@@ -5,6 +5,7 @@ import hashlib
 import json
 import logging
 import re
+import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -27,6 +28,7 @@ class NewsItem:
     codes: list[str] = field(default_factory=list)
     score: float = 0.0
     tags: list[str] = field(default_factory=list)
+    themes: list[str] = field(default_factory=list)  # 漲價新聞提到的產品所對應的受惠族群
 
     @property
     def key(self) -> str:
@@ -170,7 +172,15 @@ def parse_rss(xml_text: str, source: str) -> list[NewsItem]:
     return items
 
 
+_google_last: dict[str, float] = {}
+GOOGLE_MIN_INTERVAL = 180  # 同一個搜尋最快 3 分鐘查一次，避免被 Google 限流
+
+
 def fetch_google_news(query: str, lang: str = "zh-TW") -> list[NewsItem]:
+    now = time.monotonic()
+    if now - _google_last.get(query, -1e9) < GOOGLE_MIN_INTERVAL:
+        return []
+    _google_last[query] = now
     if lang == "zh-TW":
         url = f"https://news.google.com/rss/search?q={quote_plus(query)}+when:1d&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
     else:

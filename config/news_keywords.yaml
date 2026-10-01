@@ -26,6 +26,67 @@ categories:
     weight: -2
     words: [砍單, 下修, 調降財測, 跌價, 降價, 衰退, 虧損, 減產, 裁員, 停工, 低於預期, 掏空, 違約, cuts guidance, misses, downgrade, layoffs]
 
+# ---------- 漲價信（比一般「漲價」新聞更強、更早的訊號） ----------
+price_letter:
+  weight: 5            # 媒體報導公司發漲價信
+  official_weight: 6   # 公開資訊觀測站重大訊息：公司正式公告調價
+  patterns:            # 正規表示式，比對標題＋摘要
+    - 漲價信
+    - 漲價函
+    - 漲價通知
+    - 調漲通知
+    - 調價通知
+    - 價格調整通知
+    - (通知|告知|致函)客戶.{0,8}(調漲|漲價|調升|調價)
+    - 發(出|布|佈|函)?.{0,4}(漲價|調漲)
+    - (調漲|調升|上調).{0,6}(報價|售價|價格|牌價|代工價)
+    - (漲價|調漲|調升).{0,4}\d{1,2}(%|％|成)
+    - 喊漲
+    - 全面漲價
+    - price increase (letter|notice|notification)
+    - (raise|raises|raising|hike|hikes) (its |their )?prices? by
+  official_patterns:   # 重大訊息主旨／說明
+    - 調整.{0,6}(產品|銷售)?(價格|售價|報價)
+    - 價格調整
+    - 調漲.{0,6}(價格|售價|報價|產品)
+    - 調升.{0,4}(售價|價格|報價)
+  # 上游大廠漲價時，受惠的台股族群（族群名稱要和 themes.yaml 一致）
+  product_themes:
+    MLCC: 被動元件
+    被動元件: 被動元件
+    電容: 被動元件
+    電阻: 被動元件
+    電感: 被動元件
+    石英: 被動元件
+    DRAM: 記憶體
+    NAND: 記憶體
+    NOR: 記憶體
+    HBM: 記憶體
+    DDR: 記憶體
+    記憶體: 記憶體
+    快閃記憶體: 記憶體
+    CCL: PCB銅箔基板
+    銅箔基板: PCB銅箔基板
+    銅箔: PCB銅箔基板
+    玻纖: PCB銅箔基板
+    PCB: PCB銅箔基板
+    ABF: PCB銅箔基板
+    載板: PCB銅箔基板
+    晶圓代工: 晶圓代工
+    成熟製程: 晶圓代工
+    代工價: 晶圓代工
+    矽晶圓: 矽晶圓
+    封測: 封測
+    封裝: 封測
+    MCU: IC設計
+    驅動IC: IC設計
+    電源管理: IC設計
+    散熱: 散熱
+    變壓器: 重電綠能
+    電力設備: 重電綠能
+    運價: 航運
+    運費: 航運
+
 # 標題含這些字的新聞不計分（凍漲、民生物價等跟個股無關的消息）
 exclude_words: [凍漲, 不漲價, 沒漲價, 食品, 機票, 燃油附加費, 瓦斯, 電價, 油價, 票價, 房價, 房租, 學費, 列印, 日本食品, without price hike]
 
@@ -36,12 +97,21 @@ cnyes_categories: [tw_stock, headline, us_stock]
 google_queries_tw:
   - 漲價 股
   - 漲價信
+  - 發漲價信
+  - 漲價通知 客戶
   - 調漲 報價
+  - 喊漲 報價
+  - 漲價 site:money.udn.com
+  - 漲價 site:ctee.com.tw
+  - 漲價 site:moneydj.com
+  - 漲價 site:digitimes.com.tw
   - 缺貨 供不應求
   - 法說會 上修
   - 營收 創新高
 
 google_queries_us:
+  - price increase letter
+  - price increase notice semiconductor
   - price hike stocks
   - raises guidance
   - supply shortage semiconductor

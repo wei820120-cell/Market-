@@ -354,3 +354,32 @@ def test_news_by_code_dilutes_roundups():
     nb = picks.news_by_code([roundup, single])
     assert nb["1111"]["score"] == 1.5 and not nb["1111"]["hike"]
     assert nb["2327"]["score"] == 3 and nb["2327"]["hike"]
+
+
+def test_price_letter_detection_and_theme_hike():
+    import yaml
+    from market_intel.analysis import picks
+    from market_intel.utils import ROOT
+    kw = yaml.safe_load(open(ROOT / "config" / "news_keywords.yaml", encoding="utf-8"))
+    media = news_signals.score_item(news.NewsItem("鉅亨網", "國巨(2327)發漲價信 MLCC 調漲報價10%"), kw)
+    assert media.tags[0].startswith("漲價信") and media.score >= 8
+    assert "被動元件" in media.themes
+    official = news_signals.score_item(
+        news.NewsItem("MOPS重大訊息(上市)", "2327 國巨：公告調整產品價格", codes=["2327"]), kw)
+    assert official.tags[0].startswith("公司公告漲價") and news_signals.is_price_letter(official)
+    no_hike = news_signals.score_item(news.NewsItem("MOPS重大訊息(上市)", "1234 某公司：本公司產品價格暫不調整"), kw)
+    assert not news_signals.is_price_letter(no_hike)
+    upstream = news_signals.score_item(news.NewsItem("Google新聞", "三星 DRAM 全面漲價 合約價調漲15%"), kw)
+    assert news_signals.is_price_letter(upstream) and "記憶體" in upstream.themes
+
+    media.codes = ["2327"]
+    nb = picks.news_by_code([media, upstream], {"被動元件": ["2327", "2492"], "記憶體": ["2408"]})
+    assert nb["2327"]["letter"] and nb["2327"]["hike"]
+    assert nb["2492"]["theme_hike"] and not nb["2492"]["hike"]
+    assert nb["2408"]["theme_hike"]
+    df = picks.rank_picks([
+        picks.Candidate("2327", "國巨", pct=5, ratio=2, news_score=8, price_hike=True, price_letter=True),
+        picks.Candidate("2408", "南亞科", pct=1, ratio=1.3, theme_hike=True),
+    ], {})
+    assert df.iloc[0]["漲價"] == "漲價信" and "漲價信" in df.iloc[0]["理由"]
+    assert df.iloc[1]["漲價"] == "族群" and "族群漲價" in df.iloc[1]["理由"]

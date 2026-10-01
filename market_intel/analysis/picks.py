@@ -4,7 +4,8 @@
   量能   min(量比, 5) × 2          量比＝今日成交金額 ÷ 前 5 日均額（盤中用同時段步調）
   法人   外資＋投信買超金額每 5 億 1 分（-3 ~ +6）
   新聞   該股正面新聞分數加總（最多 8）
-  漲價   有漲價相關新聞 +4
+  漲價   有漲價相關新聞 +4；公司漲價信／正式公告再 +2
+  族群漲價 上游漲價、所屬族群受惠 +2
   族群   所屬族群今天判讀為資金流入 +2
   當天下跌時總分打五折。
 """
@@ -26,14 +27,20 @@ class Candidate:
     inst: float | None = None         # 外資＋投信買超（億）
     news_score: float = 0.0
     price_hike: bool = False
+    price_letter: bool = False        # 公司發漲價信／正式公告調價
+    theme_hike: bool = False          # 上游漲價，所屬族群受惠
     themes: list[str] = field(default_factory=list)
     theme_inflow: bool = False
     headline: str = ""
 
 
-def news_by_code(ranked: list) -> dict[str, dict]:
-    """把新聞依個股彙總：正面分數加總、是否有漲價、代表標題。"""
+def news_by_code(ranked: list, themes: dict[str, list] | None = None) -> dict[str, dict]:
+    """把新聞依個股彙總：正面分數加總、是否有漲價／漲價信、族群是否受惠於漲價、代表標題。"""
     out: dict[str, dict] = {}
+
+    def entry(c: str) -> dict:
+        return out.setdefault(c, {"score": 0.0, "hike": False, "letter": False, "theme_hike": False, "headline": ""})
+
     for it in ranked:
         if it.score <= 0:
             continue
@@ -41,14 +48,26 @@ def news_by_code(ranked: list) -> dict[str, dict]:
         # 一篇文章列了很多檔（盤勢整理、族群懶人包）時分數平均分攤，也不算該股本身的漲價消息
         broad = len(codes) > 3
         weight = 3 / len(codes) if broad else 1.0
+        letter = any(t.startswith(("漲價信", "公司公告漲價")) for t in it.tags)
+        hike = letter or any(t.startswith("漲價") for t in it.tags)
         for c in codes:
-            d = out.setdefault(c, {"score": 0.0, "hike": False, "headline": ""})
+            d = entry(c)
             d["score"] += it.score * weight
-            if not broad and any(t.startswith("漲價") for t in it.tags):
+            if not broad and hike:
                 d["hike"] = True
+                d["letter"] = d["letter"] or letter
             if not d["headline"] or (not broad and d.get("broad")):
                 d["headline"] = it.title[:40]
                 d["broad"] = broad
+        # 上游漲價：所屬族群的成分股標記「族群漲價」
+        if hike and themes:
+            for th in getattr(it, "themes", []) or []:
+                for c in map(str, themes.get(th, [])):
+                    d = entry(c)
+                    d["theme_hike"] = True
+                    if not d["headline"]:
+                        d["headline"] = it.title[:40]
+                        d["broad"] = True
     return out
 
 
@@ -68,6 +87,12 @@ def score(c: Candidate) -> tuple[float, list[str]]:
     if c.price_hike:
         s += 4
         why.append("漲價")
+    if c.price_letter:
+        s += 2
+        why.append("漲價信")
+    if c.theme_hike and not c.price_hike:
+        s += 2
+        why.append("族群漲價")
     if c.theme_inflow:
         s += 2
         why.append("族群資金流入")
@@ -82,7 +107,7 @@ def rank_picks(cands: list[Candidate], futures: dict[str, dict], top: int = 20,
     for c in cands:
         # 至少要有資金（量增或法人買）或題材，且當天沒有明顯下跌
         has_money = (c.ratio or 0) >= min_ratio or (c.inst or 0) >= 1
-        if not (has_money or c.news_score > 0) or (c.pct is not None and c.pct < -1):
+        if not (has_money or c.news_score > 0 or c.price_letter) or (c.pct is not None and c.pct < -1):
             continue
         sc, why = score(c)
         rows.append({
@@ -92,7 +117,7 @@ def rank_picks(cands: list[Candidate], futures: dict[str, dict], top: int = 20,
             "量比": None if c.ratio is None else round(c.ratio, 2),
             "法人(億)": None if c.inst is None else round(c.inst, 1),
             "族群": "、".join(c.themes),
-            "漲價": "✅" if c.price_hike else "",
+            "漲價": "漲價信" if c.price_letter else ("✅" if c.price_hike else ("族群" if c.theme_hike else "")),
             # 清單抓不到時標「未知」，不要誤標成「無」而錯過機會
             "股票期貨": futures_label(futures.get(c.code)) if futures else "未知",
             "分數": sc,

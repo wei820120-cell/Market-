@@ -188,7 +188,11 @@ def cmd_daily(args) -> None:
     log.info("掃描新聞…")
     ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings), _us_symbols(),
                                all_codes=set(listings))
+    letters = [it for it in ranked if news_signals.is_price_letter(it)]
     sections.append("\n## 8. 新聞與公告訊號（漲價、缺貨、擴產、財測…）\n")
+    sections.append(f"### 🚨 漲價信／公司公告調價（{len(letters)} 則）\n")
+    sections.append(news_table(letters, 30))
+    sections.append("\n### 全部新聞訊號\n")
     sections.append(news_table(ranked, 60))
 
     # 0. 強勢標的（放在報告最前面）
@@ -216,7 +220,7 @@ def daily_picks(day: pd.DataFrame, listings: dict, hist: dict, inst: pd.DataFram
                 theme_df: pd.DataFrame, themes_tw: dict, ranked: list, n_top_value: int = 150) -> pd.DataFrame:
     """盤後強勢標的：成交金額前 N 名＋族群成分股＋有正面新聞的個股，綜合評分。"""
     futures = stock_futures.load_stock_futures()
-    nb = picks.news_by_code(ranked)
+    nb = picks.news_by_code(ranked, themes_tw)
     theme_map = picks.themes_of(themes_tw)
     inflow = set()
     if theme_df is not None and not theme_df.empty:
@@ -251,6 +255,7 @@ def daily_picks(day: pd.DataFrame, listings: dict, hist: dict, inst: pd.DataFram
             code=c, name=(listings.get(c) or {}).get("name", c),
             pct=None if pct is None or pd.isna(pct) else float(pct), ratio=ratio, inst=inst_map.get(c),
             news_score=n.get("score", 0.0), price_hike=n.get("hike", False), headline=n.get("headline", ""),
+            price_letter=n.get("letter", False), theme_hike=n.get("theme_hike", False),
             themes=ths, theme_inflow=any(t in inflow for t in ths),
         ))
     return picks.rank_picks(cands, futures)
@@ -293,10 +298,33 @@ def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFr
     return "\n".join(lines)
 
 
+def price_letter_message(it, listings: dict, futures: dict, themes_tw: dict) -> str:
+    """漲價信推播：標題、相關個股（附股票期貨）、受惠族群。"""
+    lines = [f"🚨 {it.tags[0]}", it.title]
+    for c in [c for c in it.codes if c[:1].isdigit()][:5]:
+        name = (listings.get(c) or {}).get("name", "")
+        lines.append(f"・{c} {name}｜股期 {stock_futures.label(futures.get(c)) if futures else '未知'}")
+    for th in it.themes:
+        members = [str(c) for c in themes_tw.get(th, [])]
+        with_fut = [c for c in members if futures and stock_futures.label(futures.get(c)) != "無"]
+        lines.append(f"受惠族群【{th}】{len(members)} 檔，其中 {len(with_fut)} 檔有股票期貨")
+    if it.url:
+        lines.append(it.url)
+    return "\n".join(lines)
+
+
 def build_news_digest(today: datetime, ranked: list, n: int = 10) -> str:
-    """新聞機器人用的盤後新聞整理：分數最高的 N 則，附連結。"""
+    """新聞機器人用的盤後新聞整理：漲價信優先，再列分數最高的 N 則，附連結。"""
     lines = [f"📰 今日重點新聞 {today:%m/%d}"]
-    for it in ranked[:n]:
+    letters = [it for it in ranked if news_signals.is_price_letter(it)]
+    if letters:
+        lines.append(f"\n🚨 漲價信／公司公告調價 {len(letters)} 則")
+        for it in letters[:10]:
+            codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
+            ths = f"（受惠：{'、'.join(it.themes)}）" if it.themes else ""
+            lines.append(f"・{codes}{it.title[:70]}{ths}\n{it.url}")
+        lines.append("\n📰 其他重點新聞")
+    for it in [x for x in ranked if x not in letters][:n]:
         codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
         lines.append(f"\n{it.score:+g} {codes}{it.title[:80]}\n{it.url}")
     return "\n".join(lines)
@@ -352,6 +380,7 @@ def intraday_picks(quotes: dict, listings: dict, flow: pd.DataFrame, theme_map: 
         cands.append(picks.Candidate(
             code=code, name=q.name, pct=q.change_pct, ratio=ratio,
             news_score=n.get("score", 0.0), price_hike=n.get("hike", False), headline=n.get("headline", ""),
+            price_letter=n.get("letter", False), theme_hike=n.get("theme_hike", False),
             themes=ths, theme_inflow=any(t in inflow for t in ths),
         ))
     return picks.rank_picks(cands, futures, min_ratio=1.5)
@@ -456,10 +485,12 @@ def cmd_realtime(args) -> None:
             fresh = news.only_new(collect_news(full=False))
             scored = news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(),
                                        min_score=1, all_codes=set(listings))
-            for c, d in picks.news_by_code(scored).items():
-                m = news_map.setdefault(c, {"score": 0.0, "hike": False, "headline": d["headline"]})
+            for c, d in picks.news_by_code(scored, themes_tw).items():
+                m = news_map.setdefault(c, {"score": 0.0, "hike": False, "letter": False, "theme_hike": False,
+                                            "headline": d["headline"]})
                 m["score"] += d["score"]
-                m["hike"] = m["hike"] or d["hike"]
+                for k in ("hike", "letter", "theme_hike"):
+                    m[k] = m[k] or d[k]
                 if c in listings and c not in codes:
                     codes.append(c)  # 有題材的個股加入盤中報價監控
             if first_news and not args.once:
@@ -467,7 +498,13 @@ def cmd_realtime(args) -> None:
                 first_news = False
                 log.info("已記錄 %d 則既有新聞，之後只推播新出現的。", len(fresh))
             else:
-                hits = [it for it in scored if abs(it.score) >= news_min]
+                letters = [it for it in scored if news_signals.is_price_letter(it)]
+                for it in letters:  # 漲價信：全部立即推播，不受每輪 5 則上限
+                    msg = price_letter_message(it, listings, futures, themes_tw)
+                    notify.send(msg, channel="news")
+                    if it.codes or it.themes:
+                        notify.send(msg, channel="picks")
+                hits = [it for it in scored if abs(it.score) >= news_min and it not in letters]
                 for it in hits[:5]:
                     notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
 
