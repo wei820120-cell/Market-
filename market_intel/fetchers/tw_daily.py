@@ -171,7 +171,9 @@ def parse_institutional(payload: dict) -> pd.DataFrame:
     if i_foreign is None:
         i_foreign = find_col(fields, "外資", "買賣超")
     i_trust = find_col(fields, "投信買賣超股數")
-    i_dealer = find_col(fields, "自營商買賣超股數")
+    # 注意「外資自營商買賣超股數」也包含這幾個字，要先找完全相同的欄位名稱
+    exact = [str(f).strip() for f in fields]
+    i_dealer = exact.index("自營商買賣超股數") if "自營商買賣超股數" in exact else None
     i_total = find_col(fields, "三大法人買賣超股數")
     rows = []
     for d in data:
