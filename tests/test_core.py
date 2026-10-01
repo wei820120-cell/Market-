@@ -226,3 +226,16 @@ def test_dealer_not_confused_with_foreign_dealer():
 def test_tag_codes_all_listed_codes():
     it = news_signals.tag_codes(news.NewsItem("t", "正淩(8147)AI機櫃供不應求"), {}, all_codes={"8147"})
     assert it.codes == ["8147"]
+
+
+def test_build_summary(monkeypatch):
+    from market_intel import cli
+    monkeypatch.setenv("GITHUB_REPOSITORY", "me/repo")
+    theme = pd.DataFrame([{"族群": "被動元件", "量比(對5日均)": 2.33, "加權漲跌%": 9.42, "判讀": "資金流入🔥", "資金增減(億)": 442.1},
+                          {"族群": "IC設計", "量比(對5日均)": 0.55, "加權漲跌%": 0.57, "判讀": "量縮", "資金增減(億)": -280.8}])
+    inst = pd.DataFrame([{"族群": "被動元件", "三大法人合計(億)": 209.76, "外資(億)": 189.03, "投信(億)": 8.16}])
+    fx = {"pcr_oi": 80.57, "tx_institutional_net_oi": {"外資及陸資": -78151.0, "投信": 73839.0}}
+    items = [news.NewsItem("t", "國巨漲價", codes=["2327"], score=5)]
+    msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx, items)
+    assert "被動元件" in msg and "-78,151口" in msg and "[2327]" in msg
+    assert "https://github.com/me/repo/blob/main/reports/2026-10-01.md" in msg
