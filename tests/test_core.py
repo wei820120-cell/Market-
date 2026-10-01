@@ -235,9 +235,11 @@ def test_build_summary(monkeypatch):
                           {"族群": "IC設計", "量比(對5日均)": 0.55, "加權漲跌%": 0.57, "判讀": "量縮", "資金增減(億)": -280.8}])
     inst = pd.DataFrame([{"族群": "被動元件", "三大法人合計(億)": 209.76, "外資(億)": 189.03, "投信(億)": 8.16}])
     fx = {"pcr_oi": 80.57, "tx_institutional_net_oi": {"外資及陸資": -78151.0, "投信": 73839.0}}
-    items = [news.NewsItem("t", "國巨漲價", codes=["2327"], score=5)]
-    msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx, items)
-    assert "被動元件" in msg and "-78,151口" in msg and "[2327]" in msg
+    items = [news.NewsItem("t", "國巨漲價", "http://x/1", codes=["2327"], score=5)]
+    msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx)
+    assert "被動元件" in msg and "-78,151口" in msg and "國巨漲價" not in msg
+    digest = cli.build_news_digest(datetime(2026, 10, 1, tzinfo=TW_TZ), items)
+    assert "[2327] 國巨漲價" in digest and "http://x/1" in digest
     assert "https://github.com/me/repo/blob/main/reports/2026-10-01.md" in msg
 
 
@@ -258,3 +260,97 @@ def test_intraday_pace_ignores_members_without_prev_value():
     now = datetime(2026, 10, 1, 13, 30, tzinfo=TW_TZ)
     df = sector_flow.theme_flow_intraday(quotes, {"T": ["A", "B"]}, {"A": {"prev_value": 100e6}}, now)
     assert df.iloc[0]["量能步調"] == 1.0
+
+
+def test_notify_channels(monkeypatch):
+    from market_intel import notify
+    sent = []
+
+    class R:
+        ok = True
+
+    monkeypatch.setattr(notify.requests, "post", lambda url, json, timeout: sent.append((url, json["chat_id"])) or R())
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "MAIN")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    monkeypatch.delenv("TELEGRAM_NEWS_BOT_TOKEN", raising=False)
+    monkeypatch.delenv("DISCORD_WEBHOOK_URL", raising=False)
+    notify.send("x", channel="news")
+    assert "botMAIN" in sent[-1][0]  # 沒設新聞機器人 → 走主機器人
+    monkeypatch.setenv("TELEGRAM_NEWS_BOT_TOKEN", "NEWS")
+    notify.send("x", channel="news")
+    assert "botNEWS" in sent[-1][0] and sent[-1][1] == "111"
+    notify.send("x")
+    assert "botMAIN" in sent[-1][0]
+
+
+def test_stock_futures_parsers():
+    from market_intel.fetchers import stock_futures
+    row = lambda *cells: "<tr>" + "".join(f"<td>{c}</td>" for c in cells) + "</tr>"  # noqa: E731
+    html_text = "<table>" + "".join([
+        "<tr><th>商品代碼</th><th>標的證券</th><th>證券代號</th></tr>",
+        row("CD", "台灣積體電路製造股份有限公司", "2330", "台積電", "<span>●</span>", "是股票期貨標的", "●", "是股票選擇權標的",
+            "2,000", "8:45~13:45", "17:25~次日05:00"),
+        row("QF", "台灣積體電路製造股份有限公司", "2330", "台積電", "●", "是股票期貨標的", "", "", "100", "8:45~13:45", "-"),
+        row("DH", "國巨股份有限公司", "2327", "國巨", "●", "是股票期貨標的", "", "", "2,000", "8:45~13:45", "-"),
+        row("ZZ", "只有選擇權", "9999", "某股", "", "", "●", "是股票選擇權標的", "2,000", "8:45~13:45", "-"),
+    ]) + "</table>"
+    data = stock_futures.parse_stock_lists_html(html_text)
+    assert data["2330"] == {"std": "CDF", "mini": "QFF", "night": True}
+    assert data["2327"] == {"std": "DHF", "mini": None, "night": False}
+    assert "9999" not in data
+    assert stock_futures.label(data["2330"]) == "CDF／小型QFF／夜盤"
+    assert stock_futures.label(data["2327"]) == "DHF"
+    assert stock_futures.label(None) == "無"
+    rows = [{"Contract": "CDF", "StockCode": "2330", "StockName": "台積電"}]
+    assert stock_futures.parse_openapi_rows(rows)["2330"]["std"] == "CDF"
+    sw = {"paths": {"/A": {"get": {"summary": "期貨每日行情"}}, "/B": {"get": {"summary": "股票期貨及選擇權交易標的"}}}}
+    assert stock_futures.find_openapi_path(sw) == "/B"
+
+
+def test_rank_picks():
+    from market_intel.analysis import picks
+    items = [news.NewsItem("t", "國巨漲價", codes=["2327"], score=5, tags=["漲價(漲價)"]),
+             news.NewsItem("t", "某公司砍單", codes=["1111"], score=-2, tags=["利空(砍單)"])]
+    nb = picks.news_by_code(items)
+    assert nb["2327"]["hike"] and "1111" not in nb
+    cands = [
+        picks.Candidate("2327", "國巨", pct=9.9, ratio=3.0, inst=130, news_score=5, price_hike=True,
+                        themes=["被動元件"], theme_inflow=True),
+        picks.Candidate("2330", "台積電", pct=0.2, ratio=0.9, inst=90),
+        picks.Candidate("1111", "弱勢", pct=-3, ratio=2.0),          # 大跌排除
+        picks.Candidate("2222", "沒量沒題材", pct=1, ratio=1.0),     # 無資金無題材排除
+    ]
+    df = picks.rank_picks(cands, {"2327": {"std": "DHF", "mini": "QHF", "night": False}})
+    assert list(df["代號"]) == ["2327", "2330"]
+    assert df.iloc[0]["股票期貨"] == "DHF／小型QHF" and df.iloc[1]["股票期貨"] == "無"
+    assert "漲價" in df.iloc[0]["理由"]
+    msg = picks.picks_message(df, "🎯")
+    assert "股期DHF／小型QHF" in msg and "無股期" in msg
+    # 清單抓不到時標「未知」，不能誤標成「無」
+    assert picks.rank_picks(cands, {}).iloc[0]["股票期貨"] == "未知"
+
+
+def test_notify_picks_channel(monkeypatch):
+    from market_intel import notify
+    sent = []
+
+    class R:
+        ok = True
+
+    monkeypatch.setattr(notify.requests, "post", lambda url, json, timeout: sent.append(url) or R())
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "MAIN")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    monkeypatch.setenv("TELEGRAM_PICKS_BOT_TOKEN", "PICKS")
+    monkeypatch.delenv("DISCORD_WEBHOOK_URL", raising=False)
+    notify.send("x", channel="picks")
+    assert "botPICKS" in sent[-1]
+
+
+def test_news_by_code_dilutes_roundups():
+    from market_intel.analysis import picks
+    roundup = news.NewsItem("t", "漲價潮整理", codes=["1111", "2222", "3333", "4444", "5555", "6666"],
+                            score=3, tags=["漲價(漲價)"])
+    single = news.NewsItem("t", "國巨漲價", codes=["2327"], score=3, tags=["漲價(漲價)"])
+    nb = picks.news_by_code([roundup, single])
+    assert nb["1111"]["score"] == 1.5 and not nb["1111"]["hike"]
+    assert nb["2327"]["score"] == 3 and nb["2327"]["hike"]

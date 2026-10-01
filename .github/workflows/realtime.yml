@@ -12,6 +12,10 @@ on:
         description: "測試模式：只抓一次快照並推播（非交易時段也會執行）"
         type: boolean
         default: false
+      check:
+        description: "資料檢查：只印出資料來源原始欄位，不推播"
+        type: boolean
+        default: false
 
 concurrency:
   group: realtime
@@ -32,9 +36,15 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_NEWS_BOT_TOKEN: ${{ secrets.TELEGRAM_NEWS_BOT_TOKEN }}
+          TELEGRAM_NEWS_CHAT_ID: ${{ secrets.TELEGRAM_NEWS_CHAT_ID }}
+          TELEGRAM_PICKS_BOT_TOKEN: ${{ secrets.TELEGRAM_PICKS_BOT_TOKEN }}
+          TELEGRAM_PICKS_CHAT_ID: ${{ secrets.TELEGRAM_PICKS_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          if [ "${{ inputs.test }}" = "true" ]; then
+          if [ "${{ inputs.check }}" = "true" ]; then
+            python -m market_intel check
+          elif [ "${{ inputs.test }}" = "true" ]; then
             python -m market_intel realtime --once --force
           else
             python -m market_intel realtime --until 13:35

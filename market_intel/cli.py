@@ -19,8 +19,8 @@ from datetime import datetime, time as dtime
 import pandas as pd
 
 from . import config, notify
-from .analysis import news_signals, sector_flow, target_price
-from .fetchers import news, taifex, tw_daily, tw_realtime, yahoo
+from .analysis import news_signals, picks, sector_flow, target_price
+from .fetchers import news, stock_futures, taifex, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -191,10 +191,69 @@ def cmd_daily(args) -> None:
     sections.append("\n## 8. 新聞與公告訊號（漲價、缺貨、擴產、財測…）\n")
     sections.append(news_table(ranked, 60))
 
+    # 0. 強勢標的（放在報告最前面）
+    log.info("計算強勢標的…")
+    picks_df = daily_picks(day, listings, hist, inst, closes, theme_df, themes_tw, ranked)
+    sections[2:2] = [
+        "## 0. 今日強勢標的（資金流入＋題材＋漲價，附股票期貨／小型股票期貨）\n",
+        "_分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材分數＋漲價 4 分＋所屬族群資金流入 2 分；當天下跌打五折。"
+        "股票期貨欄：CDF＝一般股票期貨代碼、小型＝小型股票期貨、夜盤＝有盤後交易時段。_\n\n",
+        md_table(picks_df, 20) + "\n",
+    ]
+
     path = REPORT_DIR / f"{today:%Y-%m-%d}.md"
     path.write_text("\n".join(sections), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text("\n".join(sections), encoding="utf-8")
-    notify.send(build_summary(today, theme_df, inst_theme, fx, ranked))
+    notify.send(build_summary(today, theme_df, inst_theme, fx))
+    if ranked:
+        notify.send(build_news_digest(today, ranked), channel="news")
+    if not picks_df.empty:
+        notify.send(picks.picks_message(picks_df, f"🎯 盤後強勢標的 {today:%m/%d}", n=10)
+                    + f"\n\n完整報告：{_report_url(today)}", channel="picks")
+
+
+def daily_picks(day: pd.DataFrame, listings: dict, hist: dict, inst: pd.DataFrame, closes: dict,
+                theme_df: pd.DataFrame, themes_tw: dict, ranked: list, n_top_value: int = 150) -> pd.DataFrame:
+    """盤後強勢標的：成交金額前 N 名＋族群成分股＋有正面新聞的個股，綜合評分。"""
+    futures = stock_futures.load_stock_futures()
+    nb = picks.news_by_code(ranked)
+    theme_map = picks.themes_of(themes_tw)
+    inflow = set()
+    if theme_df is not None and not theme_df.empty:
+        inflow = set(theme_df[theme_df["判讀"].str.contains("資金流入")]["族群"])
+    codes = set(theme_map) | {c for c in nb if c in listings}
+    if not day.empty:
+        stocks = day[~day["code"].str.startswith("0")].dropna(subset=["value"])
+        codes |= set(stocks.sort_values("value", ascending=False).head(n_top_value)["code"])
+    missing = [c for c in codes if c not in hist]
+    hist = {**hist, **_yahoo_histories(missing, listings, range_="1mo")} if missing else hist
+    pct_map = dict(zip(day["code"], day["pct"])) if not day.empty else {}
+    inst_map = {}
+    if inst is not None and not inst.empty:
+        for r in inst.itertuples():
+            px = closes.get(r.code)
+            if px and r.foreign is not None and r.trust is not None:
+                inst_map[r.code] = (r.foreign + r.trust) * px / 1e8
+    cands = []
+    for c in codes:
+        ratio = None
+        h = hist.get(c)
+        if h is not None and len(h) >= 6:
+            v = h["close"] * h["volume"]
+            base = float(v.iloc[-6:-1].mean())
+            ratio = float(v.iloc[-1]) / base if base else None
+            # 證交所盤後資料少數個股（如有 * 註記者）漲跌欄位不可靠，有日K時改用日K計算
+            pct_map[c] = float(h["close"].iloc[-1] / h["close"].iloc[-2] - 1) * 100
+        n = nb.get(c, {})
+        ths = theme_map.get(c, [])
+        pct = pct_map.get(c)
+        cands.append(picks.Candidate(
+            code=c, name=(listings.get(c) or {}).get("name", c),
+            pct=None if pct is None or pd.isna(pct) else float(pct), ratio=ratio, inst=inst_map.get(c),
+            news_score=n.get("score", 0.0), price_hike=n.get("hike", False), headline=n.get("headline", ""),
+            themes=ths, theme_inflow=any(t in inflow for t in ths),
+        ))
+    return picks.rank_picks(cands, futures)
 
 
 def _report_url(today: datetime) -> str:
@@ -206,8 +265,7 @@ def _report_url(today: datetime) -> str:
     return f"{server}/{repo}/blob/main/reports/{today:%Y-%m-%d}.md"
 
 
-def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFrame, fx: dict,
-                  ranked: list, n_news: int = 5) -> str:
+def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFrame, fx: dict) -> str:
     """手機推播用的盤後重點摘要。"""
     lines = [f"📊 盤後情報 {today:%m/%d}"]
     if theme_df is not None and not theme_df.empty:
@@ -231,12 +289,16 @@ def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFr
             fx_lines.append(f"外資台指期 {v:+,.0f}口")
     if fx_lines:
         lines.append("\n📈 " + "｜".join(fx_lines))
-    if ranked:
-        lines.append("\n📰 重點新聞")
-        for it in ranked[:n_news]:
-            codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
-            lines.append(f"・{it.score:+g} {codes}{it.title[:60]}")
     lines.append(f"\n完整報告：{_report_url(today)}")
+    return "\n".join(lines)
+
+
+def build_news_digest(today: datetime, ranked: list, n: int = 10) -> str:
+    """新聞機器人用的盤後新聞整理：分數最高的 N 則，附連結。"""
+    lines = [f"📰 今日重點新聞 {today:%m/%d}"]
+    for it in ranked[:n]:
+        codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
+        lines.append(f"\n{it.score:+g} {codes}{it.title[:80]}\n{it.url}")
     return "\n".join(lines)
 
 
@@ -274,6 +336,27 @@ def _flow_message(flow: pd.DataFrame, now: datetime, n: int = 5) -> str:
     return "\n".join(lines)
 
 
+def intraday_picks(quotes: dict, listings: dict, flow: pd.DataFrame, theme_map: dict, news_map: dict,
+                   futures: dict, now: datetime) -> pd.DataFrame:
+    """盤中強勢標的：個股量能步調＋漲跌＋今日新聞題材／漲價＋所屬族群是否資金流入。"""
+    frac = sector_flow.expected_fraction(now)
+    inflow = set()
+    if flow is not None and not flow.empty:
+        inflow = set(flow[flow["判讀"].str.contains("資金流入")]["族群"])
+    cands = []
+    for code, q in quotes.items():
+        prev = (listings.get(code) or {}).get("prev_value") or 0
+        ratio = q.turnover / (prev * frac) if prev and frac > 0 and q.turnover else None
+        n = news_map.get(code, {})
+        ths = theme_map.get(code, [])
+        cands.append(picks.Candidate(
+            code=code, name=q.name, pct=q.change_pct, ratio=ratio,
+            news_score=n.get("score", 0.0), price_hike=n.get("hike", False), headline=n.get("headline", ""),
+            themes=ths, theme_inflow=any(t in inflow for t in ths),
+        ))
+    return picks.rank_picks(cands, futures, min_ratio=1.5)
+
+
 def cmd_realtime(args) -> None:
     ensure_dirs()
     st = (config.settings().get("realtime") or {})
@@ -300,6 +383,9 @@ def cmd_realtime(args) -> None:
         except Exception as e:  # noqa: BLE001
             log.warning("目標價計算失敗，停用到價推播：%s", e)
 
+    futures = stock_futures.load_stock_futures()
+    theme_map = picks.themes_of(themes_tw)
+    news_map: dict[str, dict] = {}  # 今天看過的新聞依個股彙總（題材、漲價）
     alerted: set[str] = set()
     pushed_times: set[str] = set()
     last_news = 0.0
@@ -327,10 +413,21 @@ def cmd_realtime(args) -> None:
             print(f"\n===== {now:%H:%M:%S}  {head}  （同時段正常量比例 {sector_flow.expected_fraction(now):.0%}）=====")
             if not flow.empty:
                 print(flow.head(top_n).to_string(index=False))
+                picks_df = intraday_picks(quotes, listings, flow, theme_map, news_map, futures, now)
                 due = [t for t in flow_times if t <= f"{now:%H:%M}" and t not in pushed_times]
                 if due:
                     pushed_times.update(due)
                     notify.send((f"{head}\n" if head else "") + _flow_message(flow, now))
+                    if not picks_df.empty:
+                        notify.send(picks.picks_message(picks_df, f"🎯 {now:%H:%M} 強勢標的"), channel="picks")
+                # 漲價題材＋資金湧入＋上漲：立即推播（每檔每天一次）
+                for r in picks_df.to_dict("records") if not picks_df.empty else []:
+                    key = f"hike:{r['代號']}:{now:%Y%m%d}"
+                    if r["漲價"] and (r["量比"] or 0) >= 1.5 and (r["漲跌%"] or 0) > 0 and key not in alerted:
+                        alerted.add(key)
+                        fut = {"無": "無股票期貨", "未知": "股票期貨未知"}.get(r["股票期貨"], f"股票期貨 {r['股票期貨']}")
+                        notify.send(f"🎯 漲價＋資金湧入：{r['代號']} {r['名稱']} {r['漲跌%']:+.2f}% 步調{r['量比']}倍｜{fut}\n{r['新聞']}",
+                                    channel="picks")
                 for r in flow.to_dict("records"):
                     key = f"theme:{r['族群']}:{now:%Y%m%d}"
                     if (r["量能步調"] or 0) >= alert_pace and (r["加權漲跌%"] or 0) > 0 and key not in alerted:
@@ -357,15 +454,22 @@ def cmd_realtime(args) -> None:
         if time.monotonic() - last_news >= news_interval:
             last_news = time.monotonic()
             fresh = news.only_new(collect_news(full=False))
+            scored = news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(),
+                                       min_score=1, all_codes=set(listings))
+            for c, d in picks.news_by_code(scored).items():
+                m = news_map.setdefault(c, {"score": 0.0, "hike": False, "headline": d["headline"]})
+                m["score"] += d["score"]
+                m["hike"] = m["hike"] or d["hike"]
+                if c in listings and c not in codes:
+                    codes.append(c)  # 有題材的個股加入盤中報價監控
             if first_news and not args.once:
                 # 第一次掃描只記錄已經存在的新聞，避免一啟動就把舊新聞全部推出去
                 first_news = False
                 log.info("已記錄 %d 則既有新聞，之後只推播新出現的。", len(fresh))
             else:
-                hits = news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(),
-                                         min_score=news_min, all_codes=set(listings))
+                hits = [it for it in scored if abs(it.score) >= news_min]
                 for it in hits[:5]:
-                    notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}")
+                    notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
 
         if args.once:
             break
@@ -399,6 +503,16 @@ def cmd_target(args) -> None:
     print(pd.DataFrame(rows).to_string(index=False))
 
 
+def cmd_check(args) -> None:
+    """資料檢查：印出各資料來源的原始欄位，不推播。"""
+    print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
+    data = stock_futures.load_stock_futures()
+    print(f"\n股票期貨標的：{len(data)} 檔；有小型：{sum(1 for v in data.values() if v.get('mini'))} 檔；"
+          f"有夜盤：{sum(1 for v in data.values() if v.get('night'))} 檔")
+    for code in ["2330", "2317", "2454", "2327", "2303", "3017", "0050", "6488"]:
+        print(f"  {code}：{stock_futures.label(data.get(code))}")
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="market_intel", description="台美股 / 期權 即時情報與目標價")
     p.add_argument("-v", "--verbose", action="store_true")
@@ -406,6 +520,7 @@ def main(argv: list[str] | None = None) -> None:
 
     sub.add_parser("daily", help="盤後總報告").set_defaults(func=cmd_daily)
     sub.add_parser("us", help="美股類股資金流向").set_defaults(func=cmd_us)
+    sub.add_parser("check", help="資料檢查：印出資料來源原始欄位（不推播）").set_defaults(func=cmd_check)
 
     rt = sub.add_parser("realtime", help="盤中即時監控")
     rt.add_argument("--once", action="store_true", help="只跑一次")
