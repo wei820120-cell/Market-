@@ -194,7 +194,9 @@ def cmd_daily(args) -> None:
     path = REPORT_DIR / f"{today:%Y-%m-%d}.md"
     path.write_text("\n".join(sections), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text("\n".join(sections), encoding="utf-8")
-    notify.send(build_summary(today, theme_df, inst_theme, fx, ranked))
+    notify.send(build_summary(today, theme_df, inst_theme, fx))
+    if ranked:
+        notify.send(build_news_digest(today, ranked), channel="news")
 
 
 def _report_url(today: datetime) -> str:
@@ -206,8 +208,7 @@ def _report_url(today: datetime) -> str:
     return f"{server}/{repo}/blob/main/reports/{today:%Y-%m-%d}.md"
 
 
-def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFrame, fx: dict,
-                  ranked: list, n_news: int = 5) -> str:
+def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFrame, fx: dict) -> str:
     """手機推播用的盤後重點摘要。"""
     lines = [f"📊 盤後情報 {today:%m/%d}"]
     if theme_df is not None and not theme_df.empty:
@@ -231,12 +232,16 @@ def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFr
             fx_lines.append(f"外資台指期 {v:+,.0f}口")
     if fx_lines:
         lines.append("\n📈 " + "｜".join(fx_lines))
-    if ranked:
-        lines.append("\n📰 重點新聞")
-        for it in ranked[:n_news]:
-            codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
-            lines.append(f"・{it.score:+g} {codes}{it.title[:60]}")
     lines.append(f"\n完整報告：{_report_url(today)}")
+    return "\n".join(lines)
+
+
+def build_news_digest(today: datetime, ranked: list, n: int = 10) -> str:
+    """新聞機器人用的盤後新聞整理：分數最高的 N 則，附連結。"""
+    lines = [f"📰 今日重點新聞 {today:%m/%d}"]
+    for it in ranked[:n]:
+        codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
+        lines.append(f"\n{it.score:+g} {codes}{it.title[:80]}\n{it.url}")
     return "\n".join(lines)
 
 
@@ -365,7 +370,7 @@ def cmd_realtime(args) -> None:
                 hits = news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(),
                                          min_score=news_min, all_codes=set(listings))
                 for it in hits[:5]:
-                    notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}")
+                    notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
 
         if args.once:
             break

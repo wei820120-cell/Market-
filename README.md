@@ -90,7 +90,10 @@ pip install -r requirements.txt
 
 設定環境變數即可，**不要把金鑰寫進程式或上傳到 GitHub**，這個儲存庫是公開的：
 
-- Telegram：`TELEGRAM_BOT_TOKEN`、`TELEGRAM_CHAT_ID`
+- Telegram 盤勢機器人：`TELEGRAM_BOT_TOKEN`、`TELEGRAM_CHAT_ID`
+  （推送族群資金流向、到價、大漲、盤後摘要）
+- Telegram 新聞機器人（選用）：`TELEGRAM_NEWS_BOT_TOKEN`
+  （推送新聞、漲價信、重大訊息；沒設定時新聞由盤勢機器人送出。Chat ID 會沿用 `TELEGRAM_CHAT_ID`，要推到別的聊天室才需要另設 `TELEGRAM_NEWS_CHAT_ID`）
 - Discord：`DISCORD_WEBHOOK_URL`
 
 要讓 GitHub 自動排程也能推播，到儲存庫的 **Settings → Secrets and variables → Actions** 新增同名的 Secret。

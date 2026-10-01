@@ -235,9 +235,11 @@ def test_build_summary(monkeypatch):
                           {"族群": "IC設計", "量比(對5日均)": 0.55, "加權漲跌%": 0.57, "判讀": "量縮", "資金增減(億)": -280.8}])
     inst = pd.DataFrame([{"族群": "被動元件", "三大法人合計(億)": 209.76, "外資(億)": 189.03, "投信(億)": 8.16}])
     fx = {"pcr_oi": 80.57, "tx_institutional_net_oi": {"外資及陸資": -78151.0, "投信": 73839.0}}
-    items = [news.NewsItem("t", "國巨漲價", codes=["2327"], score=5)]
-    msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx, items)
-    assert "被動元件" in msg and "-78,151口" in msg and "[2327]" in msg
+    items = [news.NewsItem("t", "國巨漲價", "http://x/1", codes=["2327"], score=5)]
+    msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx)
+    assert "被動元件" in msg and "-78,151口" in msg and "國巨漲價" not in msg
+    digest = cli.build_news_digest(datetime(2026, 10, 1, tzinfo=TW_TZ), items)
+    assert "[2327] 國巨漲價" in digest and "http://x/1" in digest
     assert "https://github.com/me/repo/blob/main/reports/2026-10-01.md" in msg
 
 
@@ -258,3 +260,24 @@ def test_intraday_pace_ignores_members_without_prev_value():
     now = datetime(2026, 10, 1, 13, 30, tzinfo=TW_TZ)
     df = sector_flow.theme_flow_intraday(quotes, {"T": ["A", "B"]}, {"A": {"prev_value": 100e6}}, now)
     assert df.iloc[0]["量能步調"] == 1.0
+
+
+def test_notify_channels(monkeypatch):
+    from market_intel import notify
+    sent = []
+
+    class R:
+        ok = True
+
+    monkeypatch.setattr(notify.requests, "post", lambda url, json, timeout: sent.append((url, json["chat_id"])) or R())
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "MAIN")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    monkeypatch.delenv("TELEGRAM_NEWS_BOT_TOKEN", raising=False)
+    monkeypatch.delenv("DISCORD_WEBHOOK_URL", raising=False)
+    notify.send("x", channel="news")
+    assert "botMAIN" in sent[-1][0]  # 沒設新聞機器人 → 走主機器人
+    monkeypatch.setenv("TELEGRAM_NEWS_BOT_TOKEN", "NEWS")
+    notify.send("x", channel="news")
+    assert "botNEWS" in sent[-1][0] and sent[-1][1] == "111"
+    notify.send("x")
+    assert "botMAIN" in sent[-1][0]
