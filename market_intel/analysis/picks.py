@@ -14,6 +14,8 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
+from ..fetchers.stock_futures import label as futures_label
+
 
 @dataclass
 class Candidate:
@@ -74,7 +76,7 @@ def score(c: Candidate) -> tuple[float, list[str]]:
     return round(s, 1), why
 
 
-def rank_picks(cands: list[Candidate], futures: dict[str, str], top: int = 20,
+def rank_picks(cands: list[Candidate], futures: dict[str, dict], top: int = 20,
                min_ratio: float = 1.2) -> pd.DataFrame:
     rows = []
     for c in cands:
@@ -91,7 +93,8 @@ def rank_picks(cands: list[Candidate], futures: dict[str, str], top: int = 20,
             "法人(億)": None if c.inst is None else round(c.inst, 1),
             "族群": "、".join(c.themes),
             "漲價": "✅" if c.price_hike else "",
-            "股票期貨": futures.get(c.code, "無"),
+            # 清單抓不到時標「未知」，不要誤標成「無」而錯過機會
+            "股票期貨": futures_label(futures.get(c.code)) if futures else "未知",
             "分數": sc,
             "理由": "、".join(why),
             "新聞": c.headline,
@@ -113,7 +116,7 @@ def themes_of(themes: dict[str, list]) -> dict[str, list[str]]:
 def picks_message(df: pd.DataFrame, title: str, n: int = 5) -> str:
     lines = [title]
     for r in df.head(n).to_dict("records"):
-        fut = f"股期{r['股票期貨']}" if r["股票期貨"] != "無" else "無股期"
+        fut = {"無": "無股期", "未知": "股期未知"}.get(r["股票期貨"], f"股期{r['股票期貨']}")
         pct = "" if r["漲跌%"] is None else f"{r['漲跌%']:+.1f}% "
         lines.append(f"・{r['代號']} {r['名稱']} {pct}{fut}｜{r['理由']}")
     return "\n".join(lines)

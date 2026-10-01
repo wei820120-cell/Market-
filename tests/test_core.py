@@ -285,13 +285,24 @@ def test_notify_channels(monkeypatch):
 
 def test_stock_futures_parsers():
     from market_intel.fetchers import stock_futures
-    html_text = """<table><tr><th>證券代號</th><th>名稱</th><th>股票期貨</th><th>股票選擇權</th></tr>
-      <tr><td>2330</td><td>台積電</td><td>CDF</td><td>CDO</td></tr>
-      <tr><td>2327</td><td>國巨</td><td>DHF</td><td></td></tr>
-      <tr><td>9999</td><td>只有選擇權</td><td></td><td>ZZO</td></tr></table>"""
-    assert stock_futures.parse_stock_lists_html(html_text) == {"2330": "CDF", "2327": "DHF"}
-    rows = [{"證券代號": "2330", "股票期貨英文代碼": "CDF"}]
-    assert stock_futures.parse_openapi_rows(rows) == {"2330": "CDF"}
+    row = lambda *cells: "<tr>" + "".join(f"<td>{c}</td>" for c in cells) + "</tr>"  # noqa: E731
+    html_text = "<table>" + "".join([
+        "<tr><th>商品代碼</th><th>標的證券</th><th>證券代號</th></tr>",
+        row("CD", "台灣積體電路製造股份有限公司", "2330", "台積電", "<span>●</span>", "是股票期貨標的", "●", "是股票選擇權標的",
+            "2,000", "8:45~13:45", "17:25~次日05:00"),
+        row("QF", "台灣積體電路製造股份有限公司", "2330", "台積電", "●", "是股票期貨標的", "", "", "100", "8:45~13:45", "-"),
+        row("DH", "國巨股份有限公司", "2327", "國巨", "●", "是股票期貨標的", "", "", "2,000", "8:45~13:45", "-"),
+        row("ZZ", "只有選擇權", "9999", "某股", "", "", "●", "是股票選擇權標的", "2,000", "8:45~13:45", "-"),
+    ]) + "</table>"
+    data = stock_futures.parse_stock_lists_html(html_text)
+    assert data["2330"] == {"std": "CDF", "mini": "QFF", "night": True}
+    assert data["2327"] == {"std": "DHF", "mini": None, "night": False}
+    assert "9999" not in data
+    assert stock_futures.label(data["2330"]) == "CDF／小型QFF／夜盤"
+    assert stock_futures.label(data["2327"]) == "DHF"
+    assert stock_futures.label(None) == "無"
+    rows = [{"Contract": "CDF", "StockCode": "2330", "StockName": "台積電"}]
+    assert stock_futures.parse_openapi_rows(rows)["2330"]["std"] == "CDF"
     sw = {"paths": {"/A": {"get": {"summary": "期貨每日行情"}}, "/B": {"get": {"summary": "股票期貨及選擇權交易標的"}}}}
     assert stock_futures.find_openapi_path(sw) == "/B"
 
@@ -309,12 +320,14 @@ def test_rank_picks():
         picks.Candidate("1111", "弱勢", pct=-3, ratio=2.0),          # 大跌排除
         picks.Candidate("2222", "沒量沒題材", pct=1, ratio=1.0),     # 無資金無題材排除
     ]
-    df = picks.rank_picks(cands, {"2327": "DHF"})
+    df = picks.rank_picks(cands, {"2327": {"std": "DHF", "mini": "QHF", "night": False}})
     assert list(df["代號"]) == ["2327", "2330"]
-    assert df.iloc[0]["股票期貨"] == "DHF" and df.iloc[1]["股票期貨"] == "無"
+    assert df.iloc[0]["股票期貨"] == "DHF／小型QHF" and df.iloc[1]["股票期貨"] == "無"
     assert "漲價" in df.iloc[0]["理由"]
     msg = picks.picks_message(df, "🎯")
-    assert "股期DHF" in msg and "無股期" in msg
+    assert "股期DHF／小型QHF" in msg and "無股期" in msg
+    # 清單抓不到時標「未知」，不能誤標成「無」
+    assert picks.rank_picks(cands, {}).iloc[0]["股票期貨"] == "未知"
 
 
 def test_notify_picks_channel(monkeypatch):

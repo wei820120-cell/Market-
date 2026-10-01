@@ -195,8 +195,9 @@ def cmd_daily(args) -> None:
     log.info("計算強勢標的…")
     picks_df = daily_picks(day, listings, hist, inst, closes, theme_df, themes_tw, ranked)
     sections[2:2] = [
-        "## 0. 今日強勢標的（資金流入＋題材＋漲價，附股票期貨）\n",
-        "_分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材分數＋漲價 4 分＋所屬族群資金流入 2 分；當天下跌打五折。_\n\n",
+        "## 0. 今日強勢標的（資金流入＋題材＋漲價，附股票期貨／小型股票期貨）\n",
+        "_分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材分數＋漲價 4 分＋所屬族群資金流入 2 分；當天下跌打五折。"
+        "股票期貨欄：CDF＝一般股票期貨代碼、小型＝小型股票期貨、夜盤＝有盤後交易時段。_\n\n",
         md_table(picks_df, 20) + "\n",
     ]
 
@@ -424,7 +425,7 @@ def cmd_realtime(args) -> None:
                     key = f"hike:{r['代號']}:{now:%Y%m%d}"
                     if r["漲價"] and (r["量比"] or 0) >= 1.5 and (r["漲跌%"] or 0) > 0 and key not in alerted:
                         alerted.add(key)
-                        fut = f"股票期貨 {r['股票期貨']}" if r["股票期貨"] != "無" else "無股票期貨"
+                        fut = {"無": "無股票期貨", "未知": "股票期貨未知"}.get(r["股票期貨"], f"股票期貨 {r['股票期貨']}")
                         notify.send(f"🎯 漲價＋資金湧入：{r['代號']} {r['名稱']} {r['漲跌%']:+.2f}% 步調{r['量比']}倍｜{fut}\n{r['新聞']}",
                                     channel="picks")
                 for r in flow.to_dict("records"):
@@ -504,7 +505,12 @@ def cmd_target(args) -> None:
 
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
-    print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:20000])
+    print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
+    data = stock_futures.load_stock_futures()
+    print(f"\n股票期貨標的：{len(data)} 檔；有小型：{sum(1 for v in data.values() if v.get('mini'))} 檔；"
+          f"有夜盤：{sum(1 for v in data.values() if v.get('night'))} 檔")
+    for code in ["2330", "2317", "2454", "2327", "2303", "3017", "0050", "6488"]:
+        print(f"  {code}：{stock_futures.label(data.get(code))}")
 
 
 def main(argv: list[str] | None = None) -> None:
