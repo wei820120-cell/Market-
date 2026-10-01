@@ -239,3 +239,13 @@ def test_build_summary(monkeypatch):
     msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx, items)
     assert "被動元件" in msg and "-78,151口" in msg and "[2327]" in msg
     assert "https://github.com/me/repo/blob/main/reports/2026-10-01.md" in msg
+
+
+def test_find_tpex_material_path():
+    swagger = {"paths": {
+        "/mopsfin_t187ap03_O": {"get": {"summary": "上櫃公司基本資料"}},
+        "/mopsfin_t187ap04_R": {"get": {"summary": "興櫃公司每日重大訊息"}},
+        "/mopsfin_t187ap04_O": {"get": {"summary": "上櫃公司每日重大訊息"}},
+    }}
+    assert news.find_tpex_material_path(swagger) == "/mopsfin_t187ap04_O"
+    assert news.find_tpex_material_path({"paths": {}}) is None
