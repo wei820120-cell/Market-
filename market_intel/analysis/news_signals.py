@@ -10,6 +10,10 @@ def score_item(item: NewsItem, keywords: dict) -> NewsItem:
     text = f"{item.title} {item.summary}"
     lower = text.lower()
     score, tags = 0.0, []
+    # 排除字（凍漲、民生物價等跟個股無關的新聞）
+    if any(str(w).lower() in item.title.lower() for w in keywords.get("exclude_words", [])):
+        item.score, item.tags = 0.0, []
+        return item
     for cat, spec in (keywords.get("categories") or {}).items():
         weight = float(spec.get("weight", 1))
         hit = [w for w in spec.get("words", []) if str(w).lower() in lower]
@@ -25,9 +29,15 @@ def tag_codes(item: NewsItem, name_to_code: dict[str, str], us_symbols: set[str]
     """在標題中找出台股名稱/代號、美股代號。"""
     text = item.title
     codes = list(item.codes)
-    for m in re.finditer(r"(?<!\d)(\d{4})(?!\d)", text):
-        if m.group(1) in name_to_code.values():
-            codes.append(m.group(1))
+    valid = set(name_to_code.values())
+    # 只認「(2330)」「2330-TW」「2330 台積電」這類寫法，避免把年份 2027 當成代號
+    for m in re.finditer(r"[(（](\d{4,6})[)）\-]|(?<!\d)(\d{4,6})-TW|(?<![\d.])(\d{4,6})\s+(\S{2,})", text):
+        code = m.group(1) or m.group(2) or m.group(3)
+        if code not in valid:
+            continue
+        if m.group(3) and not any(n in text for n, c in name_to_code.items() if c == code):
+            continue  # 「2027 財年」這種數字後面不是公司名稱，不算
+        codes.append(code)
     for name, code in name_to_code.items():
         if len(name) >= 2 and name in text:
             codes.append(code)

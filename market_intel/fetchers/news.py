@@ -204,7 +204,9 @@ def only_new(items: list[NewsItem], max_keep: int = 20000) -> list[NewsItem]:
 def dedupe(items: list[NewsItem]) -> list[NewsItem]:
     out, keys = [], set()
     for it in items:
-        k = re.sub(r"\s+", "", it.title)[:60]
+        # Google 新聞標題結尾是「 - 媒體名稱」，去掉後再比對，避免同一則被多家轉載重複出現
+        title = re.sub(r"\s+-\s+[^-]{1,30}$", "", it.title) if it.source.startswith("Google") else it.title
+        k = re.sub(r"[\s　，。！？、：:,.!?「」《》()（）]", "", title)[:40]
         if k and k not in keys:
             keys.add(k)
             out.append(it)
