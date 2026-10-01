@@ -1,6 +1,6 @@
 # 盤後情報 2026-10-01
 
-_產生時間 2026-10-01 17:48 (台北)_
+_產生時間 2026-10-01 17:52 (台北)_
 
 ## 1. 台股族群資金流向（今日成交金額 vs 前 5 日平均）
 
@@ -67,23 +67,23 @@ _產生時間 2026-10-01 17:48 (台北)_
 
 | 族群 | 檔數 | 外資(億) | 投信(億) | 自營商(億) | 三大法人合計(億) |
 |---|---|---|---|---|---|
-| 被動元件 | 3 | 189.03 | 8.16 | 0.0 | 209.76 |
-| 晶圓代工 | 3 | 105.56 | 17.65 | 0.0 | 140.55 |
-| AI伺服器 | 7 | 58.68 | 0.42 | 0.0 | 64.11 |
-| PCB銅箔基板 | 5 | 3.57 | 38.67 | 0.0 | 44.45 |
-| 記憶體 | 3 | 33.98 | -0.69 | 0.0 | 35.88 |
-| 散熱 | 3 | -1.16 | 1.82 | 0.0 | 2.28 |
-| 軍工航太 | 3 | 0.93 | 0.23 | 0.0 | 1.21 |
-| 機器人 | 3 | -0.54 | 0.04 | 0.0 | -0.59 |
-| 光學鏡頭 | 2 | 3.41 | -8.17 | 0.0 | -1.13 |
-| 先進封裝設備 | 1 | -1.38 | 0.0 | 0.0 | -1.39 |
-| 金融 | 5 | -21.48 | 17.76 | 0.0 | -2.17 |
-| 航運 | 3 | -3.14 | 1.02 | 0.0 | -2.27 |
-| 航空 | 2 | -2.83 | -0.15 | 0.0 | -2.92 |
-| 重電綠能 | 5 | -3.1 | 0.02 | 0.0 | -2.95 |
-| 矽光子網通 | 2 | 7.2 | -12.47 | 0.0 | -4.71 |
-| 生技 | 2 | -8.85 | -0.64 | 0.0 | -9.28 |
-| IC設計 | 6 | -24.76 | -3.27 | 0.0 | -22.23 |
+| 被動元件 | 3 | 189.03 | 8.16 | 12.58 | 209.76 |
+| 晶圓代工 | 3 | 105.56 | 17.65 | 17.34 | 140.55 |
+| AI伺服器 | 7 | 58.68 | 0.42 | 5.01 | 64.11 |
+| PCB銅箔基板 | 5 | 3.57 | 38.67 | 2.21 | 44.45 |
+| 記憶體 | 3 | 33.98 | -0.69 | 2.6 | 35.88 |
+| 散熱 | 3 | -1.16 | 1.82 | 1.62 | 2.28 |
+| 軍工航太 | 3 | 0.93 | 0.23 | 0.06 | 1.21 |
+| 機器人 | 3 | -0.54 | 0.04 | -0.09 | -0.59 |
+| 光學鏡頭 | 2 | 3.41 | -8.17 | 3.62 | -1.13 |
+| 先進封裝設備 | 1 | -1.38 | 0.0 | -0.01 | -1.39 |
+| 金融 | 5 | -21.48 | 17.76 | 1.55 | -2.17 |
+| 航運 | 3 | -3.14 | 1.02 | -0.15 | -2.27 |
+| 航空 | 2 | -2.83 | -0.15 | 0.06 | -2.92 |
+| 重電綠能 | 5 | -3.1 | 0.02 | 0.13 | -2.95 |
+| 矽光子網通 | 2 | 7.2 | -12.47 | 0.55 | -4.71 |
+| 生技 | 2 | -8.85 | -0.64 | 0.21 | -9.28 |
+| IC設計 | 6 | -24.76 | -3.27 | 5.81 | -22.23 |
 
 
 ### 外資買超前 15 名（金額）
@@ -260,8 +260,8 @@ _保守目標＝最近的上方目標，積極目標＝最遠的上方目標，�
 | +5 | 漲價(漲價)、接單擴產(大單) | 2327 | [國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定2027年產能，被動元件新一輪漲價潮要來了？ - news.cnyes.com](https://news.google.com/rss/articles/CBMiT0FVX3lxTE55R2FLazNLNmFSX0NGMUlsV19OUzJPR1F5azl0SndWcnpkWHExX2xKNGhrdmRYb2Z1MVhqQXZER0lGbmRvMENxMzhHQ1pQY0E?oc=5) | Google新聞[漲價 股] | 2026-10-01T06:00:37+00:00 |
 | +5 | 漲價(漲價)、營運上修(創新高) | MU | [美光（MU）財報解析：營收創新高靠漲價，客戶簽長約代表什麼？ - pocket.tw](https://news.google.com/rss/articles/CBMiY0FVX3lxTE40WmlsOGpIZldMbEtwNGFTUV90bFluYVNDTHZhLS1qWGhqSlgtbnVaY3pNNlhNZEljc2dSM2VpaXkxd1AxSE56V0pJV3E3VU1NdXZnWXVsVTFGYkJvbTBfbnhvaw?oc=5) | Google新聞[營收 創新高] | 2026-10-01T07:52:17+00:00 |
 | +5 | 漲價(漲價)、營運上修(年增) |  | [台灣平板市場逆勢增 台灣三星拚全系列今年銷售額增逾2成](https://news.cnyes.com/news/id/6619583) | 鉅亨網 | 2026-10-01T15:55:35+08:00 |
+| +4 | 供不應求(供不應求)、接單擴產(擴產) | 8147 | [正淩(8147)AI機櫃供不應求、廣州廠滿載仍擴產33%！毛利率卻跌破40%，獲利卡在哪？ - 鉅亨網](https://news.google.com/rss/articles/CBMiS0FVX3lxTFBjajlLeEVtQUdSODJ4cWRqWHZCdmJESF84QTNCbWZHZ3ZDLXZqelY5dFpyVkVWaDJsQ1JrXzVQQUcwdEg0WTB1VzBFdw?oc=5) | Google新聞[法說會 上修] | 2026-10-01T05:30:09+00:00 |
 | +4 | 供不應求(缺貨)、營運上修(優於預期) |  | [美光Q4業績再度炸裂！AI記憶體缺貨推升毛利率至87%　但空頭依舊存疑](https://news.cnyes.com/news/id/6619513) | 鉅亨網 | 2026-10-01T15:50:02+08:00 |
-| +4 | 供不應求(供不應求)、接單擴產(擴產) |  | [正淩(8147)AI機櫃供不應求、廣州廠滿載仍擴產33%！毛利率卻跌破40%，獲利卡在哪？ - 鉅亨網](https://news.google.com/rss/articles/CBMiS0FVX3lxTFBjajlLeEVtQUdSODJ4cWRqWHZCdmJESF84QTNCbWZHZ3ZDLXZqelY5dFpyVkVWaDJsQ1JrXzVQQUcwdEg0WTB1VzBFdw?oc=5) | Google新聞[法說會 上修] | 2026-10-01T05:30:09+00:00 |
 | +4 | 接單擴產(擴產)、營運上修(創新高) |  | [被動元件7月出貨創新高！AI擴產與先進封裝齊發威，國巨爆3萬張大量-財經焦點情報站 - CMoney投資網誌](https://news.google.com/rss/articles/CBMiggFBVV95cUxOS0g2TFhZc1BwZTBqSXctQk5tQXZRY2FobVF2TmdFQW5DMGRudHE1dmlBU0wwN0hlX3ppLVV0SGlhQmxidndEc0psSE84M19mNzZvMjVTWW5XMjVxN3BvQ1ZjYWg5cGlsTUxYb183dGM3aWU2OVV0ZzdqMkR3T3pIY1BB?oc=5) | Google新聞[營收 創新高] | 2026-10-01T03:15:21+00:00 |
 | +3 | 漲價(漲價) | 6488 | [焦點股》環球晶：漲價題材發酵 再飆逾9％ - ec.ltn.com.tw](https://news.google.com/rss/articles/CBMiX0FVX3lxTE01VUpPajYweVhqY2FYSWlOaXAtYUFtQkVwLUNwaUZQT2U1bmFLNWg5bUs4Q2ZKbkl5YjlnY21SWkhZTDVKdkhzajNVUDI4ZkpkWXc0LWxNQ0dUWTJkNFhB0gFkQVVfeXFMTXdGWkhBa0UyUkZ6ZXZuYUJBZjJtUWgtM1Q5bGkwTm9adk5FV0gwNlBDUnlPTEZ5Umt3LVlIVk1oY0ZtZ2ZTdXlSdmtQRWM2TG4zVUJXMFlXNVgwa211YTRBS3Z2Mw?oc=5) | Google新聞[漲價 股] | 2026-10-01T03:31:16+00:00 |
 | +3 | 漲價(漲價) | 2327、6488 | [10月開門紅先看漲價股！環球晶攻頂、國巨*飆7% 矽晶圓＋被動元件早盤全面升溫 - 聚財網](https://news.google.com/rss/articles/CBMiTEFVX3lxTE1OLTk1R1FjT0VyNUFzcV9xT0Z2QUNvZlA3WXdFRkZaeFRNcldpUGZYN1hEQ21tVTNBQm1JY0FoSW1qRjIycXdzUWZYcTM?oc=5) | Google新聞[漲價 股] | 2026-10-01T02:28:23+00:00 |
@@ -299,6 +299,7 @@ _保守目標＝最近的上方目標，積極目標＝最遠的上方目標，�
 | +2 | 營運上修(年增) | 5483、6488 | [熱門股／環球晶8月獲利年增145% 漲停站回千元！中美晶、合晶也亮燈／ 產經 - 非凡新聞台](https://news.google.com/rss/articles/CBMiX0FVX3lxTE11RFdVZ0lfbWxRVnhRdkpMN2ZncXptOGhIbUFUTGZyeF94WHpzVF84eGVzV29LNURvcmpqOTE4Zkh2ZEdSZTU0emg4X2I1dHFiQko0YUl5Rjc3UktWdndR?oc=5) | Google新聞[漲價 股] | 2026-09-30T22:07:36+00:00 |
 | +2 | 供不應求(缺貨) | 2344、2408 | [AI把記憶體吃到缺貨！DDR5飆逾5倍 華邦電、南亞科到封測鏈全面升溫 - 聚財網](https://news.google.com/rss/articles/CBMiTEFVX3lxTE5DLXBvVjRCdS1EZUV4SllSSS1kQ1Z2TTNTbHRRMEY3SEE3WTRObzdzVzgyclJHMVJtYUtod3dleDllNFZLVE1MRTQ0ZVY?oc=5) | Google新聞[缺貨 供不應求] | 2026-09-30T11:12:05+00:00 |
 | +2 | 接單擴產(擴廠) | 2330 | [台積電中科1.4奈米新廠助攻！台中半導體產值破1.5兆 供應鏈大擴廠 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTFBhNXRneFNQc0pZd1FLWldXbXF1VmRvTThzbm1ubERnckh6YVlqa2QxMmF6MGZmZ0tkLUo4Z2dJOTNaVEZkT01KdXhURnZKT0FfRngyQmpwa2kwZ9IBX0FVX3lxTE9WWWhKbnNQT193XzBCYUxBNHBqTDk3OUtYSGtiZXA4MVRwSVVWb0NjenRSMFhLaE9rNTJzTDRMbzI4WGtWR1c2a1kxQ2JFLUhqNHJ3LW5rdHV1ZHlVVmQw?oc=5) | Google新聞[法說會 上修] | 2026-10-01T09:25:34+00:00 |
+| +2 | 營運上修(創新高) | 6438 | [營收：迅得(6438)9月營收6億9537萬元創新高，月增率13.74%，年增率30.84% - 富聯網](https://news.google.com/rss/articles/CBMiiAFBVV95cUxNXzVqLVdsZ3psX1Q2NldjemFyQ2tVY0t0QWRMbnRYY1N6aWpVQVpkOU5MMklBZGtidHpIS0x5T25HcnlNR3RSLXQxWUZZa2RHMlN3cUVQZGNLSUFJaktqX2dHdzMzU295d1RBbFk4UVdLSzNvMGVHY3ZaczJiX0FobnF2NFhYWUpJ?oc=5) | Google新聞[營收 創新高] | 2026-10-01T08:48:00+00:00 |
 | +2 | 營運上修(創新高) | 2317 | [鴻海分紅豪撒117億史上最大包，績優員工「百萬起跳」…營收獲利雙創新高，平均分紅2位數成長 - Yahoo新聞](https://news.google.com/rss/articles/CBMijgRBVV95cUxOREQ5VDlJM0ZGY042Q2Fub21saDBhckZjWVlXRHFUaDJqUk95THJGZFZ2OGpRd3ZLd0h1MTBIMzBIa1N1S0FSXy1NVFZsLUx0V1V6el9lZFBwaXRPMkN1c0NDWW5QTnppMURRWVhtUGpEWWIzeFJGek9NU0F5ejRPVF92clB6R1lVU3BSTm5nTk1ZemhwWHpqLVBWMFJCaVIwUmMyQVNUUDB0VDViMERIN1JsTFBJYjJ5WGFVU09VcVdQZW1xZDN3b0ZOaGMwUmZEbHZFdWppQ0pyd1poajZ0WXJWdC1NVjFPTl9nX3hENnV6a2hVWFdkSHBqaWc5SGJ3MERUU0ZHQlhid1RzMmJLNVVFQzVDZ1pxRWl0WFRPeVBvRUY5WThsb0pPU0ZSTTB3YWhPM0FTREo3UEt3bkVvRy1yOFVTX1ZnNm1HSWg5bmVQSmUwRnlPMnJ2dVNUMktuUGlvRTVQVVdPTml5MnlsRG5OV2w2NDUtQk51QU9La0FDZEhtUFFYa3BiOW9pa3VwVzB6THMzbFgzd0w4dmtOWmwxenJIYTlGdWtkTnZ3OWFkRWNkOTM1M0pxOWlHb3VHcUYzanAxRXZJSmtNZU5VMGM5MXViWk9FVlp2d0pyWGl0V0J4Q1JtQ1NrZjlheXdkLVZmbUJZWDlyZ2ROQnBrM0Q2MjR6UFZMSm5aZlRR?oc=5) | Google新聞[營收 創新高] | 2026-09-30T21:00:01+00:00 |
 | +2 | 接單擴產(擴產) | 3706 | [神達擴產效益加持，今年營收可望登頂 - 台視全球資訊網](https://news.google.com/rss/articles/CBMikgFBVV95cUxQV3pMM1RHS3JIUXd3MHFpUF9Td2UtcWZ0VkFxYzJySmJmZ19UekxhcUtOZXBTYXFwbGxqc3pPT09jbnR4c2ZzX0xnQUFKanRxU2V5ajZzRWVlZ0tiU2tVVWxqc3RTb1MybURvVTQxX043SVBfWDVLQzlhOWpqMVJuWUw3cTU0eG41YnZuMmxwZVFkUQ?oc=5) | Google新聞[營收 創新高] | 2026-10-01T02:35:13+00:00 |
 | +2 | 接單擴產(量產) |  | [美專家：若先前未禁止EUV出口 中國或已成為高端晶片生產國](https://news.cnyes.com/news/id/6619498) | 鉅亨網 | 2026-10-01T16:40:04+08:00 |
@@ -316,4 +317,3 @@ _保守目標＝最近的上方目標，積極目標＝最遠的上方目標，�
 | +2 | 營運上修(上修) |  | [消費、AI投資雙引擎！美國第二季GDP終值上修 成長率達2.2% - CMoney](https://news.google.com/rss/articles/CBMiWEFVX3lxTFB5QTZLSzBaejNfODVJWTkwQWN3WFpZMkJ0eDVqOWlQbXpNaDcyMGNWTGd6RE9LYjZKWFgxa1VtaVVreWlYSHpPOTJod0dDZWU3QWtKVGh2R0k?oc=5) | Google新聞[法說會 上修] | 2026-09-30T14:34:14+00:00 |
 | +2 | 接單擴產(擴產) |  | [美光估記憶體未來兩年更吃緊！台灣四大廠區加速擴產，為何仍追不上需求？ - 數位時代](https://news.google.com/rss/articles/CBMihAFBVV95cUxQTExxNHhUZFBPTm9RRXN6UGZJS3czTUU3MDQwT0Z3M0lKQWw1dlRwMUctcko4MlFMdXFlVE5sSUZUZ2FXR1lvVzVIN0lDczAtdE9hVFRETWZCYzBjTEI2RUdWUWNISjRMTmZWdWQ4cWFJR3NzZjhRRFQxZ2w3b3doMjVkSHo?oc=5) | Google新聞[法說會 上修] | 2026-10-01T09:31:00+00:00 |
 | +2 | 營運上修(年增) |  | [【鴻準FY2026 Q2 法說會】鴻準美國廠Q4試產、散熱營收年增48% 力抗蘋果鏈營收年減26%逆風 - BigGo 財經](https://news.google.com/rss/articles/CBMiZkFVX3lxTFB3c25UUDlQLU9IRFczemZLMGZWR1ZBVWZ1Y2N1alVtLWxrUFlBU3VqX05lYUpyWkVlV3o2MkdKNTB4QTJleWlKa2ZlX2gyNzdGVHRxOVB0d2M2SVd3VU1ScTZ1OUFoQQ?oc=5) | Google新聞[法說會 上修] | 2026-09-30T10:55:00+00:00 |
-| +2 | 營運上修(創新高) |  | [美光第四季營收創歷史新高，預測 2027 財年將再創新高 - TradingKey](https://news.google.com/rss/articles/CBMifkFVX3lxTE90a3g0YTNuVTEyc3JaMTJZRjhJaXVSY2lSVUt4UWE5VlJmaUNjMjYyRVVyQmp3VXp0RHNKT2J0M0sxOHktR2NnUHdkX2dvbmdETkVQR2FQWlJQbFhYWlFPTzdXUWFDc3RfOFVmWThuZDd2VURQNW92eC1Rb1FRZw?oc=5) | Google新聞[營收 創新高] | 2026-10-01T08:01:25+00:00 |
