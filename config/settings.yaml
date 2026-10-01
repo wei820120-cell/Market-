@@ -1,0 +1,6 @@
+realtime:
+  interval_seconds: 20        # 盤中報價更新間隔（證交所 MIS 約 5 秒更新，太頻繁可能被暫時封鎖）
+  news_interval_seconds: 60   # 新聞 / 重大訊息掃描間隔
+  top_themes: 12              # 終端機顯示前幾名族群
+  alert_theme_pace: 2.0       # 族群量能步調 >= 此倍數且上漲時推播「資金湧入」
+  alert_stock_pct: 7.0        # 個股漲幅 >= 此 % 時推播
