@@ -1,15 +1,17 @@
 """推播：一定會印在終端機；有設定環境變數時同步推到 Telegram / Discord。
 
-分成兩個頻道，各用一個 Telegram 機器人，手機上比較不亂：
+分成三個頻道，各用一個 Telegram 機器人，手機上比較不亂：
   market（預設）：族群資金流向、到價、大漲、盤後摘要
   news          ：新聞、漲價信、重大訊息
+  picks         ：強勢標的（資金流入＋題材＋漲價，附股票期貨）
 
 環境變數（不要寫進程式或上傳到 GitHub）：
-  TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID            盤勢機器人
-  TELEGRAM_NEWS_BOT_TOKEN, TELEGRAM_NEWS_CHAT_ID  新聞機器人（選用）
-  DISCORD_WEBHOOK_URL, DISCORD_NEWS_WEBHOOK_URL
-沒設定新聞機器人時，新聞改由盤勢機器人送出。
-新聞機器人的 CHAT_ID 沒填時沿用 TELEGRAM_CHAT_ID（同一個人跟不同機器人的私訊 Chat ID 相同）。
+  TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID                盤勢機器人
+  TELEGRAM_NEWS_BOT_TOKEN, TELEGRAM_NEWS_CHAT_ID      新聞機器人（選用）
+  TELEGRAM_PICKS_BOT_TOKEN, TELEGRAM_PICKS_CHAT_ID    選股機器人（選用）
+  DISCORD_WEBHOOK_URL, DISCORD_NEWS_WEBHOOK_URL, DISCORD_PICKS_WEBHOOK_URL
+沒設定新聞／選股機器人時，改由盤勢機器人送出。
+CHAT_ID 沒填時沿用 TELEGRAM_CHAT_ID（同一個人跟不同機器人的私訊 Chat ID 相同）。
 """
 from __future__ import annotations
 
@@ -23,15 +25,17 @@ log = logging.getLogger(__name__)
 
 def _telegram(channel: str) -> tuple[str | None, str | None]:
     token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
-    if channel == "news" and os.environ.get("TELEGRAM_NEWS_BOT_TOKEN"):
-        token = os.environ["TELEGRAM_NEWS_BOT_TOKEN"]
-        chat = os.environ.get("TELEGRAM_NEWS_CHAT_ID") or chat
+    prefix = f"TELEGRAM_{channel.upper()}_"
+    if channel != "market" and os.environ.get(prefix + "BOT_TOKEN"):
+        token = os.environ[prefix + "BOT_TOKEN"]
+        chat = os.environ.get(prefix + "CHAT_ID") or chat
     return token, chat
 
 
 def _discord(channel: str) -> str | None:
-    if channel == "news" and os.environ.get("DISCORD_NEWS_WEBHOOK_URL"):
-        return os.environ["DISCORD_NEWS_WEBHOOK_URL"]
+    key = f"DISCORD_{channel.upper()}_WEBHOOK_URL"
+    if channel != "market" and os.environ.get(key):
+        return os.environ[key]
     return os.environ.get("DISCORD_WEBHOOK_URL")
 
 

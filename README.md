@@ -66,6 +66,7 @@ pip install -r requirements.txt
 
 ## 盤後報告內容
 
+0. **今日強勢標的**：資金流入（量比、法人）＋題材新聞＋漲價，並標出有沒有股票期貨
 1. **台股族群資金流向**：族群今日成交金額 vs 前 5 日平均，判讀「資金流入／放量下跌／量縮」
 2. **官方產業類股成交比重變化**：資金在產業之間的移動
 3. **三大法人**：依族群加總的買賣超金額，外資和投信的買超、賣超排行
@@ -90,10 +91,18 @@ pip install -r requirements.txt
 
 設定環境變數即可，**不要把金鑰寫進程式或上傳到 GitHub**，這個儲存庫是公開的：
 
-- Telegram 盤勢機器人：`TELEGRAM_BOT_TOKEN`、`TELEGRAM_CHAT_ID`
-  （推送族群資金流向、到價、大漲、盤後摘要）
-- Telegram 新聞機器人（選用）：`TELEGRAM_NEWS_BOT_TOKEN`
-  （推送新聞、漲價信、重大訊息；沒設定時新聞由盤勢機器人送出。Chat ID 會沿用 `TELEGRAM_CHAT_ID`，要推到別的聊天室才需要另設 `TELEGRAM_NEWS_CHAT_ID`）
+三個 Telegram 機器人分開推播，手機上比較不亂：
+
+| 機器人 | Secret 名稱 | 推播內容 |
+|---|---|---|
+| 盤勢 | `TELEGRAM_BOT_TOKEN`、`TELEGRAM_CHAT_ID` | 族群資金流向、資金湧入、到價、停損、大漲、盤後摘要 |
+| 新聞（選用） | `TELEGRAM_NEWS_BOT_TOKEN` | 新聞、漲價信、重大訊息、盤後新聞整理 |
+| 選股（選用） | `TELEGRAM_PICKS_BOT_TOKEN` | 強勢標的（資金流入＋題材＋漲價，附股票期貨代碼）、「漲價＋資金湧入」即時警示 |
+
+- 新聞、選股機器人沒設定時，改由盤勢機器人送出。
+- Chat ID 會沿用 `TELEGRAM_CHAT_ID`。要推到別的聊天室，才需要另設 `TELEGRAM_NEWS_CHAT_ID` 或 `TELEGRAM_PICKS_CHAT_ID`。
+- 新建的機器人要先在 Telegram 對它按 **Start**，它才能傳訊息給你。
+
 - Discord：`DISCORD_WEBHOOK_URL`
 
 要讓 GitHub 自動排程也能推播，到儲存庫的 **Settings → Secrets and variables → Actions** 新增同名的 Secret。

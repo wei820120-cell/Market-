@@ -281,3 +281,53 @@ def test_notify_channels(monkeypatch):
     assert "botNEWS" in sent[-1][0] and sent[-1][1] == "111"
     notify.send("x")
     assert "botMAIN" in sent[-1][0]
+
+
+def test_stock_futures_parsers():
+    from market_intel.fetchers import stock_futures
+    html_text = """<table><tr><th>證券代號</th><th>名稱</th><th>股票期貨</th><th>股票選擇權</th></tr>
+      <tr><td>2330</td><td>台積電</td><td>CDF</td><td>CDO</td></tr>
+      <tr><td>2327</td><td>國巨</td><td>DHF</td><td></td></tr>
+      <tr><td>9999</td><td>只有選擇權</td><td></td><td>ZZO</td></tr></table>"""
+    assert stock_futures.parse_stock_lists_html(html_text) == {"2330": "CDF", "2327": "DHF"}
+    rows = [{"證券代號": "2330", "股票期貨英文代碼": "CDF"}]
+    assert stock_futures.parse_openapi_rows(rows) == {"2330": "CDF"}
+    sw = {"paths": {"/A": {"get": {"summary": "期貨每日行情"}}, "/B": {"get": {"summary": "股票期貨及選擇權交易標的"}}}}
+    assert stock_futures.find_openapi_path(sw) == "/B"
+
+
+def test_rank_picks():
+    from market_intel.analysis import picks
+    items = [news.NewsItem("t", "國巨漲價", codes=["2327"], score=5, tags=["漲價(漲價)"]),
+             news.NewsItem("t", "某公司砍單", codes=["1111"], score=-2, tags=["利空(砍單)"])]
+    nb = picks.news_by_code(items)
+    assert nb["2327"]["hike"] and "1111" not in nb
+    cands = [
+        picks.Candidate("2327", "國巨", pct=9.9, ratio=3.0, inst=130, news_score=5, price_hike=True,
+                        themes=["被動元件"], theme_inflow=True),
+        picks.Candidate("2330", "台積電", pct=0.2, ratio=0.9, inst=90),
+        picks.Candidate("1111", "弱勢", pct=-3, ratio=2.0),          # 大跌排除
+        picks.Candidate("2222", "沒量沒題材", pct=1, ratio=1.0),     # 無資金無題材排除
+    ]
+    df = picks.rank_picks(cands, {"2327": "DHF"})
+    assert list(df["代號"]) == ["2327", "2330"]
+    assert df.iloc[0]["股票期貨"] == "DHF" and df.iloc[1]["股票期貨"] == "無"
+    assert "漲價" in df.iloc[0]["理由"]
+    msg = picks.picks_message(df, "🎯")
+    assert "股期DHF" in msg and "無股期" in msg
+
+
+def test_notify_picks_channel(monkeypatch):
+    from market_intel import notify
+    sent = []
+
+    class R:
+        ok = True
+
+    monkeypatch.setattr(notify.requests, "post", lambda url, json, timeout: sent.append(url) or R())
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "MAIN")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    monkeypatch.setenv("TELEGRAM_PICKS_BOT_TOKEN", "PICKS")
+    monkeypatch.delenv("DISCORD_WEBHOOK_URL", raising=False)
+    notify.send("x", channel="picks")
+    assert "botPICKS" in sent[-1]
