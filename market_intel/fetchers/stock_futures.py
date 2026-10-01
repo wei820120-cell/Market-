@@ -56,6 +56,31 @@ def parse_stock_lists_html(text: str) -> dict[str, str]:
     return out
 
 
+def raw_samples() -> dict:
+    """資料檢查用：回傳期交所兩個來源的原始樣本（欄位名稱、前幾列）。"""
+    out: dict = {}
+    try:
+        sw = net.get_json(TAIFEX_SWAGGER)
+        path = find_openapi_path(sw)
+        out["openapi_path"] = path
+        out["openapi_candidates"] = [p for p, ops in (sw.get("paths") or {}).items()
+                                     if "股票" in str(((ops or {}).get("get") or {}).get("summary", ""))]
+        if path:
+            rows = net.get_json(f"{TAIFEX_OPENAPI}{path}")
+            out["openapi_count"] = len(rows) if isinstance(rows, list) else None
+            out["openapi_rows"] = rows[:5] if isinstance(rows, list) else rows
+    except Exception as e:  # noqa: BLE001
+        out["openapi_error"] = str(e)
+    try:
+        text = net.get(STOCK_LISTS_URL).text
+        out["html_length"] = len(text)
+        rows = re.findall(r"<tr[^>]*>(.*?)</tr>", text, flags=re.S | re.I)
+        out["html_rows"] = [re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "|", r))[:300] for r in rows[:8]]
+    except Exception as e:  # noqa: BLE001
+        out["html_error"] = str(e)
+    return out
+
+
 def load_stock_futures() -> dict[str, str]:
     """回傳 {股票代號: 股票期貨契約代碼}。"""
     today = now_tw().strftime("%Y-%m-%d")

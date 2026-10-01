@@ -1,0 +1,18 @@
+# 資料檢查：手動執行，印出各資料來源的原始欄位，方便除錯。不會推播。
+name: check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m market_intel check

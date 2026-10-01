@@ -35,13 +35,18 @@ def news_by_code(ranked: list) -> dict[str, dict]:
     for it in ranked:
         if it.score <= 0:
             continue
-        for c in it.codes:
+        codes = [c for c in it.codes if c[:1].isdigit()]  # 只彙總台股
+        # 一篇文章列了很多檔（盤勢整理、族群懶人包）時分數平均分攤，也不算該股本身的漲價消息
+        broad = len(codes) > 3
+        weight = 3 / len(codes) if broad else 1.0
+        for c in codes:
             d = out.setdefault(c, {"score": 0.0, "hike": False, "headline": ""})
-            d["score"] += it.score
-            if any(t.startswith("漲價") for t in it.tags):
+            d["score"] += it.score * weight
+            if not broad and any(t.startswith("漲價") for t in it.tags):
                 d["hike"] = True
-            if not d["headline"]:
+            if not d["headline"] or (not broad and d.get("broad")):
                 d["headline"] = it.title[:40]
+                d["broad"] = broad
     return out
 
 

@@ -241,6 +241,8 @@ def daily_picks(day: pd.DataFrame, listings: dict, hist: dict, inst: pd.DataFram
             v = h["close"] * h["volume"]
             base = float(v.iloc[-6:-1].mean())
             ratio = float(v.iloc[-1]) / base if base else None
+            # 證交所盤後資料少數個股（如有 * 註記者）漲跌欄位不可靠，有日K時改用日K計算
+            pct_map[c] = float(h["close"].iloc[-1] / h["close"].iloc[-2] - 1) * 100
         n = nb.get(c, {})
         ths = theme_map.get(c, [])
         pct = pct_map.get(c)
@@ -500,6 +502,11 @@ def cmd_target(args) -> None:
     print(pd.DataFrame(rows).to_string(index=False))
 
 
+def cmd_check(args) -> None:
+    """資料檢查：印出各資料來源的原始欄位，不推播。"""
+    print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:20000])
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="market_intel", description="台美股 / 期權 即時情報與目標價")
     p.add_argument("-v", "--verbose", action="store_true")
@@ -507,6 +514,7 @@ def main(argv: list[str] | None = None) -> None:
 
     sub.add_parser("daily", help="盤後總報告").set_defaults(func=cmd_daily)
     sub.add_parser("us", help="美股類股資金流向").set_defaults(func=cmd_us)
+    sub.add_parser("check", help="資料檢查：印出資料來源原始欄位（不推播）").set_defaults(func=cmd_check)
 
     rt = sub.add_parser("realtime", help="盤中即時監控")
     rt.add_argument("--once", action="store_true", help="只跑一次")

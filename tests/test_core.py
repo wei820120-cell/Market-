@@ -331,3 +331,13 @@ def test_notify_picks_channel(monkeypatch):
     monkeypatch.delenv("DISCORD_WEBHOOK_URL", raising=False)
     notify.send("x", channel="picks")
     assert "botPICKS" in sent[-1]
+
+
+def test_news_by_code_dilutes_roundups():
+    from market_intel.analysis import picks
+    roundup = news.NewsItem("t", "漲價潮整理", codes=["1111", "2222", "3333", "4444", "5555", "6666"],
+                            score=3, tags=["漲價(漲價)"])
+    single = news.NewsItem("t", "國巨漲價", codes=["2327"], score=3, tags=["漲價(漲價)"])
+    nb = picks.news_by_code([roundup, single])
+    assert nb["1111"]["score"] == 1.5 and not nb["1111"]["hike"]
+    assert nb["2327"]["score"] == 3 and nb["2327"]["hike"]
