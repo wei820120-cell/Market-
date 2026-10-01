@@ -95,6 +95,19 @@ pip install -r requirements.txt
 
 要讓 GitHub 自動排程也能推播，到儲存庫的 **Settings → Secrets and variables → Actions** 新增同名的 Secret。
 
+## 盤中即時推播（雲端自動執行，不用開電腦）
+
+`.github/workflows/realtime.yml` 會在週一到週五 08:35 自動啟動，在 GitHub 雲端監控到 13:35。休市日會自動偵測並結束。
+
+推播內容（設定在 `config/settings.yaml`）：
+
+- **定時族群排行**：09:15、10:00、11:00、12:00、13:00、13:25 推送資金流向前 5 名族群
+- **資金湧入**：族群量能步調 ≥ 2 倍且上漲時立即推播（每個族群每天一次）
+- **個股警示**：自選股觸及目標價或停損、族群個股漲幅 ≥ 7%，同一輪合併成一則
+- **新聞**：新出現且分數 ≥ 3 的新聞或重大訊息（例如漲價信）
+
+想在非交易時段測試，可以到 **Actions → realtime → Run workflow**，勾選「測試模式」後執行。
+
 ## 自動盤後報告
 
 `.github/workflows/daily-report.yml` 會在週一到週五台北時間 15:40 自動執行 `daily`，並把報告存進 `reports/`。

@@ -264,14 +264,27 @@ def _in_session(now: datetime) -> bool:
     return now.weekday() < 5 and dtime(8, 59) <= now.time() <= dtime(13, 31)
 
 
+def _flow_message(flow: pd.DataFrame, now: datetime, n: int = 5) -> str:
+    lines = [f"⏱ {now:%H:%M} 族群資金流向"]
+    for r in flow.head(n).to_dict("records"):
+        lines.append(f"・{r['族群']} 步調{r['量能步調']} {r['加權漲跌%']:+.1f}% {r['判讀']}｜{r['領漲']}")
+    out = flow[flow["超額資金(億)"].fillna(0) < 0].tail(2).iloc[::-1]
+    if not out.empty:
+        lines.append("❄️ 流出：" + "、".join(f"{r['族群']}({r['超額資金(億)']:+.0f}億)" for r in out.to_dict("records")))
+    return "\n".join(lines)
+
+
 def cmd_realtime(args) -> None:
     ensure_dirs()
     st = (config.settings().get("realtime") or {})
     interval = args.interval or st.get("interval_seconds", 20)
     news_interval = st.get("news_interval_seconds", 60)
+    news_min = st.get("news_min_score", 3)
     top_n = st.get("top_themes", 12)
     alert_pace = st.get("alert_theme_pace", 2.0)
     alert_pct = st.get("alert_stock_pct", 7.0)
+    flow_times = sorted(str(t) for t in st.get("flow_push_times", []))
+    until = dtime.fromisoformat(args.until) if args.until else None
 
     listings = _listings()
     themes_tw = config.themes().get("tw") or {}
@@ -280,28 +293,50 @@ def cmd_realtime(args) -> None:
     targets_path = CACHE_DIR / "targets.json"
     targets = json.loads(targets_path.read_text()) if targets_path.exists() else {}
     if not targets:
-        log.info("尚無目標價快取，先執行 `python -m market_intel daily` 可啟用目標價/停損警示")
+        log.info("尚無目標價快取，先計算自選股目標價…")
+        try:
+            compute_targets(listings)
+            targets = json.loads(targets_path.read_text())
+        except Exception as e:  # noqa: BLE001
+            log.warning("目標價計算失敗，停用到價推播：%s", e)
 
     alerted: set[str] = set()
+    pushed_times: set[str] = set()
     last_news = 0.0
+    first_news = True
+    checked_open = False
     while True:
         now = now_tw()
+        if until and now.time() > until:
+            log.info("已到結束時間 %s，停止監控。", args.until)
+            break
         if not args.once and not args.force and not _in_session(now):
             log.info("非台股交易時段（09:00–13:30），只監控新聞。")
         else:
             quotes = tw_realtime.fetch_quotes(codes, listings)
             idx = tw_realtime.fetch_indices()
+            if not checked_open and not args.force and idx and now.time() >= dtime(9, 5):
+                checked_open = True
+                taiex = idx.get("加權指數")
+                if taiex and taiex.date and taiex.date != f"{now:%Y%m%d}":
+                    log.info("加權指數資料日期 %s 不是今天，今天休市，停止監控。", taiex.date)
+                    break
             flow = sector_flow.theme_flow_intraday(quotes, themes_tw, listings, now)
             head = " ｜ ".join(f"{k} {q.price:,.2f} ({q.change_pct:+.2f}%)" for k, q in idx.items()
                                if q.price is not None and q.change_pct is not None)
             print(f"\n===== {now:%H:%M:%S}  {head}  （同時段正常量比例 {sector_flow.expected_fraction(now):.0%}）=====")
             if not flow.empty:
                 print(flow.head(top_n).to_string(index=False))
+                due = [t for t in flow_times if t <= f"{now:%H:%M}" and t not in pushed_times]
+                if due:
+                    pushed_times.update(due)
+                    notify.send((f"{head}\n" if head else "") + _flow_message(flow, now))
                 for r in flow.to_dict("records"):
                     key = f"theme:{r['族群']}:{now:%Y%m%d}"
                     if (r["量能步調"] or 0) >= alert_pace and (r["加權漲跌%"] or 0) > 0 and key not in alerted:
                         alerted.add(key)
                         notify.send(f"🔥 資金湧入【{r['族群']}】量能步調 {r['量能步調']} 倍，加權漲 {r['加權漲跌%']}%，領漲：{r['領漲']}")
+            stock_msgs = []
             for code, q in quotes.items():
                 if q.price is None:
                     continue
@@ -315,13 +350,22 @@ def cmd_realtime(args) -> None:
                     key = f"{kind}:{code}:{now:%Y%m%d}"
                     if cond and key not in alerted:
                         alerted.add(key)
-                        notify.send(msg)
+                        stock_msgs.append(msg)
+            if stock_msgs:  # 同一輪的個股警示合併成一則，避免手機被洗版
+                notify.send("\n".join(stock_msgs))
 
         if time.monotonic() - last_news >= news_interval:
             last_news = time.monotonic()
             fresh = news.only_new(collect_news(full=False))
-            for it in news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(), all_codes=set(listings)):
-                notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}")
+            if first_news and not args.once:
+                # 第一次掃描只記錄已經存在的新聞，避免一啟動就把舊新聞全部推出去
+                first_news = False
+                log.info("已記錄 %d 則既有新聞，之後只推播新出現的。", len(fresh))
+            else:
+                hits = news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(),
+                                         min_score=news_min, all_codes=set(listings))
+                for it in hits[:5]:
+                    notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}")
 
         if args.once:
             break
@@ -367,6 +411,7 @@ def main(argv: list[str] | None = None) -> None:
     rt.add_argument("--once", action="store_true", help="只跑一次")
     rt.add_argument("--force", action="store_true", help="非交易時段也抓報價")
     rt.add_argument("--interval", type=int, help="報價更新秒數")
+    rt.add_argument("--until", help="到這個時間（HH:MM，台北時間）自動結束，例如 13:35")
     rt.set_defaults(func=cmd_realtime)
 
     nw = sub.add_parser("news", help="掃描新聞與公告")
