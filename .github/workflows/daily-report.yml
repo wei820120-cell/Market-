@@ -1,0 +1,42 @@
+# 每個交易日收盤後自動產生盤後報告，並存進 reports/ 資料夾。
+# 也可以在 GitHub 的 Actions 頁面按「Run workflow」手動執行。
+name: daily-report
+
+on:
+  schedule:
+    - cron: "40 7 * * 1-5"   # 台北時間 15:40（UTC 07:40），週一到週五
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - name: 產生盤後報告
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python -m market_intel daily
+      - name: 存檔報告
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git diff --cached --quiet || git commit -m "盤後報告 $(TZ=Asia/Taipei date +%F)"
+          git push

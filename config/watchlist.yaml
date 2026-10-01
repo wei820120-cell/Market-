@@ -1,0 +1,19 @@
+# 自選股：盤後會計算波段目標價，盤中觸及目標價或停損會推播。
+# 可選欄位：
+#   target_pe  目標本益比（搭配 EPS 算估值目標價）
+#   eps        自己預估的未來四季 EPS；沒填時用證交所本益比反推近四季 EPS（只限上市股）
+
+tw:
+  - code: "2330"
+    target_pe: 25
+  - code: "2454"
+  - code: "2382"
+  - code: "3017"
+  - code: "2383"
+  - code: "1519"
+
+us:
+  - symbol: NVDA
+  - symbol: TSM
+  - symbol: AVGO
+  - symbol: PLTR

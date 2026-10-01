@@ -1,0 +1,44 @@
+# 新聞訊號關鍵字。命中一個類別就加上該類別的權重（負數代表利空）。
+# 分數絕對值 >= min_score 的新聞才會出現在報告與推播。
+
+min_score: 1
+
+categories:
+  漲價:
+    weight: 3
+    words: [漲價, 調漲, 喊漲, 漲價信, 報價上揚, 價格調升, 調升報價, 漲幅擴大, price hike, raise prices, price increase]
+  供不應求:
+    weight: 2
+    words: [缺貨, 供不應求, 產能滿載, 滿載, 產能吃緊, 急單, 追加訂單, 交期拉長, 斷貨, shortage, sold out]
+  接單擴產:
+    weight: 2
+    words: [大單, 接獲訂單, 拿下訂單, 打入, 獨家供應, 認證通過, 擴產, 擴廠, 新產能, 量產, 出貨放量, wins order, contract award]
+  營運上修:
+    weight: 2
+    words: [創新高, 年增, 上修, 調升財測, 優於預期, 轉盈, 獲利倍增, beats, raises guidance, record revenue]
+  併購合作:
+    weight: 1
+    words: [併購, 收購, 策略聯盟, 入股, 合資, acquisition, merger, partnership]
+  股利庫藏股:
+    weight: 1
+    words: [庫藏股, 買回, 配息創新高, 特別股利, buyback, special dividend]
+  利空:
+    weight: -2
+    words: [砍單, 下修, 調降財測, 跌價, 降價, 衰退, 虧損, 減產, 裁員, 停工, 低於預期, 掏空, 違約, cuts guidance, misses, downgrade, layoffs]
+
+# 鉅亨網類別
+cnyes_categories: [tw_stock, headline, us_stock]
+
+# Google 新聞搜尋（過去 24 小時），抓「漲價信」等第一手訊息
+google_queries_tw:
+  - 漲價 股
+  - 漲價信
+  - 調漲 報價
+  - 缺貨 供不應求
+  - 法說會 上修
+  - 營收 創新高
+
+google_queries_us:
+  - price hike stocks
+  - raises guidance
+  - supply shortage semiconductor
