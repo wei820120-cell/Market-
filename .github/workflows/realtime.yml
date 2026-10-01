@@ -1,0 +1,41 @@
+# 盤中即時監控：每個交易日早上自動啟動，在 GitHub 雲端跑到收盤，有訊號就推播到手機。
+# 不用開電腦。休市日會自動偵測並結束。
+# 也可以在 Actions 頁面按「Run workflow」手動啟動（例如盤中臨時想開）。
+name: realtime
+
+on:
+  schedule:
+    - cron: "35 0 * * 1-5"   # 台北時間 08:35 啟動（GitHub 排程可能延遲 5–15 分鐘，所以提早）
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "測試模式：只抓一次快照並推播（非交易時段也會執行）"
+        type: boolean
+        default: false
+
+concurrency:
+  group: realtime
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 盤中監控（到 13:35 自動結束）
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          if [ "${{ inputs.test }}" = "true" ]; then
+            python -m market_intel realtime --once --force
+          else
+            python -m market_intel realtime --until 13:35
+          fi

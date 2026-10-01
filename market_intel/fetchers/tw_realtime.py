@@ -36,6 +36,7 @@ class Quote:
     time: str
     bid: float | None = None
     ask: float | None = None
+    date: str = ""  # 資料日期 YYYYMMDD，用來判斷今天是否開盤
 
     @property
     def change_pct(self) -> float | None:
@@ -81,6 +82,7 @@ def parse_mis(payload: dict) -> list[Quote]:
             time=str(m.get("t", "")),
             bid=bid,
             ask=ask,
+            date=str(m.get("d", "")),
         ))
     return quotes
 
