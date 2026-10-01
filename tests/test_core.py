@@ -249,3 +249,12 @@ def test_find_tpex_material_path():
     }}
     assert news.find_tpex_material_path(swagger) == "/mopsfin_t187ap04_O"
     assert news.find_tpex_material_path({"paths": {}}) is None
+
+
+def test_intraday_pace_ignores_members_without_prev_value():
+    Q = tw_realtime.Quote
+    quotes = {"A": Q("A", "甲", "tse", 100, 100, 100, 100, 100, 1000, "10:00"),
+              "B": Q("B", "乙", "otc", 100, 100, 100, 100, 100, 9000, "10:00")}
+    now = datetime(2026, 10, 1, 13, 30, tzinfo=TW_TZ)
+    df = sector_flow.theme_flow_intraday(quotes, {"T": ["A", "B"]}, {"A": {"prev_value": 100e6}}, now)
+    assert df.iloc[0]["量能步調"] == 1.0

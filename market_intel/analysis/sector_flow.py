@@ -51,8 +51,11 @@ def theme_flow_intraday(quotes: dict, themes: dict[str, list], listings: dict[st
         if not qs:
             continue
         turnover = sum(q.turnover for q in qs)
-        prev = sum((listings.get(q.code) or {}).get("prev_value") or 0 for q in qs)
-        pace = turnover / (prev * frac) if prev and frac > 0 else None
+        # 只用有昨日成交金額的成分股算步調；缺資料的股票若算進分子會讓步調虛高
+        paired = [(q.turnover, (listings.get(q.code) or {}).get("prev_value") or 0) for q in qs]
+        paired = [(t, p) for t, p in paired if p > 0]
+        prev = sum(p for _, p in paired)
+        pace = sum(t for t, _ in paired) / (prev * frac) if prev and frac > 0 else None
         chgs = [q.change_pct for q in qs if q.change_pct is not None]
         # 以成交金額加權的漲跌幅，大型股影響較大
         w = [(q.change_pct, q.turnover) for q in qs if q.change_pct is not None and q.turnover]
