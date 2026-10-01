@@ -57,17 +57,59 @@ def parse_mops(rows: list[dict], market: str) -> list[NewsItem]:
     return items
 
 
+TPEX_OPENAPI = "https://www.tpex.org.tw/openapi/v1"
+TPEX_SWAGGER = "https://www.tpex.org.tw/openapi/swagger.json"
+# 找不到 API 目錄時依序嘗試的候選路徑
+TPEX_MATERIAL_CANDIDATES = ["/mopsfin_t187ap04_O", "/mopsfe_t187ap04_O", "/t187ap04_O"]
+_tpex_material_path: str | None = None
+
+
+def find_tpex_material_path(swagger: dict) -> str | None:
+    """從櫃買中心 OpenAPI 目錄找出「上櫃公司每日重大訊息」的路徑（排除興櫃）。"""
+    best = None
+    for path, ops in (swagger.get("paths") or {}).items():
+        op = (ops or {}).get("get") or {}
+        text = f"{op.get('summary', '')} {op.get('description', '')} {' '.join(op.get('tags') or [])}"
+        if "重大訊息" not in text or "興櫃" in text:
+            continue
+        if "上櫃" in text and "每日" in text:
+            return path
+        best = best or path
+    return best
+
+
+def _tpex_material_paths() -> list[str]:
+    global _tpex_material_path
+    if _tpex_material_path is None:
+        try:
+            _tpex_material_path = find_tpex_material_path(net.get_json(TPEX_SWAGGER)) or ""
+            if _tpex_material_path:
+                log.info("櫃買中心重大訊息介面：%s", _tpex_material_path)
+        except Exception as e:  # noqa: BLE001
+            log.debug("讀取櫃買中心 API 目錄失敗：%s", e)
+            _tpex_material_path = ""
+    found = [_tpex_material_path] if _tpex_material_path else []
+    return found + [p for p in TPEX_MATERIAL_CANDIDATES if p not in found]
+
+
 def fetch_mops() -> list[NewsItem]:
     items: list[NewsItem] = []
-    sources = [
-        ("上市", "https://openapi.twse.com.tw/v1/opendata/t187ap04_L"),
-        ("上櫃", "https://www.tpex.org.tw/openapi/v1/mopsfe_t187ap04_O"),
-    ]
-    for market, url in sources:
+    try:
+        items.extend(parse_mops(net.get_json("https://openapi.twse.com.tw/v1/opendata/t187ap04_L"), "上市"))
+    except Exception as e:  # noqa: BLE001
+        log.warning("重大訊息（上市）抓取失敗：%s", e)
+    last_err = None
+    for path in _tpex_material_paths():
         try:
-            items.extend(parse_mops(net.get_json(url), market))
+            rows = net.get_json(f"{TPEX_OPENAPI}{path}", retries=1)
+            if isinstance(rows, list):
+                items.extend(parse_mops(rows, "上櫃"))
+                log.info("重大訊息（上櫃）%s：%d 則", path, len(rows))
+                break
         except Exception as e:  # noqa: BLE001
-            log.warning("重大訊息（%s）抓取失敗：%s", market, e)
+            last_err = e
+    else:
+        log.warning("重大訊息（上櫃）抓取失敗：%s", last_err)
     return items
 
 

@@ -239,3 +239,22 @@ def test_build_summary(monkeypatch):
     msg = cli.build_summary(datetime(2026, 10, 1, tzinfo=TW_TZ), theme, inst, fx, items)
     assert "被動元件" in msg and "-78,151口" in msg and "[2327]" in msg
     assert "https://github.com/me/repo/blob/main/reports/2026-10-01.md" in msg
+
+
+def test_find_tpex_material_path():
+    swagger = {"paths": {
+        "/mopsfin_t187ap03_O": {"get": {"summary": "上櫃公司基本資料"}},
+        "/mopsfin_t187ap04_R": {"get": {"summary": "興櫃公司每日重大訊息"}},
+        "/mopsfin_t187ap04_O": {"get": {"summary": "上櫃公司每日重大訊息"}},
+    }}
+    assert news.find_tpex_material_path(swagger) == "/mopsfin_t187ap04_O"
+    assert news.find_tpex_material_path({"paths": {}}) is None
+
+
+def test_intraday_pace_ignores_members_without_prev_value():
+    Q = tw_realtime.Quote
+    quotes = {"A": Q("A", "甲", "tse", 100, 100, 100, 100, 100, 1000, "10:00"),
+              "B": Q("B", "乙", "otc", 100, 100, 100, 100, 100, 9000, "10:00")}
+    now = datetime(2026, 10, 1, 13, 30, tzinfo=TW_TZ)
+    df = sector_flow.theme_flow_intraday(quotes, {"T": ["A", "B"]}, {"A": {"prev_value": 100e6}}, now)
+    assert df.iloc[0]["量能步調"] == 1.0
