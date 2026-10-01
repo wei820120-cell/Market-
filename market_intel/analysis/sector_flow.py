@@ -24,14 +24,19 @@ def expected_fraction(now: datetime) -> float:
     return float(np.interp(minutes, xs, ys))
 
 
+FLAT_PCT = 0.3  # 漲跌幅在 ±0.3% 內視為平盤，避免小跌就判成放量下跌
+
+
 def label(pace: float | None, chg: float | None) -> str:
     if pace is None or chg is None:
         return "—"
-    if pace >= 1.3 and chg > 0:
+    if pace >= 1.3 and chg > FLAT_PCT:
         return "資金流入🔥" if pace >= 2 else "資金流入"
-    if pace >= 1.3 and chg < 0:
+    if pace >= 1.3 and chg < -FLAT_PCT:
         return "放量下跌⚠️"
-    if pace < 0.7 and chg < 0:
+    if pace >= 1.3:
+        return "放量平盤"
+    if pace < 0.7 and chg < -FLAT_PCT:
         return "量縮下跌"
     if pace < 0.7:
         return "量縮"

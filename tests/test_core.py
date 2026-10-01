@@ -184,3 +184,33 @@ def test_taifex_summary_tolerant_keys():
     s = taifex.summarize(data)
     assert s["pcr_oi"] == 130.2 and s["pcr_volume"] == 90.0
     assert s["tx_institutional_net_oi"]["外資"] == -25000
+
+
+def test_news_code_tagging_ignores_years_and_excludes():
+    n2c = {"國巨": "2327", "大成鋼": "2027", "台積電": "2330"}
+    it = news_signals.tag_codes(news.NewsItem("t", "國巨(2327)漲停！AI大單鎖定2027年產能"), n2c)
+    assert it.codes == ["2327"]
+    it = news_signals.tag_codes(news.NewsItem("t", "美光預測 2027 財年再創新高"), n2c)
+    assert it.codes == []
+    it = news_signals.tag_codes(news.NewsItem("t", "2330 台積電 法說"), n2c)
+    assert it.codes == ["2330"]
+    kw = {"exclude_words": ["凍漲"], "categories": {"漲價": {"weight": 3, "words": ["漲價"]}}}
+    assert news_signals.score_item(news.NewsItem("t", "瓦斯不漲價！中油宣布凍漲"), kw).score == 0
+
+
+def test_dedupe_google_suffix():
+    items = [news.NewsItem("鉅亨網", "國巨(2327)今日漲停、被動元件噴出！"),
+             news.NewsItem("Google新聞[漲價]", "國巨(2327)今日漲停、被動元件噴出！ - news.cnyes.com"),
+             news.NewsItem("Google新聞[漲價]", "國巨(2327)今日漲停、被動元件噴出！ - 鉅亨網")]
+    assert len(news.dedupe(items)) == 1
+
+
+def test_institutional_dealer_fallback():
+    t86 = {"fields": ["證券代號", "證券名稱", "外陸資買賣超股數(不含外資自營商)", "投信買賣超股數", "三大法人買賣超股數"],
+           "data": [["2330", "台積電", "1,000", "200", "1,500"]]}
+    assert tw_daily.parse_institutional(t86).iloc[0]["dealer"] == 300
+
+
+def test_label_flat_band():
+    assert sector_flow.label(1.5, -0.2) == "放量平盤"
+    assert sector_flow.label(1.5, 1.0) == "資金流入"

@@ -175,14 +175,18 @@ def parse_institutional(payload: dict) -> pd.DataFrame:
     i_total = find_col(fields, "三大法人買賣超股數")
     rows = []
     for d in data:
-        rows.append({
+        row = {
             "code": str(d[i_code]).strip(),
             "name": str(d[i_name]).strip() if i_name is not None else "",
             "foreign": to_float(d[i_foreign]) if i_foreign is not None else None,
             "trust": to_float(d[i_trust]) if i_trust is not None else None,
             "dealer": to_float(d[i_dealer]) if i_dealer is not None else None,
             "total": to_float(d[i_total]) if i_total is not None else None,
-        })
+        }
+        # 找不到自營商欄位時，用 三大法人合計 − 外資 − 投信 推算
+        if row["dealer"] is None and None not in (row["total"], row["foreign"], row["trust"]):
+            row["dealer"] = row["total"] - row["foreign"] - row["trust"]
+        rows.append(row)
     return pd.DataFrame(rows, columns=cols)
 
 

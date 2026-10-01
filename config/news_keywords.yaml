@@ -26,6 +26,9 @@ categories:
     weight: -2
     words: [砍單, 下修, 調降財測, 跌價, 降價, 衰退, 虧損, 減產, 裁員, 停工, 低於預期, 掏空, 違約, cuts guidance, misses, downgrade, layoffs]
 
+# 標題含這些字的新聞不計分（凍漲、民生物價等跟個股無關的消息）
+exclude_words: [凍漲, 不漲價, 沒漲價, 食品, 機票, 燃油附加費, 瓦斯, 電價, 油價, 票價, 房價, 房租, 學費, 列印, 日本食品, without price hike]
+
 # 鉅亨網類別
 cnyes_categories: [tw_stock, headline, us_stock]
 
