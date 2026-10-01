@@ -183,7 +183,8 @@ def cmd_daily(args) -> None:
 
     # 8. 新聞
     log.info("掃描新聞…")
-    ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings), _us_symbols())
+    ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings), _us_symbols(),
+                               all_codes=set(listings))
     sections.append("\n## 8. 新聞與公告訊號（漲價、缺貨、擴產、財測…）\n")
     sections.append(news_table(ranked, 60))
 
@@ -273,7 +274,7 @@ def cmd_realtime(args) -> None:
         if time.monotonic() - last_news >= news_interval:
             last_news = time.monotonic()
             fresh = news.only_new(collect_news(full=False))
-            for it in news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols()):
+            for it in news_signals.rank(fresh, config.news_keywords(), name_to_code, _us_symbols(), all_codes=set(listings)):
                 notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}")
 
         if args.once:
@@ -286,7 +287,7 @@ def cmd_realtime(args) -> None:
 def cmd_news(args) -> None:
     listings = _listings()
     ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings), _us_symbols(),
-                               min_score=args.min_score)
+                               min_score=args.min_score, all_codes=set(listings))
     for it in ranked[: args.limit]:
         print(f"[{it.score:+g}] {'、'.join(it.tags)} | {'、'.join(it.codes)} | {it.title} ({it.source}) {it.url}")
 

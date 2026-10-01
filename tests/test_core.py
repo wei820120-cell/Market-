@@ -214,3 +214,15 @@ def test_institutional_dealer_fallback():
 def test_label_flat_band():
     assert sector_flow.label(1.5, -0.2) == "放量平盤"
     assert sector_flow.label(1.5, 1.0) == "資金流入"
+
+
+def test_dealer_not_confused_with_foreign_dealer():
+    t86 = {"fields": ["證券代號", "證券名稱", "外陸資買賣超股數(不含外資自營商)", "外資自營商買賣超股數",
+                      "投信買賣超股數", "自營商買賣超股數", "三大法人買賣超股數"],
+           "data": [["2330", "台積電", "1,000", "0", "200", "300", "1,500"]]}
+    assert tw_daily.parse_institutional(t86).iloc[0]["dealer"] == 300
+
+
+def test_tag_codes_all_listed_codes():
+    it = news_signals.tag_codes(news.NewsItem("t", "正淩(8147)AI機櫃供不應求"), {}, all_codes={"8147"})
+    assert it.codes == ["8147"]
