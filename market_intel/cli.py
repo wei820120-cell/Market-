@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import time
 from datetime import datetime, time as dtime
 
@@ -122,7 +123,8 @@ def cmd_daily(args) -> None:
     log.info("計算台股族群資金流向…")
     hist = _yahoo_histories(config.all_tw_theme_codes(), listings)
     sections.append("## 1. 台股族群資金流向（今日成交金額 vs 前 5 日平均）\n")
-    sections.append(md_table(sector_flow.theme_flow_daily(hist, themes_tw, names)))
+    theme_df = sector_flow.theme_flow_daily(hist, themes_tw, names)
+    sections.append(md_table(theme_df))
 
     log.info("抓取官方類股成交…")
     sections.append("\n## 2. 官方產業類股成交比重變化（資金在產業間的移動）\n")
@@ -133,7 +135,8 @@ def cmd_daily(args) -> None:
     inst_date, inst = tw_daily.fetch_latest_institutional()
     sections.append(f"\n## 3. 三大法人買賣超（上市，{inst_date or '無資料'}）\n")
     sections.append("### 依族群加總\n")
-    sections.append(md_table(sector_flow.institutional_by_theme(inst, closes, themes_tw)))
+    inst_theme = sector_flow.institutional_by_theme(inst, closes, themes_tw)
+    sections.append(md_table(inst_theme))
     if not inst.empty and closes:
         inst = inst.copy()
         inst["close"] = inst["code"].map(closes)
@@ -191,7 +194,50 @@ def cmd_daily(args) -> None:
     path = REPORT_DIR / f"{today:%Y-%m-%d}.md"
     path.write_text("\n".join(sections), encoding="utf-8")
     (REPORT_DIR / "latest.md").write_text("\n".join(sections), encoding="utf-8")
-    notify.send(f"盤後報告完成：{path}")
+    notify.send(build_summary(today, theme_df, inst_theme, fx, ranked))
+
+
+def _report_url(today: datetime) -> str:
+    """在 GitHub Actions 上執行時，產生報告在 GitHub 上的網址。"""
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    if not repo:
+        return str(REPORT_DIR / f"{today:%Y-%m-%d}.md")
+    server = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+    return f"{server}/{repo}/blob/main/reports/{today:%Y-%m-%d}.md"
+
+
+def build_summary(today: datetime, theme_df: pd.DataFrame, inst_theme: pd.DataFrame, fx: dict,
+                  ranked: list, n_news: int = 5) -> str:
+    """手機推播用的盤後重點摘要。"""
+    lines = [f"📊 盤後情報 {today:%m/%d}"]
+    if theme_df is not None and not theme_df.empty:
+        inflow = theme_df[theme_df["資金增減(億)"] > 0].head(3).to_dict("records")
+        outflow = theme_df[theme_df["資金增減(億)"] < 0].tail(2).iloc[::-1].to_dict("records")
+        if inflow:
+            lines.append("\n🔥 資金流入族群")
+            for r in inflow:
+                lines.append(f"・{r['族群']} 量比{r['量比(對5日均)']} {r['加權漲跌%']:+.1f}% {r['判讀']}")
+        if outflow:
+            lines.append("❄️ 資金流出：" + "、".join(f"{r['族群']}({r['資金增減(億)']:+.0f}億)" for r in outflow))
+    if inst_theme is not None and not inst_theme.empty:
+        lines.append("\n🏦 法人買超族群")
+        for r in inst_theme.head(3).to_dict("records"):
+            lines.append(f"・{r['族群']} {r['三大法人合計(億)']:+.1f}億（外資{r['外資(億)']:+.1f} 投信{r['投信(億)']:+.1f}）")
+    fx_lines = []
+    if fx.get("pcr_oi") is not None:
+        fx_lines.append(f"P/C Ratio {fx['pcr_oi']}%")
+    for who, v in (fx.get("tx_institutional_net_oi") or {}).items():
+        if "外資" in who:
+            fx_lines.append(f"外資台指期 {v:+,.0f}口")
+    if fx_lines:
+        lines.append("\n📈 " + "｜".join(fx_lines))
+    if ranked:
+        lines.append("\n📰 重點新聞")
+        for it in ranked[:n_news]:
+            codes = f"[{'、'.join(it.codes[:3])}] " if it.codes else ""
+            lines.append(f"・{it.score:+g} {codes}{it.title[:60]}")
+    lines.append(f"\n完整報告：{_report_url(today)}")
+    return "\n".join(lines)
 
 
 def _us_section() -> str:
