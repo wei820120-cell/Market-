@@ -20,9 +20,49 @@ def score_item(item: NewsItem, keywords: dict) -> NewsItem:
         if hit:
             score += weight
             tags.append(f"{cat}({hit[0]})")
+    spec = keywords.get("price_letter") or {}
+    letter = detect_price_letter(item, spec)
+    if letter or any(t.startswith("漲價") for t in tags):
+        item.themes = hike_themes(text, spec)
+    # 漲價信要對得到個股或產業族群才算（排除手機、天然氣這類民生漲價）
+    if letter and (item.codes or item.themes or item.source.startswith("MOPS")):
+        tag, weight = letter
+        score += weight
+        tags.insert(0, tag)
     item.score = score
     item.tags = tags
     return item
+
+
+def detect_price_letter(item: NewsItem, spec: dict) -> tuple[str, float] | None:
+    """偵測漲價信：公開資訊觀測站正式公告優先，其次是媒體報導公司發漲價信。"""
+    if not spec:
+        return None
+    text = f"{item.title} {item.summary}"
+    if item.source.startswith("MOPS"):
+        for pat in spec.get("official_patterns", []):
+            m = re.search(pat, text)
+            if m and not re.search(r"(不|未|無|暫不|沒有)(調整|調漲|調升)", text):
+                return f"公司公告漲價({m.group(0)[:12]})", float(spec.get("official_weight", 6))
+    for pat in spec.get("patterns", []):
+        m = re.search(pat, text, flags=re.I)
+        if m:
+            return f"漲價信({m.group(0)[:12]})", float(spec.get("weight", 5))
+    return None
+
+
+def hike_themes(text: str, spec: dict) -> list[str]:
+    """漲價新聞提到哪些產品 → 對應的受惠族群。"""
+    out = []
+    lower = text.lower()
+    for kw, theme in (spec.get("product_themes") or {}).items():
+        if str(kw).lower() in lower and theme not in out:
+            out.append(theme)
+    return out
+
+
+def is_price_letter(item: NewsItem) -> bool:
+    return any(t.startswith(("漲價信", "公司公告漲價")) for t in item.tags)
 
 
 def tag_codes(item: NewsItem, name_to_code: dict[str, str], us_symbols: set[str] | None = None,
@@ -53,8 +93,8 @@ def tag_codes(item: NewsItem, name_to_code: dict[str, str], us_symbols: set[str]
 def rank(items: list[NewsItem], keywords: dict, name_to_code: dict[str, str], us_symbols: set[str] | None = None,
          min_score: float | None = None, all_codes: set[str] | None = None) -> list[NewsItem]:
     for it in items:
+        tag_codes(it, name_to_code, us_symbols, all_codes)  # 先標個股，漲價信判斷需要
         score_item(it, keywords)
-        tag_codes(it, name_to_code, us_symbols, all_codes)
     threshold = keywords.get("min_score", 1) if min_score is None else min_score
     hits = [it for it in items if abs(it.score) >= threshold]
     return sorted(hits, key=lambda it: (abs(it.score), bool(it.codes)), reverse=True)

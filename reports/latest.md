@@ -1,6 +1,6 @@
 # 盤後情報 2026-10-01
 
-_產生時間 2026-10-01 19:07 (台北)_
+_產生時間 2026-10-01 20:30 (台北)_
 
 ## 0. 今日強勢標的（資金流入＋題材＋漲價，附股票期貨／小型股票期貨）
 
@@ -9,26 +9,26 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 
 | 代號 | 名稱 | 漲跌% | 量比 | 法人(億) | 族群 | 漲價 | 股票期貨 | 分數 | 理由 | 新聞 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2327 | 國巨* | 9.85 | 2.21 | 134.8 | 被動元件 | ✅ | LXF／小型QEF | 24.4 | 量2.2倍、法人買135億、題材、漲價、族群資金流入 | 國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定2027年產能，被動元件 |
-| 2344 | 華邦電 | 0.28 | 0.97 | 29.3 | 記憶體 | ✅ | FZF | 16.8 | 法人買29億、題材、漲價 | 《半導體》MCU漲價、AI伺服器、華邦電加碼三箭齊發 新唐飆漲停 - 富聯網 |
-| 2492 | 華新科 | 9.85 | 2.69 | 49.4 | 被動元件 |  | HBF | 15.6 | 量2.7倍、法人買49億、題材、族群資金流入 | 光輝十月不要怕洗盤、國巨⊕、華新科⊕、鈞寶⊕、金居 |
-| 6488 | 環球晶 | 4.83 | 1.66 |  |  | ✅ | OWF／小型PBF | 15.3 | 量1.7倍、題材、漲價 | 焦點股》環球晶：漲價題材發酵 再飆逾9％ - 自由財經 |
-| 2330 | 台積電 | 1.21 | 0.93 | 91.4 | 晶圓代工 |  | CDF／小型QFF／夜盤 | 13.5 | 法人買91億、題材 | 台積電中科1.4奈米新廠助攻！台中半導體產值破1.5兆 供應鏈大擴廠 - 經濟日 |
+| 2327 | 國巨* | 9.85 | 2.21 | 135.9 | 被動元件 | ✅ | LXF／小型QEF | 24.4 | 量2.2倍、法人買136億、題材、漲價、族群資金流入 | 國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定2027年產能，被動元件 |
+| 8046 | 南電 | 5.97 | 1.66 | 45.8 | PCB銅箔基板 | 漲價信 | LYF／小型QSF | 23.3 | 量1.7倍、法人買46億、題材、漲價、漲價信 | ABF吃緊喊漲南電創高.景碩破千.欣興觸前高／ 科技 - 非凡新聞台 |
+| 3189 | 景碩 | 4.12 | 1.31 | 29.5 | PCB銅箔基板 | 漲價信 | IXF | 22.5 | 法人買29億、題材、漲價、漲價信 | ABF吃緊喊漲南電創高.景碩破千.欣興觸前高／ 科技 - 非凡新聞台 |
+| 3037 | 欣興 | 3.4 | 1.19 | 11.4 | PCB銅箔基板 | 漲價信 | IRF | 18.7 | 法人買11億、題材、漲價、漲價信 | ABF吃緊喊漲南電創高.景碩破千.欣興觸前高／ 科技 - 非凡新聞台 |
+| 2344 | 華邦電 | 0.28 | 0.97 | 29.3 | 記憶體 | ✅ | FZF | 17.8 | 法人買29億、題材、漲價 | 《半導體》MCU漲價、AI伺服器、華邦電加碼三箭齊發 新唐飆漲停 - 富聯網 |
+| 2492 | 華新科 | 9.85 | 2.69 | 49.4 | 被動元件 | 族群 | HBF | 17.6 | 量2.7倍、法人買49億、題材、族群漲價、族群資金流入 | 光輝十月不要怕洗盤、國巨⊕、華新科⊕、鈞寶⊕、金居 |
+| 6488 | 環球晶 | 4.83 | 1.66 |  | 矽晶圓 | ✅ | OWF／小型PBF | 17.3 | 量1.7倍、題材、漲價、族群資金流入 | 焦點股》環球晶：漲價題材發酵 再飆逾9％ - 自由財經 |
+| 2330 | 台積電 | 1.21 | 0.93 | 91.4 | 晶圓代工 | 族群 | CDF／小型QFF／夜盤 | 15.5 | 法人買91億、題材、族群漲價 | 一座至少200億美元！台積電德州擴產構想曝光 租稅優惠成關鍵 |
 | 3013 | 晟銘電 | 8.29 | 5.06 | 0.1 |  |  | 無 | 12.0 | 量5.1倍、題材 | 晟銘電聚焦機櫃業務 Q4旺季預期出貨逐步上升 |
-| 6532 | 瑞耘 | 3.38 | 6.74 |  |  |  | 無 | 12.0 | 量6.7倍、題材 | 瑞耘(6532) 台灣廠產能滿載！馬來西亞新廠第4季驗證，離供貨放量不遠？ |
+| 3026 | 禾伸堂 | 7.71 | 2.36 | 13.0 | 被動元件 | 族群 | 無 | 11.3 | 量2.4倍、法人買13億、族群漲價、族群資金流入 | 國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定2027年產能，被動元件 |
 | 5292 | 華懋 | 3.04 | 4.95 | -0.1 |  |  | 無 | 10.9 | 量4.9倍、題材 | 5292 華懋：申請庫藏股買回達一定標準申報- |
+| 5483 | 中美晶 | 1.93 | 2.21 |  | 矽晶圓 | 族群 | NOF | 10.6 | 量2.2倍、題材、族群漲價、族群資金流入 | 熱門股／環球晶8月獲利年增145% 漲停站回千元！中美晶、合晶也亮燈／ 產經 - |
 | 3311 | 閎暉 | 9.99 | 5.9 | 0.7 |  |  | 無 | 10.3 | 量5.9倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 6708 | 天擎 | 9.86 | 6.04 |  |  |  | 無 | 10.2 | 量6.0倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 3236 | 千如 | 9.97 | 8.55 |  |  |  | 無 | 10.2 | 量8.6倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 3537 | 堡達 | 9.94 | 15.95 |  |  |  | 無 | 10.2 | 量16.0倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
 | 3701 | 大眾控 | 9.8 | 7.38 | 0.3 |  |  | 無 | 10.2 | 量7.4倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 8201 | 無敵 | 9.97 | 5.21 | 0.0 |  |  | 無 | 10.2 | 量5.2倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
+| 6150 | 撼訊 | 9.91 | 18.36 |  |  |  | 無 | 10.2 | 量18.4倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
+| 6708 | 天擎 | 9.86 | 6.04 |  |  |  | 無 | 10.2 | 量6.0倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
+| 3490 | 單井 | 9.92 | 5.34 |  |  |  | 無 | 10.2 | 量5.3倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
 | 8289 | 泰藝 | 9.91 | 5.48 |  |  |  | 無 | 10.2 | 量5.5倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
 | 6127 | 九豪 | 9.86 | 6.31 |  |  |  | 無 | 10.2 | 量6.3倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 5328 | 華容 | 9.98 | 7.04 |  |  |  | 無 | 10.2 | 量7.0倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 3490 | 單井 | 9.92 | 5.34 |  |  |  | 無 | 10.2 | 量5.3倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 6150 | 撼訊 | 9.91 | 18.36 |  |  |  | 無 | 10.2 | 量18.4倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
-| 8042 | 金山電 | 5.83 | 5.48 |  |  |  | 無 | 10.0 | 量5.5倍 |  |
+| 8201 | 無敵 | 9.97 | 5.21 | 0.0 |  |  | 無 | 10.2 | 量5.2倍、題材 | 【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?! |
 
 
 ## 1. 台股族群資金流向（今日成交金額 vs 前 5 日平均）
@@ -36,6 +36,7 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 | 族群 | 檔數 | 成交金額(億) | 量比(對5日均) | 資金增減(億) | 加權漲跌% | 5日漲跌% | 領漲 | 判讀 |
 |---|---|---|---|---|---|---|---|---|
 | 被動元件 | 3 | 773.48 | 2.33 | 442.12 | 9.42 | 6.82 | 國巨*+9.9%、華新科+9.8%、禾伸堂+7.7% | 資金流入🔥 |
+| 矽晶圓 | 4 | 666.19 | 1.73 | 281.07 | 1.51 | 9.63 | 環球晶+4.8%、中美晶+1.9%、台勝科+0.6% | 資金流入 |
 | PCB銅箔基板 | 6 | 1032.67 | 1.11 | 103.15 | 3.45 | 9.29 | 南電+6.0%、景碩+4.1%、欣興+3.4% | 持平 |
 | 光學鏡頭 | 2 | 203.07 | 1.58 | 74.36 | 5.07 | -0.1 | 玉晶光+6.7%、大立光+4.4% | 資金流入 |
 | 金融 | 5 | 97.27 | 1.33 | 24.17 | -0.28 | -2.23 | 玉山金+1.1%、富邦金-0.3%、國泰金-0.5% | 放量平盤 |
@@ -49,6 +50,7 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 | 航運 | 3 | 26.2 | 0.78 | -7.4 | -0.86 | -2.86 | 長榮-0.6%、陽明-1.0%、萬海-1.3% | 持平 |
 | 矽光子網通 | 5 | 203.21 | 0.96 | -8.26 | 3.22 | -3.91 | 智邦+7.0%、上詮-1.2%、聯亞-1.3% | 持平 |
 | 散熱 | 4 | 207.51 | 0.75 | -68.75 | 1.39 | 3.75 | 奇鋐+2.2%、建準+2.2%、健策+1.1% | 持平 |
+| 封測 | 5 | 242.41 | 0.76 | -75.42 | 3.95 | -0.6 | 頎邦+7.6%、力成+1.0%、日月光投控+1.0% | 持平 |
 | 晶圓代工 | 4 | 790.64 | 0.89 | -98.36 | 1.82 | 3.34 | 聯電+4.5%、世界+1.9%、台積電+1.2% | 持平 |
 | 記憶體 | 5 | 327.45 | 0.69 | -148.05 | -0.19 | 1.55 | 威剛+0.7%、華邦電+0.3%、南亞科+0.0% | 量縮 |
 | IC設計 | 6 | 349.04 | 0.55 | -280.78 | 0.57 | -1.51 | 聯發科+1.2%、祥碩+1.0%、世芯-KY+0.7% | 量縮 |
@@ -96,23 +98,25 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 
 | 族群 | 檔數 | 外資(億) | 投信(億) | 自營商(億) | 三大法人合計(億) |
 |---|---|---|---|---|---|
-| 被動元件 | 3 | 189.03 | 8.16 | 12.58 | 209.76 |
-| 晶圓代工 | 3 | 105.56 | 17.65 | 17.34 | 140.55 |
+| 被動元件 | 3 | 189.03 | 9.23 | 12.58 | 210.83 |
+| 晶圓代工 | 3 | 105.56 | 18.66 | 17.34 | 141.56 |
 | AI伺服器 | 7 | 58.68 | 0.42 | 5.01 | 64.11 |
-| PCB銅箔基板 | 5 | 3.57 | 38.67 | 2.21 | 44.45 |
-| 記憶體 | 3 | 33.98 | -0.69 | 2.6 | 35.88 |
-| 散熱 | 3 | -1.16 | 1.82 | 1.62 | 2.28 |
+| PCB銅箔基板 | 5 | 3.57 | 46.04 | 2.21 | 51.82 |
+| 記憶體 | 3 | 33.98 | -0.8 | 2.6 | 35.78 |
 | 軍工航太 | 3 | 0.93 | 0.23 | 0.06 | 1.21 |
+| 散熱 | 3 | -1.16 | -0.01 | 1.62 | 0.46 |
 | 機器人 | 3 | -0.54 | 0.04 | -0.09 | -0.59 |
 | 光學鏡頭 | 2 | 3.41 | -8.17 | 3.62 | -1.13 |
 | 先進封裝設備 | 1 | -1.38 | 0.0 | -0.01 | -1.39 |
+| 矽晶圓 | 1 | -0.59 | -0.73 | -0.6 | -1.92 |
 | 金融 | 5 | -21.48 | 17.76 | 1.55 | -2.17 |
 | 航運 | 3 | -3.14 | 1.02 | -0.15 | -2.27 |
 | 航空 | 2 | -2.83 | -0.15 | 0.06 | -2.92 |
 | 重電綠能 | 5 | -3.1 | 0.02 | 0.13 | -2.95 |
-| 矽光子網通 | 2 | 7.2 | -12.47 | 0.55 | -4.71 |
+| 矽光子網通 | 2 | 7.2 | -13.48 | 0.55 | -5.72 |
+| 封測 | 4 | -1.78 | -4.6 | -0.15 | -6.53 |
 | 生技 | 2 | -8.85 | -0.64 | 0.21 | -9.28 |
-| IC設計 | 6 | -24.76 | -3.27 | 5.81 | -22.23 |
+| IC設計 | 6 | -24.76 | -6.01 | 5.81 | -24.97 |
 
 
 ### 外資買超前 15 名（金額）
@@ -156,32 +160,32 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 
 | 代號 | 名稱 | 投信(億) |
 |---|---|---|
-| 8046 | 南電 | 18.25 |
+| 8046 | 南電 | 25.62 |
 | 2330 | 台積電 | 14.79 |
 | 3189 | 景碩 | 14.73 |
 | 3665 | 貿聯-KY | 12.61 |
 | 2887 | 台新新光金 | 8.09 |
+| 2327 | 國巨* | 7.67 |
 | 3037 | 欣興 | 7.37 |
 | 6505 | 台塑化 | 6.77 |
-| 2327 | 國巨* | 6.6 |
 | 2882 | 國泰金 | 6.08 |
 | 2881 | 富邦金 | 5.77 |
+| 2404 | 漢唐 | 5.7 |
 | 2382 | 廣達 | 4.82 |
-| 2404 | 漢唐 | 4.71 |
+| 2303 | 聯電 | 3.85 |
 | 2884 | 玉山金 | 3.59 |
 | 2891 | 中信金 | 3.25 |
-| 2883 | 凱基金 | 3.22 |
 
 
 ### 投信賣超前 10 名（金額）
 
 | 代號 | 名稱 | 投信(億) |
 |---|---|---|
-| 2360 | 致茂 | -22.7 |
-| 6805 | 富世達 | -11.56 |
-| 3443 | 創意 | -8.36 |
+| 2360 | 致茂 | -25.45 |
+| 6805 | 富世達 | -13.55 |
+| 3443 | 創意 | -11.1 |
+| 2345 | 智邦 | -8.66 |
 | 3008 | 大立光 | -8.26 |
-| 2345 | 智邦 | -7.65 |
 | 2449 | 京元電子 | -6.54 |
 | 6669 | 緯穎 | -6.29 |
 | 2455 | 全新 | -5.61 |
@@ -284,65 +288,74 @@ _保守目標＝最近的上方目標，積極目標＝最遠的上方目標，�
 
 ## 8. 新聞與公告訊號（漲價、缺貨、擴產、財測…）
 
+### 🚨 漲價信／公司公告調價（1 則）
+
 | 分數 | 訊號 | 相關個股 | 標題 | 來源 | 時間 |
 |---|---|---|---|---|---|
+| +8 | 漲價信(喊漲)、漲價(喊漲) | 3037、3189、8046 | [ABF吃緊喊漲南電創高.景碩破千.欣興觸前高／ 科技 - 非凡新聞台](https://news.google.com/rss/articles/CBMiXEFVX3lxTFA5Z05Jbnlfam1ubFBWN05wZU9oaHlxYmVRaXdnME9leHJkeTNYVWFsYVg5SmZ2RFlfb2tqUEcwZHpoTFRlaHFlaXVOWDhyZkRZekxJZ09JNzhrRV9h?oc=5) | Google新聞[喊漲 報價] | 2026-10-01T10:10:00+00:00 |
+
+
+### 全部新聞訊號
+
+| 分數 | 訊號 | 相關個股 | 標題 | 來源 | 時間 |
+|---|---|---|---|---|---|
+| +8 | 漲價信(喊漲)、漲價(喊漲) | 3037、3189、8046 | [ABF吃緊喊漲南電創高.景碩破千.欣興觸前高／ 科技 - 非凡新聞台](https://news.google.com/rss/articles/CBMiXEFVX3lxTFA5Z05Jbnlfam1ubFBWN05wZU9oaHlxYmVRaXdnME9leHJkeTNYVWFsYVg5SmZ2RFlfb2tqUEcwZHpoTFRlaHFlaXVOWDhyZkRZekxJZ09JNzhrRV9h?oc=5) | Google新聞[喊漲 報價] | 2026-10-01T10:10:00+00:00 |
 | +5 | 漲價(漲價)、接單擴產(大單) | 2327 | [國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定2027年產能，被動元件新一輪漲價潮要來了？ - news.cnyes.com](https://news.google.com/rss/articles/CBMiT0FVX3lxTE55R2FLazNLNmFSX0NGMUlsV19OUzJPR1F5azl0SndWcnpkWHExX2xKNGhrdmRYb2Z1MVhqQXZER0lGbmRvMENxMzhHQ1pQY0E?oc=5) | Google新聞[漲價 股] | 2026-10-01T06:00:37+00:00 |
 | +5 | 漲價(漲價)、營運上修(創新高) | MU | [美光（MU）財報解析：營收創新高靠漲價，客戶簽長約代表什麼？ - pocket.tw](https://news.google.com/rss/articles/CBMiY0FVX3lxTE40WmlsOGpIZldMbEtwNGFTUV90bFluYVNDTHZhLS1qWGhqSlgtbnVaY3pNNlhNZEljc2dSM2VpaXkxd1AxSE56V0pJV3E3VU1NdXZnWXVsVTFGYkJvbTBfbnhvaw?oc=5) | Google新聞[營收 創新高] | 2026-10-01T07:52:17+00:00 |
 | +4 | 供不應求(供不應求)、接單擴產(擴產) | 8147 | [正淩(8147)AI機櫃供不應求、廣州廠滿載仍擴產33%！毛利率卻跌破40%，獲利卡在哪？ - 鉅亨網](https://news.google.com/rss/articles/CBMiS0FVX3lxTFBjajlLeEVtQUdSODJ4cWRqWHZCdmJESF84QTNCbWZHZ3ZDLXZqelY5dFpyVkVWaDJsQ1JrXzVQQUcwdEg0WTB1VzBFdw?oc=5) | Google新聞[法說會 上修] | 2026-10-01T05:30:09+00:00 |
 | +4 | 供不應求(缺貨)、營運上修(優於預期) |  | [美光Q4業績再度炸裂！AI記憶體缺貨推升毛利率至87%　但空頭依舊存疑](https://news.cnyes.com/news/id/6619513) | 鉅亨網 | 2026-10-01T15:50:02+08:00 |
+| +4 | 接單擴產(大單)、營運上修(上修) |  | [HPE拿下Vultr機櫃大單 網通財測同步上修 - DIGITIMES](https://news.google.com/rss/articles/CBMimAFBVV95cUxNMFk5Tm14ZEkzcDQ0Vk03V3V4b2dtdVN1STdKYUlxS0FXeHgyWXphblp0eTh2b2xqVlpXZFVWelFHb0E1WWh0d0RJU3NaUHFXdmt2R0IyMHBFclBiV0t5T0pJR243RTR4RE9mdjhQdFpDMTdRTnpBQjdxeEkxS25lenZ1a1RGN3NnZlljbkY0S1hQYVd4c1BNTw?oc=5) | Google新聞[漲價 site:digitimes.com.tw] | 2026-10-01T01:08:00+00:00 |
 | +3 | 漲價(漲價)、營運上修(年增)、利空(低於預期) | 3624、3311、7711、6226、2340、6168、4956、2409、5328、2492、2327、2330、4722、2881、6669、3017、2303、3532、5483、6488、2454、2317、2882、6155、8201、4174、4556、6127、3147、6174、8289、6150、6432、3490、3537、3236、1709、8121、6485、6449、3701、7795、6672、6533、3094、3167、2033、6708 | [【量大強漲股整理】台股漲價潮全面擴散，下一波接棒主角換誰當?!](https://news.cnyes.com/news/id/6619710) | 鉅亨網 | 2026-10-01T18:12:31+08:00 |
 | +3 | 漲價(漲價) | 6488 | [焦點股》環球晶：漲價題材發酵 再飆逾9％ - 自由財經](https://news.google.com/rss/articles/CBMiX0FVX3lxTE01VUpPajYweVhqY2FYSWlOaXAtYUFtQkVwLUNwaUZQT2U1bmFLNWg5bUs4Q2ZKbkl5YjlnY21SWkhZTDVKdkhzajNVUDI4ZkpkWXc0LWxNQ0dUWTJkNFhB0gFkQVVfeXFMTXdGWkhBa0UyUkZ6ZXZuYUJBZjJtUWgtM1Q5bGkwTm9adk5FV0gwNlBDUnlPTEZ5Umt3LVlIVk1oY0ZtZ2ZTdXlSdmtQRWM2TG4zVUJXMFlXNVgwa211YTRBS3Z2Mw?oc=5) | Google新聞[漲價 股] | 2026-10-01T03:31:16+00:00 |
 | +3 | 漲價(漲價) | 2327、6488 | [10月開門紅先看漲價股！環球晶攻頂、國巨*飆7% 矽晶圓＋被動元件早盤全面升溫 - 聚財網](https://news.google.com/rss/articles/CBMiTEFVX3lxTE1OLTk1R1FjT0VyNUFzcV9xT0Z2QUNvZlA3WXdFRkZaeFRNcldpUGZYN1hEQ21tVTNBQm1JY0FoSW1qRjIycXdzUWZYcTM?oc=5) | Google新聞[漲價 股] | 2026-10-01T02:28:23+00:00 |
 | +3 | 漲價(漲價) | 2327 | [《價值型投資 最新產業研究報告》國巨 (2327-TW) 高階電容需求續強，漲價與轉單接力 - news.cnyes.com](https://news.google.com/rss/articles/CBMiT0FVX3lxTE83SkZtSmVzQzB0eWI1SGNVbzMwbUFyOUFSdXAwNkZMdzBGSHdNaTFIOTJnS1BHNUZxdEd1a3BIYnJ5dTloN213azFFN3BnTk0?oc=5) | Google新聞[漲價 股] | 2026-10-01T05:52:03+00:00 |
 | +3 | 漲價(漲價) | 2327 | [《價值型投資 最新產業研究報告》國巨（2327） 高階電容需求續強，漲價與轉單接力 - hao.cnyes.com](https://news.google.com/rss/articles/CBMiSEFVX3lxTE1mS0gwenIwNUVtQzdYMmN4a1RneWVhaU9kUXJXUkU3RDl5UWMyRWFUSW05N3FZdjNPYklKNVNRWWVxdXUyUTNmaw?oc=5) | Google新聞[漲價 股] | 2026-10-01T04:27:13+00:00 |
-| +3 | 漲價(漲價) | 2344 | [《半導體》MCU漲價、AI伺服器、華邦電加碼三箭齊發 新唐飆漲停 - 富聯網](https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYnpiZVRSUS1DX0labXFoYkl5bWdEYUR6MjVVMUhXc1hocnJTN1I0NFRpbFlwUXNfR21xMV9GZkotVW04WmctT1d1eEJydnhrR29jQVNBSWtWWXFWWEFRMW9ZdEY4NHhqc0kwXzF5UjVSSi16THVYV3BIWTNYcUo1UEFWVmVueUhH?oc=5) | Google新聞[調漲 報價] | 2026-10-01T02:20:00+00:00 |
-| +3 | 漲價(漲價) |  | [大鵬下半年毛利面壓 次世代AI感測平台明年Q4出貨](https://news.cnyes.com/news/id/6619590) | 鉅亨網 | 2026-10-01T16:19:55+08:00 |
+| +3 | 漲價(漲價) | 2344 | [《半導體》MCU漲價、AI伺服器、華邦電加碼三箭齊發 新唐飆漲停 - 富聯網](https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYnpiZVRSUS1DX0labXFoYkl5bWdEYUR6MjVVMUhXc1hocnJTN1I0NFRpbFlwUXNfR21xMV9GZkotVW04WmctT1d1eEJydnhrR29jQVNBSWtWWXFWWEFRMW9ZdEY4NHhqc0kwXzF5UjVSSi16THVYV3BIWTNYcUo1UEFWVmVueUhH?oc=5) | Google新聞[漲價通知 客戶] | 2026-10-01T02:20:00+00:00 |
+| +3 | 漲價(漲價) | 2344 | [《半導體》MCU漲價、AI伺服器、華邦電加碼三箭齊發新唐飆漲停- 證券 - ctee.com.tw](https://news.google.com/rss/articles/CBMiX0FVX3lxTE52ZkJ2UEllenBfWk1nVXZrcXlkczRVWkFyX25IZzl1S0R6azZCTnBMWlJIdnA0T3ZOUTZYTF8xcWJrOXVKV1JmQVpnNUtuUkE4V2NqQWVJVklnZmJoN1Qw?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-01T02:20:00+00:00 |
 | +3 | 漲價(漲價) |  | [石英晶體漲價受惠股：晶技／ 雜誌 - UDN](https://news.google.com/rss/articles/CBMiUEFVX3lxTE12WFRaOTBDMExYWnZyTzBLSnZqYVJ5U3Z4TE1ScFVJNWRHdG1YckJqTmhfdjFMdWNTZGJSNE15WlhFblJVWDJoN0xfaDJMZDRE?oc=5) | Google新聞[漲價 股] | 2026-10-01T07:01:42+00:00 |
-| +3 | 漲價(漲價) |  | [【焦點速報】國巨挑戰季線！被動元件掀集體漲停潮，Q4 漲價主升段看這 2 大訊號 - CMoney投資網誌](https://news.google.com/rss/articles/CBMifkFVX3lxTE1ZY2ZTNElGbV9YUGM0Y3U0OE9reEJtRmJOWUNuNmMxbmZmeVk2a3RuQm8zOV9jaGdmcVpKaFVsa2ttRE5jMXdwSmdKX240bU82Rl9jR3ZURGxtbmtxTUpNMXJBVFNOSWJ2cTFCTXBIalFoaDF3ZFRBVGZkOEQzZw?oc=5) | Google新聞[漲價 股] | 2026-10-01T03:08:46+00:00 |
-| +3 | 漲價(漲價) |  | [手機又要變貴了 記憶體漲價讓華為每支成本平均多200美元 - 鉅亨網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE1RekNvRGxseXgtZE9ELVdvNGgwRk5ZQmRtV3FXUEEtVHE4aW5rRVFyYm1teXpBbTRNbVJkc2VrWVRReVFndTBVeUtIYw?oc=5) | Google新聞[漲價 股] | 2026-10-01T03:41:31+00:00 |
+| +3 | 漲價(漲價) |  | [手機又要變貴了 記憶體漲價讓華為每支成本平均多200美元 - news.cnyes.com](https://news.google.com/rss/articles/CBMiT0FVX3lxTFBTZE0xZ21ta0VOWkYxSnhCRkxPNVc0WURvUmw0aXR5Zzk4TDNEYXVyUlJNRldnV1hjOXNSTUNZWmkxRVV1ZHlVOEk4OWdFYW8?oc=5) | Google新聞[漲價 股] | 2026-10-01T03:41:31+00:00 |
 | +3 | 漲價(漲價) |  | [功率元件10月漲價潮台廠跟進／ 產經 - 非凡新聞台](https://news.google.com/rss/articles/CBMikgFBVV95cUxOVmZDQ2JEX1V0b21kTUtMT2stdUxyRXJtdW9vQUtOVjVkNDVpY1UxZUQzbUM4ZXFLUEdveEpnZlRLM3EtM25oc05yMVpqY19GazR3NG9JLWFlSzlMY1FIOFJnS2ttM0FyOHdJWVdZNlBZaVNkaVVid3dxb0RWbWFIcHFvengzQkJjZXluYWNzcUJxQQ?oc=5) | Google新聞[漲價 股] | 2026-10-01T05:39:15+00:00 |
 | +3 | 漲價(漲價) |  | [晶圓代工漲價　二哥目標價曝 - 三立新聞網SETN.com](https://news.google.com/rss/articles/CBMiTEFVX3lxTE1PREdMR0xlcmZIdmV3ZjZsb2lGUU5sc0xYU1lCQXVZVXpPMFk2b1NfTF91bG1EczVKT08xeXZrek85RVJPWjdlalJJMkLSAUxBVV95cUxNT0RHTEdMZXJmSHZld2Y2bG9pRlFObHNMWFNZQkF1WVV6TzBZNm9TX0xfdWxtRHM1Sk9PMXl2a3pPOUVST1o3ZWpSSTJC?oc=5) | Google新聞[漲價 股] | 2026-09-30T14:00:00+00:00 |
 | +3 | 漲價(漲價) |  | [記憶體漲價燒到旗艦機 三星Galaxy S26上市7個月後反向漲價 - DIGITIMES](https://news.google.com/rss/articles/CBMijgFBVV95cUxPMG13UGxhSS00Wk1QU2QwNDJfT0JvNl9UNGVOTkRpUldoWGRWZ3lhc1pjX1otWHNPb2RsNDVZOVRtMDhTVGFMZ1pjZHY0RzhRaUJOeXNySW9UajJBS3kyeEZ5ZFlCS1ZZc1kzcWhucVVQcEpGWlpjcjZKRUl3YjJQUjlxaVk5ZXZFSzlXTXFn?oc=5) | Google新聞[漲價信] | 2026-10-01T03:09:00+00:00 |
+| +3 | 漲價(漲價) |  | [個股：日韓廠轉單效益＋漲價可期，被動元件群起亮燈，國巨重返600元大關 - 富聯網](https://news.google.com/rss/articles/CBMiiAFBVV95cUxQWU5BcVgtN3Jkb2tCem93M1Bocmt3ZWxKWHFDeDRFWkVsb2FjRkQ2WHF3NXVVVms4dGZONkhyTkNremtFblJidThKbExwTDN2VE56VHhOVEFjVDhQSmpCcDhvdmp5V0prQ2dRbTdqZVAwYU8yS2MwQ0haWDNOc0xicV9qMlZYRVBU?oc=5) | Google新聞[漲價通知 客戶] | 2026-10-01T04:44:00+00:00 |
 | +3 | 漲價(漲價) |  | [vivo手機價格10月跟進漲價！X300 Ultra漲3千、iQOO旗艦漲5千 - LINE TODAY](https://news.google.com/rss/articles/CBMiVkFVX3lxTFBYT0NCY25oZHFicEVlcnNsNEQzMzRpS2ZNdHY1ajZMdHFvUkk5ZngyWUNsME5Qcm43OWFQbHZiZnlfWWxfVlF2MXZhNWk2WktCUV9SaFln?oc=5) | Google新聞[調漲 報價] | 2026-10-01T06:12:42+00:00 |
-| +3 | 漲價(調漲) |  | [荷包失血！三星S26、S26+與Ultra在台售價全面調漲 最新價格一次看 - knews.com.tw](https://news.google.com/rss/articles/CBMib0FVX3lxTE5kLWFiOUxtZTlKQVZYTWJEaWJLR2t0cTVNR2s4V2xxNTYtSlJ1QVJDRGFxeERXMGV3SWo1SjRTTG1MWkxXQTMwVnU5NER2MUNKWG94ZTRfUDdnVjhvUTVlZ05qR0R6cFlmSVYyWDE3NA?oc=5) | Google新聞[調漲 報價] | 2026-10-01T09:24:00+00:00 |
-| +3 | 漲價(調漲) |  | [三星手機平板再調漲估記憶體需求熱到明年底／ 科技產業／ 產經 - UDN](https://news.google.com/rss/articles/CBMickFVX3lxTE81NnVxM0tiQlYxa0d6bFRFd3lTMFJCaG0zNUF4c1MzSktYdngwMzJqczh0MHh5N3A4NU9Wa0IycG15RWQ1cG5ObWgzVm5wWXB3VjViTXVUa1ZsUEJNMlI0WjVaNlJ6NE9FYnpsUnRKSElRdw?oc=5) | Google新聞[調漲 報價] | 2026-10-01T07:54:18+00:00 |
-| +3 | 漲價(漲價) |  | [Q4 第一天，三星 S26、A 系列手機都漲價了 - technews.tw](https://news.google.com/rss/articles/CBMickFVX3lxTE1rcjJoc2Y2VXkwRzRLYkluMWM3SGJ6S040ZlYxTWhCNUJVUzBNUEVaMThlZTdKOWFvZDVHYVRxOFR2YnVkaFU5TWFVMTJ6ZkFTVVhDaldMbVZpZGpsNzJKT2Vpb1BPQTJ1RWMxQUVtcEwyZw?oc=5) | Google新聞[調漲 報價] | 2026-10-01T04:47:10+00:00 |
+| +3 | 漲價(調漲) |  | [荷包失血！三星S26、S26+與Ultra在台售價全面調漲 最新價格一次看 - 知新聞](https://news.google.com/rss/articles/CBMib0FVX3lxTE5kLWFiOUxtZTlKQVZYTWJEaWJLR2t0cTVNR2s4V2xxNTYtSlJ1QVJDRGFxeERXMGV3SWo1SjRTTG1MWkxXQTMwVnU5NER2MUNKWG94ZTRfUDdnVjhvUTVlZ05qR0R6cFlmSVYyWDE3NA?oc=5) | Google新聞[調漲 報價] | 2026-10-01T09:24:00+00:00 |
+| +3 | 漲價(調漲) |  | [三星手機平板再調漲估記憶體需求熱到明年底／ 科技產業／ 產經 - UDN](https://news.google.com/rss/articles/CBMie0FVX3lxTE04VGlyR0NIczI4R1NheWpUSC04NVlMV1lkaXJtcV8tQ3NQeWtLQVFoR2E1YmZQYnVVSENIbFA3eXI4N25lT2J2RXRXVW1JMVhtSzNLNTJzNHVDNlJheURjWG1TR281cUIxS3NKRTFPTnRNQzZQZTBhS3MyRQ?oc=5) | Google新聞[調漲 報價] | 2026-10-01T07:54:18+00:00 |
 | +3 | 漲價(漲價) |  | [三星手機價格調漲！S26 Ultra旗艦機最高漲價8千、A系列連漲兩個月／ 手機王 - LINE TODAY](https://news.google.com/rss/articles/CBMiVkFVX3lxTFAxbGk0aEJjT0wtMzdlMUwyckl3UGF4V19IbXZxN1JSbHFBUUl5SG53S3pscUExQ3htTTkxdnUyenJvTWVQTTQ2VzZPVDV6YkF3alhLTzBn?oc=5) | Google新聞[調漲 報價] | 2026-10-01T07:55:49+00:00 |
-| +3 | 漲價(調漲) |  | [10月電業氣價調漲9.68%，中油還要再扛多久-孔明投資長 - CMoney投資網誌](https://news.google.com/rss/articles/CBMif0FVX3lxTFBsczdZMzRiVkNVeW41WF90eVkxS1NvOGl4VDlGdHgzQWRzRjBxZXZHN3JvY1JRN3VEa05taW5Ma2tNV0xJY1pfUmlTVzNjRWR4MWNCRXZEUkFkYXdrSG1DOFNmMmVybU9iV3VfZ184SkRWTmNMeUpMWXl3WjNsd1E?oc=5) | Google新聞[調漲 報價] | 2026-09-30T12:59:18+00:00 |
-| +3 | 漲價(調漲) |  | [三星手機平板再調漲估記憶體需求熱到明年底／ 產經 - 中央社 CNA](https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOeDZxZnJNck0wM2E1NkNBMGoxaHdJMW1PUUpWUlJGSWNzUXg4cTJnU0d4MEN3Q1hqVWRlUnB5UUFpMzQxYWNTa1pDTXo2RHhYNlBRNk5mU3FvQnRWTGc?oc=5) | Google新聞[調漲 報價] | 2026-10-01T07:37:00+00:00 |
 | +3 | 漲價(漲價) |  | [熱門族群》ABF載板下半年再漲價 明年供應缺口擴大 - 自由時報](https://news.google.com/rss/articles/CBMiWEFVX3lxTE5YUmtVV2t6X1BHd3NUX1VodV84bDZLejFqX2Q2LWcxSzNyd2N4V24wRGJBLTNoX0VtdlB2OWFpQWpFbkN0QUs2MVYzUDJjR3JXWURSYTJGeVk?oc=5) | Google新聞[調漲 報價] | 2026-09-30T21:05:50+00:00 |
+| +3 | 漲價(調漲) |  | [三星手機平板再調漲估記憶體需求熱到明年底／ 產經 - 中央社 CNA](https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOeDZxZnJNck0wM2E1NkNBMGoxaHdJMW1PUUpWUlJGSWNzUXg4cTJnU0d4MEN3Q1hqVWRlUnB5UUFpMzQxYWNTa1pDTXo2RHhYNlBRNk5mU3FvQnRWTGc?oc=5) | Google新聞[調漲 報價] | 2026-10-01T07:37:00+00:00 |
 | +3 | 漲價(漲價) |  | [CCL漲價一路延續到2027年，誰能先把報價轉成獲利？-柏宇 KD 獲利模式 - CMoney投資網誌](https://news.google.com/rss/articles/CBMigAFBVV95cUxQVF9qMVlTdjZFbWxFSDVFLXpsS21ERmRoLXhXelgwVzNYaldIUGlScjQzY1lGb0ZjX0JiMUEyeGJtQk1LaXFjRFVGdlF6ZGFuMkw5aVlIMzUtUVVFMGd1MHdoMngyejlUbGJldjc4eTBwUFB5Rjd0TkR5QVF0a01OaA?oc=5) | Google新聞[調漲 報價] | 2026-10-01T06:47:31+00:00 |
-| +3 | 漲價(調漲) |  | [鋼鐵產業旺季報到！原物料成本推升，4大鋼廠齊調漲盤價最高達千元-財經焦點情報站 - CMoney投資網誌](https://news.google.com/rss/articles/CBMiggFBVV95cUxOaDBIbE43MHNEbGp2cF92dUtGSlJmRkNraVA1Yl93S3l6OGZlMFJydVRfRHFBZ1VpeFBNaUhRcDFiSzczbkJqdmNkVDBkdkxXMTFOb2RxM0x3M08tSUZrZWFtb1phQkxhelV0ZEtMc21kdVZoZ0k1c2JOZ0M1bTQzalpn?oc=5) | Google新聞[調漲 報價] | 2026-09-30T12:14:45+00:00 |
+| +3 | 漲價(漲價) |  | [Q4 第一天，三星 S26、A 系列手機都漲價了 - TechNews 科技新報](https://news.google.com/rss/articles/CBMickFVX3lxTE1rcjJoc2Y2VXkwRzRLYkluMWM3SGJ6S040ZlYxTWhCNUJVUzBNUEVaMThlZTdKOWFvZDVHYVRxOFR2YnVkaFU5TWFVMTJ6ZkFTVVhDaldMbVZpZGpsNzJKT2Vpb1BPQTJ1RWMxQUVtcEwyZw?oc=5) | Google新聞[調漲 報價] | 2026-10-01T04:47:10+00:00 |
+| +3 | 漲價(漲價) |  | [【焦點速報】國巨挑戰季線！被動元件掀集體漲停潮，Q4 漲價主升段看這 2 大訊號 - CMoney投資網誌](https://news.google.com/rss/articles/CBMifkFVX3lxTE1ZY2ZTNElGbV9YUGM0Y3U0OE9reEJtRmJOWUNuNmMxbmZmeVk2a3RuQm8zOV9jaGdmcVpKaFVsa2ttRE5jMXdwSmdKX240bU82Rl9jR3ZURGxtbmtxTUpNMXJBVFNOSWJ2cTFCTXBIalFoaDF3ZFRBVGZkOEQzZw?oc=5) | Google新聞[調漲 報價] | 2026-10-01T03:08:46+00:00 |
+| +3 | 漲價(漲價) |  | [三星手機全面漲價！Galaxy S26 Ultra最高貴8千 A系列連兩個月喊漲 - udn科技玩家](https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4dGZWOU9wUHpIcGJGMmliVTAyVW9lMjZUbi02OXVIOFQxTlNBYzNDd21JUGJQeUJoVE93R0pQMmQ0UHpLRHpmblBiQ05nTnpUVThteXBkWUI4QdIBX0FVX3lxTFB4R3Y4YTNPSGF1cjRoTkdjMkFuUFdIbU1kVDdxaVRaS2tkbnZYcjVYZWRCSXlzT0FLSzZVdTR1TmRSVGdRUnpzWklzRlppM1ZCY0dEQk1HUEpfbG5oMS13?oc=5) | Google新聞[喊漲 報價] | 2026-10-01T10:27:53+00:00 |
+| +3 | 漲價(漲價) |  | [兼具漲價及衛星題材 法人調高聯茂獲利預估值及目標價 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTFBncjFyanI0OGh0YnlnVmc5dVFhRFZ6OWdfVEs1R1lyYlJVVGpDQkpfd0Fzc1BHanlGUTJLNWpYRHFISmttZXI1YXgzMXFaRXRlS1JpQ3djSEpBZ9IBX0FVX3lxTE1RbF9jUzB2amtKWmVvSTcxNlI1VjNzcm95SEx0MGxSUWtkRXltQXBvU2d6VWpLZVZMLW1jYll1ZGVUc3p4UnFNUUpwQVFwT1NVZm9aTm13djVULURlbVhN?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-01T05:31:33+00:00 |
+| +3 | 漲價(調漲) |  | [三星手機平板再調漲　估記憶體需求熱到明年底 - 經濟日報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE44aWxTV1l4V0pWUm5vMzdlTjZ5RG1qS0l4dzVscWJYUFFfTU9LNzBlSzBGU21zenJ6SXQzQWZwX2s5VDJTZzJUOE5yU3l6REdhd0lyTFJCZzdWTTYzSVJR0gFfQVVfeXFMTjhpbFNXWXhXSlZSbm8zN2VONnlEbWpLSXh3NWxxYlhQUV9NT0s3MGVLMEZTbXN6cnpJdDNBZnBfazlUMlNnMlQ4TnJTeXpER2F3SXJMUkJnN1ZNNjNJUlE?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-01T07:45:41+00:00 |
+| +3 | 漲價(漲價) |  | [功率元件10月漲價潮台廠跟進- 日報 - ctee.com.tw](https://news.google.com/rss/articles/CBMiX0FVX3lxTE5mM2pKYkdUTUJRQllNWkJ4eWloVkpYMlU1VnE5NEhWd3JmV2lFdHBKd1FaS3JJcFhnQ0FpdEpqMDRURGhuNG1GLXNJbzBJay02S1R0b19MNkxhM2IzSXVj?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-09-30T19:00:00+00:00 |
+| +3 | 漲價(漲價) |  | [蔡慶龍｜高階電容需求續強 國巨後市取決漲價與轉單效益- 證券 - ctee.com.tw](https://news.google.com/rss/articles/CBMiX0FVX3lxTE5Xc1R6c2EzSy1oREU4NzFodW9aaDM2b21XNVAzcDlPM0FGV3NaeU5zVXhmUXRNWjM5N2xGck9EN0RuM1hkS2hSRjRvd3hQQTdSdlVUWG1ZY2ExRTlUc2dr?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-01T04:53:00+00:00 |
+| +3 | 漲價(漲價) |  | [陸9月手機圈大洗牌 安卓漲價反助攻蘋果銷量暴增？ - ctee.com.tw](https://news.google.com/rss/articles/CBMiX0FVX3lxTE16aV9odndDY3kxNGVfdXQzUDVQRmJia005cUZlUmdXd1M1cmlTaXN1ODAyY2k2dE9Qb1RNZjJBb2tTTUtVTDVULU80U18xZ3oyM2ZqVTJaRklLbW1BWU00?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-01T03:18:00+00:00 |
+| +3 | 接單擴產(擴產)、併購合作(入股) |  | [日月光入股再擴產替牧德開門 半導體設備搶封測放量商機 - DIGITIMES](https://news.google.com/rss/articles/CBMijgFBVV95cUxPWk14bC1xNThRZDRzanF3bFZXY0E4MkMtNl9ySGpSZVI1OFk4ZHdrMGdJNEJEV3AtNlNQNlFCVy16WDdSMG5nanctcE84aTdOaDZOZUF1amtZX3BqN2NRR0R2SFd0cnpvalJ2dW9LTVJfOVJGalVVZU5Jd1FSRE1oRDhDT0oxMmRTS2JES1ZB?oc=5) | Google新聞[漲價 site:digitimes.com.tw] | 2026-09-30T18:25:00+00:00 |
 | +3 | 營運上修(創新高)、股利庫藏股(配息創新高) |  | [台股ETF季末資金輪動！半導體單月飆漲逾12%，多檔配息創新高-財經焦點情報站 - CMoney投資網誌](https://news.google.com/rss/articles/CBMiwwFBVV95cUxNS243SHJJRWpuN2pnQXVzbmxRc1lHcmV3VHNlNUVjWUJISjBVV1RyN1VTa004LWVvZGk1QXZ6S0lNV3hJMTJ5aFE3aloyZ3RkTGtHTzgwY2FQc0g3MkQ2b3ZTb09QU1pFU1JQeGMwaVA0TzhueUJodDVXYUwtYXFzcG5PTV8ybnhfTE1KYkhrX0FaRUttUUlPSWFHMXpqR2pwbHh0czQ3UHFQQkNBdUtFcDl2ZU50M2RGcTNHLXkyeW16TVE?oc=5) | Google新聞[營收 創新高] | 2026-10-01T03:44:53+00:00 |
+| +3 | 漲價(price increase) |  | [Raspberry Pi 4/5 2GB receive major price increase - OC3D](https://news.google.com/rss/articles/CBMijAFBVV95cUxNTFcwOUtzMU1yS3hiTkR5cFJQQllENjgwcm1sWWd1M1lCdHVjY1NNZ3BlTHl4N1hJUDZoVUhQc1FSZjFEeGJjaTdSYlhJb3hqQXpGSVpkOXlHcGlaczBjVXZfbWctcjFDWjc1OW9idXlEaFBRMnBJaHc4UjNkeXRxbllraVhma3hQN3Nvag?oc=5) | Google新聞[price increase letter] | 2026-10-01T10:10:12+00:00 |
+| +3 | 漲價(price increase) |  | [Holiday travel sees price increase for gas and airfare - KBTX News 3](https://news.google.com/rss/articles/CBMijgFBVV95cUxQOC1NSXdqbmtjbDd2SDVyeU02N2ptVENFZ2JXNFZZSmQ2MldneWRwUmdjQzc4WTlpSFZ6Uk1vdGhuNExsREs1UUotWFB6YkI1bThkN1l4bkV6Sm1XazhneHE0V242aHRpdzlYeUE3d0xBWjhtWjlUOXBOaHljRGdIM3hfU01LRTdlNUJFZkFB?oc=5) | Google新聞[price increase letter] | 2026-09-30T23:00:39+00:00 |
+| +3 | 漲價(price hike) |  | [Hub: Streaming price hikes make consumers more-receptive to ad-based plans - thedesk.net](https://news.google.com/rss/articles/CBMif0FVX3lxTE56VzRoeE9TaTJKUEdqZ2ZJc1pianJ3SXNkYzFFaHNRQTlNZEF0UUY2bGgyd2g2MmpSZkR5V1EwZE01MFdIZUFfUkNOdWN5UFFjQk1zSkhFaEl3WGdNWGhHTHdEbUlrY3Jmc3ZDMEprc3c5TkVSVDNneGh5OGZjNGc?oc=5) | Google新聞[price increase letter] | 2026-09-30T16:45:22+00:00 |
+| +3 | 漲價(price hike) |  | [No edible oil price hike without scrutiny - The Daily Star](https://news.google.com/rss/articles/CBMiogFBVV95cUxPX0xXTUo2WVlIU2E2aERGdHFXN080NGRnRWlMeGVHeUxFS3pXVG04TXI0RFpKMl9zWENvd2V4Y19LSnNZSndJakZoWWluV09ZTUdWc2prZEtDaTdJeWpSY2RtLXlHOTR4dFNxc3gxTGYzamdrSG5qLU1vQnhDTGJLNmtDRy1Jemd1U1laS1lTMU1tVGV6LXdxUHd0NkpHWGVpV1E?oc=5) | Google新聞[price increase letter] | 2026-09-30T17:46:34+00:00 |
+| +3 | 漲價(price hike) |  | [LPG price hike: 19-Kg commercial cylinder hiked by Rs 62.50 from October 1; check city-wise rates - The Statesman](https://news.google.com/rss/articles/CBMi3wFBVV95cUxPZkpDbmM5MFV6aVdpR3VSTW4tdFJxbGVrOUdpS2hURk5GX3VGYXNhTkxRQTFWVnZ5Ty0yR0xLUEhuM2VGbzRLZmo4aEtEWTN4N29IV2F1b0lCV2tzS0VNVWUtOXdrNDl2OXNheW1SQ3I1NHI2SEdrMFpfeWt0RXlLbk12SEhRd3hFaXRuZUNjR0hRcFdSaUpHZHRjRmw1RFU4blY1ZEx1MzU5aE94bmxUZlFQTHV3aWVtSlZQdmkyU3Zwc3RvSS1hUG1fSTVEWHFDTTFZTzY2WWNvUDI5Z1hR0gHkAUFVX3lxTE9tNmJ4aTRJV2h6UlZVWjRTWnc0OUI4ejVUOU1jQzRjc3JvejJROXlQNlhaTGFwWjZvLV9RZUZpY0c2SXQ1YVJSUG9waGlfczdUNml3Sk5kQjh1RHA2alZLTlJKY3dxZ0doRXgzZWlJVVNIVjJfb0tidWZkQzNJRWhURmNBRGpqbE1lbWJvYm10NG52Z1l3SzQtOVVzOUt6WWZoMHVodzNsOXl6bUstbkQwczZaSDJBYW9rZ2hCVUQ2Q0ozazdBUWVnc2ZJemZrMGU3c2U4YlZwb2xEYnk3YkkxTWlwcw?oc=5) | Google新聞[price increase letter] | 2026-10-01T08:44:00+00:00 |
+| +3 | 漲價(price hike) |  | [Your Disney+ is getting more expensive this month after the fourth price hike in just 4 years - GB News](https://news.google.com/rss/articles/CBMib0FVX3lxTFB0a3hEMmFXOWFFY3NlVi1Eb3p5eVdLbXlwU2FWWnVfdm5CVXg1ek9UVVpjR21ua2FfZlpfdlNuNFMyX2cwRjN5U29rUDBlNVg2eUpjY295MmM3SjVLTFpnN2JXY2dxTzhxX1dzWFBGWQ?oc=5) | Google新聞[price increase letter] | 2026-10-01T06:55:46+00:00 |
+| +3 | 漲價(price hike) |  | [D2C consumer brands turn to bulk buys, selective price hikes amid input cost pressure - financialexpress.com](https://news.google.com/rss/articles/CBMi1wFBVV95cUxOOHJOQ3p2UGtlMDR5dWdVTnNBTUJFcl8ybm03bW1HOWNOcXAtZFNxYTdPVEo0cWJyanF5QnNUQ01DTGJmdnhLNDVNUEktR0JFVjhrZmVTdGY5VzVJa3FKOFRIQ01YUmZKVmtUVWUxMG8zWkdvQk03aWNvMzQ2ZzNUenVkUGxQdG9NT0o1UXlOOUI2R0YzdnFScWRJQkJybEtETEt2UGRvbm9UZVdEdlRrWEdEUDNWbVJqVkFJak05VW9iT2szYmtpd19uTUZjNmdlbUpMYmk0RdIB3gFBVV95cUxOZktYMjJ6OWJmOGZ3T0JjMU5BMm9KS212UTlzUU5QZWRjd1FuSWpCbG5IMXIzclZ1VGJFOXByUE8wOVNXVVAtaFF6dEhIT1F2MDZVaWtGbmdjTUVQRDhFNEZEcDRreTRyV3NvalVZNGlWclBXVkx4RUFVUVhrNW93QkVuUGlNZXd0cjc3M09tM0xOano1ajBGOXBfeWJHdjJjQ25KVkRyT3REOERUT0tScDlIMDB6eGpPV0h3T3k3T2p6cllQNkxvdGkwOUhJdTJUNWZyTkZ5TEFJZWNXMlE?oc=5) | Google新聞[price increase letter] | 2026-09-30T17:42:19+00:00 |
 | -2 | 利空(虧損) | 6405 | [6405 悅城：澄清媒體報導](https://mops.twse.com.tw/mops/web/t05sr01_1) | MOPS重大訊息(上市) | 1150930 152313 |
 | -2 | 利空(停工) | 2208 | [2208 台船：台船公司工安意外停工說明。](https://mops.twse.com.tw/mops/web/t05sr01_1) | MOPS重大訊息(上市) | 1150930 162755 |
 | -2 | 利空(虧損) | 3629 | [3629 地心引力：公告本公司董事會決議減資彌補虧損召開重大訊息說明記者會內容](https://mops.twse.com.tw/mops/web/t05sr01_1) | MOPS重大訊息(上櫃) | 1150930 94342 |
+| +2 | 接單擴產(擴產) | 2330 | [一座至少200億美元！台積電德州擴產構想曝光 租稅優惠成關鍵](https://news.cnyes.com/news/id/6619758) | 鉅亨網 | 2026-10-01T19:15:55+08:00 |
 | +2 | 接單擴產(量產) | 3013 | [晟銘電聚焦機櫃業務 Q4旺季預期出貨逐步上升](https://news.cnyes.com/news/id/6619675) | 鉅亨網 | 2026-10-01T18:25:40+08:00 |
 | +2 | 營運上修(創新高) | 2330、6438、4958、3189 | [迅得9月、Q3營收齊創歷史新高 法人看好下半年營運攀峰](https://news.cnyes.com/news/id/6619673) | 鉅亨網 | 2026-10-01T18:20:39+08:00 |
 | +2 | 接單擴產(量產) | 2492 | [光輝十月不要怕洗盤、國巨⊕、華新科⊕、鈞寶⊕、金居](https://news.cnyes.com/news/id/6619681) | 鉅亨網 | 2026-10-01T17:42:00+08:00 |
-| +2 | 營運上修(上修) | 4551 | [鉅亨速報 - Factset 最新調查：智伸科(4551-TW)EPS預估上修至10.82元，預估目標價為238元](https://news.cnyes.com/news/id/6619601) | 鉅亨網 | 2026-10-01T16:11:08+08:00 |
-| +2 | 供不應求(產能滿載) | 6532 | [瑞耘(6532) 台灣廠產能滿載！馬來西亞新廠第4季驗證，離供貨放量不遠？](https://news.cnyes.com/news/id/6619594) | 鉅亨網 | 2026-10-01T16:00:19+08:00 |
 | +2 | 接單擴產(擴產) | 6691、6139、4755、2464、3583、5536、9933、2404、6196、6803、2371 | [〈美光加碼台灣〉今後數年營建支出拚全球前五 美光點名亞翔、帆宣等跟著出海](https://news.cnyes.com/news/id/6619490) | 鉅亨網 | 2026-10-01T13:39:03+08:00 |
 | +2 | 接單擴產(擴產) | 2409 | [〈美光加碼台灣〉美光台灣四大基地同步擴產 台中HBM先進封裝二廠本月啟用](https://news.cnyes.com/news/id/6619474) | 鉅亨網 | 2026-10-01T13:11:07+08:00 |
-| +2 | 營運上修(年增) | 5483、6488 | [熱門股／環球晶8月獲利年增145% 漲停站回千元！中美晶、合晶也亮燈／ 產經 - 非凡新聞台](https://news.google.com/rss/articles/CBMiX0FVX3lxTE11RFdVZ0lfbWxRVnhRdkpMN2ZncXptOGhIbUFUTGZyeF94WHpzVF84eGVzV29LNURvcmpqOTE4Zkh2ZEdSZTU0emg4X2I1dHFiQko0YUl5Rjc3UktWdndR?oc=5) | Google新聞[漲價 股] | 2026-09-30T22:07:36+00:00 |
-| +2 | 供不應求(缺貨) | 2344、2408 | [AI把記憶體吃到缺貨！DDR5飆逾5倍 華邦電、南亞科到封測鏈全面升溫 - 聚財網](https://news.google.com/rss/articles/CBMiTEFVX3lxTE5DLXBvVjRCdS1EZUV4SllSSS1kQ1Z2TTNTbHRRMEY3SEE3WTRObzdzVzgyclJHMVJtYUtod3dleDllNFZLVE1MRTQ0ZVY?oc=5) | Google新聞[缺貨 供不應求] | 2026-09-30T11:12:05+00:00 |
+| +2 | 營運上修(年增) | 5483、6182、6488 | [熱門股／環球晶8月獲利年增145% 漲停站回千元！中美晶、合晶也亮燈／ 產經 - 非凡新聞台](https://news.google.com/rss/articles/CBMiX0FVX3lxTE11RFdVZ0lfbWxRVnhRdkpMN2ZncXptOGhIbUFUTGZyeF94WHpzVF84eGVzV29LNURvcmpqOTE4Zkh2ZEdSZTU0emg4X2I1dHFiQko0YUl5Rjc3UktWdndR?oc=5) | Google新聞[漲價 股] | 2026-10-01T06:39:34+00:00 |
+| +2 | 營運上修(年增) | 6488 | [《半導體》8月獲利年增近1.45倍環球晶亮燈攻逾2月高價- 證券 - ctee.com.tw](https://news.google.com/rss/articles/CBMiX0FVX3lxTFB4Qko2Uk9nZlVzZ2hzSHViUVMwc3lNNDc1T1FjQjFUQzVGREM5MGJ3cFVNSl81OWV5ZTJPMVBIVmlXRV9TLVpwSEVoMm5uOGFyTVdPb2dGMUdwcFV5N0w0?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-01T03:47:00+00:00 |
+| +2 | 營運上修(年增) | 3591 | [艾笛森Q3營收估年增逾4成，Q4成長動能延續- 新聞 - MoneyDJ理財網](https://news.google.com/rss/articles/CBMikgFBVV95cUxNTGZjNlBEaFk3ay1pVzlqQ2lLUmtia3ZnQ0FkcTJaeWNIWVBwRkdKRS1YX09tRFhBbHk1ak1IQXhzZG5RVnZJM0t5Q0o2OUhicHI0ZTJhcXhhOTJWeXhJQm52WnIxTDV0Yk5ZOWpJSlk1Z3RFQ0tXMERnOEFKZ0ZxUWhMRURqcURnQXgwT0VLMlpJQQ?oc=5) | Google新聞[漲價 site:moneydj.com] | 2026-10-01T02:52:00+00:00 |
 | +2 | 接單擴產(擴廠) | 2330 | [台積電中科1.4奈米新廠助攻！台中半導體產值破1.5兆 供應鏈大擴廠 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTFBhNXRneFNQc0pZd1FLWldXbXF1VmRvTThzbm1ubERnckh6YVlqa2QxMmF6MGZmZ0tkLUo4Z2dJOTNaVEZkT01KdXhURnZKT0FfRngyQmpwa2kwZ9IBX0FVX3lxTE9WWWhKbnNQT193XzBCYUxBNHBqTDk3OUtYSGtiZXA4MVRwSVVWb0NjenRSMFhLaE9rNTJzTDRMbzI4WGtWR1c2a1kxQ2JFLUhqNHJ3LW5rdHV1ZHlVVmQw?oc=5) | Google新聞[法說會 上修] | 2026-10-01T09:25:34+00:00 |
 | +2 | 營運上修(創新高) | 6438 | [營收：迅得(6438)9月營收6億9537萬元創新高，月增率13.74%，年增率30.84% - 富聯網](https://news.google.com/rss/articles/CBMiiAFBVV95cUxNXzVqLVdsZ3psX1Q2NldjemFyQ2tVY0t0QWRMbnRYY1N6aWpVQVpkOU5MMklBZGtidHpIS0x5T25HcnlNR3RSLXQxWUZZa2RHMlN3cUVQZGNLSUFJaktqX2dHdzMzU295d1RBbFk4UVdLSzNvMGVHY3ZaczJiX0FobnF2NFhYWUpJ?oc=5) | Google新聞[營收 創新高] | 2026-10-01T08:48:00+00:00 |
-| +2 | 營運上修(創新高) | 2317 | [鴻海分紅豪撒117億史上最大包，績優員工「百萬起跳」…營收獲利雙創新高，平均分紅2位數成長 - tw.news.yahoo.com](https://news.google.com/rss/articles/CBMijgRBVV95cUxOREQ5VDlJM0ZGY042Q2Fub21saDBhckZjWVlXRHFUaDJqUk95THJGZFZ2OGpRd3ZLd0h1MTBIMzBIa1N1S0FSXy1NVFZsLUx0V1V6el9lZFBwaXRPMkN1c0NDWW5QTnppMURRWVhtUGpEWWIzeFJGek9NU0F5ejRPVF92clB6R1lVU3BSTm5nTk1ZemhwWHpqLVBWMFJCaVIwUmMyQVNUUDB0VDViMERIN1JsTFBJYjJ5WGFVU09VcVdQZW1xZDN3b0ZOaGMwUmZEbHZFdWppQ0pyd1poajZ0WXJWdC1NVjFPTl9nX3hENnV6a2hVWFdkSHBqaWc5SGJ3MERUU0ZHQlhid1RzMmJLNVVFQzVDZ1pxRWl0WFRPeVBvRUY5WThsb0pPU0ZSTTB3YWhPM0FTREo3UEt3bkVvRy1yOFVTX1ZnNm1HSWg5bmVQSmUwRnlPMnJ2dVNUMktuUGlvRTVQVVdPTml5MnlsRG5OV2w2NDUtQk51QU9La0FDZEhtUFFYa3BiOW9pa3VwVzB6THMzbFgzd0w4dmtOWmwxenJIYTlGdWtkTnZ3OWFkRWNkOTM1M0pxOWlHb3VHcUYzanAxRXZJSmtNZU5VMGM5MXViWk9FVlp2d0pyWGl0V0J4Q1JtQ1NrZjlheXdkLVZmbUJZWDlyZ2ROQnBrM0Q2MjR6UFZMSm5aZlRR?oc=5) | Google新聞[營收 創新高] | 2026-09-30T21:00:01+00:00 |
+| +2 | 營運上修(創新高) | 2317 | [鴻海分紅豪撒117億史上最大包，績優員工「百萬起跳」…營收獲利雙創新高，平均分紅2位數成長 - Yahoo新聞](https://news.google.com/rss/articles/CBMijgRBVV95cUxOREQ5VDlJM0ZGY042Q2Fub21saDBhckZjWVlXRHFUaDJqUk95THJGZFZ2OGpRd3ZLd0h1MTBIMzBIa1N1S0FSXy1NVFZsLUx0V1V6el9lZFBwaXRPMkN1c0NDWW5QTnppMURRWVhtUGpEWWIzeFJGek9NU0F5ejRPVF92clB6R1lVU3BSTm5nTk1ZemhwWHpqLVBWMFJCaVIwUmMyQVNUUDB0VDViMERIN1JsTFBJYjJ5WGFVU09VcVdQZW1xZDN3b0ZOaGMwUmZEbHZFdWppQ0pyd1poajZ0WXJWdC1NVjFPTl9nX3hENnV6a2hVWFdkSHBqaWc5SGJ3MERUU0ZHQlhid1RzMmJLNVVFQzVDZ1pxRWl0WFRPeVBvRUY5WThsb0pPU0ZSTTB3YWhPM0FTREo3UEt3bkVvRy1yOFVTX1ZnNm1HSWg5bmVQSmUwRnlPMnJ2dVNUMktuUGlvRTVQVVdPTml5MnlsRG5OV2w2NDUtQk51QU9La0FDZEhtUFFYa3BiOW9pa3VwVzB6THMzbFgzd0w4dmtOWmwxenJIYTlGdWtkTnZ3OWFkRWNkOTM1M0pxOWlHb3VHcUYzanAxRXZJSmtNZU5VMGM5MXViWk9FVlp2d0pyWGl0V0J4Q1JtQ1NrZjlheXdkLVZmbUJZWDlyZ2ROQnBrM0Q2MjR6UFZMSm5aZlRR?oc=5) | Google新聞[營收 創新高] | 2026-09-30T21:00:01+00:00 |
 | +2 | 接單擴產(擴產) | 3706 | [神達擴產效益加持，今年營收可望登頂 - 台視全球資訊網](https://news.google.com/rss/articles/CBMikgFBVV95cUxQV3pMM1RHS3JIUXd3MHFpUF9Td2UtcWZ0VkFxYzJySmJmZ19UekxhcUtOZXBTYXFwbGxqc3pPT09jbnR4c2ZzX0xnQUFKanRxU2V5ajZzRWVlZ0tiU2tVVWxqc3RTb1MybURvVTQxX043SVBfWDVLQzlhOWpqMVJuWUw3cTU0eG41YnZuMmxwZVFkUQ?oc=5) | Google新聞[營收 創新高] | 2026-10-01T02:35:13+00:00 |
-| +2 | 營運上修(創新高) | 2330 | [台股收48353創新高！台積電平天價2510元 被動元件、ABF載板強勢表態 - 民報](https://news.google.com/rss/articles/CBMic0FVX3lxTFB6bWVkZkUzZ0xOVW43Q0Vza05KTTltc2taR1p4elp1bmgtWlY1ZUx3cjlqU21yXzJLU2hvT1VobmpQMFFrOTQ3djRxOXdDR0JGc3N5eTAtMDRhOUY1UW1JbWdSS1FQem92Y1hEaktNeUJQVFk?oc=5) | Google新聞[營收 創新高] | 2026-10-01T10:27:12+00:00 |
-| +2 | 接單擴產(量產) |  | [美專家：若先前未禁止EUV出口 中國或已成為高端晶片生產國](https://news.cnyes.com/news/id/6619498) | 鉅亨網 | 2026-10-01T16:40:04+08:00 |
-| -2 | 利空(虧損) |  | [美國貿易代表籲G20支持川普關稅 矛頭直指中國](https://news.cnyes.com/news/id/6619417) | 鉅亨網 | 2026-10-01T12:00:08+08:00 |
-| +2 | 營運上修(年增) |  | [AI支出續強勁 美銀點名美光、輝達、英特爾等「贏家」](https://news.cnyes.com/news/id/6619193) | 鉅亨網 | 2026-10-01T09:00:11+08:00 |
-| +2 | 營運上修(年增) |  | [AI資料中心搶電！Bloom Energy今年暴漲219% 克雷默仍看好但喊「先別追」](https://news.cnyes.com/news/id/6619284) | 鉅亨網 | 2026-10-01T08:50:04+08:00 |
-| +2 | 營運上修(優於預期) |  | [美光AI需求爆發 Q1財測大幅超預期股價盤後走高](https://news.cnyes.com/news/id/6619198) | 鉅亨網 | 2026-10-01T08:20:02+08:00 |
-| +2 | 營運上修(創新高) |  | [台股創新高！投信前10大賣超出爐 「這檔」遭狂砍4979張最慘 - 自由財經](https://news.google.com/rss/articles/CBMiX0FVX3lxTE1VTlRMdEVmbm9XQkxqb2ROQWRoRjBVZWhSNnFkV0ZiMjkyeXd5V01paXd4T2lVZ1VHSkFJZHJMN1NZemVoTkFmNGlIM25SS1hWLU5uaTJCV3QxQ193a2d30gFkQVVfeXFMT3VVanlXOXJpX0NsLVJFdXhOOUREMG9MdUY1enItamtBOXVPU1U0X2daZC1YODRaQmdMVkt6dlBnOVIzcGpXWHNWb2ROeHNaZU5zZUpzLUVwQUpxWVo2OU90ampIeg?oc=5) | Google新聞[漲價 股] | 2026-10-01T07:36:01+00:00 |
-| -2 | 利空(裁員) |  | [記憶體價格飆 美國科技巨頭也扛不住 傳蘋果新執行長計畫裁員 - tw.news.yahoo.com](https://news.google.com/rss/articles/CBMimgNBVV95cUxQYjBwcU5INHEtUHg5WXZGMkNzZWtNeXNQaHh4aDhrSk5adzg1TkdqVXItcktHclZ2MDN2bXFjYV9nMzQ2R3NrSDZpMEVUU3hzRWJuRVBwSF85UE1vMlNEUWN5dFZ0eEhnQjlzX3RCTFFnYS1JYTdKNFJXaTA4dUFVcy1NRUNVWGF4NllBSzRRMV9QamI1V2hONWNKZExpX0hLOUFhd1A0SWtieXJMZWk4V0wwM2U1bkZqSjdPd2NnSVFuUGxjRHFncUZmSjhBY24tWXBHdTJwWHVxMHk2cDVfcnNILXBSMkpqdFYzRVJJMktHcEI3QjdlVXM2NVZsd3pCR2lZbTlLbDZuaDNQX0NORG5ZZlF3N2FJWG10YTV4TDZRMDROTnMzVlM3NzZIUWM3aE9KWG1NLS1iNzBhREdDaGphc3RmZGM0bTdtQkp0TGNEMm5yVG9aVG9va2lfQkp6LUt1WjVaZUFSNUEzWDIySlRZRU96WGduWS10SW4wTWNFVEhqVWV4Z2VhaDY4eHh6dS12M3ZvclhVZw?oc=5) | Google新聞[漲價信] | 2026-09-30T23:30:11+00:00 |
-| +2 | 供不應求(缺貨) |  | [美光每股暴賺33.42美元、三星預告大缺貨潮...記憶體雙喜臨門法人點名「這2家」最受惠：驚人EPS曝光 - 上市櫃 - 旺得富理財網](https://news.google.com/rss/articles/CBMiakFVX3lxTFBIc3ZqR2dMbGdEcWZDNkdiYXF1VjJzMVBYZDUyTmt5MDRKRHBMQlh1QWNfN21sMGJreGE5Q2E5dW5QaW8wWGl3R1YtdzFkQ2lDVWRhM1JReThFZDZaWGFER2dFYzg3Z3VKMUE?oc=5) | Google新聞[缺貨 供不應求] | 2026-10-01T01:32:55+00:00 |
-| +2 | 接單擴產(大單) |  | [12億美元AI大單到手！慧與科技上調網路事業成長預期 - Yahoo 財經](https://news.google.com/rss/articles/CBMi4AJBVV95cUxPLVpMY3QwdWZZSWtVS0lDcE9ESl9oOEUtZmJELWRXRnloaWtxMFpteHpZNW1fdzBHWVpLVjlObklEeFVTaHNuR0pzZzZ6dHVMWnU0d3FlR243MFh3bVgzN3pIVnUtX1UyY3lzejhNWGctNXpCc0Y3cS1xMU5rVXNfTzRiV2ZYd0t0cTZzWWVkRDBhZU5rYm1pY25XVHROYnlSQi1tdFR3R3NsSW5XeE9scEZZYjBXb2kzUjlxNVlONUlHQXJnYzM4ZnZGMFI1QkVtNVJEVkprS1RGUVpPa1E3QktVbllhQVBzNXBGVkxIc3VWVFdfdllRWHJmYUZoaUhvSVJlZXl0LS15R3h4bWtDeWViY2ZiX2ZhaG5RVHM5RzBfVFI4Z2RCZG5KMzZUakdJcy0ybTZpbGp5OVJTR0dqWFVicTV4TkpCb0Fscmx0NkdIelRBWVdFc3dVQktvcTBa?oc=5) | Google新聞[法說會 上修] | 2026-09-30T15:30:02+00:00 |
-| +2 | 營運上修(上修) |  | [消費、AI投資雙引擎！美國第二季GDP終值上修 成長率達2.2% - cmoney.tw](https://news.google.com/rss/articles/CBMiWEFVX3lxTFB5QTZLSzBaejNfODVJWTkwQWN3WFpZMkJ0eDVqOWlQbXpNaDcyMGNWTGd6RE9LYjZKWFgxa1VtaVVreWlYSHpPOTJod0dDZWU3QWtKVGh2R0k?oc=5) | Google新聞[法說會 上修] | 2026-09-30T14:34:14+00:00 |
-| +2 | 接單擴產(量產) |  | [正淩法說會／1.6T產品第4季量產 第3季營運將達到高峰 - UDN](https://news.google.com/rss/articles/CBMiUEFVX3lxTFBZcjdRbzBMc0FoOEo1S1ZuX2RYdjUtNkZ2NnNtRVZ4aFF1NW5LRzcyVnVTZGJOOGpoY1lqSi1wcDZNXzNPOE9ueXNyU1Y1N2xN0gFWQVVfeXFMTTBudWctYWRacnMxc2RiU2tyWk1iM0ZrbTNfWFBRT3lnMmpfZ1N0cW5sVHpONnF4OVc3aUx4QzhCZlV2S1lHRWx3T0tWWTM3Vk9hNENTWnc?oc=5) | Google新聞[法說會 上修] | 2026-09-30T12:23:50+00:00 |
-| +2 | 接單擴產(擴產) |  | [美光估記憶體未來兩年更吃緊！台灣四大廠區加速擴產，為何仍追不上需求？ - 數位時代](https://news.google.com/rss/articles/CBMihAFBVV95cUxQTExxNHhUZFBPTm9RRXN6UGZJS3czTUU3MDQwT0Z3M0lKQWw1dlRwMUctcko4MlFMdXFlVE5sSUZUZ2FXR1lvVzVIN0lDczAtdE9hVFRETWZCYzBjTEI2RUdWUWNISjRMTmZWdWQ4cWFJR3NzZjhRRFQxZ2w3b3doMjVkSHo?oc=5) | Google新聞[法說會 上修] | 2026-10-01T09:31:00+00:00 |
-| +2 | 營運上修(創新高) |  | [美光第四季營收創歷史新高，預測 2027 財年將再創新高 - TradingKey](https://news.google.com/rss/articles/CBMifkFVX3lxTE90a3g0YTNuVTEyc3JaMTJZRjhJaXVSY2lSVUt4UWE5VlJmaUNjMjYyRVVyQmp3VXp0RHNKT2J0M0sxOHktR2NnUHdkX2dvbmdETkVQR2FQWlJQbFhYWlFPTzdXUWFDc3RfOFVmWThuZDd2VURQNW92eC1Rb1FRZw?oc=5) | Google新聞[營收 創新高] | 2026-10-01T08:01:25+00:00 |
-| +2 | 營運上修(創新高) |  | [美光財報炸裂！營收創新高、毛利率衝87% 預告記憶體派對繼續開 - 鏡報](https://news.google.com/rss/articles/CBMiUkFVX3lxTFBfX2Njb3l3ZjN5ZDBmZWs1eEVwcXYzdG9CTUsyNzhZUzV5LXNJWUxRX3U4eWZSbWVZLXppTDZXZW1XSHZrdkpyUnZSY2FiZi1EZGc?oc=5) | Google新聞[營收 創新高] | 2026-10-01T00:54:00+00:00 |
-| +2 | 營運上修(創新高) |  | [美光營收獲利雙超預期 下一季財測再創新高 - tw.news.yahoo.com](https://news.google.com/rss/articles/CBMirgJBVV95cUxOY2NieERrdGZDY1dnQnpQcjBkRS1LOHgxWVNWUmM4UjB5b3B2NTRKSlBoeWFpV3l2bFNESGFTZTNnbnBmdk4wSTY5bmc1dDZnbTU5VjM5T3RBQVJjbW5NT3diLTNQUGhRNHhNUE5FU3lDZXZxR0d6cjZqVFhYMVl3TnduUUVIV2dLS0RxY0FNbWRCNTRkNEc4eDBsODRWdTlQUnFmR09nZ29RVTdlZkNkRkdGbzJUanJEU1FqREhFbmwwdEdWU2xJTnVDUUFiMlVoSU5oYXV4SFR0ZFJzOGVGcjQtNjVlTlhPQW9KVk9zazRvWjdDRjlZMUl3UDRBS0Zjakp5b0UzcDRZdGYwNnU4NmNnSklnd0JIRkdWaHQ3aWx5OFFHVFlOcVBTVV9Odw?oc=5) | Google新聞[營收 創新高] | 2026-09-30T23:06:50+00:00 |
+| +2 | 營運上修(創新高) |  | [〈台幣〉Q4開門紅！大盤創新高 貶轉升收31.842元](https://news.cnyes.com/news/id/6619807) | 鉅亨網 | 2026-10-01T19:55:59+08:00 |
