@@ -70,10 +70,12 @@ def fetch_day_all() -> pd.DataFrame:
         frames.append(parse_twse_day_all(net.get_json(f"{TWSE_OPENAPI}/exchangeReport/STOCK_DAY_ALL")))
     except Exception as e:  # noqa: BLE001
         log.warning("上市行情抓取失敗：%s", e)
-    try:
-        frames.append(parse_tpex_day_all(net.get_json(f"{TPEX_OPENAPI}/tpex_mainboard_daily_close_quotes")))
-    except Exception as e:  # noqa: BLE001
-        log.warning("上櫃行情抓取失敗：%s", e)
+    for attempt in range(2):  # 櫃買中心偶爾連線中斷，多試一次
+        try:
+            frames.append(parse_tpex_day_all(net.get_json(f"{TPEX_OPENAPI}/tpex_mainboard_daily_close_quotes", timeout=30)))
+            break
+        except Exception as e:  # noqa: BLE001
+            log.warning("上櫃行情抓取失敗（第 %d 次）：%s", attempt + 1, e)
     if not frames:
         return pd.DataFrame(columns=DAY_COLUMNS)
     df = pd.concat(frames, ignore_index=True)

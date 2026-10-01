@@ -47,13 +47,27 @@ def fetch_chart(symbol: str, range_: str = "1y", interval: str = "1d") -> tuple[
     return parse_chart(payload)
 
 
+def _alternate(symbol: str) -> str | None:
+    """台股上市／上櫃代號互換（市場別不確定時用）。"""
+    if symbol.endswith(".TWO"):
+        return symbol[:-4] + ".TW"
+    if symbol.endswith(".TW"):
+        return symbol + "O"
+    return None
+
+
 def fetch_many(symbols: list[str], range_: str = "3mo") -> dict[str, pd.DataFrame]:
+    """回傳 {原始代號: 日K}；台股代號查不到時自動改試上市／上櫃另一邊。"""
     out = {}
     for s in symbols:
-        try:
-            df, _ = fetch_chart(s, range_=range_)
-            if not df.empty:
-                out[s] = df
-        except Exception as e:  # noqa: BLE001
-            log.warning("Yahoo %s 抓取失敗：%s", s, e)
+        for sym in filter(None, [s, _alternate(s)]):
+            try:
+                df, _ = fetch_chart(sym, range_=range_)
+                if not df.empty:
+                    out[s] = df
+                    break
+            except Exception as e:  # noqa: BLE001
+                log.debug("Yahoo %s 抓取失敗：%s", sym, e)
+        else:
+            log.warning("Yahoo %s 抓不到日K", s)
     return out

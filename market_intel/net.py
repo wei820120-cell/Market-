@@ -64,6 +64,9 @@ def get(url: str, params=None, headers=None, timeout: float = 15, retries: int =
         except requests.RequestException as e:
             last_exc = e
             log.debug("GET %s 失敗（第 %d 次）：%s", url, attempt + 1, e)
+            status = getattr(getattr(e, "response", None), "status_code", None)
+            if status is not None and 400 <= status < 500 and status != 429:
+                break  # 404 這類「查無資料」重試也沒用
             time.sleep(2 ** attempt)
     assert last_exc is not None
     raise last_exc

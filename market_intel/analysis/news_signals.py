@@ -20,13 +20,15 @@ def score_item(item: NewsItem, keywords: dict) -> NewsItem:
         if hit:
             score += weight
             tags.append(f"{cat}({hit[0]})")
-    letter = detect_price_letter(item, keywords.get("price_letter") or {})
-    if letter:
+    spec = keywords.get("price_letter") or {}
+    letter = detect_price_letter(item, spec)
+    if letter or any(t.startswith("漲價") for t in tags):
+        item.themes = hike_themes(text, spec)
+    # 漲價信要對得到個股或產業族群才算（排除手機、天然氣這類民生漲價）
+    if letter and (item.codes or item.themes or item.source.startswith("MOPS")):
         tag, weight = letter
         score += weight
         tags.insert(0, tag)
-    if letter or any(t.startswith("漲價") for t in tags):
-        item.themes = hike_themes(text, keywords.get("price_letter") or {})
     item.score = score
     item.tags = tags
     return item
@@ -91,8 +93,8 @@ def tag_codes(item: NewsItem, name_to_code: dict[str, str], us_symbols: set[str]
 def rank(items: list[NewsItem], keywords: dict, name_to_code: dict[str, str], us_symbols: set[str] | None = None,
          min_score: float | None = None, all_codes: set[str] | None = None) -> list[NewsItem]:
     for it in items:
+        tag_codes(it, name_to_code, us_symbols, all_codes)  # 先標個股，漲價信判斷需要
         score_item(it, keywords)
-        tag_codes(it, name_to_code, us_symbols, all_codes)
     threshold = keywords.get("min_score", 1) if min_score is None else min_score
     hits = [it for it in items if abs(it.score) >= threshold]
     return sorted(hits, key=lambda it: (abs(it.score), bool(it.codes)), reverse=True)

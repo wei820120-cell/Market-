@@ -361,7 +361,7 @@ def test_price_letter_detection_and_theme_hike():
     from market_intel.analysis import picks
     from market_intel.utils import ROOT
     kw = yaml.safe_load(open(ROOT / "config" / "news_keywords.yaml", encoding="utf-8"))
-    media = news_signals.score_item(news.NewsItem("鉅亨網", "國巨(2327)發漲價信 MLCC 調漲報價10%"), kw)
+    media = news_signals.score_item(news.NewsItem("鉅亨網", "國巨(2327)發漲價信 MLCC 調漲報價10%", codes=["2327"]), kw)
     assert media.tags[0].startswith("漲價信") and media.score >= 8
     assert "被動元件" in media.themes
     official = news_signals.score_item(
@@ -383,3 +383,27 @@ def test_price_letter_detection_and_theme_hike():
     ], {})
     assert df.iloc[0]["漲價"] == "漲價信" and "漲價信" in df.iloc[0]["理由"]
     assert df.iloc[1]["漲價"] == "族群" and "族群漲價" in df.iloc[1]["理由"]
+
+
+def test_price_letter_needs_stock_or_theme():
+    import yaml
+    from market_intel.utils import ROOT
+    kw = yaml.safe_load(open(ROOT / "config" / "news_keywords.yaml", encoding="utf-8"))
+    phone = news_signals.score_item(news.NewsItem("Google新聞", "三星Galaxy售價全面調漲 最高貴8千"), kw)
+    assert not news_signals.is_price_letter(phone)
+    gas = news_signals.score_item(news.NewsItem("Google新聞", "中油：10月電業用戶天然氣調漲9.68%"), kw)
+    assert gas.score == 0
+
+
+def test_yahoo_alternate_symbol(monkeypatch):
+    calls = []
+
+    def fake(sym, range_="3mo", interval="1d"):
+        calls.append(sym)
+        if sym.endswith(".TW"):
+            raise RuntimeError("404")
+        return pd.DataFrame({"close": [1.0]}), {}
+
+    monkeypatch.setattr(yahoo, "fetch_chart", fake)
+    out = yahoo.fetch_many(["6488.TW"])
+    assert "6488.TW" in out and calls == ["6488.TW", "6488.TWO"]

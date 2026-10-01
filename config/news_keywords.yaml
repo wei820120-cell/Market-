@@ -88,7 +88,7 @@ price_letter:
     運費: 航運
 
 # 標題含這些字的新聞不計分（凍漲、民生物價等跟個股無關的消息）
-exclude_words: [凍漲, 不漲價, 沒漲價, 食品, 機票, 燃油附加費, 瓦斯, 電價, 油價, 票價, 房價, 房租, 學費, 列印, 日本食品, without price hike]
+exclude_words: [凍漲, 不漲價, 沒漲價, 不調整, 食品, 機票, 燃油附加費, 瓦斯, 天然氣, 氣價, 電價, 電費, 水費, 油價, 票價, 房價, 房租, 學費, 列印, 日本食品, 健保, 保費, 菸, 便利商店, 超商, 外送, without price hike]
 
 # 鉅亨網類別
 cnyes_categories: [tw_stock, headline, us_stock]
