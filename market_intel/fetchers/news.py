@@ -237,29 +237,68 @@ def fetch_sec_8k(count: int = 100) -> list[NewsItem]:
 # ---------- 去重：只回傳沒看過的 ----------
 
 SEEN_PATH = CACHE_DIR / "seen_news.json"
+SIMILAR = 0.6  # 標題字元雙字組相似度 >= 此值視為同一則新聞
 
 
-def only_new(items: list[NewsItem], max_keep: int = 20000) -> list[NewsItem]:
-    seen: list[str] = json.loads(SEEN_PATH.read_text()) if SEEN_PATH.exists() else []
+def title_key(title: str) -> str:
+    """標題正規化：去掉結尾「 - 媒體名稱」、「／ 分類」、括號與標點，用來判斷是不是同一則新聞。"""
+    t = re.sub(r"\s+-\s+[^-]{1,30}$", "", title)       # Google：「標題 - 鉅亨網」
+    t = re.sub(r"[／|｜]\s*[^／|｜]{1,12}$", "", t)       # 「標題／ 台股」「標題| 科技」
+    t = re.sub(r"(-TW|-US)\b", "", t)
+    return re.sub(r"[\s　，。！？、：:；;,.!?「」『』《》【】()（）\[\]*＊~～…\-—_/／|｜'\"“”‘’]", "", t).lower()
+
+
+def _bigrams(s: str) -> set[str]:
+    return {s[i:i + 2] for i in range(len(s) - 1)} or {s}
+
+
+def _key(it: NewsItem) -> str:
+    # 重大訊息每則都是不同公告，同公司標題開頭很像，只比完全相同、不做相似比對
+    return ("mops:" if it.source.startswith("MOPS") else "") + title_key(it.title)
+
+
+def similar(a: str, b: str, threshold: float = SIMILAR) -> bool:
+    if not a or not b:
+        return False
+    if a.startswith("mops:") or b.startswith("mops:"):
+        return a == b
+    if a == b or (min(len(a), len(b)) >= 12 and (a in b or b in a)):
+        return True
+    ga, gb = _bigrams(a), _bigrams(b)
+    return len(ga & gb) / len(ga | gb) >= threshold
+
+
+def only_new(items: list[NewsItem], max_keep: int = 3000) -> list[NewsItem]:
+    """只回傳還沒推過的新聞。用「標題」判斷，不管是鉅亨網、Google 哪個搜尋或哪家媒體轉載，同一則只推一次。"""
+    seen: list[str] = []
+    if SEEN_PATH.exists():
+        try:
+            seen = [k for k in json.loads(SEEN_PATH.read_text(encoding="utf-8")) if isinstance(k, str)]
+        except (ValueError, OSError):
+            seen = []
     seen_set = set(seen)
+    recent = seen[-1500:]  # 近期標題做相似度比對
     fresh = []
     for it in items:
-        if it.key not in seen_set:
-            seen_set.add(it.key)
-            seen.append(it.key)
-            fresh.append(it)
+        k = _key(it)
+        if not k or k in seen_set or any(similar(k, r) for r in recent):
+            continue
+        seen_set.add(k)
+        seen.append(k)
+        recent.append(k)
+        fresh.append(it)
     SEEN_PATH.parent.mkdir(parents=True, exist_ok=True)
-    SEEN_PATH.write_text(json.dumps(seen[-max_keep:]))
+    SEEN_PATH.write_text(json.dumps(seen[-max_keep:], ensure_ascii=False), encoding="utf-8")
     return fresh
 
 
 def dedupe(items: list[NewsItem]) -> list[NewsItem]:
-    out, keys = [], set()
+    """同一批新聞內去重：標題相同或高度相似只留第一則（MOPS、鉅亨網排在 Google 前面，優先保留）。"""
+    out: list[NewsItem] = []
+    keys: list[str] = []
     for it in items:
-        # Google 新聞標題結尾是「 - 媒體名稱」，去掉後再比對，避免同一則被多家轉載重複出現
-        title = re.sub(r"\s+-\s+[^-]{1,30}$", "", it.title) if it.source.startswith("Google") else it.title
-        k = re.sub(r"[\s　，。！？、：:,.!?「」《》()（）]", "", title)[:40]
-        if k and k not in keys:
-            keys.add(k)
+        k = _key(it)
+        if k and not any(similar(k, x) for x in keys):
+            keys.append(k)
             out.append(it)
     return out
