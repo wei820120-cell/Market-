@@ -407,3 +407,32 @@ def test_yahoo_alternate_symbol(monkeypatch):
     monkeypatch.setattr(yahoo, "fetch_chart", fake)
     out = yahoo.fetch_many(["6488.TW"])
     assert "6488.TW" in out and calls == ["6488.TW", "6488.TWO"]
+
+
+def test_only_new_dedupes_across_sources_and_scans(tmp_path, monkeypatch):
+    monkeypatch.setattr(news, "SEEN_PATH", tmp_path / "seen.json")
+    first = [news.NewsItem("鉅亨網", "國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定產能", "https://cnyes/1")]
+    assert len(news.only_new(first)) == 1
+    later = [
+        # 同一則，被 Google 不同搜尋抓到、標題多了媒體名稱
+        news.NewsItem("Google新聞[漲價 股]", "國巨(2327)今日漲停、被動元件噴出！AI大單提前鎖定產能 - news.cnyes.com", "https://g/1"),
+        news.NewsItem("Google新聞[漲價信]", "國巨（2327）今日漲停、被動元件噴出！AI大單提前鎖定產能 - 鉅亨網", "https://g/2"),
+        # 真的不同的新聞
+        news.NewsItem("Google新聞[漲價信]", "ABF吃緊喊漲 南電創高 景碩破千", "https://g/3"),
+    ]
+    fresh = news.only_new(later)
+    assert [it.url for it in fresh] == ["https://g/3"]
+    assert news.only_new(later) == []  # 下一輪再出現也不會再推
+
+
+def test_dedupe_similar_titles():
+    items = [news.NewsItem("Google新聞[a]", "《價值型投資 最新產業研究報告》國巨 (2327-TW) 高階電容需求續強，漲價與轉單接力 - news.cnyes.com"),
+             news.NewsItem("Google新聞[b]", "《價值型投資最新產業研究報告》國巨（2327） 高階電容需求續強，漲價與轉單接力／ 台股 - 鉅亨號"),
+             news.NewsItem("Google新聞[c]", "美光第四季營收創歷史新高")]
+    assert len(news.dedupe(items)) == 2
+
+
+def test_mops_announcements_not_merged():
+    items = [news.NewsItem("MOPS重大訊息(上市)", "2327 國巨：公告本公司董事會決議發放現金股利"),
+             news.NewsItem("MOPS重大訊息(上市)", "2327 國巨：公告本公司董事會決議調整產品價格")]
+    assert len(news.dedupe(items)) == 2
