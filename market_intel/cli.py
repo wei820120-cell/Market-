@@ -20,7 +20,7 @@ import pandas as pd
 
 from . import config, notify
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import news, stock_futures, taifex, tw_daily, tw_realtime, yahoo
+from .fetchers import news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -36,13 +36,17 @@ def _listings() -> dict[str, dict]:
     return listings
 
 
+# 公司簡稱同時是常用詞，用名稱比對會誤判（仍可用代號比對，例如「全新(2455)」）
+AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星"}
+
+
 def _name_to_code(listings: dict[str, dict]) -> dict[str, str]:
     """新聞比對用的「名稱 → 代號」。2 個字的短名稱容易誤判，只保留自選股與族群成分股。"""
     focus = set(config.tw_watch_codes()) | set(config.all_tw_theme_codes())
     out = {}
     for code, info in listings.items():
         name = (info.get("name") or "").strip()
-        if not name or not code.isdigit():
+        if not name or not code.isdigit() or name in AMBIGUOUS_NAMES:
             continue
         if len(name) >= 3 or code in focus:
             out[name] = code
@@ -540,6 +544,80 @@ def cmd_target(args) -> None:
     print(pd.DataFrame(rows).to_string(index=False))
 
 
+def topic_themes_of(text: str) -> list[str]:
+    """貼文提到的關鍵字 → 相關族群（config/sources.yaml 的 topic_themes）。"""
+    out: list[str] = []
+    lower = text.lower()
+    for kw, ths in (config.sources().get("topic_themes") or {}).items():
+        if str(kw).lower() in lower:
+            for th in ([ths] if isinstance(ths, str) else ths):
+                if th not in out:
+                    out.append(th)
+    return out
+
+
+def channel_post_message(name: str, post, listings: dict, futures: dict, themes_tw: dict,
+                         name_to_code: dict, max_chars: int = 1500) -> str:
+    """頻道貼文推播：原文（截斷）＋相關個股／股票期貨＋相關族群＋訊號標籤。"""
+    item = news.NewsItem(source=f"Telegram[{name}]", title=post.text, url=post.url)
+    news_signals.tag_codes(item, name_to_code, _us_symbols(), set(listings))
+    news_signals.score_item(item, config.news_keywords())
+    themes = list(dict.fromkeys(topic_themes_of(post.text) + item.themes))
+    when = post.published[11:16] if len(post.published) >= 16 else ""
+    text = post.text if len(post.text) <= max_chars else post.text[:max_chars] + "…（完整內容見連結）"
+    lines = [f"📣 {name}　{post.published[5:10].replace('-', '/')} {when} UTC".strip(), "", text, "", "—"]
+    tw_codes = [c for c in item.codes if c[:1].isdigit()][:8]
+    if tw_codes:
+        lines.append("🔎 提到的個股")
+        for c in tw_codes:
+            lines.append(f"・{c} {(listings.get(c) or {}).get('name', '')}｜股期 "
+                         f"{stock_futures.label(futures.get(c)) if futures else '未知'}")
+    us = [c for c in item.codes if not c[:1].isdigit()]
+    if us:
+        lines.append("🇺🇸 " + "、".join(us))
+    for th in themes:
+        members = [str(c) for c in themes_tw.get(th, [])]
+        if not members:
+            continue
+        with_fut = [f"{c}{(listings.get(c) or {}).get('name', '')}" for c in members
+                    if futures and stock_futures.label(futures.get(c)) != "無"]
+        lines.append(f"🧭 族群【{th}】{len(members)} 檔；有股期：{'、'.join(with_fut[:8]) or '無'}")
+    if item.tags:
+        lines.append("🏷 " + "、".join(item.tags))
+    lines.append(post.url)
+    return "\n".join(lines)
+
+
+def cmd_channels(args) -> None:
+    """檢查公開 Telegram 頻道新貼文並推播（config/sources.yaml）。"""
+    channels = config.sources().get("telegram_channels") or []
+    if not channels:
+        log.info("config/sources.yaml 沒有設定 telegram_channels")
+        return
+    listings = _listings()
+    name_to_code = _name_to_code(listings)
+    futures = stock_futures.load_stock_futures()
+    themes_tw = config.themes().get("tw") or {}
+    state = telegram_channel.load_state()
+    for ch in channels:
+        handle, name = ch["handle"], ch.get("name", ch["handle"])
+        try:
+            posts = telegram_channel.fetch_channel(handle)
+        except Exception as e:  # noqa: BLE001
+            log.warning("Telegram 頻道 %s 抓取失敗：%s", handle, e)
+            continue
+        log.info("頻道 %s：讀到 %d 則貼文", handle, len(posts))
+        if args.latest:
+            fresh = posts[-args.latest:]  # 測試用：推最新 N 則，不更新記錄
+        else:
+            fresh = telegram_channel.new_posts(handle, posts, state)
+        for p in fresh:
+            notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code),
+                        channel=ch.get("push_to", "news"))
+    if not args.latest:
+        telegram_channel.save_state(state)
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
     print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
@@ -548,6 +626,14 @@ def cmd_check(args) -> None:
           f"有夜盤：{sum(1 for v in data.values() if v.get('night'))} 檔")
     for code in ["2330", "2317", "2454", "2327", "2303", "3017", "0050", "6488"]:
         print(f"  {code}：{stock_futures.label(data.get(code))}")
+    for ch in config.sources().get("telegram_channels") or []:
+        try:
+            posts = telegram_channel.fetch_channel(ch["handle"])
+            print(f"\nTelegram {ch['handle']}：{len(posts)} 則有文字的貼文")
+            for p in posts[-3:]:
+                print(f"  #{p.post_id} {p.published} {p.text[:80]!r}")
+        except Exception as e:  # noqa: BLE001
+            print(f"\nTelegram {ch['handle']} 抓取失敗：{e}")
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -558,6 +644,9 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("daily", help="盤後總報告").set_defaults(func=cmd_daily)
     sub.add_parser("us", help="美股類股資金流向").set_defaults(func=cmd_us)
     sub.add_parser("check", help="資料檢查：印出資料來源原始欄位（不推播）").set_defaults(func=cmd_check)
+    ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
+    ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
+    ch.set_defaults(func=cmd_channels)
 
     rt = sub.add_parser("realtime", help="盤中即時監控")
     rt.add_argument("--once", action="store_true", help="只跑一次")

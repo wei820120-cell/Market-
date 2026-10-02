@@ -35,6 +35,10 @@ def news_keywords() -> dict:
     return load("news_keywords")
 
 
+def sources() -> dict:
+    return load("sources")
+
+
 def all_tw_theme_codes() -> list[str]:
     codes: list[str] = []
     for members in (themes().get("tw") or {}).values():

@@ -436,3 +436,42 @@ def test_mops_announcements_not_merged():
     items = [news.NewsItem("MOPS重大訊息(上市)", "2327 國巨：公告本公司董事會決議發放現金股利"),
              news.NewsItem("MOPS重大訊息(上市)", "2327 國巨：公告本公司董事會決議調整產品價格")]
     assert len(news.dedupe(items)) == 2
+
+
+TG_HTML = """
+<div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message text_not_supported_wrap js-widget_message" data-post="Gooaye/1001">
+<div class="tgme_widget_message_text js-message_text" dir="auto">MS 今日的光通 memo<br/><br/>- 3.2T 會是對中政策施力點<br/>- 如果被擠壓到，中國可能控制 inp 基板出口反制，聯亞(3081)</div>
+<a class="tgme_widget_message_date" href="https://t.me/Gooaye/1001"><time datetime="2026-10-02T03:21:00+00:00" class="time">11:21</time></a></div></div>
+<div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="Gooaye/1002">
+<a class="tgme_widget_message_photo_wrap"></a><time datetime="2026-10-02T03:30:00+00:00"></time></div></div>
+<div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="Gooaye/1003">
+<div class="tgme_widget_message_text js-message_text" dir="auto">國巨 &amp; 華新科 MLCC 喊漲</div><time datetime="2026-10-02T04:00:00+00:00"></time></div></div>
+"""
+
+
+def test_telegram_channel_parse_and_state():
+    from market_intel.fetchers import telegram_channel as tg
+    posts = tg.parse_channel_html(TG_HTML, "Gooaye")
+    assert [p.post_id for p in posts] == [1001, 1003]  # 純圖片貼文略過
+    assert "3.2T" in posts[0].text and "\n" in posts[0].text
+    assert posts[1].text == "國巨 & 華新科 MLCC 喊漲" and posts[0].url == "https://t.me/Gooaye/1001"
+    state: dict = {}
+    assert tg.new_posts("Gooaye", posts, state) == [] and state["Gooaye"] == 1003  # 第一次只記錄
+    state["Gooaye"] = 1001
+    assert [p.post_id for p in tg.new_posts("Gooaye", posts, state)] == [1003]
+    assert state["Gooaye"] == 1003
+
+
+def test_channel_post_message(monkeypatch):
+    from market_intel import cli
+    from market_intel.fetchers import telegram_channel as tg
+    post = tg.parse_channel_html(TG_HTML, "Gooaye")[0]
+    listings = {"3081": {"name": "聯亞"}, "4971": {"name": "英特磊"}, "2455": {"name": "全新"}}
+    futures = {"3081": {"std": "XXF", "mini": None, "night": False}}
+    themes = {"光通訊雷射InP": ["3081", "4971", "2455"]}
+    msg = cli.channel_post_message("股癌", post, listings, futures, themes, {"聯亞": "3081", "英特磊": "4971"})
+    assert "📣 股癌" in msg and "3081 聯亞｜股期 XXF" in msg
+    assert "族群【光通訊雷射InP】3 檔；有股期：3081聯亞" in msg
+    assert msg.rstrip().endswith("https://t.me/Gooaye/1001")
+    # 「全新」是常用詞，不用名稱比對
+    assert "全新" in cli.AMBIGUOUS_NAMES

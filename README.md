@@ -120,6 +120,19 @@ pip install -r requirements.txt
 
 想在非交易時段測試，可以到 **Actions → realtime → Run workflow**，勾選「測試模式」後執行。
 
+## 產業消息頻道（股癌 Telegram 等）
+
+`.github/workflows/channels.yml` 每 10 分鐘檢查 `config/sources.yaml` 裡的公開 Telegram 頻道，全天執行，有新貼文就推到新聞機器人。每則會附上：
+
+- 原文
+- 提到的台股，以及它們有沒有股票期貨或小型股票期貨
+- 相關族群，以及族群中有股票期貨的標的
+- 訊號標籤，例如漲價信
+
+要追蹤其他頻道，在 `config/sources.yaml` 的 `telegram_channels` 加一筆即可。只限公開頻道。
+
+想測試，可以到 **Actions → channels → Run workflow**，在 latest 填 1，會直接推最新 1 則。
+
 ## 自動盤後報告
 
 `.github/workflows/daily-report.yml` 會在週一到週五台北時間 15:40 自動執行 `daily`，並把報告存進 `reports/`。
