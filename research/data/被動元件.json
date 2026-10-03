@@ -1,0 +1,160 @@
+{
+ "topic": "被動元件",
+ "one_line": "日韓大廠減供低階 MLCC、三星電機 Q4 調漲，台廠承接轉單並跟漲；AI 伺服器電源升級同時推升 MLCC、鉭電容、混合鋁電容、電阻、電感的用量與規格。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "被動元件",
+  "MLCC",
+  "積層陶瓷電容",
+  "晶片電阻",
+  "鉭質電容",
+  "鋁電容",
+  "電感",
+  "村田",
+  "三星電機",
+  "X5R",
+  "X6S"
+ ],
+ "catalysts": [
+  "日韓 Q4 報價調漲生效、台廠跟漲",
+  "10 月 10 日前 9 月營收",
+  "Rubin／ASIC 伺服器出貨放量"
+ ],
+ "risks": [
+  "景氣循環、補庫存後需求急凍",
+  "消費性終端需求仍弱",
+  "短線漲多，9 月曾集體跌停"
+ ],
+ "sources": [
+  {
+   "title": "時報資訊 被動元件大軍狂飆",
+   "url": "https://www.chinatimes.com/realtimenews/20261001002997-260410"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "MLCC（積層陶瓷電容）",
+   "description": "日韓調漲、村田減供低階 → 台廠轉單跟漲",
+   "global_players": [
+    "村田",
+    "三星電機",
+    "太陽誘電",
+    "TDK"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2327",
+     "name": "國巨*",
+     "role": "MLCC＋鉭電容＋電阻＋磁性，四大領域全球前三",
+     "impact": "受惠"
+    },
+    {
+     "code": "2492",
+     "name": "華新科",
+     "role": "MLCC／電阻，中低階轉單最直接",
+     "impact": "受惠"
+    },
+    {
+     "code": "3026",
+     "name": "禾伸堂",
+     "role": "NP0 MLCC 全球市占逾 5 成",
+     "impact": "受惠"
+    },
+    {
+     "code": "6173",
+     "name": "信昌電",
+     "role": "MLCC 與陶瓷基板",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "晶片電阻",
+   "description": "漲價擴散、AI 電源高功率電阻",
+   "global_players": [
+    "Rohm",
+    "KOA",
+    "Vishay"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2478",
+     "name": "大毅",
+     "role": "台灣晶片電阻二哥",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "電感／磁性元件",
+   "description": "AI 伺服器 VRM 一體成型電感",
+   "global_players": [
+    "TDK",
+    "村田",
+    "順絡"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6284",
+     "name": "佳邦",
+     "role": "電路保護、電感",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "鋁質／鉭質電容",
+   "description": "AI 電源高容值低 ESR 電容",
+   "global_players": [
+    "Panasonic",
+    "Nichicon",
+    "KEMET"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2472",
+     "name": "立隆電",
+     "role": "混合鋁電容，打入 Vera Rubin BOM",
+     "impact": "受惠"
+    },
+    {
+     "code": "2375",
+     "name": "凱美",
+     "role": "鋁電解電容",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "頻率元件",
+   "description": "AI 伺服器、網通低抖動振盪器",
+   "global_players": [
+    "Epson",
+    "NDK",
+    "KDS"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3042",
+     "name": "晶技",
+     "role": "石英振盪器",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "通路",
+   "description": "漲價期間庫存增值",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3537",
+     "name": "堡達",
+     "role": "被動元件通路",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
