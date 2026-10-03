@@ -3,16 +3,15 @@
 每檔股票：
 - 價量：收盤、漲跌（1／5／20 日）、量比（今日成交金額 ÷ 前 5 日平均）、趨勢
 - 波段目標價：保守目標、積極目標、停損、風報比（analysis/target_price.py）
-- 股票期貨／小型股票期貨：契約代碼、每口股數、一口契約價值、近月期貨價、期現價差、成交量、未平倉、夜盤
+- 有沒有股票期貨、小型股票期貨（契約代碼）
 - 月營收：最新月份年增、月增
 - 處置股、注意股警示
 - 研究後漲跌（題材研究過的話）
 
 圖片：
-1. 供應鏈地圖（研究過的題材才有分層；沒有研究的族群只列成分股）
-2. 目標價總表
-3. 股票期貨明細表
-4. 個股走勢小圖（標出目標價與停損）
+1. 供應鏈地圖（依研究的細項產業分層）
+2. 目標價總表（含股票期貨／小型股票期貨欄）
+3. 個股走勢小圖（標出目標價與停損）
 
 觸發：盤中族群資金湧入、盤後資金流入前幾名族群、題材研究完成、Telegram 指令「題材 玻纖布」。
 """
@@ -29,7 +28,7 @@ import pandas as pd
 
 from . import charts, config, notify, research
 from .analysis import target_price
-from .fetchers import futures_detail, stock_futures, tw_daily, yahoo
+from .fetchers import stock_futures, tw_daily, yahoo
 from .utils import CACHE_DIR, now_tw
 
 log = logging.getLogger(__name__)
@@ -119,7 +118,17 @@ def _pct(a, b) -> float | None:
         return None
 
 
-def stock_row(code: str, df: pd.DataFrame | None, futures: dict, detail: dict, revenue: dict, alerts: dict,
+def fut_text(info: dict | None, known: bool = True) -> str:
+    """「股期 LXF／小型 QEF」、「股期 HBF」、「無」；清單抓不到時「未知」。"""
+    if not known:
+        return "未知"
+    if not info or not (info.get("std") or info.get("mini")):
+        return "無"
+    return "／".join(filter(None, [f"股期 {info['std']}" if info.get("std") else "",
+                                   f"小型 {info['mini']}" if info.get("mini") else ""]))
+
+
+def stock_row(code: str, df: pd.DataFrame | None, futures: dict, revenue: dict, alerts: dict,
               research_date: str | None) -> dict:
     d: dict = {"code": code}
     if df is not None and len(df) >= 2:
@@ -147,13 +156,8 @@ def stock_row(code: str, df: pd.DataFrame | None, futures: dict, detail: dict, r
                 d[f"{k}_pct"] = _pct(d.get(k), d["close"])
         except ValueError as e:
             log.info("目標價 %s：%s", code, e)
-    info = futures.get(code) if futures else None
-    d["futures"] = futures_detail.contracts(code, d.get("close"), info, detail)
-    d["fut_label"] = stock_futures.label(info) if futures else "未知"
-    std = next((c for c in d["futures"] if c["kind"] == "一般"), None)
-    mini = next((c for c in d["futures"] if c["kind"] == "小型"), None)
-    d["fut_short"] = "／".join(filter(None, [f"股期 {std['contract']}" if std else "",
-                                              f"小型 {mini['contract']}" if mini else ""])) or "無股期"
+    d["fut"] = fut_text(futures.get(code) if futures else None, known=bool(futures))
+    d["fut_short"] = "無股期" if d["fut"] == "無" else d["fut"]
     d["revenue"] = revenue.get(code)
     d["alerts"] = alerts.get(code, [])
     return d
@@ -178,14 +182,13 @@ def build(found: dict, listings: dict, context: str = "", futures: dict | None =
     card.layers = layers
     codes = [s["code"] for l in layers for s in l["tw_stocks"]]
     futures = futures if futures is not None else stock_futures.load_stock_futures()
-    detail = futures_detail.load_detail()
     revenue = tw_daily.load_revenue()
     alerts = tw_daily.load_alerts()
     sym = {yahoo.yahoo_symbol(c, (listings.get(c) or {}).get("market") or "tse"): c for c in codes}
     hist = {sym[s]: df for s, df in yahoo.fetch_many(list(sym), range_="1y").items()}
     for layer in layers:
         for s in layer["tw_stocks"]:
-            row = stock_row(s["code"], hist.get(s["code"]), futures, detail, revenue, alerts, card.research_date)
+            row = stock_row(s["code"], hist.get(s["code"]), futures, revenue, alerts, card.research_date)
             row.update({"name": s["name"], "layer": layer.get("layer", ""), "role": s.get("role", ""),
                         "impact": s.get("impact", "中性"), "df": hist.get(s["code"])})
             card.stocks[s["code"]] = row
@@ -214,7 +217,7 @@ def render(card: Card) -> list[Path]:
         if card.layers:
             paths.append(charts.supply_chain_png(out_dir / "1_supply_chain.png", card.title,
                                                  card.subtitle or card.context, card.layers, card.stocks))
-        header = ["股票", "收盤", "漲跌", "5日", "量比", "營收年增", "保守目標", "積極目標", "停損", "風報比"]
+        header = ["股票", "收盤", "漲跌", "5日", "量比", "營收年增", "保守目標", "積極目標", "停損", "風報比", "股票期貨"]
         trs = []
         for d in rows:
             rev = d.get("revenue") or {}
@@ -224,30 +227,17 @@ def render(card: Card) -> list[Path]:
                         f"{_f(d.get('target'), 0)}({_f(d.get('target_pct'), 0, True)}%)" if d.get("target") else "—",
                         f"{_f(d.get('aggressive'), 0)}({_f(d.get('aggressive_pct'), 0, True)}%)" if d.get("aggressive") else "—",
                         f"{_f(d.get('stop'), 0)}({_f(d.get('stop_pct'), 0, True)}%)" if d.get("stop") else "—",
-                        _f(d.get("rr"), 1)])
-        paths.append(charts.table_png(out_dir / "2_targets.png", f"{card.title}｜波段目標價", header, trs,
-                                      [1.55, 0.75, 0.7, 0.7, 0.55, 0.75, 1.15, 1.15, 1.1, 0.6],
+                        _f(d.get("rr"), 1), d["fut"].replace("股期 ", "").replace("小型 ", "小型")])
+        paths.append(charts.table_png(out_dir / "2_targets.png", f"{card.title}｜波段目標價與股票期貨", header, trs,
+                                      [1.5, 0.72, 0.66, 0.66, 0.5, 0.72, 1.1, 1.1, 1.05, 0.55, 1.15],
                                       note="保守目標＝最近的上方目標，積極目標＝最遠的上方目標，停損＝最近支撐；"
-                                           "風報比＝(保守目標−收盤)/(收盤−停損)。⚠＝處置／注意股。僅供參考。",
-                                      colorize={2: 2, 3: 3, 5: 5}))
-        fh = ["股票", "契約", "每口", "一口價值", "近月期價", "期現價差", "成交量", "未平倉", "夜盤"]
-        frs = []
-        for d in rows:
-            for c in d.get("futures") or []:
-                frs.append([f"{d['code']} {d['name']}", f"{c['kind']} {c['contract']}", f"{c['shares']:,}股",
-                            futures_detail.wan(c.get("value")), _f(c.get("last")), _f(c.get("basis"), 1, True),
-                            _f(c.get("volume"), 0), _f(c.get("oi"), 0), "有" if c.get("night") else "—"])
-        no_fut = [f"{d['code']} {d['name']}" for d in rows if not d.get("futures")]
-        if frs:
-            paths.append(charts.table_png(out_dir / "3_futures.png", f"{card.title}｜股票期貨／小型股票期貨", fh, frs,
-                                          [1.5, 1.05, 0.75, 0.95, 0.9, 0.9, 0.8, 0.8, 0.55],
-                                          note=("沒有股票期貨：" + "、".join(no_fut) + "。" if no_fut else "")
-                                               + "一口價值＝收盤×每口股數；期現價差＝近月期價−收盤（正＝正價差）。",
-                                          colorize={5: 5}))
+                                           "風報比＝(保守目標−收盤)/(收盤−停損)。股票期貨欄：一般股期代碼／小型股期代碼。"
+                                           "⚠＝處置／注意股。僅供參考。",
+                                      colorize={2: 2, 3: 3, 5: 5}, width=9.6))
         items = [{"label": f"{d['code']} {d['name']}", "df": d["df"], "target": d.get("target"),
                   "aggressive": d.get("aggressive"), "stop": d.get("stop")} for d in rows if d.get("df") is not None]
         if items:
-            paths.append(charts.price_grid_png(out_dir / "4_charts.png", f"{card.title}｜走勢與目標價", items))
+            paths.append(charts.price_grid_png(out_dir / "3_charts.png", f"{card.title}｜走勢與目標價", items))
     except Exception as e:  # noqa: BLE001
         log.warning("題材卡圖片產生失敗：%s", e)
     return paths
@@ -272,15 +262,7 @@ def message(card: Card) -> str:
             lines.append(f"  目標 {_f(d['target'], 1)}（{_f(d.get('target_pct'), 0, True)}%）／"
                          f"{_f(d.get('aggressive'), 1)}（{_f(d.get('aggressive_pct'), 0, True)}%）"
                          f"｜停損 {_f(d.get('stop'), 1)}（{_f(d.get('stop_pct'), 0, True)}%）｜風報比 {_f(d.get('rr'), 1)}")
-        futs = d.get("futures") or []
-        if futs:
-            for c in futs:
-                lines.append(f"  {c['kind']}股期 {c['contract']}：一口 {c['shares']:,} 股≈{futures_detail.wan(c.get('value'))}"
-                             f"｜期價 {_f(c.get('last'))}（價差 {_f(c.get('basis'), 1, True)}）"
-                             f" 量 {_f(c.get('volume'), 0)} 未平倉 {_f(c.get('oi'), 0)}"
-                             + ("｜夜盤" if c.get("night") else ""))
-        else:
-            lines.append(f"  股票期貨：{d.get('fut_label', '無')}")
+        lines.append(f"  {d['fut']}" if d["fut"] not in ("無", "未知") else f"  股票期貨：{d['fut']}")
         extra = []
         rev = d.get("revenue") or {}
         if rev.get("yoy") is not None:

@@ -594,30 +594,12 @@ def test_parse_request_kinds():
     assert research.parse_request("早安") is None
 
 
-def test_futures_detail_parse_and_contracts():
-    from market_intel.fetchers import futures_detail as fd
-    rows = [
-        {"Contract": "QSF", "ContractMonth(Week)": "202611", "Last": "1467", "Volume": "462", "OpenInterest": "409",
-         "TradingSession": "一般"},
-        {"Contract": "QSF", "ContractMonth(Week)": "202610", "Last": "1468", "Volume": "11218", "OpenInterest": "7414",
-         "TradingSession": "一般"},
-        {"Contract": "QSF", "ContractMonth(Week)": "202610/202611", "Last": "1", "Volume": "5", "OpenInterest": "0",
-         "TradingSession": "一般"},
-        {"Contract": "QSF", "ContractMonth(Week)": "202610", "Last": "1470", "Volume": "300", "OpenInterest": "0",
-         "TradingSession": "盤後"},
-    ]
-    q = fd.parse_quotes(rows)["QSF"]
-    assert q["month"] == "202610" and q["last"] == 1468 and q["volume"] == 11680 and q["oi"] == 7823
-    assert q["night_volume"] == 300
-    detail = {"quotes": {"QSF": q}}
-    std, mini = fd.contracts("8046", 1460.0, {"std": "LYF", "mini": "QSF", "night": False}, detail)
-    assert std["shares"] == 2000 and std["value"] == 1460.0 * 2000 and std["last"] is None
-    assert mini["shares"] == 100 and mini["last"] == 1468 and mini["basis"] == 8 and mini["oi"] == 7823
-    assert "initial" not in mini
-    etf = fd.contracts("0050", 200.0, {"std": "NYF", "mini": None, "night": True}, detail)
-    assert etf[0]["shares"] == 10000 and etf[0]["night"]
-    assert fd.contracts("1815", 100.0, None, detail) == []
-    assert fd.wan(826000) == "82.6萬"
+def test_card_fut_text():
+    from market_intel import theme_card
+    assert theme_card.fut_text({"std": "LXF", "mini": "QEF", "night": False}) == "股期 LXF／小型 QEF"
+    assert theme_card.fut_text({"std": "HBF", "mini": None, "night": True}) == "股期 HBF"
+    assert theme_card.fut_text(None) == "無"
+    assert theme_card.fut_text(None, known=False) == "未知"
 
 
 def test_revenue_and_alerts_parse():
@@ -664,12 +646,12 @@ def test_card_stock_row_since_research():
     close = pd.Series(range(100, 190), index=idx, dtype=float)
     df = pd.DataFrame({"open": close, "high": close * 1.01, "low": close * 0.99, "close": close, "volume": 1e6})
     last_day = f"{idx[-1].tz_convert('Asia/Taipei'):%Y-%m-%d}"
-    row = theme_card.stock_row("8046", df, {}, {"quotes": {}}, {}, {}, last_day)
+    row = theme_card.stock_row("8046", df, {"8046": {"std": "LYF", "mini": "QSF"}}, {}, {}, last_day)
     assert "since_research" not in row and row["close"] == 189.0 and row["target"]
-    row = theme_card.stock_row("8046", df, {}, {"quotes": {}}, {}, {"8046": ["注意股"]},
+    row = theme_card.stock_row("8046", df, {}, {}, {"8046": ["注意股"]},
                                f"{idx[-11].tz_convert('Asia/Taipei'):%Y-%m-%d}")
     assert round(row["since_research"], 1) == round((189 / 179 - 1) * 100, 1) and row["alerts"] == ["注意股"]
-    assert row["fut_short"] == "無股期"
+    assert row["fut"] == "未知"
 
 
 def test_push_theme_cards_research_first(tmp_path, monkeypatch):

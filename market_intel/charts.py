@@ -146,13 +146,13 @@ def supply_chain_png(path: Path, title: str, subtitle: str, layers: list[dict], 
 
 
 def table_png(path: Path, title: str, header: list[str], rows: list[list], col_widths: list[float],
-              note: str = "", colorize: dict[int, int] | None = None) -> Path:
+              note: str = "", colorize: dict[int, int] | None = None, width: float = WIDTH) -> Path:
     """一般表格圖。colorize：{要上色的欄: 依哪一欄的數字正負上色}。"""
     setup_font()
     colorize = colorize or {}
     row_h = 0.42
     height = 1.0 + row_h * (len(rows) + 1) + (0.5 if note else 0.2)
-    fig = plt.figure(figsize=(WIDTH, height), dpi=DPI)
+    fig = plt.figure(figsize=(width, height), dpi=DPI)
     ax = fig.add_axes([0, 0, 1, 1])
     total = sum(col_widths)
     ax.set_xlim(0, total)
@@ -185,7 +185,7 @@ def table_png(path: Path, title: str, header: list[str], rows: list[list], col_w
                     ha="center", va="center", weight="bold" if j == 0 else "normal")
             x += w
     if note:
-        ax.text(0.1, height - 0.28, _wrap(note, 70, 2), fontsize=7.5, color="#777", va="center")
+        ax.text(0.1, height - 0.28, _wrap(note, int(70 * width / WIDTH), 2), fontsize=7.5, color="#777", va="center")
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=DPI)
     plt.close(fig)
