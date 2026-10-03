@@ -28,6 +28,7 @@ RESEARCH_DIR = ROOT / "research"
 INDEX_PATH = RESEARCH_DIR / "index.json"
 AUTO_THEMES_PATH = RESEARCH_DIR / "auto_themes.yaml"
 INBOX_DIR = ROOT / "state" / "inbox"
+PENDING_DIR = RESEARCH_DIR / "pending"  # 已寫好、等待發布的研究（JSON：REPORT_SCHEMA 欄位＋report＋trigger）
 
 SYSTEM = """你是台股產業研究員，專門把一個新題材拆解成完整的供應鏈地圖，給做波段的投資人參考。
 原則：
@@ -243,9 +244,10 @@ def render_markdown(data: dict, layers: list[dict], dropped: list[str], report: 
         lines += ["", f"_以下 AI 列出的代號不在上市櫃清單，已剔除：{'、'.join(dropped)}_"]
     if trigger:
         lines += ["", "<details><summary>觸發來源</summary>", "", trigger[:2000], "", "</details>"]
-    lines += ["", "---", "", report, "", "---",
-              f"_用量：輸入 {usage.input_tokens:,} tokens、輸出 {usage.output_tokens:,} tokens、"
-              f"網路搜尋 {usage.web_searches} 次，約 US${usage.usd():.2f}_"]
+    lines += ["", "---", "", report]
+    if usage.calls:
+        lines += ["", "---", f"_用量：輸入 {usage.input_tokens:,} tokens、輸出 {usage.output_tokens:,} tokens、"
+                             f"網路搜尋 {usage.web_searches} 次，約 US${usage.usd():.2f}_"]
     return "\n".join(lines) + "\n"
 
 
@@ -260,10 +262,10 @@ def summary_message(data: dict, layers: list[dict], url: str) -> str:
         lines.append(f"【{layer['layer']}】")
         for s in gain[:6]:
             fut = "" if s["futures"] in ("無", "未知") else f"｜股期 {s['futures']}"
-            lines.append(f"  ▲ {s['code']} {s['name']}：{s['role'][:24]}{fut}")
+            lines.append(f"  ▲ {s['code']} {s['name']}：{s['role'][:40]}{fut}")
         for s in hurt[:3]:
             fut = "" if s["futures"] in ("無", "未知") else f"｜股期 {s['futures']}"
-            lines.append(f"  ▼ {s['code']} {s['name']}：{s['role'][:24]}{fut}")
+            lines.append(f"  ▼ {s['code']} {s['name']}：{s['role'][:40]}{fut}")
     if data.get("catalysts"):
         lines += ["", "📅 催化劑：" + "；".join(data["catalysts"][:3])]
     if data.get("risks"):
@@ -304,13 +306,30 @@ def update_auto_themes(topic: str, layers: list[dict], keywords: list[str]) -> N
 
 # ---------- 主流程 ----------
 
+def _save_report(topic: str, data: dict, report: str, trigger: str, listings: dict, futures: dict,
+                 usage: ai.Usage, auto: bool) -> dict:
+    """核對代號、存報告、更新索引與族群監控，回傳 {data, layers, file, message}。"""
+    data["topic"] = data.get("topic") or topic
+    layers, dropped = validate_layers(data, listings, futures)
+    fname = f"{now_tw():%Y-%m-%d}-{slug(topic)}.md"
+    RESEARCH_DIR.mkdir(parents=True, exist_ok=True)
+    (RESEARCH_DIR / fname).write_text(render_markdown(data, layers, dropped, report, trigger, usage), encoding="utf-8")
+    index = load_index()
+    index[topic] = {"file": fname, "date": f"{now_tw():%Y-%m-%d}", "keywords": data.get("keywords", []),
+                    "codes": [s["code"] for layer in layers for s in layer["tw_stocks"]],
+                    "status": data.get("status"), "usd": round(usage.usd(), 3), "auto": auto}
+    save_index(index)
+    update_auto_themes(topic, layers, data.get("keywords", []))
+    return {"data": data, "layers": layers, "file": fname,
+            "message": summary_message(data, layers, report_url(fname))}
+
+
 def research_topic(topic: str, trigger: str, listings: dict, futures: dict, auto: bool = False) -> dict:
     """研究一個題材，存檔並回傳 {data, layers, file, message}。失敗時丟出 ai.AIUnavailable。"""
     ai.check_budget()
-    index = load_index()
     usage = ai.Usage()
     prompt = REPORT_TEMPLATE.format(topic=topic, trigger=trigger[:3000] or "（手動指定）",
-                                    knowledge=relevant_knowledge(topic, index))
+                                    knowledge=relevant_knowledge(topic, load_index()))
     log.info("開始研究題材：%s", topic)
     try:
         report = ai.web_research(SYSTEM, prompt, usage)
@@ -318,19 +337,24 @@ def research_topic(topic: str, trigger: str, listings: dict, futures: dict, auto
     finally:
         if usage.calls:
             ai.record_usage(usage, topic)
-    data["topic"] = data.get("topic") or topic
-    layers, dropped = validate_layers(data, listings, futures)
-    fname = f"{now_tw():%Y-%m-%d}-{slug(topic)}.md"
-    RESEARCH_DIR.mkdir(parents=True, exist_ok=True)
-    (RESEARCH_DIR / fname).write_text(render_markdown(data, layers, dropped, report, trigger, usage), encoding="utf-8")
-    index[topic] = {"file": fname, "date": f"{now_tw():%Y-%m-%d}", "keywords": data.get("keywords", []),
-                    "codes": [s["code"] for layer in layers for s in layer["tw_stocks"]],
-                    "status": data.get("status"), "usd": round(usage.usd(), 3), "auto": auto}
-    save_index(index)
-    update_auto_themes(topic, layers, data.get("keywords", []))
-    log.info("研究完成：%s（約 US$%.2f）", fname, usage.usd())
-    return {"data": data, "layers": layers, "file": fname,
-            "message": summary_message(data, layers, report_url(fname))}
+    out = _save_report(topic, data, report, trigger, listings, futures, usage, auto)
+    log.info("研究完成：%s（約 US$%.2f）", out["file"], usage.usd())
+    return out
+
+
+def publish_pending(listings: dict, futures: dict) -> list[dict]:
+    """發布 research/pending/ 裡已寫好的研究（不需要 API 金鑰），發布後刪除該檔。"""
+    outs = []
+    for p in sorted(PENDING_DIR.glob("*.json")) if PENDING_DIR.exists() else []:
+        try:
+            d = json.loads(p.read_text(encoding="utf-8"))
+            report, trigger = d.pop("report", ""), d.pop("trigger", "")
+            outs.append(_save_report(d["topic"], d, report, trigger, listings, futures, ai.Usage(), False))
+        except (ValueError, KeyError) as e:
+            log.warning("待發布研究 %s 格式錯誤：%s", p.name, e)
+            continue
+        p.unlink()
+    return outs
 
 
 def detect_topics(texts: list[str]) -> list[dict]:

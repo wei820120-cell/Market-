@@ -1,6 +1,6 @@
 # 主動追蹤的產業消息來源
 
-# 公開 Telegram 頻道（填 t.me/ 後面的帳號）。每 10 分鐘檢查一次，新貼文推到新聞機器人。
+# 公開 Telegram 頻道（填 t.me/ 後面的帳號）。每 10 分鐘檢查一次，新貼文依 push_to 推到對應機器人（股癌推到研究機器人）。
 telegram_channels:
   - name: 股癌
     handle: Gooaye
