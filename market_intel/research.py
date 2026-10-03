@@ -14,7 +14,7 @@ import json
 import logging
 import os
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import yaml
 
@@ -28,6 +28,7 @@ RESEARCH_DIR = ROOT / "research"
 INDEX_PATH = RESEARCH_DIR / "index.json"
 AUTO_THEMES_PATH = RESEARCH_DIR / "auto_themes.yaml"
 INBOX_DIR = ROOT / "state" / "inbox"
+QUEUE_DIR = ROOT / "state" / "research_queue"  # 資金流入但還沒研究過的題材，等有 API 金鑰時研究
 PENDING_DIR = RESEARCH_DIR / "pending"  # 已寫好、等待發布的研究（JSON：REPORT_SCHEMA 欄位＋report＋trigger）
 
 SYSTEM = """你是台股產業研究員，專門把一個新題材拆解成完整的供應鏈地圖，給做波段的投資人參考。
@@ -51,10 +52,15 @@ REPORT_TEMPLATE = """請研究這個題材：「{topic}」
 ## 一句話重點
 ## 這是什麼？為什麼現在？
 （技術或產品是什麼、解決什麼問題、這次被討論的契機）
-## 技術／規格演進
-（如果有世代演進，像 FR-4 → M8 → M9 → 無布 HC／Hybrid PTFE 那樣講清楚每一代差在哪；沒有就略過）
-## 供應鏈地圖
-（由上游到下游分層：原料／材料 → 零組件 → 模組 → 系統／終端。每一層寫：這層做什麼、全球主要廠商、台股公司（代號 名稱：角色、受惠或受傷、理由））
+## 技術細項（要像產業懶人包一樣具體）
+- 規格比較表：關鍵材料／產品的規格數字比較（例如 PCB 材料的 Dk、Df、Tg、成本；光模組的速率、功耗、雷射種類），附單位與數值範圍
+- 世代演進：每一代的組成、關鍵規格、典型應用（例如 FR-4 → 改性 PPO → M8 → M9 → 無布 HC／Hybrid PTFE）
+- 關鍵概念解說：2～4 個讀者一定要懂的技術問題（例如「為什麼要拿掉玻纖布：Glass Weave Effect」），每個寫 3～5 點，講原因、影響、代價
+- 結論：怎麼判斷誰勝出（不是單看一個規格，而是性能、成本、良率、量產可行性的平衡）
+## 細項產業與供應鏈地圖
+（把題材拆成細項產業，由上游到下游排列。例如「被動元件」拆成：上游材料（陶瓷粉、電極漿料）→ MLCC → 晶片電阻 → 電感 → 鉭質／鋁質電容 → 通路。
+每個細項產業寫：這段做什麼、現在的景氣與報價（漲價、缺貨、稼動率）、全球主要廠商、台股公司（代號 名稱：在這個細項的角色、受惠或受傷、理由）。
+同一家公司橫跨多個細項時，放在營收占比最高或受惠最大的那一項。）
 ## 受惠與受傷總表
 ## 時間軸與催化劑
 （何時量產、何時放量、接下來要看的事件）
@@ -66,7 +72,8 @@ REPORT_TEMPLATE = """請研究這個題材：「{topic}」
 REPORT_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["topic", "one_line", "status", "horizon", "layers", "keywords", "catalysts", "risks", "sources"],
+    "required": ["topic", "one_line", "status", "horizon", "layers", "keywords", "catalysts", "risks",
+                 "spec_tables", "evolution", "concepts", "conclusion", "sources"],
     "properties": {
         "topic": {"type": "string"},
         "one_line": {"type": "string"},
@@ -102,6 +109,40 @@ REPORT_SCHEMA = {
         "keywords": {"type": "array", "items": {"type": "string"}},
         "catalysts": {"type": "array", "items": {"type": "string"}},
         "risks": {"type": "array", "items": {"type": "string"}},
+        "spec_tables": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["title", "columns", "rows", "note"],
+                "properties": {
+                    "title": {"type": "string"},
+                    "columns": {"type": "array", "items": {"type": "string"}},
+                    "rows": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+                    "note": {"type": "string"},
+                },
+            },
+        },
+        "evolution": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["name", "composition", "spec", "application"],
+                "properties": {"name": {"type": "string"}, "composition": {"type": "string"},
+                               "spec": {"type": "string"}, "application": {"type": "string"}},
+            },
+        },
+        "concepts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["title", "points"],
+                "properties": {"title": {"type": "string"}, "points": {"type": "array", "items": {"type": "string"}}},
+            },
+        },
+        "conclusion": {"type": "array", "items": {"type": "string"}},
         "sources": {
             "type": "array",
             "items": {
@@ -115,7 +156,10 @@ REPORT_SCHEMA = {
 }
 
 EXTRACT_INSTRUCTION = """把下面這份研究報告整理成 JSON。
-- layers 依報告的供應鏈分層，由上游到下游；tw_stocks 只放報告中明確寫出代號的台股，代號只要數字（例如 "2383"）。
+- layers 依報告的細項產業分層，由上游到下游（layer 寫細項產業名稱，description 寫這段的景氣與報價）；
+  tw_stocks 只放報告中明確寫出代號的台股，代號只要數字（例如 "2383"），同一檔只放一次。
+- spec_tables：報告裡的規格比較表，原樣搬過來（columns 是欄名，rows 每列是字串陣列，數字帶單位）。
+- evolution：世代演進，由舊到新；concepts：關鍵概念解說，每個 3～5 點；conclusion：結論 3～6 點。
 - keywords 放 5-15 個之後在新聞中辨識這個題材用的關鍵字（中英文都可，例如 M9、石英布、Q布、Low-Dk）。
 - 報告沒寫的欄位給空陣列，不要自己補。"""
 
@@ -149,6 +193,12 @@ TOPICS_INSTRUCTION = """以下是今天的新聞標題與產業社群貼文。�
 
 
 # ---------- 研究索引 ----------
+
+def data_dir():
+    """每份研究的結構化資料（供應鏈分層），題材卡畫圖用。"""
+    return RESEARCH_DIR / "data"
+
+
 
 def load_index() -> dict:
     if INDEX_PATH.exists():
@@ -320,6 +370,16 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
                     "status": data.get("status"), "usd": round(usage.usd(), 3), "auto": auto}
     save_index(index)
     update_auto_themes(topic, layers, data.get("keywords", []))
+    (QUEUE_DIR / f"{slug(topic)}.json").unlink(missing_ok=True)  # 研究完成就移出佇列
+    data_dir().mkdir(parents=True, exist_ok=True)
+    keep = ("topic", "one_line", "status", "horizon", "keywords", "catalysts", "risks", "spec_tables", "evolution",
+            "concepts", "conclusion", "sources")
+    (data_dir() / f"{slug(topic)}.json").write_text(json.dumps(
+        {**{k: data.get(k) for k in keep}, "layers": [
+            {"layer": l.get("layer"), "description": l.get("description", ""),
+             "global_players": l.get("global_players", []),
+             "tw_stocks": [{k: s[k] for k in ("code", "name", "role", "impact")} for s in l["tw_stocks"]]}
+            for l in layers]}, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"data": data, "layers": layers, "file": fname,
             "message": summary_message(data, layers, report_url(fname))}
 
@@ -414,6 +474,47 @@ def parse_command(text: str) -> str | None:
     return topic[:40] or None
 
 
+CARD_RE = re.compile(r"^\s*/?(題材|族群|卡片?|目標價|card)\s*[:：]?\s*(.+)$", re.I)
+
+
+def parse_request(text: str) -> tuple[str, str] | None:
+    """「研究 XXX」→ ("research", XXX)；「題材 XXX」「族群 XXX」「目標價 XXX」→ ("card", XXX)。"""
+    t = parse_command(text)
+    if t:
+        return "research", t
+    m = CARD_RE.match(text or "")
+    if m:
+        q = m.group(2).strip().splitlines()[0].strip()[:40]
+        return ("card", q) if q else None
+    return None
+
+
+def pending_requests(updates: list[dict], owner_chat: str | None,
+                     offset: int | None) -> tuple[list[tuple[str, str]], int | None]:
+    """從 getUpdates 取出主人傳的指令，回傳（[(種類, 內容)], 下一次的 offset）。"""
+    out = []
+    for u in updates:
+        offset = max(offset or 0, int(u.get("update_id", 0)) + 1)
+        msg = u.get("message") or {}
+        if owner_chat and str((msg.get("chat") or {}).get("id")) != str(owner_chat):
+            continue
+        req = parse_request(msg.get("text", ""))
+        if req:
+            out.append(req)
+    return out, offset
+
+
+def find_for_codes(codes: list[str], min_overlap: int = 2) -> str | None:
+    """族群成分股和哪一份研究重疊最多（至少 2 檔、且過半），回傳研究題材名稱。"""
+    best, best_n = None, 0
+    want = set(codes)
+    for topic, e in load_index().items():
+        n = len(want & set(e.get("codes", [])))
+        if n >= min_overlap and n * 2 >= len(want) and n > best_n:
+            best, best_n = topic, n
+    return best
+
+
 def pending_commands(updates: list[dict], owner_chat: str | None, offset: int | None) -> tuple[list[str], int | None]:
     """從 getUpdates 結果取出主人傳的「研究 XXX」指令，回傳（題材清單, 下一次的 offset）。"""
     topics = []
@@ -454,3 +555,66 @@ def save_offset(token: str | None, offset: int | None) -> None:
     data[_bot_key(token)] = offset
     COMMAND_STATE.parent.mkdir(parents=True, exist_ok=True)
     COMMAND_STATE.write_text(json.dumps(data) + "\n", encoding="utf-8")
+
+
+# ---------- 研究佇列（資金流入的題材） ----------
+
+def queue_research(topic: str, trigger: str) -> bool:
+    """把題材排入研究佇列；14 天內研究過或已在佇列就略過。回傳是否新排入。"""
+    if recently_researched(topic, load_index()):
+        return False
+    p = QUEUE_DIR / f"{slug(topic)}.json"
+    if p.exists():
+        return False
+    QUEUE_DIR.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"topic": topic, "trigger": trigger, "time": f"{now_tw():%Y-%m-%d %H:%M}"},
+                            ensure_ascii=False), encoding="utf-8")
+    return True
+
+
+def read_queue() -> list[tuple[os.PathLike, dict]]:
+    """待研究的題材；14 天內已研究過的直接移出。"""
+    out = []
+    index = load_index()
+    for p in sorted(QUEUE_DIR.glob("*.json")) if QUEUE_DIR.exists() else []:
+        try:
+            d = json.loads(p.read_text(encoding="utf-8"))
+        except ValueError:
+            p.unlink(missing_ok=True)
+            continue
+        if recently_researched(d.get("topic", ""), index):
+            p.unlink(missing_ok=True)
+            continue
+        out.append((p, d))
+    return out
+
+
+def topic_for_theme(theme: str, codes: list[str]) -> str | None:
+    """族群對應的研究題材：同名、或成分股和某份研究重疊過半。"""
+    index = load_index()
+    if theme in index:
+        return theme
+    if theme.startswith("研究:"):
+        hit = next((t for t in index if f"研究:{t}"[:20] == theme), None)
+        if hit:
+            return hit
+    return find_for_codes(codes)
+
+
+def research_age_days(topic: str) -> int:
+    d = (load_index().get(topic) or {}).get("date")
+    try:
+        return (now_tw().date() - datetime.strptime(d, "%Y-%m-%d").date()).days
+    except (TypeError, ValueError):
+        return 999
+
+
+def status_of(theme: str, codes: list[str]) -> str:
+    """族群的研究狀態：已研究（日期）／排隊中／未研究。"""
+    index = load_index()
+    topic = theme if theme in index else find_for_codes(codes)
+    if topic:
+        return f"已研究 {index[topic].get('date', '')}"
+    if (QUEUE_DIR / f"{slug(theme)}.json").exists():
+        return "排隊研究中"
+    return "未研究"

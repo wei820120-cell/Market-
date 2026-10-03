@@ -1,6 +1,7 @@
 """離線測試：用樣本資料驗證解析與計算邏輯（不連網）。"""
 from datetime import datetime
 
+import json
 import numpy as np
 import pandas as pd
 import pytest
@@ -582,3 +583,118 @@ def test_publish_pending(tmp_path, monkeypatch):
     assert not list((tmp_path / "pending").glob("*.json"))
     md = (tmp_path / outs[0]["file"]).read_text(encoding="utf-8")
     assert "9999" in md and "用量" not in md
+
+
+def test_parse_request_kinds():
+    from market_intel import research
+    assert research.parse_request("研究 玻纖布") == ("research", "玻纖布")
+    assert research.parse_request("題材 玻纖布") == ("card", "玻纖布")
+    assert research.parse_request("/族群：CCL高速板材") == ("card", "CCL高速板材")
+    assert research.parse_request("目標價 光通訊") == ("card", "光通訊")
+    assert research.parse_request("早安") is None
+
+
+def test_card_fut_text():
+    from market_intel import theme_card
+    assert theme_card.fut_text({"std": "LXF", "mini": "QEF", "night": False}) == "股期 LXF／小型 QEF"
+    assert theme_card.fut_text({"std": "HBF", "mini": None, "night": True}) == "股期 HBF"
+    assert theme_card.fut_text(None) == "無"
+    assert theme_card.fut_text(None, known=False) == "未知"
+
+
+def test_revenue_and_alerts_parse():
+    from market_intel.fetchers import tw_daily
+    rev = tw_daily.parse_revenue([{"資料年月": "11508", "公司代號": "1815", "營業收入-當月營收": "500000",
+                                   "營業收入-去年同月增減(%)": "85.2", "營業收入-上月比較增減(%)": "6.1",
+                                   "累計營業收入-前期比較增減(%)": "40"}])
+    assert rev["1815"]["ym"] == "2026/08" and rev["1815"]["yoy"] == 85.2
+    al = tw_daily.parse_alerts([{"Code": "2030", "DispositionPeriod": "115/10/01～115/10/07"}],
+                               [{"SecuritiesCompanyCode": "8084", "DispositionPeriod": "1151002~1151008"}],
+                               [{"Code": ""}], [{"SecuritiesCompanyCode": "3163"}], [{"Code": "2033"}], [])
+    assert al["2030"] == ["處置 10/01~10/07"] and al["8084"] == ["處置 10/02~10/08"]
+    assert al["3163"] == ["注意股"] and al["2033"] == ["注意累計將達處置"] and "" not in al
+
+
+def test_notify_chunks_and_ads():
+    from market_intel import notify
+    from market_intel.fetchers import telegram_channel
+    parts = notify._chunks("\n".join(["一二三四五"] * 2000), 4000)
+    assert all(len(p) <= 4000 for p in parts) and len(parts) >= 3
+    assert telegram_channel.is_ad("詳情請看資訊欄：立即領取1888幣", ["詳情請看資訊欄"])
+    assert not telegram_channel.is_ad("MS 今日的光通 memo", ["詳情請看資訊欄"])
+
+
+def test_find_for_codes(tmp_path, monkeypatch):
+    from market_intel import research
+    idx = tmp_path / "index.json"
+    idx.write_text(json.dumps({"玻纖布": {"codes": ["1802", "1815", "5340", "5475", "2383"]}}), encoding="utf-8")
+    monkeypatch.setattr(research, "INDEX_PATH", idx)
+    assert research.find_for_codes(["1802", "1815", "5340", "5475"]) == "玻纖布"
+    assert research.find_for_codes(["2330", "2454", "1802"]) is None
+
+
+def test_chart_wrap():
+    from market_intel.charts import _wrap
+    out = _wrap("Low-Dk1/2、Low-CTE 認證，產線 4→12 條", 15, 2)
+    assert "Low-\n" not in out and len(out.splitlines()) <= 2
+
+
+def test_card_stock_row_since_research():
+    import pandas as pd
+    from market_intel import theme_card
+    idx = pd.date_range("2026-06-01", periods=90, freq="B", tz="Asia/Taipei").tz_convert("UTC")
+    close = pd.Series(range(100, 190), index=idx, dtype=float)
+    df = pd.DataFrame({"open": close, "high": close * 1.01, "low": close * 0.99, "close": close, "volume": 1e6})
+    last_day = f"{idx[-1].tz_convert('Asia/Taipei'):%Y-%m-%d}"
+    row = theme_card.stock_row("8046", df, {"8046": {"std": "LYF", "mini": "QSF"}}, {}, {}, last_day)
+    assert "since_research" not in row and row["close"] == 189.0 and row["target"]
+    row = theme_card.stock_row("8046", df, {}, {}, {"8046": ["注意股"]},
+                               f"{idx[-11].tz_convert('Asia/Taipei'):%Y-%m-%d}")
+    assert round(row["since_research"], 1) == round((189 / 179 - 1) * 100, 1) and row["alerts"] == ["注意股"]
+    assert row["fut"] == "未知"
+
+
+def test_push_theme_cards_research_first(tmp_path, monkeypatch):
+    import pandas as pd
+    from market_intel import cli, config, notify, research, theme_card
+    idx = tmp_path / "index.json"
+    idx.write_text(json.dumps({"玻纖布與石英布": {"date": "2026-10-03", "codes": ["1802", "1815", "5340", "5475"],
+                                                 "file": "x.md"}}), encoding="utf-8")
+    monkeypatch.setattr(research, "INDEX_PATH", idx)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(theme_card, "SENT_PATH", tmp_path / "sent.json")
+    monkeypatch.setattr(config, "themes", lambda: {"tw": {"玻纖布": ["1802", "1815", "5340", "5475"],
+                                                          "被動元件": ["2327", "2492"]}})
+    monkeypatch.setattr(cli.ai, "available", lambda: False)
+    cards, msgs = [], []
+    monkeypatch.setattr(theme_card, "build", lambda found, listings, context="", futures=None: (found, context))
+    monkeypatch.setattr(theme_card, "send", lambda card, channel="research": cards.append(card))
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": msgs.append((channel, text)))
+    flow = pd.DataFrame([
+        {"族群": "被動元件", "量比(對5日均)": 2.46, "資金增減(億)": 584.0, "加權漲跌%": 4.3, "判讀": "資金流入🔥"},
+        {"族群": "玻纖布", "量比(對5日均)": 1.5, "資金增減(億)": 21.7, "加權漲跌%": 3.7, "判讀": "資金流入"},
+        {"族群": "AI伺服器", "量比(對5日均)": 1.0, "資金增減(億)": 22.0, "加權漲跌%": -1.0, "判讀": "持平"},
+    ])
+    picks_df = pd.DataFrame([{"代號": "3163", "名稱": "波若威", "族群": "", "分數": 9.0, "理由": "量比6倍", "新聞": ""},
+                             {"代號": "2330", "名稱": "台積電", "族群": "", "分數": 2.0, "理由": "", "新聞": ""}])
+    cli.push_theme_cards(flow, picks_df, {}, "盤後")
+    # 研究過的玻纖布 → 直接推題材卡（細項產業來自研究）；沒研究過的被動元件 → 只排入研究
+    assert len(cards) == 1 and cards[0][0]["title"] == "玻纖布（研究：玻纖布與石英布）"
+    queued = sorted(p.stem for p in (tmp_path / "queue").glob("*.json"))
+    assert queued == sorted([research.slug("被動元件"), research.slug("波若威（3163）題材與產業")])
+    assert msgs and msgs[0][0] == "research" and "被動元件" in msgs[0][1] and "波若威" in msgs[0][1]
+    cli.push_theme_cards(flow, picks_df, {}, "盤後")  # 同一天不重複
+    assert len(cards) == 1
+
+
+def test_detail_slides(tmp_path):
+    from market_intel import charts
+    t = {"title": "比較", "columns": ["材料", "Dk", "定位"],
+         "rows": [["FR-4", "4.0–4.5", "成熟便宜、強度高；高頻損耗大，用於一般電子產品"], ["PTFE", "2.0", "電性天花板"]],
+         "note": "Dk 越低越好"}
+    assert charts.spec_table_slide_png(tmp_path / "a.png", "PCB", t).stat().st_size > 1000
+    evo = [{"name": "M8", "composition": "PPO", "spec": "Dk 3.3", "application": "AI"},
+           {"name": "M9", "composition": "Q布", "spec": "Dk 3.1", "application": "Rubin"}]
+    assert charts.evolution_slide_png(tmp_path / "b.png", "PCB", evo).stat().st_size > 1000
+    assert charts.concepts_slide_png(tmp_path / "c.png", "PCB", [{"title": "為什麼", "points": ["一", "二"]}],
+                                     ["結論一"]).stat().st_size > 1000

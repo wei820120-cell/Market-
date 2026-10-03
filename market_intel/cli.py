@@ -13,12 +13,13 @@ import argparse
 import json
 import logging
 import os
+import re
 import time
 from datetime import datetime, time as dtime
 
 import pandas as pd
 
-from . import ai, config, notify, research
+from . import ai, config, notify, research, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
 from .fetchers import news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
@@ -218,6 +219,10 @@ def cmd_daily(args) -> None:
     if not picks_df.empty:
         notify.send(picks.picks_message(picks_df, f"🎯 盤後強勢標的 {today:%m/%d}", n=10)
                     + f"\n\n完整報告：{_report_url(today)}", channel="picks")
+    try:  # 資金流入族群 → 研究機器人：題材卡（圖片、目標價、股票期貨）＋排入研究
+        push_theme_cards(theme_df, picks_df, listings, "盤後")
+    except Exception as e:  # noqa: BLE001
+        log.warning("盤後題材卡推播失敗：%s", e)
 
 
 def daily_picks(day: pd.DataFrame, listings: dict, hist: dict, inst: pd.DataFrame, closes: dict,
@@ -461,11 +466,18 @@ def cmd_realtime(args) -> None:
                         fut = {"無": "無股票期貨", "未知": "股票期貨未知"}.get(r["股票期貨"], f"股票期貨 {r['股票期貨']}")
                         notify.send(f"🎯 漲價＋資金湧入：{r['代號']} {r['名稱']} {r['漲跌%']:+.2f}% 步調{r['量比']}倍｜{fut}\n{r['新聞']}",
                                     channel="picks")
+                surged: list[str] = []
                 for r in flow.to_dict("records"):
                     key = f"theme:{r['族群']}:{now:%Y%m%d}"
                     if (r["量能步調"] or 0) >= alert_pace and (r["加權漲跌%"] or 0) > 0 and key not in alerted:
                         alerted.add(key)
                         notify.send(f"🔥 資金湧入【{r['族群']}】量能步調 {r['量能步調']} 倍，加權漲 {r['加權漲跌%']}%，領漲：{r['領漲']}")
+                        surged.append(r["族群"])
+                if surged:  # 資金湧入的族群 → 研究機器人推題材卡
+                    try:
+                        push_theme_cards(flow[flow["族群"].isin(surged)], None, listings, "盤中", futures=futures)
+                    except Exception as e:  # noqa: BLE001
+                        log.warning("盤中題材卡推播失敗：%s", e)
             stock_msgs = []
             for code, q in quotes.items():
                 if q.price is None:
@@ -599,6 +611,7 @@ def cmd_channels(args) -> None:
     futures = stock_futures.load_stock_futures()
     themes_tw = config.themes().get("tw") or {}
     state = telegram_channel.load_state()
+    skip = config.sources().get("skip_patterns") or []
     for ch in channels:
         handle, name = ch["handle"], ch.get("name", ch["handle"])
         try:
@@ -612,6 +625,9 @@ def cmd_channels(args) -> None:
         else:
             fresh = telegram_channel.new_posts(handle, posts, state)
         for p in fresh:
+            if telegram_channel.is_ad(p.text, skip):
+                log.info("頻道 %s #%s 是業配／廣告，略過", handle, p.post_id)
+                continue
             notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code),
                         channel=ch.get("push_to", "news"))
             if not args.latest and ch.get("research", True):
@@ -620,11 +636,42 @@ def cmd_channels(args) -> None:
         telegram_channel.save_state(state)
 
 
+AUTO_SLOTS = ("14:05", "21:05")  # 每天從新聞自動偵測新題材的時間（台北）
+
+
+def _auto_due() -> bool:
+    """監看迴圈用：到了 14:05／21:05 且這個時段還沒跑過。"""
+    path = research.ROOT / "state" / "research_auto.json"
+    now = now_tw()
+    done = json.loads(path.read_text(encoding="utf-8")).get("done", []) if path.exists() else []
+    done = [k for k in done if k.startswith(f"{now:%Y-%m-%d}")]
+    due = [s for s in AUTO_SLOTS if f"{now:%H:%M}" >= s and f"{now:%Y-%m-%d} {s}" not in done]
+    if not due:
+        return False
+    done += [f"{now:%Y-%m-%d} {s}" for s in due]  # 錯過的時段只補跑一次
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"done": done}, ensure_ascii=False), encoding="utf-8")
+    return True
+
+
+def _send_card_for_topic(topic: str, listings: dict, push: str, context: str) -> None:
+    try:
+        theme_card.send(theme_card.build(theme_card.from_research(topic), listings, context=context), channel=push)
+    except Exception as e:  # noqa: BLE001
+        log.warning("題材卡 %s 產生失敗：%s", topic, e)
+
+
 def cmd_research(args) -> None:
-    """題材研究員：手動題材、Telegram「研究 XXX」指令、頻道貼文收件匣、每日新聞自動偵測。"""
+    """題材研究員：手動題材、Telegram 指令、頻道貼文收件匣、資金流入題材佇列、每日新聞自動偵測。"""
     st = ai.settings()
     push = st.get("push_to", "research")
     queue: list[tuple[str, str, bool]] = []  # (題材, 觸發來源, 是否自動)
+    listings_cache: dict = {}
+
+    def listings() -> dict:
+        if not listings_cache:
+            listings_cache.update(_listings())
+        return listings_cache
 
     if args.topic:
         queue.append((args.topic, "手動指定", False))
@@ -632,14 +679,24 @@ def cmd_research(args) -> None:
     if args.commands:
         token = notify.bot_token(push)
         offset = research.load_offset(token)
-        topics, offset = research.pending_commands(notify.get_updates(push, offset), notify.owner_chat(push), offset)
+        reqs, offset = research.pending_requests(notify.get_updates(push, offset), notify.owner_chat(push), offset)
         research.save_offset(token, offset)
-        for t in topics:
-            if not ai.available():
-                notify.send(f"⚠️ 收到「研究 {t}」，但還沒設定 ANTHROPIC_API_KEY，無法進行 AI 研究。", channel=push)
+        for kind, text in reqs:
+            if kind == "card":
+                if not theme_card.send_query(text, listings(), context=f"📩 查詢：{text}", channel=push):
+                    names = list(research.load_index()) + list((config.themes().get("tw") or {}))[:30]
+                    notify.send(f"找不到題材「{text}」。可以查：{'、'.join(names[:40])}", channel=push)
                 continue
-            notify.send(f"🔬 收到，開始研究「{t}」，約 3～8 分鐘後回報。", channel=push)
-            queue.append((t, "Telegram 指令", False))
+            if not ai.available():
+                found = theme_card.find(text)
+                if found:
+                    notify.send(f"⚠️ 還沒設定 ANTHROPIC_API_KEY，無法重新研究「{text}」；先附上已有的資料。", channel=push)
+                    theme_card.send(theme_card.build(found, listings(), context=f"📩 查詢：{text}"), channel=push)
+                else:
+                    notify.send(f"⚠️ 收到「研究 {text}」，但還沒設定 ANTHROPIC_API_KEY，無法進行 AI 研究。", channel=push)
+                continue
+            notify.send(f"🔬 收到，開始研究「{text}」，約 3～8 分鐘後回報。", channel=push)
+            queue.append((text, "Telegram 指令", False))
 
     auto_texts: list[str] = []
     triggers: dict[str, str] = {}
@@ -650,14 +707,24 @@ def cmd_research(args) -> None:
             triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
         for p, _ in items:  # 讀過就刪，避免重複偵測（沒有金鑰也刪，免得越積越多）
             p.unlink(missing_ok=True)
+    if args.auto_slots and _auto_due():
+        args.auto = True
     if args.auto:
-        listings_ = _listings()
+        listings_ = listings()
         ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings_), _us_symbols(),
                                    min_score=3, all_codes=set(listings_))
         auto_texts += [it.title for it in ranked[:80]]
 
+    cap = int(st.get("max_per_day", 4)) - research.researched_today()
+    if args.inbox and ai.available():  # 資金流入但還沒研究過的題材（盤中、盤後排入）
+        for p, d in research.read_queue():
+            if cap <= 0:
+                break
+            queue.append((d["topic"], d.get("trigger", "資金流入"), True))
+            p.unlink(missing_ok=True)
+            cap -= 1
+
     if auto_texts and ai.available():
-        cap = int(st.get("max_per_day", 4)) - research.researched_today()
         if cap <= 0:
             log.info("今天自動研究已達上限 %s 個", st.get("max_per_day", 4))
         else:
@@ -676,14 +743,16 @@ def cmd_research(args) -> None:
     pending = research.PENDING_DIR.exists() and any(research.PENDING_DIR.glob("*.json"))
     if not queue and not pending:
         return
-    listings = _listings()
     futures = stock_futures.load_stock_futures()
-    for out in research.publish_pending(listings, futures) if pending else []:
+    for out in research.publish_pending(listings(), futures) if pending else []:
         notify.send(out["message"], channel=push)
+        _send_card_for_topic(out["data"]["topic"], listings(), push, "🔬 研究完成")
     for topic, trigger, is_auto in queue:
         try:
-            out = research.research_topic(topic, trigger, listings, futures, auto=is_auto)
+            out = research.research_topic(topic, trigger, listings(), futures, auto=is_auto)
             notify.send(out["message"], channel=push)
+            why = trigger.splitlines()[0][:80] if trigger else ""
+            _send_card_for_topic(out["data"]["topic"], listings(), push, f"🔬 研究完成｜{why}" if why else "🔬 研究完成")
         except ai.AIUnavailable as e:
             log.warning("研究「%s」失敗：%s", topic, e)
             notify.send(f"⚠️ 研究「{topic}」沒有完成：{e}", channel=push)
@@ -691,8 +760,127 @@ def cmd_research(args) -> None:
                 break
 
 
+def cmd_card(args) -> None:
+    """產生並推播題材卡（圖片＋目標價＋股票期貨），例如：python -m market_intel card 玻纖布"""
+    if not theme_card.send_query(args.query, _listings(), context="", channel=args.channel):
+        print(f"找不到題材：{args.query}")
+
+
+def cmd_inflow(args) -> None:
+    """盤後資金流入族群 → 研究機器人題材卡（不跑完整盤後報告）。"""
+    listings = _listings()
+    themes_tw = config.themes().get("tw") or {}
+    names = {c: (v.get("name") or c) for c, v in listings.items()}
+    hist = _yahoo_histories(config.all_tw_theme_codes(), listings)
+    flow = sector_flow.theme_flow_daily(hist, themes_tw, names)
+    print(flow.head(15).to_string(index=False) if not flow.empty else "沒有族群資料")
+    push_theme_cards(flow, None, listings, "盤後", top=args.top)
+
+
+def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings: dict, source: str,
+                     futures: dict | None = None, top: int = 3, channel: str = "research") -> None:
+    """資金流入的族群／個股 → 研究細項產業 → 題材卡。
+
+    （資金流入本身已由盤勢機器人、新聞機器人推過，這裡只負責「研究」與「題材卡」。）
+    - 研究過的題材：直接推題材卡（細項產業分層＋目標價＋股票期貨），研究超過 30 天另排入更新
+    - 還沒研究過的族群、不在任何族群的強勢股：排入研究佇列，研究完成後才推題材卡
+    flow：盤後 theme_flow_daily 或盤中 theme_flow_intraday 的結果（要有「族群」「判讀」欄）。
+    """
+    themes_tw = config.themes().get("tw") or {}
+    queued: list[str] = []
+    if flow is not None and not flow.empty:
+        money_col = "資金增減(億)" if "資金增減(億)" in flow else "超額資金(億)"
+        ratio_col = "量比(對5日均)" if "量比(對5日均)" in flow else "量能步調"
+        ratio_name = "量比" if "量比" in ratio_col else ratio_col
+        inflow = flow[flow["判讀"].astype(str).str.contains("資金流入") & (flow[money_col].fillna(0) > 0)]
+        for r in inflow.head(top).to_dict("records"):
+            name = r["族群"]
+            codes = [str(c) for c in themes_tw.get(name, [])]
+            context = (f"🔥 {source}資金流入：{ratio_name} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
+                       f"加權 {r['加權漲跌%']:+.1f}%")
+            topic = research.topic_for_theme(name, codes)
+            if not topic:
+                if research.queue_research(name, f"{now_tw():%Y-%m-%d} {context}\n成分股：{'、'.join(codes)}"):
+                    queued.append(f"{name}（{context[2:]}）")
+                continue
+            if research.research_age_days(topic) > 30:
+                research.queue_research(topic, f"{now_tw():%Y-%m-%d} 更新研究｜{context}")
+            key = f"{source}:{name}"
+            if theme_card.already_sent(key):
+                continue
+            try:
+                found = theme_card.from_research(topic)
+                if topic != name:
+                    found["title"] = f"{name}（研究：{topic}）"
+                theme_card.send(theme_card.build(found, listings, context=context, futures=futures), channel=channel)
+                theme_card.mark_sent(key)
+            except Exception as e:  # noqa: BLE001
+                log.warning("題材卡 %s 產生失敗：%s", name, e)
+    if picks_df is not None and not picks_df.empty and "族群" in picks_df:
+        # 資金流入但不在任何族群：研究它屬於哪個細項產業、有什麼題材
+        loose = picks_df[(picks_df["族群"].fillna("") == "") & (picks_df["分數"] >= 6)].head(2)
+        for r in loose.to_dict("records"):
+            topic = f"{r['名稱']}（{r['代號']}）題材與產業"
+            if research.queue_research(topic, f"{now_tw():%Y-%m-%d} {source}資金流入、不在任何族群："
+                                              f"{r['代號']} {r['名稱']}｜{r['理由']}｜{r.get('新聞', '')}"):
+                queued.append(f"{r['代號']} {r['名稱']}（不在任何族群：{r['理由']}）")
+    if queued:
+        msg = "🔬 排入研究（拆解細項產業，完成後推研究圖表）：\n" + "\n".join(f"・{q}" for q in queued)
+        if not ai.available():
+            msg += "\n\n⚠️ 還沒設定 ANTHROPIC_API_KEY，不會自動研究；可以請 Claude 先研究這些題材。"
+        notify.send(msg, channel=channel)
+
+
+def _probe_sources() -> None:
+    """資料檢查：找出期交所保證金、股期行情、月營收、處置／注意股的 OpenAPI 路徑與欄位。"""
+    from . import net
+    specs = [
+        ("TAIFEX", "https://openapi.taifex.com.tw/swagger.json", "https://openapi.taifex.com.tw/v1",
+         ("保證金", "Margin", "股票期貨", "個股")),
+        ("TWSE", "https://openapi.twse.com.tw/v1/swagger.json", "https://openapi.twse.com.tw/v1",
+         ("處置", "注意", "營業收入", "營收")),
+        ("TPEX", "https://www.tpex.org.tw/openapi/swagger.json", "https://www.tpex.org.tw/openapi/v1",
+         ("處置", "注意", "營業收入", "營收")),
+    ]
+    for name, sw_url, base, words in specs:
+        try:
+            sw = net.get_json(sw_url)
+        except Exception as e:  # noqa: BLE001
+            print(f"\n{name} swagger 失敗：{e}")
+            continue
+        for path, ops in (sw.get("paths") or {}).items():
+            op = (ops or {}).get("get") or {}
+            text = f"{path} {op.get('summary', '')} {op.get('description', '')}"
+            if not any(w in text for w in words):
+                continue
+            print(f"\n{name} {path}：{op.get('summary', '')}")
+            try:
+                rows = net.get_json(base + path)
+                if isinstance(rows, list):
+                    print(f"  {len(rows)} 列；前 2 列：{json.dumps(rows[:2], ensure_ascii=False)[:700]}")
+            except Exception as e:  # noqa: BLE001
+                print(f"  讀取失敗：{e}")
+    try:
+        rows = taifex.fetch("futures_daily")
+        stock = [r for r in rows if str(r.get("Contract", "")).startswith(("CD", "QF", "KU", "LY", "QS"))]
+        print(f"\nDailyMarketReportFut：{len(rows)} 列；股期樣本：{json.dumps(stock[:4], ensure_ascii=False)[:1500]}")
+        print("Contract 種類：", sorted({str(r.get('Contract')) for r in rows})[:400])
+    except Exception as e:  # noqa: BLE001
+        print(f"DailyMarketReportFut 失敗：{e}")
+    for url in ("https://www.taifex.com.tw/cht/5/stockMargining", "https://www.taifex.com.tw/cht/5/indexMarging"):
+        try:
+            text = net.get(url).text
+            rows = re.findall(r"<tr[^>]*>(.*?)</tr>", text, flags=re.S | re.I)
+            print(f"\n{url}：{len(text)} 字，{len(rows)} 列")
+            for r in rows[:6]:
+                print("  ", re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "|", r))[:300])
+        except Exception as e:  # noqa: BLE001
+            print(f"{url} 失敗：{e}")
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
+    _probe_sources()
     print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
     data = stock_futures.load_stock_futures()
     print(f"\n股票期貨標的：{len(data)} 檔；有小型：{sum(1 for v in data.values() if v.get('mini'))} 檔；"
@@ -722,7 +910,15 @@ def main(argv: list[str] | None = None) -> None:
     rs.add_argument("--commands", action="store_true", help="處理 Telegram「研究 XXX」指令")
     rs.add_argument("--inbox", action="store_true", help="從頻道新貼文偵測新題材並研究")
     rs.add_argument("--auto", action="store_true", help="從今天的重點新聞偵測新題材並研究")
+    rs.add_argument("--auto-slots", action="store_true", help="監看用：到 14:05、21:05 時自動加上 --auto")
     rs.set_defaults(func=cmd_research)
+    cd = sub.add_parser("card", help="推播題材卡（圖片＋目標價＋股票期貨），例如：card 玻纖布")
+    cd.add_argument("query")
+    cd.add_argument("--channel", default="research")
+    cd.set_defaults(func=cmd_card)
+    fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
+    fl.add_argument("--top", type=int, default=3)
+    fl.set_defaults(func=cmd_inflow)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
     ch.set_defaults(func=cmd_channels)

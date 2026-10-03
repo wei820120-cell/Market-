@@ -1,0 +1,239 @@
+{
+ "topic": "AI伺服器PCB材料",
+ "one_line": "112G→224G/448G，PCB 材料 FR-4→M8→M9，下一代分成無布 HC 與 Hybrid PTFE；材料規格與單價往上，玻纖布在無布方案中可能被取代。",
+ "status": "混合",
+ "horizon": "長期（1年以上）",
+ "keywords": [],
+ "catalysts": [
+  "224G／448G 世代材料定案（無布 HC vs Hybrid PTFE）",
+  "M9＋石英布導入 AI 伺服器、1.6T 交換器"
+ ],
+ "risks": [
+  "無布 HC 量產難度（翹曲、CTE、壓合）",
+  "PTFE 成本約 HC 的 3～5 倍、加工難"
+ ],
+ "sources": [],
+ "layers": [
+  {
+   "layer": "上游 銅箔",
+   "global_players": [
+    "三井金屬",
+    "古河電工"
+   ],
+   "tw_stocks": [
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "HVLP 低粗糙度銅箔",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "上游 玻纖布",
+   "global_players": [
+    "日東紡",
+    "旭化成"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "Low-Dk 玻纖布",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "Low-Dk 紗布、石英布認證",
+     "impact": "受惠"
+    },
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "日東紡集團玻纖布",
+     "impact": "受惠"
+    },
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "石英布（Q布）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "中游 樹脂／CCL",
+   "global_players": [
+    "松下",
+    "斗山",
+    "生益",
+    "Rogers"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "CCL＋玻纖布",
+     "impact": "受惠"
+    },
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭 M8/M9",
+     "impact": "受惠"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "高階 CCL",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "CCL",
+     "impact": "中性"
+    },
+    {
+     "code": "6672",
+     "name": "騰輝電子-KY",
+     "role": "高頻 CCL",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游 PCB",
+   "global_players": [
+    "Ibiden",
+    "TTM"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI 伺服器 PCB",
+     "impact": "受惠"
+    },
+    {
+     "code": "3044",
+     "name": "健鼎",
+     "role": "伺服器 PCB",
+     "impact": "中性"
+    },
+    {
+     "code": "8155",
+     "name": "博智",
+     "role": "高層數 PCB",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "spec_tables": [
+  {
+   "title": "核心樹脂材料比較",
+   "columns": [
+    "材料",
+    "Dk（10GHz）",
+    "Df（10GHz）",
+    "Tg（°C）",
+    "定位"
+   ],
+   "rows": [
+    [
+     "FR-4 環氧樹脂",
+     "4.0–4.5",
+     "0.015–0.020",
+     "~130",
+     "成熟便宜、強度高；高頻損耗大，用於一般電子"
+    ],
+    [
+     "改性 PPO",
+     "3.3–3.6",
+     "0.002–0.004",
+     "~200",
+     "高速 PCB 基礎樹脂，用於 M8/M9"
+    ],
+    [
+     "HC 碳氫樹脂",
+     "2.3–2.6",
+     "0.0010–0.0015",
+     "~200",
+     "非極性低損耗、可用現有設備；常與 PPO 複合"
+    ],
+    [
+     "PTFE",
+     "2.0–2.1",
+     "<0.0005",
+     ">300",
+     "電性天花板；難黏銅、Z 軸 CTE 高、需 >360°C 加工、成本約 HC 3–5 倍"
+    ]
+   ],
+   "note": "Dk 越低訊號越快、Df 越低損耗越小；Tg 越高越耐熱"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "FR-4",
+   "composition": "環氧樹脂＋玻纖布",
+   "spec": "Dk 4.0–4.5／Df ~0.020",
+   "application": "消費電子"
+  },
+  {
+   "name": "改性 PPO",
+   "composition": "PPO＋玻纖布",
+   "spec": "Dk 3.6–3.8／Df ~0.012",
+   "application": "伺服器、網通、車用"
+  },
+  {
+   "name": "M8",
+   "composition": "PPO＋HC＋Low-Dk 玻纖布",
+   "spec": "Dk 3.2–3.4／Df 0.0012–0.0018",
+   "application": "AI 伺服器、交換器"
+  },
+  {
+   "name": "M9",
+   "composition": "更低損耗配方＋石英布（Q布）",
+   "spec": "Dk 3.0–3.2／Df 0.0008–0.0012",
+   "application": "AI／HPC、800G／1.6T 交換器、CPO"
+  },
+  {
+   "name": "無布 HC",
+   "composition": "HC 樹脂＋特殊無機填料，無玻纖布",
+   "spec": "Dk 2.3–2.6／Df 0.0010–0.0015",
+   "application": "次世代 224G／448G"
+  },
+  {
+   "name": "Hybrid PTFE",
+   "composition": "高速層 PTFE＋其他層 M8/M9",
+   "spec": "Dk 2.1–2.3／Df 0.001–0.003",
+   "application": "超高速，短中期最可能的 PTFE 導入方式"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼要拿掉玻纖布：Glass Weave Effect",
+   "points": [
+    "玻纖束 Dk 約 6–7、樹脂約 3–4，差分訊號經過的玻纖／樹脂比例不同，速度不同產生時間差（skew）",
+    "10–25G 影響很小，112G 開始出現，224G／448G 可能讓眼圖閉合、訊號失真",
+    "無布 HC 讓介電環境均勻、消除 skew",
+    "代價：板材變軟易翹曲、CTE 變大、多層壓合困難、銅箔附著力差，要大量填料補強"
+   ]
+  },
+  {
+   "title": "Hybrid PTFE：只把幹線升級成國道",
+   "points": [
+    "只在 GPU 與記憶體間、112G／224G／448G SerDes、高速背板、CPO、PCIe／DDR 等關鍵層用 PTFE",
+    "電源層、低速訊號層、控制層用 M8／M9",
+    "全 PTFE 板目前不適合量產；Hybrid 兼顧電性、成本、良率"
+   ]
+  }
+ ],
+ "conclusion": [
+  "不是單純比 Df，而是在訊號性能、成本、PCB 良率、量產可行性之間找平衡",
+  "一般電子：FR-4；中高速：改性 PPO → M8；超高速：M9",
+  "下一階段依需求走無布 HC 或 Hybrid PTFE；PTFE 短中期以局部 Hybrid 導入"
+ ]
+}

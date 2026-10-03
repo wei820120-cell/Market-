@@ -1,19 +1,22 @@
 # 題材研究員：AI＋網路搜尋研究新題材的整條供應鏈，報告存到 research/，摘要推到手機。
-# - 每 10 分鐘：處理 Telegram「研究 XXX」指令、股癌等頻道新貼文的題材偵測
-# - 每天 14:05、21:05（台北）：從當天重點新聞偵測新題材
-# - 手動：Actions → research → Run workflow，填題材名稱
+# 平常由 watch.yml 每 2 分鐘處理指令、頻道貼文、研究佇列，14:05／21:05 從新聞偵測新題材。
+# 這個 workflow 給手動用：Actions → research → Run workflow，填題材名稱。
 # 需要 GitHub Secret：ANTHROPIC_API_KEY（沒有的話只會回覆提醒，不會呼叫 AI）
 name: research
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
-    - cron: "5 6,13 * * *"
   workflow_dispatch:
     inputs:
       topic:
         description: "要研究的題材，例如：玻纖布、CoWoP、1.6T 光模組"
         default: ""
+      card:
+        description: "只推題材卡（圖片＋目標價＋股票期貨），例如：玻纖布"
+        default: ""
+      inflow:
+        description: "推盤後資金流入族群的題材卡"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -33,6 +36,8 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
+      - name: 安裝中文字型（題材卡圖片）
+        run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 題材研究
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -43,11 +48,14 @@ jobs:
           TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
           TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
           TOPIC: ${{ inputs.topic }}
+          CARD: ${{ inputs.card }}
         run: |
-          if [ -n "$TOPIC" ]; then
+          if [ -n "$CARD" ]; then
+            python -m market_intel card "$CARD"
+          elif [ "${{ inputs.inflow }}" = "true" ]; then
+            python -m market_intel inflow
+          elif [ -n "$TOPIC" ]; then
             python -m market_intel research --topic "$TOPIC"
-          elif [ "${{ github.event.schedule }}" = "5 6,13 * * *" ]; then
-            python -m market_intel research --auto --commands --inbox
           else
             python -m market_intel research --commands --inbox
           fi

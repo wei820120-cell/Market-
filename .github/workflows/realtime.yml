@@ -32,6 +32,8 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
+      - name: 安裝中文字型（題材卡圖片）
+        run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 盤中監控（到 13:35 自動結束）
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -40,6 +42,8 @@ jobs:
           TELEGRAM_NEWS_CHAT_ID: ${{ secrets.TELEGRAM_NEWS_CHAT_ID }}
           TELEGRAM_PICKS_BOT_TOKEN: ${{ secrets.TELEGRAM_PICKS_BOT_TOKEN }}
           TELEGRAM_PICKS_CHAT_ID: ${{ secrets.TELEGRAM_PICKS_CHAT_ID }}
+          TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
+          TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           if [ "${{ inputs.check }}" = "true" ]; then
@@ -49,3 +53,17 @@ jobs:
           else
             python -m market_intel realtime --until 13:35
           fi
+      - name: 存檔題材卡與研究佇列記錄
+        if: ${{ !cancelled() && inputs.check != true }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -d state ] || exit 0
+          git add -A state
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "盤中記錄 $(TZ=Asia/Taipei date '+%F %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase -q && git push && exit 0
+            sleep 5
+          done
+          exit 1

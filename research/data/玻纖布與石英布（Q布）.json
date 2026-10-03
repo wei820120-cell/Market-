@@ -1,0 +1,268 @@
+{
+ "topic": "玻纖布與石英布（Q布）",
+ "one_line": "M8→M9 升級帶動 Low-Dk2、Low-CTE 與石英布（Q布）缺貨漲價，預期缺到 2027 下半年；玻纖紗／布廠最直接受惠，Q布是輝達 Rubin 的下一段增量。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "玻纖布",
+  "石英布",
+  "Q布",
+  "Q-glass",
+  "Low-Dk",
+  "Low-CTE",
+  "T-glass",
+  "石英纖維",
+  "M9",
+  "日東紡",
+  "Nittobo",
+  "電子布",
+  "玻纖紗"
+ ],
+ "catalysts": [
+  "9、10 月營收反映南亞 CCL 漲 20～25%",
+  "Rubin／Groq LPX 採用 M9＋Q布 起量（2026 下半年）",
+  "德宏、富喬 Q布認證與出貨進度"
+ ],
+ "risks": [
+  "中國巨石、菲利華擴產攻高階",
+  "日東紡 2027 年 T-glass 產能擴 3 倍，缺口收斂",
+  "股價已大漲、處置頻繁，波動大"
+ ],
+ "sources": [
+  {
+   "title": "工商時報 玻纖布短缺異常嚴重",
+   "url": "https://www.ctee.com.tw/news/20260815700069-430502"
+  },
+  {
+   "title": "鉅亨網 這塊布價格近翻倍",
+   "url": "https://news.cnyes.com/news/id/6608165"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游 玻纖紗／石英紗",
+   "description": "玻纖紗與石英纖維紗",
+   "global_players": [
+    "日東紡",
+    "信越化學",
+    "Saint-Gobain",
+    "菲利華",
+    "中國巨石"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "台廠唯一 Q紗＋Q布 批量出貨",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "自產紗布，Low-Dk 比重 6 成，M9 石英布認證中",
+     "impact": "受惠"
+    },
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "Low-Dk1/2、Low-CTE 認證，產線 4→12 條",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "中游 玻纖布織造",
+   "description": "高階玻纖布",
+   "global_players": [
+    "日東紡",
+    "旭化成",
+    "宏和"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "日東紡集團子公司，承接外溢訂單",
+     "impact": "受惠"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "紗布自製＋CCL 漲價 20～25%",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "下游 CCL",
+   "description": "銅箔基板，M8/M9",
+   "global_players": [
+    "生益",
+    "松下",
+    "斗山",
+    "Rogers"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭，M9 拉高 ASP，看成本轉嫁",
+     "impact": "中性"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "4 月漲價，高階漲 20～25%",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "可望跟進漲價",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游 PCB／載板",
+   "description": "材料漲價的成本方",
+   "global_players": [
+    "Ibiden",
+    "Unimicron"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "載板需 Low-CTE，缺料與成本上升",
+     "impact": "受傷"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "載板需 Low-CTE，成本上升",
+     "impact": "受傷"
+    },
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI PCB 材料成本上升，看轉嫁",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "spec_tables": [
+  {
+   "title": "玻纖布等級比較",
+   "columns": [
+    "種類",
+    "Dk（約）",
+    "Df（約）",
+    "特性",
+    "對應 CCL",
+    "價格參考"
+   ],
+   "rows": [
+    [
+     "E-glass",
+     "6.2–6.6",
+     "~0.006",
+     "一般用途，便宜",
+     "M6 以下",
+     ""
+    ],
+    [
+     "Low-Dk1（一代）",
+     "4.6–4.8",
+     "0.003–0.004",
+     "低介電",
+     "M7",
+     ""
+    ],
+    [
+     "Low-Dk2（二代）",
+     "4.2–4.4",
+     "~0.002",
+     "更低介電，目前最缺之一",
+     "M8",
+     "每公尺約 US$18–22"
+    ],
+    [
+     "石英布 Q-glass",
+     "3.7–3.8",
+     "<0.001",
+     "SiO₂ 純度極高，難織、認證長",
+     "M9",
+     "每公尺約 US$39–45"
+    ],
+    [
+     "Low-CTE（T-glass）",
+     "~5.0",
+     "—",
+     "熱膨脹係數低（約 E-glass 一半），撐住大尺寸載板",
+     "IC 載板（ABF／BT）",
+     "日東紡市占約 9 成"
+    ]
+   ],
+   "note": "數值為業界常見範圍，依廠商與配方不同；價格為媒體引述"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "M6 以下",
+   "composition": "E-glass",
+   "spec": "Dk ~6.6",
+   "application": "一般伺服器、消費電子"
+  },
+  {
+   "name": "M7",
+   "composition": "Low-Dk1",
+   "spec": "Dk ~4.7",
+   "application": "前一代 AI 伺服器"
+  },
+  {
+   "name": "M8",
+   "composition": "Low-Dk1＋Low-Dk2 混用",
+   "spec": "Dk ~4.3",
+   "application": "目前 AI 伺服器、800G 交換器主流"
+  },
+  {
+   "name": "M9",
+   "composition": "石英布 Q-glass／Low-Dk3",
+   "spec": "Dk ~3.7、Df <0.001",
+   "application": "輝達 Rubin、1.6T 交換器"
+  },
+  {
+   "name": "次世代",
+   "composition": "無布 HC 或 Hybrid PTFE",
+   "spec": "可能減少玻纖布用量",
+   "application": "224G／448G"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼玻纖布會缺",
+   "points": [
+    "AI 伺服器板層數增加、材料世代升級，高階布用量與單價同時上升",
+    "Low-CTE（T-glass）日東紡市占約 9 成，產能滿載，新產能 2027 年才開出",
+    "載板越做越大，核心層 T-glass 用量倍增",
+    "蘋果、AMD、輝達都派人到日本搶貨"
+   ]
+  },
+  {
+   "title": "為什麼 Q布是下一段",
+   "points": [
+    "石英纖維 Dk、Df 比 Low-Dk2 更低，對應 M9",
+    "石英纖維脆、難織，要和樹脂搭配，下游 CCL 認證期長",
+    "台廠德宏是唯一同時做 Q紗＋Q布並批量出貨；富喬 M9 石英布認證中"
+   ]
+  }
+ ],
+ "conclusion": [
+  "缺貨主軸：Low-Dk2 與 Low-CTE 到 2027 下半年",
+  "Q布是 M9 的增量，看 Rubin 放量與認證進度",
+  "最大轉折：日東紡 2027 年產能擴 3 倍、中國廠擴產",
+  "長線風險：224G 走無布 HC 會減少玻纖布用量"
+ ]
+}

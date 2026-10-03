@@ -1,0 +1,304 @@
+{
+ "topic": "光通訊雷射InP",
+ "one_line": "1.6T 放量、3.2T 送驗加上 CPO 外置雷射，讓 InP 磊晶與 CW 雷射成為最缺環節（InP 缺口估 7 成）；台廠從磊晶、雷射晶粒、COS／ELS 封裝到 FAU 都有布局，3.2T 也是美中政策施力點。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "InP",
+  "磷化銦",
+  "CW雷射",
+  "EML",
+  "1.6T",
+  "3.2T",
+  "CPO",
+  "矽光子",
+  "光收發模組",
+  "FAU",
+  "ELS",
+  "外部雷射源",
+  "光通訊"
+ ],
+ "catalysts": [
+  "1.6T 放量、3.2T 驗證",
+  "CPO 光交換器商轉",
+  "美中政策：3.2T 生產位置、InP 出口管制"
+ ],
+ "risks": [
+  "InP 缺料限制出貨",
+  "出口管制擾動供應鏈",
+  "多檔處置、注意，波動大"
+ ],
+ "sources": [
+  {
+   "title": "經濟日報 1.6T量產、3.2T送驗",
+   "url": "https://money.udn.com/money/story/5607/9675600"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游 InP 基板／材料",
+   "description": "缺料、地緣政治風險",
+   "global_players": [
+    "住友電工",
+    "AXT",
+    "JX金屬"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2340",
+     "name": "台亞",
+     "role": "InP 材料，用於 1.6T 模組",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "磊晶（InP／GaAs）",
+   "description": "雷射與 PD 都要用，產能滿載",
+   "global_players": [
+    "IQE",
+    "Landmark"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3081",
+     "name": "聯亞",
+     "role": "InP 磊晶＋CW 雷射，1.6T 量產、3.2T 送驗",
+     "impact": "受惠"
+    },
+    {
+     "code": "4971",
+     "name": "IET-KY",
+     "role": "InP 磊晶量產",
+     "impact": "受惠"
+    },
+    {
+     "code": "2455",
+     "name": "全新",
+     "role": "InP 磊晶（處置中）",
+     "impact": "受惠"
+    },
+    {
+     "code": "4991",
+     "name": "環宇-KY",
+     "role": "InP／GaAs 光電代工",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "雷射／PD 晶粒",
+   "description": "CW 雷射產能倍增仍不足",
+   "global_players": [
+    "Lumentum",
+    "Coherent",
+    "Broadcom"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4979",
+     "name": "華星光",
+     "role": "CW 雷射晶粒，2026 產能倍增",
+     "impact": "受惠"
+    },
+    {
+     "code": "3234",
+     "name": "光環",
+     "role": "PD／雷射元件",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "封裝 COS／ELS",
+   "description": "擴產 5 倍仍供不應求",
+   "global_players": [
+    "Fabrinet"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3450",
+     "name": "聯鈞",
+     "role": "COS 雷射封裝、AOC",
+     "impact": "受惠"
+    },
+    {
+     "code": "4977",
+     "name": "眾達-KY",
+     "role": "CPO 外部雷射源 ELS 組裝",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "光纖被動元件／FAU",
+   "description": "CPO 光纖陣列需求上升",
+   "global_players": [
+    "康寧",
+    "Senko"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3363",
+     "name": "上詮",
+     "role": "FAU，與台積電矽光子封裝合作",
+     "impact": "受惠"
+    },
+    {
+     "code": "3163",
+     "name": "波若威",
+     "role": "光纖被動元件、CPO 光纖套件",
+     "impact": "受惠"
+    },
+    {
+     "code": "6442",
+     "name": "光聖",
+     "role": "光纖連接器",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "光收發模組",
+   "description": "中國廠主導，3.2T 生產位置之爭",
+   "global_players": [
+    "中際旭創",
+    "新易盛",
+    "Coherent"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4908",
+     "name": "前鼎",
+     "role": "光收發模組",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ],
+ "spec_tables": [
+  {
+   "title": "光收發模組世代比較",
+   "columns": [
+    "速率",
+    "通道",
+    "雷射",
+    "單模組功耗（約）",
+    "時程"
+   ],
+   "rows": [
+    [
+     "400G",
+     "4×100G PAM4",
+     "EML／DML",
+     "~10W",
+     "成熟"
+    ],
+    [
+     "800G",
+     "8×100G",
+     "EML 或 矽光子＋CW",
+     "~14–16W",
+     "主流"
+    ],
+    [
+     "1.6T",
+     "8×200G",
+     "EML 或 矽光子＋CW",
+     "~25–30W",
+     "2026 放量"
+    ],
+    [
+     "3.2T",
+     "16×200G／8×400G",
+     "矽光子＋CW、CPO",
+     "—",
+     "送驗中"
+    ]
+   ],
+   "note": "功耗為業界常見估計，依廠商與架構不同"
+  },
+  {
+   "title": "光源與材料",
+   "columns": [
+    "項目",
+    "材料",
+    "說明"
+   ],
+   "rows": [
+    [
+     "EML 電吸收調變雷射",
+     "InP",
+     "速度高，傳統可插拔模組主力"
+    ],
+    [
+     "CW 連續波雷射",
+     "InP",
+     "搭配矽光子調變；CPO 外部雷射源（ELS）"
+    ],
+    [
+     "PD 光偵測器",
+     "InP／InGaAs",
+     "接收端"
+    ],
+    [
+     "矽光子調變器",
+     "矽",
+     "不能發光，需要外部 CW 雷射"
+    ]
+   ],
+   "note": "InP 供需缺口估約 7 成"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "可插拔模組",
+   "composition": "EML／DML＋DSP",
+   "spec": "400G／800G",
+   "application": "資料中心主流"
+  },
+  {
+   "name": "矽光子模組",
+   "composition": "矽光子調變＋CW 雷射",
+   "spec": "800G／1.6T",
+   "application": "降低成本與功耗"
+  },
+  {
+   "name": "LPO／LRO",
+   "composition": "拿掉或簡化 DSP",
+   "spec": "省電",
+   "application": "短距連接"
+  },
+  {
+   "name": "CPO 共同封裝",
+   "composition": "光引擎與交換晶片同封裝，雷射外置（ELS）",
+   "spec": "功耗省約 3 成以上",
+   "application": "輝達光交換器、3.2T"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 InP 最缺",
+   "points": [
+    "雷射與 PD 都做在 InP 基板的磊晶層上，矽不能發光",
+    "InP 基板主要來自住友電工、AXT（中國生產）、JX 金屬",
+    "CPO 把雷射外置，CW 雷射需求放大",
+    "聯亞綁定住友 InP 基板到 2030 年"
+   ]
+  },
+  {
+   "title": "3.2T 與美中政策",
+   "points": [
+    "MS：3.2T 是對中政策施力點，決定下一代生產位置",
+    "中國模組廠（旭創、新易盛）主導 800G／1.6T",
+    "若 3.2T 生產移出中國，台廠有轉單機會",
+    "出口管制（銦、InP）是供應鏈風險"
+   ]
+  }
+ ],
+ "conclusion": [
+  "最上游的 InP 磊晶與 CW 雷射是瓶頸，議價力最強",
+  "CPO 放量帶動外部雷射源、FAU 光纖陣列",
+  "多檔處置、注意中，波動大"
+ ]
+}

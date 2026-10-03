@@ -6,6 +6,22 @@ telegram_channels:
     handle: Gooaye
     push_to: research    # news / picks / market / research
 
+# 業配／廣告：貼文含這些字就不推播、也不送去研究（正規表示式）
+skip_patterns:
+  - 詳情請看資訊欄
+  - 立即領取
+  - 優惠碼
+  - 折扣碼
+  - 折價券
+  - 專屬優惠
+  - 本集贊助
+  - 贊助商
+  - 業配
+  - 限時優惠
+  - 登入就能抽
+  - 立即下載
+  - 點擊下方連結
+
 # 貼文提到這些關鍵字時，標出相關族群（族群名稱要和 themes.yaml 一致）
 topic_themes:
   光通: [光通訊雷射InP, 矽光子網通]

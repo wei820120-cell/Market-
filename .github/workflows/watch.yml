@@ -1,0 +1,75 @@
+# 常駐監看：每 2 分鐘檢查一次
+#   - 股癌等 Telegram 頻道新貼文 → 推研究機器人（業配略過）
+#   - 你傳給研究機器人的指令：「研究 XXX」「題材 XXX」「族群 XXX」「目標價 XXX」
+#   - 資金流入題材的研究佇列、14:05／21:05 從新聞自動偵測新題材（需要 ANTHROPIC_API_KEY）
+# GitHub 的排程常延遲 30 分鐘以上，所以改成一次跑約 5 小時 50 分、結束前自動接續下一輪。
+# 公開儲存庫的 GitHub Actions 不收費。
+name: watch
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"   # 保險：萬一接續失敗，最慢 2 小時內重新啟動
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "這一輪要跑幾分鐘（測試可填 5）"
+        default: "345"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 安裝中文字型（題材卡圖片）
+        run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
+      - name: 監看（約 5 小時 45 分）
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_NEWS_BOT_TOKEN: ${{ secrets.TELEGRAM_NEWS_BOT_TOKEN }}
+          TELEGRAM_NEWS_CHAT_ID: ${{ secrets.TELEGRAM_NEWS_CHAT_ID }}
+          TELEGRAM_PICKS_BOT_TOKEN: ${{ secrets.TELEGRAM_PICKS_BOT_TOKEN }}
+          TELEGRAM_PICKS_CHAT_ID: ${{ secrets.TELEGRAM_PICKS_CHAT_ID }}
+          TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
+          TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          save() {
+            for d in research state; do if [ -d "$d" ]; then git add -A "$d"; fi; done
+            git diff --cached --quiet && return 0
+            git commit -q -m "監看記錄 $(TZ=Asia/Taipei date '+%F %H:%M')"
+            for i in 1 2 3; do
+              git pull --rebase -q && git push -q && return 0
+              git rebase --abort 2>/dev/null; sleep 5
+            done
+            git reset -q --hard "origin/${GITHUB_REF_NAME}"   # 一直衝突就放棄這次記錄，避免卡住
+          }
+          end=$(( $(date +%s) + ${{ inputs.minutes || '345' }} * 60 ))
+          while [ "$(date +%s)" -lt "$end" ]; do
+            git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
+            timeout 600 python -m market_intel channels || echo "channels 失敗"
+            timeout 1800 python -m market_intel research --commands --inbox --auto-slots || echo "research 失敗"
+            save
+            sleep 120
+          done
+      - name: 接續下一輪（只在 main 分支、完整跑完時接續）
+        if: ${{ !cancelled() && github.ref_name == github.event.repository.default_branch && (inputs.minutes || '345') == '345' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run watch.yml --ref "${GITHUB_REF_NAME}"
