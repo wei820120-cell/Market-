@@ -1,5 +1,7 @@
 # 常駐監看：每 2 分鐘檢查一次
 #   - 股癌等 Telegram 頻道新貼文 → 推研究機器人（業配略過）
+#   - 新聞、漲價信 → 新聞機器人（假日也推）
+#   - 開發分支 research/pending 的研究（Claude 研究好的）→ 發布並推研究圖表
 #   - 你傳給研究機器人的指令：「研究 XXX」「題材 XXX」「族群 XXX」「目標價 XXX」
 #   - 資金流入題材的研究佇列、14:05／21:05 從新聞自動偵測新題材（需要 ANTHROPIC_API_KEY）
 # GitHub 的排程常延遲 30 分鐘以上，所以改成一次跑約 5 小時 50 分、結束前自動接續下一輪。
@@ -38,6 +40,8 @@ jobs:
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 監看（約 5 小時 45 分）
         env:
+          RESEARCH_BRANCH: claude/funny-goodall-fft1u6
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -64,6 +68,11 @@ jobs:
           while [ "$(date +%s)" -lt "$end" ]; do
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
+            timeout 600 python -m market_intel news --push || echo "news 失敗"
+            # Claude 研究好的題材放在開發分支，拿過來發布（同一份只發布一次）
+            if git fetch -q origin "$RESEARCH_BRANCH" 2>/dev/null; then
+              git checkout FETCH_HEAD -- research/pending 2>/dev/null && git reset -q research/pending || true
+            fi
             timeout 1800 python -m market_intel research --commands --inbox --auto-slots || echo "research 失敗"
             save
             sleep 120
