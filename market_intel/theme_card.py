@@ -1,19 +1,20 @@
-"""題材卡：把一個題材（族群）的完整交易資料整理成圖片＋文字，推到研究機器人。
+"""題材卡（研究圖表）：把研究過的題材依「細項產業」整理成圖片＋文字，推到研究機器人。
+
+（進出場訊號：目標價、停損等，之後由另一個「進出場機器人」負責，不放在研究圖表裡。）
 
 每檔股票：
-- 價量：收盤、漲跌（1／5／20 日）、量比（今日成交金額 ÷ 前 5 日平均）、趨勢
-- 波段目標價：保守目標、積極目標、停損、風報比（analysis/target_price.py）
-- 有沒有股票期貨、小型股票期貨（契約代碼）
+- 所屬細項產業、角色、受惠／受傷
+- 價量：收盤、漲跌（1／5／20 日）、量比（今日成交金額 ÷ 前 5 日平均）
 - 月營收：最新月份年增、月增
-- 處置股、注意股警示
-- 研究後漲跌（題材研究過的話）
+- 有沒有股票期貨、小型股票期貨（契約代碼）
+- 處置股、注意股警示；研究後漲跌
 
 圖片：
-1. 供應鏈地圖（依研究的細項產業分層）
-2. 目標價總表（含股票期貨／小型股票期貨欄）
-3. 個股走勢小圖（標出目標價與停損）
+1. 供應鏈地圖：依細項產業分層
+2. 細項產業表現：各細項等權走勢比較＋5 日／20 日漲跌與量比（看資金流向哪個細項）
+3. 研究資料表
 
-觸發：盤中族群資金湧入、盤後資金流入前幾名族群、題材研究完成、Telegram 指令「題材 玻纖布」。
+觸發：題材研究完成、研究過的族群資金流入（盤中湧入、盤後前幾名）、Telegram 指令「題材 玻纖布」。
 """
 from __future__ import annotations
 
@@ -200,92 +201,101 @@ def build(found: dict, listings: dict, context: str = "", futures: dict | None =
 def _f(v, nd=1, sign=False, suffix="") -> str:
     if v is None or (isinstance(v, float) and pd.isna(v)):
         return "—"
+    if round(v, nd) == 0:
+        v = 0.0  # 避免顯示 -0%
     return (f"{v:+.{nd}f}" if sign else f"{v:,.{nd}f}") + suffix
 
 
-def _ordered(card: Card) -> list[dict]:
+def _by_layer(card: Card) -> list[tuple[str, list[dict]]]:
     order = {"受惠": 0, "中性": 1, "受傷": 2}
-    return sorted(card.stocks.values(), key=lambda d: (order.get(d.get("impact"), 1), -(d.get("vol_ratio") or 0)))
+    out = []
+    for layer in card.layers:
+        rows = [card.stocks[s["code"]] for s in layer["tw_stocks"] if s["code"] in card.stocks]
+        rows.sort(key=lambda d: (order.get(d.get("impact"), 1), -(d.get("vol_ratio") or 0)))
+        if rows:
+            out.append((layer.get("layer", ""), rows))
+    return out
 
 
 def render(card: Card) -> list[Path]:
-    """產生圖片，回傳檔案路徑。"""
+    """產生研究圖表，回傳檔案路徑。"""
     out_dir = CARD_DIR / f"{now_tw():%Y%m%d-%H%M%S}-{research.slug(card.title)}"
     paths = []
-    rows = _ordered(card)
+    groups = _by_layer(card)
     try:
         if card.layers:
             paths.append(charts.supply_chain_png(out_dir / "1_supply_chain.png", card.title,
                                                  card.subtitle or card.context, card.layers, card.stocks))
-        header = ["股票", "收盤", "漲跌", "5日", "量比", "營收年增", "保守目標", "積極目標", "停損", "風報比", "股票期貨"]
-        trs = []
-        for d in rows:
-            rev = d.get("revenue") or {}
-            name = f"{d['code']} {d['name']}" + (" ⚠" if d.get("alerts") else "")
-            trs.append([name, _f(d.get("close")), _f(d.get("pct1"), 1, True, "%"), _f(d.get("pct5"), 1, True, "%"),
-                        _f(d.get("vol_ratio"), 1), _f(rev.get("yoy"), 0, True, "%"),
-                        f"{_f(d.get('target'), 0)}({_f(d.get('target_pct'), 0, True)}%)" if d.get("target") else "—",
-                        f"{_f(d.get('aggressive'), 0)}({_f(d.get('aggressive_pct'), 0, True)}%)" if d.get("aggressive") else "—",
-                        f"{_f(d.get('stop'), 0)}({_f(d.get('stop_pct'), 0, True)}%)" if d.get("stop") else "—",
-                        _f(d.get("rr"), 1), d["fut"].replace("股期 ", "").replace("小型 ", "小型")])
-        paths.append(charts.table_png(out_dir / "2_targets.png", f"{card.title}｜波段目標價與股票期貨", header, trs,
-                                      [1.5, 0.72, 0.66, 0.66, 0.5, 0.72, 1.1, 1.1, 1.05, 0.55, 1.15],
-                                      note="保守目標＝最近的上方目標，積極目標＝最遠的上方目標，停損＝最近支撐；"
-                                           "風報比＝(保守目標−收盤)/(收盤−停損)。股票期貨欄：一般股期代碼／小型股期代碼。"
-                                           "⚠＝處置／注意股。僅供參考。",
-                                      colorize={2: 2, 3: 3, 5: 5}, width=9.6))
-        items = [{"label": f"{d['code']} {d['name']}", "df": d["df"], "target": d.get("target"),
-                  "aggressive": d.get("aggressive"), "stop": d.get("stop")} for d in rows if d.get("df") is not None]
-        if items:
-            paths.append(charts.price_grid_png(out_dir / "3_charts.png", f"{card.title}｜走勢與目標價", items))
     except Exception as e:  # noqa: BLE001
-        log.warning("題材卡圖片產生失敗：%s", e)
+        log.warning("供應鏈地圖產生失敗：%s", e)
+    try:
+        paths.append(charts.sector_perf_png(out_dir / "2_sectors.png", card.title,
+                                            [(name, [d.get("df") for d in rows]) for name, rows in groups]))
+    except Exception as e:  # noqa: BLE001
+        log.warning("細項產業表現圖產生失敗：%s", e)
+    try:
+        header = ["細項產業", "股票", "角色", "影響", "收盤", "漲跌", "20日", "量比", "營收年增", "月增", "股票期貨"]
+        trs = []
+        for name, rows in groups:
+            for d in rows:
+                rev = d.get("revenue") or {}
+                trs.append([re.split(r"[（(]", name)[0][:8], f"{d['code']} {d['name']}" + (" ⚠" if d.get("alerts") else ""),
+                            (d.get("role") or "")[:11], d.get("impact", "中性"), _f(d.get("close")),
+                            _f(d.get("pct1"), 1, True, "%"), _f(d.get("pct20"), 1, True, "%"),
+                            _f(d.get("vol_ratio"), 1), _f(rev.get("yoy"), 0, True, "%"), _f(rev.get("mom"), 0, True, "%"),
+                            d["fut"].replace("股期 ", "").replace("小型 ", "小型")])
+        ym = next((d["revenue"]["ym"] for _, rows in groups for d in rows if d.get("revenue")), "")
+        paths.append(charts.table_png(out_dir / "3_table.png", f"{card.title}｜研究資料", header, trs,
+                                      [1.3, 1.35, 1.75, 0.5, 0.75, 0.65, 0.7, 0.5, 0.75, 0.6, 1.15],
+                                      note=f"營收＝{ym} 月營收；量比＝今日成交金額÷前 5 日平均；股票期貨欄＝一般股期代碼／小型股期代碼；"
+                                           "⚠＝處置／注意股。研究內容僅供參考。",
+                                      colorize={5: 5, 6: 6, 8: 8, 9: 9}, width=10.4))
+    except Exception as e:  # noqa: BLE001
+        log.warning("研究資料表產生失敗：%s", e)
     return paths
 
 
 def message(card: Card) -> str:
-    """文字版（圖片之外，方便複製與搜尋）。"""
-    lines = [f"📊 題材卡：{card.title}"]
+    """文字版（圖片之外，方便複製與搜尋），依細項產業分組。"""
+    lines = [f"🔬 研究圖表：{card.title}"]
     if card.context:
         lines.append(card.context)
     if card.research_date:
-        lines.append(f"🔬 研究日期 {card.research_date}")
+        lines.append(f"研究日期 {card.research_date}")
     if card.subtitle:
         lines += ["", card.subtitle]
-    for d in _ordered(card):
-        mark = {"受惠": "▲", "受傷": "▼"}.get(d.get("impact"), "●")
-        head = f"\n{mark} {d['code']} {d['name']} {_f(d.get('close'))}（{_f(d.get('pct1'), 1, True, '%')}）"
-        if d.get("vol_ratio"):
-            head += f" 量比{d['vol_ratio']:.1f}"
-        lines.append(head)
-        if d.get("target"):
-            lines.append(f"  目標 {_f(d['target'], 1)}（{_f(d.get('target_pct'), 0, True)}%）／"
-                         f"{_f(d.get('aggressive'), 1)}（{_f(d.get('aggressive_pct'), 0, True)}%）"
-                         f"｜停損 {_f(d.get('stop'), 1)}（{_f(d.get('stop_pct'), 0, True)}%）｜風報比 {_f(d.get('rr'), 1)}")
-        lines.append(f"  {d['fut']}" if d["fut"] not in ("無", "未知") else f"  股票期貨：{d['fut']}")
-        extra = []
-        rev = d.get("revenue") or {}
-        if rev.get("yoy") is not None:
-            extra.append(f"{rev.get('ym', '')} 營收年增 {rev['yoy']:+.0f}%、月增 {_f(rev.get('mom'), 0, True)}%")
-        if d.get("since_research") is not None:
-            extra.append(f"研究後 {d['since_research']:+.1f}%")
-        if d.get("alerts"):
-            extra.append("⚠️ " + "、".join(d["alerts"]))
-        if extra:
-            lines.append("  " + "｜".join(extra))
+    for name, rows in _by_layer(card):
+        lines.append(f"\n【{name}】")
+        for d in rows:
+            mark = {"受惠": "▲", "受傷": "▼"}.get(d.get("impact"), "●")
+            head = f"{mark} {d['code']} {d['name']} {_f(d.get('close'))}（{_f(d.get('pct1'), 1, True, '%')}）"
+            if d.get("vol_ratio"):
+                head += f" 量比{d['vol_ratio']:.1f}"
+            lines.append(head)
+            info = []
+            if d.get("role"):
+                info.append(d["role"])
+            rev = d.get("revenue") or {}
+            if rev.get("yoy") is not None:
+                info.append(f"營收年增 {rev['yoy']:+.0f}%")
+            info.append(d["fut"] if d["fut"] not in ("無", "未知") else f"股票期貨：{d['fut']}")
+            if d.get("since_research") is not None:
+                info.append(f"研究後 {d['since_research']:+.1f}%")
+            if d.get("alerts"):
+                info.append("⚠️ " + "、".join(d["alerts"]))
+            lines.append("  " + "｜".join(info))
     if card.catalysts:
         lines += ["", "📅 催化劑：" + "；".join(card.catalysts[:3])]
     if card.risks:
         lines.append("⚠️ 風險：" + "；".join(card.risks[:3]))
     if card.report_url:
         lines += ["", f"完整研究：{card.report_url}"]
-    lines.append("\n目標價依歷史價量推算，僅供參考")
     return "\n".join(lines)
 
 
 def send(card: Card, channel: str = "research") -> None:
     paths = render(card)
-    caption = f"📊 {card.title}" + (f"\n{card.context}" if card.context else "")
+    caption = f"🔬 {card.title}" + (f"\n{card.context}" if card.context else "")
     notify.send_photos(paths, caption, channel=channel)
     notify.send(message(card), channel=channel)
 

@@ -1,4 +1,4 @@
-"""推播用圖片：供應鏈地圖、目標價／股票期貨表、個股走勢小圖（matplotlib，輸出 PNG）。
+"""推播用圖片：供應鏈地圖、細項產業表現、研究資料表、個股走勢小圖（matplotlib，輸出 PNG）。
 
 手機直式閱讀：寬約 1100 像素，高度依內容調整。
 中文字型：自動找 Noto Sans CJK／思源黑體等，GitHub Actions 由 workflow 安裝 fonts-noto-cjk。
@@ -86,11 +86,11 @@ def supply_chain_png(path: Path, title: str, subtitle: str, layers: list[dict], 
     """供應鏈地圖：由上游到下游一層一層往下排，每檔股票一張卡（綠＝受惠、紅＝受傷、灰＝中性）。
 
     layers：[{"layer", "global_players", "tw_stocks": [{"code", "name", "role", "impact"}]}]
-    stocks：{代號: 卡片資料}（收盤、漲跌、目標價、股期），用來在卡片上標目標價與股票期貨。
+    stocks：{代號: 卡片資料}（收盤、漲跌、月營收、股期），用來在卡片上標營收年增與股票期貨。
     """
     setup_font()
     cols = 3
-    card_h, head_h, gap = 1.25, 0.75, 0.35
+    card_h, head_h, gap = 1.25, 0.95, 0.35
     rows_per_layer = [max(1, -(-len(l["tw_stocks"]) // cols)) for l in layers]
     height = 1.6 + sum(head_h + r * card_h + gap for r in rows_per_layer) + 0.4
     fig = plt.figure(figsize=(WIDTH, height), dpi=DPI)
@@ -106,11 +106,14 @@ def supply_chain_png(path: Path, title: str, subtitle: str, layers: list[dict], 
     for li, (layer, nrows) in enumerate(zip(layers, rows_per_layer)):
         ax.add_patch(FancyBboxPatch((0.08, y + 0.05), cols - 0.16, head_h - 0.15, boxstyle="round,pad=0.02",
                                     fc="#24364f", ec="none"))
-        ax.text(0.18, y + 0.3, f"{'↓ ' if li else ''}{layer.get('layer', '')}", fontsize=12, color="white",
+        ax.text(0.18, y + 0.28, f"{'↓ ' if li else ''}{layer.get('layer', '')}", fontsize=12, color="white",
                 weight="bold", va="center")
+        if layer.get("description"):  # 這個細項的景氣、報價
+            ax.text(0.18, y + 0.6, _wrap(_clean(layer["description"]), 44, 1), fontsize=8.5, color="#ffd479",
+                    va="center")
         players = "、".join(layer.get("global_players") or [])
         if players:
-            ax.text(cols - 0.15, y + 0.3, _wrap("全球：" + players, 34, 1), fontsize=8.5, color="#cfd8e3",
+            ax.text(cols - 0.15, y + 0.28, _wrap("全球：" + players, 30, 1), fontsize=8.5, color="#cfd8e3",
                     va="center", ha="right")
         y += head_h
         for i, s in enumerate(layer["tw_stocks"]):
@@ -130,14 +133,14 @@ def supply_chain_png(path: Path, title: str, subtitle: str, layers: list[dict], 
             ax.text(x0 + 0.05, y0 + 0.5, _wrap(s.get("role", ""), 15, 2), fontsize=8, color="#333", va="center",
                     linespacing=1.2)
             fut = d.get("fut_short") or "無股期"
-            tgt = d.get("target")
-            tline = f"目標 {tgt:,.0f}（{d.get('target_pct', 0):+.0f}%）" if tgt else ""
+            yoy = (d.get("revenue") or {}).get("yoy")
+            tline = f"營收年增 {yoy:+.0f}%" if yoy is not None else ""
             ax.text(x0 + 0.05, y0 + 0.88, fut, fontsize=8, color="#7a3e00" if fut != "無股期" else "#999",
                     weight="bold" if fut != "無股期" else "normal", va="center")
             if tline:
-                ax.text(x0 + 0.8, y0 + 0.88, tline, fontsize=8, color="#24364f", va="center", ha="right")
+                ax.text(x0 + 0.8, y0 + 0.88, tline, fontsize=8, color=_pct_color(yoy), va="center", ha="right")
         y += nrows * card_h + gap
-    ax.text(0.12, height - 0.2, "綠＝受惠　紅＝受傷　灰＝中性｜目標＝波段保守目標｜僅供參考", fontsize=8, color="#888",
+    ax.text(0.12, height - 0.2, "綠框＝受惠　紅框＝受傷　灰框＝中性｜營收年增＝最新月營收｜僅供參考", fontsize=8, color="#888",
             va="center")
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=DPI)
@@ -227,5 +230,78 @@ def price_grid_png(path: Path, title: str, items: list[dict], days: int = 120) -
     fig.tight_layout(rect=(0, 0.02, 1, 0.97))
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=DPI)
+    plt.close(fig)
+    return path
+
+
+def sector_perf_png(path: Path, title: str, groups: list[tuple[str, list]], days: int = 60) -> Path:
+    """細項產業表現：上圖＝各細項產業等權指數（起點＝100）走勢；下圖＝5 日、20 日漲跌與量比。
+
+    groups：[(細項產業名稱, [日K DataFrame, ...]), ...]，依供應鏈順序。
+    """
+    import pandas as pd
+
+    setup_font()
+    series, stats = [], []
+    for name, dfs in groups:
+        closes = [df["close"].tail(days + 1).reset_index(drop=True) for df in dfs if df is not None and len(df) > 21]
+        if not closes:
+            continue
+        n = min(len(c) for c in closes)
+        norm = pd.concat([c.tail(n).reset_index(drop=True) / c.tail(n).iloc[0] for c in closes], axis=1).mean(axis=1)
+        series.append((name, norm * 100))
+        r5 = sum(float(df["close"].iloc[-1] / df["close"].iloc[-6] - 1) for df in dfs if df is not None and len(df) > 6)
+        r20 = sum(float(df["close"].iloc[-1] / df["close"].iloc[-21] - 1) for df in dfs if df is not None and len(df) > 21)
+        cnt = sum(1 for df in dfs if df is not None and len(df) > 21)
+        vr = []
+        for df in dfs:
+            if df is not None and len(df) > 6 and "volume" in df:
+                v = df["close"] * df["volume"]
+                base = float(v.iloc[-6:-1].mean())
+                if base:
+                    vr.append(float(v.iloc[-1]) / base)
+        stats.append((name, r5 / cnt * 100 if cnt else 0, r20 / cnt * 100 if cnt else 0,
+                      sum(vr) / len(vr) if vr else None, cnt))
+    if not series:
+        raise ValueError("沒有足夠的價格資料")
+    nb = len(stats)
+    fig = plt.figure(figsize=(WIDTH, 4.2 + 0.42 * nb + 0.8), dpi=DPI)
+    gs = fig.add_gridspec(2, 1, height_ratios=[4.2, 0.42 * nb + 0.6], hspace=0.35)
+    ax = fig.add_subplot(gs[0])
+    cmap = plt.get_cmap("tab10")
+    for i, (name, s_) in enumerate(series):
+        ax.plot(range(len(s_)), s_.values, lw=1.6, color=cmap(i % 10), label=_clean(name))
+        ax.text(len(s_) - 1, s_.values[-1], f" {s_.values[-1] - 100:+.0f}%", fontsize=7.5, color=cmap(i % 10),
+                va="center")
+    ax.axhline(100, color="#999", lw=0.8, ls=":")
+    ax.set_title(f"{_clean(title)}｜細項產業走勢（近 {days} 個交易日，起點＝100，等權）", fontsize=12, loc="left",
+                 weight="bold")
+    ax.legend(fontsize=7.5, ncol=2, frameon=False, loc="upper left")
+    ax.set_xticks([])
+    ax.tick_params(labelsize=7)
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
+    bx = fig.add_subplot(gs[1])
+    names = [_clean(n) for n, *_ in stats][::-1]
+    y = range(len(names))
+    r5s = [r5 for _, r5, *_ in stats][::-1]
+    r20s = [r20 for _, _, r20, *_ in stats][::-1]
+    bx.barh([i + 0.2 for i in y], r20s, height=0.38, color=[UP if v > 0 else DOWN for v in r20s], alpha=0.45,
+            label="20日")
+    bx.barh([i - 0.2 for i in y], r5s, height=0.38, color=[UP if v > 0 else DOWN for v in r5s], label="5日")
+    bx.set_yticks(list(y))
+    bx.set_yticklabels(names, fontsize=8)
+    bx.axvline(0, color="#666", lw=0.8)
+    bx.tick_params(axis="x", labelsize=7)
+    xmax = max([abs(v) for v in r5s + r20s] + [1])
+    for i, (_, r5, r20, vr, cnt) in enumerate(stats[::-1]):
+        txt = f"5日 {r5:+.1f}%｜20日 {r20:+.1f}%" + (f"｜量比 {vr:.1f}" if vr else "") + f"｜{cnt}檔"
+        bx.text(xmax * 1.05, i, txt, fontsize=7.5, va="center", color="#333")
+    bx.set_xlim(-xmax * 1.1, xmax * 2.6)
+    bx.set_title("各細項產業漲跌（深色＝5日、淺色＝20日）與量比", fontsize=9.5, loc="left")
+    for sp in ("top", "right"):
+        bx.spines[sp].set_visible(False)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=DPI, bbox_inches="tight")
     plt.close(fig)
     return path

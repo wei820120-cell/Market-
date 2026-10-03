@@ -746,7 +746,7 @@ def cmd_research(args) -> None:
     futures = stock_futures.load_stock_futures()
     for out in research.publish_pending(listings(), futures) if pending else []:
         notify.send(out["message"], channel=push)
-        _send_card_for_topic(out["data"]["topic"], listings(), push, "🔬 研究完成：目標價與股票期貨")
+        _send_card_for_topic(out["data"]["topic"], listings(), push, "🔬 研究完成")
     for topic, trigger, is_auto in queue:
         try:
             out = research.research_topic(topic, trigger, listings(), futures, auto=is_auto)
@@ -825,7 +825,7 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
                                               f"{r['代號']} {r['名稱']}｜{r['理由']}｜{r.get('新聞', '')}"):
                 queued.append(f"{r['代號']} {r['名稱']}（不在任何族群：{r['理由']}）")
     if queued:
-        msg = "🔬 排入研究（拆解細項產業，完成後推題材卡）：\n" + "\n".join(f"・{q}" for q in queued)
+        msg = "🔬 排入研究（拆解細項產業，完成後推研究圖表）：\n" + "\n".join(f"・{q}" for q in queued)
         if not ai.available():
             msg += "\n\n⚠️ 還沒設定 ANTHROPIC_API_KEY，不會自動研究；可以請 Claude 先研究這些題材。"
         notify.send(msg, channel=channel)
