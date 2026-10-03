@@ -262,10 +262,10 @@ def summary_message(data: dict, layers: list[dict], url: str) -> str:
         lines.append(f"【{layer['layer']}】")
         for s in gain[:6]:
             fut = "" if s["futures"] in ("無", "未知") else f"｜股期 {s['futures']}"
-            lines.append(f"  ▲ {s['code']} {s['name']}：{s['role'][:24]}{fut}")
+            lines.append(f"  ▲ {s['code']} {s['name']}：{s['role'][:40]}{fut}")
         for s in hurt[:3]:
             fut = "" if s["futures"] in ("無", "未知") else f"｜股期 {s['futures']}"
-            lines.append(f"  ▼ {s['code']} {s['name']}：{s['role'][:24]}{fut}")
+            lines.append(f"  ▼ {s['code']} {s['name']}：{s['role'][:40]}{fut}")
     if data.get("catalysts"):
         lines += ["", "📅 催化劑：" + "；".join(data["catalysts"][:3])]
     if data.get("risks"):
