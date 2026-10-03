@@ -537,11 +537,8 @@ def push_news(listings: dict, min_score: float) -> None:
     scored = news_signals.rank(fresh, config.news_keywords(), _name_to_code(listings), _us_symbols(),
                                min_score=1, all_codes=set(listings))
     letters = [it for it in scored if news_signals.is_price_letter(it)]
-    for it in letters:  # 漲價信：全部立即推播
-        msg = price_letter_message(it, listings, futures, themes_tw)
-        notify.send(msg, channel="news")
-        if it.codes or it.themes:
-            notify.send(msg, channel="picks")
+    for it in letters:  # 漲價信：全部立即推播（只推新聞機器人；選股機器人只放選股結果）
+        notify.send(price_letter_message(it, listings, futures, themes_tw), channel="news")
     hits = [it for it in scored if abs(it.score) >= min_score and it not in letters]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
