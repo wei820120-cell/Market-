@@ -1,0 +1,134 @@
+{
+ "topic": "AI伺服器PCB材料",
+ "one_line": "112G→224G/448G，PCB 材料 FR-4→M8→M9，下一代分成無布 HC 與 Hybrid PTFE；材料規格與單價往上，玻纖布在無布方案中可能被取代。",
+ "status": "混合",
+ "horizon": "長期（1年以上）",
+ "keywords": [],
+ "catalysts": [
+  "224G／448G 世代材料定案（無布 HC vs Hybrid PTFE）",
+  "M9＋石英布導入 AI 伺服器、1.6T 交換器"
+ ],
+ "risks": [
+  "無布 HC 量產難度（翹曲、CTE、壓合）",
+  "PTFE 成本約 HC 的 3～5 倍、加工難"
+ ],
+ "sources": [],
+ "layers": [
+  {
+   "layer": "上游 銅箔",
+   "global_players": [
+    "三井金屬",
+    "古河電工"
+   ],
+   "tw_stocks": [
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "HVLP 低粗糙度銅箔",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "上游 玻纖布",
+   "global_players": [
+    "日東紡",
+    "旭化成"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "Low-Dk 玻纖布",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "Low-Dk 紗布、石英布認證",
+     "impact": "受惠"
+    },
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "日東紡集團玻纖布",
+     "impact": "受惠"
+    },
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "石英布（Q布）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "中游 樹脂／CCL",
+   "global_players": [
+    "松下",
+    "斗山",
+    "生益",
+    "Rogers"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "CCL＋玻纖布",
+     "impact": "受惠"
+    },
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭 M8/M9",
+     "impact": "受惠"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "高階 CCL",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "CCL",
+     "impact": "中性"
+    },
+    {
+     "code": "6672",
+     "name": "騰輝電子-KY",
+     "role": "高頻 CCL",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游 PCB",
+   "global_players": [
+    "Ibiden",
+    "TTM"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI 伺服器 PCB",
+     "impact": "受惠"
+    },
+    {
+     "code": "3044",
+     "name": "健鼎",
+     "role": "伺服器 PCB",
+     "impact": "中性"
+    },
+    {
+     "code": "8155",
+     "name": "博智",
+     "role": "高層數 PCB",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

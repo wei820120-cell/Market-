@@ -1,10 +1,8 @@
-# 產業消息頻道：每 10 分鐘檢查公開 Telegram 頻道（config/sources.yaml），有新貼文就推播。
-# 全天執行（不限交易時段）。已推過的貼文編號記在 state/telegram_seen.json。
+# 產業消息頻道：手動測試用。平常由 watch.yml 每 2 分鐘檢查（config/sources.yaml）。
+# 已推過的貼文編號記在 state/telegram_seen.json。
 name: channels
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch:
     inputs:
       latest:

@@ -1,6 +1,7 @@
 """離線測試：用樣本資料驗證解析與計算邏輯（不連網）。"""
 from datetime import datetime
 
+import json
 import numpy as np
 import pandas as pd
 import pytest
@@ -582,3 +583,79 @@ def test_publish_pending(tmp_path, monkeypatch):
     assert not list((tmp_path / "pending").glob("*.json"))
     md = (tmp_path / outs[0]["file"]).read_text(encoding="utf-8")
     assert "9999" in md and "用量" not in md
+
+
+def test_parse_request_kinds():
+    from market_intel import research
+    assert research.parse_request("研究 玻纖布") == ("research", "玻纖布")
+    assert research.parse_request("題材 玻纖布") == ("card", "玻纖布")
+    assert research.parse_request("/族群：CCL高速板材") == ("card", "CCL高速板材")
+    assert research.parse_request("目標價 光通訊") == ("card", "光通訊")
+    assert research.parse_request("早安") is None
+
+
+def test_futures_detail_parse_and_contracts():
+    from market_intel.fetchers import futures_detail as fd
+    m = fd.parse_margins([{"UnderlyingSecurityCode": "8046", "GroupLevel": "級距3", "InitialMarginRate": "20.25%",
+                           "MaintenanceMarginRate": "15.53%"}],
+                         [{"Contract": "NYF", "InitialMargin": "87000", "MaintenanceMargin": "67000"}])
+    rows = [
+        {"Contract": "QSF", "ContractMonth(Week)": "202611", "Last": "1467", "Volume": "462", "OpenInterest": "409",
+         "TradingSession": "一般"},
+        {"Contract": "QSF", "ContractMonth(Week)": "202610", "Last": "1468", "Volume": "11218", "OpenInterest": "7414",
+         "TradingSession": "一般"},
+        {"Contract": "QSF", "ContractMonth(Week)": "202610/202611", "Last": "1", "Volume": "5", "OpenInterest": "0",
+         "TradingSession": "一般"},
+        {"Contract": "QSF", "ContractMonth(Week)": "202610", "Last": "1470", "Volume": "300", "OpenInterest": "0",
+         "TradingSession": "盤後"},
+    ]
+    q = fd.parse_quotes(rows)["QSF"]
+    assert q["month"] == "202610" and q["last"] == 1468 and q["volume"] == 11680 and q["oi"] == 7823
+    assert q["night_volume"] == 300
+    detail = {**m, "quotes": {"QSF": q}}
+    cs = fd.contracts("8046", 672.0, {"std": "LYF", "mini": "QSF", "night": False}, detail)
+    std, mini = cs
+    assert std["shares"] == 2000 and std["value"] == 672.0 * 2000
+    assert abs(std["initial"] - 672.0 * 2000 * 0.2025) < 1
+    assert mini["shares"] == 100 and mini["last"] == 1468 and mini["oi"] == 7823
+    etf = fd.contracts("0050", 200.0, {"std": "NYF", "mini": None, "night": True}, detail)
+    assert etf[0]["shares"] == 10000 and etf[0]["initial"] == 87000 and etf[0]["night"]
+    assert fd.contracts("1815", 100.0, None, detail) == []
+    assert fd.wan(826000) == "82.6萬"
+
+
+def test_revenue_and_alerts_parse():
+    from market_intel.fetchers import tw_daily
+    rev = tw_daily.parse_revenue([{"資料年月": "11508", "公司代號": "1815", "營業收入-當月營收": "500000",
+                                   "營業收入-去年同月增減(%)": "85.2", "營業收入-上月比較增減(%)": "6.1",
+                                   "累計營業收入-前期比較增減(%)": "40"}])
+    assert rev["1815"]["ym"] == "2026/08" and rev["1815"]["yoy"] == 85.2
+    al = tw_daily.parse_alerts([{"Code": "2030", "DispositionPeriod": "115/10/01～115/10/07"}],
+                               [{"SecuritiesCompanyCode": "8084", "DispositionPeriod": "1151002~1151008"}],
+                               [{"Code": ""}], [{"SecuritiesCompanyCode": "3163"}], [{"Code": "2033"}], [])
+    assert al["2030"] == ["處置 10/01~10/07"] and al["8084"] == ["處置 10/02~10/08"]
+    assert al["3163"] == ["注意股"] and al["2033"] == ["注意累計將達處置"] and "" not in al
+
+
+def test_notify_chunks_and_ads():
+    from market_intel import notify
+    from market_intel.fetchers import telegram_channel
+    parts = notify._chunks("\n".join(["一二三四五"] * 2000), 4000)
+    assert all(len(p) <= 4000 for p in parts) and len(parts) >= 3
+    assert telegram_channel.is_ad("詳情請看資訊欄：立即領取1888幣", ["詳情請看資訊欄"])
+    assert not telegram_channel.is_ad("MS 今日的光通 memo", ["詳情請看資訊欄"])
+
+
+def test_find_for_codes(tmp_path, monkeypatch):
+    from market_intel import research
+    idx = tmp_path / "index.json"
+    idx.write_text(json.dumps({"玻纖布": {"codes": ["1802", "1815", "5340", "5475", "2383"]}}), encoding="utf-8")
+    monkeypatch.setattr(research, "INDEX_PATH", idx)
+    assert research.find_for_codes(["1802", "1815", "5340", "5475"]) == "玻纖布"
+    assert research.find_for_codes(["2330", "2454", "1802"]) is None
+
+
+def test_chart_wrap():
+    from market_intel.charts import _wrap
+    out = _wrap("Low-Dk1/2、Low-CTE 認證，產線 4→12 條", 15, 2)
+    assert "Low-\n" not in out and len(out.splitlines()) <= 2

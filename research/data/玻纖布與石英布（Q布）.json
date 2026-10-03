@@ -1,0 +1,155 @@
+{
+ "topic": "玻纖布與石英布（Q布）",
+ "one_line": "M8→M9 升級帶動 Low-Dk2、Low-CTE 與石英布（Q布）缺貨漲價，預期缺到 2027 下半年；玻纖紗／布廠最直接受惠，Q布是輝達 Rubin 的下一段增量。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "玻纖布",
+  "石英布",
+  "Q布",
+  "Q-glass",
+  "Low-Dk",
+  "Low-CTE",
+  "T-glass",
+  "石英纖維",
+  "M9",
+  "日東紡",
+  "Nittobo",
+  "電子布",
+  "玻纖紗"
+ ],
+ "catalysts": [
+  "9、10 月營收反映南亞 CCL 漲 20～25%",
+  "Rubin／Groq LPX 採用 M9＋Q布 起量（2026 下半年）",
+  "德宏、富喬 Q布認證與出貨進度"
+ ],
+ "risks": [
+  "中國巨石、菲利華擴產攻高階",
+  "日東紡 2027 年 T-glass 產能擴 3 倍，缺口收斂",
+  "股價已大漲、處置頻繁，波動大"
+ ],
+ "sources": [
+  {
+   "title": "工商時報 玻纖布短缺異常嚴重",
+   "url": "https://www.ctee.com.tw/news/20260815700069-430502"
+  },
+  {
+   "title": "鉅亨網 這塊布價格近翻倍",
+   "url": "https://news.cnyes.com/news/id/6608165"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游 玻纖紗／石英紗",
+   "description": "玻纖紗與石英纖維紗",
+   "global_players": [
+    "日東紡",
+    "信越化學",
+    "Saint-Gobain",
+    "菲利華",
+    "中國巨石"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "台廠唯一 Q紗＋Q布 批量出貨",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "自產紗布，Low-Dk 比重 6 成，M9 石英布認證中",
+     "impact": "受惠"
+    },
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "Low-Dk1/2、Low-CTE 認證，產線 4→12 條",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "中游 玻纖布織造",
+   "description": "高階玻纖布",
+   "global_players": [
+    "日東紡",
+    "旭化成",
+    "宏和"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "日東紡集團子公司，承接外溢訂單",
+     "impact": "受惠"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "紗布自製＋CCL 漲價 20～25%",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "下游 CCL",
+   "description": "銅箔基板，M8/M9",
+   "global_players": [
+    "生益",
+    "松下",
+    "斗山",
+    "Rogers"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭，M9 拉高 ASP，看成本轉嫁",
+     "impact": "中性"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "4 月漲價，高階漲 20～25%",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "可望跟進漲價",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游 PCB／載板",
+   "description": "材料漲價的成本方",
+   "global_players": [
+    "Ibiden",
+    "Unimicron"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "載板需 Low-CTE，缺料與成本上升",
+     "impact": "受傷"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "載板需 Low-CTE，成本上升",
+     "impact": "受傷"
+    },
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI PCB 材料成本上升，看轉嫁",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

@@ -82,3 +82,8 @@ def new_posts(channel: str, posts: list[ChannelPost], state: dict[str, int]) -> 
         log.info("頻道 %s 第一次讀取，記錄到第 %d 則，之後只推新貼文", channel, latest)
         return []
     return [p for p in posts if p.post_id > last]
+
+
+def is_ad(text: str, patterns: list[str]) -> bool:
+    """業配／廣告貼文（config/sources.yaml 的 skip_patterns）。"""
+    return any(re.search(p, text or "") for p in patterns or [])

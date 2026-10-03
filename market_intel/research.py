@@ -28,6 +28,7 @@ RESEARCH_DIR = ROOT / "research"
 INDEX_PATH = RESEARCH_DIR / "index.json"
 AUTO_THEMES_PATH = RESEARCH_DIR / "auto_themes.yaml"
 INBOX_DIR = ROOT / "state" / "inbox"
+QUEUE_DIR = ROOT / "state" / "research_queue"  # 資金流入但還沒研究過的題材，等有 API 金鑰時研究
 PENDING_DIR = RESEARCH_DIR / "pending"  # 已寫好、等待發布的研究（JSON：REPORT_SCHEMA 欄位＋report＋trigger）
 
 SYSTEM = """你是台股產業研究員，專門把一個新題材拆解成完整的供應鏈地圖，給做波段的投資人參考。
@@ -149,6 +150,12 @@ TOPICS_INSTRUCTION = """以下是今天的新聞標題與產業社群貼文。�
 
 
 # ---------- 研究索引 ----------
+
+def data_dir():
+    """每份研究的結構化資料（供應鏈分層），題材卡畫圖用。"""
+    return RESEARCH_DIR / "data"
+
+
 
 def load_index() -> dict:
     if INDEX_PATH.exists():
@@ -320,6 +327,14 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
                     "status": data.get("status"), "usd": round(usage.usd(), 3), "auto": auto}
     save_index(index)
     update_auto_themes(topic, layers, data.get("keywords", []))
+    data_dir().mkdir(parents=True, exist_ok=True)
+    keep = ("topic", "one_line", "status", "horizon", "keywords", "catalysts", "risks", "sources")
+    (data_dir() / f"{slug(topic)}.json").write_text(json.dumps(
+        {**{k: data.get(k) for k in keep}, "layers": [
+            {"layer": l.get("layer"), "description": l.get("description", ""),
+             "global_players": l.get("global_players", []),
+             "tw_stocks": [{k: s[k] for k in ("code", "name", "role", "impact")} for s in l["tw_stocks"]]}
+            for l in layers]}, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"data": data, "layers": layers, "file": fname,
             "message": summary_message(data, layers, report_url(fname))}
 
@@ -414,6 +429,47 @@ def parse_command(text: str) -> str | None:
     return topic[:40] or None
 
 
+CARD_RE = re.compile(r"^\s*/?(題材|族群|卡片?|目標價|card)\s*[:：]?\s*(.+)$", re.I)
+
+
+def parse_request(text: str) -> tuple[str, str] | None:
+    """「研究 XXX」→ ("research", XXX)；「題材 XXX」「族群 XXX」「目標價 XXX」→ ("card", XXX)。"""
+    t = parse_command(text)
+    if t:
+        return "research", t
+    m = CARD_RE.match(text or "")
+    if m:
+        q = m.group(2).strip().splitlines()[0].strip()[:40]
+        return ("card", q) if q else None
+    return None
+
+
+def pending_requests(updates: list[dict], owner_chat: str | None,
+                     offset: int | None) -> tuple[list[tuple[str, str]], int | None]:
+    """從 getUpdates 取出主人傳的指令，回傳（[(種類, 內容)], 下一次的 offset）。"""
+    out = []
+    for u in updates:
+        offset = max(offset or 0, int(u.get("update_id", 0)) + 1)
+        msg = u.get("message") or {}
+        if owner_chat and str((msg.get("chat") or {}).get("id")) != str(owner_chat):
+            continue
+        req = parse_request(msg.get("text", ""))
+        if req:
+            out.append(req)
+    return out, offset
+
+
+def find_for_codes(codes: list[str], min_overlap: int = 2) -> str | None:
+    """族群成分股和哪一份研究重疊最多（至少 2 檔、且過半），回傳研究題材名稱。"""
+    best, best_n = None, 0
+    want = set(codes)
+    for topic, e in load_index().items():
+        n = len(want & set(e.get("codes", [])))
+        if n >= min_overlap and n * 2 >= len(want) and n > best_n:
+            best, best_n = topic, n
+    return best
+
+
 def pending_commands(updates: list[dict], owner_chat: str | None, offset: int | None) -> tuple[list[str], int | None]:
     """從 getUpdates 結果取出主人傳的「研究 XXX」指令，回傳（題材清單, 下一次的 offset）。"""
     topics = []
@@ -454,3 +510,39 @@ def save_offset(token: str | None, offset: int | None) -> None:
     data[_bot_key(token)] = offset
     COMMAND_STATE.parent.mkdir(parents=True, exist_ok=True)
     COMMAND_STATE.write_text(json.dumps(data) + "\n", encoding="utf-8")
+
+
+# ---------- 研究佇列（資金流入的題材） ----------
+
+def queue_research(topic: str, trigger: str) -> bool:
+    """把題材排入研究佇列；14 天內研究過或已在佇列就略過。回傳是否新排入。"""
+    if recently_researched(topic, load_index()):
+        return False
+    p = QUEUE_DIR / f"{slug(topic)}.json"
+    if p.exists():
+        return False
+    QUEUE_DIR.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"topic": topic, "trigger": trigger, "time": f"{now_tw():%Y-%m-%d %H:%M}"},
+                            ensure_ascii=False), encoding="utf-8")
+    return True
+
+
+def read_queue() -> list[tuple[os.PathLike, dict]]:
+    out = []
+    for p in sorted(QUEUE_DIR.glob("*.json")) if QUEUE_DIR.exists() else []:
+        try:
+            out.append((p, json.loads(p.read_text(encoding="utf-8"))))
+        except ValueError:
+            p.unlink(missing_ok=True)
+    return out
+
+
+def status_of(theme: str, codes: list[str]) -> str:
+    """族群的研究狀態：已研究（日期）／排隊中／未研究。"""
+    index = load_index()
+    topic = theme if theme in index else find_for_codes(codes)
+    if topic:
+        return f"已研究 {index[topic].get('date', '')}"
+    if (QUEUE_DIR / f"{slug(theme)}.json").exists():
+        return "排隊研究中"
+    return "未研究"

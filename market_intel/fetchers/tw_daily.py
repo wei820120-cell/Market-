@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from datetime import date, timedelta
 
 import pandas as pd
@@ -230,3 +231,102 @@ def fetch_valuation() -> pd.DataFrame:
         "pb": to_float(pick(r, "PBratio", "股價淨值比")),
     } for r in rows]
     return pd.DataFrame(out)
+
+
+# ---------- 月營收 ----------
+
+def parse_revenue(rows: list[dict]) -> dict[str, dict]:
+    """月營收彙總表 → {代號: {"ym": "2026/08", "rev": 當月營收(千元), "yoy": 年增%, "mom": 月增%, "cum_yoy": 累計年增%}}。"""
+    out = {}
+    for r in rows or []:
+        code = str(r.get("公司代號") or "").strip()
+        if not code:
+            continue
+        ym = str(r.get("資料年月") or "")
+        if len(ym) >= 4 and ym[:-2].isdigit():
+            ym = f"{int(ym[:-2]) + 1911}/{ym[-2:]}"  # 民國年 11508 → 2026/08
+        out[code] = {"ym": ym, "rev": to_float(r.get("營業收入-當月營收")),
+                     "yoy": to_float(r.get("營業收入-去年同月增減(%)")),
+                     "mom": to_float(r.get("營業收入-上月比較增減(%)")),
+                     "cum_yoy": to_float(r.get("累計營業收入-前期比較增減(%)"))}
+    return out
+
+
+def load_revenue() -> dict[str, dict]:
+    """上市＋上櫃最新月營收，每天快取一次。"""
+    path = CACHE_DIR / "revenue.json"
+    today = now_tw().strftime("%Y-%m-%d")
+    if path.exists():
+        cached = json.loads(path.read_text(encoding="utf-8"))
+        if cached.get("date") == today:
+            return cached["data"]
+    data: dict[str, dict] = {}
+    for url in (f"{TWSE_OPENAPI}/opendata/t187ap05_L", f"{TPEX_OPENAPI}/mopsfin_t187ap05_O"):
+        try:
+            data.update(parse_revenue(net.get_json(url)))
+        except Exception as e:  # noqa: BLE001
+            log.warning("月營收抓取失敗 %s：%s", url, e)
+    if data:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"date": today, "data": data}, ensure_ascii=False), encoding="utf-8")
+    elif path.exists():
+        data = json.loads(path.read_text(encoding="utf-8")).get("data", {})
+    return data
+
+
+# ---------- 處置股、注意股 ----------
+
+def _roc_range(text: str) -> str:
+    """「115/10/01～115/10/07」或「1151002~1151008」→「10/01~10/07」。"""
+    nums = re.findall(r"(\d{3})/?(\d{2})/?(\d{2})", str(text or ""))
+    return "~".join(f"{m}/{d}" for _, m, d in nums[:2])
+
+
+def parse_alerts(twse_punish: list[dict], tpex_punish: list[dict], twse_notice: list[dict],
+                 tpex_notice: list[dict], twse_note: list[dict], tpex_note: list[dict]) -> dict[str, list[str]]:
+    """→ {代號: ["處置中 10/02~10/08（每 5 分鐘撮合）", "注意股", "注意累計將達處置"]}"""
+    out: dict[str, list[str]] = {}
+
+    def add(code, text):
+        code = str(code or "").strip()
+        if code and text not in out.setdefault(code, []):
+            out[code].append(text)
+
+    for r in twse_punish or []:
+        add(r.get("Code"), f"處置 {_roc_range(r.get('DispositionPeriod'))}")
+    for r in tpex_punish or []:
+        add(r.get("SecuritiesCompanyCode"), f"處置 {_roc_range(r.get('DispositionPeriod'))}")
+    for r in twse_notice or []:
+        add(r.get("Code"), "注意股")
+    for r in tpex_notice or []:
+        add(r.get("SecuritiesCompanyCode"), "注意股")
+    for r in twse_note or []:
+        add(r.get("Code"), "注意累計將達處置")
+    for r in tpex_note or []:
+        add(r.get("SecuritiesCompanyCode"), "注意累計將達處置")
+    return out
+
+
+def load_alerts(max_age_hours: float = 3) -> dict[str, list[str]]:
+    """處置股、注意股（上市＋上櫃），快取 3 小時。處置期間會改成分盤撮合、需預收款券，影響進出。"""
+    path = CACHE_DIR / "alerts.json"
+    if path.exists() and (now_tw().timestamp() - path.stat().st_mtime) / 3600 < max_age_hours:
+        return json.loads(path.read_text(encoding="utf-8"))
+    urls = [f"{TWSE_OPENAPI}/announcement/punish", f"{TPEX_OPENAPI}/tpex_disposal_information",
+            f"{TWSE_OPENAPI}/announcement/notice", f"{TPEX_OPENAPI}/tpex_trading_warning_information",
+            f"{TWSE_OPENAPI}/announcement/notetrans", f"{TPEX_OPENAPI}/tpex_trading_warning_note"]
+    parts = []
+    for url in urls:
+        try:
+            rows = net.get_json(url)
+            parts.append(rows if isinstance(rows, list) else [])
+        except Exception as e:  # noqa: BLE001
+            log.warning("處置／注意股抓取失敗 %s：%s", url, e)
+            parts.append([])
+    data = parse_alerts(*parts)
+    if any(parts):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    elif path.exists():
+        data = json.loads(path.read_text(encoding="utf-8"))
+    return data
