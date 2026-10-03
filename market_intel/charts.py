@@ -64,6 +64,11 @@ def _wrap(text: str, width: int, lines: int = 2) -> str:
     return "\n".join(rows)
 
 
+def _clean(text: str) -> str:
+    """去掉字型沒有的表情符號（🔥🔬📊 等），避免圖片出現方塊。"""
+    return re.sub(r"[\U00010000-\U0010FFFF\ufe0f]", "", str(text or "")).strip()
+
+
 def _pct_color(v) -> str:
     if v is None:
         return "#333333"
@@ -95,8 +100,8 @@ def supply_chain_png(path: Path, title: str, subtitle: str, layers: list[dict], 
     ax.axis("off")
     fig.patch.set_facecolor("white")
 
-    ax.text(0.12, 0.45, title, fontsize=17, weight="bold", va="center")
-    ax.text(0.12, 1.0, _wrap(subtitle, 46, 2), fontsize=9.5, color="#444", va="center")
+    ax.text(0.12, 0.45, _clean(title), fontsize=17, weight="bold", va="center")
+    ax.text(0.12, 1.0, _wrap(_clean(subtitle), 46, 2), fontsize=9.5, color="#444", va="center")
     y = 1.6
     for li, (layer, nrows) in enumerate(zip(layers, rows_per_layer)):
         ax.add_patch(FancyBboxPatch((0.08, y + 0.05), cols - 0.16, head_h - 0.15, boxstyle="round,pad=0.02",
@@ -153,7 +158,7 @@ def table_png(path: Path, title: str, header: list[str], rows: list[list], col_w
     ax.set_xlim(0, total)
     ax.set_ylim(height, 0)
     ax.axis("off")
-    ax.text(0.1, 0.45, title, fontsize=14, weight="bold", va="center")
+    ax.text(0.1, 0.45, _clean(title), fontsize=14, weight="bold", va="center")
     y = 0.9
     ax.add_patch(plt.Rectangle((0, y), total, row_h, fc="#24364f", ec="none"))
     x = 0.0
@@ -197,7 +202,7 @@ def price_grid_png(path: Path, title: str, items: list[dict], days: int = 120) -
     cols = 3
     nrows = max(1, -(-len(items) // cols))
     fig, axes = plt.subplots(nrows, cols, figsize=(WIDTH, 0.6 + 2.3 * nrows), dpi=DPI, squeeze=False)
-    fig.suptitle(title, fontsize=13, weight="bold", x=0.02, ha="left")
+    fig.suptitle(_clean(title), fontsize=13, weight="bold", x=0.02, ha="left")
     for ax in axes.flat:
         ax.axis("off")
     for ax, it in zip(axes.flat, items):

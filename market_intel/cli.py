@@ -812,7 +812,7 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
         if theme_card.already_sent(key):
             continue
         codes = [str(c) for c in themes_tw.get(name, [])]
-        context = (f"🔥 {source}資金流入：{ratio_col} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
+        context = (f"🔥 {source}資金流入：{'量比' if '量比' in ratio_col else ratio_col} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
                    f"加權 {r['加權漲跌%']:+.1f}%")
         try:
             theme_card.send(theme_card.build(theme_card.from_theme(name, codes), listings, context=context,
