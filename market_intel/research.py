@@ -402,10 +402,22 @@ def research_topic(topic: str, trigger: str, listings: dict, futures: dict, auto
     return out
 
 
+PUBLISHED_PATH = ROOT / "state" / "published_pending.json"
+
+
 def publish_pending(listings: dict, futures: dict) -> list[dict]:
-    """發布 research/pending/ 裡已寫好的研究（不需要 API 金鑰），發布後刪除該檔。"""
+    """發布 research/pending/ 裡已寫好的研究（不需要 API 金鑰），發布後刪除該檔。
+
+    研究檔可能從開發分支複製過來，同一份內容（依雜湊）只發布一次。
+    """
+    import hashlib
+    published = json.loads(PUBLISHED_PATH.read_text(encoding="utf-8")) if PUBLISHED_PATH.exists() else []
     outs = []
     for p in sorted(PENDING_DIR.glob("*.json")) if PENDING_DIR.exists() else []:
+        digest = hashlib.sha1(p.read_bytes()).hexdigest()
+        if digest in published:
+            p.unlink()
+            continue
         try:
             d = json.loads(p.read_text(encoding="utf-8"))
             report, trigger = d.pop("report", ""), d.pop("trigger", "")
@@ -414,6 +426,9 @@ def publish_pending(listings: dict, futures: dict) -> list[dict]:
             log.warning("待發布研究 %s 格式錯誤：%s", p.name, e)
             continue
         p.unlink()
+        published = (published + [digest])[-200:]
+        PUBLISHED_PATH.parent.mkdir(parents=True, exist_ok=True)
+        PUBLISHED_PATH.write_text(json.dumps(published), encoding="utf-8")
     return outs
 
 

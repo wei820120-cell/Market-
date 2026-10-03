@@ -571,6 +571,8 @@ def test_publish_pending(tmp_path, monkeypatch):
     monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
     monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
     monkeypatch.setattr(research, "AUTO_THEMES_PATH", tmp_path / "auto_themes.yaml")
+    monkeypatch.setattr(research, "PUBLISHED_PATH", tmp_path / "published.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
     (tmp_path / "pending").mkdir()
     d = {"topic": "測試題材", "one_line": "x", "status": "混合", "horizon": "中期（3-12個月）",
          "layers": [{"layer": "上游", "description": "", "global_players": [],
@@ -583,6 +585,10 @@ def test_publish_pending(tmp_path, monkeypatch):
     assert not list((tmp_path / "pending").glob("*.json"))
     md = (tmp_path / outs[0]["file"]).read_text(encoding="utf-8")
     assert "9999" in md and "用量" not in md
+    # 同一份研究檔（例如每輪從開發分支複製過來）只發布一次
+    (tmp_path / "pending" / "a.json").write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    assert research.publish_pending({"1815": {"name": "富喬"}}, {}) == []
+    assert not list((tmp_path / "pending").glob("*.json"))
 
 
 def test_parse_request_kinds():

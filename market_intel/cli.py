@@ -509,20 +509,9 @@ def cmd_realtime(args) -> None:
                     m[k] = m[k] or d[k]
                 if c in listings and c not in codes:
                     codes.append(c)  # 有題材的個股加入盤中報價監控
-            if first_news and not args.once:
-                # 第一次掃描只記錄已經存在的新聞，避免一啟動就把舊新聞全部推出去
+            if first_news:
                 first_news = False
-                log.info("已記錄 %d 則既有新聞，之後只推播新出現的。", len(fresh))
-            else:
-                letters = [it for it in scored if news_signals.is_price_letter(it)]
-                for it in letters:  # 漲價信：全部立即推播，不受每輪 5 則上限
-                    msg = price_letter_message(it, listings, futures, themes_tw)
-                    notify.send(msg, channel="news")
-                    if it.codes or it.themes:
-                        notify.send(msg, channel="picks")
-                hits = [it for it in scored if abs(it.score) >= news_min and it not in letters]
-                for it in hits[:5]:
-                    notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+                log.info("已記錄 %d 則既有新聞（新聞推播由常駐監看 watch.yml 負責）", len(fresh))
 
         if args.once:
             break
@@ -531,8 +520,38 @@ def cmd_realtime(args) -> None:
 
 # ---------------------------------------------------------------- news / target
 
+def push_news(listings: dict, min_score: float) -> None:
+    """新聞推播（常駐監看每 2 分鐘，假日也跑）：漲價信全部推，其他分數夠高的每輪最多 5 則。
+
+    已推過的記錄存在 state/seen_news.json（會存回 GitHub，換一輪監看也不會重複推）；第一次只記錄不推。
+    """
+    news.SEEN_PATH = research.ROOT / "state" / "seen_news.json"
+    first = not news.SEEN_PATH.exists()
+    news.SEEN_PATH.parent.mkdir(parents=True, exist_ok=True)
+    fresh = news.only_new(collect_news(full=False))
+    if first:
+        log.info("第一次掃描，記錄 %d 則既有新聞，之後只推新的", len(fresh))
+        return
+    themes_tw = config.themes().get("tw") or {}
+    futures = stock_futures.load_stock_futures()
+    scored = news_signals.rank(fresh, config.news_keywords(), _name_to_code(listings), _us_symbols(),
+                               min_score=1, all_codes=set(listings))
+    letters = [it for it in scored if news_signals.is_price_letter(it)]
+    for it in letters:  # 漲價信：全部立即推播
+        msg = price_letter_message(it, listings, futures, themes_tw)
+        notify.send(msg, channel="news")
+        if it.codes or it.themes:
+            notify.send(msg, channel="picks")
+    hits = [it for it in scored if abs(it.score) >= min_score and it not in letters]
+    for it in hits[:5]:
+        notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+
+
 def cmd_news(args) -> None:
     listings = _listings()
+    if args.push:
+        push_news(listings, (config.settings().get("realtime") or {}).get("news_min_score", 3))
+        return
     ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings), _us_symbols(),
                                min_score=args.min_score, all_codes=set(listings))
     for it in ranked[: args.limit]:
@@ -933,6 +952,7 @@ def main(argv: list[str] | None = None) -> None:
     nw = sub.add_parser("news", help="掃描新聞與公告")
     nw.add_argument("--limit", type=int, default=50)
     nw.add_argument("--min-score", type=float, default=None)
+    nw.add_argument("--push", action="store_true", help="推播新出現的新聞與漲價信（常駐監看用）")
     nw.set_defaults(func=cmd_news)
 
     tg = sub.add_parser("target", help="計算目標價")
