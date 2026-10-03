@@ -42,6 +42,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -d state ] || exit 0   # 測試模式（latest）不會寫入已讀記錄
           git add state/
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "頻道已讀記錄 $(TZ=Asia/Taipei date '+%F %H:%M')"
