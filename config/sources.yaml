@@ -4,7 +4,7 @@
 telegram_channels:
   - name: 股癌
     handle: Gooaye
-    push_to: news        # news / picks / market
+    push_to: research    # news / picks / market / research
 
 # 貼文提到這些關鍵字時，標出相關族群（族群名稱要和 themes.yaml 一致）
 topic_themes:
