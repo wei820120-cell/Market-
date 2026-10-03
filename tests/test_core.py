@@ -475,3 +475,89 @@ def test_channel_post_message(monkeypatch):
     assert msg.rstrip().endswith("https://t.me/Gooaye/1001")
     # 「全新」是常用詞，不用名稱比對
     assert "全新" in cli.AMBIGUOUS_NAMES
+
+
+def test_research_command_parsing():
+    from market_intel import research
+    assert research.parse_command("研究 玻纖布") == "玻纖布"
+    assert research.parse_command("/研究：CoWoP 封裝") == "CoWoP 封裝"
+    assert research.parse_command("/research HBM4") == "HBM4"
+    assert research.parse_command("今天天氣不錯") is None
+    updates = [
+        {"update_id": 10, "message": {"chat": {"id": 111}, "text": "研究 石英布"}},
+        {"update_id": 11, "message": {"chat": {"id": 999}, "text": "研究 別人的"}},  # 不是主人
+        {"update_id": 12, "message": {"chat": {"id": 111}, "text": "hi"}},
+    ]
+    topics, offset = research.pending_commands(updates, "111", None)
+    assert topics == ["石英布"] and offset == 13
+
+
+def test_research_topic_end_to_end(tmp_path, monkeypatch):
+    from market_intel import ai, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "AUTO_THEMES_PATH", tmp_path / "research" / "auto_themes.yaml")
+    monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")
+    monkeypatch.setattr(ai, "check_budget", lambda: None)
+
+    def fake_research(system, prompt, usage):
+        assert "石英布" in prompt and "台股公司一定要寫" in system
+        usage.input_tokens, usage.output_tokens, usage.web_searches = 50000, 8000, 10
+        usage.calls.append("research")
+        return "# 石英布\n## 一句話重點\nM9 需要石英布，供不應求。"
+
+    def fake_extract(instruction, text, schema, usage, label="extract"):
+        usage.calls.append(label)
+        return {"topic": "石英布", "one_line": "M9 板材需要石英布，供不應求", "status": "混合", "horizon": "中期（3-12個月）",
+                "layers": [
+                    {"layer": "玻纖布", "description": "石英布／Low-Dk 布", "global_players": ["Nittobo"],
+                     "tw_stocks": [{"code": "1815", "name": "富喬", "role": "Low-Dk 玻纖布", "impact": "受惠"},
+                                   {"code": "9999", "name": "不存在", "role": "?", "impact": "受惠"}]},
+                    {"layer": "CCL", "description": "M9 板材", "global_players": [],
+                     "tw_stocks": [{"code": "2383", "name": "台光電", "role": "M9 CCL", "impact": "受惠"}]}],
+                "keywords": ["石英布", "Q布", "M9"], "catalysts": ["石英布擴產"], "risks": ["無布 HC 取代"],
+                "sources": [{"title": "x", "url": "https://x"}]}
+
+    monkeypatch.setattr(ai, "web_research", fake_research)
+    monkeypatch.setattr(ai, "extract_json", fake_extract)
+    listings = {"1815": {"name": "富喬"}, "2383": {"name": "台光電"}}
+    futures = {"2383": {"std": "XXF", "mini": "YYF", "night": False}}
+    out = research.research_topic("石英布", "手動指定", listings, futures)
+    md = (tmp_path / "research" / out["file"]).read_text(encoding="utf-8")
+    assert "| 玻纖布 | 1815 | 富喬 |" in md and "9999 不存在" in md  # 不存在的代號被剔除並註明
+    assert "XXF／小型YYF" in md and "AI 研究" in md
+    assert "▲ 2383 台光電" in out["message"] and "股期 XXF／小型YYF" in out["message"]
+    idx = research.load_index()
+    assert idx["石英布"]["codes"] == ["1815", "2383"]
+    import yaml
+    auto = yaml.safe_load((tmp_path / "research" / "auto_themes.yaml").read_text(encoding="utf-8"))
+    assert auto["tw"]["研究:石英布"] == ["1815", "2383"] and "研究:石英布" in auto["topic_themes"]["Q布"]
+    assert research.recently_researched("石英布", idx)
+    usage = __import__("json").loads((tmp_path / "usage.json").read_text(encoding="utf-8"))
+    assert list(usage.values())[0]["runs"] == 1
+
+
+def test_research_budget_and_knowledge(tmp_path, monkeypatch):
+    from market_intel import ai, research
+    monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")
+    u = ai.Usage(input_tokens=1_000_000, output_tokens=1_000_000, web_searches=1000)
+    assert u.usd() > 0
+    ai.record_usage(u, "x")
+    monkeypatch.setattr(ai, "settings", lambda: {"monthly_budget_usd": 1, "price_per_mtok": {"input": 4, "output": 20}})
+    with pytest.raises(ai.AIUnavailable):
+        ai.check_budget()
+    # 研究庫的 PCB 材料筆記會被附進「玻纖布」的研究提示
+    idx = research.load_index()
+    assert "AI伺服器PCB材料" in idx
+    assert "Glass Weave" in research.relevant_knowledge("玻纖布", idx)
+    assert research.relevant_knowledge("寵物食品", idx) == ""
+
+
+def test_command_offset_per_bot(tmp_path, monkeypatch):
+    from market_intel import research
+    monkeypatch.setattr(research, "COMMAND_STATE", tmp_path / "cmd.json")
+    research.save_offset("111:SECRET", 900)
+    research.save_offset("222:OTHER", 5)
+    assert research.load_offset("111:SECRET") == 900 and research.load_offset("222:OTHER") == 5
+    assert research.load_offset("333:NEW") is None  # 新機器人從頭讀，不沿用別的機器人的記錄
+    assert "SECRET" not in (tmp_path / "cmd.json").read_text()

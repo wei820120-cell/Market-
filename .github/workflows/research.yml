@@ -1,0 +1,65 @@
+# 題材研究員：AI＋網路搜尋研究新題材的整條供應鏈，報告存到 research/，摘要推到手機。
+# - 每 10 分鐘：處理 Telegram「研究 XXX」指令、股癌等頻道新貼文的題材偵測
+# - 每天 14:05、21:05（台北）：從當天重點新聞偵測新題材
+# - 手動：Actions → research → Run workflow，填題材名稱
+# 需要 GitHub Secret：ANTHROPIC_API_KEY（沒有的話只會回覆提醒，不會呼叫 AI）
+name: research
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+    - cron: "5 6,13 * * *"
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "要研究的題材，例如：玻纖布、CoWoP、1.6T 光模組"
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 題材研究
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_NEWS_BOT_TOKEN: ${{ secrets.TELEGRAM_NEWS_BOT_TOKEN }}
+          TELEGRAM_NEWS_CHAT_ID: ${{ secrets.TELEGRAM_NEWS_CHAT_ID }}
+          TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
+          TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
+          TOPIC: ${{ inputs.topic }}
+        run: |
+          if [ -n "$TOPIC" ]; then
+            python -m market_intel research --topic "$TOPIC"
+          elif [ "${{ github.event.schedule }}" = "5 6,13 * * *" ]; then
+            python -m market_intel research --auto --commands --inbox
+          else
+            python -m market_intel research --commands --inbox
+          fi
+      - name: 存檔研究報告
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for d in research state; do if [ -d "$d" ]; then git add -A "$d"; fi; done
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "題材研究 $(TZ=Asia/Taipei date '+%F %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase -q && git push && exit 0
+            sleep 5
+          done
+          exit 1

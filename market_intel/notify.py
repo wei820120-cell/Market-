@@ -4,11 +4,13 @@
   market（預設）：族群資金流向、到價、大漲、盤後摘要
   news          ：新聞、漲價信、重大訊息
   picks         ：強勢標的（資金流入＋題材＋漲價，附股票期貨）
+  research      ：題材研究員（AI 供應鏈研究）；也從這個機器人接收「研究 XXX」指令
 
 環境變數（不要寫進程式或上傳到 GitHub）：
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID                盤勢機器人
   TELEGRAM_NEWS_BOT_TOKEN, TELEGRAM_NEWS_CHAT_ID      新聞機器人（選用）
   TELEGRAM_PICKS_BOT_TOKEN, TELEGRAM_PICKS_CHAT_ID    選股機器人（選用）
+  TELEGRAM_RESEARCH_BOT_TOKEN, TELEGRAM_RESEARCH_CHAT_ID  研究機器人（選用，沒設定時用新聞機器人）
   DISCORD_WEBHOOK_URL, DISCORD_NEWS_WEBHOOK_URL, DISCORD_PICKS_WEBHOOK_URL
 沒設定新聞／選股機器人時，改由盤勢機器人送出。
 CHAT_ID 沒填時沿用 TELEGRAM_CHAT_ID（同一個人跟不同機器人的私訊 Chat ID 相同）。
@@ -23,13 +25,43 @@ import requests
 log = logging.getLogger(__name__)
 
 
+FALLBACK_CHANNEL = {"research": "news"}  # 研究機器人沒設定時改用新聞機器人
+
+
 def _telegram(channel: str) -> tuple[str | None, str | None]:
     token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
-    prefix = f"TELEGRAM_{channel.upper()}_"
-    if channel != "market" and os.environ.get(prefix + "BOT_TOKEN"):
-        token = os.environ[prefix + "BOT_TOKEN"]
-        chat = os.environ.get(prefix + "CHAT_ID") or chat
+    for ch in (channel, FALLBACK_CHANNEL.get(channel)):
+        if not ch or ch == "market":
+            continue
+        prefix = f"TELEGRAM_{ch.upper()}_"
+        if os.environ.get(prefix + "BOT_TOKEN"):
+            return os.environ[prefix + "BOT_TOKEN"], os.environ.get(prefix + "CHAT_ID") or chat
     return token, chat
+
+
+def get_updates(channel: str, offset: int | None) -> list[dict]:
+    """讀取使用者傳給機器人的訊息（Telegram getUpdates）。"""
+    token, _ = _telegram(channel)
+    if not token:
+        return []
+    params = {"timeout": 0, "allowed_updates": '["message"]'}
+    if offset is not None:
+        params["offset"] = offset
+    try:
+        r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates", params=params, timeout=15)
+        data = r.json()
+    except (requests.RequestException, ValueError) as e:
+        log.warning("讀取 Telegram 指令失敗：%s", e)
+        return []
+    return data.get("result", []) if data.get("ok") else []
+
+
+def owner_chat(channel: str) -> str | None:
+    return _telegram(channel)[1]
+
+
+def bot_token(channel: str) -> str | None:
+    return _telegram(channel)[0]
 
 
 def _discord(channel: str) -> str | None:

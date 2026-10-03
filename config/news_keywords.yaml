@@ -68,7 +68,9 @@ price_letter:
     CCL: PCB銅箔基板
     銅箔基板: PCB銅箔基板
     銅箔: PCB銅箔基板
-    玻纖: PCB銅箔基板
+    玻纖: 玻纖布
+    石英布: 玻纖布
+    Q布: 玻纖布
     PCB: PCB銅箔基板
     ABF: PCB銅箔基板
     載板: PCB銅箔基板

@@ -18,7 +18,7 @@ from datetime import datetime, time as dtime
 
 import pandas as pd
 
-from . import config, notify
+from . import ai, config, notify, research
 from .analysis import news_signals, picks, sector_flow, target_price
 from .fetchers import news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
@@ -614,8 +614,78 @@ def cmd_channels(args) -> None:
         for p in fresh:
             notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code),
                         channel=ch.get("push_to", "news"))
+            if not args.latest and ch.get("research", True):
+                research.add_to_inbox(handle, p.post_id, p.text, p.url)  # 交給題材研究員判斷要不要研究
     if not args.latest:
         telegram_channel.save_state(state)
+
+
+def cmd_research(args) -> None:
+    """題材研究員：手動題材、Telegram「研究 XXX」指令、頻道貼文收件匣、每日新聞自動偵測。"""
+    st = ai.settings()
+    push = st.get("push_to", "research")
+    queue: list[tuple[str, str, bool]] = []  # (題材, 觸發來源, 是否自動)
+
+    if args.topic:
+        queue.append((args.topic, "手動指定", False))
+
+    if args.commands:
+        token = notify.bot_token(push)
+        offset = research.load_offset(token)
+        topics, offset = research.pending_commands(notify.get_updates(push, offset), notify.owner_chat(push), offset)
+        research.save_offset(token, offset)
+        for t in topics:
+            if not ai.available():
+                notify.send(f"⚠️ 收到「研究 {t}」，但還沒設定 ANTHROPIC_API_KEY，無法進行 AI 研究。", channel=push)
+                continue
+            notify.send(f"🔬 收到，開始研究「{t}」，約 3～8 分鐘後回報。", channel=push)
+            queue.append((t, "Telegram 指令", False))
+
+    auto_texts: list[str] = []
+    triggers: dict[str, str] = {}
+    if args.inbox:
+        items = research.read_inbox()
+        for _, d in items:
+            auto_texts.append(d["text"][:600])
+            triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
+        for p, _ in items:  # 讀過就刪，避免重複偵測（沒有金鑰也刪，免得越積越多）
+            p.unlink(missing_ok=True)
+    if args.auto:
+        listings_ = _listings()
+        ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings_), _us_symbols(),
+                                   min_score=3, all_codes=set(listings_))
+        auto_texts += [it.title for it in ranked[:80]]
+
+    if auto_texts and ai.available():
+        cap = int(st.get("max_per_day", 4)) - research.researched_today()
+        if cap <= 0:
+            log.info("今天自動研究已達上限 %s 個", st.get("max_per_day", 4))
+        else:
+            try:
+                found = research.detect_topics(auto_texts)
+            except ai.AIUnavailable as e:
+                log.warning("題材偵測失敗：%s", e)
+                found = []
+            min_imp = int(st.get("min_importance", 3))
+            for t in [x for x in found if x["importance"] >= min_imp][:cap]:
+                src = next((v for k, v in triggers.items() if t["topic"] in k), "")
+                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", True))
+    elif auto_texts:
+        log.info("沒有 ANTHROPIC_API_KEY，略過自動題材偵測")
+
+    if not queue:
+        return
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    for topic, trigger, is_auto in queue:
+        try:
+            out = research.research_topic(topic, trigger, listings, futures, auto=is_auto)
+            notify.send(out["message"], channel=push)
+        except ai.AIUnavailable as e:
+            log.warning("研究「%s」失敗：%s", topic, e)
+            notify.send(f"⚠️ 研究「{topic}」沒有完成：{e}", channel=push)
+            if "預算" in str(e) or "ANTHROPIC_API_KEY" in str(e):
+                break
 
 
 def cmd_check(args) -> None:
@@ -644,6 +714,12 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("daily", help="盤後總報告").set_defaults(func=cmd_daily)
     sub.add_parser("us", help="美股類股資金流向").set_defaults(func=cmd_us)
     sub.add_parser("check", help="資料檢查：印出資料來源原始欄位（不推播）").set_defaults(func=cmd_check)
+    rs = sub.add_parser("research", help="題材研究員（AI 供應鏈研究）")
+    rs.add_argument("--topic", help="直接研究這個題材，例如：玻纖布")
+    rs.add_argument("--commands", action="store_true", help="處理 Telegram「研究 XXX」指令")
+    rs.add_argument("--inbox", action="store_true", help="從頻道新貼文偵測新題材並研究")
+    rs.add_argument("--auto", action="store_true", help="從今天的重點新聞偵測新題材並研究")
+    rs.set_defaults(func=cmd_research)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
     ch.set_defaults(func=cmd_channels)

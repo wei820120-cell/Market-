@@ -6,3 +6,16 @@ realtime:
   alert_stock_pct: 7.0        # 個股漲幅 >= 此 % 時推播
   news_min_score: 3           # 盤中新聞分數 >= 此值才推播（3 = 至少命中「漲價」，或兩個利多類別）
   flow_push_times: ["09:15", "10:00", "11:00", "12:00", "13:00", "13:25"]   # 定時推播族群資金流向排行
+
+research:                     # 題材研究員（需要 GitHub Secret：ANTHROPIC_API_KEY）
+  model: claude-opus-5-5      # 研究用的 Claude 模型
+  effort: high                # 研究深度：low / medium / high / xhigh / max（越深越貴）
+  max_searches: 15            # 每個題材最多網路搜尋次數
+  max_fetches: 8              # 每個題材最多讀取網頁次數
+  max_per_day: 4              # 每天「自動」研究的題材上限（手動指令不受限，但受預算限制）
+  min_importance: 3           # 自動偵測的題材重要性 >= 此值才研究（1-5）
+  monthly_budget_usd: 20      # 每月花費上限（美元），超過就停止，下個月自動恢復
+  push_to: research           # 推到研究機器人（沒設定時用新聞機器人）
+  # 以下用來估算花費，請以 Anthropic 官網價格為準
+  price_per_mtok: {input: 4, output: 20}   # Claude Opus 5.5 每百萬 token 美元
+  web_search_usd_per_1k: 10                # 網路搜尋每千次美元
