@@ -133,10 +133,11 @@ def stock_row(code: str, df: pd.DataFrame | None, futures: dict, detail: dict, r
             base = float(v.iloc[-6:-1].mean())
             d["value"] = float(v.iloc[-1])
             d["vol_ratio"] = float(v.iloc[-1]) / base if base else None
-        if research_date:
-            before = close[close.index.tz_localize(None) <= pd.Timestamp(research_date)] \
-                if close.index.tz is not None else close[close.index <= pd.Timestamp(research_date)]
-            if len(before):
+        if research_date:  # 研究日之後有新的交易日才算「研究後漲跌」
+            idx = close.index.tz_convert("Asia/Taipei").tz_localize(None) if close.index.tz is not None else close.index
+            cut = pd.Timestamp(research_date) + pd.Timedelta(days=1)
+            before = close[idx < cut]
+            if len(before) and idx[-1] >= cut:
                 d["since_research"] = _pct(close.iloc[-1], before.iloc[-1])
         try:
             res = target_price.compute(df, symbol=code)

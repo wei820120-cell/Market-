@@ -659,3 +659,18 @@ def test_chart_wrap():
     from market_intel.charts import _wrap
     out = _wrap("Low-Dk1/2、Low-CTE 認證，產線 4→12 條", 15, 2)
     assert "Low-\n" not in out and len(out.splitlines()) <= 2
+
+
+def test_card_stock_row_since_research():
+    import pandas as pd
+    from market_intel import theme_card
+    idx = pd.date_range("2026-06-01", periods=90, freq="B", tz="Asia/Taipei").tz_convert("UTC")
+    close = pd.Series(range(100, 190), index=idx, dtype=float)
+    df = pd.DataFrame({"open": close, "high": close * 1.01, "low": close * 0.99, "close": close, "volume": 1e6})
+    last_day = f"{idx[-1].tz_convert('Asia/Taipei'):%Y-%m-%d}"
+    row = theme_card.stock_row("8046", df, {}, {"rate": {}, "etf": {}, "quotes": {}}, {}, {}, last_day)
+    assert "since_research" not in row and row["close"] == 189.0 and row["target"]
+    row = theme_card.stock_row("8046", df, {}, {"rate": {}, "etf": {}, "quotes": {}}, {}, {"8046": ["注意股"]},
+                               f"{idx[-11].tz_convert('Asia/Taipei'):%Y-%m-%d}")
+    assert round(row["since_research"], 1) == round((189 / 179 - 1) * 100, 1) and row["alerts"] == ["注意股"]
+    assert row["fut_short"] == "無股期"

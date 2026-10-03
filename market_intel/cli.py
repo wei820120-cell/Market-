@@ -801,7 +801,8 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
         if not loose.empty:
             lines.append("\n💡 資金流入但不在任何族群（可能是新題材）：")
             for r in loose.to_dict("records"):
-                lines.append(f"・{r['代號']} {r['名稱']} {r['漲跌%']:+.1f}%｜{r['股票期貨']}｜{r['理由']}")
+                pct = "" if r["漲跌%"] is None or pd.isna(r["漲跌%"]) else f" {r['漲跌%']:+.1f}%"
+                lines.append(f"・{r['代號']} {r['名稱']}{pct}｜股期 {r['股票期貨']}｜{r['理由']}")
     if not ai.available():
         lines.append("\n（還沒設定 API 金鑰：未研究的題材先附題材卡；想研究可以傳「研究 族群名稱」給 Claude 處理）")
     notify.send("\n".join(lines), channel=channel)
