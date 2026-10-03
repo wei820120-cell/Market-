@@ -98,6 +98,7 @@ pip install -r requirements.txt
 | 盤勢 | `TELEGRAM_BOT_TOKEN`、`TELEGRAM_CHAT_ID` | 族群資金流向、資金湧入、到價、停損、大漲、盤後摘要 |
 | 新聞（選用） | `TELEGRAM_NEWS_BOT_TOKEN` | 新聞、漲價信、重大訊息、盤後新聞整理 |
 | 選股（選用） | `TELEGRAM_PICKS_BOT_TOKEN` | 強勢標的（資金流入＋題材＋漲價，附股票期貨代碼）、「漲價＋資金湧入」即時警示 |
+| 研究組（選用） | `TELEGRAM_RESEARCH_BOT_TOKEN` | 股癌頻道貼文、AI 題材供應鏈研究；接收「研究 XXX」指令 |
 
 - 新聞、選股機器人沒設定時，改由盤勢機器人送出。
 - Chat ID 會沿用 `TELEGRAM_CHAT_ID`。要推到別的聊天室，才需要另設 `TELEGRAM_NEWS_CHAT_ID` 或 `TELEGRAM_PICKS_CHAT_ID`。
@@ -153,7 +154,7 @@ pip install -r requirements.txt
 
 ## 產業消息頻道（股癌 Telegram 等）
 
-`.github/workflows/channels.yml` 每 10 分鐘檢查 `config/sources.yaml` 裡的公開 Telegram 頻道，全天執行，有新貼文就推到新聞機器人。每則會附上：
+`.github/workflows/channels.yml` 每 10 分鐘檢查 `config/sources.yaml` 裡的公開 Telegram 頻道，全天執行，有新貼文就推到研究機器人（沒設定時推到新聞機器人；可在 `push_to` 改）。新貼文也會交給題材研究員判斷要不要研究。每則會附上：
 
 - 原文
 - 提到的台股，以及它們有沒有股票期貨或小型股票期貨
