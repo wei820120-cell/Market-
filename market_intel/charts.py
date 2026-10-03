@@ -305,3 +305,120 @@ def sector_perf_png(path: Path, title: str, groups: list[tuple[str, list]], days
     fig.savefig(path, dpi=DPI, bbox_inches="tight")
     plt.close(fig)
     return path
+
+
+# ---------------------------------------------------------------- 技術細項解說圖（產業懶人包風格）
+
+def _slide(title: str, subtitle: str, height: float):
+    setup_font()
+    fig = plt.figure(figsize=(WIDTH, height), dpi=DPI)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 10)
+    ax.set_ylim(height, 0)
+    ax.axis("off")
+    ax.add_patch(plt.Rectangle((0, 0), 10, 1.05, fc="#24364f", ec="none"))
+    ax.text(0.35, 0.42, _clean(title), fontsize=16, color="white", weight="bold", va="center")
+    if subtitle:
+        ax.text(0.35, 0.8, _wrap(_clean(subtitle), 60, 1), fontsize=9, color="#ffd479", va="center")
+    return fig, ax
+
+
+def _save(fig, path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=DPI)
+    plt.close(fig)
+    return path
+
+
+def spec_table_slide_png(path: Path, topic: str, table: dict) -> Path:
+    """規格比較表：欄寬依內容自動分配，儲存格自動換行。"""
+    cols = [str(c) for c in table.get("columns") or []]
+    rows = [[str(c) for c in r] + [""] * (len(cols) - len(r)) for r in table.get("rows") or []]
+    if not cols or not rows:
+        raise ValueError("規格表沒有內容")
+    width_w = [max(sum(0.55 if ord(ch) < 128 else 1 for ch in str(x)) for x in [c] + [r[i] for r in rows])
+               for i, c in enumerate(cols)]
+    width_w = [min(max(w, 3), 16) for w in width_w]
+    total = sum(width_w)
+    xs = [0.25]
+    for w in width_w:
+        xs.append(xs[-1] + w / total * 9.5)
+    chars = [max(4, int(w / total * 9.5 * 5.2)) for w in width_w]  # 每欄每行大約可放的字數
+    wrapped = [[_wrap(_clean(c), chars[i], 3) for i, c in enumerate(r)] for r in rows]
+    heights = [0.32 + 0.24 * max(x.count("\n") + 1 for x in r) for r in wrapped]
+    note = table.get("note") or ""
+    height = 1.05 + 0.55 + 0.5 + sum(heights) + (0.7 if note else 0.3)
+    fig, ax = _slide(f"{topic}｜{table.get('title', '規格比較')}", "", height)
+    y = 1.35
+    ax.add_patch(plt.Rectangle((0.25, y), 9.5, 0.5, fc="#e8edf3", ec="none"))
+    for i, c in enumerate(cols):
+        ax.text((xs[i] + xs[i + 1]) / 2, y + 0.25, _wrap(_clean(c), chars[i], 2), fontsize=9, weight="bold",
+                ha="center", va="center", color="#24364f")
+    y += 0.5
+    for k, (r, h) in enumerate(zip(wrapped, heights)):
+        if k % 2:
+            ax.add_patch(plt.Rectangle((0.25, y), 9.5, h, fc="#f6f8fa", ec="none"))
+        for i, c in enumerate(r):
+            ax.text((xs[i] + xs[i + 1]) / 2, y + h / 2, c, fontsize=8.5, ha="center", va="center",
+                    weight="bold" if i == 0 else "normal", color="#1f2a37", linespacing=1.25)
+        y += h
+        ax.plot([0.25, 9.75], [y, y], color="#dde3ea", lw=0.6)
+    if note:
+        ax.text(0.3, y + 0.35, _wrap("註：" + _clean(note), 64, 2), fontsize=8, color="#666", va="center")
+    return _save(fig, path)
+
+
+def evolution_slide_png(path: Path, topic: str, steps: list[dict]) -> Path:
+    """世代演進：由舊到新往下排，每代一張卡（名稱｜組成｜關鍵規格｜應用），越新顏色越深。"""
+    if not steps:
+        raise ValueError("沒有世代資料")
+    card_h, gap = 1.05, 0.32
+    height = 1.05 + 0.4 + len(steps) * (card_h + gap) + 0.2
+    fig, ax = _slide(f"{topic}｜世代演進", "由上往下＝由舊到新", height)
+    cmap = plt.get_cmap("Blues")
+    y = 1.4
+    for i, st in enumerate(steps):
+        shade = cmap(0.25 + 0.6 * i / max(1, len(steps) - 1))
+        ax.add_patch(FancyBboxPatch((0.3, y), 2.3, card_h - 0.05, boxstyle="round,pad=0.03", fc=shade, ec="none"))
+        ax.text(1.45, y + card_h / 2, _wrap(_clean(st.get("name", "")), 9, 2), fontsize=11, weight="bold",
+                ha="center", va="center", color="white" if i > len(steps) / 2 else "#14243a")
+        ax.add_patch(FancyBboxPatch((2.75, y), 6.95, card_h - 0.05, boxstyle="round,pad=0.03", fc="#f6f8fa",
+                                    ec="#dde3ea"))
+        ax.text(2.9, y + 0.22, _wrap("組成：" + _clean(st.get("composition", "")), 38, 1), fontsize=8.5, va="center")
+        ax.text(2.9, y + 0.5, _wrap("規格：" + _clean(st.get("spec", "")), 38, 1), fontsize=8.5, va="center",
+                color="#9a3412", weight="bold")
+        ax.text(2.9, y + 0.78, _wrap("應用：" + _clean(st.get("application", "")), 38, 1), fontsize=8.5,
+                va="center", color="#24364f")
+        if i < len(steps) - 1:
+            ax.annotate("", xy=(1.45, y + card_h + gap - 0.02), xytext=(1.45, y + card_h - 0.04),
+                        arrowprops={"arrowstyle": "-|>", "color": "#8a94a6", "lw": 1.4})
+        y += card_h + gap
+    return _save(fig, path)
+
+
+def concepts_slide_png(path: Path, topic: str, concepts: list[dict], conclusion: list[str]) -> Path:
+    """關鍵概念解說＋結論：每個概念一個區塊，條列重點。"""
+    blocks = [(c.get("title", ""), c.get("points") or []) for c in concepts if c.get("points")]
+    if conclusion:
+        blocks.append(("結論", conclusion))
+    if not blocks:
+        raise ValueError("沒有概念資料")
+    wrapped = [(t, [_wrap(_clean(p), 52, 3) for p in pts]) for t, pts in blocks]
+    hs = [0.6 + sum(0.12 + 0.24 * (p.count("\n") + 1) for p in pts) for _, pts in wrapped]
+    height = 1.05 + 0.3 + sum(h + 0.25 for h in hs)
+    fig, ax = _slide(f"{topic}｜關鍵概念", "讀懂這個題材一定要知道的事", height)
+    y = 1.35
+    for (title, pts), h in zip(wrapped, hs):
+        last = title == "結論"
+        ax.add_patch(FancyBboxPatch((0.3, y), 9.4, h, boxstyle="round,pad=0.03",
+                                    fc="#fff7e6" if last else "#f6f8fa", ec="#f0b429" if last else "#dde3ea"))
+        ax.text(0.5, y + 0.3, _clean(title), fontsize=12, weight="bold", va="center",
+                color="#9a3412" if last else "#24364f")
+        yy = y + 0.6
+        for p in pts:
+            n = p.count("\n") + 1
+            ax.text(0.55, yy + 0.06, "•", fontsize=10, va="top", color="#24364f")
+            ax.text(0.8, yy, p, fontsize=9, va="top", color="#1f2a37", linespacing=1.3)
+            yy += 0.12 + 0.24 * n
+        y += h + 0.25
+    return _save(fig, path)

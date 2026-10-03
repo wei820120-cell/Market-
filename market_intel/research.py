@@ -52,8 +52,11 @@ REPORT_TEMPLATE = """請研究這個題材：「{topic}」
 ## 一句話重點
 ## 這是什麼？為什麼現在？
 （技術或產品是什麼、解決什麼問題、這次被討論的契機）
-## 技術／規格演進
-（如果有世代演進，像 FR-4 → M8 → M9 → 無布 HC／Hybrid PTFE 那樣講清楚每一代差在哪；沒有就略過）
+## 技術細項（要像產業懶人包一樣具體）
+- 規格比較表：關鍵材料／產品的規格數字比較（例如 PCB 材料的 Dk、Df、Tg、成本；光模組的速率、功耗、雷射種類），附單位與數值範圍
+- 世代演進：每一代的組成、關鍵規格、典型應用（例如 FR-4 → 改性 PPO → M8 → M9 → 無布 HC／Hybrid PTFE）
+- 關鍵概念解說：2～4 個讀者一定要懂的技術問題（例如「為什麼要拿掉玻纖布：Glass Weave Effect」），每個寫 3～5 點，講原因、影響、代價
+- 結論：怎麼判斷誰勝出（不是單看一個規格，而是性能、成本、良率、量產可行性的平衡）
 ## 細項產業與供應鏈地圖
 （把題材拆成細項產業，由上游到下游排列。例如「被動元件」拆成：上游材料（陶瓷粉、電極漿料）→ MLCC → 晶片電阻 → 電感 → 鉭質／鋁質電容 → 通路。
 每個細項產業寫：這段做什麼、現在的景氣與報價（漲價、缺貨、稼動率）、全球主要廠商、台股公司（代號 名稱：在這個細項的角色、受惠或受傷、理由）。
@@ -69,7 +72,8 @@ REPORT_TEMPLATE = """請研究這個題材：「{topic}」
 REPORT_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["topic", "one_line", "status", "horizon", "layers", "keywords", "catalysts", "risks", "sources"],
+    "required": ["topic", "one_line", "status", "horizon", "layers", "keywords", "catalysts", "risks",
+                 "spec_tables", "evolution", "concepts", "conclusion", "sources"],
     "properties": {
         "topic": {"type": "string"},
         "one_line": {"type": "string"},
@@ -105,6 +109,40 @@ REPORT_SCHEMA = {
         "keywords": {"type": "array", "items": {"type": "string"}},
         "catalysts": {"type": "array", "items": {"type": "string"}},
         "risks": {"type": "array", "items": {"type": "string"}},
+        "spec_tables": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["title", "columns", "rows", "note"],
+                "properties": {
+                    "title": {"type": "string"},
+                    "columns": {"type": "array", "items": {"type": "string"}},
+                    "rows": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+                    "note": {"type": "string"},
+                },
+            },
+        },
+        "evolution": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["name", "composition", "spec", "application"],
+                "properties": {"name": {"type": "string"}, "composition": {"type": "string"},
+                               "spec": {"type": "string"}, "application": {"type": "string"}},
+            },
+        },
+        "concepts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["title", "points"],
+                "properties": {"title": {"type": "string"}, "points": {"type": "array", "items": {"type": "string"}}},
+            },
+        },
+        "conclusion": {"type": "array", "items": {"type": "string"}},
         "sources": {
             "type": "array",
             "items": {
@@ -120,6 +158,8 @@ REPORT_SCHEMA = {
 EXTRACT_INSTRUCTION = """把下面這份研究報告整理成 JSON。
 - layers 依報告的細項產業分層，由上游到下游（layer 寫細項產業名稱，description 寫這段的景氣與報價）；
   tw_stocks 只放報告中明確寫出代號的台股，代號只要數字（例如 "2383"），同一檔只放一次。
+- spec_tables：報告裡的規格比較表，原樣搬過來（columns 是欄名，rows 每列是字串陣列，數字帶單位）。
+- evolution：世代演進，由舊到新；concepts：關鍵概念解說，每個 3～5 點；conclusion：結論 3～6 點。
 - keywords 放 5-15 個之後在新聞中辨識這個題材用的關鍵字（中英文都可，例如 M9、石英布、Q布、Low-Dk）。
 - 報告沒寫的欄位給空陣列，不要自己補。"""
 
@@ -332,7 +372,8 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
     update_auto_themes(topic, layers, data.get("keywords", []))
     (QUEUE_DIR / f"{slug(topic)}.json").unlink(missing_ok=True)  # 研究完成就移出佇列
     data_dir().mkdir(parents=True, exist_ok=True)
-    keep = ("topic", "one_line", "status", "horizon", "keywords", "catalysts", "risks", "sources")
+    keep = ("topic", "one_line", "status", "horizon", "keywords", "catalysts", "risks", "spec_tables", "evolution",
+            "concepts", "conclusion", "sources")
     (data_dir() / f"{slug(topic)}.json").write_text(json.dumps(
         {**{k: data.get(k) for k in keep}, "layers": [
             {"layer": l.get("layer"), "description": l.get("description", ""),

@@ -50,6 +50,10 @@ class Card:
     report_url: str = ""
     catalysts: list[str] = field(default_factory=list)
     risks: list[str] = field(default_factory=list)
+    spec_tables: list[dict] = field(default_factory=list)  # 技術細項：規格比較表
+    evolution: list[dict] = field(default_factory=list)    # 世代演進
+    concepts: list[dict] = field(default_factory=list)     # 關鍵概念解說
+    conclusion: list[str] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------- 找題材
@@ -91,7 +95,9 @@ def from_research(topic: str) -> dict:
                                                 for c in e.get("codes", [])]}]
     return {"title": topic, "layers": layers, "subtitle": d.get("one_line", ""), "research_date": e.get("date"),
             "report_url": research.report_url(e["file"]) if e.get("file") else "",
-            "catalysts": d.get("catalysts", []), "risks": d.get("risks", [])}
+            "catalysts": d.get("catalysts", []), "risks": d.get("risks", []),
+            "spec_tables": d.get("spec_tables") or [], "evolution": d.get("evolution") or [],
+            "concepts": d.get("concepts") or [], "conclusion": d.get("conclusion") or []}
 
 
 def from_theme(name: str, codes: list) -> dict:
@@ -167,7 +173,9 @@ def stock_row(code: str, df: pd.DataFrame | None, futures: dict, revenue: dict, 
 def build(found: dict, listings: dict, context: str = "", futures: dict | None = None) -> Card:
     card = Card(title=found["title"], subtitle=found.get("subtitle", ""), context=context,
                 research_date=found.get("research_date"), report_url=found.get("report_url", ""),
-                catalysts=found.get("catalysts", []), risks=found.get("risks", []))
+                catalysts=found.get("catalysts", []), risks=found.get("risks", []),
+                spec_tables=found.get("spec_tables") or [], evolution=found.get("evolution") or [],
+                concepts=found.get("concepts") or [], conclusion=found.get("conclusion") or [])
     seen: set[str] = set()
     layers = []
     for layer in found["layers"]:
@@ -222,6 +230,20 @@ def render(card: Card) -> list[Path]:
     out_dir = CARD_DIR / f"{now_tw():%Y%m%d-%H%M%S}-{research.slug(card.title)}"
     paths = []
     groups = _by_layer(card)
+    topic = re.split(r"[（(]研究", card.title)[0]
+    # 技術細項解說（像產業懶人包）：規格比較表 → 世代演進 → 關鍵概念與結論
+    for i, t in enumerate(card.spec_tables[:3]):
+        try:
+            paths.append(charts.spec_table_slide_png(out_dir / f"0{i}_spec.png", topic, t))
+        except Exception as e:  # noqa: BLE001
+            log.warning("規格表產生失敗：%s", e)
+    for name, fn, args in (("evolution", charts.evolution_slide_png, (card.evolution,)),
+                           ("concepts", charts.concepts_slide_png, (card.concepts, card.conclusion))):
+        if args[0] or (name == "concepts" and card.conclusion):
+            try:
+                paths.append(fn(out_dir / f"0{5 if name == 'evolution' else 6}_{name}.png", topic, *args))
+            except Exception as e:  # noqa: BLE001
+                log.warning("%s 產生失敗：%s", name, e)
     try:
         if card.layers:
             paths.append(charts.supply_chain_png(out_dir / "1_supply_chain.png", card.title,

@@ -685,3 +685,16 @@ def test_push_theme_cards_research_first(tmp_path, monkeypatch):
     assert msgs and msgs[0][0] == "research" and "被動元件" in msgs[0][1] and "波若威" in msgs[0][1]
     cli.push_theme_cards(flow, picks_df, {}, "盤後")  # 同一天不重複
     assert len(cards) == 1
+
+
+def test_detail_slides(tmp_path):
+    from market_intel import charts
+    t = {"title": "比較", "columns": ["材料", "Dk", "定位"],
+         "rows": [["FR-4", "4.0–4.5", "成熟便宜、強度高；高頻損耗大，用於一般電子產品"], ["PTFE", "2.0", "電性天花板"]],
+         "note": "Dk 越低越好"}
+    assert charts.spec_table_slide_png(tmp_path / "a.png", "PCB", t).stat().st_size > 1000
+    evo = [{"name": "M8", "composition": "PPO", "spec": "Dk 3.3", "application": "AI"},
+           {"name": "M9", "composition": "Q布", "spec": "Dk 3.1", "application": "Rubin"}]
+    assert charts.evolution_slide_png(tmp_path / "b.png", "PCB", evo).stat().st_size > 1000
+    assert charts.concepts_slide_png(tmp_path / "c.png", "PCB", [{"title": "為什麼", "points": ["一", "二"]}],
+                                     ["結論一"]).stat().st_size > 1000
