@@ -561,3 +561,24 @@ def test_command_offset_per_bot(tmp_path, monkeypatch):
     assert research.load_offset("111:SECRET") == 900 and research.load_offset("222:OTHER") == 5
     assert research.load_offset("333:NEW") is None  # 新機器人從頭讀，不沿用別的機器人的記錄
     assert "SECRET" not in (tmp_path / "cmd.json").read_text()
+
+
+def test_publish_pending(tmp_path, monkeypatch):
+    import json
+    from market_intel import research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path)
+    monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(research, "AUTO_THEMES_PATH", tmp_path / "auto_themes.yaml")
+    (tmp_path / "pending").mkdir()
+    d = {"topic": "測試題材", "one_line": "x", "status": "混合", "horizon": "中期（3-12個月）",
+         "layers": [{"layer": "上游", "description": "", "global_players": [],
+                     "tw_stocks": [{"code": "1815", "name": "富喬", "role": "紗布", "impact": "受惠"},
+                                   {"code": "9999", "name": "假的", "role": "", "impact": "受惠"}]}],
+         "keywords": ["Q布"], "catalysts": [], "risks": [], "sources": [], "report": "# 報告"}
+    (tmp_path / "pending" / "a.json").write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    outs = research.publish_pending({"1815": {"name": "富喬"}}, {})
+    assert len(outs) == 1 and "1815 富喬" in outs[0]["message"]
+    assert not list((tmp_path / "pending").glob("*.json"))
+    md = (tmp_path / outs[0]["file"]).read_text(encoding="utf-8")
+    assert "9999" in md and "用量" not in md

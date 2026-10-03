@@ -673,10 +673,13 @@ def cmd_research(args) -> None:
     elif auto_texts:
         log.info("沒有 ANTHROPIC_API_KEY，略過自動題材偵測")
 
-    if not queue:
+    pending = research.PENDING_DIR.exists() and any(research.PENDING_DIR.glob("*.json"))
+    if not queue and not pending:
         return
     listings = _listings()
     futures = stock_futures.load_stock_futures()
+    for out in research.publish_pending(listings, futures) if pending else []:
+        notify.send(out["message"], channel=push)
     for topic, trigger, is_auto in queue:
         try:
             out = research.research_topic(topic, trigger, listings, futures, auto=is_auto)

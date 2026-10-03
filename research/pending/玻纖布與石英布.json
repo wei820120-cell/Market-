@@ -1,0 +1,157 @@
+{
+ "topic": "玻纖布與石英布（Q布）",
+ "one_line": "M8→M9 升級帶動 Low-Dk2、Low-CTE 與石英布（Q布）缺貨漲價，預期缺到 2027 下半年；玻纖紗／布廠最直接受惠，Q布是輝達 Rubin 的下一段增量。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "layers": [
+  {
+   "layer": "上游 玻纖紗／石英紗",
+   "description": "玻纖紗與石英纖維紗",
+   "global_players": [
+    "日東紡",
+    "信越化學",
+    "Saint-Gobain",
+    "菲利華",
+    "中國巨石"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "台廠唯一 Q紗＋Q布 批量出貨",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "自產紗布，Low-Dk 比重 6 成，M9 石英布認證中",
+     "impact": "受惠"
+    },
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "Low-Dk1/2、Low-CTE 認證，產線 4→12 條",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "中游 玻纖布織造",
+   "description": "高階玻纖布",
+   "global_players": [
+    "日東紡",
+    "旭化成",
+    "宏和"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "日東紡集團子公司，承接外溢訂單",
+     "impact": "受惠"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "紗布自製＋CCL 漲價 20～25%",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "下游 CCL",
+   "description": "銅箔基板，M8/M9",
+   "global_players": [
+    "生益",
+    "松下",
+    "斗山",
+    "Rogers"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭，M9 拉高 ASP，看成本轉嫁",
+     "impact": "中性"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "4 月漲價，高階漲 20～25%",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "可望跟進漲價",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游 PCB／載板",
+   "description": "材料漲價的成本方",
+   "global_players": [
+    "Ibiden",
+    "Unimicron"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "載板需 Low-CTE，缺料與成本上升",
+     "impact": "受傷"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "載板需 Low-CTE，成本上升",
+     "impact": "受傷"
+    },
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI PCB 材料成本上升，看轉嫁",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "keywords": [
+  "玻纖布",
+  "石英布",
+  "Q布",
+  "Q-glass",
+  "Low-Dk",
+  "Low-CTE",
+  "T-glass",
+  "石英纖維",
+  "M9",
+  "日東紡",
+  "Nittobo",
+  "電子布",
+  "玻纖紗"
+ ],
+ "catalysts": [
+  "9、10 月營收反映南亞 CCL 漲 20～25%",
+  "Rubin／Groq LPX 採用 M9＋Q布 起量（2026 下半年）",
+  "德宏、富喬 Q布認證與出貨進度"
+ ],
+ "risks": [
+  "中國巨石、菲利華擴產攻高階",
+  "日東紡 2027 年 T-glass 產能擴 3 倍，缺口收斂",
+  "股價已大漲、處置頻繁，波動大"
+ ],
+ "sources": [
+  {
+   "title": "工商時報 玻纖布短缺異常嚴重",
+   "url": "https://www.ctee.com.tw/news/20260815700069-430502"
+  },
+  {
+   "title": "鉅亨網 這塊布價格近翻倍",
+   "url": "https://news.cnyes.com/news/id/6608165"
+  }
+ ],
+ "report": "# 玻纖布與石英布（Q布）\n\n## 一句話重點\nAI 伺服器材料從 M7 → M8 → M9 升級，玻纖布跟著從 E-glass → Low-Dk1 → Low-Dk2 → 石英布（Q布）升級；高階 Low-Dk2、Low-CTE（T-glass）缺貨預期延續到 2027 下半年，價格一路漲，並傳導到 CCL（南亞已發漲價通知）。台股最直接受惠的是玻纖紗／布廠，Q布是下一段（M9、輝達 Rubin）的增量。\n\n## 這是什麼？為什麼現在？\n- **玻纖布**是 CCL（銅箔基板）和 IC 載板的骨架：玻纖紗織成布，含浸樹脂成為 PP（半固化片），再壓上銅箔成為 CCL。\n- 高速傳輸要更低的 Dk／Df，所以玻纖本身也要升級：\n  - **Low-Dk1／Low-Dk2**：低介電玻纖布，用在 M7／M8 等級的 AI 伺服器、交換器板。\n  - **Low-CTE（T-glass）**：低熱膨脹係數，用在 IC 載板（ABF／BT）。載板越做越大，需要更硬的核心層，T-glass 用量倍增。日東紡全球市占約 9 成。\n  - **石英布（Q布／Q-glass）**：用石英纖維（SiO₂ 純度極高）織成，Dk、Df 比 Low-Dk2 更低，對應 M9 等級材料。\n- **為什麼現在**：\n  - 輝達 Rubin 平台（及 Groq 3 LPX 機櫃）指定 M9 材料搭配 Q布，預期 2026 下半年到年底起量。\n  - 日東紡產能已滿，新產能最快 2027 年才開出；蘋果、AMD、輝達都派人到日本搶貨。\n  - 南亞 2026/9/1 起 CCL、PP 調漲 20～25%，點名玻纖布短缺「異常嚴重」；台燿 4 月已漲價。\n\n## 技術／規格演進\n| CCL 等級 | 玻纖布 | 說明 |\n|---|---|---|\n| M6 以下 | E-glass | 一般伺服器、消費電子 |\n| M7 | Low-Dk1 | 前一代 AI 伺服器 |\n| M8 | Low-Dk1 ＋ Low-Dk2 混用 | 目前 AI 伺服器、800G 交換器主流 |\n| M9 | 石英布（Q布）／Low-Dk3 | 輝達 Rubin、1.6T 交換器；2026 下半年起 |\n| 次世代 | 無布 HC 或 Hybrid PTFE | 224G／448G；無布方案會減少玻纖布用量（見研究庫「AI伺服器PCB材料」） |\n\n- 價格參考（媒體引述）：Low-Dk2 約每公尺 US$17.9～22.4，Q布約 US$38.7～44.7，接近兩倍。\n- 2026 年 Low-Dk3 與 Q布需求估約每月 100 萬公尺。\n- Q布難點：石英纖維脆、難織、要和樹脂搭配，下游 CCL 廠認證期長。\n\n## 供應鏈地圖\n**上游：玻纖紗／石英纖維紗**\n- 全球：日東紡（Nittobo，T-glass、Low-Dk、Q布）、信越化學（石英纖維）、Saint-Gobain（Quartzel）、菲利華（中國，石英纖維到 Q布一條龍）、中國巨石、泰山玻纖（中材科技）\n- 台股：\n  - 5475 德宏：台廠唯一同時投入 Q紗與 Q布並批量出貨，打入高階供應鏈（受惠，Q布純度最高）\n  - 1815 富喬：自產玻纖紗＋布，Low-Dk／Low-CTE 比重 2026 拉到約 6 成，產線滿載；M9 等級石英布研製成功、認證中（受惠）\n  - 1802 台玻：Low-Dk1、Low-Dk2、Low-CTE 三款通過認證，高階產線從 4 條擴到 12 條，2026 產能翻倍（受惠）\n\n**中游：玻纖布織造**\n- 全球：日東紡、旭化成、宏和（中國，與台光、生益、松下、斗山簽長約）\n- 台股：\n  - 5340 建榮：日東紡集團在台子公司，承接母集團外溢的高階訂單（受惠）\n  - 1303 南亞：自有玻纖紗／布，並與日東紡合作織造特殊玻纖布；同時是 CCL 廠，已發漲價通知（受惠）\n\n**下游：CCL（銅箔基板）**\n- 全球：生益、松下、斗山、Rogers\n- 台股：\n  - 2383 台光電：全球高階 CCL 龍頭，M8／M9 升級拉高 ASP；但玻纖布缺料、成本上升要看轉嫁能力（中性偏受惠）\n  - 6274 台燿：4 月已調漲 CCL，高階漲 20～25%（受惠於漲價，但也受料源限制）\n  - 6213 聯茂：可望跟進漲價（中性）\n\n**下游：PCB／IC 載板**\n- 台股：3037 欣興、8046 南電（載板，需要 Low-CTE T-glass，缺料可能卡出貨，成本上升）、2368 金像電（AI 伺服器 PCB，材料成本上升）\n- 這一層是材料漲價的「成本方」，短期毛利可能受壓，要看轉嫁。\n\n## 受惠與受傷總表\n- 受惠（純度高到低）：德宏（Q布）＞富喬（Low-Dk＋Q布認證）＞台玻（產能翻倍）＞建榮（日東紡外溢）＞南亞（紗布＋CCL 漲價）\n- 漲價轉嫁：台燿、台光電、聯茂\n- 成本壓力：欣興、南電、金像電（看轉嫁能力）\n- 長線潛在受傷：玻纖布廠若 224G／448G 走「無布 HC」路線，玻纖布用量會減少（目前多數判斷 Hybrid PTFE 與 M9＋Q布 仍是主流）\n\n## 時間軸與催化劑\n- 2026/9/1：南亞 CCL、PP 漲 20～25% 生效 → 看 9、10 月營收\n- 2026 下半年：Groq 3 LPX、輝達 Rubin 採用 M9＋Q布 → 德宏、富喬 Q布出貨與認證進度\n- 中國玻纖布廠每月調漲 10～15% 的計畫是否持續\n- 2027 年（初～第四季）：日東紡 T-glass 產能擴大約 3 倍 → 供給鬆動的時間點，是本題材最大的轉折觀察點\n- 每月 10 日前營收：台玻、富喬、德宏、建榮\n\n## 風險與反方觀點\n- **中國產能**：巨石集團投資 46 億人民幣擴產並攻高階，菲利華積極搶進 Q布；日東紡股價曾自高點腰斬（謝金河示警台玻、富喬、建榮、德宏面臨挑戰）\n- **日東紡 2027 年擴產 3 倍**，屆時 Low-CTE、Low-Dk 缺口可能收斂、漲價趨緩\n- **股價已大漲**：德宏 2026 年一度漲 7 倍以上，多檔進入處置，波動大\n- **Q布認證時間長**，富喬仍在認證階段，量產時程不確定\n- **技術路線**：無布 HC 若成主流，長期玻纖布用量下降\n\n## 已證實 vs 傳聞\n- 已證實：南亞漲價通知（2026/9/1 生效）、台燿 4 月漲價、台玻三款 Low-Dk／Low-CTE 認證通過與擴線、富喬股東會說明石英布認證中、日東紡擴產計畫\n- 傳聞／推估：輝達 Rubin 全面指定 Q布的程度、Q布月需求 100 萬公尺、中國廠每月漲 10～15% 的節奏、德宏取得輝達相關訂單\n\n## 資料來源\n- [財報狗：玻纖布缺口延燒至 2027 年](https://statementdog.com/news/15582)\n- [TechNews：玻纖布史詩級缺貨成下一個記憶體？](https://finance.technews.tw/2026/01/19/low-cte/)\n- [工商時報：玻纖布短缺「異常嚴重」！PCB材料漲價潮擴大](https://www.ctee.com.tw/news/20260815700069-430502)\n- [工商時報：輝達Rubin點名M9、Q布 台廠唯一供應商曝光](https://www.ctee.com.tw/news/20251205700272-430502)\n- [鉅亨網：AI伺服器下一個缺貨材料？這塊「布」價格近翻倍](https://news.cnyes.com/news/id/6608165)\n- [鉅亨網：富喬M9等級石英布材料進行認證](https://news.cnyes.com/news/id/6508216)\n- [經濟日報：去年已漲50%還沒完！大陸玻纖布續調價](https://money.udn.com/money/story/5607/9338993)\n- [ETtoday：中國殺向玻纖布！謝金河示警](https://finance.ettoday.net/news/3182421)\n- [TrendForce：What Is Glass Fiber Fabric and Why Is T-Glass Critical](https://www.trendforce.com/news/2025/11/24/news-what-is-glass-fiber-fabric-and-why-is-t-glass-critical-for-ai-servers-a-deep-dive/)\n- [DIGITIMES：Nittobo and Mitsui expand capacity](https://www.digitimes.com/news/a20251118PD211/mitsui-ai-server-capacity-production-demand.html)\n- [理財周刊：台燿全年獲利進入跳升期](https://www.moneyweekly.com.tw/ArticleData/Info/Article/247880)\n",
+ "trigger": "使用者手動指定（Claude Code 代為研究，未使用 API 金鑰）"
+}
