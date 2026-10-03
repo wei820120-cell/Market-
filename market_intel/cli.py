@@ -13,6 +13,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import time
 from datetime import datetime, time as dtime
 
@@ -691,8 +692,56 @@ def cmd_research(args) -> None:
                 break
 
 
+def _probe_sources() -> None:
+    """資料檢查：找出期交所保證金、股期行情、月營收、處置／注意股的 OpenAPI 路徑與欄位。"""
+    from . import net
+    specs = [
+        ("TAIFEX", "https://openapi.taifex.com.tw/swagger.json", "https://openapi.taifex.com.tw/v1",
+         ("保證金", "Margin", "股票期貨", "個股")),
+        ("TWSE", "https://openapi.twse.com.tw/v1/swagger.json", "https://openapi.twse.com.tw/v1",
+         ("處置", "注意", "營業收入", "營收")),
+        ("TPEX", "https://www.tpex.org.tw/openapi/swagger.json", "https://www.tpex.org.tw/openapi/v1",
+         ("處置", "注意", "營業收入", "營收")),
+    ]
+    for name, sw_url, base, words in specs:
+        try:
+            sw = net.get_json(sw_url)
+        except Exception as e:  # noqa: BLE001
+            print(f"\n{name} swagger 失敗：{e}")
+            continue
+        for path, ops in (sw.get("paths") or {}).items():
+            op = (ops or {}).get("get") or {}
+            text = f"{path} {op.get('summary', '')} {op.get('description', '')}"
+            if not any(w in text for w in words):
+                continue
+            print(f"\n{name} {path}：{op.get('summary', '')}")
+            try:
+                rows = net.get_json(base + path)
+                if isinstance(rows, list):
+                    print(f"  {len(rows)} 列；前 2 列：{json.dumps(rows[:2], ensure_ascii=False)[:700]}")
+            except Exception as e:  # noqa: BLE001
+                print(f"  讀取失敗：{e}")
+    try:
+        rows = taifex.fetch("futures_daily")
+        stock = [r for r in rows if str(r.get("Contract", "")).startswith(("CD", "QF", "KU", "LY", "QS"))]
+        print(f"\nDailyMarketReportFut：{len(rows)} 列；股期樣本：{json.dumps(stock[:4], ensure_ascii=False)[:1500]}")
+        print("Contract 種類：", sorted({str(r.get('Contract')) for r in rows})[:400])
+    except Exception as e:  # noqa: BLE001
+        print(f"DailyMarketReportFut 失敗：{e}")
+    for url in ("https://www.taifex.com.tw/cht/5/stockMargining", "https://www.taifex.com.tw/cht/5/indexMarging"):
+        try:
+            text = net.get(url).text
+            rows = re.findall(r"<tr[^>]*>(.*?)</tr>", text, flags=re.S | re.I)
+            print(f"\n{url}：{len(text)} 字，{len(rows)} 列")
+            for r in rows[:6]:
+                print("  ", re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "|", r))[:300])
+        except Exception as e:  # noqa: BLE001
+            print(f"{url} 失敗：{e}")
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
+    _probe_sources()
     print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
     data = stock_futures.load_stock_futures()
     print(f"\n股票期貨標的：{len(data)} 檔；有小型：{sum(1 for v in data.values() if v.get('mini'))} 檔；"
