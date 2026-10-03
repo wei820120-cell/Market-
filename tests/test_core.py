@@ -551,3 +551,13 @@ def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     assert "AI伺服器PCB材料" in idx
     assert "Glass Weave" in research.relevant_knowledge("玻纖布", idx)
     assert research.relevant_knowledge("寵物食品", idx) == ""
+
+
+def test_command_offset_per_bot(tmp_path, monkeypatch):
+    from market_intel import research
+    monkeypatch.setattr(research, "COMMAND_STATE", tmp_path / "cmd.json")
+    research.save_offset("111:SECRET", 900)
+    research.save_offset("222:OTHER", 5)
+    assert research.load_offset("111:SECRET") == 900 and research.load_offset("222:OTHER") == 5
+    assert research.load_offset("333:NEW") is None  # 新機器人從頭讀，不沿用別的機器人的記錄
+    assert "SECRET" not in (tmp_path / "cmd.json").read_text()

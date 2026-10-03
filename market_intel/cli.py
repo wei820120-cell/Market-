@@ -630,9 +630,10 @@ def cmd_research(args) -> None:
         queue.append((args.topic, "手動指定", False))
 
     if args.commands:
-        offset = research.load_offset()
+        token = notify.bot_token(push)
+        offset = research.load_offset(token)
         topics, offset = research.pending_commands(notify.get_updates(push, offset), notify.owner_chat(push), offset)
-        research.save_offset(offset)
+        research.save_offset(token, offset)
         for t in topics:
             if not ai.available():
                 notify.send(f"⚠️ 收到「研究 {t}」，但還沒設定 ANTHROPIC_API_KEY，無法進行 AI 研究。", channel=push)

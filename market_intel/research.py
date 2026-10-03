@@ -404,17 +404,29 @@ def pending_commands(updates: list[dict], owner_chat: str | None, offset: int | 
     return topics, offset
 
 
-def load_offset() -> int | None:
+def _bot_key(token: str | None) -> str:
+    # 每個機器人的訊息編號各自獨立，記錄要分開；只用 token 冒號前的機器人編號，不存密鑰
+    return (token or "none").split(":")[0]
+
+
+def load_offset(token: str | None) -> int | None:
     if COMMAND_STATE.exists():
         try:
-            return json.loads(COMMAND_STATE.read_text(encoding="utf-8")).get("offset")
+            return json.loads(COMMAND_STATE.read_text(encoding="utf-8")).get(_bot_key(token))
         except (ValueError, OSError):
             pass
     return None
 
 
-def save_offset(offset: int | None) -> None:
+def save_offset(token: str | None, offset: int | None) -> None:
     if offset is None:
         return
+    data = {}
+    if COMMAND_STATE.exists():
+        try:
+            data = json.loads(COMMAND_STATE.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            data = {}
+    data[_bot_key(token)] = offset
     COMMAND_STATE.parent.mkdir(parents=True, exist_ok=True)
-    COMMAND_STATE.write_text(json.dumps({"offset": offset}) + "\n", encoding="utf-8")
+    COMMAND_STATE.write_text(json.dumps(data) + "\n", encoding="utf-8")

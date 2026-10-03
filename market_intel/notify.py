@@ -60,6 +60,10 @@ def owner_chat(channel: str) -> str | None:
     return _telegram(channel)[1]
 
 
+def bot_token(channel: str) -> str | None:
+    return _telegram(channel)[0]
+
+
 def _discord(channel: str) -> str | None:
     key = f"DISCORD_{channel.upper()}_WEBHOOK_URL"
     if channel != "market" and os.environ.get(key):
