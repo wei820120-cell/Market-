@@ -27,16 +27,38 @@ def watchlist() -> dict:
     return load("watchlist")
 
 
+def _auto_research() -> dict:
+    """題材研究員自動產生的族群與關鍵字（research/auto_themes.yaml）。"""
+    path = ROOT / "research" / "auto_themes.yaml"
+    if not path.exists():
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
+
+@lru_cache(maxsize=None)
 def themes() -> dict:
-    return load("themes")
+    base = dict(load("themes"))
+    auto = _auto_research().get("tw") or {}
+    if auto:
+        base["tw"] = {**auto, **(base.get("tw") or {})}  # 手動設定優先
+    return base
 
 
 def news_keywords() -> dict:
     return load("news_keywords")
 
 
+@lru_cache(maxsize=None)
 def sources() -> dict:
-    return load("sources")
+    base = dict(load("sources"))
+    auto = _auto_research().get("topic_themes") or {}
+    if auto:
+        merged = {k: list(v) for k, v in auto.items()}
+        for k, v in (base.get("topic_themes") or {}).items():
+            merged[k] = list(dict.fromkeys(([v] if isinstance(v, str) else list(v)) + merged.get(k, [])))
+        base["topic_themes"] = merged
+    return base
 
 
 def all_tw_theme_codes() -> list[str]:
