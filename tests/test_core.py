@@ -596,9 +596,6 @@ def test_parse_request_kinds():
 
 def test_futures_detail_parse_and_contracts():
     from market_intel.fetchers import futures_detail as fd
-    m = fd.parse_margins([{"UnderlyingSecurityCode": "8046", "GroupLevel": "級距3", "InitialMarginRate": "20.25%",
-                           "MaintenanceMarginRate": "15.53%"}],
-                         [{"Contract": "NYF", "InitialMargin": "87000", "MaintenanceMargin": "67000"}])
     rows = [
         {"Contract": "QSF", "ContractMonth(Week)": "202611", "Last": "1467", "Volume": "462", "OpenInterest": "409",
          "TradingSession": "一般"},
@@ -612,14 +609,13 @@ def test_futures_detail_parse_and_contracts():
     q = fd.parse_quotes(rows)["QSF"]
     assert q["month"] == "202610" and q["last"] == 1468 and q["volume"] == 11680 and q["oi"] == 7823
     assert q["night_volume"] == 300
-    detail = {**m, "quotes": {"QSF": q}}
-    cs = fd.contracts("8046", 672.0, {"std": "LYF", "mini": "QSF", "night": False}, detail)
-    std, mini = cs
-    assert std["shares"] == 2000 and std["value"] == 672.0 * 2000
-    assert abs(std["initial"] - 672.0 * 2000 * 0.2025) < 1
-    assert mini["shares"] == 100 and mini["last"] == 1468 and mini["oi"] == 7823
+    detail = {"quotes": {"QSF": q}}
+    std, mini = fd.contracts("8046", 1460.0, {"std": "LYF", "mini": "QSF", "night": False}, detail)
+    assert std["shares"] == 2000 and std["value"] == 1460.0 * 2000 and std["last"] is None
+    assert mini["shares"] == 100 and mini["last"] == 1468 and mini["basis"] == 8 and mini["oi"] == 7823
+    assert "initial" not in mini
     etf = fd.contracts("0050", 200.0, {"std": "NYF", "mini": None, "night": True}, detail)
-    assert etf[0]["shares"] == 10000 and etf[0]["initial"] == 87000 and etf[0]["night"]
+    assert etf[0]["shares"] == 10000 and etf[0]["night"]
     assert fd.contracts("1815", 100.0, None, detail) == []
     assert fd.wan(826000) == "82.6萬"
 
@@ -668,9 +664,42 @@ def test_card_stock_row_since_research():
     close = pd.Series(range(100, 190), index=idx, dtype=float)
     df = pd.DataFrame({"open": close, "high": close * 1.01, "low": close * 0.99, "close": close, "volume": 1e6})
     last_day = f"{idx[-1].tz_convert('Asia/Taipei'):%Y-%m-%d}"
-    row = theme_card.stock_row("8046", df, {}, {"rate": {}, "etf": {}, "quotes": {}}, {}, {}, last_day)
+    row = theme_card.stock_row("8046", df, {}, {"quotes": {}}, {}, {}, last_day)
     assert "since_research" not in row and row["close"] == 189.0 and row["target"]
-    row = theme_card.stock_row("8046", df, {}, {"rate": {}, "etf": {}, "quotes": {}}, {}, {"8046": ["注意股"]},
+    row = theme_card.stock_row("8046", df, {}, {"quotes": {}}, {}, {"8046": ["注意股"]},
                                f"{idx[-11].tz_convert('Asia/Taipei'):%Y-%m-%d}")
     assert round(row["since_research"], 1) == round((189 / 179 - 1) * 100, 1) and row["alerts"] == ["注意股"]
     assert row["fut_short"] == "無股期"
+
+
+def test_push_theme_cards_research_first(tmp_path, monkeypatch):
+    import pandas as pd
+    from market_intel import cli, config, notify, research, theme_card
+    idx = tmp_path / "index.json"
+    idx.write_text(json.dumps({"玻纖布與石英布": {"date": "2026-10-03", "codes": ["1802", "1815", "5340", "5475"],
+                                                 "file": "x.md"}}), encoding="utf-8")
+    monkeypatch.setattr(research, "INDEX_PATH", idx)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(theme_card, "SENT_PATH", tmp_path / "sent.json")
+    monkeypatch.setattr(config, "themes", lambda: {"tw": {"玻纖布": ["1802", "1815", "5340", "5475"],
+                                                          "被動元件": ["2327", "2492"]}})
+    monkeypatch.setattr(cli.ai, "available", lambda: False)
+    cards, msgs = [], []
+    monkeypatch.setattr(theme_card, "build", lambda found, listings, context="", futures=None: (found, context))
+    monkeypatch.setattr(theme_card, "send", lambda card, channel="research": cards.append(card))
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": msgs.append((channel, text)))
+    flow = pd.DataFrame([
+        {"族群": "被動元件", "量比(對5日均)": 2.46, "資金增減(億)": 584.0, "加權漲跌%": 4.3, "判讀": "資金流入🔥"},
+        {"族群": "玻纖布", "量比(對5日均)": 1.5, "資金增減(億)": 21.7, "加權漲跌%": 3.7, "判讀": "資金流入"},
+        {"族群": "AI伺服器", "量比(對5日均)": 1.0, "資金增減(億)": 22.0, "加權漲跌%": -1.0, "判讀": "持平"},
+    ])
+    picks_df = pd.DataFrame([{"代號": "3163", "名稱": "波若威", "族群": "", "分數": 9.0, "理由": "量比6倍", "新聞": ""},
+                             {"代號": "2330", "名稱": "台積電", "族群": "", "分數": 2.0, "理由": "", "新聞": ""}])
+    cli.push_theme_cards(flow, picks_df, {}, "盤後")
+    # 研究過的玻纖布 → 直接推題材卡（細項產業來自研究）；沒研究過的被動元件 → 只排入研究
+    assert len(cards) == 1 and cards[0][0]["title"] == "玻纖布（研究：玻纖布與石英布）"
+    queued = sorted(p.stem for p in (tmp_path / "queue").glob("*.json"))
+    assert queued == sorted([research.slug("被動元件"), research.slug("波若威（3163）題材與產業")])
+    assert msgs and msgs[0][0] == "research" and "被動元件" in msgs[0][1] and "波若威" in msgs[0][1]
+    cli.push_theme_cards(flow, picks_df, {}, "盤後")  # 同一天不重複
+    assert len(cards) == 1

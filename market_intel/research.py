@@ -14,7 +14,7 @@ import json
 import logging
 import os
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import yaml
 
@@ -54,8 +54,10 @@ REPORT_TEMPLATE = """請研究這個題材：「{topic}」
 （技術或產品是什麼、解決什麼問題、這次被討論的契機）
 ## 技術／規格演進
 （如果有世代演進，像 FR-4 → M8 → M9 → 無布 HC／Hybrid PTFE 那樣講清楚每一代差在哪；沒有就略過）
-## 供應鏈地圖
-（由上游到下游分層：原料／材料 → 零組件 → 模組 → 系統／終端。每一層寫：這層做什麼、全球主要廠商、台股公司（代號 名稱：角色、受惠或受傷、理由））
+## 細項產業與供應鏈地圖
+（把題材拆成細項產業，由上游到下游排列。例如「被動元件」拆成：上游材料（陶瓷粉、電極漿料）→ MLCC → 晶片電阻 → 電感 → 鉭質／鋁質電容 → 通路。
+每個細項產業寫：這段做什麼、現在的景氣與報價（漲價、缺貨、稼動率）、全球主要廠商、台股公司（代號 名稱：在這個細項的角色、受惠或受傷、理由）。
+同一家公司橫跨多個細項時，放在營收占比最高或受惠最大的那一項。）
 ## 受惠與受傷總表
 ## 時間軸與催化劑
 （何時量產、何時放量、接下來要看的事件）
@@ -116,7 +118,8 @@ REPORT_SCHEMA = {
 }
 
 EXTRACT_INSTRUCTION = """把下面這份研究報告整理成 JSON。
-- layers 依報告的供應鏈分層，由上游到下游；tw_stocks 只放報告中明確寫出代號的台股，代號只要數字（例如 "2383"）。
+- layers 依報告的細項產業分層，由上游到下游（layer 寫細項產業名稱，description 寫這段的景氣與報價）；
+  tw_stocks 只放報告中明確寫出代號的台股，代號只要數字（例如 "2383"），同一檔只放一次。
 - keywords 放 5-15 個之後在新聞中辨識這個題材用的關鍵字（中英文都可，例如 M9、石英布、Q布、Low-Dk）。
 - 報告沒寫的欄位給空陣列，不要自己補。"""
 
@@ -327,6 +330,7 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
                     "status": data.get("status"), "usd": round(usage.usd(), 3), "auto": auto}
     save_index(index)
     update_auto_themes(topic, layers, data.get("keywords", []))
+    (QUEUE_DIR / f"{slug(topic)}.json").unlink(missing_ok=True)  # 研究完成就移出佇列
     data_dir().mkdir(parents=True, exist_ok=True)
     keep = ("topic", "one_line", "status", "horizon", "keywords", "catalysts", "risks", "sources")
     (data_dir() / f"{slug(topic)}.json").write_text(json.dumps(
@@ -528,13 +532,40 @@ def queue_research(topic: str, trigger: str) -> bool:
 
 
 def read_queue() -> list[tuple[os.PathLike, dict]]:
+    """待研究的題材；14 天內已研究過的直接移出。"""
     out = []
+    index = load_index()
     for p in sorted(QUEUE_DIR.glob("*.json")) if QUEUE_DIR.exists() else []:
         try:
-            out.append((p, json.loads(p.read_text(encoding="utf-8"))))
+            d = json.loads(p.read_text(encoding="utf-8"))
         except ValueError:
             p.unlink(missing_ok=True)
+            continue
+        if recently_researched(d.get("topic", ""), index):
+            p.unlink(missing_ok=True)
+            continue
+        out.append((p, d))
     return out
+
+
+def topic_for_theme(theme: str, codes: list[str]) -> str | None:
+    """族群對應的研究題材：同名、或成分股和某份研究重疊過半。"""
+    index = load_index()
+    if theme in index:
+        return theme
+    if theme.startswith("研究:"):
+        hit = next((t for t in index if f"研究:{t}"[:20] == theme), None)
+        if hit:
+            return hit
+    return find_for_codes(codes)
+
+
+def research_age_days(topic: str) -> int:
+    d = (load_index().get(topic) or {}).get("date")
+    try:
+        return (now_tw().date() - datetime.strptime(d, "%Y-%m-%d").date()).days
+    except (TypeError, ValueError):
+        return 999
 
 
 def status_of(theme: str, codes: list[str]) -> str:

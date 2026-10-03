@@ -751,7 +751,8 @@ def cmd_research(args) -> None:
         try:
             out = research.research_topic(topic, trigger, listings(), futures, auto=is_auto)
             notify.send(out["message"], channel=push)
-            _send_card_for_topic(out["data"]["topic"], listings(), push, "🔬 研究完成：目標價與股票期貨")
+            why = trigger.splitlines()[0][:80] if trigger else ""
+            _send_card_for_topic(out["data"]["topic"], listings(), push, f"🔬 研究完成｜{why}" if why else "🔬 研究完成")
         except ai.AIUnavailable as e:
             log.warning("研究「%s」失敗：%s", topic, e)
             notify.send(f"⚠️ 研究「{topic}」沒有完成：{e}", channel=push)
@@ -778,50 +779,56 @@ def cmd_inflow(args) -> None:
 
 def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings: dict, source: str,
                      futures: dict | None = None, top: int = 3, channel: str = "research") -> None:
-    """資金流入的族群 → 研究機器人：總覽＋前幾名族群的題材卡；還沒研究過的排入研究佇列。
+    """資金流入的族群／個股 → 研究細項產業 → 題材卡。
 
+    （資金流入本身已由盤勢機器人、新聞機器人推過，這裡只負責「研究」與「題材卡」。）
+    - 研究過的題材：直接推題材卡（細項產業分層＋目標價＋股票期貨），研究超過 30 天另排入更新
+    - 還沒研究過的族群、不在任何族群的強勢股：排入研究佇列，研究完成後才推題材卡
     flow：盤後 theme_flow_daily 或盤中 theme_flow_intraday 的結果（要有「族群」「判讀」欄）。
     """
-    if flow is None or flow.empty:
-        return
     themes_tw = config.themes().get("tw") or {}
-    money_col = "資金增減(億)" if "資金增減(億)" in flow else "超額資金(億)"
-    ratio_col = "量比(對5日均)" if "量比(對5日均)" in flow else "量能步調"
-    inflow = flow[flow["判讀"].astype(str).str.contains("資金流入") & (flow[money_col].fillna(0) > 0)]
-    if inflow.empty:
-        return
-    today = f"{now_tw():%Y-%m-%d}"
-    lines = [f"🔬 {source}資金流入題材 {now_tw():%m/%d %H:%M}"]
-    for r in inflow.head(6).to_dict("records"):
-        codes = [str(c) for c in themes_tw.get(r["族群"], [])]
-        lines.append(f"・{r['族群']}：{ratio_col[:2]} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
-                     f"加權 {r['加權漲跌%']:+.1f}%｜{research.status_of(r['族群'], codes)}")
+    queued: list[str] = []
+    if flow is not None and not flow.empty:
+        money_col = "資金增減(億)" if "資金增減(億)" in flow else "超額資金(億)"
+        ratio_col = "量比(對5日均)" if "量比(對5日均)" in flow else "量能步調"
+        ratio_name = "量比" if "量比" in ratio_col else ratio_col
+        inflow = flow[flow["判讀"].astype(str).str.contains("資金流入") & (flow[money_col].fillna(0) > 0)]
+        for r in inflow.head(top).to_dict("records"):
+            name = r["族群"]
+            codes = [str(c) for c in themes_tw.get(name, [])]
+            context = (f"🔥 {source}資金流入：{ratio_name} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
+                       f"加權 {r['加權漲跌%']:+.1f}%")
+            topic = research.topic_for_theme(name, codes)
+            if not topic:
+                if research.queue_research(name, f"{now_tw():%Y-%m-%d} {context}\n成分股：{'、'.join(codes)}"):
+                    queued.append(f"{name}（{context[2:]}）")
+                continue
+            if research.research_age_days(topic) > 30:
+                research.queue_research(topic, f"{now_tw():%Y-%m-%d} 更新研究｜{context}")
+            key = f"{source}:{name}"
+            if theme_card.already_sent(key):
+                continue
+            try:
+                found = theme_card.from_research(topic)
+                if topic != name:
+                    found["title"] = f"{name}（研究：{topic}）"
+                theme_card.send(theme_card.build(found, listings, context=context, futures=futures), channel=channel)
+                theme_card.mark_sent(key)
+            except Exception as e:  # noqa: BLE001
+                log.warning("題材卡 %s 產生失敗：%s", name, e)
     if picks_df is not None and not picks_df.empty and "族群" in picks_df:
-        loose = picks_df[picks_df["族群"].fillna("") == ""].head(5)
-        if not loose.empty:
-            lines.append("\n💡 資金流入但不在任何族群（可能是新題材）：")
-            for r in loose.to_dict("records"):
-                pct = "" if r["漲跌%"] is None or pd.isna(r["漲跌%"]) else f" {r['漲跌%']:+.1f}%"
-                lines.append(f"・{r['代號']} {r['名稱']}{pct}｜股期 {r['股票期貨']}｜{r['理由']}")
-    if not ai.available():
-        lines.append("\n（還沒設定 API 金鑰：未研究的題材先附題材卡；想研究可以傳「研究 族群名稱」給 Claude 處理）")
-    notify.send("\n".join(lines), channel=channel)
-    for r in inflow.head(top).to_dict("records"):
-        name = r["族群"]
-        key = f"{source}:{name}"
-        if theme_card.already_sent(key):
-            continue
-        codes = [str(c) for c in themes_tw.get(name, [])]
-        context = (f"🔥 {source}資金流入：{'量比' if '量比' in ratio_col else ratio_col} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
-                   f"加權 {r['加權漲跌%']:+.1f}%")
-        try:
-            theme_card.send(theme_card.build(theme_card.from_theme(name, codes), listings, context=context,
-                                             futures=futures), channel=channel)
-            theme_card.mark_sent(key)
-        except Exception as e:  # noqa: BLE001
-            log.warning("題材卡 %s 產生失敗：%s", name, e)
-        if research.status_of(name, codes) == "未研究":
-            research.queue_research(name, f"{today} {context}\n成分股：{'、'.join(codes)}")
+        # 資金流入但不在任何族群：研究它屬於哪個細項產業、有什麼題材
+        loose = picks_df[(picks_df["族群"].fillna("") == "") & (picks_df["分數"] >= 6)].head(2)
+        for r in loose.to_dict("records"):
+            topic = f"{r['名稱']}（{r['代號']}）題材與產業"
+            if research.queue_research(topic, f"{now_tw():%Y-%m-%d} {source}資金流入、不在任何族群："
+                                              f"{r['代號']} {r['名稱']}｜{r['理由']}｜{r.get('新聞', '')}"):
+                queued.append(f"{r['代號']} {r['名稱']}（不在任何族群：{r['理由']}）")
+    if queued:
+        msg = "🔬 排入研究（拆解細項產業，完成後推題材卡）：\n" + "\n".join(f"・{q}" for q in queued)
+        if not ai.available():
+            msg += "\n\n⚠️ 還沒設定 ANTHROPIC_API_KEY，不會自動研究；可以請 Claude 先研究這些題材。"
+        notify.send(msg, channel=channel)
 
 
 def _probe_sources() -> None:

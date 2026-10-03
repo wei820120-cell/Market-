@@ -3,7 +3,7 @@
 每檔股票：
 - 價量：收盤、漲跌（1／5／20 日）、量比（今日成交金額 ÷ 前 5 日平均）、趨勢
 - 波段目標價：保守目標、積極目標、停損、風報比（analysis/target_price.py）
-- 股票期貨／小型股票期貨：契約代碼、每口股數、一口契約價值、原始／維持保證金、近月期貨價、成交量、未平倉、夜盤
+- 股票期貨／小型股票期貨：契約代碼、每口股數、一口契約價值、近月期貨價、期現價差、成交量、未平倉、夜盤
 - 月營收：最新月份年增、月增
 - 處置股、注意股警示
 - 研究後漲跌（題材研究過的話）
@@ -230,20 +230,20 @@ def render(card: Card) -> list[Path]:
                                       note="保守目標＝最近的上方目標，積極目標＝最遠的上方目標，停損＝最近支撐；"
                                            "風報比＝(保守目標−收盤)/(收盤−停損)。⚠＝處置／注意股。僅供參考。",
                                       colorize={2: 2, 3: 3, 5: 5}))
-        fh = ["股票", "契約", "每口", "一口價值", "原始保證金", "維持保證金", "近月期價", "成交量", "未平倉"]
+        fh = ["股票", "契約", "每口", "一口價值", "近月期價", "期現價差", "成交量", "未平倉", "夜盤"]
         frs = []
         for d in rows:
             for c in d.get("futures") or []:
-                frs.append([f"{d['code']} {d['name']}", f"{c['kind']} {c['contract']}" + ("＋夜盤" if c.get("night") else ""),
-                            f"{c['shares']:,}股", futures_detail.wan(c.get("value")), futures_detail.wan(c.get("initial")),
-                            futures_detail.wan(c.get("maint")), _f(c.get("last")),
-                            _f(c.get("volume"), 0), _f(c.get("oi"), 0)])
+                frs.append([f"{d['code']} {d['name']}", f"{c['kind']} {c['contract']}", f"{c['shares']:,}股",
+                            futures_detail.wan(c.get("value")), _f(c.get("last")), _f(c.get("basis"), 1, True),
+                            _f(c.get("volume"), 0), _f(c.get("oi"), 0), "有" if c.get("night") else "—"])
         no_fut = [f"{d['code']} {d['name']}" for d in rows if not d.get("futures")]
         if frs:
             paths.append(charts.table_png(out_dir / "3_futures.png", f"{card.title}｜股票期貨／小型股票期貨", fh, frs,
-                                          [1.45, 1.35, 0.7, 0.9, 0.95, 0.95, 0.8, 0.7, 0.7],
+                                          [1.5, 1.05, 0.75, 0.95, 0.9, 0.9, 0.8, 0.8, 0.55],
                                           note=("沒有股票期貨：" + "、".join(no_fut) + "。" if no_fut else "")
-                                               + "保證金＝契約價值×期交所公告比例。以期貨商實際收取為準。"))
+                                               + "一口價值＝收盤×每口股數；期現價差＝近月期價−收盤（正＝正價差）。",
+                                          colorize={5: 5}))
         items = [{"label": f"{d['code']} {d['name']}", "df": d["df"], "target": d.get("target"),
                   "aggressive": d.get("aggressive"), "stop": d.get("stop")} for d in rows if d.get("df") is not None]
         if items:
@@ -275,9 +275,9 @@ def message(card: Card) -> str:
         futs = d.get("futures") or []
         if futs:
             for c in futs:
-                lines.append(f"  {c['kind']}股期 {c['contract']}：一口 {c['shares']:,} 股≈{futures_detail.wan(c.get('value'))}，"
-                             f"原始保證金≈{futures_detail.wan(c.get('initial'))}"
-                             f"｜期價 {_f(c.get('last'))} 量 {_f(c.get('volume'), 0)} 未平倉 {_f(c.get('oi'), 0)}"
+                lines.append(f"  {c['kind']}股期 {c['contract']}：一口 {c['shares']:,} 股≈{futures_detail.wan(c.get('value'))}"
+                             f"｜期價 {_f(c.get('last'))}（價差 {_f(c.get('basis'), 1, True)}）"
+                             f" 量 {_f(c.get('volume'), 0)} 未平倉 {_f(c.get('oi'), 0)}"
                              + ("｜夜盤" if c.get("night") else ""))
         else:
             lines.append(f"  股票期貨：{d.get('fut_label', '無')}")

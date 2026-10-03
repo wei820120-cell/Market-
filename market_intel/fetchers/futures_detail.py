@@ -1,10 +1,7 @@
-"""股票期貨完整資料：保證金比例、近月行情、成交量、未平倉量。
+"""股票期貨行情：近月期貨價、成交量、未平倉量、盤後（夜盤）成交量。
 
-來源：期交所 OpenAPI
-- /SingleStockFuturesMargining       股票類保證金比例（原始／維持／結算，依級距）
-- /SingleStockFuturesETFMargining    ETF 期貨保證金（固定金額）
-- /DailyMarketReportFut              期貨每日行情（含各股票期貨、一般／盤後時段）
-每天快取一次（盤後更新）。保證金＝契約價值 × 比例，契約價值＝股價 × 每口股數。
+來源：期交所 OpenAPI /DailyMarketReportFut（期貨每日行情，含各股票期貨、一般／盤後時段）
+每天快取一次（盤後更新）。一口契約價值＝股價 × 每口股數。
 """
 from __future__ import annotations
 
@@ -21,27 +18,6 @@ OPENAPI = "https://openapi.taifex.com.tw/v1"
 CACHE = CACHE_DIR / "futures_detail.json"
 STD_SHARES, MINI_SHARES = 2000, 100
 ETF_SHARES, ETF_MINI_SHARES = 10000, 1000
-
-
-def _rate(v) -> float | None:
-    x = to_float(str(v or "").replace("%", ""))
-    return None if x is None else x / 100
-
-
-def parse_margins(stock_rows: list[dict], etf_rows: list[dict]) -> dict:
-    """回傳 {"rate": {證券代號: {"level", "initial", "maint"}}, "etf": {契約代碼: {"initial", "maint"}}}。"""
-    rate: dict[str, dict] = {}
-    for r in stock_rows or []:
-        code = str(r.get("UnderlyingSecurityCode") or "").strip()
-        init, maint = _rate(r.get("InitialMarginRate")), _rate(r.get("MaintenanceMarginRate"))
-        if code and init:
-            rate[code] = {"level": str(r.get("GroupLevel") or ""), "initial": init, "maint": maint}
-    etf: dict[str, dict] = {}
-    for r in etf_rows or []:
-        c = str(r.get("Contract") or "").strip()
-        if c:
-            etf[c] = {"initial": to_float(r.get("InitialMargin")), "maint": to_float(r.get("MaintenanceMargin"))}
-    return {"rate": rate, "etf": etf}
 
 
 def parse_quotes(rows: list[dict]) -> dict[str, dict]:
@@ -76,17 +52,12 @@ def load_detail() -> dict:
         cached = json.loads(CACHE.read_text(encoding="utf-8"))
         if cached.get("date") == today and cached.get("quotes"):
             return cached
-    out: dict = {"date": today, "rate": {}, "etf": {}, "quotes": {}}
-    try:
-        out.update(parse_margins(net.get_json(f"{OPENAPI}/SingleStockFuturesMargining"),
-                                 net.get_json(f"{OPENAPI}/SingleStockFuturesETFMargining")))
-    except Exception as e:  # noqa: BLE001
-        log.warning("股票期貨保證金抓取失敗：%s", e)
+    out: dict = {"date": today, "quotes": {}}
     try:
         out["quotes"] = parse_quotes(net.get_json(f"{OPENAPI}/DailyMarketReportFut"))
     except Exception as e:  # noqa: BLE001
         log.warning("期貨每日行情抓取失敗：%s", e)
-    if out["quotes"] or out["rate"]:
+    if out["quotes"]:
         CACHE.parent.mkdir(parents=True, exist_ok=True)
         CACHE.write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
     elif CACHE.exists():
@@ -97,8 +68,8 @@ def load_detail() -> dict:
 def contracts(code: str, price: float | None, info: dict | None, detail: dict) -> list[dict]:
     """一檔股票的股票期貨契約明細（一般、小型各一筆）。沒有股票期貨回傳空清單。
 
-    每筆：{"kind": "一般"/"小型", "contract", "shares", "value", "initial", "maint", "level",
-           "last", "volume", "oi", "night_volume", "night"}
+    每筆：{"kind": "一般"/"小型", "contract", "shares", "value", "last", "basis", "volume", "oi",
+           "night_volume", "night"}；basis＝期貨價−股價（正價差／逆價差）
     """
     if not info:
         return []
@@ -111,18 +82,10 @@ def contracts(code: str, price: float | None, info: dict | None, detail: dict) -
             shares = ETF_SHARES if kind == "一般" else ETF_MINI_SHARES
         else:
             shares = STD_SHARES if kind == "一般" else MINI_SHARES
-        value = price * shares if price else None
-        init = maint = None
-        level = ""
-        if is_etf and contract in (detail.get("etf") or {}):
-            m = detail["etf"][contract]
-            init, maint = m.get("initial"), m.get("maint")
-        elif code in (detail.get("rate") or {}) and value:
-            m = detail["rate"][code]
-            init, maint, level = value * m["initial"], value * (m.get("maint") or 0), m.get("level", "")
         q = (detail.get("quotes") or {}).get(contract) or {}
-        out.append({"kind": kind, "contract": contract, "shares": shares, "value": value,
-                    "initial": init, "maint": maint, "level": level, "last": q.get("last"),
+        last = q.get("last")
+        out.append({"kind": kind, "contract": contract, "shares": shares, "value": price * shares if price else None,
+                    "last": last, "basis": last - price if last and price else None,
                     "volume": q.get("volume"), "oi": q.get("oi"), "night_volume": q.get("night_volume"),
                     "night": bool(info.get("night")) and kind == "一般"})
     return out
