@@ -10,6 +10,10 @@ on:
   schedule:
     - cron: "17 */2 * * *"   # 保險：萬一接續失敗，最慢 2 小時內重新啟動
   workflow_dispatch:
+    inputs:
+      minutes:
+        description: "這一輪要跑幾分鐘（測試可填 5）"
+        default: "345"
 
 permissions:
   contents: write
@@ -56,7 +60,7 @@ jobs:
             done
             git reset -q --hard "origin/${GITHUB_REF_NAME}"   # 一直衝突就放棄這次記錄，避免卡住
           }
-          end=$(( $(date +%s) + 345 * 60 ))
+          end=$(( $(date +%s) + ${{ inputs.minutes || '345' }} * 60 ))
           while [ "$(date +%s)" -lt "$end" ]; do
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
@@ -64,8 +68,8 @@ jobs:
             save
             sleep 120
           done
-      - name: 接續下一輪
-        if: ${{ !cancelled() }}
+      - name: 接續下一輪（只在 main 分支、完整跑完時接續）
+        if: ${{ !cancelled() && github.ref_name == github.event.repository.default_branch && (inputs.minutes || '345') == '345' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run watch.yml --ref "${GITHUB_REF_NAME}"
