@@ -772,3 +772,26 @@ def test_supply_shock(tmp_path, monkeypatch):
     assert sent and sent[0][0] == "research" and "天災意外" in sent[0][1] and "政策管制" in sent[0][1]
     assert cli.shock_cause("一般新聞", kw["supply_shock"]["causes"]) is None
     assert cli.supply_shocks(items, {"2327": {"name": "國巨"}}, {}) == []  # 已在佇列不重複
+
+
+def test_real_trade_parse_and_book(tmp_path, monkeypatch):
+    from market_intel.trade import real
+    monkeypatch.setattr(real, "STATE", tmp_path / "real.json")
+    assert real.parse("亞泥 35.7 1口") == {"cmd": "fill", "side": "buy", "query": "亞泥", "price": 35.7, "qty": 1, "mini": False}
+    assert real.parse("亞泥、35.7、1口")["price"] == 35.7
+    assert real.parse("買 DYF 35.7 2口")["query"] == "DYF"
+    assert real.parse("賣 亞泥 36.5 1口")["side"] == "sell"
+    assert real.parse("南電 小型 1468 1口") == {"cmd": "fill", "side": "buy", "query": "南電", "price": 1468.0,
+                                               "qty": 1, "mini": True}
+    assert real.parse("持倉") == {"cmd": "positions"} and real.parse("你好") is None
+    listings = {"1102": {"name": "亞泥"}, "8046": {"name": "南電"}}
+    futures = {"1102": {"std": "DYF"}, "8046": {"std": "LYF", "mini": "QSF"}}
+    assert real.resolve("亞泥", listings, futures) == ("1102", "亞泥", "DYF", 2000)
+    assert real.resolve("DYF", listings, futures)[2] == "DYF"
+    assert real.resolve("南電", listings, futures, mini=True) == ("8046", "南電", "QSF", 100)
+    assert real.resolve("台積電", listings, futures) is None
+    st = real.load()
+    msg = real.buy(st, "1102", "亞泥", "DYF", 2000, 35.7, 1, 0.6, 0.135)
+    assert "停損 34.80" in msg and st["positions"][0]["stop"] == 35.7 - 0.9
+    msg = real.sell(st, "DYF", "亞泥", 36.5, 1)
+    assert "損益 +1,4" in msg and not st["positions"] and st["equity"] > 100000

@@ -1118,12 +1118,15 @@ def cmd_trade(args) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(done, ensure_ascii=False), encoding="utf-8")
 
+    if args.commands:
+        _trade_commands()
     want_pre = args.pre or (args.auto and paper.is_weekday(now) and TRADE_PRE <= f"{now:%H:%M}" < "09:00"
                             and done.get("pre") != today)
     want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
                               and done.get("post") != today)
     if want_pre:
-        paper.push(paper.run_pre())
+        from .trade import real
+        paper.push(paper.run_pre() + "\n\n" + real.positions_text(real.load()))
         mark("pre")
     if not want_post:
         return
@@ -1146,8 +1149,77 @@ def cmd_trade(args) -> None:
     msg = paper.run_post(data, index_df, futures, names, rates, tw_daily.load_alerts(), today)
     if msg is None and f"{now:%H:%M}" < TRADE_POST_GIVEUP and not args.post:
         return  # 日 K 可能還沒更新，下一輪再試
+    if msg is not None:  # 實單持倉：盤後檢查停損與出場
+        from .trade import backtest as bt
+        from .trade import real
+        rst = real.load()
+        prepped = {x["code"]: bt.prepare(data[x["code"]], paper.PARAMS) for x in rst["positions"] if x["code"] in data}
+        day = index_df.index[-1]
+        alerts = real.daily_check(rst, day, prepped)
+        real.save(rst)
+        closes = {c: float(d["close"].iloc[-1]) for c, d in prepped.items()}
+        section = real.positions_text(rst, closes) + ("\n\n【出場提醒】\n" + "\n".join(alerts) if alerts else "")
+        msg = section + "\n\n━━━━ 以下為模擬帳戶（對照用）━━━━\n" + (msg or "")
     paper.push(msg)
     mark("post")
+
+
+def _trade_commands() -> None:
+    """讀進出場機器人收到的成交回報（只接受自己的訊息），記帳並回覆停損、目標與風險檢查。"""
+    from . import net
+    from .trade import paper, real
+    token = os.environ.get("TELEGRAM_TRADE_BOT_TOKEN")
+    if not token:
+        return
+    offset = research.load_offset(token)
+    updates = notify.get_updates("trade", offset)
+    owner = notify.owner_chat("trade")
+    msgs = []
+    for u in updates:
+        offset = max(offset or 0, int(u.get("update_id", 0)) + 1)
+        m = u.get("message") or {}
+        if owner and str((m.get("chat") or {}).get("id")) != str(owner):
+            continue
+        if m.get("text"):
+            msgs.append(m["text"])
+    research.save_offset(token, offset)
+    if not msgs:
+        return
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    st = real.load()
+    for text in msgs:
+        cmd = real.parse(text)
+        if not cmd:
+            notify.send("看不懂這則回報。格式例如：亞泥 35.7 1口、賣 亞泥 36.5 1口、持倉、說明", channel="trade")
+            continue
+        if cmd["cmd"] == "help":
+            notify.send(real.HELP, channel="trade")
+            continue
+        if cmd["cmd"] == "positions":
+            notify.send(real.positions_text(st), channel="trade")
+            continue
+        hit = real.resolve(cmd["query"], listings, futures, cmd["mini"])
+        if not hit:
+            notify.send(f"找不到「{cmd['query']}」的股票期貨，請打股票名稱、代號或契約代碼（例如 亞泥、1102、DYF）",
+                        channel="trade")
+            continue
+        code, name, contract, mult = hit
+        if cmd["side"] == "sell":
+            notify.send(real.sell(st, contract, name, cmd["price"], cmd["qty"]), channel="trade")
+            continue
+        hist = _yahoo_histories([code], listings, range_="6mo").get(code)
+        from .analysis.indicators import atr as _atr
+        a = float(_atr(hist).iloc[-1]) if hist is not None and len(hist) > 20 else cmd["price"] * 0.03
+        rate = paper.PARAMS.margin_rate
+        try:
+            for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+                if r.get("Contract") == contract or (r.get("UnderlyingSecurityCode") == code and rate == paper.PARAMS.margin_rate):
+                    rate = float(str(r.get("InitialMarginRate", "20.25")).replace("%", "")) / 100
+        except Exception as e:  # noqa: BLE001
+            log.warning("保證金比例抓取失敗：%s", e)
+        notify.send(real.buy(st, code, name, contract, mult, cmd["price"], cmd["qty"], a, rate), channel="trade")
+    real.save(st)
 
 
 def cmd_check(args) -> None:
@@ -1198,6 +1270,7 @@ def main(argv: list[str] | None = None) -> None:
     tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")
     tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
     tr.add_argument("--post", action="store_true", help="立即盤後結算")
+    tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
     tr.set_defaults(func=cmd_trade)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
