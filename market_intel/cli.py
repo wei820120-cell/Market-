@@ -1122,6 +1122,38 @@ def _verify_margin() -> None:
                   "| 原始保證金≈", round(amt) if amt else None)
 
 
+def _backtest_factors(data, futures, index_df, rates, capital: float) -> None:
+    """哪些「看對的條件」真的讓交易更賺：同一批交易，依進場前的條件分組比平均 R、勝率。"""
+    from .trade import backtest as bt
+    res = bt.run(data, futures, index_df, bt.Params(capital=capital, exit_ma="ma20"), rates)
+    tr = pd.DataFrame(res["trades"])
+    tr = tr[tr["feat"].apply(bool)]
+    feats = pd.DataFrame(tr["feat"].tolist(), index=tr.index)
+    tr = tr.join(feats)
+    rows = []
+
+    def stat(label, m):
+        sub = tr[m]
+        if len(sub):
+            rows.append({"條件": label, "筆數": len(sub), "勝率%": round((sub["pnl"] > 0).mean() * 100, 1),
+                         "平均R": round(float(sub["r"].mean()), 2), "總損益": round(float(sub["pnl"].sum()))})
+
+    stat("全部交易", tr["pnl"].notna())
+    for k, name in bt.FACTORS.items():
+        stat(f"有：{name}", tr[k])
+        stat(f"無：{name}", ~tr[k])
+    n = feats.sum(axis=1)
+    for lo, hi in ((0, 2), (3, 3), (4, 4), (5, 7)):
+        stat(f"條件數 {lo}～{hi} 個" if lo != hi else f"條件數 {lo} 個", (n >= lo) & (n <= hi))
+    for setup in ("突破", "拉回"):
+        stat(f"型態：{setup}", tr["setup"] == setup)
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "factors.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def _backtest_speed(data, futures, index_df, rates, capital: float) -> None:
     """翻倍速度：同一套策略，不同風險／持倉數，從不同起點開始，看多久翻倍、中途最多回撤多少。"""
     from .trade import backtest as bt
@@ -1180,6 +1212,9 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.factors:
+        _backtest_factors(data, futures, index_df, rates, args.capital)
+        return
     if args.speed:
         _backtest_speed(data, futures, index_df, rates, args.capital)
         return
@@ -1525,6 +1560,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)
     tr = sub.add_parser("trade", help="進出場機器人（模擬）")

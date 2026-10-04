@@ -21,6 +21,10 @@ on:
         description: "股票期貨波段策略回測"
         type: boolean
         default: false
+      factors:
+        description: "看對的條件回測：依進場前條件分組比較勝率與平均 R"
+        type: boolean
+        default: false
       speed:
         description: "翻倍速度回測：不同風險／持倉數、不同起點，多久翻倍與回撤"
         type: boolean
@@ -71,6 +75,8 @@ jobs:
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ "${{ inputs.trade }}" = "true" ]; then
             python -m market_intel trade --post
+          elif [ "${{ inputs.factors }}" = "true" ]; then
+            python -m market_intel backtest --factors
           elif [ "${{ inputs.speed }}" = "true" ]; then
             python -m market_intel backtest --speed
           elif [ "${{ inputs.backtest }}" = "true" ]; then

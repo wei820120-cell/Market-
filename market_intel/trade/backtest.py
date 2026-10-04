@@ -80,6 +80,18 @@ class Trade:
     base: float = 0.0        # 試單進場價（算加碼價位用）
     reduced: bool = False    # 已減碼一半
     reduce_next: bool = False
+    feat: dict = field(default_factory=dict)  # 進場前一天的品質條件（只用來事後分析，不影響進出場）
+
+
+FACTORS = {
+    "f_hi": "離 52 週高點 10% 內",
+    "f_200": "站上 200 日線且 200 日線向上",
+    "f_rs": "近 120 日漲幅排名前 20%",
+    "f_vcp": "波動收斂（10 日均振幅 < 50 日均振幅 80%）",
+    "f_vol2": "突破量比 ≥ 2",
+    "f_tight": "低波動（ATR < 股價 3.5%）",
+    "f_mkt": "大盤強勢（站上 20 日線且 20 日線上升）",
+}
 
 
 def prepare(df: pd.DataFrame, p: Params) -> pd.DataFrame:
@@ -89,6 +101,15 @@ def prepare(df: pd.DataFrame, p: Params) -> pd.DataFrame:
     d["hh"] = d["high"].shift(1).rolling(p.breakout_n).max()
     d["vr"] = d["volume"] / d["volume"].shift(1).rolling(20).mean()
     new_high = d["close"] > d["hh"]
+    tr = pd.concat([d["high"] - d["low"], (d["high"] - d["close"].shift(1)).abs(),
+                    (d["low"] - d["close"].shift(1)).abs()], axis=1).max(axis=1)
+    ma200 = sma(d["close"], 200)
+    d["f_hi"] = d["close"] >= 0.9 * d["high"].rolling(252, min_periods=200).max()
+    d["f_200"] = (d["close"] > ma200) & (ma200 > ma200.shift(20))
+    d["f_vcp"] = tr.rolling(10).mean() < 0.8 * tr.rolling(50).mean()
+    d["f_vol2"] = d["vr"] >= 2.0
+    d["f_tight"] = d["atr"] < 0.035 * d["close"]
+    d["ret120"] = d["close"] / d["close"].shift(120) - 1
     d["sig_a"] = new_high & (d["vr"] >= p.vol_ratio) & (d["close"] > d["ma60"])
     recent_high = new_high.rolling(10).max().fillna(0).astype(bool)
     d["sig_b"] = ((d["ma20"] > d["ma60"]) & (d["ma20"] > d["ma20"].shift(5)) & recent_high
@@ -139,6 +160,9 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
     rates = rates or {}
     prepped = {c: prepare(df, p) for c, df in data.items() if len(df) > 80}
     mkt = market_ok(index_df)
+    ic = index_df["close"]
+    mkt_strong = (ic > sma(ic, 20)) & (sma(ic, 20) > sma(ic, 20).shift(10))
+    rs_rank = pd.DataFrame({c: d["ret120"] for c, d in prepped.items()}).rank(axis=1, pct=True)
     dates = sorted(set().union(*[set(d.index) for d in prepped.values()]) & set(mkt.index))
     equity = p.capital
     open_t: list[Trade] = []
@@ -166,8 +190,12 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             if not qty:
                 continue
             entry_cost = cost(entry, mult, qty)  # 記在這筆的損益裡，出場時一起結算
+            prev = d.shift(1).loc[day]
+            feat = {k: bool(prev[k]) for k in ("f_hi", "f_200", "f_vcp", "f_vol2", "f_tight")}
+            feat["f_rs"] = bool(rs_rank[code].shift(1).get(day, 0) >= 0.8)
+            feat["f_mkt"] = bool(mkt_strong.shift(1).get(day, False))
             open_t.append(Trade(code, setup, contract, mult, qty, str(day.date()), entry, stop,
-                                realized=-entry_cost, r0=entry - stop, qty0=qty, unit=qty, base=entry))
+                                realized=-entry_cost, r0=entry - stop, qty0=qty, unit=qty, base=entry, feat=feat))
         pending = []
         # 2) 出場：開盤執行前一天收盤觸發的出場 → 盤中停損 → +2R 先出一半 → 收盤檢查均線、時間停損
         for t in list(open_t):
