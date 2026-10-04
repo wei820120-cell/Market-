@@ -1080,6 +1080,8 @@ def cmd_trade(args) -> None:
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗：%s", e)
     names = {c: (v.get("name") or c) for c, v in listings.items()}
+    if args.post and not index_df.empty:
+        today = paper.last_date(index_df)  # 手動執行：用最近一個交易日結算
     msg = paper.run_post(data, index_df, futures, names, rates, tw_daily.load_alerts(), today)
     if msg is None and f"{now:%H:%M}" < TRADE_POST_GIVEUP and not args.post:
         return  # 日 K 可能還沒更新，下一輪再試
