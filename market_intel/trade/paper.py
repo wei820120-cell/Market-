@@ -120,9 +120,14 @@ def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict) -> list[str]
 
 
 def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: dict, rates: dict,
-              alerts: dict, market_ok: bool) -> list[dict]:
-    """今天收盤的訊號 → 明天的計劃（依量比排序，扣掉已持有、處置股，最多補滿 3 檔）。"""
+              alerts: dict, market_ok: bool, themes: dict | None = None) -> list[dict]:
+    """今天收盤的訊號 → 明天的計劃（題材股優先，再依量比排序；扣掉已持有、處置股，最多補滿 3 檔）。
+
+    themes：{代號: "族群／研究題材名稱"}，有題材的排前面。有訊號但口數算不出來的題材股記在 st["blocked"]。
+    """
     p = PARAMS
+    themes = themes or {}
+    st["blocked"] = []
     if not market_ok:
         return []
     cands = []
@@ -142,13 +147,21 @@ def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: 
         contract, mult, qty = bt.size(st["equity"], close, stop, futures.get(code, {}), p,
                                       rates.get(code, p.margin_rate), used)
         if not qty:
+            if code in themes:  # 有題材、有訊號，但 10 萬本金的風險／保證金規則做不了
+                info = futures.get(code, {})
+                m = bt.MINI if info.get("mini") else bt.STD
+                c = info.get("mini") or info.get("std")
+                one = (close - stop) * m
+                st["blocked"].append({"code": code, "name": names.get(code, code), "setup": setup, "theme": themes[code],
+                                      "contract": c, "risk_one": one, "need_capital": one / p.risk_pct,
+                                      "reserve_one": close * m * rates.get(code, p.margin_rate) * p.margin_mult})
             continue
-        cands.append({"code": code, "name": names.get(code, code), "setup": setup, "atr": a, "close": close,
+        cands.append({"code": code, "name": names.get(code, code), "setup": setup, "theme": themes.get(code, ""), "atr": a, "close": close,
                       "vr": float(row["vr"]), "info": futures.get(code, {}), "contract": contract, "mult": mult,
                       "qty": qty, "stop_est": stop, "target_est": close + p.take_r * (close - stop),
                       "margin_est": margin(close, mult, qty, rates.get(code, p.margin_rate)),
                       "risk_est": (close - stop) * mult * qty})
-    cands.sort(key=lambda c: (c["setup"] == "突破", c["vr"]), reverse=True)
+    cands.sort(key=lambda c: (bool(c["theme"]), c["setup"] == "突破", c["vr"]), reverse=True)
     return cands[:max(0, p.max_pos - len(st["positions"]))]
 
 
@@ -176,22 +189,34 @@ def report(st: dict, day: pd.Timestamp, events: list[str], market_ok: bool, prep
     return "\n".join(lines)
 
 
+def blocked_text(st: dict) -> str:
+    rows = st.get("blocked") or []
+    if not rows:
+        return ""
+    lines = ["", "👀 有題材、有訊號，但 10 萬本金規則做不了（僅供參考）"]
+    for b in rows[:6]:
+        lines.append(f"・{b['code']} {b['name']}〔{b['theme']}〕｜{b['setup']}｜{b['contract']} 一口停損約虧 {b['risk_one']:,.0f}"
+                     f"（上限 {PARAMS.capital * PARAMS.risk_pct:,.0f}）｜要做 1 口需本金約 {b['need_capital']:,.0f}")
+    return "\n".join(lines)
+
+
 def plan_text(st: dict, market_ok: bool, when: str = "今天") -> str:
     if not market_ok:
         return f"📋 {when}計劃：大盤空頭／盤整，不開新倉（持倉照停損與出場規則處理）"
     if not st.get("plan"):
-        return f"📋 {when}計劃：沒有符合條件的標的（或持倉已滿 {PARAMS.max_pos} 檔）"
+        return f"📋 {when}計劃：沒有符合條件的標的（或持倉已滿 {PARAMS.max_pos} 檔）" + blocked_text(st)
     lines = [f"📋 {when}計劃（開盤進場；停損＝進場價 − 1.5×ATR，依實際開盤價重算口數）"]
     for c in st["plan"]:
-        lines.append(f"・{c['code']} {c['name']}｜{c['setup']}｜{c['contract']} {c['qty']} 口"
+        lines.append(f"・{c['code']} {c['name']}" + (f"〔{c['theme']}〕" if c.get("theme") else "")
+                     + f"｜{c['setup']}｜{c['contract']} {c['qty']} 口"
                      f"｜參考價 {c['close']:,.1f}｜停損約 {c['stop_est']:,.1f}｜+2R 約 {c['target_est']:,.1f}"
                      f"｜最大虧損約 {c['risk_est']:,.0f}｜保證金約 {c['margin_est']:,.0f}"
                      f"（準備 3 倍 {c['margin_est'] * PARAMS.margin_mult:,.0f}）")
-    return "\n".join(lines)
+    return "\n".join(lines) + blocked_text(st)
 
 
 def run_post(data: dict, index_df: pd.DataFrame, futures: dict, names: dict, rates: dict, alerts: dict,
-             today: str) -> str | None:
+             today: str, themes: dict | None = None) -> str | None:
     """盤後：今天有新的日 K 才結算（休市日不動作）。回傳推播文字。"""
     st = load()
     prepped = {c: bt.prepare(df, PARAMS) for c, df in data.items() if len(df) > 80}
@@ -204,7 +229,7 @@ def run_post(data: dict, index_df: pd.DataFrame, futures: dict, names: dict, rat
         return ""
     mkt = bool(bt.market_ok(index_df).iloc[-1])
     events = settle(st, day, prepped, rates) if st.get("last_date") else []
-    st["plan"] = make_plan(st, day, prepped, futures, names, rates, alerts, mkt)
+    st["plan"] = make_plan(st, day, prepped, futures, names, rates, alerts, mkt, themes)
     st["last_date"], st["regime"] = today, "多頭" if mkt else "空頭／盤整"
     msg = report(st, day, events, mkt, prepped)
     save(st)

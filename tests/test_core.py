@@ -806,3 +806,27 @@ def test_size_three_times_margin():
     assert bt.size(100_000, 1468, 1448, {"std": "LYF", "mini": "QSF"}, p, 0.216, 80_000) == ("", 0, 0)
     # 亞泥 35.6：風險可做 1 口；3 倍保證金 35.6*2000*0.135*3≈28,836
     assert bt.size(100_000, 35.6, 34.7, {"std": "DYF"}, p, 0.135) == ("DYF", 2000, 1)
+
+
+def test_plan_theme_priority_and_blocked():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt, paper
+    idx = pd.date_range("2025-01-01", periods=200, freq="B", tz="UTC")
+
+    def mk(base, spread=0.004):
+        close = pd.Series(np.linspace(base, base * 1.6, 200), index=idx)
+        close.iloc[-1] = close.iloc[-2] * 1.04
+        vol = pd.Series(1e6, index=idx)
+        vol.iloc[-1] = 3e6
+        return bt.prepare(pd.DataFrame({"open": close, "high": close * (1 + spread), "low": close * (1 - spread),
+                                        "close": close,
+                                        "volume": vol}), paper.PARAMS)
+    prepped = {"2368": mk(700, 0.03), "1102": mk(25), "2002": mk(20)}
+    fut = {"2368": {"std": "RKF", "mini": "VGF"}, "1102": {"std": "DYF"}, "2002": {"std": "CBF"}}
+    st = {"equity": 100_000, "positions": []}
+    plan = paper.make_plan(st, idx[-1], prepped, fut, {"2368": "金像電", "1102": "亞泥", "2002": "中鋼"}, {}, {},
+                           True, {"2002": "鋼鐵", "2368": "AI伺服器PCB材料"})
+    assert plan[0]["code"] == "2002" and plan[0]["theme"] == "鋼鐵"  # 題材股排前面
+    assert st["blocked"] and st["blocked"][0]["code"] == "2368" and st["blocked"][0]["contract"] == "VGF"
+    assert "要做 1 口需本金約" in paper.plan_text({**st, "plan": plan}, True)

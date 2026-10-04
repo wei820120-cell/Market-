@@ -1147,7 +1147,14 @@ def cmd_trade(args) -> None:
     names = {c: (v.get("name") or c) for c, v in listings.items()}
     if args.post and not index_df.empty:
         today = paper.last_date(index_df)  # 手動執行：用最近一個交易日結算
-    msg = paper.run_post(data, index_df, futures, names, rates, tw_daily.load_alerts(), today)
+    themes = {}
+    for name, members in (config.themes().get("tw") or {}).items():
+        for c in map(str, members):
+            themes.setdefault(c, name.replace("研究:", ""))
+    for topic, e in research.load_index().items():
+        for c in e.get("codes", []):
+            themes[c] = topic
+    msg = paper.run_post(data, index_df, futures, names, rates, tw_daily.load_alerts(), today, themes)
     if msg is None and f"{now:%H:%M}" < TRADE_POST_GIVEUP and not args.post:
         return  # 日 K 可能還沒更新，下一輪再試
     if msg is not None:  # 實單持倉：盤後檢查停損與出場
