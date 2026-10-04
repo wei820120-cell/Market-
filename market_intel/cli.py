@@ -1194,6 +1194,13 @@ def cmd_backtest(args) -> None:
             "P6 試單1.5%＋+1R/+2R加碼、第2次才保本、不減碼": {"exit_ma": "ma20", "pyramid": True, "trial_risk": 0.015,
                                                        "add_stops": (-1.0, 0.0), "reduce_ma": ""},
             "P7 同P5＋跌破10日線減碼": {"exit_ma": "ma20", "pyramid": True, "add_stops": (-1.0, 0.0)},
+            "P8 滿額2%試單＋+1R/+2R各加同口數、停損保本→+1R、不減碼": {
+                "exit_ma": "ma20", "pyramid": True, "trial_risk": 0.02, "add_stops": (0.0, 1.0), "reduce_ma": ""},
+            "P9 滿額2%試單＋只在+1R加一次、停損保本": {
+                "exit_ma": "ma20", "pyramid": True, "trial_risk": 0.02, "add_levels": (1.0,), "add_stops": (0.0,),
+                "reduce_ma": ""},
+            "P10 試單1.5%＋+1R/+2R加碼、停損保本→+1R、不減碼": {
+                "exit_ma": "ma20", "pyramid": True, "trial_risk": 0.015, "add_stops": (0.0, 1.0), "reduce_ma": ""},
         }
         cut = index_df.index[len(index_df) // 2]
         rows = []
