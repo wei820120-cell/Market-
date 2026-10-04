@@ -1122,6 +1122,39 @@ def _verify_margin() -> None:
                   "| 原始保證金≈", round(amt) if amt else None)
 
 
+def _backtest_daytrade(data, futures, index_df, rates, capital: float) -> None:
+    """當沖（日 K 近似）vs 現行波段：全期間與前後半段。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    cases = {
+        "B 現行波段（不當沖）": lambda d, i: bt.run(d, futures, i, bt.Params(capital=capital, exit_ma="ma20"), rates),
+        "D1 當沖、收盤全出": lambda d, i: bt.run_daytrade(d, futures, i, bt.Params(capital=capital), rates, hold_locked=False),
+        "D2 當沖、漲停鎖住才留倉": lambda d, i: bt.run_daytrade(d, futures, i, bt.Params(capital=capital), rates),
+        "D3 同D2、品質分數≥2": lambda d, i: bt.run_daytrade(d, futures, i, bt.Params(capital=capital), rates, min_quality=2),
+        "D4 同D2、品質分數≥3": lambda d, i: bt.run_daytrade(d, futures, i, bt.Params(capital=capital), rates, min_quality=3),
+        "D5 同D3、停損 1.5ATR": lambda d, i: bt.run_daytrade(d, futures, i, bt.Params(capital=capital), rates,
+                                                       min_quality=2, stop_atr=1.5),
+    }
+    rows = []
+    for name, fn in cases.items():
+        full = fn(data, index_df)
+        a = fn(*first)
+        b = fn(*second)
+        reasons = full["出場原因"]
+        rows.append({"策略": name, "報酬%": full["報酬率%"], "年化%": full["年化%"], "最大回撤%": full["最大回撤%"],
+                     "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                     "前半段%": a["報酬率%"], "後半段%": b["報酬率%"],
+                     "漲停留倉筆數": reasons.get("漲停鎖住留倉，隔天開盤出", 0), "翻倍": full["翻倍日期"]})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "daytrade.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def _backtest_factors(data, futures, index_df, rates, capital: float) -> None:
     """哪些「看對的條件」真的讓交易更賺：同一批交易，依進場前的條件分組比平均 R、勝率。"""
     from .trade import backtest as bt
@@ -1212,6 +1245,9 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.daytrade:
+        _backtest_daytrade(data, futures, index_df, rates, args.capital)
+        return
     if args.factors:
         _backtest_factors(data, futures, index_df, rates, args.capital)
         return
@@ -1564,6 +1600,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)

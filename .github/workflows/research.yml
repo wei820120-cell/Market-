@@ -21,6 +21,10 @@ on:
         description: "股票期貨波段策略回測"
         type: boolean
         default: false
+      daytrade:
+        description: "當沖（日K近似）vs 現行波段回測"
+        type: boolean
+        default: false
       factors:
         description: "看對的條件回測：依進場前條件分組比較勝率與平均 R"
         type: boolean
@@ -75,6 +79,8 @@ jobs:
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ "${{ inputs.trade }}" = "true" ]; then
             python -m market_intel trade --post
+          elif [ "${{ inputs.daytrade }}" = "true" ]; then
+            python -m market_intel backtest --daytrade
           elif [ "${{ inputs.factors }}" = "true" ]; then
             python -m market_intel backtest --factors
           elif [ "${{ inputs.speed }}" = "true" ]; then
