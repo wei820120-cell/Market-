@@ -42,6 +42,9 @@ class Params:
     take_r: float = 2.0
     time_stop: int = 10
     margin_rate: float = 0.2025  # 沒有個別比例時用最高級距估
+    exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
+    setups: tuple = ("突破", "拉回")
+    trend_filter: bool = False   # 個股也要 20MA > 60MA 才做突破
 
 
 @dataclass
@@ -160,8 +163,8 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                         t.realized += (target - t.entry) * t.mult * half - cost(target, t.mult, half)
                         t.qty -= half
                     t.half_done, t.stop = True, t.entry
-                if t.days > 1 and row["close"] < row["ma10"]:
-                    t.exit_next = "跌破10日線"
+                if t.days > 1 and row["close"] < row[p.exit_ma]:
+                    t.exit_next = "跌破均線"
                 elif t.days >= p.time_stop and not t.half_done and row["close"] < t.entry + t.r0:
                     t.exit_next = "時間停損"
             if px is not None:
@@ -177,9 +180,9 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             for code, d in prepped.items():
                 if day in d.index:
                     row = d.loc[day]
-                    if row["sig_a"]:
+                    if row["sig_a"] and "突破" in p.setups and (not p.trend_filter or row["ma20"] > row["ma60"]):
                         cands.append((float(row["vr"]), code, "突破"))
-                    elif row["sig_b"]:
+                    elif row["sig_b"] and "拉回" in p.setups:
                         cands.append((float(row["vr"]) * 0.5, code, "拉回"))
             pending = [(c, s) for _, c, s in sorted(cands, reverse=True)[:p.max_pos * 2]]
         mtm = sum((float(prepped[t.code]["close"].get(day, t.entry)) - t.entry) * t.mult * t.qty + t.realized

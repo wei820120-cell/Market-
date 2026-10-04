@@ -984,6 +984,36 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.variants:
+        variants = {
+            "A 原版": {},
+            "B 停利改20日線": {"exit_ma": "ma20"},
+            "C 只做拉回": {"setups": ("拉回",)},
+            "D 拉回＋20日線停利": {"setups": ("拉回",), "exit_ma": "ma20"},
+            "E 突破加個股趨勢＋20日線": {"exit_ma": "ma20", "trend_filter": True},
+            "F 停損2ATR＋20日線": {"exit_ma": "ma20", "atr_mult": 2.0},
+            "G 停利3R＋20日線": {"exit_ma": "ma20", "take_r": 3.0},
+            "H 量比2倍＋20日線＋趨勢": {"exit_ma": "ma20", "vol_ratio": 2.0, "trend_filter": True},
+        }
+        cut = index_df.index[len(index_df) // 2]
+        rows = []
+        for name, kw in variants.items():
+            full = bt.run(data, futures, index_df, bt.Params(capital=args.capital, **kw), rates)
+            first = bt.run({c: d[d.index < cut] for c, d in data.items()}, futures, index_df[index_df.index < cut],
+                           bt.Params(capital=args.capital, **kw), rates)
+            second = bt.run({c: d[d.index >= cut - pd.Timedelta(days=120)] for c, d in data.items()}, futures,
+                            index_df[index_df.index >= cut - pd.Timedelta(days=120)],
+                            bt.Params(capital=args.capital, **kw), rates)
+            rows.append({"策略": name, "報酬%": full["報酬率%"], "年化%": full["年化%"], "最大回撤%": full["最大回撤%"],
+                         "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                         "前半段%": first["報酬率%"], "後半段%": second["報酬率%"], "翻倍": full["翻倍日期"]})
+        table = pd.DataFrame(rows)
+        print(table.to_string(index=False))
+        out = research.RESEARCH_DIR / "backtest"
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "variants.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1),
+                                           encoding="utf-8")
+        return
     for name, data_slice in (("全期間", None),):
         res = bt.run(data, futures, index_df, bt.Params(capital=args.capital), rates)
         out = research.RESEARCH_DIR / "backtest"
@@ -1052,6 +1082,7 @@ def main(argv: list[str] | None = None) -> None:
     bk = sub.add_parser("backtest", help="股票期貨波段策略回測（只做多）")
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
+    bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
     bk.set_defaults(func=cmd_backtest)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)

@@ -55,7 +55,7 @@ jobs:
           CARD: ${{ inputs.card }}
         run: |
           if [ "${{ inputs.backtest }}" = "true" ]; then
-            python -m market_intel backtest
+            python -m market_intel backtest --variants
           elif [ -n "$CARD" ]; then
             python -m market_intel card "$CARD"
           elif [ "${{ inputs.inflow }}" = "true" ]; then
