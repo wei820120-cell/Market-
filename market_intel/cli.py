@@ -793,6 +793,31 @@ def _send_card_for_topic(topic: str, listings: dict, push: str, context: str) ->
         theme_card.send(theme_card.build(theme_card.from_research(topic), listings, context=context), channel=push)
     except Exception as e:  # noqa: BLE001
         log.warning("題材卡 %s 產生失敗：%s", topic, e)
+    codes = (research.load_index().get(topic) or {}).get("codes", [])
+    push_trade_candidates(f"{topic}（研究完成）", codes, listings, "🔬 研究完成，以下是研究裡有股期的標的")
+
+
+def push_trade_candidates(title: str, codes: list[str], listings: dict, context: str = "",
+                          futures: dict | None = None) -> None:
+    """可卡位標的 → 進出場機器人（沒設定進出場機器人就略過）。"""
+    if not os.environ.get("TELEGRAM_TRADE_BOT_TOKEN") or not codes:
+        return
+    try:
+        from .trade import backtest as bt
+        from .trade import candidates, real
+        futures = futures if futures is not None else stock_futures.load_stock_futures()
+        codes = [c for c in codes if (futures.get(c) or {}).get("std") or (futures.get(c) or {}).get("mini")]
+        if not codes:
+            notify.send(f"🎯 {title}：題材裡沒有股票期貨標的", channel="trade")
+            return
+        hist = _yahoo_histories(codes, listings, range_="1y")
+        index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+        names = {c: (listings.get(c) or {}).get("name", c) for c in codes}
+        rs = candidates.rows(codes, hist, futures, names, real.load()["equity"], _margin_rates())
+        mkt = bool(bt.market_ok(index_df).iloc[-1]) if len(index_df) > 60 else False
+        notify.send(candidates.message(title, context, rs, mkt), channel="trade")
+    except Exception as e:  # noqa: BLE001
+        log.warning("可卡位標的 %s 產生失敗：%s", title, e)
 
 
 def cmd_research(args) -> None:
@@ -982,6 +1007,11 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
             context = (f"🔥 {source}資金流入：{ratio_name} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
                        f"加權 {r['加權漲跌%']:+.1f}%")
             topic = research.topic_for_theme(name, codes)
+            key_trade = f"trade:{source}:{name}"
+            if not theme_card.already_sent(key_trade):  # 一條龍第一步：不等研究，先推可卡位標的
+                push_trade_candidates(f"{name}", codes + list((research.load_index().get(topic) or {}).get("codes", [])),
+                                      listings, context + ("" if topic else "｜研究中"), futures)
+                theme_card.mark_sent(key_trade)
             if not topic:
                 if research.queue_research(name, f"{now_tw():%Y-%m-%d} {context}\n成分股：{'、'.join(codes)}"):
                     queued.append(f"{name}（{context[2:]}）")

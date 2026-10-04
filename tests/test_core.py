@@ -889,3 +889,24 @@ def test_scan_new_themes(tmp_path, monkeypatch):
     assert q == ["雙鴻（3324）題材與產業", "高明鐵（4573）題材與產業"]
     assert sent[0][0] == "research" and "營收年增 +338%" in sent[0][1]
     assert cli.scan_new_themes(day, listings, {}) == []  # 已排入、營收同月份不重複
+
+
+def test_trade_candidates_rows():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import candidates
+    idx = pd.date_range("2025-01-01", periods=150, freq="B", tz="UTC")
+
+    def mk(base, last_jump, spread):
+        c = pd.Series(np.linspace(base, base * 1.3, 150), index=idx)
+        c.iloc[-1] = c.iloc[-2] * last_jump
+        v = pd.Series(1e6, index=idx)
+        v.iloc[-1] = 3e6
+        return pd.DataFrame({"open": c, "high": c * (1 + spread), "low": c * (1 - spread), "close": c, "volume": v})
+    hist = {"1102": mk(30, 1.04, 0.004), "2327": mk(500, 1.04, 0.03), "1101": mk(40, 0.99, 0.004), "9999": mk(10, 1, 0.01)}
+    fut = {"1102": {"std": "DYF"}, "2327": {"std": "LXF", "mini": "QEF"}, "1101": {"std": "DFF"}}
+    rs = candidates.rows(list(hist), hist, fut, {"1102": "亞泥", "2327": "國巨", "1101": "台泥"}, 100_000, {})
+    assert [r["code"] for r in rs][:2] == ["1102", "2327"]  # 可做的突破優先，其次做不了的突破；9999 沒股期不列
+    assert rs[0]["qty"] >= 1 and rs[1]["qty"] == 0 and "9999" not in [r["code"] for r in rs]
+    msg = candidates.message("被動元件", "⚡ 盤中資金湧入", rs, True)
+    assert "🟢 可做 DYF" in msg and "小型 QEF" in msg and "需本金約" in msg
