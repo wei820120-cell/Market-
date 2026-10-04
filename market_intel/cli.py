@@ -539,9 +539,50 @@ def push_news(listings: dict, min_score: float) -> None:
     letters = [it for it in scored if news_signals.is_price_letter(it)]
     for it in letters:  # 漲價信：全部立即推播（只推新聞機器人；選股機器人只放選股結果）
         notify.send(price_letter_message(it, listings, futures, themes_tw), channel="news")
-    hits = [it for it in scored if abs(it.score) >= min_score and it not in letters]
+    # 重訊不限分數（rank 已替 fresh 裡每則打好分數、標好個股）
+    mops = [it for it in fresh if it.source.startswith("MOPS") and it not in letters]
+    hits = [it for it in scored if abs(it.score) >= min_score and it not in letters and it not in mops]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+    msgs = [mops_message(it, listings, futures) for it in mops_to_push(mops, listings, futures)]
+    for i in range(0, len(msgs), 8):  # 重訊每 8 則合併成一則，避免洗版
+        notify.send("📢 公司重大訊息\n\n" + "\n\n".join(msgs[i:i + 8]), channel="news")
+
+
+def _focus_codes(futures: dict) -> set[str]:
+    """重訊要推的股票：自選股、族群成分股、研究過的股票、股票期貨標的。"""
+    codes = set(config.tw_watch_codes()) | set(config.all_tw_theme_codes()) | set(futures or {})
+    for e in research.load_index().values():
+        codes.update(e.get("codes", []))
+    return codes
+
+
+def mops_to_push(items: list, listings: dict, futures: dict) -> list:
+    """公司重大訊息：略過例行公告；重點股票全推，其他股票有關鍵字訊號（漲價、擴產、上修、利空…）才推。"""
+    skip = [re.compile(p) for p in (config.news_keywords().get("mops_skip") or [])]
+    focus = _focus_codes(futures)
+    out = []
+    for it in items:
+        subject = it.title.split("：", 1)[-1]
+        if any(p.search(subject) for p in skip):
+            continue
+        if any(c in focus for c in it.codes) or it.score != 0:
+            out.append(it)
+    return out
+
+
+def mops_message(it, listings: dict, futures: dict) -> str:
+    code = it.codes[0] if it.codes else ""
+    themes = picks.themes_of(config.themes().get("tw") or {}).get(code, [])
+    fut = theme_card.fut_text((futures or {}).get(code), known=bool(futures))
+    head = f"{'🔺' if it.score > 0 else ('🔻' if it.score < 0 else '・')} {it.title}"
+    extra = [fut if fut not in ("無", "未知") else f"股票期貨：{fut}"]
+    if themes:
+        extra.append("族群：" + "、".join(themes[:3]))
+    if it.tags:
+        extra.append("訊號：" + "、".join(it.tags))
+    body = re.sub(r"\s+", " ", it.summary or "")[:120]
+    return "\n".join([head, "  " + "｜".join(extra)] + ([f"  {body}…"] if body else []))
 
 
 def cmd_news(args) -> None:
