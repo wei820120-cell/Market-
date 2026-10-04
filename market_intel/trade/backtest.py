@@ -48,6 +48,7 @@ class Params:
     add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
     reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
     add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
+    tier_risk: tuple = ()        # 依品質分數（0～4）決定每筆風險；空＝一律用 risk_pct。分數＝離52週高10%內＋站上向上200日線＋相對強度前20%＋大盤強勢
     margin_mult: float = 3.0     # 波段單每口準備 3 倍原始保證金（承擔波動），準備金合計不得超過權益
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
     setups: tuple = ("突破", "拉回")
@@ -92,6 +93,9 @@ FACTORS = {
     "f_tight": "低波動（ATR < 股價 3.5%）",
     "f_mkt": "大盤強勢（站上 20 日線且 20 日線上升）",
 }
+
+
+QUALITY = ("f_hi", "f_200", "f_rs", "f_mkt")  # 回測證明有加分的四項
 
 
 def prepare(df: pd.DataFrame, p: Params) -> pd.DataFrame:
@@ -184,16 +188,19 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                 continue
             stop = entry - p.atr_mult * a
             used = sum(reserve(t.entry, t.mult, t.qty, rates.get(t.code, p.margin_rate), p) for t in open_t)
+            prev = d.shift(1).loc[day]
+            feat = {k: bool(prev[k]) for k in ("f_hi", "f_200", "f_vcp", "f_vol2", "f_tight")}
+            feat["f_rs"] = bool(rs_rank[code].shift(1).get(day, 0) >= 0.8)
+            feat["f_mkt"] = bool(mkt_strong.shift(1).get(day, False))
             pp = Params(**{**p.__dict__, "risk_pct": p.trial_risk}) if p.pyramid else p
+            if p.tier_risk:
+                score = sum(feat[k] for k in QUALITY)
+                pp = Params(**{**pp.__dict__, "risk_pct": p.tier_risk[min(score, len(p.tier_risk) - 1)]})
             contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), pp,
                                        rates.get(code, p.margin_rate), used)
             if not qty:
                 continue
             entry_cost = cost(entry, mult, qty)  # 記在這筆的損益裡，出場時一起結算
-            prev = d.shift(1).loc[day]
-            feat = {k: bool(prev[k]) for k in ("f_hi", "f_200", "f_vcp", "f_vol2", "f_tight")}
-            feat["f_rs"] = bool(rs_rank[code].shift(1).get(day, 0) >= 0.8)
-            feat["f_mkt"] = bool(mkt_strong.shift(1).get(day, False))
             open_t.append(Trade(code, setup, contract, mult, qty, str(day.date()), entry, stop,
                                 realized=-entry_cost, r0=entry - stop, qty0=qty, unit=qty, base=entry, feat=feat))
         pending = []
