@@ -219,6 +219,10 @@ def cmd_daily(args) -> None:
     if not picks_df.empty:
         notify.send(picks.picks_message(picks_df, f"🎯 盤後強勢標的 {today:%m/%d}", n=10)
                     + f"\n\n完整報告：{_report_url(today)}", channel="picks")
+    try:  # 全市場強勢股、營收爆發股，不在任何族群的 → 排入研究
+        scan_new_themes(day, listings, stock_futures.load_stock_futures())
+    except Exception as e:  # noqa: BLE001
+        log.warning("強勢股／營收爆發掃描失敗：%s", e)
     try:  # 資金流入族群 → 研究機器人：題材卡（圖片、目標價、股票期貨）＋排入研究
         push_theme_cards(theme_df, picks_df, listings, "盤後")
     except Exception as e:  # noqa: BLE001
@@ -905,6 +909,55 @@ def cmd_inflow(args) -> None:
     flow = sector_flow.theme_flow_daily(hist, themes_tw, names)
     print(flow.head(15).to_string(index=False) if not flow.empty else "沒有族群資料")
     push_theme_cards(flow, None, listings, "盤後", top=args.top)
+
+
+SCAN_LIMIT_PCT, SCAN_MIN_VALUE = 9.5, 2e8         # 漲停（≥9.5%）且成交金額 ≥ 2 億
+REV_MIN_YOY, REV_MIN_K = 100.0, 100_000           # 月營收年增 ≥ 100% 且當月營收 ≥ 1 億（千元）
+SCAN_MAX_PER_DAY = 3
+
+
+def scan_new_themes(day: pd.DataFrame, listings: dict, futures: dict) -> list[str]:
+    """全市場掃描：漲停大量股、營收爆發股，不在任何族群／研究裡的排入研究（每天最多 3 檔），並推研究機器人。
+
+    抓的是「還沒被歸類的新題材」，例如高明鐵這種中小型股。
+    """
+    known = set(_trade_theme_map())
+    path = research.ROOT / "state" / "scan_seen.json"
+    seen = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    today = f"{now_tw():%Y-%m-%d}"
+    picks_: list[tuple[str, str, str]] = []  # (代號, 名稱, 原因)
+    if day is not None and not day.empty:
+        hot = day[(day["pct"] >= SCAN_LIMIT_PCT) & (day["value"] >= SCAN_MIN_VALUE)
+                  & ~day["code"].astype(str).str.startswith("0")].sort_values("value", ascending=False)
+        for r in hot.itertuples():
+            if r.code not in known:
+                picks_.append((r.code, r.name, f"漲停 {r.pct:+.1f}%、成交 {r.value / 1e8:.1f} 億"))
+    revenue = tw_daily.load_revenue()
+    for code, rv in sorted(revenue.items(), key=lambda kv: -(kv[1].get("yoy") or 0)):
+        if code in known or code not in listings or (rv.get("yoy") or 0) < REV_MIN_YOY or (rv.get("rev") or 0) < REV_MIN_K:
+            continue
+        key = f"rev:{code}:{rv.get('ym')}"
+        if key in seen:
+            continue
+        seen[key] = today
+        picks_.append((code, listings[code].get("name", code),
+                       f"{rv.get('ym')} 營收年增 {rv['yoy']:+.0f}%（{(rv.get('rev') or 0) / 1e5:.1f} 億）"))
+    lines, queued = [], []
+    for code, name, why in picks_:
+        if len(queued) >= SCAN_MAX_PER_DAY:
+            break
+        topic = f"{name}（{code}）題材與產業"
+        if not research.queue_research(topic, f"{today} 不在任何族群的強勢股：{code} {name}｜{why}"):
+            continue
+        queued.append(topic)
+        fut = theme_card.fut_text(futures.get(code), known=bool(futures))
+        lines.append(f"・{code} {name}｜{why}｜{fut if fut not in ('無', '未知') else '股票期貨：' + fut}")
+    if lines:
+        notify.send("🚀 不在任何族群的強勢股（已排入研究，找出題材後推研究圖表）\n" + "\n".join(lines), channel="research")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({k: v for k, v in seen.items() if v >= f"{now_tw().year - 1}"}, ensure_ascii=False),
+                    encoding="utf-8")
+    return queued
 
 
 def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings: dict, source: str,
