@@ -741,6 +741,8 @@ def test_paper_trade_cycle(tmp_path, monkeypatch):
     msg = paper.run_post(data, df, fut, {"8046": "南電"}, {"8046": 0.216}, {}, today)
     st = paper.load()
     assert "多頭" in msg and st["plan"] and st["plan"][0]["contract"] == "QSF"
+    assert "並排模擬" in msg and "T3 品質分級" in msg and (tmp_path / "paper_A.json").exists()
+    assert paper.load("T3")["plan"][0]["risk_pct"] in (0.02, 0.03)  # 對照帳戶也有計劃，風險依品質分數
     assert paper.run_post(data, df, fut, {"8046": "南電"}, {}, {}, today) == ""  # 同一天不重算
     # 隔天：開盤成交
     nxt = idx[-1] + pd.Timedelta(days=1)
@@ -750,6 +752,7 @@ def test_paper_trade_cycle(tmp_path, monkeypatch):
     msg2 = paper.run_post({"8046": df2}, df2, fut, {"8046": "南電"}, {"8046": 0.216}, {}, f"{nxt:%Y-%m-%d}")
     st = paper.load()
     assert "模擬進場" in msg2 and st["positions"] and st["positions"][0]["contract"] == "QSF"
+    assert paper.load("A")["positions"] and paper.load("T3")["positions"]  # 對照帳戶同一天成交
     assert "盤前" in paper.run_pre()
     # 休市（沒有今天的日 K）不結算
     assert paper.run_post({"8046": df2}, df2, fut, {}, {}, {}, "2099-01-01") is None
