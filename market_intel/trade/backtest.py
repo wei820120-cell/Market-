@@ -46,7 +46,8 @@ class Params:
     pyramid: bool = False        # 試單＋加減碼模式
     trial_risk: float = 0.01     # 試單風險（權益比例）
     add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
-    reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出
+    reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
+    add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
     margin_mult: float = 3.0     # 波段單每口準備 3 倍原始保證金（承擔波動），準備金合計不得超過權益
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
     setups: tuple = ("突破", "拉回")
@@ -247,10 +248,10 @@ def _pyramid_day(t: Trade, row, p: Params, rates: dict, open_t: list, equity: fl
         t.qty0 += add
         t.realized -= cost(fill, t.mult, add)
         t.adds = k
-        t.stop = t.base + (k - 1) * t.r0  # 第一次加碼停損拉到成本，第二次拉到 +1R
+        t.stop = max(t.stop, t.base + p.add_stops[min(k, len(p.add_stops)) - 1] * t.r0)
     if t.days > 1 and row["close"] < row[p.exit_ma]:
         t.exit_next = "跌破20日線"
-    elif t.days > 1 and not t.reduced and t.adds >= 1 and row["close"] < row[p.reduce_ma]:
+    elif p.reduce_ma and t.days > 1 and not t.reduced and t.adds >= 1 and row["close"] < row[p.reduce_ma]:
         t.reduce_next = True
     elif t.days >= p.time_stop and t.adds == 0 and row["close"] < t.base + t.r0:
         t.exit_next = "時間停損"
