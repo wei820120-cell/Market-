@@ -1,6 +1,7 @@
 # 常駐監看：每 2 分鐘檢查一次
 #   - 股癌等 Telegram 頻道新貼文 → 推研究機器人（業配略過）
 #   - 新聞、漲價信 → 新聞機器人（假日也推）
+#   - 進出場機器人（模擬）：平日 08:30 盤前計劃、15:30 後盤後結算
 #   - 開發分支 research/pending 的研究（Claude 研究好的）→ 發布並推研究圖表
 #   - 你傳給研究機器人的指令：「研究 XXX」「題材 XXX」「族群 XXX」「目標價 XXX」
 #   - 資金流入題材的研究佇列、14:05／21:05 從新聞自動偵測新題材（需要 ANTHROPIC_API_KEY）
@@ -51,6 +52,8 @@ jobs:
           TELEGRAM_PICKS_CHAT_ID: ${{ secrets.TELEGRAM_PICKS_CHAT_ID }}
           TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
           TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
+          TELEGRAM_TRADE_BOT_TOKEN: ${{ secrets.TELEGRAM_TRADE_BOT_TOKEN }}
+          TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -69,6 +72,7 @@ jobs:
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
             timeout 600 python -m market_intel news --push || echo "news 失敗"
+            timeout 900 python -m market_intel trade --auto || echo "trade 失敗"
             # Claude 研究好的題材放在開發分支，拿過來發布（同一份只發布一次）
             if git fetch -q origin "$RESEARCH_BRANCH" 2>/dev/null; then
               git checkout FETCH_HEAD -- research/pending 2>/dev/null && git reset -q research/pending || true

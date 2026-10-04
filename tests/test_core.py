@@ -722,3 +722,34 @@ def test_mops_push_filter(monkeypatch):
     assert [it.title for it in out] == ["2327 X：董事會通過擴產案", "9999 X：調升財測"]
     msg = cli.mops_message(out[0], {}, {"2327": {"std": "LXF", "mini": "QEF"}})
     assert "股期 LXF／小型 QEF" in msg and "被動元件" in msg
+
+
+def test_paper_trade_cycle(tmp_path, monkeypatch):
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import paper
+    monkeypatch.setattr(paper, "STATE", tmp_path / "paper.json")
+    idx = pd.date_range("2025-01-01", periods=200, freq="B", tz="UTC")
+    close = pd.Series(np.linspace(100, 160, 200), index=idx)
+    close.iloc[-1] = close.iloc[-2] * 1.04  # 最後一天突破
+    vol = pd.Series(1e6, index=idx)
+    vol.iloc[-1] = 3e6
+    df = pd.DataFrame({"open": close * 0.995, "high": close * 1.01, "low": close * 0.99, "close": close, "volume": vol})
+    data = {"8046": df}
+    fut = {"8046": {"std": "LYF", "mini": "QSF"}}
+    today = f"{idx[-1]:%Y-%m-%d}"
+    msg = paper.run_post(data, df, fut, {"8046": "南電"}, {"8046": 0.216}, {}, today)
+    st = paper.load()
+    assert "多頭" in msg and st["plan"] and st["plan"][0]["contract"] == "QSF"
+    assert paper.run_post(data, df, fut, {"8046": "南電"}, {}, {}, today) == ""  # 同一天不重算
+    # 隔天：開盤成交
+    nxt = idx[-1] + pd.Timedelta(days=1)
+    row = pd.DataFrame({"open": [close.iloc[-1] * 1.01], "high": [close.iloc[-1] * 1.03],
+                        "low": [close.iloc[-1] * 1.0], "close": [close.iloc[-1] * 1.02], "volume": [2e6]}, index=[nxt])
+    df2 = pd.concat([df, row])
+    msg2 = paper.run_post({"8046": df2}, df2, fut, {"8046": "南電"}, {"8046": 0.216}, {}, f"{nxt:%Y-%m-%d}")
+    st = paper.load()
+    assert "模擬進場" in msg2 and st["positions"] and st["positions"][0]["contract"] == "QSF"
+    assert "盤前" in paper.run_pre()
+    # 休市（沒有今天的日 K）不結算
+    assert paper.run_post({"8046": df2}, df2, fut, {}, {}, {}, "2099-01-01") is None

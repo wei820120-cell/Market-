@@ -21,6 +21,10 @@ on:
         description: "股票期貨波段策略回測"
         type: boolean
         default: false
+      trade:
+        description: "進出場機器人（模擬）：立即盤後結算並推播"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -51,10 +55,14 @@ jobs:
           TELEGRAM_NEWS_CHAT_ID: ${{ secrets.TELEGRAM_NEWS_CHAT_ID }}
           TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
           TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
+          TELEGRAM_TRADE_BOT_TOKEN: ${{ secrets.TELEGRAM_TRADE_BOT_TOKEN }}
+          TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
           TOPIC: ${{ inputs.topic }}
           CARD: ${{ inputs.card }}
         run: |
-          if [ "${{ inputs.backtest }}" = "true" ]; then
+          if [ "${{ inputs.trade }}" = "true" ]; then
+            python -m market_intel trade --post
+          elif [ "${{ inputs.backtest }}" = "true" ]; then
             python -m market_intel backtest --variants
           elif [ -n "$CARD" ]; then
             python -m market_intel card "$CARD"

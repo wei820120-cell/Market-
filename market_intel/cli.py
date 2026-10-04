@@ -1040,6 +1040,53 @@ def cmd_backtest(args) -> None:
             log.warning("權益曲線圖失敗：%s", e)
 
 
+TRADE_PRE, TRADE_POST, TRADE_POST_GIVEUP = "08:30", "15:30", "18:30"
+
+
+def cmd_trade(args) -> None:
+    """進出場機器人（模擬）。--auto：常駐監看用，平日 08:30 推盤前計劃、15:30 後盤後結算（每天各一次）。"""
+    from . import net
+    from .trade import paper
+    path = research.ROOT / "state" / "trade" / "slots.json"
+    done = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    now = now_tw()
+    today = f"{now:%Y-%m-%d}"
+
+    def mark(key):
+        done[key] = today
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(done, ensure_ascii=False), encoding="utf-8")
+
+    want_pre = args.pre or (args.auto and paper.is_weekday(now) and TRADE_PRE <= f"{now:%H:%M}" < "09:00"
+                            and done.get("pre") != today)
+    want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
+                              and done.get("post") != today)
+    if want_pre:
+        paper.push(paper.run_pre())
+        mark("pre")
+    if not want_post:
+        return
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
+    data = _yahoo_histories(codes, listings, range_="1y")
+    index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+    rates = {}
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            rate = str(r.get("InitialMarginRate", "")).replace("%", "")
+            if rate:
+                rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗：%s", e)
+    names = {c: (v.get("name") or c) for c, v in listings.items()}
+    msg = paper.run_post(data, index_df, futures, names, rates, tw_daily.load_alerts(), today)
+    if msg is None and f"{now:%H:%M}" < TRADE_POST_GIVEUP and not args.post:
+        return  # 日 K 可能還沒更新，下一輪再試
+    paper.push(msg)
+    mark("post")
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
     _verify_margin()
@@ -1084,6 +1131,11 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
     bk.set_defaults(func=cmd_backtest)
+    tr = sub.add_parser("trade", help="進出場機器人（模擬）")
+    tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")
+    tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
+    tr.add_argument("--post", action="store_true", help="立即盤後結算")
+    tr.set_defaults(func=cmd_trade)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
     fl.set_defaults(func=cmd_inflow)
