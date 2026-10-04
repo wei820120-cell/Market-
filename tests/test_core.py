@@ -753,3 +753,22 @@ def test_paper_trade_cycle(tmp_path, monkeypatch):
     assert "盤前" in paper.run_pre()
     # 休市（沒有今天的日 K）不結算
     assert paper.run_post({"8046": df2}, df2, fut, {}, {}, {}, "2099-01-01") is None
+
+
+def test_supply_shock(tmp_path, monkeypatch):
+    from market_intel import cli, config, notify, research
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    kw = config.news_keywords()
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    items = [NewsItem(source="鉅亨網", title="日本 MLCC 大廠工廠火災 停工兩週", summary="", codes=["2327"]),
+             NewsItem(source="鉅亨網", title="中國宣布鎵、鍺出口管制", summary=""),
+             NewsItem(source="鉅亨網", title="台積電法說會", summary="")]
+    q = cli.supply_shocks(items, {"2327": {"name": "國巨"}}, {"2327": {"std": "LXF", "mini": "QEF"}})
+    assert q[0] == "MLCC供需" and q[1].startswith("供需事件：") and len(q) == 2
+    assert sent and sent[0][0] == "research" and "天災意外" in sent[0][1] and "政策管制" in sent[0][1]
+    assert cli.shock_cause("一般新聞", kw["supply_shock"]["causes"]) is None
+    assert cli.supply_shocks(items, {"2327": {"name": "國巨"}}, {}) == []  # 已在佇列不重複

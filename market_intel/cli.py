@@ -544,9 +544,70 @@ def push_news(listings: dict, min_score: float) -> None:
     hits = [it for it in scored if abs(it.score) >= min_score and it not in letters and it not in mops]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+    try:
+        supply_shocks(fresh, listings, futures)
+    except Exception as e:  # noqa: BLE001
+        log.warning("供需失衡偵測失敗：%s", e)
     msgs = [mops_message(it, listings, futures) for it in mops_to_push(mops, listings, futures)]
     for i in range(0, len(msgs), 8):  # 重訊每 8 則合併成一則，避免洗版
         notify.send("📢 公司重大訊息\n\n" + "\n\n".join(msgs[i:i + 8]), channel="news")
+
+
+def shock_cause(text: str, causes: dict) -> str | None:
+    """新聞是否為供需失衡事件，回傳原因（天災意外、政策管制…）。"""
+    for cause, pats in (causes or {}).items():
+        if any(re.search(p, text, flags=re.I) for p in pats):
+            return cause
+    return None
+
+
+def shock_topic(it, listings: dict) -> str:
+    """供需事件要研究的題材：先找產品（MLCC、DRAM…），其次個股，最後用標題。"""
+    kw = config.news_keywords()
+    text = f"{it.title} {it.summary}"
+    products = (kw.get("price_letter") or {}).get("product_themes") or {}
+    for product in sorted(products, key=len, reverse=True):
+        if product.lower() in text.lower():
+            return f"{product}供需"
+    codes = [c for c in it.codes if c in listings]
+    if codes:
+        return f"{listings[codes[0]].get('name', codes[0])}（{codes[0]}）題材與產業"
+    title = re.sub(r"\s*[-|｜].*$", "", it.title.split("：", 1)[-1]).strip()
+    return f"供需事件：{title[:24]}"
+
+
+def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
+    """供需失衡訊號 → 排入研究佇列＋推研究機器人（每天最多 N 個新題材）。"""
+    kw = config.news_keywords()
+    conf = kw.get("supply_shock") or {}
+    exclude = kw.get("exclude_words") or []
+    path = research.ROOT / "state" / "supply_shock.json"
+    today = f"{now_tw():%Y-%m-%d}"
+    st = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    count = st.get(today, 0)
+    lines, queued = [], []
+    for it in items:
+        text = f"{it.title} {it.summary}"
+        if any(w in it.title for w in exclude) or it.score < 0 and "減產" not in text:
+            continue
+        cause = shock_cause(text, conf.get("causes") or {})
+        if not cause or count >= int(conf.get("max_per_day", 4)):
+            continue
+        topic = shock_topic(it, listings)
+        if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}"):
+            continue
+        count += 1
+        queued.append(topic)
+        stocks = "、".join(f"{c} {(listings.get(c) or {}).get('name', '')}｜{theme_card.fut_text((futures or {}).get(c), known=bool(futures))}"
+                          for c in it.codes[:3] if c[:1].isdigit())
+        lines.append(f"・【{cause}】{it.title[:80]}" + (f"\n  相關：{stocks}" if stocks else "")
+                     + f"\n  → 研究題材：{topic}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
+    if lines:
+        notify.send("🧭 供需失衡訊號（已排入研究，研究完成會推研究圖表）\n\n" + "\n\n".join(lines), channel="research")
+        st = {today: count}
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
+    return queued
 
 
 def _focus_codes(futures: dict) -> set[str]:
