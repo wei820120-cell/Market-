@@ -1135,13 +1135,14 @@ def _backtest_speed(data, futures, index_df, rates, capital: float) -> None:
             warm = s0 - pd.Timedelta(days=120)
             res = bt.run({c: d[d.index >= warm] for c, d in data.items()}, futures, index_df[index_df.index >= warm],
                          bt.Params(capital=capital, exit_ma="ma20", risk_pct=risk, max_pos=mp), rates)
-            eq = pd.Series(dict((pd.Timestamp(d), v) for d, v in res["curve"]))
-            eq = eq[eq.index >= s0]
+            s0n = s0.tz_localize(None) if s0.tzinfo else s0  # 曲線日期是不帶時區的字串日期
+            eq = pd.Series([v for _, v in res["curve"]], index=pd.to_datetime([d for d, _ in res["curve"]]))
+            eq = eq[eq.index >= s0n]
             if len(eq) < 20:
                 continue
             ratio = eq / float(eq.iloc[0])
             hit = ratio[ratio >= 2.0]
-            days.append((hit.index[0] - s0).days if len(hit) else None)
+            days.append((hit.index[0] - s0n).days if len(hit) else None)
             dds.append(float((ratio / ratio.cummax() - 1).min()) * 100)
             finals.append(float(ratio.iloc[-1]))
         ok = [d for d in days if d is not None]
