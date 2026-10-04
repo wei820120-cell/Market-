@@ -544,9 +544,70 @@ def push_news(listings: dict, min_score: float) -> None:
     hits = [it for it in scored if abs(it.score) >= min_score and it not in letters and it not in mops]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+    try:
+        supply_shocks(fresh, listings, futures)
+    except Exception as e:  # noqa: BLE001
+        log.warning("供需失衡偵測失敗：%s", e)
     msgs = [mops_message(it, listings, futures) for it in mops_to_push(mops, listings, futures)]
     for i in range(0, len(msgs), 8):  # 重訊每 8 則合併成一則，避免洗版
         notify.send("📢 公司重大訊息\n\n" + "\n\n".join(msgs[i:i + 8]), channel="news")
+
+
+def shock_cause(text: str, causes: dict) -> str | None:
+    """新聞是否為供需失衡事件，回傳原因（天災意外、政策管制…）。"""
+    for cause, pats in (causes or {}).items():
+        if any(re.search(p, text, flags=re.I) for p in pats):
+            return cause
+    return None
+
+
+def shock_topic(it, listings: dict) -> str:
+    """供需事件要研究的題材：先找產品（MLCC、DRAM…），其次個股，最後用標題。"""
+    kw = config.news_keywords()
+    text = f"{it.title} {it.summary}"
+    products = (kw.get("price_letter") or {}).get("product_themes") or {}
+    for product in sorted(products, key=len, reverse=True):
+        if product.lower() in text.lower():
+            return f"{product}供需"
+    codes = [c for c in it.codes if c in listings]
+    if codes:
+        return f"{listings[codes[0]].get('name', codes[0])}（{codes[0]}）題材與產業"
+    title = re.sub(r"\s*[-|｜].*$", "", it.title.split("：", 1)[-1]).strip()
+    return f"供需事件：{title[:24]}"
+
+
+def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
+    """供需失衡訊號 → 排入研究佇列＋推研究機器人（每天最多 N 個新題材）。"""
+    kw = config.news_keywords()
+    conf = kw.get("supply_shock") or {}
+    exclude = kw.get("exclude_words") or []
+    path = research.ROOT / "state" / "supply_shock.json"
+    today = f"{now_tw():%Y-%m-%d}"
+    st = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    count = st.get(today, 0)
+    lines, queued = [], []
+    for it in items:
+        text = f"{it.title} {it.summary}"
+        if any(w in it.title for w in exclude) or it.score < 0 and "減產" not in text:
+            continue
+        cause = shock_cause(text, conf.get("causes") or {})
+        if not cause or count >= int(conf.get("max_per_day", 4)):
+            continue
+        topic = shock_topic(it, listings)
+        if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}"):
+            continue
+        count += 1
+        queued.append(topic)
+        stocks = "、".join(f"{c} {(listings.get(c) or {}).get('name', '')}｜{theme_card.fut_text((futures or {}).get(c), known=bool(futures))}"
+                          for c in it.codes[:3] if c[:1].isdigit())
+        lines.append(f"・【{cause}】{it.title[:80]}" + (f"\n  相關：{stocks}" if stocks else "")
+                     + f"\n  → 研究題材：{topic}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
+    if lines:
+        notify.send("🧭 供需失衡訊號（已排入研究，研究完成會推研究圖表）\n\n" + "\n\n".join(lines), channel="research")
+        st = {today: count}
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
+    return queued
 
 
 def _focus_codes(futures: dict) -> set[str]:
@@ -935,9 +996,236 @@ def _probe_sources() -> None:
             print(f"{url} 失敗：{e}")
 
 
+def _verify_margin() -> None:
+    """保證金核對：期交所規則頁、原始比例資料、用期貨結算價重算幾檔。"""
+    from . import net
+    for url in ("https://www.taifex.com.tw/cht/5/margingReqSSF", "https://www.taifex.com.tw/cht/5/margingCal"):
+        try:
+            text = re.sub(r"\s+", " ", re.sub(r"<script.*?</script>|<style.*?</style>|<[^>]+>", " ",
+                                              net.get(url).text, flags=re.S))
+            i = text.find("保證金")
+            print(f"\n== {url}\n{text[i:i + 2500]}")
+        except Exception as e:  # noqa: BLE001
+            print(f"{url} 失敗：{e}")
+    rows = net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining")
+    quotes = {}
+    for r in taifex.fetch("futures_daily"):
+        m = str(r.get("ContractMonth(Week)", ""))
+        if re.fullmatch(r"\d{6}", m) and "一般" in str(r.get("TradingSession", "")):
+            c = r.get("Contract")
+            if c not in quotes or m < quotes[c][0]:
+                quotes[c] = (m, r.get("SettlementPrice"))
+    print(f"\nSingleStockFuturesMargining {len(rows)} 列；契約有：{sorted({r.get('Contract') for r in rows})[:400]}")
+    for code in ("1802", "2383", "2455", "8046", "2327", "6173", "2330", "3081"):
+        for r in [r for r in rows if r.get("UnderlyingSecurityCode") == code]:
+            c = r["Contract"]
+            m, settle = quotes.get(c, (None, None))
+            mult = 100 if c.startswith(("Q", "S", "U", "V", "P")) and r.get("ContractName", "").startswith("小型") else 2000
+            rate = float(str(r.get("InitialMarginRate", "0")).replace("%", "")) / 100
+            amt = float(settle) * mult * rate if settle not in (None, "", "-") else None
+            print(json.dumps(r, ensure_ascii=False), "| 近月", m, "結算價", settle, "| 乘數", mult,
+                  "| 原始保證金≈", round(amt) if amt else None)
+
+
+def cmd_backtest(args) -> None:
+    """股票期貨波段策略回測（只做多），結果存到 research/backtest/。"""
+    from . import net
+    from .trade import backtest as bt
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
+    log.info("回測標的：%d 檔（有股票期貨或小型股期）", len(codes))
+    data = _yahoo_histories(codes, listings, range_=args.range)
+    index_df, _ = yahoo.fetch_chart("^TWII", range_=args.range)
+    rates = {}
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            rate = str(r.get("InitialMarginRate", "")).replace("%", "")
+            if rate:
+                rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.variants:
+        variants = {
+            "A 原版": {},
+            "B 停利改20日線": {"exit_ma": "ma20"},
+            "C 只做拉回": {"setups": ("拉回",)},
+            "D 拉回＋20日線停利": {"setups": ("拉回",), "exit_ma": "ma20"},
+            "E 突破加個股趨勢＋20日線": {"exit_ma": "ma20", "trend_filter": True},
+            "F 停損2ATR＋20日線": {"exit_ma": "ma20", "atr_mult": 2.0},
+            "G 停利3R＋20日線": {"exit_ma": "ma20", "take_r": 3.0},
+            "H 量比2倍＋20日線＋趨勢": {"exit_ma": "ma20", "vol_ratio": 2.0, "trend_filter": True},
+        }
+        cut = index_df.index[len(index_df) // 2]
+        rows = []
+        for name, kw in variants.items():
+            full = bt.run(data, futures, index_df, bt.Params(capital=args.capital, **kw), rates)
+            first = bt.run({c: d[d.index < cut] for c, d in data.items()}, futures, index_df[index_df.index < cut],
+                           bt.Params(capital=args.capital, **kw), rates)
+            second = bt.run({c: d[d.index >= cut - pd.Timedelta(days=120)] for c, d in data.items()}, futures,
+                            index_df[index_df.index >= cut - pd.Timedelta(days=120)],
+                            bt.Params(capital=args.capital, **kw), rates)
+            rows.append({"策略": name, "報酬%": full["報酬率%"], "年化%": full["年化%"], "最大回撤%": full["最大回撤%"],
+                         "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                         "前半段%": first["報酬率%"], "後半段%": second["報酬率%"], "翻倍": full["翻倍日期"]})
+        table = pd.DataFrame(rows)
+        print(table.to_string(index=False))
+        out = research.RESEARCH_DIR / "backtest"
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "variants.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1),
+                                           encoding="utf-8")
+        return
+    for name, data_slice in (("全期間", None),):
+        res = bt.run(data, futures, index_df, bt.Params(capital=args.capital), rates)
+        out = research.RESEARCH_DIR / "backtest"
+        bt.save(res, out / "latest.json")
+        summary = {k: v for k, v in res.items() if k not in ("trades", "curve")}
+        print(json.dumps(summary, ensure_ascii=False, indent=1))
+        trades = pd.DataFrame(res["trades"])
+        if not trades.empty:
+            print(trades.sort_values("pnl").tail(8)[["code", "setup", "contract", "qty", "entry_date", "entry",
+                                                     "exit_date", "exit", "pnl", "r", "reason"]].to_string())
+            print(trades.groupby(trades["entry_date"].str[:7])["pnl"].sum().round().to_string())
+        try:
+            import matplotlib.pyplot as plt
+            from . import charts
+            charts.setup_font()
+            eq = pd.Series([v for _, v in res["curve"]], index=pd.to_datetime([d for d, _ in res["curve"]]))
+            fig, ax = plt.subplots(figsize=(8.6, 4), dpi=130)
+            ax.plot(eq.index, eq.values, color="#24364f")
+            ax.axhline(args.capital * 2, color="#d0312d", ls="--", lw=0.8)
+            ax.set_title(f"回測權益曲線（起始 {args.capital:,.0f}）", loc="left")
+            fig.tight_layout()
+            fig.savefig(out / "equity.png")
+        except Exception as e:  # noqa: BLE001
+            log.warning("權益曲線圖失敗：%s", e)
+
+
+TRADE_PRE, TRADE_POST, TRADE_POST_GIVEUP = "08:30", "15:30", "18:30"
+
+
+def cmd_trade(args) -> None:
+    """進出場機器人（模擬）。--auto：常駐監看用，平日 08:30 推盤前計劃、15:30 後盤後結算（每天各一次）。"""
+    from . import net
+    from .trade import paper
+    path = research.ROOT / "state" / "trade" / "slots.json"
+    done = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    now = now_tw()
+    today = f"{now:%Y-%m-%d}"
+
+    def mark(key):
+        done[key] = today
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(done, ensure_ascii=False), encoding="utf-8")
+
+    if args.commands:
+        _trade_commands()
+    want_pre = args.pre or (args.auto and paper.is_weekday(now) and TRADE_PRE <= f"{now:%H:%M}" < "09:00"
+                            and done.get("pre") != today)
+    want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
+                              and done.get("post") != today)
+    if want_pre:
+        from .trade import real
+        paper.push(paper.run_pre() + "\n\n" + real.positions_text(real.load()))
+        mark("pre")
+    if not want_post:
+        return
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
+    data = _yahoo_histories(codes, listings, range_="1y")
+    index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+    rates = {}
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            rate = str(r.get("InitialMarginRate", "")).replace("%", "")
+            if rate:
+                rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗：%s", e)
+    names = {c: (v.get("name") or c) for c, v in listings.items()}
+    if args.post and not index_df.empty:
+        today = paper.last_date(index_df)  # 手動執行：用最近一個交易日結算
+    msg = paper.run_post(data, index_df, futures, names, rates, tw_daily.load_alerts(), today)
+    if msg is None and f"{now:%H:%M}" < TRADE_POST_GIVEUP and not args.post:
+        return  # 日 K 可能還沒更新，下一輪再試
+    if msg is not None:  # 實單持倉：盤後檢查停損與出場
+        from .trade import backtest as bt
+        from .trade import real
+        rst = real.load()
+        prepped = {x["code"]: bt.prepare(data[x["code"]], paper.PARAMS) for x in rst["positions"] if x["code"] in data}
+        day = index_df.index[-1]
+        alerts = real.daily_check(rst, day, prepped)
+        real.save(rst)
+        closes = {c: float(d["close"].iloc[-1]) for c, d in prepped.items()}
+        section = real.positions_text(rst, closes) + ("\n\n【出場提醒】\n" + "\n".join(alerts) if alerts else "")
+        msg = section + "\n\n━━━━ 以下為模擬帳戶（對照用）━━━━\n" + (msg or "")
+    paper.push(msg)
+    mark("post")
+
+
+def _trade_commands() -> None:
+    """讀進出場機器人收到的成交回報（只接受自己的訊息），記帳並回覆停損、目標與風險檢查。"""
+    from . import net
+    from .trade import paper, real
+    token = os.environ.get("TELEGRAM_TRADE_BOT_TOKEN")
+    if not token:
+        return
+    offset = research.load_offset(token)
+    updates = notify.get_updates("trade", offset)
+    owner = notify.owner_chat("trade")
+    msgs = []
+    for u in updates:
+        offset = max(offset or 0, int(u.get("update_id", 0)) + 1)
+        m = u.get("message") or {}
+        if owner and str((m.get("chat") or {}).get("id")) != str(owner):
+            continue
+        if m.get("text"):
+            msgs.append(m["text"])
+    research.save_offset(token, offset)
+    if not msgs:
+        return
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    st = real.load()
+    for text in msgs:
+        cmd = real.parse(text)
+        if not cmd:
+            notify.send("看不懂這則回報。格式例如：亞泥 35.7 1口、賣 亞泥 36.5 1口、持倉、說明", channel="trade")
+            continue
+        if cmd["cmd"] == "help":
+            notify.send(real.HELP, channel="trade")
+            continue
+        if cmd["cmd"] == "positions":
+            notify.send(real.positions_text(st), channel="trade")
+            continue
+        hit = real.resolve(cmd["query"], listings, futures, cmd["mini"])
+        if not hit:
+            notify.send(f"找不到「{cmd['query']}」的股票期貨，請打股票名稱、代號或契約代碼（例如 亞泥、1102、DYF）",
+                        channel="trade")
+            continue
+        code, name, contract, mult = hit
+        if cmd["side"] == "sell":
+            notify.send(real.sell(st, contract, name, cmd["price"], cmd["qty"]), channel="trade")
+            continue
+        hist = _yahoo_histories([code], listings, range_="6mo").get(code)
+        from .analysis.indicators import atr as _atr
+        a = float(_atr(hist).iloc[-1]) if hist is not None and len(hist) > 20 else cmd["price"] * 0.03
+        rate = paper.PARAMS.margin_rate
+        try:
+            for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+                if r.get("Contract") == contract or (r.get("UnderlyingSecurityCode") == code and rate == paper.PARAMS.margin_rate):
+                    rate = float(str(r.get("InitialMarginRate", "20.25")).replace("%", "")) / 100
+        except Exception as e:  # noqa: BLE001
+            log.warning("保證金比例抓取失敗：%s", e)
+        notify.send(real.buy(st, code, name, contract, mult, cmd["price"], cmd["qty"], a, rate), channel="trade")
+    real.save(st)
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
-    _probe_sources()
+    _verify_margin()
+    return
     print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
     data = stock_futures.load_stock_futures()
     print(f"\n股票期貨標的：{len(data)} 檔；有小型：{sum(1 for v in data.values() if v.get('mini'))} 檔；"
@@ -973,6 +1261,17 @@ def main(argv: list[str] | None = None) -> None:
     cd.add_argument("query")
     cd.add_argument("--channel", default="research")
     cd.set_defaults(func=cmd_card)
+    bk = sub.add_parser("backtest", help="股票期貨波段策略回測（只做多）")
+    bk.add_argument("--capital", type=float, default=100_000)
+    bk.add_argument("--range", default="3y")
+    bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.set_defaults(func=cmd_backtest)
+    tr = sub.add_parser("trade", help="進出場機器人（模擬）")
+    tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")
+    tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
+    tr.add_argument("--post", action="store_true", help="立即盤後結算")
+    tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
+    tr.set_defaults(func=cmd_trade)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
     fl.set_defaults(func=cmd_inflow)

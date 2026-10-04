@@ -722,3 +722,76 @@ def test_mops_push_filter(monkeypatch):
     assert [it.title for it in out] == ["2327 X：董事會通過擴產案", "9999 X：調升財測"]
     msg = cli.mops_message(out[0], {}, {"2327": {"std": "LXF", "mini": "QEF"}})
     assert "股期 LXF／小型 QEF" in msg and "被動元件" in msg
+
+
+def test_paper_trade_cycle(tmp_path, monkeypatch):
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import paper
+    monkeypatch.setattr(paper, "STATE", tmp_path / "paper.json")
+    idx = pd.date_range("2025-01-01", periods=200, freq="B", tz="UTC")
+    close = pd.Series(np.linspace(100, 160, 200), index=idx)
+    close.iloc[-1] = close.iloc[-2] * 1.04  # 最後一天突破
+    vol = pd.Series(1e6, index=idx)
+    vol.iloc[-1] = 3e6
+    df = pd.DataFrame({"open": close * 0.995, "high": close * 1.01, "low": close * 0.99, "close": close, "volume": vol})
+    data = {"8046": df}
+    fut = {"8046": {"std": "LYF", "mini": "QSF"}}
+    today = f"{idx[-1]:%Y-%m-%d}"
+    msg = paper.run_post(data, df, fut, {"8046": "南電"}, {"8046": 0.216}, {}, today)
+    st = paper.load()
+    assert "多頭" in msg and st["plan"] and st["plan"][0]["contract"] == "QSF"
+    assert paper.run_post(data, df, fut, {"8046": "南電"}, {}, {}, today) == ""  # 同一天不重算
+    # 隔天：開盤成交
+    nxt = idx[-1] + pd.Timedelta(days=1)
+    row = pd.DataFrame({"open": [close.iloc[-1] * 1.01], "high": [close.iloc[-1] * 1.03],
+                        "low": [close.iloc[-1] * 1.0], "close": [close.iloc[-1] * 1.02], "volume": [2e6]}, index=[nxt])
+    df2 = pd.concat([df, row])
+    msg2 = paper.run_post({"8046": df2}, df2, fut, {"8046": "南電"}, {"8046": 0.216}, {}, f"{nxt:%Y-%m-%d}")
+    st = paper.load()
+    assert "模擬進場" in msg2 and st["positions"] and st["positions"][0]["contract"] == "QSF"
+    assert "盤前" in paper.run_pre()
+    # 休市（沒有今天的日 K）不結算
+    assert paper.run_post({"8046": df2}, df2, fut, {}, {}, {}, "2099-01-01") is None
+
+
+def test_supply_shock(tmp_path, monkeypatch):
+    from market_intel import cli, config, notify, research
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    kw = config.news_keywords()
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    items = [NewsItem(source="鉅亨網", title="日本 MLCC 大廠工廠火災 停工兩週", summary="", codes=["2327"]),
+             NewsItem(source="鉅亨網", title="中國宣布鎵、鍺出口管制", summary=""),
+             NewsItem(source="鉅亨網", title="台積電法說會", summary="")]
+    q = cli.supply_shocks(items, {"2327": {"name": "國巨"}}, {"2327": {"std": "LXF", "mini": "QEF"}})
+    assert q[0] == "MLCC供需" and q[1].startswith("供需事件：") and len(q) == 2
+    assert sent and sent[0][0] == "research" and "天災意外" in sent[0][1] and "政策管制" in sent[0][1]
+    assert cli.shock_cause("一般新聞", kw["supply_shock"]["causes"]) is None
+    assert cli.supply_shocks(items, {"2327": {"name": "國巨"}}, {}) == []  # 已在佇列不重複
+
+
+def test_real_trade_parse_and_book(tmp_path, monkeypatch):
+    from market_intel.trade import real
+    monkeypatch.setattr(real, "STATE", tmp_path / "real.json")
+    assert real.parse("亞泥 35.7 1口") == {"cmd": "fill", "side": "buy", "query": "亞泥", "price": 35.7, "qty": 1, "mini": False}
+    assert real.parse("亞泥、35.7、1口")["price"] == 35.7
+    assert real.parse("買 DYF 35.7 2口")["query"] == "DYF"
+    assert real.parse("賣 亞泥 36.5 1口")["side"] == "sell"
+    assert real.parse("南電 小型 1468 1口") == {"cmd": "fill", "side": "buy", "query": "南電", "price": 1468.0,
+                                               "qty": 1, "mini": True}
+    assert real.parse("持倉") == {"cmd": "positions"} and real.parse("你好") is None
+    listings = {"1102": {"name": "亞泥"}, "8046": {"name": "南電"}}
+    futures = {"1102": {"std": "DYF"}, "8046": {"std": "LYF", "mini": "QSF"}}
+    assert real.resolve("亞泥", listings, futures) == ("1102", "亞泥", "DYF", 2000)
+    assert real.resolve("DYF", listings, futures)[2] == "DYF"
+    assert real.resolve("南電", listings, futures, mini=True) == ("8046", "南電", "QSF", 100)
+    assert real.resolve("台積電", listings, futures) is None
+    st = real.load()
+    msg = real.buy(st, "1102", "亞泥", "DYF", 2000, 35.7, 1, 0.6, 0.135)
+    assert "停損 34.80" in msg and st["positions"][0]["stop"] == 35.7 - 0.9
+    msg = real.sell(st, "DYF", "亞泥", 36.5, 1)
+    assert "損益 +1,4" in msg and not st["positions"] and st["equity"] > 100000
