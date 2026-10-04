@@ -830,3 +830,40 @@ def test_plan_theme_priority_and_blocked():
     assert plan[0]["code"] == "2002" and plan[0]["theme"] == "鋼鐵"  # 題材股排前面
     assert st["blocked"] and st["blocked"][0]["code"] == "2368" and st["blocked"][0]["contract"] == "VGF"
     assert "要做 1 口需本金約" in paper.plan_text({**st, "plan": plan}, True)
+
+
+def test_trade_explain():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import real
+    assert real.parse("檢查 國巨") == {"cmd": "explain", "query": "國巨"}
+    idx = pd.date_range("2025-01-01", periods=200, freq="B", tz="UTC")
+    close = pd.Series(np.linspace(400, 600, 200), index=idx)
+    close.iloc[-1] = close.iloc[-2] * 1.05
+    vol = pd.Series(1e6, index=idx)
+    vol.iloc[-1] = 3e6
+    df = pd.DataFrame({"open": close, "high": close * 1.03, "low": close * 0.97, "close": close, "volume": vol})
+    msg = real.explain("2327", "國巨", df, {"std": "LXF", "mini": "QEF"}, True, 100_000, 0.2025)
+    assert "突破訊號：✅" in msg and "小型股期 QEF" in msg and "要做 1 口需本金約" in msg
+
+
+def test_intraday_breakout_signal():
+    import numpy as np
+    import pandas as pd
+    from datetime import datetime
+    from market_intel.fetchers.tw_realtime import Quote
+    from market_intel.trade import intraday
+    idx = pd.date_range("2025-01-01", periods=120, freq="B", tz="UTC")
+    close = pd.Series(np.linspace(30, 44, 120), index=idx)
+    df = pd.DataFrame({"open": close, "high": close * 1.01, "low": close * 0.99, "close": close,
+                       "volume": 2_000_000.0})
+    lv = intraday.levels({"2367": df})
+    assert round(lv["2367"]["avg_lots"]) == 2000
+    q = Quote("2367", "燿華", "tse", 46.0, 44.0, 44.5, 46.2, 44.3, 1500, "10:00")
+    sigs = intraday.check({"2367": q}, lv, 0.5)  # 半天成交 1500 張 vs 正常 1000 張 → 步調 1.5
+    assert sigs and sigs[0]["code"] == "2367" and abs(sigs[0]["pace"] - 1.5) < 0.01
+    msg = intraday.message(sigs[0], {"std": "VBF"}, "PCB供需", 100_000, 0.216, True, "alert",
+                           datetime(2026, 10, 5, 10, 0))
+    assert "⚡ 10:00 盤中突破：2367 燿華〔PCB供需〕" in msg and "一般 VBF" in msg
+    q.price = 44.0
+    assert intraday.check({"2367": q}, lv, 0.5) == []  # 沒突破

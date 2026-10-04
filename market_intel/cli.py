@@ -423,6 +423,13 @@ def cmd_realtime(args) -> None:
 
     futures = stock_futures.load_stock_futures()
     theme_map = picks.themes_of(themes_tw)
+    trade_rt = None
+    try:
+        trade_rt = _trade_intraday_setup(listings, futures)
+    except Exception as e:  # noqa: BLE001
+        log.warning("盤中進場訊號準備失敗：%s", e)
+    if trade_rt:
+        codes = list(dict.fromkeys(codes + list(trade_rt["levels"])))
     news_map: dict[str, dict] = {}  # 今天看過的新聞依個股彙總（題材、漲價）
     alerted: set[str] = set()
     pushed_times: set[str] = set()
@@ -445,6 +452,11 @@ def cmd_realtime(args) -> None:
                 if taiex and taiex.date and taiex.date != f"{now:%Y%m%d}":
                     log.info("加權指數資料日期 %s 不是今天，今天休市，停止監控。", taiex.date)
                     break
+            if trade_rt and _in_session(now):
+                try:
+                    _trade_intraday_check(trade_rt, quotes, futures, now)
+                except Exception as e:  # noqa: BLE001
+                    log.warning("盤中進場訊號失敗：%s", e)
             flow = sector_flow.theme_flow_intraday(quotes, themes_tw, listings, now)
             head = " ｜ ".join(f"{k} {q.price:,.2f} ({q.change_pct:+.2f}%)" for k, q in idx.items()
                                if q.price is not None and q.change_pct is not None)
@@ -1105,6 +1117,83 @@ def cmd_backtest(args) -> None:
 TRADE_PRE, TRADE_POST, TRADE_POST_GIVEUP = "08:30", "15:30", "18:30"
 
 
+def _trade_theme_map() -> dict[str, str]:
+    """{代號: 題材}：族群成分股＋研究過的股票。"""
+    themes = {}
+    for name, members in (config.themes().get("tw") or {}).items():
+        for c in map(str, members):
+            themes.setdefault(c, name.replace("研究:", ""))
+    for topic, e in research.load_index().items():
+        for c in e.get("codes", []):
+            themes[c] = topic
+    return themes
+
+
+def _margin_rates() -> dict[str, float]:
+    from . import net
+    rates = {}
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            rate = str(r.get("InitialMarginRate", "")).replace("%", "")
+            if rate:
+                rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗：%s", e)
+    return rates
+
+
+def _trade_intraday_setup(listings: dict, futures: dict) -> dict | None:
+    """盤中進場訊號的準備：股期標的的昨日關卡、大盤濾網、題材、保證金比例、權益。沒設定進出場機器人就不啟用。"""
+    if not os.environ.get("TELEGRAM_TRADE_BOT_TOKEN"):
+        return None
+    from .trade import backtest as bt
+    from .trade import intraday, real
+    today = f"{now_tw():%Y-%m-%d}"
+
+    def upto_yesterday(df):
+        idx = df.index.tz_convert("Asia/Taipei") if df.index.tz is not None else df.index
+        return df[[f"{d:%Y-%m-%d}" < today for d in idx]]
+
+    codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
+    hist = {c: upto_yesterday(df) for c, df in _yahoo_histories(codes, listings, range_="6mo").items()}
+    index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+    index_df = upto_yesterday(index_df)
+    lv = intraday.levels(hist)
+    log.info("盤中進場訊號：監控 %d 檔股期標的", len(lv))
+    return {"levels": lv, "market_ok": bool(bt.market_ok(index_df).iloc[-1]) if len(index_df) > 60 else False,
+            "themes": _trade_theme_map(), "rates": _margin_rates(), "equity": real.load()["equity"],
+            "alerted": set(), "confirmed": False}
+
+
+def _trade_intraday_check(tr: dict, quotes: dict, futures: dict, now: datetime) -> None:
+    from .trade import intraday
+    frac = sector_flow.expected_fraction(now)
+    sigs = intraday.check(quotes, tr["levels"], frac)
+    confirm = not tr["confirmed"] and f"{now:%H:%M}" >= intraday.CONFIRM_AT
+    from .trade import backtest as bt
+    from .trade.paper import PARAMS
+    for s in sigs:
+        if s["code"] in tr["alerted"] or len(tr["alerted"]) >= 12:
+            continue
+        info = futures.get(s["code"], {})
+        stop = s["price"] - PARAMS.atr_mult * s["atr"]
+        doable = bt.size(tr["equity"], s["price"], stop, info, PARAMS, tr["rates"].get(s["code"], 0.2025))[2] > 0
+        if s["code"] not in tr["themes"] and not doable:
+            continue  # 沒題材、規則也做不了的不推，避免洗版
+        tr["alerted"].add(s["code"])
+        notify.send(intraday.message(s, futures.get(s["code"], {}), tr["themes"].get(s["code"], ""), tr["equity"],
+                                     tr["rates"].get(s["code"], 0.2025), tr["market_ok"], "alert", now), channel="trade")
+    if confirm:
+        tr["confirmed"] = True
+        ok = [s for s in sigs if s["code"] in tr["alerted"]]
+        if not ok:
+            notify.send(f"📋 {now:%H:%M} 收盤前確認：今天沒有仍站穩 20 日高的突破標的", channel="trade")
+        for s in ok[:8]:
+            notify.send(intraday.message(s, futures.get(s["code"], {}), tr["themes"].get(s["code"], ""), tr["equity"],
+                                         tr["rates"].get(s["code"], 0.2025), tr["market_ok"], "confirm", now),
+                        channel="trade")
+
+
 def cmd_trade(args) -> None:
     """進出場機器人（模擬）。--auto：常駐監看用，平日 08:30 推盤前計劃、15:30 後盤後結算（每天各一次）。"""
     from . import net
@@ -1121,6 +1210,10 @@ def cmd_trade(args) -> None:
 
     if args.commands:
         _trade_commands()
+    if args.explain:
+        listings = _listings()
+        print(_trade_explain(args.explain, listings, stock_futures.load_stock_futures(), 100_000))
+        return
     want_pre = args.pre or (args.auto and paper.is_weekday(now) and TRADE_PRE <= f"{now:%H:%M}" < "09:00"
                             and done.get("pre") != today)
     want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
@@ -1172,6 +1265,29 @@ def cmd_trade(args) -> None:
     mark("post")
 
 
+def _trade_explain(query: str, listings: dict, futures: dict, equity: float) -> str:
+    from . import net
+    from .trade import backtest as bt
+    from .trade import real
+    hit = real.resolve(query, listings, futures)
+    if not hit:
+        return f"找不到「{query}」的股票期貨"
+    code, name, _, _ = hit
+    hist = _yahoo_histories([code], listings, range_="1y").get(code)
+    index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+    if hist is None or len(hist) < 80:
+        return f"{name} 歷史資料不足"
+    rate = 0.2025
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            if str(r.get("UnderlyingSecurityCode")) == code:
+                rate = float(str(r.get("InitialMarginRate", "20.25")).replace("%", "")) / 100
+                break
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗：%s", e)
+    return real.explain(code, name, hist, futures.get(code, {}), bool(bt.market_ok(index_df).iloc[-1]), equity, rate)
+
+
 def _trade_commands() -> None:
     """讀進出場機器人收到的成交回報（只接受自己的訊息），記帳並回覆停損、目標與風險檢查。"""
     from . import net
@@ -1206,6 +1322,9 @@ def _trade_commands() -> None:
             continue
         if cmd["cmd"] == "positions":
             notify.send(real.positions_text(st), channel="trade")
+            continue
+        if cmd["cmd"] == "explain":
+            notify.send(_trade_explain(cmd["query"], listings, futures, st["equity"]), channel="trade")
             continue
         hit = real.resolve(cmd["query"], listings, futures, cmd["mini"])
         if not hit:
@@ -1279,6 +1398,7 @@ def main(argv: list[str] | None = None) -> None:
     tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
     tr.add_argument("--post", action="store_true", help="立即盤後結算")
     tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
+    tr.add_argument("--explain", help="檢查某檔股票的訊號與口數，例如：--explain 國巨")
     tr.set_defaults(func=cmd_trade)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
