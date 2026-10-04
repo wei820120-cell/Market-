@@ -49,6 +49,9 @@ def parse(text: str) -> dict | None:
         return {"cmd": "positions"}
     if t in ("說明", "help", "/help", "/start"):
         return {"cmd": "help"}
+    m = re.match(r"^\s*(檢查|為什麼|為何|check)\s*(.+)$", t)
+    if m:
+        return {"cmd": "explain", "query": m.group(2).strip().split()[0]}
     qty_m = re.search(r"(\d+)\s*口", t)
     if not qty_m:
         return None
@@ -205,4 +208,43 @@ HELP = """📖 進出場機器人指令
 ・買進：亞泥 35.7 1口（也可以：買 DYF 35.7 1口、亞泥 小型 35.7 1口）
 ・賣出：賣 亞泥 36.5 1口
 ・持倉：查看持倉、損益、權益
+・檢查：檢查 國巨（看今天有沒有訊號、停損距離、一口虧多少、為什麼能做或不能做）
 回報後機器人會算停損、+2R 目標、最大虧損，並在每天盤後提醒出場。機器人不會自動下單。"""
+
+
+def explain(code: str, name: str, df: pd.DataFrame, info: dict, market_ok: bool, equity: float, rate: float) -> str:
+    """說明某檔股票在最新一天的訊號與口數計算（能不能做、卡在哪條規則）。"""
+    p = PARAMS
+    d = bt.prepare(df, p)
+    row = d.iloc[-1]
+    day = d.index[-1]
+    close, a = float(row["close"]), float(row["atr"])
+    stop = close - p.atr_mult * a
+    dist = close - stop
+    lines = [f"🔎 {name}（{code}）{day:%m/%d} 收盤 {close:,.2f}",
+             f"大盤：{'🟢 多頭' if market_ok else '🔴 空頭／盤整（不開新倉）'}"]
+    hh, vr, ma60 = float(row["hh"]), float(row["vr"]), float(row["ma60"])
+    a_ok = bool(row["sig_a"])
+    lines.append(f"突破訊號：{'✅' if a_ok else '❌'}（收盤 {close:,.1f} vs 前 20 日高 {hh:,.1f}｜量比 {vr:.1f}，需 ≥{p.vol_ratio}"
+                 f"｜60 日線 {ma60:,.1f}）")
+    lines.append(f"拉回訊號：{'✅' if bool(row['sig_b']) else '❌'}（20 日線 {float(row['ma20']):,.1f}）")
+    lines.append(f"停損距離：1.5×ATR = 1.5×{a:,.1f} = {dist:,.1f}（停損約 {stop:,.1f}）")
+    risk_cap = equity * p.risk_pct
+    lines.append(f"每筆風險上限：權益 {equity:,.0f} × 2% = {risk_cap:,.0f}")
+    for key, mult, label in (("mini", bt.MINI, "小型"), ("std", bt.STD, "一般")):
+        c = info.get(key)
+        if not c:
+            lines.append(f"{label}股期：無")
+            continue
+        one = dist * mult
+        res = close * mult * rate * p.margin_mult
+        ok = one <= risk_cap and res <= equity
+        why = "可做 1 口以上" if ok else ("停損一口虧損超過上限" if one > risk_cap else "3 倍保證金超過權益")
+        lines.append(f"{label}股期 {c}：一口停損約虧 {one:,.0f}｜3 倍保證金 {res:,.0f}｜{'✅' if ok else '❌'} {why}")
+    contract, mult, qty = bt.size(equity, close, stop, info, p, rate)
+    verdict = ("✅ 規則允許：" + f"{contract} {qty} 口") if qty and market_ok and (a_ok or bool(row["sig_b"])) else \
+        ("❌ 今天沒有進場訊號" if not (a_ok or bool(row["sig_b"])) else
+         ("❌ 大盤空頭，不開新倉" if not market_ok else
+          f"❌ 有訊號但 10 萬本金規則做不了，要做 1 口需本金約 {dist * (bt.MINI if info.get('mini') else bt.STD) / p.risk_pct:,.0f}"))
+    lines += ["", verdict]
+    return "\n".join(lines)

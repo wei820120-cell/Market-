@@ -1121,6 +1121,10 @@ def cmd_trade(args) -> None:
 
     if args.commands:
         _trade_commands()
+    if args.explain:
+        listings = _listings()
+        print(_trade_explain(args.explain, listings, stock_futures.load_stock_futures(), 100_000))
+        return
     want_pre = args.pre or (args.auto and paper.is_weekday(now) and TRADE_PRE <= f"{now:%H:%M}" < "09:00"
                             and done.get("pre") != today)
     want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
@@ -1172,6 +1176,29 @@ def cmd_trade(args) -> None:
     mark("post")
 
 
+def _trade_explain(query: str, listings: dict, futures: dict, equity: float) -> str:
+    from . import net
+    from .trade import backtest as bt
+    from .trade import real
+    hit = real.resolve(query, listings, futures)
+    if not hit:
+        return f"找不到「{query}」的股票期貨"
+    code, name, _, _ = hit
+    hist = _yahoo_histories([code], listings, range_="1y").get(code)
+    index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+    if hist is None or len(hist) < 80:
+        return f"{name} 歷史資料不足"
+    rate = 0.2025
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            if str(r.get("UnderlyingSecurityCode")) == code:
+                rate = float(str(r.get("InitialMarginRate", "20.25")).replace("%", "")) / 100
+                break
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗：%s", e)
+    return real.explain(code, name, hist, futures.get(code, {}), bool(bt.market_ok(index_df).iloc[-1]), equity, rate)
+
+
 def _trade_commands() -> None:
     """讀進出場機器人收到的成交回報（只接受自己的訊息），記帳並回覆停損、目標與風險檢查。"""
     from . import net
@@ -1206,6 +1233,9 @@ def _trade_commands() -> None:
             continue
         if cmd["cmd"] == "positions":
             notify.send(real.positions_text(st), channel="trade")
+            continue
+        if cmd["cmd"] == "explain":
+            notify.send(_trade_explain(cmd["query"], listings, futures, st["equity"]), channel="trade")
             continue
         hit = real.resolve(cmd["query"], listings, futures, cmd["mini"])
         if not hit:
@@ -1279,6 +1309,7 @@ def main(argv: list[str] | None = None) -> None:
     tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
     tr.add_argument("--post", action="store_true", help="立即盤後結算")
     tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
+    tr.add_argument("--explain", help="檢查某檔股票的訊號與口數，例如：--explain 國巨")
     tr.set_defaults(func=cmd_trade)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)

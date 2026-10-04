@@ -830,3 +830,18 @@ def test_plan_theme_priority_and_blocked():
     assert plan[0]["code"] == "2002" and plan[0]["theme"] == "鋼鐵"  # 題材股排前面
     assert st["blocked"] and st["blocked"][0]["code"] == "2368" and st["blocked"][0]["contract"] == "VGF"
     assert "要做 1 口需本金約" in paper.plan_text({**st, "plan": plan}, True)
+
+
+def test_trade_explain():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import real
+    assert real.parse("檢查 國巨") == {"cmd": "explain", "query": "國巨"}
+    idx = pd.date_range("2025-01-01", periods=200, freq="B", tz="UTC")
+    close = pd.Series(np.linspace(400, 600, 200), index=idx)
+    close.iloc[-1] = close.iloc[-2] * 1.05
+    vol = pd.Series(1e6, index=idx)
+    vol.iloc[-1] = 3e6
+    df = pd.DataFrame({"open": close, "high": close * 1.03, "low": close * 0.97, "close": close, "volume": vol})
+    msg = real.explain("2327", "國巨", df, {"std": "LXF", "mini": "QEF"}, True, 100_000, 0.2025)
+    assert "突破訊號：✅" in msg and "小型股期 QEF" in msg and "要做 1 口需本金約" in msg
