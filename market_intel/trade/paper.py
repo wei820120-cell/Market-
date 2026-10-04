@@ -6,7 +6,7 @@
              → 產生明天的計劃 → 推「盤後報告」（成交、持倉、權益、離目標還差多少）
 
 規則與 trade/backtest.py 相同（只做多、大盤濾網、突破／拉回、1.5ATR 停損、+2R 出一半、跌破 20 日線出場、
-10 天時間停損、每筆風險 2%、最多 3 檔、小型股期優先、保證金合計不超過權益），另外排除處置股。
+10 天時間停損、每筆風險 2%、最多 3 檔、小型股期優先、每口準備 3 倍原始保證金且合計不超過權益），另外排除處置股。
 帳戶記錄在 state/trade/paper.json。模擬用股價代替期貨價，實際成交以期貨價為準。
 """
 from __future__ import annotations
@@ -62,14 +62,12 @@ def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict) -> list[str]
             continue
         entry = float(d.loc[day, "open"])
         stop = entry - p.atr_mult * plan["atr"]
-        contract, mult, qty = bt.size(st["equity"], entry, stop, plan["info"], p)
-        if not qty:
-            events.append(f"⏭ {plan['code']} {plan['name']} 開盤 {entry:,.1f}，停損距離太大、算不出 1 口，放棄")
-            continue
         rate = rates.get(plan["code"], p.margin_rate)
-        used = sum(margin(x["entry"], x["mult"], x["qty"], rates.get(x["code"], p.margin_rate)) for x in st["positions"])
-        if used + margin(entry, mult, qty, rate) > st["equity"]:
-            events.append(f"⏭ {plan['code']} {plan['name']} 保證金不足，放棄")
+        used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], rates.get(x["code"], p.margin_rate), p)
+                   for x in st["positions"])
+        contract, mult, qty = bt.size(st["equity"], entry, stop, plan["info"], p, rate, used)
+        if not qty:
+            events.append(f"⏭ {plan['code']} {plan['name']} 開盤 {entry:,.1f}，風險或 3 倍保證金準備金不足、算不出 1 口，放棄")
             continue
         c = _cost(entry, mult, qty)
         st["positions"].append({"code": plan["code"], "name": plan["name"], "setup": plan["setup"],
@@ -139,7 +137,10 @@ def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: 
             continue
         close, a = float(row["close"]), float(row["atr"])
         stop = close - p.atr_mult * a
-        contract, mult, qty = bt.size(st["equity"], close, stop, futures.get(code, {}), p)
+        used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], rates.get(x["code"], p.margin_rate), p)
+                   for x in st["positions"])
+        contract, mult, qty = bt.size(st["equity"], close, stop, futures.get(code, {}), p,
+                                      rates.get(code, p.margin_rate), used)
         if not qty:
             continue
         cands.append({"code": code, "name": names.get(code, code), "setup": setup, "atr": a, "close": close,
@@ -184,7 +185,8 @@ def plan_text(st: dict, market_ok: bool, when: str = "今天") -> str:
     for c in st["plan"]:
         lines.append(f"・{c['code']} {c['name']}｜{c['setup']}｜{c['contract']} {c['qty']} 口"
                      f"｜參考價 {c['close']:,.1f}｜停損約 {c['stop_est']:,.1f}｜+2R 約 {c['target_est']:,.1f}"
-                     f"｜最大虧損約 {c['risk_est']:,.0f}｜保證金約 {c['margin_est']:,.0f}")
+                     f"｜最大虧損約 {c['risk_est']:,.0f}｜保證金約 {c['margin_est']:,.0f}"
+                     f"（準備 3 倍 {c['margin_est'] * PARAMS.margin_mult:,.0f}）")
     return "\n".join(lines)
 
 

@@ -795,3 +795,14 @@ def test_real_trade_parse_and_book(tmp_path, monkeypatch):
     assert "停損 34.80" in msg and st["positions"][0]["stop"] == 35.7 - 0.9
     msg = real.sell(st, "DYF", "亞泥", 36.5, 1)
     assert "損益 +1,4" in msg and not st["positions"] and st["equity"] > 100000
+
+
+def test_size_three_times_margin():
+    from market_intel.trade import backtest as bt
+    p = bt.Params()
+    # 南電 1468、停損 20 元：風險上限 2000/(20*100)=1 口；3 倍保證金 1468*100*0.216*3≈95,126 ≤ 10 萬 → 1 口
+    assert bt.size(100_000, 1468, 1448, {"std": "LYF", "mini": "QSF"}, p, 0.216) == ("QSF", 100, 1)
+    # 已有 1 檔佔用 8 萬準備金 → 剩 2 萬不夠再開
+    assert bt.size(100_000, 1468, 1448, {"std": "LYF", "mini": "QSF"}, p, 0.216, 80_000) == ("", 0, 0)
+    # 亞泥 35.6：風險可做 1 口；3 倍保證金 35.6*2000*0.135*3≈28,836
+    assert bt.size(100_000, 35.6, 34.7, {"std": "DYF"}, p, 0.135) == ("DYF", 2000, 1)

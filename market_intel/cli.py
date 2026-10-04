@@ -1048,7 +1048,9 @@ def cmd_backtest(args) -> None:
     if args.variants:
         variants = {
             "A 原版": {},
-            "B 停利改20日線": {"exit_ma": "ma20"},
+            "B 停利改20日線（3倍保證金）": {"exit_ma": "ma20"},
+            "B' 同B但不準備3倍": {"exit_ma": "ma20", "margin_mult": 1.0},
+            "B2 同B、每筆風險3%": {"exit_ma": "ma20", "risk_pct": 0.03},
             "C 只做拉回": {"setups": ("拉回",)},
             "D 拉回＋20日線停利": {"setups": ("拉回",), "exit_ma": "ma20"},
             "E 突破加個股趨勢＋20日線": {"exit_ma": "ma20", "trend_filter": True},

@@ -8,7 +8,8 @@
   B 拉回：20 日均線 > 60 日均線且向上，近 10 日內創過 20 日新高，今日最低碰到 20 日均線 ±1% 內且收在均線之上
 - 停損：進場價 − 1.5 × ATR(14)
 - 出場：漲到 +2R 先出一半，停損移到成本；剩下收盤跌破 10 日均線隔天開盤出場；10 個交易日內沒到 +1R 就出場
-- 資金：每筆風險 2% 權益；最多同時 3 檔；口數 ＝ 風險金額 ÷（停損距離 × 每口股數）；保證金合計不得超過權益
+- 資金：每筆風險 2% 權益；最多同時 3 檔；口數 ＝ 風險金額 ÷（停損距離 × 每口股數）；
+  每口準備 3 倍原始保證金，所有持倉的準備金合計不得超過權益（口數會再依此往下調）
 - 成本：手續費每口單邊 50 元、期交稅 十萬分之二（單邊）、滑價 0.1%（單邊）
 
 注意：用股票價格代替期貨價格（忽略正逆價差、轉倉）；股期標的用目前清單（有存活者偏差）。結果只是參考。
@@ -42,6 +43,7 @@ class Params:
     take_r: float = 2.0
     time_stop: int = 10
     margin_rate: float = 0.2025  # 沒有個別比例時用最高級距估
+    margin_mult: float = 3.0     # 波段單每口準備 3 倍原始保證金（承擔波動），準備金合計不得超過權益
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
     setups: tuple = ("突破", "拉回")
     trend_filter: bool = False   # 個股也要 20MA > 60MA 才做突破
@@ -89,18 +91,32 @@ def market_ok(index_df: pd.DataFrame) -> pd.Series:
     return (c > sma(c, 60)) & (sma(c, 20) > sma(c, 60))
 
 
-def size(equity: float, entry: float, stop: float, info: dict, p: Params) -> tuple[str, int, int]:
-    """回傳（契約, 每口股數, 口數）。先試小型股期，再試一般股期；算不出 1 口就不做。"""
+def size(equity: float, entry: float, stop: float, info: dict, p: Params, rate: float | None = None,
+         reserved: float = 0.0) -> tuple[str, int, int]:
+    """回傳（契約, 每口股數, 口數）。先試小型股期，再試一般股期；算不出 1 口就不做。
+
+    口數同時受兩個限制：風險（停損虧損 ≤ 權益 2%）、準備金（每口 3 倍原始保證金，加上已持倉的準備金 ≤ 權益）。
+    """
     risk = equity * p.risk_pct
     dist = entry - stop
+    rate = p.margin_rate if rate is None else rate
+    room = equity - reserved
     for key, mult in (("mini", MINI), ("std", STD)):
         c = info.get(key)
         if not c or dist <= 0:
             continue
         qty = int(risk // (dist * mult))
+        per = entry * mult * rate * p.margin_mult
+        if per > 0:
+            qty = min(qty, int(room // per))
         if qty >= 1:
             return c, mult, qty
     return "", 0, 0
+
+
+def reserve(entry: float, mult: int, qty: int, rate: float, p: Params) -> float:
+    """這筆持倉要準備的資金：原始保證金 × 3。"""
+    return entry * mult * qty * rate * p.margin_mult
 
 
 def cost(price: float, mult: int, qty: int) -> float:
@@ -133,11 +149,10 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             if not entry or math.isnan(a):
                 continue
             stop = entry - p.atr_mult * a
-            contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), p)
+            used = sum(reserve(t.entry, t.mult, t.qty, rates.get(t.code, p.margin_rate), p) for t in open_t)
+            contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), p,
+                                       rates.get(code, p.margin_rate), used)
             if not qty:
-                continue
-            used = sum(t.entry * t.mult * t.qty * rates.get(t.code, p.margin_rate) for t in open_t)
-            if used + entry * mult * qty * rates.get(code, p.margin_rate) > equity:
                 continue
             entry_cost = cost(entry, mult, qty)  # 記在這筆的損益裡，出場時一起結算
             open_t.append(Trade(code, setup, contract, mult, qty, str(day.date()), entry, stop,
