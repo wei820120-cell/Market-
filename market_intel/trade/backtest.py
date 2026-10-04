@@ -8,7 +8,8 @@
   B 拉回：20 日均線 > 60 日均線且向上，近 10 日內創過 20 日新高，今日最低碰到 20 日均線 ±1% 內且收在均線之上
 - 停損：進場價 − 1.5 × ATR(14)
 - 出場：漲到 +2R 先出一半，停損移到成本；剩下收盤跌破 10 日均線隔天開盤出場；10 個交易日內沒到 +1R 就出場
-- 資金：每筆風險 2% 權益；最多同時 3 檔；口數 ＝ 風險金額 ÷（停損距離 × 每口股數）；保證金合計不得超過權益
+- 資金：每筆風險 2% 權益；最多同時 3 檔；口數 ＝ 風險金額 ÷（停損距離 × 每口股數）；
+  每口準備 3 倍原始保證金，所有持倉的準備金合計不得超過權益（口數會再依此往下調）
 - 成本：手續費每口單邊 50 元、期交稅 十萬分之二（單邊）、滑價 0.1%（單邊）
 
 注意：用股票價格代替期貨價格（忽略正逆價差、轉倉）；股期標的用目前清單（有存活者偏差）。結果只是參考。
@@ -42,6 +43,12 @@ class Params:
     take_r: float = 2.0
     time_stop: int = 10
     margin_rate: float = 0.2025  # 沒有個別比例時用最高級距估
+    pyramid: bool = False        # 試單＋加減碼模式
+    trial_risk: float = 0.01     # 試單風險（權益比例）
+    add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
+    reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
+    add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
+    margin_mult: float = 3.0     # 波段單每口準備 3 倍原始保證金（承擔波動），準備金合計不得超過權益
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
     setups: tuple = ("突破", "拉回")
     trend_filter: bool = False   # 個股也要 20MA > 60MA 才做突破
@@ -68,6 +75,11 @@ class Trade:
     r0: float = 0.0          # 每股初始風險（進場價 − 初始停損）
     qty0: int = 0            # 初始口數
     exit_next: str = ""      # 收盤觸發、隔天開盤要出場的原因
+    adds: int = 0            # 已加碼次數
+    unit: int = 0            # 每次加碼口數（＝試單口數）
+    base: float = 0.0        # 試單進場價（算加碼價位用）
+    reduced: bool = False    # 已減碼一半
+    reduce_next: bool = False
 
 
 def prepare(df: pd.DataFrame, p: Params) -> pd.DataFrame:
@@ -89,18 +101,32 @@ def market_ok(index_df: pd.DataFrame) -> pd.Series:
     return (c > sma(c, 60)) & (sma(c, 20) > sma(c, 60))
 
 
-def size(equity: float, entry: float, stop: float, info: dict, p: Params) -> tuple[str, int, int]:
-    """回傳（契約, 每口股數, 口數）。先試小型股期，再試一般股期；算不出 1 口就不做。"""
+def size(equity: float, entry: float, stop: float, info: dict, p: Params, rate: float | None = None,
+         reserved: float = 0.0) -> tuple[str, int, int]:
+    """回傳（契約, 每口股數, 口數）。先試小型股期，再試一般股期；算不出 1 口就不做。
+
+    口數同時受兩個限制：風險（停損虧損 ≤ 權益 2%）、準備金（每口 3 倍原始保證金，加上已持倉的準備金 ≤ 權益）。
+    """
     risk = equity * p.risk_pct
     dist = entry - stop
+    rate = p.margin_rate if rate is None else rate
+    room = equity - reserved
     for key, mult in (("mini", MINI), ("std", STD)):
         c = info.get(key)
         if not c or dist <= 0:
             continue
         qty = int(risk // (dist * mult))
+        per = entry * mult * rate * p.margin_mult
+        if per > 0:
+            qty = min(qty, int(room // per))
         if qty >= 1:
             return c, mult, qty
     return "", 0, 0
+
+
+def reserve(entry: float, mult: int, qty: int, rate: float, p: Params) -> float:
+    """這筆持倉要準備的資金：原始保證金 × 3。"""
+    return entry * mult * qty * rate * p.margin_mult
 
 
 def cost(price: float, mult: int, qty: int) -> float:
@@ -133,15 +159,15 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             if not entry or math.isnan(a):
                 continue
             stop = entry - p.atr_mult * a
-            contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), p)
+            used = sum(reserve(t.entry, t.mult, t.qty, rates.get(t.code, p.margin_rate), p) for t in open_t)
+            pp = Params(**{**p.__dict__, "risk_pct": p.trial_risk}) if p.pyramid else p
+            contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), pp,
+                                       rates.get(code, p.margin_rate), used)
             if not qty:
-                continue
-            used = sum(t.entry * t.mult * t.qty * rates.get(t.code, p.margin_rate) for t in open_t)
-            if used + entry * mult * qty * rates.get(code, p.margin_rate) > equity:
                 continue
             entry_cost = cost(entry, mult, qty)  # 記在這筆的損益裡，出場時一起結算
             open_t.append(Trade(code, setup, contract, mult, qty, str(day.date()), entry, stop,
-                                realized=-entry_cost, r0=entry - stop, qty0=qty))
+                                realized=-entry_cost, r0=entry - stop, qty0=qty, unit=qty, base=entry))
         pending = []
         # 2) 出場：開盤執行前一天收盤觸發的出場 → 盤中停損 → +2R 先出一半 → 收盤檢查均線、時間停損
         for t in list(open_t):
@@ -151,7 +177,9 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             row = d.loc[day]
             t.days += 1
             px, reason = None, ""
-            if t.exit_next:
+            if p.pyramid:
+                px, reason = _pyramid_day(t, row, p, rates, open_t, equity)
+            elif t.exit_next:
                 px, reason = float(row["open"]), t.exit_next
             elif row["low"] <= t.stop:
                 px, reason = min(float(row["open"]), t.stop), ("保本出場" if t.half_done else "停損")
@@ -189,6 +217,45 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                   for t in open_t)
         curve.append((day, equity + mtm))
     return summarize(closed, curve, p, mkt)
+
+
+def _pyramid_day(t: Trade, row, p: Params, rates: dict, open_t: list, equity: float) -> tuple:
+    """加減碼模式的一天：開盤先執行前一天的減碼／出場 → 盤中停損 → 加碼 → 收盤檢查均線。回傳（出場價, 原因）。"""
+    if t.exit_next:
+        return float(row["open"]), t.exit_next
+    if t.reduce_next and t.qty >= 2:
+        half = t.qty // 2
+        px = float(row["open"])
+        t.realized += (px - t.entry) * t.mult * half - cost(px, t.mult, half)
+        t.qty -= half
+        t.reduced, t.reduce_next = True, False
+    if row["low"] <= t.stop:
+        return min(float(row["open"]), t.stop), ("停損" if t.adds == 0 else "加碼後停損")
+    for k, lvl in enumerate(p.add_levels, start=1):
+        if t.adds >= k or t.reduced:
+            continue
+        price = t.base + lvl * t.r0
+        if row["high"] < price:
+            break
+        fill = max(float(row["open"]), price)
+        rate = rates.get(t.code, p.margin_rate)
+        used = sum(reserve(x.entry, x.mult, x.qty, rates.get(x.code, p.margin_rate), p) for x in open_t)
+        add = min(t.unit, int((equity - used) // max(1e-9, fill * t.mult * rate * p.margin_mult)))
+        if add < 1:
+            break
+        t.entry = (t.entry * t.qty + fill * add) / (t.qty + add)
+        t.qty += add
+        t.qty0 += add
+        t.realized -= cost(fill, t.mult, add)
+        t.adds = k
+        t.stop = max(t.stop, t.base + p.add_stops[min(k, len(p.add_stops)) - 1] * t.r0)
+    if t.days > 1 and row["close"] < row[p.exit_ma]:
+        t.exit_next = "跌破20日線"
+    elif p.reduce_ma and t.days > 1 and not t.reduced and t.adds >= 1 and row["close"] < row[p.reduce_ma]:
+        t.reduce_next = True
+    elif t.days >= p.time_stop and t.adds == 0 and row["close"] < t.base + t.r0:
+        t.exit_next = "時間停損"
+    return None, ""
 
 
 def summarize(closed: list[Trade], curve: list, p: Params, mkt: pd.Series) -> dict:

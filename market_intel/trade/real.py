@@ -9,7 +9,8 @@
   說明                    → 指令說明
 
 規則（和回測選定的策略 B 相同）：停損＝進場價 − 1.5×ATR(14)、+2R 建議先出一半並把停損移到成本、
-收盤跌破 20 日線隔天開盤出場、持有 10 個交易日未達 +1R 出場；每筆最大虧損 2% 權益、最多 3 檔。
+收盤跌破 20 日線隔天開盤出場、持有 10 個交易日未達 +1R 出場；每筆最大虧損 2% 權益、最多 3 檔；
+波段單每口準備 3 倍原始保證金，所有持倉的準備金合計不超過權益。
 機器人只提醒，不會自動下單。帳戶記錄在 state/trade/real.json。
 """
 from __future__ import annotations
@@ -100,9 +101,11 @@ def buy(st: dict, code: str, name: str, contract: str, mult: int, price: float, 
     if not same and len(st["positions"]) >= p.max_pos:
         warn.append(f"⚠️ 持倉已超過 {p.max_pos} 檔上限")
     margin = price * mult * qty * rate
-    used = sum(x["entry"] * x["mult"] * x["qty"] * x.get("rate", rate) for x in st["positions"])
-    if used + margin > st["equity"]:
-        warn.append(f"⚠️ 保證金合計約 {used + margin:,.0f}，超過權益")
+    need = margin * p.margin_mult
+    used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], x.get("rate", rate), p)
+               for x in st["positions"] if x is not same)
+    if used + need > st["equity"]:
+        warn.append(f"⚠️ 3 倍保證金準備：這筆要 {need:,.0f}，加上其他持倉共 {used + need:,.0f}，超過權益 {st['equity']:,.0f}")
     if same:  # 加碼：平均成本，停損用新的平均成本重算
         total = same["qty"] + qty
         same["entry"] = (same["entry"] * same["qty"] + price * qty) / total
@@ -119,7 +122,8 @@ def buy(st: dict, code: str, name: str, contract: str, mult: int, price: float, 
         head = f"🟢 已記錄買進 {name}（{code}）{contract} {qty} 口 @ {price:,.2f}"
     lines = [head,
              f"停損 {x['stop']:,.2f}（−1.5ATR）｜+2R 目標 {x['entry'] + p.take_r * x['r0']:,.2f}",
-             f"最大虧損約 {(x['entry'] - x['stop']) * mult * x['qty']:,.0f}｜保證金約 {margin:,.0f}",
+             f"最大虧損約 {(x['entry'] - x['stop']) * mult * x['qty']:,.0f}｜原始保證金約 {margin:,.0f}，"
+             f"建議準備 3 倍 {need:,.0f}",
              "出場規則：碰停損出場；到 +2R 先出一半、停損移到成本；收盤跌破 20 日線隔天出場；10 天未達 +1R 出場"]
     return "\n".join(lines + warn)
 
@@ -165,6 +169,9 @@ def positions_text(st: dict, closes: dict | None = None) -> str:
         c = closes.get(x["code"])
         u = f"｜現價 {c:,.2f} 未實現 {(c - x['entry']) * x['mult'] * x['qty']:+,.0f}" if c else ""
         lines.append(f"・{x['name']} {x['contract']} {x['qty']} 口｜成本 {x['entry']:,.2f}｜停損 {x['stop']:,.2f}{u}")
+    used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], x.get("rate", PARAMS.margin_rate), PARAMS)
+               for x in st["positions"])
+    lines.append(f"🧱 3 倍保證金準備：已用 {used:,.0f}／權益 {st['equity']:,.0f}，還可用 {max(0, st['equity'] - used):,.0f}")
     return "\n".join(lines + [equity_line(st)])
 
 

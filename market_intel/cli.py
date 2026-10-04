@@ -1047,14 +1047,15 @@ def cmd_backtest(args) -> None:
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
     if args.variants:
         variants = {
-            "A 原版": {},
-            "B 停利改20日線": {"exit_ma": "ma20"},
-            "C 只做拉回": {"setups": ("拉回",)},
-            "D 拉回＋20日線停利": {"setups": ("拉回",), "exit_ma": "ma20"},
-            "E 突破加個股趨勢＋20日線": {"exit_ma": "ma20", "trend_filter": True},
-            "F 停損2ATR＋20日線": {"exit_ma": "ma20", "atr_mult": 2.0},
-            "G 停利3R＋20日線": {"exit_ma": "ma20", "take_r": 3.0},
-            "H 量比2倍＋20日線＋趨勢": {"exit_ma": "ma20", "vol_ratio": 2.0, "trend_filter": True},
+            "B 現行（3倍保證金）": {"exit_ma": "ma20"},
+            "P1 試單1%＋加碼2次＋停損拉近＋減碼": {"exit_ma": "ma20", "pyramid": True},
+            "P4 試單1%＋+1R加碼1次、停損不動、不減碼": {"exit_ma": "ma20", "pyramid": True, "add_levels": (1.0,),
+                                                  "add_stops": (-1.0,), "reduce_ma": ""},
+            "P5 試單1%＋+1R/+2R加碼、第2次才保本、不減碼": {"exit_ma": "ma20", "pyramid": True,
+                                                     "add_stops": (-1.0, 0.0), "reduce_ma": ""},
+            "P6 試單1.5%＋+1R/+2R加碼、第2次才保本、不減碼": {"exit_ma": "ma20", "pyramid": True, "trial_risk": 0.015,
+                                                       "add_stops": (-1.0, 0.0), "reduce_ma": ""},
+            "P7 同P5＋跌破10日線減碼": {"exit_ma": "ma20", "pyramid": True, "add_stops": (-1.0, 0.0)},
         }
         cut = index_df.index[len(index_df) // 2]
         rows = []
