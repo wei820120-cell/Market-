@@ -5,6 +5,9 @@
 - 15:30 盤後：用今天的日 K 結算：開盤成交昨天的計劃 → 停損／+2R 先出一半 → 收盤檢查 20 日線與時間停損
              → 產生明天的計劃 → 推「盤後報告」（成交、持倉、權益、離目標還差多少）
 
+並排模擬：另有 A（最多 4 檔）、T3（品質分級下注）兩個對照帳戶（state/trade/paper_A.json、paper_T3.json），
+同一天結算，盤後報告最後附比較；實際下單照 B。
+
 規則與 trade/backtest.py 相同（只做多、大盤濾網、突破／拉回、1.5ATR 停損、+2R 出一半、跌破 20 日線出場、
 10 天時間停損、每筆風險 2%、最多 3 檔、小型股期優先、每口準備 3 倍原始保證金且合計不超過權益），另外排除處置股。
 帳戶記錄在 state/trade/paper.json。模擬用股價代替期貨價，實際成交以期貨價為準。
@@ -18,6 +21,7 @@ from datetime import datetime
 import pandas as pd
 
 from .. import notify
+from ..analysis.indicators import sma
 from ..utils import ROOT, now_tw
 from . import backtest as bt
 
@@ -27,18 +31,30 @@ STATE = ROOT / "state" / "trade" / "paper.json"
 CHANNEL = "trade"
 PARAMS = bt.Params(exit_ma="ma20")  # 回測選定：策略 B
 TARGET = 200_000
+# 並排模擬：實際下單照 B；A、T3 是對照組，各自一個模擬帳戶，累積實績後再決定要不要換
+VARIANTS = {
+    "A": ("A 每筆 2%、最多 4 檔", bt.Params(exit_ma="ma20", max_pos=4)),
+    "T3": ("T3 品質分級（4 項條件符合 3～4 項給 3%，其餘 2%）",
+           bt.Params(exit_ma="ma20", tier_risk=(0.02, 0.02, 0.02, 0.03, 0.03))),
+}
 
 
-def load() -> dict:
-    if STATE.exists():
-        return json.loads(STATE.read_text(encoding="utf-8"))
+def _path(name: str = "B"):
+    return STATE if name == "B" else STATE.with_name(f"paper_{name}.json")
+
+
+def load(name: str = "B") -> dict:
+    path = _path(name)
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
     return {"start": f"{now_tw():%Y-%m-%d}", "capital": PARAMS.capital, "equity": PARAMS.capital,
             "positions": [], "closed": [], "plan": [], "last_date": None, "regime": None}
 
 
-def save(st: dict) -> None:
-    STATE.parent.mkdir(parents=True, exist_ok=True)
-    STATE.write_text(json.dumps(st, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+def save(st: dict, name: str = "B") -> None:
+    path = _path(name)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(st, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
 
 
 def margin(price: float, mult: int, qty: int, rate: float) -> float:
@@ -49,9 +65,9 @@ def _cost(price, mult, qty) -> float:
     return bt.cost(price, mult, qty)
 
 
-def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict) -> list[str]:
+def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict, p: bt.Params | None = None) -> list[str]:
     """用當天日 K 結算：成交昨天的計劃、處理出場。回傳要推播的事件。"""
-    p = PARAMS
+    p = p or PARAMS
     events = []
     # 1) 開盤成交昨天的計劃
     for plan in st.get("plan", []):
@@ -65,7 +81,8 @@ def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict) -> list[str]
         rate = rates.get(plan["code"], p.margin_rate)
         used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], rates.get(x["code"], p.margin_rate), p)
                    for x in st["positions"])
-        contract, mult, qty = bt.size(st["equity"], entry, stop, plan["info"], p, rate, used)
+        pp = bt.Params(**{**p.__dict__, "risk_pct": plan.get("risk_pct", p.risk_pct)}) if p.tier_risk else p
+        contract, mult, qty = bt.size(st["equity"], entry, stop, plan["info"], pp, rate, used)
         if not qty:
             events.append(f"⏭ {plan['code']} {plan['name']} 開盤 {entry:,.1f}，風險或 3 倍保證金準備金不足、算不出 1 口，放棄")
             continue
@@ -119,13 +136,30 @@ def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict) -> list[str]
     return events
 
 
+def quality_scores(day: pd.Timestamp, prepped: dict, index_df: pd.DataFrame) -> dict[str, int]:
+    """品質分數 0～4（回測驗證有加分的四項）：離 52 週高 10% 內、站上向上 200 日線、近 120 日漲幅前 20%、大盤強勢。"""
+    rets = {c: float(d.loc[day, "ret120"]) for c, d in prepped.items()
+            if day in d.index and pd.notna(d.loc[day, "ret120"])}
+    rank = pd.Series(rets, dtype=float).rank(pct=True)
+    ic = index_df["close"]
+    ma20 = sma(ic, 20)
+    mkt = bool(ic.iloc[-1] > ma20.iloc[-1] and ma20.iloc[-1] > ma20.iloc[-11]) if len(ic) > 31 else False
+    out = {}
+    for c, d in prepped.items():
+        if day in d.index:
+            r = d.loc[day]
+            out[c] = int(bool(r["f_hi"])) + int(bool(r["f_200"])) + int(rank.get(c, 0) >= 0.8) + int(mkt)
+    return out
+
+
 def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: dict, rates: dict,
-              alerts: dict, market_ok: bool, themes: dict | None = None) -> list[dict]:
+              alerts: dict, market_ok: bool, themes: dict | None = None, p: bt.Params | None = None,
+              scores: dict | None = None) -> list[dict]:
     """今天收盤的訊號 → 明天的計劃（題材股優先，再依量比排序；扣掉已持有、處置股，最多補滿 3 檔）。
 
     themes：{代號: "族群／研究題材名稱"}，有題材的排前面。有訊號但口數算不出來的題材股記在 st["blocked"]。
     """
-    p = PARAMS
+    p = p or PARAMS
     themes = themes or {}
     st["blocked"] = []
     if not market_ok:
@@ -144,7 +178,10 @@ def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: 
         stop = close - p.atr_mult * a
         used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], rates.get(x["code"], p.margin_rate), p)
                    for x in st["positions"])
-        contract, mult, qty = bt.size(st["equity"], close, stop, futures.get(code, {}), p,
+        score = (scores or {}).get(code, 0)
+        pp = (bt.Params(**{**p.__dict__, "risk_pct": p.tier_risk[min(score, len(p.tier_risk) - 1)]})
+              if p.tier_risk else p)
+        contract, mult, qty = bt.size(st["equity"], close, stop, futures.get(code, {}), pp,
                                       rates.get(code, p.margin_rate), used)
         if not qty:
             if code in themes:  # 有題材、有訊號，但 10 萬本金的風險／保證金規則做不了
@@ -153,12 +190,12 @@ def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: 
                 c = info.get("mini") or info.get("std")
                 one = (close - stop) * m
                 st["blocked"].append({"code": code, "name": names.get(code, code), "setup": setup, "theme": themes[code],
-                                      "contract": c, "risk_one": one, "need_capital": one / p.risk_pct,
+                                      "contract": c, "risk_one": one, "need_capital": one / pp.risk_pct,
                                       "reserve_one": close * m * rates.get(code, p.margin_rate) * p.margin_mult})
             continue
         cands.append({"code": code, "name": names.get(code, code), "setup": setup, "theme": themes.get(code, ""), "atr": a, "close": close,
                       "vr": float(row["vr"]), "info": futures.get(code, {}), "contract": contract, "mult": mult,
-                      "qty": qty, "stop_est": stop, "target_est": close + p.take_r * (close - stop),
+                      "qty": qty, "risk_pct": pp.risk_pct, "score": score, "stop_est": stop, "target_est": close + p.take_r * (close - stop),
                       "margin_est": margin(close, mult, qty, rates.get(code, p.margin_rate)),
                       "risk_est": (close - stop) * mult * qty})
     cands.sort(key=lambda c: (bool(c["theme"]), c["setup"] == "突破", c["vr"]), reverse=True)
@@ -233,7 +270,44 @@ def run_post(data: dict, index_df: pd.DataFrame, futures: dict, names: dict, rat
     st["last_date"], st["regime"] = today, "多頭" if mkt else "空頭／盤整"
     msg = report(st, day, events, mkt, prepped)
     save(st)
-    return msg
+    extra = run_variants(st, day, data, prepped, index_df, futures, names, rates, alerts, today, themes, mkt)
+    return msg + ("\n\n" + extra if extra else "")
+
+
+def _line(label: str, st: dict, day: pd.Timestamp, prepped: dict, tier: bool) -> str:
+    mtm = 0.0
+    for x in st["positions"]:
+        close = float(prepped[x["code"]]["close"].get(day, x["entry"])) if x["code"] in prepped else x["entry"]
+        mtm += (close - x["entry"]) * x["mult"] * x["qty"] + x["realized"]
+    total = st["equity"] + mtm
+    closed = st["closed"]
+    win = f"｜勝率 {sum(c['pnl'] > 0 for c in closed) / len(closed):.0%}" if closed else ""
+    plan = "、".join(f"{c['code']} {c['name']} {c['qty']}口" + (f"（{c.get('risk_pct', 0):.0%}）" if tier else "")
+                    for c in st.get("plan", [])) or "無"
+    return (f"{label}\n  權益 {total:,.0f}（{total / st['capital'] - 1:+.1%}）｜持倉 {len(st['positions'])}｜"
+            f"已平倉 {len(closed)}{win}\n  明天：{plan}")
+
+
+def run_variants(base_st: dict, day: pd.Timestamp, data: dict, prepped: dict, index_df: pd.DataFrame,
+                 futures: dict, names: dict, rates: dict, alerts: dict, today: str, themes: dict | None,
+                 mkt: bool) -> str:
+    """並排模擬：A、T3 各自一個模擬帳戶，和 B 同一天結算。回傳比較區塊（實際下單照 B）。"""
+    scores = quality_scores(day, prepped, index_df)
+    lines = ["📊 並排模擬（實際下單照 B；A、T3 是對照組，累積實績後再決定要不要換）",
+             _line("B 現行：每筆 2%、最多 3 檔", base_st, day, prepped, False)]
+    for name, (label, p) in VARIANTS.items():
+        try:
+            vst = load(name)
+            if vst.get("last_date") != today:
+                events = settle(vst, day, prepped, rates, p) if vst.get("last_date") else []
+                vst["plan"] = make_plan(vst, day, prepped, futures, names, rates, alerts, mkt, themes, p, scores)
+                vst["last_date"], vst["regime"] = today, "多頭" if mkt else "空頭／盤整"
+                vst["last_events"] = events
+                save(vst, name)
+            lines.append(_line(label, vst, day, prepped, bool(p.tier_risk)))
+        except Exception as e:  # noqa: BLE001 — 對照組出錯不能影響主帳戶
+            log.warning("並排模擬 %s 失敗：%s", name, e)
+    return "\n".join(lines)
 
 
 def last_date(df: pd.DataFrame) -> str:

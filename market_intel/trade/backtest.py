@@ -48,6 +48,7 @@ class Params:
     add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
     reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
     add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
+    tier_risk: tuple = ()        # 依品質分數（0～4）決定每筆風險；空＝一律用 risk_pct。分數＝離52週高10%內＋站上向上200日線＋相對強度前20%＋大盤強勢
     margin_mult: float = 3.0     # 波段單每口準備 3 倍原始保證金（承擔波動），準備金合計不得超過權益
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
     setups: tuple = ("突破", "拉回")
@@ -80,6 +81,21 @@ class Trade:
     base: float = 0.0        # 試單進場價（算加碼價位用）
     reduced: bool = False    # 已減碼一半
     reduce_next: bool = False
+    feat: dict = field(default_factory=dict)  # 進場前一天的品質條件（只用來事後分析，不影響進出場）
+
+
+FACTORS = {
+    "f_hi": "離 52 週高點 10% 內",
+    "f_200": "站上 200 日線且 200 日線向上",
+    "f_rs": "近 120 日漲幅排名前 20%",
+    "f_vcp": "波動收斂（10 日均振幅 < 50 日均振幅 80%）",
+    "f_vol2": "突破量比 ≥ 2",
+    "f_tight": "低波動（ATR < 股價 3.5%）",
+    "f_mkt": "大盤強勢（站上 20 日線且 20 日線上升）",
+}
+
+
+QUALITY = ("f_hi", "f_200", "f_rs", "f_mkt")  # 回測證明有加分的四項
 
 
 def prepare(df: pd.DataFrame, p: Params) -> pd.DataFrame:
@@ -89,6 +105,15 @@ def prepare(df: pd.DataFrame, p: Params) -> pd.DataFrame:
     d["hh"] = d["high"].shift(1).rolling(p.breakout_n).max()
     d["vr"] = d["volume"] / d["volume"].shift(1).rolling(20).mean()
     new_high = d["close"] > d["hh"]
+    tr = pd.concat([d["high"] - d["low"], (d["high"] - d["close"].shift(1)).abs(),
+                    (d["low"] - d["close"].shift(1)).abs()], axis=1).max(axis=1)
+    ma200 = sma(d["close"], 200)
+    d["f_hi"] = d["close"] >= 0.9 * d["high"].rolling(252, min_periods=200).max()
+    d["f_200"] = (d["close"] > ma200) & (ma200 > ma200.shift(20))
+    d["f_vcp"] = tr.rolling(10).mean() < 0.8 * tr.rolling(50).mean()
+    d["f_vol2"] = d["vr"] >= 2.0
+    d["f_tight"] = d["atr"] < 0.035 * d["close"]
+    d["ret120"] = d["close"] / d["close"].shift(120) - 1
     d["sig_a"] = new_high & (d["vr"] >= p.vol_ratio) & (d["close"] > d["ma60"])
     recent_high = new_high.rolling(10).max().fillna(0).astype(bool)
     d["sig_b"] = ((d["ma20"] > d["ma60"]) & (d["ma20"] > d["ma20"].shift(5)) & recent_high
@@ -139,6 +164,9 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
     rates = rates or {}
     prepped = {c: prepare(df, p) for c, df in data.items() if len(df) > 80}
     mkt = market_ok(index_df)
+    ic = index_df["close"]
+    mkt_strong = (ic > sma(ic, 20)) & (sma(ic, 20) > sma(ic, 20).shift(10))
+    rs_rank = pd.DataFrame({c: d["ret120"] for c, d in prepped.items()}).rank(axis=1, pct=True)
     dates = sorted(set().union(*[set(d.index) for d in prepped.values()]) & set(mkt.index))
     equity = p.capital
     open_t: list[Trade] = []
@@ -160,14 +188,21 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                 continue
             stop = entry - p.atr_mult * a
             used = sum(reserve(t.entry, t.mult, t.qty, rates.get(t.code, p.margin_rate), p) for t in open_t)
+            prev = d.shift(1).loc[day]
+            feat = {k: bool(prev[k]) for k in ("f_hi", "f_200", "f_vcp", "f_vol2", "f_tight")}
+            feat["f_rs"] = bool(rs_rank[code].shift(1).get(day, 0) >= 0.8)
+            feat["f_mkt"] = bool(mkt_strong.shift(1).get(day, False))
             pp = Params(**{**p.__dict__, "risk_pct": p.trial_risk}) if p.pyramid else p
+            if p.tier_risk:
+                score = sum(feat[k] for k in QUALITY)
+                pp = Params(**{**pp.__dict__, "risk_pct": p.tier_risk[min(score, len(p.tier_risk) - 1)]})
             contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), pp,
                                        rates.get(code, p.margin_rate), used)
             if not qty:
                 continue
             entry_cost = cost(entry, mult, qty)  # 記在這筆的損益裡，出場時一起結算
             open_t.append(Trade(code, setup, contract, mult, qty, str(day.date()), entry, stop,
-                                realized=-entry_cost, r0=entry - stop, qty0=qty, unit=qty, base=entry))
+                                realized=-entry_cost, r0=entry - stop, qty0=qty, unit=qty, base=entry, feat=feat))
         pending = []
         # 2) 出場：開盤執行前一天收盤觸發的出場 → 盤中停損 → +2R 先出一半 → 收盤檢查均線、時間停損
         for t in list(open_t):
@@ -217,6 +252,86 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                   for t in open_t)
         curve.append((day, equity + mtm))
     return summarize(closed, curve, p, mkt)
+
+
+def run_daytrade(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.DataFrame,
+                 p: Params | None = None, rates: dict[str, float] | None = None, hold_locked: bool = True,
+                 min_quality: int = 0, stop_atr: float = 1.0) -> dict:
+    """當沖版（日 K 近似）：盤中突破前 20 日高就進場，收盤全出；收盤漲停鎖住（近似：漲幅 ≥ 9.5% 且收在最高附近）才留倉，隔天開盤出。
+
+    近似與限制：只有日 K，看不到盤中順序，同一天碰到停損就當作先停損；成交價假設在突破價（跳空就用開盤價，開盤高過突破價 3% 以上不追）；
+    不用當天的量（盤中看不到全天量），改用前一天的條件（品質分數、站上 60 日線、大盤多頭）。當沖只準備 1 倍原始保證金。
+    """
+    p = p or Params()
+    rates = rates or {}
+    pp = Params(**{**p.__dict__, "margin_mult": 1.0})
+    prepped = {c: prepare(df, p) for c, df in data.items() if len(df) > 80}
+    prev = {c: d.shift(1) for c, d in prepped.items()}
+    mkt = market_ok(index_df).shift(1)
+    ic = index_df["close"]
+    mkt_strong = ((ic > sma(ic, 20)) & (sma(ic, 20) > sma(ic, 20).shift(10))).shift(1)
+    rs_rank = pd.DataFrame({c: d["ret120"] for c, d in prepped.items()}).rank(axis=1, pct=True).shift(1)
+    dates = sorted(set().union(*[set(d.index) for d in prepped.values()]) & set(index_df.index))
+    equity = p.capital
+    held: list[Trade] = []
+    closed: list[Trade] = []
+    curve = []
+
+    def settle(t: Trade, px: float, day, reason: str):
+        nonlocal equity
+        t.pnl = t.realized + (px - t.entry) * t.mult * t.qty - cost(px, t.mult, t.qty)
+        t.r = t.pnl / (t.r0 * t.mult * t.qty0) if t.r0 > 0 else 0
+        t.exit, t.reason, t.exit_date = px, reason, str(day.date())
+        equity += t.pnl
+        closed.append(t)
+
+    for day in dates:
+        for t in list(held):  # 昨天留倉的，今天開盤出
+            d = prepped[t.code]
+            if day in d.index:
+                t.days += 1
+                settle(t, float(d.loc[day, "open"]), day, "漲停鎖住留倉，隔天開盤出")
+                held.remove(t)
+        if not bool(mkt.get(day, False)):
+            curve.append((day, equity))
+            continue
+        cands = []
+        for code, d in prepped.items():
+            if day not in d.index:
+                continue
+            row, pv = d.loc[day], prev[code].loc[day]
+            hh = float(row["hh"]) if not math.isnan(row["hh"]) else None
+            if hh is None or math.isnan(pv["atr"]) or not pv["close"] > pv["ma60"] or row["high"] <= hh:
+                continue
+            entry = max(float(row["open"]), hh)
+            if entry > hh * 1.03:
+                continue
+            feat = {"f_hi": bool(pv["f_hi"]), "f_200": bool(pv["f_200"]),
+                    "f_rs": bool(rs_rank[code].get(day, 0) >= 0.8), "f_mkt": bool(mkt_strong.get(day, False))}
+            q = sum(feat.values())
+            if q < min_quality:
+                continue
+            cands.append((float(rs_rank[code].get(day, 0) or 0), q, code, entry, feat))
+        for _, q, code, entry, feat in sorted(cands, reverse=True)[:p.max_pos]:
+            d, row = prepped[code], prepped[code].loc[day]
+            stop = entry - stop_atr * float(prev[code].loc[day, "atr"])
+            contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), pp, rates.get(code, p.margin_rate), 0.0)
+            if not qty:
+                continue
+            t = Trade(code, "當沖突破", contract, mult, qty, str(day.date()), entry, stop,
+                      realized=-cost(entry, mult, qty), r0=entry - stop, qty0=qty, unit=qty, base=entry, feat=feat)
+            if row["low"] <= stop:
+                settle(t, stop, day, "當沖停損")
+                continue
+            pc = float(prev[code].loc[day, "close"])
+            locked = row["close"] >= pc * 1.095 and row["close"] >= row["high"] * 0.995
+            if locked and hold_locked:
+                held.append(t)
+            else:
+                settle(t, float(row["close"]), day, "當沖收盤出")
+        mtm = sum((float(prepped[t.code]["close"].get(day, t.entry)) - t.entry) * t.mult * t.qty + t.realized for t in held)
+        curve.append((day, equity + mtm))
+    return summarize(closed, curve, p, market_ok(index_df))
 
 
 def _pyramid_day(t: Trade, row, p: Params, rates: dict, open_t: list, equity: float) -> tuple:
