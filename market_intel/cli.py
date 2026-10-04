@@ -1122,6 +1122,45 @@ def _verify_margin() -> None:
                   "| 原始保證金≈", round(amt) if amt else None)
 
 
+def _backtest_speed(data, futures, index_df, rates, capital: float) -> None:
+    """翻倍速度：同一套策略，不同風險／持倉數，從不同起點開始，看多久翻倍、中途最多回撤多少。"""
+    from .trade import backtest as bt
+    grid = [(r, m) for r in (0.02, 0.03, 0.04, 0.05) for m in (3, 4)] + [(0.06, 3)]
+    starts = list(pd.date_range(index_df.index[0] + pd.Timedelta(days=100), index_df.index[-1] - pd.Timedelta(days=300),
+                                freq="75D"))
+    rows = []
+    for risk, mp in grid:
+        days, dds, finals = [], [], []
+        for s0 in starts:
+            warm = s0 - pd.Timedelta(days=120)
+            res = bt.run({c: d[d.index >= warm] for c, d in data.items()}, futures, index_df[index_df.index >= warm],
+                         bt.Params(capital=capital, exit_ma="ma20", risk_pct=risk, max_pos=mp), rates)
+            eq = pd.Series(dict((pd.Timestamp(d), v) for d, v in res["curve"]))
+            eq = eq[eq.index >= s0]
+            if len(eq) < 20:
+                continue
+            ratio = eq / float(eq.iloc[0])
+            hit = ratio[ratio >= 2.0]
+            days.append((hit.index[0] - s0).days if len(hit) else None)
+            dds.append(float((ratio / ratio.cummax() - 1).min()) * 100)
+            finals.append(float(ratio.iloc[-1]))
+        ok = [d for d in days if d is not None]
+        rows.append({"單筆風險%": risk * 100, "最多持倉": mp, "起點數": len(days),
+                     "翻倍比例%": round(len(ok) / len(days) * 100) if days else 0,
+                     "翻倍天數中位": int(pd.Series(ok).median()) if ok else None,
+                     "最快": min(ok) if ok else None, "最慢": max(ok) if ok else None,
+                     "一年內翻倍%": round(sum(d <= 365 for d in ok) / len(days) * 100) if days else 0,
+                     "最大回撤中位%": round(float(pd.Series(dds).median()), 1) if dds else None,
+                     "最大回撤最差%": round(min(dds), 1) if dds else None,
+                     "最終倍數中位": round(float(pd.Series(finals).median()), 2) if finals else None})
+        log.info("風險 %.0f%% 持倉 %d：%s", risk * 100, mp, rows[-1])
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "speed.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def cmd_backtest(args) -> None:
     """股票期貨波段策略回測（只做多），結果存到 research/backtest/。"""
     from . import net
@@ -1140,6 +1179,9 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.speed:
+        _backtest_speed(data, futures, index_df, rates, args.capital)
+        return
     if args.variants:
         variants = {
             "B 現行（3倍保證金）": {"exit_ma": "ma20"},
@@ -1475,6 +1517,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)
     tr = sub.add_parser("trade", help="進出場機器人（模擬）")
     tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")

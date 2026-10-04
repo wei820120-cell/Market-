@@ -21,6 +21,10 @@ on:
         description: "股票期貨波段策略回測"
         type: boolean
         default: false
+      speed:
+        description: "翻倍速度回測：不同風險／持倉數、不同起點，多久翻倍與回撤"
+        type: boolean
+        default: false
       trade:
         description: "進出場機器人（模擬）：立即盤後結算並推播"
         type: boolean
@@ -67,6 +71,8 @@ jobs:
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ "${{ inputs.trade }}" = "true" ]; then
             python -m market_intel trade --post
+          elif [ "${{ inputs.speed }}" = "true" ]; then
+            python -m market_intel backtest --speed
           elif [ "${{ inputs.backtest }}" = "true" ]; then
             python -m market_intel backtest --variants
           elif [ -n "$CARD" ]; then
