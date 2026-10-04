@@ -867,3 +867,25 @@ def test_intraday_breakout_signal():
     assert "⚡ 10:00 盤中突破：2367 燿華〔PCB供需〕" in msg and "一般 VBF" in msg
     q.price = 44.0
     assert intraday.check({"2367": q}, lv, 0.5) == []  # 沒突破
+
+
+def test_scan_new_themes(tmp_path, monkeypatch):
+    import pandas as pd
+    from market_intel import cli, notify, research
+    from market_intel.fetchers import tw_daily
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(cli, "_trade_theme_map", lambda: {"2327": "被動元件"})
+    monkeypatch.setattr(tw_daily, "load_revenue", lambda: {"4573": {"ym": "2026/08", "yoy": 337.8, "rev": 220_000},
+                                                          "1234": {"ym": "2026/08", "yoy": 150.0, "rev": 5_000}})
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    day = pd.DataFrame([{"code": "2327", "name": "國巨", "pct": 9.9, "value": 9e9},
+                        {"code": "3324", "name": "雙鴻", "pct": 10.0, "value": 5e8},
+                        {"code": "8888", "name": "小股", "pct": 10.0, "value": 1e7}])
+    listings = {"4573": {"name": "高明鐵"}, "1234": {"name": "X"}}
+    q = cli.scan_new_themes(day, listings, {})
+    assert q == ["雙鴻（3324）題材與產業", "高明鐵（4573）題材與產業"]
+    assert sent[0][0] == "research" and "營收年增 +338%" in sent[0][1]
+    assert cli.scan_new_themes(day, listings, {}) == []  # 已排入、營收同月份不重複
