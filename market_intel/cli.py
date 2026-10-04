@@ -966,6 +966,50 @@ def _verify_margin() -> None:
                   "| 原始保證金≈", round(amt) if amt else None)
 
 
+def cmd_backtest(args) -> None:
+    """股票期貨波段策略回測（只做多），結果存到 research/backtest/。"""
+    from . import net
+    from .trade import backtest as bt
+    listings = _listings()
+    futures = stock_futures.load_stock_futures()
+    codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
+    log.info("回測標的：%d 檔（有股票期貨或小型股期）", len(codes))
+    data = _yahoo_histories(codes, listings, range_=args.range)
+    index_df, _ = yahoo.fetch_chart("^TWII", range_=args.range)
+    rates = {}
+    try:
+        for r in net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining"):
+            rate = str(r.get("InitialMarginRate", "")).replace("%", "")
+            if rate:
+                rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
+    except Exception as e:  # noqa: BLE001
+        log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    for name, data_slice in (("全期間", None),):
+        res = bt.run(data, futures, index_df, bt.Params(capital=args.capital), rates)
+        out = research.RESEARCH_DIR / "backtest"
+        bt.save(res, out / "latest.json")
+        summary = {k: v for k, v in res.items() if k not in ("trades", "curve")}
+        print(json.dumps(summary, ensure_ascii=False, indent=1))
+        trades = pd.DataFrame(res["trades"])
+        if not trades.empty:
+            print(trades.sort_values("pnl").tail(8)[["code", "setup", "contract", "qty", "entry_date", "entry",
+                                                     "exit_date", "exit", "pnl", "r", "reason"]].to_string())
+            print(trades.groupby(trades["entry_date"].str[:7])["pnl"].sum().round().to_string())
+        try:
+            import matplotlib.pyplot as plt
+            from . import charts
+            charts.setup_font()
+            eq = pd.Series([v for _, v in res["curve"]], index=pd.to_datetime([d for d, _ in res["curve"]]))
+            fig, ax = plt.subplots(figsize=(8.6, 4), dpi=130)
+            ax.plot(eq.index, eq.values, color="#24364f")
+            ax.axhline(args.capital * 2, color="#d0312d", ls="--", lw=0.8)
+            ax.set_title(f"回測權益曲線（起始 {args.capital:,.0f}）", loc="left")
+            fig.tight_layout()
+            fig.savefig(out / "equity.png")
+        except Exception as e:  # noqa: BLE001
+            log.warning("權益曲線圖失敗：%s", e)
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
     _verify_margin()
@@ -1005,6 +1049,10 @@ def main(argv: list[str] | None = None) -> None:
     cd.add_argument("query")
     cd.add_argument("--channel", default="research")
     cd.set_defaults(func=cmd_card)
+    bk = sub.add_parser("backtest", help="股票期貨波段策略回測（只做多）")
+    bk.add_argument("--capital", type=float, default=100_000)
+    bk.add_argument("--range", default="3y")
+    bk.set_defaults(func=cmd_backtest)
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
     fl.set_defaults(func=cmd_inflow)

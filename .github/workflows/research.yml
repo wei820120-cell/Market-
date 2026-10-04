@@ -17,6 +17,10 @@ on:
         description: "推盤後資金流入族群的題材卡"
         type: boolean
         default: false
+      backtest:
+        description: "股票期貨波段策略回測"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,7 +54,9 @@ jobs:
           TOPIC: ${{ inputs.topic }}
           CARD: ${{ inputs.card }}
         run: |
-          if [ -n "$CARD" ]; then
+          if [ "${{ inputs.backtest }}" = "true" ]; then
+            python -m market_intel backtest
+          elif [ -n "$CARD" ]; then
             python -m market_intel card "$CARD"
           elif [ "${{ inputs.inflow }}" = "true" ]; then
             python -m market_intel inflow
