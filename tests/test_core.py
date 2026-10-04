@@ -704,3 +704,21 @@ def test_detail_slides(tmp_path):
     assert charts.evolution_slide_png(tmp_path / "b.png", "PCB", evo).stat().st_size > 1000
     assert charts.concepts_slide_png(tmp_path / "c.png", "PCB", [{"title": "為什麼", "points": ["一", "二"]}],
                                      ["結論一"]).stat().st_size > 1000
+
+
+def test_mops_push_filter(monkeypatch):
+    from market_intel import cli, config, research
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(config, "news_keywords", lambda: {"mops_skip": ["代.{0,4}子公司", "背書保證"]})
+    monkeypatch.setattr(config, "tw_watch_codes", lambda: [])
+    monkeypatch.setattr(config, "all_tw_theme_codes", lambda: ["2327"])
+    monkeypatch.setattr(config, "themes", lambda: {"tw": {"被動元件": ["2327"]}})
+    monkeypatch.setattr(research, "load_index", lambda: {})
+    mk = lambda code, subj, score=0.0: NewsItem(source="MOPS重大訊息(上市)", title=f"{code} X：{subj}", codes=[code],
+                                               score=score, summary="說明內容")
+    items = [mk("2327", "董事會通過擴產案"), mk("2327", "代子公司公告取得設備"), mk("9999", "法說會"),
+             mk("9999", "調升財測", 2.0), mk("2330", "背書保證")]
+    out = cli.mops_to_push(items, {}, {"2330": {"std": "CDF"}})
+    assert [it.title for it in out] == ["2327 X：董事會通過擴產案", "9999 X：調升財測"]
+    msg = cli.mops_message(out[0], {}, {"2327": {"std": "LXF", "mini": "QEF"}})
+    assert "股期 LXF／小型 QEF" in msg and "被動元件" in msg
