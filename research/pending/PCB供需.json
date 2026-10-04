@@ -1,0 +1,335 @@
+{
+ "topic": "PCB供需",
+ "one_line": "AI 伺服器、網通、記憶體需求同步爆發，台灣 PCB 全年產值估首破兆元（年增 24%），載板 +37%、多層板 +48%；層數與面積吃掉產能、材料缺料漲價，高階 PCB 價量齊揚，吃緊估延續到 2027。",
+ "status": "已證實",
+ "horizon": "中期（3-12個月）",
+ "layers": [
+  {
+   "layer": "上游材料（CCL／銅箔／玻纖布）",
+   "description": "缺料漲價，CCL 占 PCB 成本升到 50% 以上",
+   "global_players": [
+    "生益",
+    "建滔",
+    "松下",
+    "斗山"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭（M8／M9）",
+     "impact": "受惠"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "高階 CCL，已漲價",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "CCL",
+     "impact": "受惠"
+    },
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "HVLP 低粗糙度銅箔",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "IC 載板（ABF／BT）",
+   "description": "高階 ABF 轉賣方市場，載板產值年增 36.7%",
+   "global_players": [
+    "Ibiden",
+    "新光電氣",
+    "AT&S",
+    "深南電路"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "ABF 載板龍頭，AI GPU／ASIC",
+     "impact": "受惠"
+    },
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "ABF／BT 載板",
+     "impact": "受惠"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "ABF 載板",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "高層數板 HLC",
+   "description": "AI 伺服器、交換器主板 24～30 層以上，多層板產值年增 47.6%",
+   "global_players": [
+    "TTM",
+    "勝宏",
+    "滬電"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI 伺服器／交換器高層數板",
+     "impact": "受惠"
+    },
+    {
+     "code": "3044",
+     "name": "健鼎",
+     "role": "伺服器、網通板",
+     "impact": "受惠"
+    },
+    {
+     "code": "8155",
+     "name": "博智",
+     "role": "高層數測試與伺服器板",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "HDI",
+   "description": "AI 加速卡、交換器開始混用 HDI",
+   "global_players": [
+    "勝宏",
+    "AT&S"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2313",
+     "name": "華通",
+     "role": "HDI，AI 伺服器與衛星",
+     "impact": "受惠"
+    },
+    {
+     "code": "2367",
+     "name": "燿華",
+     "role": "HDI",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "軟板與模組",
+   "description": "消費性為主，AI 受惠有限",
+   "global_players": [
+    "Nippon Mektron"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4958",
+     "name": "臻鼎-KY",
+     "role": "全球最大 PCB 廠，載板與 HLC 擴產",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "設備與耗材",
+   "description": "擴產帶動鑽孔、壓合、曝光設備與鑽針需求",
+   "global_players": [
+    "Schmoll",
+    "日立Via"
+   ],
+   "tw_stocks": [
+    {
+     "code": "8021",
+     "name": "尖點",
+     "role": "PCB 鑽針、鑽孔代工",
+     "impact": "受惠"
+    },
+    {
+     "code": "2467",
+     "name": "志聖",
+     "role": "壓合、曝光設備",
+     "impact": "受惠"
+    },
+    {
+     "code": "6664",
+     "name": "群翊",
+     "role": "壓合、烘烤設備",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ],
+ "keywords": [
+  "PCB",
+  "印刷電路板",
+  "高層數板",
+  "HLC",
+  "HDI",
+  "ABF",
+  "載板",
+  "CCL",
+  "PCB 漲價",
+  "TPCA"
+ ],
+ "catalysts": [
+  "每月 10 日前月營收（欣興、金像電、台光電）",
+  "Rubin／ASIC 主板層數升級放量",
+  "建滔等材料廠續發漲價通知"
+ ],
+ "risks": [
+  "關稅、匯率、地緣政治、AI 需求能見度（TPCA 四不確定）",
+  "材料漲價轉嫁不及壓縮毛利",
+  "中國廠高階擴產"
+ ],
+ "spec_tables": [
+  {
+   "title": "PCB 產品比較",
+   "columns": [
+    "種類",
+    "層數／線寬",
+    "主要用途",
+    "AI 帶動",
+    "2026 上半年產值年增"
+   ],
+   "rows": [
+    [
+     "一般多層板",
+     "4～12 層",
+     "消費、工控",
+     "低",
+     "—"
+    ],
+    [
+     "高層數板 HLC",
+     "16～30 層以上",
+     "AI 伺服器主板、交換器",
+     "高（層數＋材料升級）",
+     "多層板 +47.6%"
+    ],
+    [
+     "HDI",
+     "多次增層、微孔",
+     "手機、AI 加速卡、交換器",
+     "中高",
+     "—"
+    ],
+    [
+     "ABF 載板",
+     "細線路 <10μm",
+     "GPU、ASIC、CPU 封裝",
+     "高（晶片面積變大）",
+     "載板 +36.7%"
+    ],
+    [
+     "BT 載板",
+     "細線路",
+     "記憶體、射頻",
+     "中（HBM、記憶體）",
+     "—"
+    ],
+    [
+     "軟板",
+     "可彎折",
+     "手機、穿戴",
+     "低",
+     "—"
+    ]
+   ],
+   "note": "產值年增為 TPCA 公布之台灣 PCB 2026 上半年數據"
+  },
+  {
+   "title": "AI 伺服器 PCB 成本結構變化",
+   "columns": [
+    "項目",
+    "傳統伺服器",
+    "AI 伺服器（M8／M9）"
+   ],
+   "rows": [
+    [
+     "CCL 占 PCB 成本",
+     "30～40%",
+     "50% 以上"
+    ],
+    [
+     "層數",
+     "12～16 層",
+     "24～30 層以上"
+    ],
+    [
+     "材料等級",
+     "M4～M6",
+     "M8～M9（Low-Dk 玻纖布、HVLP 銅箔）"
+    ]
+   ],
+   "note": "依法人與產業報導整理"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "傳統伺服器",
+   "composition": "12～16 層、M4～M6",
+   "spec": "一般玻纖布、銅箔",
+   "application": "通用伺服器"
+  },
+  {
+   "name": "AI 伺服器（Hopper／Blackwell）",
+   "composition": "20～26 層、M7～M8",
+   "spec": "Low-Dk 玻纖布、HVLP 銅箔",
+   "application": "GPU 主板、交換器"
+  },
+  {
+   "name": "Rubin／ASIC 世代",
+   "composition": "26～30 層以上、M8～M9，混用 HDI",
+   "spec": "Q布、更大面積、更多壓合",
+   "application": "GPU／ASIC 主板、1.6T 交換器"
+  },
+  {
+   "name": "下一代",
+   "composition": "無布 HC／Hybrid PTFE、玻璃基板、CPO",
+   "spec": "224G／448G",
+   "application": "超高速互連"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "AI 板層數與面積倍增，同一條產線能做的平方米大減，等於產能被吃掉",
+    "高層數板良率較低、壓合次數多，再吃一次產能",
+    "CCL、玻纖布、銅箔同步缺料，材料廠發漲價通知",
+    "高階 ABF 轉賣方市場，產能由低階往高階移"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠：高階材料（台光電、台燿、金居）＞ 載板（欣興、景碩、南電）＞ AI 高層數板（金像電、健鼎、博智）＞ 設備耗材（尖點、志聖、群翊）",
+    "受傷：消費性、低階 PCB 廠材料成本上升又難轉嫁",
+    "中低階載板仍供過於求，不是全面缺貨"
+   ]
+  }
+ ],
+ "conclusion": [
+  "這波是結構性需求（層數、面積、材料同步升級），不是單純補庫存",
+  "議價力排序：上游材料 ＞ 高階載板 ＞ AI 高層數板",
+  "看月營收量價齊揚與材料漲價能否轉嫁；風險在關稅、匯率與 AI 需求能見度"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網 台灣PCB業H1總產值創同期新高",
+   "url": "https://news.cnyes.com/news/id/6614798"
+  },
+  {
+   "title": "工商時報 AI點火 台灣PCB產值估突破兆元",
+   "url": "https://www.ctee.com.tw/news/20260925700162-439901"
+  }
+ ],
+ "report": "# PCB供需\n\n## 一句話重點\nAI 伺服器、高速網通、記憶體三股需求同時爆發，台灣 PCB 上半年產值 5,247 億元、年增 23.9% 創同期新高，全年估 1 兆 1,365 億元首度破兆（年增 24.2%）。其中載板年增 36.7%、多層板年增 47.6%。AI 板層數與面積大增，吃掉產能和良率，加上 CCL、玻纖布、銅箔缺料漲價，高階 PCB 進入「價量齊揚、供給吃緊」，業界估吃緊至少延續到 2027 年。\n\n## 供需缺口怎麼來的\n- **需求**：GPU 與 ASIC 主板、交換器板層數從 16～20 層升到 24～30 層以上，板子更大、材料升級到 M8、M9，單價與用量同時增加。\n- **產能**：高層數板良率較低、壓合次數多，同樣的產線能做的平方米大幅減少，等於產能被吃掉。\n- **材料**：CCL 占 PCB 成本從 30～40% 升到 50% 以上；玻纖布（Low-Dk、Low-CTE）、HVLP 銅箔缺貨，建滔等材料廠發漲價通知。\n- **載板**：高階 ABF 轉為賣方市場，廠商把產能從低階移到高階，中低階仍過剩。\n\n## 細項產業\n1. 上游材料（CCL、銅箔、玻纖布）：缺料漲價，議價力最強\n2. IC 載板（ABF／BT）：高階賣方市場，載板產值年增 36.7%\n3. 高層數板 HLC：AI 伺服器、交換器主板，多層板產值年增 47.6%\n4. HDI：AI 伺服器加速卡、交換器開始混用 HDI\n5. 軟板與模組：消費性為主，AI 受惠有限\n6. 設備與耗材：鑽針、壓合、曝光設備隨擴產受惠\n\n## 誰受惠、誰受傷\n- 受惠：高階材料（台光電、台燿、金居）、載板（欣興、景碩、南電）、AI 高層數板（金像電、健鼎、博智）、HDI（華通）、設備耗材（尖點、志聖、群翊）\n- 受傷：消費性與低階 PCB 廠材料成本上升、轉嫁不易；中低階載板仍供過於求\n\n## 風險\n- 四大不確定（TPCA）：關稅、匯率、地緣政治、AI 需求能見度\n- 材料漲價轉嫁不及會壓縮毛利\n- 中國廠擴產高階產能\n\n## 資料來源\n- [鉅亨網：台灣PCB業H1總產值達5247億元創同期新高年增23%](https://news.cnyes.com/news/id/6614798)\n- [工商時報：AI點火 台灣PCB產值估突破兆元](https://www.ctee.com.tw/news/20260925700162-439901)\n- [TechNews：AI 帶旺，台灣 PCB 產值全年有望首度破兆元](https://technews.tw/2026/09/25/ai-drives-taiwan-full-year-pcb-output-value-surpass-trillion-first-time/)\n- [Yahoo：TPCA：PCB產值今年首破1.13兆 仍須應對四不確定](https://tw.stock.yahoo.com/news/tpca-pcb%E7%94%A2%E5%80%BC%E4%BB%8A%E5%B9%B4%E9%A6%96%E7%A0%B41-13%E5%85%86-%E4%BB%8D%E9%A0%88%E6%87%89%E5%B0%8D%E5%9B%9B%E4%B8%8D%E7%A2%BA%E5%AE%9A-014800735.html)\n- [自由財經：擺脫供過於求 ABF載板轉為賣方市場](https://ec.ltn.com.tw/article/paper/1767912)\n- [玉山證券：建滔發漲價通，PCB漲價趨勢延續](https://www.esunsec.com.tw/article/post/481)\n",
+ "trigger": "2026-10-04 供需失衡（需求爆發）：AI伺服器與網通需求爆發，最新PCB產值年增23%創高，欣興等廠受惠！-財經焦點情報站 - CMoney投資網誌\nAI伺服器與網通需求爆發，最新PCB產值年增23%創高，欣興等廠受惠！-財經焦點情報站&nbsp;&nbsp;CMoney投資網誌\nhttps://news.google.com/rss/articles/CBMiwwFBVV95cUxQUkNwQjlPay1IbHpCUU1FbktsRnY1WnprVEdIa0l4Z2NyZHFqU0VDdkIxVlZoSm9aTDJTay1NTkJydnVhdTV2MDVUb2FPRWhGSHB4S0xFTDg0eVlMZmUwc0dwSUJXSFZSN056LWo5dVdqTUNKcmRScHo0Ync1ZGVrcjFVOGJXOU81YmFsX1V4REhZRjNCMk1rdWpINnBrb1hhMWFTbkR5aXlKT05RUjdjUlR6V1p6VEpVTENwRGNOcXh5Z1U?oc=5"
+}
