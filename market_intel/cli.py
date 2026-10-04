@@ -935,9 +935,41 @@ def _probe_sources() -> None:
             print(f"{url} 失敗：{e}")
 
 
+def _verify_margin() -> None:
+    """保證金核對：期交所規則頁、原始比例資料、用期貨結算價重算幾檔。"""
+    from . import net
+    for url in ("https://www.taifex.com.tw/cht/5/margingReqSSF", "https://www.taifex.com.tw/cht/5/margingCal"):
+        try:
+            text = re.sub(r"\s+", " ", re.sub(r"<script.*?</script>|<style.*?</style>|<[^>]+>", " ",
+                                              net.get(url).text, flags=re.S))
+            i = text.find("保證金")
+            print(f"\n== {url}\n{text[i:i + 2500]}")
+        except Exception as e:  # noqa: BLE001
+            print(f"{url} 失敗：{e}")
+    rows = net.get_json("https://openapi.taifex.com.tw/v1/SingleStockFuturesMargining")
+    quotes = {}
+    for r in taifex.fetch("futures_daily"):
+        m = str(r.get("ContractMonth(Week)", ""))
+        if re.fullmatch(r"\d{6}", m) and "一般" in str(r.get("TradingSession", "")):
+            c = r.get("Contract")
+            if c not in quotes or m < quotes[c][0]:
+                quotes[c] = (m, r.get("SettlementPrice"))
+    print(f"\nSingleStockFuturesMargining {len(rows)} 列；契約有：{sorted({r.get('Contract') for r in rows})[:400]}")
+    for code in ("1802", "2383", "2455", "8046", "2327", "6173", "2330", "3081"):
+        for r in [r for r in rows if r.get("UnderlyingSecurityCode") == code]:
+            c = r["Contract"]
+            m, settle = quotes.get(c, (None, None))
+            mult = 100 if c.startswith(("Q", "S", "U", "V", "P")) and r.get("ContractName", "").startswith("小型") else 2000
+            rate = float(str(r.get("InitialMarginRate", "0")).replace("%", "")) / 100
+            amt = float(settle) * mult * rate if settle not in (None, "", "-") else None
+            print(json.dumps(r, ensure_ascii=False), "| 近月", m, "結算價", settle, "| 乘數", mult,
+                  "| 原始保證金≈", round(amt) if amt else None)
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
-    _probe_sources()
+    _verify_margin()
+    return
     print(json.dumps(stock_futures.raw_samples(), ensure_ascii=False, indent=1)[:6000])
     data = stock_futures.load_stock_futures()
     print(f"\n股票期貨標的：{len(data)} 檔；有小型：{sum(1 for v in data.values() if v.get('mini'))} 檔；"
