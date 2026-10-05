@@ -1122,6 +1122,30 @@ def _verify_margin() -> None:
                   "| 原始保證金≈", round(amt) if amt else None)
 
 
+def _backtest_maexit(data, futures, index_df, rates, capital: float) -> None:
+    """跌破 20 日線出場從持有第幾天開始檢查：進場當天就查 vs 隔天起（現行）vs 更晚。拉回型另外列出。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    rows = []
+    for k, label in ((1, "進場當天就檢查"), (2, "進場隔天起（現行）"), (3, "進場後第 3 天起")):
+        par = bt.Params(capital=capital, exit_ma="ma20", ma_exit_from=k)
+        full = bt.run(data, futures, index_df, par, rates)
+        a = bt.run(first[0], futures, first[1], par, rates)
+        b = bt.run(second[0], futures, second[1], par, rates)
+        pb = full["各型態"].get("拉回", {})
+        rows.append({"20日線出場": label, "報酬%": full["報酬率%"], "最大回撤%": full["最大回撤%"], "筆數": full["交易筆數"],
+                     "勝率%": full["勝率%"], "平均R": full["平均R"], "前半段%": a["報酬率%"], "後半段%": b["報酬率%"],
+                     "拉回型筆數": pb.get("筆數"), "拉回型平均R": pb.get("平均R"), "拉回型總損益": pb.get("總損益")})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "maexit.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def _backtest_gate(data, futures, index_df, rates, capital: float) -> None:
     """進場門檻：品質分數（離52週高、200日線、相對強度、大盤強勢）太低的訊號乾脆不做。"""
     from .trade import backtest as bt
@@ -1298,6 +1322,9 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.maexit:
+        _backtest_maexit(data, futures, index_df, rates, args.capital)
+        return
     if args.gate:
         _backtest_gate(data, futures, index_df, rates, args.capital)
         return
@@ -1664,6 +1691,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--maexit", action="store_true", help="20日線出場從第幾天開始檢查")
     bk.add_argument("--gate", action="store_true", help="進場品質門檻回測")
     bk.add_argument("--exceptions", action="store_true", help="強勢股 1 口例外（風險上限放寬）回測")
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")

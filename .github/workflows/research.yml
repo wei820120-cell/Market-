@@ -21,6 +21,10 @@ on:
         description: "股票期貨波段策略回測"
         type: boolean
         default: false
+      maexit:
+        description: "20日線出場從第幾天開始檢查回測"
+        type: boolean
+        default: false
       gate:
         description: "進場品質門檻回測"
         type: boolean
@@ -87,6 +91,8 @@ jobs:
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ "${{ inputs.trade }}" = "true" ]; then
             python -m market_intel trade --post
+          elif [ "${{ inputs.maexit }}" = "true" ]; then
+            python -m market_intel backtest --maexit
           elif [ "${{ inputs.gate }}" = "true" ]; then
             python -m market_intel backtest --gate
           elif [ "${{ inputs.exceptions }}" = "true" ]; then

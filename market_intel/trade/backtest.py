@@ -48,6 +48,7 @@ class Params:
     add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
     reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
     add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
+    ma_exit_from: int = 2        # 持有第幾天起才檢查「收盤跌破均線」（2＝進場隔天起；1＝進場當天就檢查）
     min_score: int = 0           # 進場門檻：品質分數（0～4）低於此值的訊號不做
     one_lot_risk: float = 0.0    # 例外：2% 算不出 1 口時，只要 1 口的停損虧損 ≤ 權益 × 此比例，仍允許做 1 口（0＝不允許）
     one_lot_min_score: int = 0   # 例外只給品質分數 ≥ 此值的標的
@@ -236,7 +237,7 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                         t.realized += (target - t.entry) * t.mult * half - cost(target, t.mult, half)
                         t.qty -= half
                     t.half_done, t.stop = True, t.entry
-                if t.days > 1 and row["close"] < row[p.exit_ma]:
+                if t.days >= p.ma_exit_from and row["close"] < row[p.exit_ma]:
                     t.exit_next = "跌破均線"
                 elif t.days >= p.time_stop and not t.half_done and row["close"] < t.entry + t.r0:
                     t.exit_next = "時間停損"
