@@ -48,6 +48,7 @@ class Params:
     add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
     reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
     add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
+    min_score: int = 0           # 進場門檻：品質分數（0～4）低於此值的訊號不做
     one_lot_risk: float = 0.0    # 例外：2% 算不出 1 口時，只要 1 口的停損虧損 ≤ 權益 × 此比例，仍允許做 1 口（0＝不允許）
     one_lot_min_score: int = 0   # 例外只給品質分數 ≥ 此值的標的
     tier_risk: tuple = ()        # 依品質分數（0～4）決定每筆風險；空＝一律用 risk_pct。分數＝離52週高10%內＋站上向上200日線＋相對強度前20%＋大盤強勢
@@ -196,6 +197,8 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             feat = {k: bool(prev[k]) for k in ("f_hi", "f_200", "f_vcp", "f_vol2", "f_tight")}
             feat["f_rs"] = bool(rs_rank[code].shift(1).get(day, 0) >= 0.8)
             feat["f_mkt"] = bool(mkt_strong.shift(1).get(day, False))
+            if p.min_score and sum(feat[k] for k in QUALITY) < p.min_score:
+                continue
             pp = Params(**{**p.__dict__, "risk_pct": p.trial_risk}) if p.pyramid else p
             if p.tier_risk:
                 score = sum(feat[k] for k in QUALITY)

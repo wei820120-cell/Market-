@@ -1122,6 +1122,29 @@ def _verify_margin() -> None:
                   "| 原始保證金≈", round(amt) if amt else None)
 
 
+def _backtest_gate(data, futures, index_df, rates, capital: float) -> None:
+    """進場門檻：品質分數（離52週高、200日線、相對強度、大盤強勢）太低的訊號乾脆不做。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    rows = []
+    for ms in (0, 1, 2, 3, 4):
+        par = bt.Params(capital=capital, exit_ma="ma20", min_score=ms)
+        full = bt.run(data, futures, index_df, par, rates)
+        a = bt.run(first[0], futures, first[1], par, rates)
+        b = bt.run(second[0], futures, second[1], par, rates)
+        rows.append({"品質分數門檻": f"≥{ms}" if ms else "不設門檻（現行）", "報酬%": full["報酬率%"], "年化%": full["年化%"],
+                     "最大回撤%": full["最大回撤%"], "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                     "前半段%": a["報酬率%"], "後半段%": b["報酬率%"], "翻倍": full["翻倍日期"]})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "gate.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def _backtest_exceptions(data, futures, index_df, rates, capital: float) -> None:
     """2% 算不出 1 口的強勢股，放寬到「1 口最多虧權益多少 %」會不會更好（可選只給品質分數高的）。"""
     from .trade import backtest as bt
@@ -1275,6 +1298,9 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.gate:
+        _backtest_gate(data, futures, index_df, rates, args.capital)
+        return
     if args.exceptions:
         _backtest_exceptions(data, futures, index_df, rates, args.capital)
         return
@@ -1638,6 +1664,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--gate", action="store_true", help="進場品質門檻回測")
     bk.add_argument("--exceptions", action="store_true", help="強勢股 1 口例外（風險上限放寬）回測")
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")

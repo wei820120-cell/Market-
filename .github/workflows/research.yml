@@ -21,6 +21,10 @@ on:
         description: "股票期貨波段策略回測"
         type: boolean
         default: false
+      gate:
+        description: "進場品質門檻回測"
+        type: boolean
+        default: false
       exceptions:
         description: "強勢股 1 口例外（風險上限放寬）回測"
         type: boolean
@@ -83,6 +87,8 @@ jobs:
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ "${{ inputs.trade }}" = "true" ]; then
             python -m market_intel trade --post
+          elif [ "${{ inputs.gate }}" = "true" ]; then
+            python -m market_intel backtest --gate
           elif [ "${{ inputs.exceptions }}" = "true" ]; then
             python -m market_intel backtest --exceptions
           elif [ "${{ inputs.daytrade }}" = "true" ]; then
