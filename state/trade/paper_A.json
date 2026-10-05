@@ -1,26 +1,8 @@
 {
- "start": "2026-10-04",
+ "start": "2026-10-05",
  "capital": 100000,
  "equity": 100000,
- "positions": [
-  {
-   "code": "1102",
-   "name": "亞泥",
-   "setup": "拉回",
-   "contract": "DYF",
-   "mult": 2000,
-   "qty": 1,
-   "qty0": 1,
-   "entry_date": "2026-10-05",
-   "entry": 35.79999923706055,
-   "stop": 34.944130864628754,
-   "r0": 0.855868372431793,
-   "realized": -123.03199844360353,
-   "half_done": false,
-   "days": 1,
-   "exit_next": ""
-  }
- ],
+ "positions": [],
  "closed": [],
  "plan": [
   {
@@ -40,7 +22,7 @@
    "mult": 100,
    "qty": 1,
    "risk_pct": 0.02,
-   "score": 0,
+   "score": 3,
    "stop_est": 370.0181154637296,
    "target_est": 425.4637690725408,
    "margin_est": 7867.125000000001,
@@ -140,5 +122,6 @@
    "need_capital": 239103.12891054063,
    "reserve_one": 60324.75185394287
   }
- ]
+ ],
+ "last_events": []
 }

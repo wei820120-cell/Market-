@@ -17,7 +17,8 @@
    "days": 0,
    "half_done": false,
    "realized": 0.0,
-   "alerts": []
+   "alerts": [],
+   "last_check": "2026-10-05"
   }
  ],
  "closed": []

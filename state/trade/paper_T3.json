@@ -1,26 +1,8 @@
 {
- "start": "2026-10-04",
+ "start": "2026-10-05",
  "capital": 100000,
  "equity": 100000,
- "positions": [
-  {
-   "code": "1102",
-   "name": "亞泥",
-   "setup": "拉回",
-   "contract": "DYF",
-   "mult": 2000,
-   "qty": 1,
-   "qty0": 1,
-   "entry_date": "2026-10-05",
-   "entry": 35.79999923706055,
-   "stop": 34.944130864628754,
-   "r0": 0.855868372431793,
-   "realized": -123.03199844360353,
-   "half_done": false,
-   "days": 1,
-   "exit_next": ""
-  }
- ],
+ "positions": [],
  "closed": [],
  "plan": [
   {
@@ -39,8 +21,8 @@
    "contract": "SLF",
    "mult": 100,
    "qty": 1,
-   "risk_pct": 0.02,
-   "score": 0,
+   "risk_pct": 0.03,
+   "score": 3,
    "stop_est": 370.0181154637296,
    "target_est": 425.4637690725408,
    "margin_est": 7867.125000000001,
@@ -67,7 +49,7 @@
    "theme": "光通訊雷射InP",
    "contract": "FYF",
    "risk_one": 7235.449832952966,
-   "need_capital": 361772.4916476483,
+   "need_capital": 241181.6610984322,
    "reserve_one": 61114.499073028564
   },
   {
@@ -77,7 +59,7 @@
    "theme": "供需事件：卡位缺貨漲價飆股",
    "contract": "HBF",
    "risk_one": 67367.75337425957,
-   "need_capital": 3368387.6687129783,
+   "need_capital": 2245591.779141986,
    "reserve_one": 447727.5
   },
   {
@@ -87,7 +69,7 @@
    "theme": "銅箔供需",
    "contract": "IRF",
    "risk_one": 199907.5964475842,
-   "need_capital": 9995379.82237921,
+   "need_capital": 6663586.548252807,
    "reserve_one": 1609875.0
   },
   {
@@ -97,7 +79,7 @@
    "theme": "供需事件：卡位缺貨漲價飆股",
    "contract": "IXF",
    "risk_one": 175023.5588309199,
-   "need_capital": 8751177.941545995,
+   "need_capital": 5834118.627697331,
    "reserve_one": 1330425.0000000002
   },
   {
@@ -107,7 +89,7 @@
    "theme": "銅箔供需",
    "contract": "LUF",
    "risk_one": 82700.33489428557,
-   "need_capital": 4135016.7447142783,
+   "need_capital": 2756677.829809519,
    "reserve_one": 699840.0000000001
   },
   {
@@ -117,7 +99,7 @@
    "theme": "銅箔供需",
    "contract": "OVF",
    "risk_one": 292265.7172550394,
-   "need_capital": 14613285.862751968,
+   "need_capital": 9742190.57516798,
    "reserve_one": 2162700.0
   },
   {
@@ -127,7 +109,7 @@
    "theme": "銅箔供需",
    "contract": "PQF",
    "risk_one": 84818.29896751241,
-   "need_capital": 4240914.948375621,
+   "need_capital": 2827276.6322504138,
    "reserve_one": 784889.9999999999
   },
   {
@@ -140,5 +122,6 @@
    "need_capital": 239103.12891054063,
    "reserve_one": 60324.75185394287
   }
- ]
+ ],
+ "last_events": []
 }
