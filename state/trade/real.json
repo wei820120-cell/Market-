@@ -1,6 +1,24 @@
 {
  "capital": 100000,
  "equity": 100000,
- "positions": [],
+ "positions": [
+  {
+   "code": "2368",
+   "name": "金像電",
+   "contract": "VGF",
+   "mult": 100,
+   "qty": 1,
+   "qty0": 1,
+   "entry": 1145.0,
+   "stop": 1037.211701791426,
+   "r0": 107.7882982085739,
+   "rate": 0.2025,
+   "entry_date": "2026-10-05",
+   "days": 0,
+   "half_done": false,
+   "realized": 0.0,
+   "alerts": []
+  }
+ ],
  "closed": []
 }
