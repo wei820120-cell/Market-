@@ -1039,8 +1039,9 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
                 queued.append(f"{r['代號']} {r['名稱']}（不在任何族群：{r['理由']}）")
     if queued:
         msg = "🔬 排入研究（拆解細項產業，完成後推研究圖表）：\n" + "\n".join(f"・{q}" for q in queued)
-        if not ai.available():
-            msg += "\n\n⚠️ 還沒設定 ANTHROPIC_API_KEY，不會自動研究；可以請 Claude 先研究這些題材。"
+        cap = int(ai.settings().get("max_per_day", 4))
+        msg += (f"\n\n常駐監看會自動研究（金鑰只放在監看那邊）；今天已自動研究 {research.researched_today()}／{cap} 個，"
+                "超過的排到明天，也可以請 Claude 先研究。")
         notify.send(msg, channel=channel)
 
 
