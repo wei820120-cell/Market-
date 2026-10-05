@@ -48,6 +48,8 @@ class Params:
     add_levels: tuple = (1.0, 2.0)  # 漲到 +1R、+2R 各加碼一次（口數同試單），停損拉到成本、+1R
     reduce_ma: str = "ma10"      # 加減碼模式：跌破這條線先減碼一半，跌破 exit_ma 全出（空字串＝不減碼）
     add_stops: tuple = (0.0, 1.0)  # 第 k 次加碼後停損＝試單價 + add_stops[k-1]×R（-1＝維持原停損）
+    one_lot_risk: float = 0.0    # 例外：2% 算不出 1 口時，只要 1 口的停損虧損 ≤ 權益 × 此比例，仍允許做 1 口（0＝不允許）
+    one_lot_min_score: int = 0   # 例外只給品質分數 ≥ 此值的標的
     tier_risk: tuple = ()        # 依品質分數（0～4）決定每筆風險；空＝一律用 risk_pct。分數＝離52週高10%內＋站上向上200日線＋相對強度前20%＋大盤強勢
     margin_mult: float = 3.0     # 波段單每口準備 3 倍原始保證金（承擔波動），準備金合計不得超過權益
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
@@ -142,6 +144,8 @@ def size(equity: float, entry: float, stop: float, info: dict, p: Params, rate: 
             continue
         qty = int(risk // (dist * mult))
         per = entry * mult * rate * p.margin_mult
+        if qty < 1 and p.one_lot_risk and dist * mult <= equity * p.one_lot_risk:
+            qty = 1
         if per > 0:
             qty = min(qty, int(room // per))
         if qty >= 1:
@@ -196,6 +200,9 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             if p.tier_risk:
                 score = sum(feat[k] for k in QUALITY)
                 pp = Params(**{**pp.__dict__, "risk_pct": p.tier_risk[min(score, len(p.tier_risk) - 1)]})
+            if p.one_lot_risk:
+                ok = sum(feat[k] for k in QUALITY) >= p.one_lot_min_score
+                pp = Params(**{**pp.__dict__, "one_lot_risk": p.one_lot_risk if ok else 0.0})
             contract, mult, qty = size(equity, entry, stop, futures.get(code, {}), pp,
                                        rates.get(code, p.margin_rate), used)
             if not qty:
