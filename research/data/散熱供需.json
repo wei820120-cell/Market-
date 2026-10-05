@@ -1,0 +1,456 @@
+{
+ "topic": "散熱供需（AI液冷）",
+ "one_line": "AI晶片功耗超出氣冷極限，液冷從選配變標配；TrendForce預估液冷滲透率2025年約33%、2026年53%、2027年近60%，但Rubin水冷板由NVIDIA主導採購，量大不等於毛利高，勝負在認證與微通道技術路線。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "液冷",
+  "水冷板",
+  "Cold Plate",
+  "微通道",
+  "MCCP",
+  "MCL",
+  "Vera Rubin",
+  "CDU",
+  "快接頭",
+  "QD",
+  "均熱片",
+  "Fanless",
+  "ASIC",
+  "Sidecar",
+  "微流體"
+ ],
+ "catalysts": [
+  "奇鋐2026 Q3出貨VR水冷板模組",
+  "雙鴻NVIDIA認證結果（目標9月底）與Q4小量出貨",
+  "9月營收（10月10日前公布）",
+  "NVIDIA公布Group A供應商名單",
+  "MCL取得客戶明確量產訂單",
+  "台積電對微流道的說明",
+  "健策2027年微流道擴產",
+  "Kyber時程"
+ ],
+ "risks": [
+  "HBM4驗證分歧恐遞延Rubin放量",
+  "平台切換造成短期空窗，GB300部分訂單遞延",
+  "NVIDIA主導採購導致水冷板毛利壓力",
+  "技術路線風險：MCL放量稀釋奇鋐MCCP價值，MCL有堵塞、翹曲、漏液、良率風險",
+  "中國廠（如英維克）競爭",
+  "券商目標價與EPS預期偏高",
+  "數據口徑不一（滲透率53%對76%）",
+  "供需失衡證據不足，無官方缺貨或報價數據"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格／方案比較表",
+   "columns": [
+    "方案",
+    "熱路徑／結構",
+    "可處理功耗",
+    "成熟度",
+    "備註（來源等級）"
+   ],
+   "rows": [
+    [
+     "氣冷（風扇＋散熱鰭片／熱管／VC）",
+     "晶片→IHS→TIM→散熱器→空氣",
+     "約 ≤700W/顆（投顧說法）",
+     "成熟",
+     "主要用於 Hopper 以前及一般伺服器"
+    ],
+    [
+     "直接液冷冷板（DLC，GB200/GB300）",
+     "晶片→IHS→TIM2→冷板→冷卻液",
+     "GB300 TDP 已突破 1,400W（永豐金研究，經工商時報轉述）",
+     "量產",
+     "奇鋐、雙鴻已出貨"
+    ],
+    [
+     "冷板＋鍍金散熱蓋（VR 預期）",
+     "同上，換成 MCCP 冷板",
+     "VR GPU TDP 約 2.3kW（鉅亨網引述 GTC 資訊，屬投顧說法）",
+     "2H26 導入",
+     "市場原先關注 MCL，供應鏈評估短期無法大量量產（股市爆料同學會引述券商報告）"
+    ],
+    [
+     "第一層：微通道冷板 MCCP",
+     "冷板內水道變細，仍在蓋板上方",
+     "—",
+     "接近量產",
+     "奇鋐稱可做到 80 微米（數位時代）"
+    ],
+    [
+     "第二層：微通道蓋板 MCL／MLCP",
+     "水道直接做進封裝金屬蓋板，省去 TIM2",
+     "健策鎖定 7,000～8,000W 應用，列為未來 2～5 年重點",
+     "送樣／客戶測試",
+     "券商稱 MCL 單價為傳統均熱片 9～10 倍（pttstock 整理，屬推測，不採信為事實）"
+    ],
+    [
+     "第三層：晶粒內微流體",
+     "水道蝕刻在矽晶背面或封裝結構內",
+     "微軟＋Corintis 實驗室測試：散熱最高達傳統冷板 3 倍，矽晶最高溫升降 65%",
+     "研發／導入規劃",
+     "台積電已開始導入微流道技術，具體架構未公布（數位時代）"
+    ],
+    [
+     "浸沒式",
+     "—",
+     "—",
+     "—",
+     "本次未查到可靠數據，不評論"
+    ]
+   ],
+   "note": "單櫃功耗200～250kW與TDP 2.3kW皆為投顧引述，非NVIDIA官方規格表；2026液冷滲透率76%（鉅亨網）與TrendForce的53%口徑不同，本報告以TrendForce為準。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "Hopper 及以前",
+   "composition": "氣冷為主",
+   "spec": "風扇、VC、熱管",
+   "application": "H100/H200 伺服器"
+  },
+  {
+   "name": "GB200（Blackwell）",
+   "composition": "冷板＋快接頭＋分歧管＋CDU 進入機櫃",
+   "spec": "液冷成為 NVL72 標配",
+   "application": "GB200 NVL72"
+  },
+  {
+   "name": "GB300（Blackwell Ultra）",
+   "composition": "同上，用量更大",
+   "spec": "業界人士稱快接頭用量約為 GB200 的 4 倍（2025 年 3 月 udn 報導，屬傳聞）；富世達 NV QD 已出貨（TrendForce）",
+   "application": "GB300 NVL72"
+  },
+  {
+   "name": "Vera Rubin（VR200）",
+   "composition": "Fanless 全液冷，擴大到 NIC、Busbar、光模組",
+   "spec": "水冷板由 NVIDIA 主導設計與採購；均熱片原規劃兩片式，因基板翹曲暫改一片式，目前健策獨家（TrendForce）",
+   "application": "VR NVL144"
+  },
+  {
+   "name": "Rubin Ultra／Kyber",
+   "composition": "更高功耗",
+   "spec": "Kyber NVL144 時程可能遞延（TrendForce）；2H26 末預期導入可拆式 Screw Lid（鉅亨網投顧說法）",
+   "application": "2027 以後"
+  },
+  {
+   "name": "未來",
+   "composition": "MCL → 晶粒內微流體",
+   "spec": "水道愈近晶片，效率愈高，風險也愈高",
+   "application": "7～8kW 級應用"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼氣冷到頂、液冷變標配",
+   "points": [
+    "原因：晶片 TDP 從數百 W 到 1.4kW 以上，再到 VR 的 2 kW 級，空氣的比熱和熱傳導不夠",
+    "影響：Rubin 採無風扇設計，散熱範圍擴大到網卡、電源、光模組，每櫃散熱零組件價值上升",
+    "代價：機房端要配管路、CDU、冷卻水塔，建置複雜度與漏液風險上升"
+   ]
+  },
+  {
+   "title": "為什麼大家談微通道：從 MCCP 到 MCL 到晶粒內",
+   "points": [
+    "原因：MCL 把水道做進蓋板、拿掉 TIM2，熱傳更快且整體高度降低",
+    "影響：水道愈靠近晶片，價值愈集中在均熱片／封裝金屬件廠（如健策）",
+    "代價：奇鋐董事長點出水道可能因加工或焊接瑕疵阻塞、晶片受熱後可能翹曲，漏液或堵塞可能損傷高價晶片",
+    "現階段 MCCP 最接近量產，MCL 仍在送樣驗證，晶粒內微流體距離最遠"
+   ]
+  },
+  {
+   "title": "為什麼規格被 NVIDIA 收回會改變獲利邏輯",
+   "points": [
+    "原因：Vera Rubin 水冷板由 NVIDIA 主導設計與採購，雙鴻預計 Group A 供應商 3～4 家，水冷板毛利率壓力較大",
+    "影響：廠商須進入 NVIDIA 推薦名單並通過認證才能出貨，認證結果決定 Q4 出貨量",
+    "代價：標準化後比價更直接；ASIC 因高度客製，設計門檻與議價空間較好"
+   ]
+  },
+  {
+   "title": "房間端 vs 機櫃端：誰受影響要分清楚",
+   "points": [
+    "2026 年 1 月黃仁勳提到資料中心不再需要水冷式冷卻機（chiller），奇鋐、雙鴻、富世達等股價連 2 天收黑",
+    "投顧反駁：機櫃內水冷板、快接頭、分歧管、CDU/Sidecar 仍是必要組件",
+    "多數散熱廠聚焦機櫃內零組件，chiller 屬機房端，應分開看"
+   ]
+  }
+ ],
+ "conclusion": [
+  "液冷從選配變標配，TrendForce預估滲透率2026年53%、2027年近60%，Rubin換代與ASIC放量同步帶動需求。",
+  "Rubin水冷板由NVIDIA主導採購，量大不等於毛利高，認證是分水嶺。",
+  "微通道技術路線分歧：奇鋐主攻MCCP、健策押MCL，MCL與晶粒內微流體仍在驗證，風險高。",
+  "判斷誰勝出看四件事：認證、產能與交期、良率與可靠度、毛利結構（純水冷板對系統級）。",
+  "供需失衡缺乏官方缺貨或報價證據，緊繃說法多來自券商與媒體，需追蹤雙鴻認證結果與9～10月營收。"
+ ],
+ "sources": [
+  {
+   "title": "觸發文章：〈需求爆發散熱雙雄有戲〉工商時報 2026-10-06（內文未取得）",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE80SnIzenAtWUp2UVNzS085RndMWVI3MktsdEJZaVoxSWd0aEt1QTkxdDBxN1pDTjJFbHNvblUxTW5zRU1tX1c2LVhJNldMRWE5YnlPbUllejExa1dYNjJz?oc=5"
+  },
+  {
+   "title": "《科技》液冷成AI標配 奇鋐雙鴻等迎商機（工商時報 2026-08-19）",
+   "url": "https://www.ctee.com.tw/news/20260819700751-430503"
+  },
+  {
+   "title": "AI液冷滲透率明年逼近6成 散熱廠受惠（自由財經）",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5542665"
+  },
+  {
+   "title": "液冷散熱成高階AI基礎設施標配 估2026年滲透率可達53%（經濟日報／聯合新聞網）",
+   "url": "https://money.udn.com/money/story/5612/9696679"
+  },
+  {
+   "title": "2026 NVIDIA展望：GB300主流化與液冷趨勢（TrendForce，2026-02-26）",
+   "url": "https://www.trendforce.com.tw/research/download/RP260226EZ"
+  },
+  {
+   "title": "《科技》液冷散熱需求升溫 奇鋐、雙鴻加速跑（旺得富理財網，2025-07）",
+   "url": "https://wantrich.chinatimes.com/news/20250725900086-420101"
+  },
+  {
+   "title": "微流體概念股有哪些？健策、奇鋐出列，AI散熱3層路線一次看（數位時代，2026-10-02）",
+   "url": "https://www.bnext.com.tw/article/92484/microfluidic-cooling-stocks-taiwan"
+  },
+  {
+   "title": "雙鴻 2026-06-01 法說會（BigGo 財經）",
+   "url": "https://finance.biggo.com.tw/quote/3324.TW/earnings-call/TW_3324.TW_2026-06-01"
+  },
+  {
+   "title": "雙鴻法說會重點備忘錄 20260312（富果）",
+   "url": "https://blog.fugle.tw/post/earnings-call-3324-1"
+  },
+  {
+   "title": "雙鴻法說會／看好液冷散熱動能（udn）",
+   "url": "https://udn.com/news/story/7254/9140567"
+  },
+  {
+   "title": "雙鴻(3324)大利多！Vera Rubin水冷板重返輝達推薦名單（優分析）",
+   "url": "https://uanalyze.com.tw/articles/4231954648"
+  },
+  {
+   "title": "重返輝達VR水冷板供應鏈！（FTNN）",
+   "url": "https://www.ftnn.com.tw/news/575668"
+  },
+  {
+   "title": "雙鴻 AI 水冷業務爆發、2025 年 EPS 28.26 元（財報狗）",
+   "url": "https://statementdog.com/news/15880"
+  },
+  {
+   "title": "雙鴻：一家死過一次的散熱廠……（WiseUp AI）",
+   "url": "https://www.wiseup.cc/p/auras"
+  },
+  {
+   "title": "告別單一GPU幻想！2H26散熱價值大重估（鉅亨網研報）",
+   "url": "https://news.cnyes.com/news/id/6486253"
+  },
+  {
+   "title": "液冷革命強勢接棒！散熱戰場直衝太空（鉅亨網研報，2026-03-21）",
+   "url": "https://news.cnyes.com/news/id/6392216"
+  },
+  {
+   "title": "2026液冷滲透率直衝76%！（鉅亨網研報）",
+   "url": "https://news.cnyes.com/news/id/6423986"
+  },
+  {
+   "title": "液冷擴散帶旺散熱股，大摩看調升奇鋐、富世達目標價（TechNews）",
+   "url": "https://finance.technews.tw/2026/04/16/avc-fositek/"
+  },
+  {
+   "title": "教主黃仁勳1句話 散熱股全崩了（旺得富理財網，2026-01）",
+   "url": "https://wantrich.chinatimes.com/news/20260109900003-420101"
+  },
+  {
+   "title": "GB300出貨爆量、Rubin正式量產！（旺得富理財網，2026-06）",
+   "url": "https://wantrich.chinatimes.com/news/20260619900003-420101"
+  },
+  {
+   "title": "從GB300到Vera Rubin！黃仁勳訪台固樁供應鏈（工商時報，2026-01）",
+   "url": "https://www.ctee.com.tw/news/20260131700008-430201"
+  },
+  {
+   "title": "從Vera Rubin開始，液冷進入下階段（優分析／經濟日報）",
+   "url": "https://money.udn.com/money/story/12040/9670373"
+  },
+  {
+   "title": "GB300來了 掀二次冷革命（udn，2025-03）",
+   "url": "https://money.udn.com/money/story/11162/8596612"
+  },
+  {
+   "title": "GB300全改用它！接棒PCB「這產業」成新剛需（旺得富理財網，2025-09）",
+   "url": "https://wantrich.chinatimes.com/news/20250909900003-420101"
+  },
+  {
+   "title": "液冷散熱概念股整理（pttstock，整理型資料，可信度較低）",
+   "url": "https://pttstock.tw/liquid-cooling-stocks/"
+  },
+  {
+   "title": "3324 雙鴻 微通道冷板 MCCP（股市爆料同學會，轉述券商報告，可信度較低）",
+   "url": "https://www.cmoney.tw/forum/article/177727008"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游：銅材與精密金屬加工、熱介面材料",
+   "description": "冷板與均熱片基材（銅、鋁）與TIM。本次未查到銅價與TIM報價，不評論。",
+   "global_players": [],
+   "tw_stocks": []
+  },
+  {
+   "layer": "晶片級：均熱片（IHS）與微通道蓋板（MCL）",
+   "description": "Rubin均熱片目前健策獨家供應（TrendForce）；有投顧稱IHS因金屬TIM2處理，ASP預期較前代成長三倍（屬預期）。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3653",
+     "name": "健策",
+     "role": "均熱片主力、微流道指標，客戶測試中，2027年桃園新廠擴產微流道",
+     "impact": "受惠"
+    },
+    {
+     "code": "2486",
+     "name": "一詮",
+     "role": "微流道封裝蓋板送樣，與工研院合組惠智先進，屬早期題材",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "水冷板（Cold Plate）與散熱模組",
+   "description": "5月散熱廠營收年增55%，奇鋐年增61%、雙鴻年增94%；全球供應鏈傳吃緊（券商說法），未見官方缺貨或報價數據。",
+   "global_players": [
+    "Cooler Master（酷碼）",
+    "BOYD",
+    "英維克（Envicool）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3017",
+     "name": "奇鋐",
+     "role": "液冷龍頭，冷板、歧管、CDU到風扇；VR水冷板Q3出貨，主攻MCCP",
+     "impact": "受惠"
+    },
+    {
+     "code": "3324",
+     "name": "雙鴻",
+     "role": "水冷板、分歧管、CDU、快接頭系統級供應商；NVIDIA認證結果待追蹤，毛利有壓力",
+     "impact": "受惠"
+    },
+    {
+     "code": "6230",
+     "name": "尼得科超眾",
+     "role": "散熱概念股，液冷貢獻待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2421",
+     "name": "建準",
+     "role": "風扇為主，Rubin無風扇設計有替代風險",
+     "impact": "受傷"
+    }
+   ]
+  },
+  {
+   "layer": "管路：快接頭（QD）與分歧管",
+   "description": "GB300快接頭用量傳激增（屬傳聞）；富世達已出貨GB300專用NV QD。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6805",
+     "name": "富世達",
+     "role": "奇鋐旗下，GB300 NV QD已出貨，VR200認證中",
+     "impact": "受惠"
+    },
+    {
+     "code": "4566",
+     "name": "時碩工業",
+     "role": "水冷快接頭，GB200已供應，現況待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3533",
+     "name": "嘉澤",
+     "role": "曾被列為快接頭受惠股，實際角色待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3665",
+     "name": "貿聯-KY",
+     "role": "被市場列入液冷相關股，貢獻待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "CDU／機櫃級系統（Sidecar）與熱交換",
+   "description": "雙鴻稱2Q26起CDU開始放量。",
+   "global_players": [
+    "Vertiv"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2308",
+     "name": "台達電",
+     "role": "Sidecar主要供應商，散熱占比待確認",
+     "impact": "受惠"
+    },
+    {
+     "code": "3013",
+     "name": "晟銘電",
+     "role": "投顧點名供應CDU",
+     "impact": "受惠"
+    },
+    {
+     "code": "2301",
+     "name": "光寶科",
+     "role": "投顧點名供應CDU",
+     "impact": "受惠"
+    },
+    {
+     "code": "8996",
+     "name": "高力",
+     "role": "板式熱交換器，GB300液冷受惠者",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "下游：伺服器ODM／機櫃組裝",
+   "description": "法人估2026年Q2 GB出貨約1.8萬～1.9萬櫃，季增10～20%；GB300全年估5.5萬～6萬櫃。散熱為成本項。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "整櫃組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "整櫃組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "整櫃組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "整櫃組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "8210",
+     "name": "勤誠",
+     "role": "機櫃組裝",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
