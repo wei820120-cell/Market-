@@ -793,6 +793,14 @@ def test_real_trade_parse_and_book(tmp_path, monkeypatch):
     assert real.resolve("DYF", listings, futures)[2] == "DYF"
     assert real.resolve("南電", listings, futures, mini=True) == ("8046", "南電", "QSF", 100)
     assert real.resolve("台積電", listings, futures) is None
+    # 使用者實際打的格式：小金像電、1145、1口／買小型金像電 1145 口（漏打口數）
+    listings["2368"], futures["2368"] = {"name": "金像電"}, {"std": "XYF", "mini": "QXF"}
+    c = real.parse("小金像電、1145、1口")
+    assert c["query"] == "小金像電" and c["price"] == 1145 and c["qty"] == 1
+    assert real.resolve(c["query"], listings, futures, c["mini"]) == ("2368", "金像電", "QXF", 100)
+    assert real.resolve("小型金像電", listings, futures) == ("2368", "金像電", "QXF", 100)
+    assert real.parse("買小型金像電 1145 口") == {"cmd": "need_qty", "query": "金像電", "price": 1145.0, "mini": True}
+    assert real.parse("金像電 1145")["cmd"] == "need_qty" and real.parse("Wvgf") is None
     st = real.load()
     msg = real.buy(st, "1102", "亞泥", "DYF", 2000, 35.7, 1, 0.6, 0.135)
     assert "停損 34.80" in msg and st["positions"][0]["stop"] == 35.7 - 0.9

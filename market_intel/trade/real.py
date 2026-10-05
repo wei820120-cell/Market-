@@ -54,10 +54,10 @@ def parse(text: str) -> dict | None:
         return {"cmd": "explain", "query": m.group(2).strip().split()[0]}
     qty_m = re.search(r"(\d+)\s*口", t)
     if not qty_m:
-        return None
+        return _missing_qty(t)
     rest = t[:qty_m.start()] + " " + t[qty_m.end():]
     side = "sell" if any(w in rest for w in SELL_WORDS) else "buy"
-    for w in SELL_WORDS + BUY_WORDS + ("價位", "價格", "元", "@"):
+    for w in SELL_WORDS + BUY_WORDS + ("價位", "價格", "元", "@", "一般"):
         rest = rest.replace(w, " ")
     mini = "小型" in rest
     rest = rest.replace("小型", " ")
@@ -70,13 +70,40 @@ def parse(text: str) -> dict | None:
             price = float(tok)  # 例如「台積電 2520 1口」
         else:
             tokens.append(tok)
+    if price is None and tokens and int(qty_m.group(1)) >= 100:
+        # 例如「買小型金像電 1145 口」：那個大數字是價位，口數漏打了
+        return {"cmd": "need_qty", "query": tokens[0], "price": float(qty_m.group(1)), "mini": mini}
     if price is None or not tokens:
         return None
     return {"cmd": "fill", "side": side, "query": tokens[0], "price": price, "qty": int(qty_m.group(1)), "mini": mini}
 
 
+def _missing_qty(t: str) -> dict | None:
+    """沒打「口」：只有名稱和價位時，回報「口數漏打」，請使用者補上（不替他猜口數）。"""
+    for w in SELL_WORDS + BUY_WORDS + ("價位", "價格", "元", "@", "一般"):
+        t = t.replace(w, " ")
+    mini = "小型" in t
+    toks = t.replace("小型", " ").split()
+    nums = [x for x in toks if re.fullmatch(r"\d+(\.\d+)?", x)]
+    names = [x for x in toks if x not in nums]
+    if len(nums) == 1 and len(names) == 1:
+        return {"cmd": "need_qty", "query": names[0], "price": float(nums[0]), "mini": mini}
+    return None
+
+
 def resolve(query: str, listings: dict, futures: dict, mini: bool = False) -> tuple[str, str, str, int] | None:
-    """股票名稱／代號／股期契約代碼 → (代號, 名稱, 契約, 每口股數)。"""
+    """股票名稱／代號／股期契約代碼 → (代號, 名稱, 契約, 每口股數)。「小金像電」「小型金像電」＝金像電的小型股期。"""
+    hit = _resolve(query, listings, futures, mini)
+    if hit or len(query.strip()) < 2:
+        return hit
+    q = query.strip()
+    for prefix in ("小型", "小"):
+        if q.startswith(prefix) and len(q) > len(prefix):
+            return _resolve(q[len(prefix):], listings, futures, True)
+    return None
+
+
+def _resolve(query: str, listings: dict, futures: dict, mini: bool = False) -> tuple[str, str, str, int] | None:
     q = query.strip().upper()
     for code, info in futures.items():
         if q in (info.get("std"), info.get("mini")):
@@ -205,7 +232,7 @@ def daily_check(st: dict, day: pd.Timestamp, prepped: dict) -> list[str]:
 
 
 HELP = """📖 進出場機器人指令
-・買進：亞泥 35.7 1口（也可以：買 DYF 35.7 1口、亞泥 小型 35.7 1口）
+・買進：亞泥 35.7 1口（也可以：買 DYF 35.7 1口、小型亞泥 35.7 1口、小金像電 1145 1口）
 ・賣出：賣 亞泥 36.5 1口
 ・持倉：查看持倉、損益、權益
 ・檢查：檢查 國巨（看今天有沒有訊號、停損距離、一口虧多少、為什麼能做或不能做）

@@ -1523,7 +1523,12 @@ def _trade_commands() -> None:
     for text in msgs:
         cmd = real.parse(text)
         if not cmd:
-            notify.send("看不懂這則回報。格式例如：亞泥 35.7 1口、賣 亞泥 36.5 1口、持倉、說明", channel="trade")
+            notify.send("看不懂這則回報。格式例如：亞泥 35.7 1口、小型金像電 1145 1口、賣 亞泥 36.5 1口、持倉、說明",
+                        channel="trade")
+            continue
+        if cmd["cmd"] == "need_qty":
+            notify.send(f"收到 {cmd['query']} 價位 {cmd['price']:,g}，但沒看到口數，請再回報一次，"
+                        f"例如：{cmd['query']} {cmd['price']:,g} 1口", channel="trade")
             continue
         if cmd["cmd"] == "help":
             notify.send(real.HELP, channel="trade")
@@ -1536,7 +1541,7 @@ def _trade_commands() -> None:
             continue
         hit = real.resolve(cmd["query"], listings, futures, cmd["mini"])
         if not hit:
-            notify.send(f"找不到「{cmd['query']}」的股票期貨，請打股票名稱、代號或契約代碼（例如 亞泥、1102、DYF）",
+            notify.send(f"找不到「{cmd['query']}」的股票期貨，請打股票名稱、代號或契約代碼（例如 亞泥、1102、DYF；小型契約：小型亞泥）",
                         channel="trade")
             continue
         code, name, contract, mult = hit
