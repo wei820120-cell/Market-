@@ -1039,8 +1039,9 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
                 queued.append(f"{r['代號']} {r['名稱']}（不在任何族群：{r['理由']}）")
     if queued:
         msg = "🔬 排入研究（拆解細項產業，完成後推研究圖表）：\n" + "\n".join(f"・{q}" for q in queued)
-        if not ai.available():
-            msg += "\n\n⚠️ 還沒設定 ANTHROPIC_API_KEY，不會自動研究；可以請 Claude 先研究這些題材。"
+        cap = int(ai.settings().get("max_per_day", 4))
+        msg += (f"\n\n常駐監看會自動研究（金鑰只放在監看那邊）；今天已自動研究 {research.researched_today()}／{cap} 個，"
+                "超過的排到明天，也可以請 Claude 先研究。")
         notify.send(msg, channel=channel)
 
 
@@ -1120,6 +1121,83 @@ def _verify_margin() -> None:
             amt = float(settle) * mult * rate if settle not in (None, "", "-") else None
             print(json.dumps(r, ensure_ascii=False), "| 近月", m, "結算價", settle, "| 乘數", mult,
                   "| 原始保證金≈", round(amt) if amt else None)
+
+
+def _backtest_maexit(data, futures, index_df, rates, capital: float) -> None:
+    """跌破 20 日線出場從持有第幾天開始檢查：進場當天就查 vs 隔天起（現行）vs 更晚。拉回型另外列出。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    rows = []
+    for k, label in ((1, "進場當天就檢查"), (2, "進場隔天起（現行）"), (3, "進場後第 3 天起")):
+        par = bt.Params(capital=capital, exit_ma="ma20", ma_exit_from=k)
+        full = bt.run(data, futures, index_df, par, rates)
+        a = bt.run(first[0], futures, first[1], par, rates)
+        b = bt.run(second[0], futures, second[1], par, rates)
+        pb = full["各型態"].get("拉回", {})
+        rows.append({"20日線出場": label, "報酬%": full["報酬率%"], "最大回撤%": full["最大回撤%"], "筆數": full["交易筆數"],
+                     "勝率%": full["勝率%"], "平均R": full["平均R"], "前半段%": a["報酬率%"], "後半段%": b["報酬率%"],
+                     "拉回型筆數": pb.get("筆數"), "拉回型平均R": pb.get("平均R"), "拉回型總損益": pb.get("總損益")})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "maexit.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
+def _backtest_gate(data, futures, index_df, rates, capital: float) -> None:
+    """進場門檻：品質分數（離52週高、200日線、相對強度、大盤強勢）太低的訊號乾脆不做。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    rows = []
+    for ms in (0, 1, 2, 3, 4):
+        par = bt.Params(capital=capital, exit_ma="ma20", min_score=ms)
+        full = bt.run(data, futures, index_df, par, rates)
+        a = bt.run(first[0], futures, first[1], par, rates)
+        b = bt.run(second[0], futures, second[1], par, rates)
+        rows.append({"品質分數門檻": f"≥{ms}" if ms else "不設門檻（現行）", "報酬%": full["報酬率%"], "年化%": full["年化%"],
+                     "最大回撤%": full["最大回撤%"], "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                     "前半段%": a["報酬率%"], "後半段%": b["報酬率%"], "翻倍": full["翻倍日期"]})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "gate.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
+def _backtest_exceptions(data, futures, index_df, rates, capital: float) -> None:
+    """2% 算不出 1 口的強勢股，放寬到「1 口最多虧權益多少 %」會不會更好（可選只給品質分數高的）。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    cases = {"B 現行（嚴守 2%）": {}}
+    for r in (0.03, 0.04, 0.05, 0.06):
+        cases[f"E 1口例外 ≤{r:.0%}"] = {"one_lot_risk": r}
+    for r, sc in ((0.05, 2), (0.05, 3), (0.06, 3)):
+        cases[f"E 1口例外 ≤{r:.0%}、品質分數≥{sc}"] = {"one_lot_risk": r, "one_lot_min_score": sc}
+    rows = []
+    for name, kw in cases.items():
+        par = bt.Params(capital=capital, exit_ma="ma20", **kw)
+        full = bt.run(data, futures, index_df, par, rates)
+        a = bt.run(*first[:1], futures, first[1], par, rates)
+        b = bt.run(*second[:1], futures, second[1], par, rates)
+        big = [t for t in full["trades"] if (t["entry"] - t["stop"]) * t["mult"] * t["qty0"] > capital * 0.0205]
+        rows.append({"策略": name, "報酬%": full["報酬率%"], "年化%": full["年化%"], "最大回撤%": full["最大回撤%"],
+                     "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                     "前半段%": a["報酬率%"], "後半段%": b["報酬率%"], "超過2%的筆數": len(big),
+                     "其中平均R": round(sum(t["r"] for t in big) / len(big), 2) if big else None, "翻倍": full["翻倍日期"]})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "exceptions.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
 
 
 def _backtest_daytrade(data, futures, index_df, rates, capital: float) -> None:
@@ -1245,6 +1323,15 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.maexit:
+        _backtest_maexit(data, futures, index_df, rates, args.capital)
+        return
+    if args.gate:
+        _backtest_gate(data, futures, index_df, rates, args.capital)
+        return
+    if args.exceptions:
+        _backtest_exceptions(data, futures, index_df, rates, args.capital)
+        return
     if args.daytrade:
         _backtest_daytrade(data, futures, index_df, rates, args.capital)
         return
@@ -1605,6 +1692,9 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--maexit", action="store_true", help="20日線出場從第幾天開始檢查")
+    bk.add_argument("--gate", action="store_true", help="進場品質門檻回測")
+    bk.add_argument("--exceptions", action="store_true", help="強勢股 1 口例外（風險上限放寬）回測")
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
