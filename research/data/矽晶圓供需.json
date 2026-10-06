@@ -1,0 +1,449 @@
+{
+ "topic": "矽晶圓供需",
+ "one_line": "矽晶圓歷經約兩年庫存調整後，12 吋因 AI 邏輯與 HBM／記憶體投片而滿載，6、8 吋跟著補漲，環球晶、台勝科、合晶皆喊滿載與調價，但漲幅、2027 年長約與 2028 年缺口多為法人與媒體推估，股價已領先基本面。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "矽晶圓",
+  "12吋",
+  "8吋",
+  "磊晶片",
+  "長約",
+  "LTA",
+  "預付款",
+  "HBM",
+  "CoWoS",
+  "SEMI出貨面積",
+  "漲價函",
+  "再生晶圓",
+  "SOI",
+  "滿載"
+ ],
+ "catalysts": [
+  "9 月營收（約 10 月上旬），看環球晶單月營收年增是否持續轉正",
+  "台積電法說（10 月中旬，待確認）",
+  "SEMI Q3 出貨報告（約 10 月底至 11 月初，待確認）",
+  "SUMCO、環球晶、台勝科 Q3 財報／法說（約 11 月，待確認）",
+  "2027 年長約談判結果（Q4）",
+  "台勝科麥寮新廠認證完成（預期今年內）",
+  "嘉晶新增產能 2027 年起逐季放量",
+  "環球晶 Sherman 廠爬坡、新產能 2027 年開出",
+  "記憶體廠與晶圓廠 2027 年資本支出公告"
+ ],
+ "risks": [
+  "漲價函不等於合約價，台勝科坦承客戶接受幅度與期待有落差",
+  "AI 資本支出反轉，12 吋緊俏敘事會破功",
+  "獲利落後、股價先行，環球晶 Q2 EPS 含業外評價利益，本益比偏高",
+  "股價波動極大，環球晶 7/13 一度 1,485 元，8/12 漲停時約 933 元",
+  "成熟尺寸（8 吋以下）受中國供給牽制",
+  "漲價後五大廠同步大擴產，2028 年後可能重回供過於求",
+  "匯率、能源、運費波動",
+  "環球晶義大利廠火災與各家新廠折舊等單一事件風險"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表（尺寸）",
+   "columns": [
+    "項目",
+    "6 吋（150mm）",
+    "8 吋（200mm）",
+    "12 吋（300mm）"
+   ],
+   "rows": [
+    [
+     "標準厚度（一般產業規格，非本次來源）",
+     "約 675 μm",
+     "約 725 μm",
+     "約 775 μm"
+    ],
+    [
+     "單片面積（由直徑計算）",
+     "約 177 cm²",
+     "約 314 cm²",
+     "約 707 cm²（約 8 吋 2.25 倍）"
+    ],
+    [
+     "主要應用",
+     "功率元件、分離元件、MEMS",
+     "PMIC、MOSFET／IGBT、車用、工控、類比、MCU",
+     "AI 邏輯（3nm 以下）、HBM／DRAM／NAND、先進封裝矽中介層"
+    ],
+    [
+     "本輪價格狀態",
+     "年初已漲約 10%，供不應求（合晶）",
+     "議價中，部分已漲約 10%，部分預計 2027 年反映（數位時代）",
+     "高階最強，見下表"
+    ],
+    [
+     "供給特性",
+     "SUMCO、Siltronic 等縮減或退出（合晶說法）",
+     "台積電、三星縮減 8 吋產能，2026 年全球 8 吋產能預估年減 2.4%（經濟日報／udn 引述，未具名研究機構）",
+     "前五大寡占逾 90%，擴產有紀律"
+    ]
+   ],
+   "note": "標準厚度為一般產業規格，非本次來源。"
+  },
+  {
+   "title": "規格比較表（產品別漲幅，皆為媒體引述的供應鏈調查，非公司公告）",
+   "columns": [
+    "產品",
+    "近期現貨／調價",
+    "2027 年長約（LTA）傳聞"
+   ],
+   "rows": [
+    [
+     "12 吋一般邏輯晶圓",
+     "約 +5～8%（鉅亨、vocus）",
+     "—"
+    ],
+    [
+     "12 吋 AI／HPC 高階磊晶片",
+     "約 +18～22%",
+     "磊晶圓新長約約 +15～25%（工商時報，經 CMoney 轉載）"
+    ],
+    [
+     "12 吋 HBM 用高階拋光片",
+     "約 +12～18%（工商時報 10/5）",
+     "拋光片約 +40% 以上，部分二線客戶逾 50%，2028 年仍有續漲空間（同上）"
+    ]
+   ],
+   "note": "不同來源對「一般調價」的時點說法不一，有的說 5 月、有的說 7 月；未見信越、SUMCO 公告原文，一律視為媒體報導。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "6／8 吋拋光片、重摻片",
+   "composition": "單晶矽，重摻雜（電阻率低）",
+   "spec": "摻雜均勻度、電阻率",
+   "application": "分離元件、功率 MOSFET"
+  },
+  {
+   "name": "8 吋磊晶片",
+   "composition": "拋光片＋磊晶層",
+   "spec": "磊晶層厚度與電阻率控制",
+   "application": "PMIC、IGBT、AI 伺服器電源"
+  },
+  {
+   "name": "12 吋拋光片",
+   "composition": "單晶矽拋光",
+   "spec": "平坦度、缺陷密度（記憶體量大）",
+   "application": "DRAM、NAND、HBM"
+  },
+  {
+   "name": "12 吋磊晶片",
+   "composition": "拋光片＋磊晶",
+   "spec": "3nm 以下需更低缺陷（vocus）",
+   "application": "先進邏輯、GPU、ASIC"
+  },
+  {
+   "name": "SOI／特殊晶圓",
+   "composition": "絕緣層上矽",
+   "spec": "層厚均勻性",
+   "application": "矽光子、射頻（環球晶密蘇里廠強調 SOI）"
+  },
+  {
+   "name": "化合物／異質",
+   "composition": "SiC、GaN-on-Si、Ge-on-Si",
+   "spec": "磊晶品質",
+   "application": "功率元件、矽光子（嘉晶有布局）"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 12 吋與 8 吋是「兩種緊」",
+   "points": [
+    "12 吋：AI 邏輯與記憶體投片直接拉動，加上供給紀律與認證門檻，供應商才有訂價權",
+    "8 吋：緊在晶圓廠減產造成供給收縮與 PMIC 需求回升；中國成熟尺寸擴產壓抑價格彈性",
+    "影響：12 吋看 AI 資本支出，8 吋看車用、工控與電源循環，景氣驅動不同",
+    "代價：二線廠（合晶以 8 吋為主）循環更劇烈，獲利彈性大，被中國供給擠壓的風險也高"
+   ]
+  },
+  {
+   "title": "為什麼 AI 會「吃掉」更多晶圓",
+   "points": [
+    "HBM 是多層 DRAM 堆疊，單位位元消耗的晶圓面積遠高於傳統 DRAM（vocus 稱數倍，單一來源推估）",
+    "先進封裝（CoWoS）需要矽中介層，法人預估 2027 年 CoWoS 產能年增 70.9%、GPU 與 AI ASIC 出貨年增 44.9%",
+    "影響：需求結構從消費性電子的「顆數」轉成 AI 的「面積」",
+    "代價：預估高度集中在 AI 資本支出，一旦降溫邏輯就會反轉"
+   ]
+  },
+  {
+   "title": "長約（LTA）結構：為什麼漲價會延遲，也會延續",
+   "points": [
+    "矽晶圓多採長約鎖定價格與數量，下行期保護廠商，上行期卻讓漲價落後",
+    "環球晶表示非長約價格下半年及明年 Q1 仍有上升空間；長約需有價格調整機制才能反映",
+    "工商時報預估今年 Q4 現貨價有機會超過既有長約價，成為 2027 年重談的支撐（法人推估）",
+    "代價：客戶會要求預付款、更長年期與在地化供應，條件常綁定產能投資"
+   ]
+  },
+  {
+   "title": "為什麼不能快速擴產",
+   "points": [
+    "資本密集（12 吋新廠投資以十億美元計），客戶認證以年計，先進尺寸多年沒有新進入者",
+    "台勝科雲林麥寮新廠投資約 282.6 億元，產能大致已被客戶包下，預期今年完成所有認證",
+    "影響：供給彈性低，需求一變就容易出現缺口",
+    "代價：新廠折舊先壓毛利，台勝科 2026 Q1 因折舊出現帳上小幅淨損"
+   ]
+  }
+ ],
+ "conclusion": [
+  "這不是技術路線之爭，而是誰的價格重置最快、產能最能變現",
+  "看 12 吋占比與產品組合：環球晶約 63%、台勝科約 70%，合晶以 8 吋為主（約 70%）、12 吋約 15%",
+  "漲價函不等於合約價，要看 2027 年長約重談的時點與實際落地幅度",
+  "新產能的認證與折舊（台勝科麥寮、環球晶 Sherman）會先壓獲利，爬坡期折舊先行",
+  "客戶結構與在地化：環球晶為唯一參與美國晶片法案、可在美國本土生產先進 12 吋的矽晶圓廠，可能帶來溢價；成熟尺寸（8 吋以下）面臨較大的中國壓力",
+  "多數漲幅、2027 年長約與 2028 年缺口仍屬推估，股價已大幅領先基本面"
+ ],
+ "sources": [
+  {
+   "title": "AI、記憶體熱度燒向矽晶圓 環球晶、台勝科、合晶三檔亮燈（經濟日報／udn money）",
+   "url": "https://money.udn.com/money/story/5710/9686214"
+  },
+  {
+   "title": "矽晶圓景氣反轉訊號浮現！供需缺口 2028 年擴至 24%（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260917700239-439901"
+  },
+  {
+   "title": "需求回溫 矽晶圓三雄也傳漲聲 6 吋先調（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260626700235-430501"
+  },
+  {
+   "title": "沉寂兩年…矽晶圓熬出頭了！新一輪漲價循環起跑（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20261005700186-439901"
+  },
+  {
+   "title": "熱門族群》矽晶圓迎最強復甦 AI 需求催動新一波漲價行情（自由財經）",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5501073"
+  },
+  {
+   "title": "矽晶圓掀漲價潮 環球晶領軍全族群飆漲（財報狗）",
+   "url": "https://statementdog.com/news/16948"
+  },
+  {
+   "title": "環球晶做什麼的？股價漲停重返千元（今周刊）",
+   "url": "https://www.businesstoday.com.tw/article/category/183008/post/202606160015/"
+  },
+  {
+   "title": "矽晶圓 3 年多來首見 6、8、12 吋全面漲價（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6593752"
+  },
+  {
+   "title": "環球晶 6 至 12 吋全面滿載 客戶長約時間再拉長（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6559383"
+  },
+  {
+   "title": "矽晶圓產業熬過冬日！台勝科：最壞時刻已過去（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6476547"
+  },
+  {
+   "title": "12 吋矽晶圓明年長約看漲（工商時報，經 CMoney 轉載）",
+   "url": "https://www.cmoney.tw/forum/article/184956045"
+  },
+  {
+   "title": "2026/08/04 環球晶法說會整理（vocus）",
+   "url": "https://vocus.cc/article/6a80bc25fd8978000149b9ec"
+  },
+  {
+   "title": "環球晶 2026Q1 法說會短評（vocus）",
+   "url": "https://vocus.cc/article/69fae1b5fd897800016e249f"
+  },
+  {
+   "title": "矽晶圓產業深度分析報告（vocus 領趨投資觀點）",
+   "url": "https://vocus.cc/article/6a5cbe32fd897800010cbb99"
+  },
+  {
+   "title": "台勝科（3532）深度分析報告（vocus）",
+   "url": "https://vocus.cc/article/6a19a627fd89780001b59215"
+  },
+  {
+   "title": "【焦點速報】矽晶圓熬出頭！漲價循環正式起跑（CMoney）",
+   "url": "https://cmnews.com.tw/article/cmoney-ebae148b-c06a-11f1-a0fa-f49d3cdc1b91"
+  },
+  {
+   "title": "合晶（6182）做什麼？（數位時代）",
+   "url": "https://www.bnext.com.tw/article/92461/wafer-works-6182-silicon-wafer-price-hike-12-inch"
+  },
+  {
+   "title": "嘉晶三大動能拉抬 H2 估勝 H1（中時）",
+   "url": "https://www.chinatimes.com/realtimenews/20260922003460-260410"
+  },
+  {
+   "title": "8 月獲利年增 73 倍 嘉晶飆 182 元新天價（中時）",
+   "url": "https://www.chinatimes.com/realtimenews/20261002002654-260410"
+  },
+  {
+   "title": "嘉晶 Q1 獲利年增逾 34 倍（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260430700272-439901"
+  },
+  {
+   "title": "8 吋晶圓漲風點火！矽晶圓 3 檔漲停（udn）",
+   "url": "https://udn.com/news/story/7251/9264597"
+  },
+  {
+   "title": "環球晶「十年之約」中美晶同樂（udn）",
+   "url": "https://money.udn.com/money/story/5607/9623955"
+  },
+  {
+   "title": "晶圓代工漲價潮延續（財訊快報／Yahoo 股市）",
+   "url": "https://tw.stock.yahoo.com/news/%E6%99%B6%E5%9C%93%E4%BB%A3%E5%B7%A5%E6%BC%B2%E5%83%B9%E6%BD%AE%E5%BB%B6%E7%BA%8C-%E4%B8%8B%E5%8D%8A%E5%B9%B48-12%E5%90%8B%E6%88%90%E7%86%9F%E8%A3%BD%E7%A8%8B%E6%BC%B2%E5%B9%85-%E6%88%90%E5%85%A7-%E5%85%88%E9%80%B2%E8%A3%BD%E7%A8%8B%E6%8C%81%E7%A9%A9-025347609.html"
+  },
+  {
+   "title": "矽晶圓復活！環球晶、中美晶、合晶、台勝科齊漲停（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260812700981-430201"
+  },
+  {
+   "title": "SEMI, Silicon Wafer Shipments Increase 7.4% Year-on-Year in Q2 2026",
+   "url": "https://www.semi.org/en/semi-press-release/semi-reports-worldwide-silicon-wafer-shipments-increase-7.4-percent-year-on-year-in-q2-2026"
+  },
+  {
+   "title": "eeNews Europe, SEMI reports 7.4% rise in silicon wafer shipments",
+   "url": "https://www.eenewseurope.com/en/semi-reports-7-4-rise-in-silicon-wafer-shipments/"
+  },
+  {
+   "title": "Quartr, SUMCO Q2 2026 earnings summary",
+   "url": "https://quartr.com/companies/sumco-corporation_15578"
+  },
+  {
+   "title": "Investing.com, SUMCO Q1 2026 電話會議逐字稿",
+   "url": "https://uk.investing.com/news/stock-market-news/earnings-call-transcript-sumco-misses-q1-2026-expectations-stock-dips-93CH-4687787"
+  },
+  {
+   "title": "Private Markets News (Substack), SUMCO／信越的擴產態度",
+   "url": "https://privatemarketsnews.substack.com/p/the-silicon-wafers-that-two-companies"
+  },
+  {
+   "title": "12 吋晶圓概念股有哪些股票（財報狗）",
+   "url": "https://statementdog.com/tags/52709"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游原料與設備（多晶矽、石英坩堝、長晶設備）",
+   "description": "本次沒查到專屬漲價報價，原料、能源與運費成本偏高，被廠商列為調價理由之一；台灣沒有明確的上市櫃代表，待確認。",
+   "global_players": [
+    "Hemlock",
+    "Wacker",
+    "OCI"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "矽晶圓製造（拋光片、退火片）",
+   "description": "12 吋滿載、價格上行；8 吋高稼動率並進入議價；6 吋年初已漲約 10%。前五大廠合計寡占逾 90%。",
+   "global_players": [
+    "信越化學",
+    "SUMCO",
+    "環球晶",
+    "Siltronic",
+    "SK Siltron"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6488",
+     "name": "環球晶",
+     "role": "全球第三大，產品線最完整（12 吋到 6 吋、SOI、GaN、SiC），12 吋約占營收 63%，與美光簽 10 年長約",
+     "impact": "受惠"
+    },
+    {
+     "code": "3532",
+     "name": "台勝科",
+     "role": "台塑與 SUMCO 合資，12 吋占營收七成以上，麥寮新廠產能已被包下",
+     "impact": "受惠"
+    },
+    {
+     "code": "6182",
+     "name": "合晶",
+     "role": "以 8 吋為主，6 吋已漲約 10%，8 吋部分調漲、部分議價",
+     "impact": "受惠"
+    },
+    {
+     "code": "5483",
+     "name": "中美晶",
+     "role": "環球晶母公司，與環球晶高度連動",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "磊晶與特殊晶圓（Epi、SiC、GaN、矽光子磊晶）",
+   "description": "嘉晶 9/22 法說稱矽磊晶產能滿載，Q3 將適度漲價，預期營收季增逾 15%，2026 營收拚增逾 35%。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3016",
+     "name": "嘉晶",
+     "role": "磊晶代工，8 吋為主力，受惠 AI 伺服器電源與矽光子，與晶圓漲價為間接連動",
+     "impact": "受惠"
+    },
+    {
+     "code": "3707",
+     "name": "漢磊",
+     "role": "與嘉晶有持股關係，與世界先進推進 8 吋 SiC 製程驗證（待確認）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "耗材、再生晶圓與製程周邊",
+   "description": "udn 報導 2 奈米量產使再生晶圓需求激增，相關個股多為題材連動，實際業績貢獻待確認。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "1560",
+     "name": "中砂",
+     "role": "被媒體列為再生晶圓、耗材概念股",
+     "impact": "受惠"
+    },
+    {
+     "code": "8028",
+     "name": "昇陽半導體",
+     "role": "被媒體列為再生晶圓概念股",
+     "impact": "受惠"
+    },
+    {
+     "code": "3583",
+     "name": "辛耘",
+     "role": "有再生晶圓與設備業務（細節待確認）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游：晶圓廠與記憶體廠（需求方與成本承受方）",
+   "description": "研調指出 8 吋製程 2026 下半年漲幅約 0～10%，12 吋成熟製程約 0～10%，先進製程持穩；矽晶圓占製造成本比重有限，長約有緩衝。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "晶圓代工，晶圓成本略增但有長約緩衝",
+     "impact": "中性"
+    },
+    {
+     "code": "5347",
+     "name": "世界",
+     "role": "晶圓代工，成本略增，影響待評估",
+     "impact": "中性"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "晶圓代工，成本略增，影響待評估",
+     "impact": "中性"
+    },
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "記憶體廠，12 吋晶圓大宗客戶，取決於報價能否轉嫁",
+     "impact": "中性"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "記憶體廠，12 吋晶圓大宗客戶，取決於報價能否轉嫁",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
