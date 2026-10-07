@@ -52,11 +52,22 @@ def parse(text: str) -> dict | None:
     m = re.match(r"^\s*(檢查|為什麼|為何|check)\s*(.+)$", t)
     if m:
         return {"cmd": "explain", "query": m.group(2).strip().split()[0]}
+    m = re.match(r"^\s*(取消|刪除|撤銷|刪掉|作廢)\s*[:：]?\s*(\S+)", t)
+    if m:  # 記錯了就刪掉：取消 聚陽
+        return {"cmd": "remove", "query": m.group(2)}
+    m = re.match(r"^\s*(更正|修正|改成|改為)\s*[:：]?\s*(.+)$", t)
+    if m:  # 更正：小聚陽 206 1口 ＝ 刪掉今天記錯的那筆，再記這筆
+        inner = parse(m.group(2))
+        if inner and inner.get("cmd") == "fill":
+            inner["replace"] = True
+            return inner
+        return None
     qty_m = re.search(r"(\d+)\s*口", t)
     if not qty_m:
         return _missing_qty(t)
     rest = t[:qty_m.start()] + " " + t[qty_m.end():]
     side = "sell" if any(w in rest for w in SELL_WORDS) else "buy"
+    std = "一般" in rest
     for w in SELL_WORDS + BUY_WORDS + ("價位", "價格", "元", "@", "一般"):
         rest = rest.replace(w, " ")
     mini = "小型" in rest
@@ -75,7 +86,8 @@ def parse(text: str) -> dict | None:
         return {"cmd": "need_qty", "query": tokens[0], "price": float(qty_m.group(1)), "mini": mini}
     if price is None or not tokens:
         return None
-    return {"cmd": "fill", "side": side, "query": tokens[0], "price": price, "qty": int(qty_m.group(1)), "mini": mini}
+    return {"cmd": "fill", "side": side, "query": tokens[0], "price": price, "qty": int(qty_m.group(1)), "mini": mini,
+            **({"std": True} if std else {})}
 
 
 def _missing_qty(t: str) -> dict | None:
@@ -91,19 +103,25 @@ def _missing_qty(t: str) -> dict | None:
     return None
 
 
-def resolve(query: str, listings: dict, futures: dict, mini: bool = False) -> tuple[str, str, str, int] | None:
-    """股票名稱／代號／股期契約代碼 → (代號, 名稱, 契約, 每口股數)。「小金像電」「小型金像電」＝金像電的小型股期。"""
-    hit = _resolve(query, listings, futures, mini)
+def resolve(query: str, listings: dict, futures: dict, mini: bool = False,
+            std: bool = False) -> tuple[str, str, str, int] | None:
+    """股票名稱／代號／股期契約代碼 → (代號, 名稱, 契約, 每口股數)。
+
+    「小金像電」「小型金像電」＝金像電的小型股期；有小型契約時預設就用小型（和策略「小型優先」一致），
+    要一般契約請打「一般聚陽」或直接打契約代碼。
+    """
+    hit = _resolve(query, listings, futures, mini, std)
     if hit or len(query.strip()) < 2:
         return hit
     q = query.strip()
     for prefix in ("小型", "小"):
         if q.startswith(prefix) and len(q) > len(prefix):
-            return _resolve(q[len(prefix):], listings, futures, True)
+            return _resolve(q[len(prefix):], listings, futures, True, False)
     return None
 
 
-def _resolve(query: str, listings: dict, futures: dict, mini: bool = False) -> tuple[str, str, str, int] | None:
+def _resolve(query: str, listings: dict, futures: dict, mini: bool = False,
+             std: bool = False) -> tuple[str, str, str, int] | None:
     q = query.strip().upper()
     for code, info in futures.items():
         if q in (info.get("std"), info.get("mini")):
@@ -114,7 +132,8 @@ def _resolve(query: str, listings: dict, futures: dict, mini: bool = False) -> t
     if not code or code not in futures:
         return None
     info = futures[code]
-    if (mini and info.get("mini")) or not info.get("std"):
+    want_mini = (mini or not std) and bool(info.get("mini"))
+    if want_mini or not info.get("std"):
         return code, (listings.get(code) or {}).get("name", code), info["mini"], bt.MINI
     return code, (listings.get(code) or {}).get("name", code), info["std"], bt.STD
 
@@ -156,6 +175,18 @@ def buy(st: dict, code: str, name: str, contract: str, mult: int, price: float, 
              f"建議準備 3 倍 {need:,.0f}",
              "出場規則：碰停損出場；到 +2R 先出一半、停損移到成本；收盤跌破 20 日線隔天出場；10 天未達 +1R 出場"]
     return "\n".join(lines + warn)
+
+
+def remove(st: dict, code: str, today_only: bool = False) -> str | None:
+    """刪掉記錯的持倉（同一檔最近開的那筆）；不影響權益與損益。沒有符合的回傳 None。"""
+    cands = [x for x in st["positions"] if x["code"] == code]
+    if today_only:
+        cands = [x for x in cands if x.get("entry_date") == f"{now_tw():%Y-%m-%d}"]
+    if not cands:
+        return None
+    x = max(cands, key=lambda p: p.get("entry_date", ""))
+    st["positions"].remove(x)
+    return f"🗑 已刪除記錄：{x['name']} {x['contract']} {x['qty']} 口 @ {x['entry']:,.2f}（不影響權益與損益）"
 
 
 def sell(st: dict, contract: str, name: str, price: float, qty: int) -> str:
@@ -232,7 +263,8 @@ def daily_check(st: dict, day: pd.Timestamp, prepped: dict) -> list[str]:
 
 
 HELP = """📖 進出場機器人指令
-・買進：亞泥 35.7 1口（也可以：買 DYF 35.7 1口、小型亞泥 35.7 1口、小金像電 1145 1口）
+・買進：亞泥 35.7 1口（也可以：買 DYF 35.7 1口、小金像電 1145 1口）；有小型契約的預設就用小型，要一般契約請打「一般聚陽 206 1口」
+・記錯了：取消 聚陽（刪掉最近一筆）、更正：小聚陽 206 1口（刪掉今天記錯的那筆，再記這筆）
 ・賣出：賣 亞泥 36.5 1口
 ・持倉：查看持倉、損益、權益
 ・檢查：檢查 國巨（看今天有沒有訊號、停損距離、一口虧多少、為什麼能做或不能做）

@@ -1626,15 +1626,26 @@ def _trade_commands() -> None:
         if cmd["cmd"] == "explain":
             notify.send(_trade_explain(cmd["query"], listings, futures, st["equity"]), channel="trade")
             continue
-        hit = real.resolve(cmd["query"], listings, futures, cmd["mini"])
+        if cmd["cmd"] == "remove":
+            hit = real.resolve(cmd["query"], listings, futures)
+            msg = real.remove(st, hit[0]) if hit else None
+            notify.send(msg or f"持倉裡找不到「{cmd['query']}」，沒有刪除任何記錄", channel="trade")
+            continue
+        hit = real.resolve(cmd["query"], listings, futures, cmd["mini"], cmd.get("std", False))
         if not hit:
             notify.send(f"找不到「{cmd['query']}」的股票期貨，請打股票名稱、代號或契約代碼（例如 亞泥、1102、DYF；小型契約：小型亞泥）",
                         channel="trade")
             continue
         code, name, contract, mult = hit
         if cmd["side"] == "sell":
+            held = next((x for x in st["positions"] if x["code"] == code), None)
+            if held and not any(x["contract"] == contract for x in st["positions"]):
+                contract = held["contract"]  # 賣的時候用實際持有的契約，不必再分一般／小型
             notify.send(real.sell(st, contract, name, cmd["price"], cmd["qty"]), channel="trade")
             continue
+        if cmd.get("replace"):  # 更正：先刪掉今天記錯的那筆，再記新的
+            gone = real.remove(st, code, today_only=True)
+            notify.send(gone or "（今天沒有這檔的舊記錄可刪，直接記新的）", channel="trade")
         hist = _yahoo_histories([code], listings, range_="6mo").get(code)
         from .analysis.indicators import atr as _atr
         a = float(_atr(hist).iloc[-1]) if hist is not None and len(hist) > 20 else cmd["price"] * 0.03
@@ -1645,7 +1656,11 @@ def _trade_commands() -> None:
                     rate = float(str(r.get("InitialMarginRate", "20.25")).replace("%", "")) / 100
         except Exception as e:  # noqa: BLE001
             log.warning("保證金比例抓取失敗：%s", e)
-        notify.send(real.buy(st, code, name, contract, mult, cmd["price"], cmd["qty"], a, rate), channel="trade")
+        out = real.buy(st, code, name, contract, mult, cmd["price"], cmd["qty"], a, rate)
+        info = futures.get(code) or {}
+        if contract == info.get("mini") and info.get("std") and not cmd["mini"] and not cmd.get("std"):
+            out += f"\n（{name} 有小型契約，預設記成小型 {contract}；要記一般契約 {info['std']} 請打「一般{name} 價位 口數」）"
+        notify.send(out, channel="trade")
     real.save(st)
 
 
