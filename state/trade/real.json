@@ -36,6 +36,23 @@
    "half_done": false,
    "realized": 0.0,
    "alerts": []
+  },
+  {
+   "code": "1477",
+   "name": "聚陽",
+   "contract": "SCF",
+   "mult": 100,
+   "qty": 1,
+   "qty0": 1,
+   "entry": 204.5,
+   "stop": 197.9968759184335,
+   "r0": 6.5031240815665114,
+   "rate": 0.162,
+   "entry_date": "2026-10-07",
+   "days": 0,
+   "half_done": false,
+   "realized": 0.0,
+   "alerts": []
   }
  ],
  "closed": []
