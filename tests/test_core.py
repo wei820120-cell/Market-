@@ -801,6 +801,19 @@ def test_real_trade_parse_and_book(tmp_path, monkeypatch):
     assert real.resolve("小型金像電", listings, futures) == ("2368", "金像電", "QXF", 100)
     assert real.parse("買小型金像電 1145 口") == {"cmd": "need_qty", "query": "金像電", "price": 1145.0, "mini": True}
     assert real.parse("金像電 1145")["cmd"] == "need_qty" and real.parse("Wvgf") is None
+    # 有小型契約預設用小型；「一般」才用一般；更正與取消
+    listings["1477"], futures["1477"] = {"name": "聚陽"}, {"std": "KSF", "mini": "SCF"}
+    assert real.resolve("聚陽", listings, futures)[2] == "SCF"
+    assert real.resolve("聚陽", listings, futures, std=True)[2] == "KSF"
+    assert real.resolve("小聚陽", listings, futures)[2] == "SCF"
+    f = real.parse("更正：小聚陽 206 1口")
+    assert f["cmd"] == "fill" and f["replace"] and f["query"] == "小聚陽" and f["price"] == 206
+    assert real.parse("一般聚陽 206 1口")["std"] is True
+    assert real.parse("取消 聚陽") == {"cmd": "remove", "query": "聚陽"}
+    st = real.load()
+    real.buy(st, "1477", "聚陽", "KSF", 2000, 206.0, 1, 4.3, 0.2)
+    assert real.remove(st, "1477", today_only=True).startswith("🗑") and not st["positions"]
+    assert real.remove(st, "1477") is None
     st = real.load()
     msg = real.buy(st, "1102", "亞泥", "DYF", 2000, 35.7, 1, 0.6, 0.135)
     assert "停損 34.80" in msg and st["positions"][0]["stop"] == 35.7 - 0.9
