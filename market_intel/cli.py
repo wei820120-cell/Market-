@@ -1628,7 +1628,8 @@ def _trade_commands() -> None:
             continue
         if cmd["cmd"] == "remove":
             hit = real.resolve(cmd["query"], listings, futures)
-            msg = real.remove(st, hit[0]) if hit else None
+            typed_contract = cmd["query"].upper() if hit and hit[2] == cmd["query"].upper() else None
+            _, msg = real.remove(st, hit[0], contract=typed_contract) if hit else (False, None)
             notify.send(msg or f"持倉裡找不到「{cmd['query']}」，沒有刪除任何記錄", channel="trade")
             continue
         hit = real.resolve(cmd["query"], listings, futures, cmd["mini"], cmd.get("std", False))
@@ -1644,8 +1645,10 @@ def _trade_commands() -> None:
             notify.send(real.sell(st, contract, name, cmd["price"], cmd["qty"]), channel="trade")
             continue
         if cmd.get("replace"):  # 更正：先刪掉今天記錯的那筆，再記新的
-            gone = real.remove(st, code, today_only=True)
+            removed, gone = real.remove(st, code, today_only=True, prefer_not=contract)
             notify.send(gone or "（今天沒有這檔的舊記錄可刪，直接記新的）", channel="trade")
+            if gone and not removed:  # 同一檔有多個契約又判斷不出來：不刪也不記，請使用者指定
+                continue
         hist = _yahoo_histories([code], listings, range_="6mo").get(code)
         from .analysis.indicators import atr as _atr
         a = float(_atr(hist).iloc[-1]) if hist is not None and len(hist) > 20 else cmd["price"] * 0.03

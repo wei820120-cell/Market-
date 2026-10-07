@@ -812,8 +812,16 @@ def test_real_trade_parse_and_book(tmp_path, monkeypatch):
     assert real.parse("取消 聚陽") == {"cmd": "remove", "query": "聚陽"}
     st = real.load()
     real.buy(st, "1477", "聚陽", "KSF", 2000, 206.0, 1, 4.3, 0.2)
-    assert real.remove(st, "1477", today_only=True).startswith("🗑") and not st["positions"]
-    assert real.remove(st, "1477") is None
+    ok, msg = real.remove(st, "1477", today_only=True)
+    assert ok and msg.startswith("🗑") and not st["positions"]
+    assert real.remove(st, "1477") == (False, None)
+    # 同一檔一般與小型都有：更正時刪「契約不同於新記錄」的那筆；沒辦法判斷時不亂刪
+    real.buy(st, "1477", "聚陽", "KSF", 2000, 206.0, 1, 4.3, 0.2)
+    real.buy(st, "1477", "聚陽", "SCF", 100, 204.5, 2, 4.3, 0.2)
+    ok, msg = real.remove(st, "1477", today_only=True)
+    assert not ok and "KSF" in msg and "SCF" in msg and len(st["positions"]) == 2
+    ok, msg = real.remove(st, "1477", today_only=True, prefer_not="SCF")
+    assert ok and "KSF" in msg and [x["contract"] for x in st["positions"]] == ["SCF"]
     st = real.load()
     msg = real.buy(st, "1102", "亞泥", "DYF", 2000, 35.7, 1, 0.6, 0.135)
     assert "停損 34.80" in msg and st["positions"][0]["stop"] == 35.7 - 0.9
