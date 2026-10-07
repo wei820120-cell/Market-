@@ -942,3 +942,10 @@ def test_trade_candidates_rows():
     assert rs[0]["qty"] >= 1 and rs[1]["qty"] == 0 and "9999" not in [r["code"] for r in rs]
     msg = candidates.message("被動元件", "⚡ 盤中資金湧入", rs, True)
     assert "🟢 可做 DYF" in msg and "小型 QEF" in msg and "需本金約" in msg
+
+
+def test_gov_import_ban_is_supply_shock():
+    from market_intel import config
+    from market_intel.cli import shock_cause
+    causes = config.news_keywords()["supply_shock"]["causes"]
+    assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "政策管制"
