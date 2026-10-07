@@ -19,6 +19,23 @@
    "realized": 0.0,
    "alerts": [],
    "last_check": "2026-10-06"
+  },
+  {
+   "code": "1477",
+   "name": "聚陽",
+   "contract": "KSF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry": 206.0,
+   "stop": 199.4968759184335,
+   "r0": 6.5031240815665114,
+   "rate": 0.162,
+   "entry_date": "2026-10-07",
+   "days": 0,
+   "half_done": false,
+   "realized": 0.0,
+   "alerts": []
   }
  ],
  "closed": []
