@@ -177,16 +177,30 @@ def buy(st: dict, code: str, name: str, contract: str, mult: int, price: float, 
     return "\n".join(lines + warn)
 
 
-def remove(st: dict, code: str, today_only: bool = False) -> str | None:
-    """刪掉記錯的持倉（同一檔最近開的那筆）；不影響權益與損益。沒有符合的回傳 None。"""
+def remove(st: dict, code: str, today_only: bool = False, contract: str | None = None,
+           prefer_not: str | None = None) -> tuple[bool, str | None]:
+    """刪掉記錯的持倉；不影響權益與損益。回傳（有沒有刪掉, 要回覆的訊息）。
+
+    contract：只刪這個契約（使用者打契約代碼，例如「取消 KSF」）。
+    prefer_not：更正時，同一檔有多筆就先刪「契約不同於新記錄」的那筆（記錯一般契約，改記小型）。
+    同一檔有多個契約又沒辦法判斷時，不亂刪，請使用者指定契約。
+    """
     cands = [x for x in st["positions"] if x["code"] == code]
     if today_only:
         cands = [x for x in cands if x.get("entry_date") == f"{now_tw():%Y-%m-%d}"]
+    if contract:
+        cands = [x for x in cands if x["contract"] == contract]
+    elif prefer_not:
+        others = [x for x in cands if x["contract"] != prefer_not]
+        cands = others or cands
     if not cands:
-        return None
+        return False, None
+    contracts = sorted({x["contract"] for x in cands})
+    if len(contracts) > 1:
+        return False, f"⚠️ {cands[0]['name']} 有多個契約的記錄（{'、'.join(contracts)}），不知道要刪哪一筆，請指定契約，例如：取消 {contracts[0]}"
     x = max(cands, key=lambda p: p.get("entry_date", ""))
     st["positions"].remove(x)
-    return f"🗑 已刪除記錄：{x['name']} {x['contract']} {x['qty']} 口 @ {x['entry']:,.2f}（不影響權益與損益）"
+    return True, f"🗑 已刪除記錄：{x['name']} {x['contract']} {x['qty']} 口 @ {x['entry']:,.2f}（不影響權益與損益）"
 
 
 def sell(st: dict, contract: str, name: str, price: float, qty: int) -> str:
