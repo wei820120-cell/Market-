@@ -1,7 +1,7 @@
 {
  "start": "2026-10-04",
  "capital": 100000,
- "equity": 100000,
+ "equity": 97974.54469859567,
  "positions": [
   {
    "code": "1102",
@@ -17,9 +17,28 @@
    "r0": 0.855868372431793,
    "realized": -123.03199844360353,
    "half_done": false,
-   "days": 2,
+   "days": 3,
    "exit_next": ""
   },
+  {
+   "code": "1101",
+   "name": "台泥",
+   "setup": "拉回",
+   "contract": "DFF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry_date": "2026-10-07",
+   "entry": 25.25,
+   "stop": 24.30404278998313,
+   "r0": 0.9459572100168714,
+   "realized": -101.51,
+   "half_done": false,
+   "days": 1,
+   "exit_next": ""
+  }
+ ],
+ "closed": [
   {
    "code": "2376",
    "name": "技嘉",
@@ -34,37 +53,41 @@
    "r0": 18.4818845362704,
    "realized": -89.576,
    "half_done": false,
-   "days": 1,
-   "exit_next": ""
+   "days": 2,
+   "exit_next": "",
+   "exit_date": "2026-10-07",
+   "exit": 369.5181154637296,
+   "pnl": -2025,
+   "r": -1.1,
+   "reason": "停損"
   }
  ],
- "closed": [],
  "plan": [
   {
-   "code": "1101",
-   "name": "台泥",
+   "code": "9945",
+   "name": "潤泰新",
    "setup": "拉回",
    "theme": "",
-   "atr": 0.6306381400112477,
-   "close": 25.200000762939453,
-   "vr": 0.7645861883377095,
+   "atr": 0.5954897705411926,
+   "close": 29.299999237060547,
+   "vr": 0.6621039950232723,
    "info": {
-    "std": "DFF",
+    "std": "KPF",
     "mini": null,
     "night": false
    },
-   "contract": "DFF",
+   "contract": "KPF",
    "mult": 2000,
    "qty": 1,
    "risk_pct": 0.02,
    "score": 0,
-   "stop_est": 24.25404355292258,
-   "target_est": 27.091915182973196,
-   "margin_est": 6804.000205993652,
-   "risk_est": 1891.9144200337428
+   "stop_est": 28.40676458124876,
+   "target_est": 31.086468548684124,
+   "margin_est": 7910.999794006349,
+   "risk_est": 1786.4693116235771
   }
  ],
- "last_date": "2026-10-06",
+ "last_date": "2026-10-07",
  "regime": "多頭",
  "blocked": [
   {
@@ -73,59 +96,79 @@
    "setup": "突破",
    "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
    "contract": "CAF",
-   "risk_one": 46993.307066739704,
-   "need_capital": 2349665.353336985,
-   "reserve_one": 355995.00000000006
+   "risk_one": 49850.92799054394,
+   "need_capital": 2492546.399527197,
+   "reserve_one": 381510.00000000006
   },
   {
-   "code": "6213",
-   "name": "聯茂",
+   "code": "1504",
+   "name": "東元",
+   "setup": "突破",
+   "theme": "重電綠能",
+   "contract": "EMF",
+   "risk_one": 4906.585796729531,
+   "need_capital": 245329.28983647653,
+   "reserve_one": 89059.50370788576
+  },
+  {
+   "code": "2376",
+   "name": "技嘉",
+   "setup": "拉回",
+   "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
+   "contract": "SLF",
+   "risk_one": 1986.1931054233196,
+   "need_capital": 99309.65527116598,
+   "reserve_one": 22204.125000000004
+  },
+  {
+   "code": "2455",
+   "name": "全新",
+   "setup": "拉回",
+   "theme": "穩懋（3105）題材與產業",
+   "contract": "GUF",
+   "risk_one": 92784.07083778825,
+   "need_capital": 4639203.541889412,
+   "reserve_one": 679185.0000000001
+  },
+  {
+   "code": "2492",
+   "name": "華新科",
+   "setup": "突破",
+   "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
+   "contract": "HBF",
+   "risk_one": 73125.76694005031,
+   "need_capital": 3656288.347002515,
+   "reserve_one": 520020.0
+  },
+  {
+   "code": "1802",
+   "name": "台玻",
    "setup": "突破",
    "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "KBF",
-   "risk_one": 126031.44347006355,
-   "need_capital": 6301572.173503177,
-   "reserve_one": 956205.0
+   "contract": "KUF",
+   "risk_one": 7629.485141946887,
+   "need_capital": 381474.2570973443,
+   "reserve_one": 85147.19604492189
   },
   {
-   "code": "3044",
-   "name": "健鼎",
+   "code": "8086",
+   "name": "宏捷科",
    "setup": "突破",
-   "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "LBF",
-   "risk_one": 60742.087607744455,
-   "need_capital": 3037104.380387223,
-   "reserve_one": 562788.0
+   "theme": "穩懋（3105）題材與產業",
+   "contract": "PRF",
+   "risk_one": 17162.860943241354,
+   "need_capital": 858143.0471620677,
+   "reserve_one": 170100.00000000003
   },
   {
-   "code": "5347",
-   "name": "世界",
-   "setup": "突破",
-   "theme": "矽晶圓供需",
-   "contract": "NLF",
-   "risk_one": 23393.456575028325,
-   "need_capital": 1169672.8287514162,
-   "reserve_one": 185652.0
-  },
-  {
-   "code": "2383",
-   "name": "台光電",
-   "setup": "突破",
-   "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "SFF",
-   "risk_one": 41209.75004586499,
-   "need_capital": 2060487.5022932494,
-   "reserve_one": 364196.25000000006
-  },
-  {
-   "code": "2368",
-   "name": "金像電",
-   "setup": "突破",
-   "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "VGF",
-   "risk_one": 11027.071640055965,
-   "need_capital": 551353.5820027982,
-   "reserve_one": 76545.0
+   "code": "3324",
+   "name": "雙鴻",
+   "setup": "拉回",
+   "theme": "散熱供需",
+   "contract": "ULF",
+   "risk_one": 13376.089278994983,
+   "need_capital": 668804.4639497491,
+   "reserve_one": 92643.75000000001
   }
  ]
 }
