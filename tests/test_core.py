@@ -743,6 +743,7 @@ def test_paper_trade_cycle(tmp_path, monkeypatch):
     assert "多頭" in msg and st["plan"] and st["plan"][0]["contract"] == "QSF"
     assert "並排模擬" in msg and "T3 品質分級" in msg and (tmp_path / "paper_A.json").exists()
     assert paper.load("T3")["plan"][0]["risk_pct"] in (0.02, 0.03)  # 對照帳戶也有計劃，風險依品質分數
+    assert "Q3 高勝率" in msg and (tmp_path / "paper_Q3.json").exists()
     assert paper.run_post(data, df, fut, {"8046": "南電"}, {}, {}, today) == ""  # 同一天不重算
     # 隔天：開盤成交
     nxt = idx[-1] + pd.Timedelta(days=1)
@@ -942,3 +943,10 @@ def test_trade_candidates_rows():
     assert rs[0]["qty"] >= 1 and rs[1]["qty"] == 0 and "9999" not in [r["code"] for r in rs]
     msg = candidates.message("被動元件", "⚡ 盤中資金湧入", rs, True)
     assert "🟢 可做 DYF" in msg and "小型 QEF" in msg and "需本金約" in msg
+
+
+def test_gov_import_ban_is_supply_shock():
+    from market_intel import config
+    from market_intel.cli import shock_cause
+    causes = config.news_keywords()["supply_shock"]["causes"]
+    assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "政策管制"

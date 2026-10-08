@@ -1147,6 +1147,42 @@ def _backtest_maexit(data, futures, index_df, rates, capital: float) -> None:
     (out / "maexit.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
 
 
+def _backtest_highwin(data, futures, index_df, rates, capital: float) -> None:
+    """高勝率版本：停損放寬、提早停利、只做拉回、品質分數門檻、縮短持有期，與現行 B 比。"""
+    from .trade import backtest as bt
+    cut = index_df.index[len(index_df) // 2]
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    warm = cut - pd.Timedelta(days=300)
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    cases = {"B 現行": {}}
+    for am in (2.0, 2.5, 3.0):
+        cases[f"停損 {am}ATR"] = {"atr_mult": am}
+    for tr in (1.0, 1.5):
+        cases[f"+{tr}R 先出一半"] = {"take_r": tr}
+    cases["停損2.5ATR＋1R出一半"] = {"atr_mult": 2.5, "take_r": 1.0}
+    cases["停損3ATR＋1R出一半"] = {"atr_mult": 3.0, "take_r": 1.0}
+    cases["只做拉回"] = {"setups": ("拉回",)}
+    cases["只做拉回＋停損2.5ATR"] = {"setups": ("拉回",), "atr_mult": 2.5}
+    cases["品質分數≥3"] = {"min_score": 3}
+    cases["品質≥3＋停損2.5ATR＋1R出一半"] = {"min_score": 3, "atr_mult": 2.5, "take_r": 1.0}
+    for ts in (5, 7, 15):
+        cases[f"時間停損 {ts} 天"] = {"time_stop": ts}
+    rows = []
+    for name, kw in cases.items():
+        par = bt.Params(capital=capital, exit_ma="ma20", **kw)
+        full = bt.run(data, futures, index_df, par, rates)
+        a = bt.run(first[0], futures, first[1], par, rates)
+        b = bt.run(second[0], futures, second[1], par, rates)
+        rows.append({"策略": name, "勝率%": full["勝率%"], "報酬%": full["報酬率%"], "年化%": full["年化%"],
+                     "最大回撤%": full["最大回撤%"], "筆數": full["交易筆數"], "平均R": full["平均R"],
+                     "前半段%": a["報酬率%"], "後半段%": b["報酬率%"], "翻倍": full["翻倍日期"]})
+    table = pd.DataFrame(rows)
+    print(table.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "highwin.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def _backtest_gate(data, futures, index_df, rates, capital: float) -> None:
     """進場門檻：品質分數（離52週高、200日線、相對強度、大盤強勢）太低的訊號乾脆不做。"""
     from .trade import backtest as bt
@@ -1323,6 +1359,9 @@ def cmd_backtest(args) -> None:
                 rates[str(r.get("UnderlyingSecurityCode"))] = float(rate) / 100
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗，用 20.25%% 估：%s", e)
+    if args.highwin:
+        _backtest_highwin(data, futures, index_df, rates, args.capital)
+        return
     if args.maexit:
         _backtest_maexit(data, futures, index_df, rates, args.capital)
         return
@@ -1710,6 +1749,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
     bk.add_argument("--variants", action="store_true", help="比較多組參數（含前後半段樣本外檢查）")
+    bk.add_argument("--highwin", action="store_true", help="高勝率版本比較")
     bk.add_argument("--maexit", action="store_true", help="20日線出場從第幾天開始檢查")
     bk.add_argument("--gate", action="store_true", help="進場品質門檻回測")
     bk.add_argument("--exceptions", action="store_true", help="強勢股 1 口例外（風險上限放寬）回測")
