@@ -17,7 +17,7 @@
    "r0": 0.855868372431793,
    "realized": -123.03199844360353,
    "half_done": false,
-   "days": 3,
+   "days": 4,
    "exit_next": ""
   },
   {
@@ -33,6 +33,23 @@
    "stop": 24.30404278998313,
    "r0": 0.9459572100168714,
    "realized": -101.51,
+   "half_done": false,
+   "days": 2,
+   "exit_next": ""
+  },
+  {
+   "code": "9945",
+   "name": "潤泰新",
+   "setup": "拉回",
+   "contract": "KPF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry_date": "2026-10-08",
+   "entry": 29.450000762939453,
+   "stop": 28.556766107127665,
+   "r0": 0.8932346558117885,
+   "realized": -110.07800155639649,
    "half_done": false,
    "days": 1,
    "exit_next": ""
@@ -62,63 +79,19 @@
    "reason": "停損"
   }
  ],
- "plan": [
-  {
-   "code": "9945",
-   "name": "潤泰新",
-   "setup": "拉回",
-   "theme": "",
-   "atr": 0.5954897705411926,
-   "close": 29.299999237060547,
-   "vr": 0.6621039950232723,
-   "info": {
-    "std": "KPF",
-    "mini": null,
-    "night": false
-   },
-   "contract": "KPF",
-   "mult": 2000,
-   "qty": 1,
-   "risk_pct": 0.02,
-   "score": 0,
-   "stop_est": 28.40676458124876,
-   "target_est": 31.086468548684124,
-   "margin_est": 7910.999794006349,
-   "risk_est": 1786.4693116235771
-  }
- ],
- "last_date": "2026-10-07",
+ "plan": [],
+ "last_date": "2026-10-08",
  "regime": "多頭",
  "blocked": [
   {
-   "code": "1303",
-   "name": "南亞",
+   "code": "2340",
+   "name": "台亞",
    "setup": "突破",
-   "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "CAF",
-   "risk_one": 49850.92799054394,
-   "need_capital": 2492546.399527197,
-   "reserve_one": 381510.00000000006
-  },
-  {
-   "code": "1504",
-   "name": "東元",
-   "setup": "突破",
-   "theme": "重電綠能",
-   "contract": "EMF",
-   "risk_one": 4906.585796729531,
-   "need_capital": 245329.28983647653,
-   "reserve_one": 89059.50370788576
-  },
-  {
-   "code": "2376",
-   "name": "技嘉",
-   "setup": "拉回",
-   "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
-   "contract": "SLF",
-   "risk_one": 1986.1931054233196,
-   "need_capital": 99309.65527116598,
-   "reserve_one": 22204.125000000004
+   "theme": "光通訊雷射InP",
+   "contract": "FYF",
+   "risk_one": 8922.66246174455,
+   "need_capital": 446133.1230872275,
+   "reserve_one": 64273.50185394287
   },
   {
    "code": "2455",
@@ -126,29 +99,9 @@
    "setup": "拉回",
    "theme": "穩懋（3105）題材與產業",
    "contract": "GUF",
-   "risk_one": 92784.07083778825,
-   "need_capital": 4639203.541889412,
-   "reserve_one": 679185.0000000001
-  },
-  {
-   "code": "2492",
-   "name": "華新科",
-   "setup": "突破",
-   "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
-   "contract": "HBF",
-   "risk_one": 73125.76694005031,
-   "need_capital": 3656288.347002515,
-   "reserve_one": 520020.0
-  },
-  {
-   "code": "1802",
-   "name": "台玻",
-   "setup": "突破",
-   "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "KUF",
-   "risk_one": 7629.485141946887,
-   "need_capital": 381474.2570973443,
-   "reserve_one": 85147.19604492189
+   "risk_one": 91513.78004262142,
+   "need_capital": 4575689.002131071,
+   "reserve_one": 677970.0000000001
   },
   {
    "code": "8086",
@@ -156,9 +109,9 @@
    "setup": "突破",
    "theme": "穩懋（3105）題材與產業",
    "contract": "PRF",
-   "risk_one": 17162.860943241354,
-   "need_capital": 858143.0471620677,
-   "reserve_one": 170100.00000000003
+   "risk_one": 18936.942283399218,
+   "need_capital": 946847.1141699608,
+   "reserve_one": 187110.00000000003
   },
   {
    "code": "3324",
@@ -166,9 +119,19 @@
    "setup": "拉回",
    "theme": "散熱供需",
    "contract": "ULF",
-   "risk_one": 13376.089278994983,
-   "need_capital": 668804.4639497491,
-   "reserve_one": 92643.75000000001
+   "risk_one": 14295.654296832663,
+   "need_capital": 714782.7148416331,
+   "reserve_one": 92340.00000000001
+  },
+  {
+   "code": "3661",
+   "name": "世芯-KY",
+   "setup": "突破",
+   "theme": "IC設計",
+   "contract": "UOF",
+   "risk_one": 30314.36620767886,
+   "need_capital": 1515718.310383943,
+   "reserve_one": 263958.75
   }
  ]
 }

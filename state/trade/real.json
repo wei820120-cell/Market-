@@ -14,11 +14,11 @@
    "r0": 107.7882982085739,
    "rate": 0.2025,
    "entry_date": "2026-10-05",
-   "days": 2,
+   "days": 3,
    "half_done": false,
    "realized": 0.0,
    "alerts": [],
-   "last_check": "2026-10-07"
+   "last_check": "2026-10-08"
   },
   {
    "code": "1477",
@@ -32,11 +32,11 @@
    "r0": 6.610266938709373,
    "rate": 0.162,
    "entry_date": "2026-10-07",
-   "days": 0,
+   "days": 1,
    "half_done": false,
    "realized": 0.0,
    "alerts": [],
-   "last_check": "2026-10-07"
+   "last_check": "2026-10-08"
   }
  ],
  "closed": []
