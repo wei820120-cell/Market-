@@ -950,3 +950,14 @@ def test_gov_import_ban_is_supply_shock():
     from market_intel.cli import shock_cause
     causes = config.news_keywords()["supply_shock"]["causes"]
     assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "政策管制"
+
+
+def test_real_chinese_qty_and_multi_price_sell():
+    from market_intel.trade import real
+    assert real.parse("賣出小聚陽 204.5 一口")["qty"] == 1
+    assert real.parse("小聚陽 206 兩口")["qty"] == 2
+    assert real.parse("賣 亞泥 36.5 十二口")["qty"] == 12
+    parts = real.expand("賣出 小聚陽 204.5、204、203.5各一口共三口")
+    assert [real.parse(p)["price"] for p in parts] == [204.5, 204.0, 203.5]
+    assert all(real.parse(p)["side"] == "sell" and real.parse(p)["qty"] == 1 for p in parts)
+    assert real.expand("亞泥 35.7 1口") == ["亞泥 35.7 1口"]
