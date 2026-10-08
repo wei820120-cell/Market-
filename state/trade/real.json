@@ -1,6 +1,6 @@
 {
  "capital": 100000,
- "equity": 100000,
+ "equity": 99849.181,
  "positions": [
   {
    "code": "2368",
@@ -25,7 +25,7 @@
    "name": "聚陽",
    "contract": "SCF",
    "mult": 100,
-   "qty": 3,
+   "qty": 2,
    "qty0": 3,
    "entry": 205.0,
    "stop": 198.38973306129063,
@@ -34,7 +34,7 @@
    "entry_date": "2026-10-07",
    "days": 1,
    "half_done": false,
-   "realized": 0.0,
+   "realized": -150.81900000000002,
    "alerts": [],
    "last_check": "2026-10-08"
   }
