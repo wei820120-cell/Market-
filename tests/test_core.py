@@ -743,6 +743,7 @@ def test_paper_trade_cycle(tmp_path, monkeypatch):
     assert "多頭" in msg and st["plan"] and st["plan"][0]["contract"] == "QSF"
     assert "並排模擬" in msg and "T3 品質分級" in msg and (tmp_path / "paper_A.json").exists()
     assert paper.load("T3")["plan"][0]["risk_pct"] in (0.02, 0.03)  # 對照帳戶也有計劃，風險依品質分數
+    assert "Q3 高勝率" in msg and (tmp_path / "paper_Q3.json").exists()
     assert paper.run_post(data, df, fut, {"8046": "南電"}, {}, {}, today) == ""  # 同一天不重算
     # 隔天：開盤成交
     nxt = idx[-1] + pd.Timedelta(days=1)

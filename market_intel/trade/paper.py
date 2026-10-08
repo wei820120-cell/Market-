@@ -5,7 +5,7 @@
 - 15:30 盤後：用今天的日 K 結算：開盤成交昨天的計劃 → 停損／+2R 先出一半 → 收盤檢查 20 日線與時間停損
              → 產生明天的計劃 → 推「盤後報告」（成交、持倉、權益、離目標還差多少）
 
-並排模擬：另有 A（最多 4 檔）、T3（品質分級下注）兩個對照帳戶（state/trade/paper_A.json、paper_T3.json），
+並排模擬：另有 A（最多 4 檔）、T3（品質分級下注）、Q3（品質分數≥3 才做）三個對照帳戶（state/trade/paper_A.json、paper_T3.json、paper_Q3.json），
 同一天結算，盤後報告最後附比較；實際下單照 B。
 
 規則與 trade/backtest.py 相同（只做多、大盤濾網、突破／拉回、1.5ATR 停損、+2R 出一半、跌破 20 日線出場、
@@ -31,11 +31,12 @@ STATE = ROOT / "state" / "trade" / "paper.json"
 CHANNEL = "trade"
 PARAMS = bt.Params(exit_ma="ma20")  # 回測選定：策略 B
 TARGET = 200_000
-# 並排模擬：實際下單照 B；A、T3 是對照組，各自一個模擬帳戶，累積實績後再決定要不要換
+# 並排模擬：實際下單照 B；A、T3、Q3 是對照組，各自一個模擬帳戶，累積實績後再決定要不要換
 VARIANTS = {
     "A": ("A 每筆 2%、最多 4 檔", bt.Params(exit_ma="ma20", max_pos=4)),
     "T3": ("T3 品質分級（4 項條件符合 3～4 項給 3%，其餘 2%）",
            bt.Params(exit_ma="ma20", tier_risk=(0.02, 0.02, 0.02, 0.03, 0.03))),
+    "Q3": ("Q3 高勝率：4 項條件至少符合 3 項才做，每筆 2%、最多 3 檔", bt.Params(exit_ma="ma20", min_score=3)),
 }
 
 
@@ -179,6 +180,8 @@ def make_plan(st: dict, day: pd.Timestamp, prepped: dict, futures: dict, names: 
         used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], rates.get(x["code"], p.margin_rate), p)
                    for x in st["positions"])
         score = (scores or {}).get(code, 0)
+        if p.min_score and score < p.min_score:
+            continue  # 品質分數不夠的訊號不做（Q3 對照帳戶）
         pp = (bt.Params(**{**p.__dict__, "risk_pct": p.tier_risk[min(score, len(p.tier_risk) - 1)]})
               if p.tier_risk else p)
         contract, mult, qty = bt.size(st["equity"], close, stop, futures.get(code, {}), pp,
@@ -291,9 +294,9 @@ def _line(label: str, st: dict, day: pd.Timestamp, prepped: dict, tier: bool) ->
 def run_variants(base_st: dict, day: pd.Timestamp, data: dict, prepped: dict, index_df: pd.DataFrame,
                  futures: dict, names: dict, rates: dict, alerts: dict, today: str, themes: dict | None,
                  mkt: bool) -> str:
-    """並排模擬：A、T3 各自一個模擬帳戶，和 B 同一天結算。回傳比較區塊（實際下單照 B）。"""
+    """並排模擬：A、T3、Q3 各自一個模擬帳戶，和 B 同一天結算。回傳比較區塊（實際下單照 B）。"""
     scores = quality_scores(day, prepped, index_df)
-    lines = ["📊 並排模擬（實際下單照 B；A、T3 是對照組，累積實績後再決定要不要換）",
+    lines = ["📊 並排模擬（實際下單照 B；A、T3、Q3 是對照組，累積實績後再決定要不要換）",
              _line("B 現行：每筆 2%、最多 3 檔", base_st, day, prepped, False)]
     for name, (label, p) in VARIANTS.items():
         try:
