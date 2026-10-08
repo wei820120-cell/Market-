@@ -1646,7 +1646,7 @@ def _trade_commands() -> None:
     listings = _listings()
     futures = stock_futures.load_stock_futures()
     st = real.load()
-    for text in msgs:
+    for text in [t for raw in msgs for t in real.expand(raw)]:
         cmd = real.parse(text)
         if not cmd:
             notify.send("看不懂這則回報。格式例如：亞泥 35.7 1口、小型金像電 1145 1口、賣 亞泥 36.5 1口、持倉、說明",

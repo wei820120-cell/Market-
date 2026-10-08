@@ -40,9 +40,40 @@ def save(st: dict) -> None:
     STATE.write_text(json.dumps(st, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
 
 
+_CN = {"零": 0, "一": 1, "二": 2, "兩": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+
+
+def _cn_to_int(s: str) -> int:
+    """一～九十九：一、兩、十、十二、二十、二十三。"""
+    if "十" in s:
+        a, _, b = s.partition("十")
+        return (_CN.get(a, 1) if a else 1) * 10 + (_CN.get(b, 0) if b else 0)
+    return _CN[s]
+
+
+def normalize(text: str) -> str:
+    """中文口數轉阿拉伯數字（一口、兩口、三口、十口），「共N口」只是總計、拿掉。"""
+    t = re.sub(r"[一二兩三四五六七八九十]{1,3}(?=\s*口)", lambda m: str(_cn_to_int(m.group(0))), text or "")
+    return re.sub(r"[，,、\s]*共\s*\d+\s*口", "", t)
+
+
+def expand(text: str) -> list[str]:
+    """「賣出 小聚陽 204.5、204、203.5各一口共三口」→ 三筆回報，各 1 口；沒有「各N口」就原樣回傳。"""
+    t = normalize(text)
+    m = re.search(r"各\s*(\d+)\s*口", t)
+    if not m:
+        return [t]
+    toks = [x for x in re.split(r"[\s、，,]+", t[:m.start()].strip()) if x]
+    prices = [x for x in toks if re.fullmatch(r"\d+(\.\d+)?", x)]
+    names = [x for x in toks if x not in prices]
+    if len(prices) < 2 or not names:
+        return [t]
+    return [f"{' '.join(names)} {p} {m.group(1)}口" for p in prices]
+
+
 def parse(text: str) -> dict | None:
     """解析成交回報：{"side", "query", "price", "qty", "mini"}；看不懂回傳 None。"""
-    t = (text or "").strip().replace("，", " ").replace("、", " ").replace(",", " ")
+    t = normalize(text).strip().replace("，", " ").replace("、", " ").replace(",", " ")
     if not t:
         return None
     if t in ("持倉", "帳戶", "部位", "/positions"):
