@@ -22,6 +22,18 @@ categories:
   股利庫藏股:
     weight: 1
     words: [庫藏股, 買回, 配息創新高, 特別股利, buyback, special dividend]
+  外資升評:
+    weight: 3          # 外資／投顧升評、調升目標價（比一般利多更直接，單獨一則就推播）
+    words: [升評, 調升評等, 上調評等, 評等調升, 調升目標價, 上調目標價, 目標價調升, 目標價上調, 目標價喊上, 目標價上看, 首次評等買進, upgrade to buy, raises price target, raised price target, initiates with buy]
+    patterns:          # 正規表示式：「高盛調升大立光目標價」這種把個股名夾在中間的說法
+      - '(升評|調升|上調|上看|喊上).{0,10}目標價'
+      - '目標價.{0,6}(調升|上調|上看|喊上|升至|上修)'
+  外資降評:
+    weight: -3
+    words: [降評, 調降評等, 下調評等, 評等調降, 調降目標價, 下調目標價, 目標價調降, 目標價下調, 目標價下修, 喊賣, 降為賣出, 降至賣出, cuts price target, lowers price target, downgrade to sell, downgrade to neutral]
+    patterns:
+      - '(降評|調降|下調|下修|喊賣).{0,10}目標價'
+      - '目標價.{0,6}(調降|下調|下修|降至)'
   利空:
     weight: -2
     words: [砍單, 下修, 調降財測, 跌價, 降價, 衰退, 虧損, 減產, 裁員, 停工, 低於預期, 掏空, 違約, cuts guidance, misses, downgrade, layoffs]
@@ -117,6 +129,10 @@ google_queries_tw:
   - 光通訊 OR 光模組 OR 矽光子 漲價
   - 磷化銦 OR InP 出口管制
   - 3.2T OR 1.6T 光模組
+  # 外資評等與目標價
+  - 外資 目標價 調升 台股
+  - 升評 目標價 台廠
+  - 高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降
   # 政府公告（經濟部／國貿署）：停止輸入、輸出管制、反傾銷等會改變供需
   - 經濟部 公告 停止輸入
   - 國貿署 公告 禁止輸入 OR 停止輸入

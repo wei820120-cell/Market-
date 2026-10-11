@@ -961,3 +961,19 @@ def test_real_chinese_qty_and_multi_price_sell():
     assert [real.parse(p)["price"] for p in parts] == [204.5, 204.0, 203.5]
     assert all(real.parse(p)["side"] == "sell" and real.parse(p)["qty"] == 1 for p in parts)
     assert real.expand("亞泥 35.7 1口") == ["亞泥 35.7 1口"]
+
+
+def test_broker_rating_and_target_price_news():
+    from market_intel import config
+    from market_intel.analysis import news_signals as ns
+    from market_intel.fetchers.news import NewsItem
+    kw = config.news_keywords()
+
+    def score(title):
+        it = NewsItem(source="t", title=title)
+        return ns.score_item(it, kw).score
+    assert score("高盛調升大立光目標價至1.1萬元 看好FAU切入CPO") >= 3
+    assert score("外資升評台積電 目標價上調至2,750元") >= 3
+    assert score("瑞銀降評 喊賣大立光 目標價維持5,000元") <= -3
+    assert score("大摩調降台積電目標價") <= -3
+    assert score("大立光董事會通過配息") == 0
