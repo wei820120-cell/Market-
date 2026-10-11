@@ -14,7 +14,7 @@ research:                     # 題材研究員（需要 GitHub Secret：ANTHROP
   max_fetches: 4              # 每個題材最多讀取網頁次數
   max_per_day: 4              # 每天「自動」研究的題材上限（手動指令不受限，但受預算限制）
   min_importance: 3           # 自動偵測的題材重要性 >= 此值才研究（1-5）
-  monthly_budget_usd: 20      # 每月花費上限（美元），超過就停止，下個月自動恢復
+  monthly_budget_usd: 39      # 每月花費上限（美元），超過就停止，下個月自動恢復
   push_to: research           # 推到研究機器人（沒設定時用新聞機器人）
   # 以下用來估算花費，請以 Anthropic 官網價格為準
   price_per_mtok: {input: 2, output: 10}   # Claude Sonnet 5.5 每百萬 token 美元
