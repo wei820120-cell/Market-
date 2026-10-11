@@ -1,0 +1,665 @@
+{
+ "topic": "供需事件：關稅與晶片出口管制",
+ "one_line": "美國半導體 232 關稅採「在美投資生產免稅、不蓋廠就付費」，台灣已預先取得最惠待遇，但完整清單與免稅配額未出；出口管制轉為「許可＋分成＋雙邊卡關」，風險集中在配額怎麼算。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "232 半導體關稅",
+  "Section 232",
+  "301 產能過剩調查",
+  "BIS 出口管制",
+  "H200",
+  "MI325X",
+  "免稅配額",
+  "美台 MOU",
+  "Lutnick",
+  "關稅抵減計畫",
+  "衍生品",
+  "逐案審查"
+ ],
+ "catalysts": [
+  "232 半導體廣泛關稅的產品清單、稅率、免稅配額計算方式（無具體時間表）",
+  "301 產能過剩調查中半導體報告出爐",
+  "2026/11 美國期中選舉，關稅言論可能升溫",
+  "台積電第三季法說會（預計 10 月中旬，日期待確認）",
+  "Nvidia 下一季財報（預計 11 月下旬，日期待確認），看中國 H200 是否放量",
+  "301 對中國晶片 18 個月延後期滿（推算約 2027 年中）",
+  "美中領袖會晤結果（未查證）"
+ ],
+ "risks": [
+  "232 可能被當成談判籌碼而非立即課徵",
+  "川普 100%～200% 發言可能只是修辭（單一分析師看法）",
+  "台灣已預先取得優惠但配額與豁免清單落實仍是問題",
+  "台灣官方與 Lutnick 對加碼投資金額說法不一（300 億 vs 200 億美元）",
+  "投資承諾可能被解讀為勒索，需確保研發根留台灣",
+  "出口管制是需求面風險，H200 對中國營收占比不到 1%",
+  "CBP 尚未說明豁免用途所需證明文件，對等關稅（IEEPA）法律狀態未查",
+  "資料缺口：9 月中旬後新聞、中國反制、設備出口管制、各公司公告未查到"
+ ],
+ "spec_tables": [
+  {
+   "title": "表 A：232 窄版 25% 關稅涵蓋的晶片條件",
+   "columns": [
+    "項目",
+    "條件 A",
+    "條件 B"
+   ],
+   "rows": [
+    [
+     "HTS 編碼",
+     "8471.50、8471.80、8473.30",
+     "同左"
+    ],
+    [
+     "總處理性能（TPP）",
+     "> 14,000 且 < 17,500",
+     "> 20,800 且 < 21,100"
+    ],
+    [
+     "總 DRAM 頻寬",
+     "> 4,500 且 < 5,000 GB/s",
+     "> 5,800 且 < 6,200 GB/s"
+    ],
+    [
+     "官方點名產品",
+     "官方說明稱涵蓋 H200",
+     "官方說明稱涵蓋 MI325X"
+    ],
+    [
+     "稅率",
+     "額外 25%，不得退稅",
+     "同左"
+    ],
+    [
+     "稅疊加",
+     "免 IEEPA 對等關稅與其他 232；仍適用最惠國稅率、反傾銷、301",
+     "同左"
+    ]
+   ],
+   "note": "來源：Covington 整理公告附件。這不是對所有晶片課稅，只鎖定很窄的算力區間。"
+  },
+  {
+   "title": "表 B：各國／地區的 232 半導體關稅預定待遇比較",
+   "columns": [
+    "對象",
+    "預定待遇",
+    "特點"
+   ],
+   "rows": [
+    [
+     "台灣",
+     "在美建廠期間：計畫產能 2.5 倍免稅；完工後 1.5 倍免稅；配額外適用優惠稅率",
+     "與企業在美投資金額綁定，不是全面豁免"
+    ],
+    [
+     "歐盟",
+     "232 半導體稅率與最惠國稅率合計上限 15%",
+     "全面性上限"
+    ],
+    [
+     "南韓",
+     "待遇不得低於涵蓋同等或更大貿易量的未來協議（外界解讀指向台灣）",
+     "未明確綁定個別企業投資"
+    ],
+    [
+     "中國",
+     "301 關稅 18 個月內不課（2025/12 決定延後）",
+     "301 原有稅率另算"
+    ]
+   ],
+   "note": "來源：Covington、USTR Fact Sheet。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "2025/4 H20 禁售",
+   "composition": "H20 禁售後撤銷禁令，但中國要求企業別買",
+   "spec": "H20",
+   "application": "中國市場 AI 晶片"
+  },
+  {
+   "name": "2025/7–8 H20 重新核准",
+   "composition": "H20 重新核准並發出許可",
+   "spec": "H20",
+   "application": "中國市場 AI 晶片"
+  },
+  {
+   "name": "2025/12 H200 可售",
+   "composition": "川普宣布 H200 可售經審查的中國客戶，美方抽 25%",
+   "spec": "H200（2022 年 Hopper 架構，比 Blackwell 落後兩個世代）",
+   "application": "中國市場 AI 晶片"
+  },
+  {
+   "name": "2026/1/15 BIS 逐案審查",
+   "composition": "BIS 改為逐案審查，條件含客戶查核、用途限制、晶片檢測；中國出貨量不得超過美國出貨量的 50%",
+   "spec": "H200 等先進 AI 晶片",
+   "application": "對中國與澳門出貨"
+  },
+  {
+   "name": "2026/5/31 BIS 通知",
+   "composition": "總部或最終母公司在 D:5 國家或澳門的實體，即使位在境外，買先進 AI 晶片仍須許可（二手整理，可信度中）",
+   "spec": "先進 AI 晶片",
+   "application": "海外子公司買晶片"
+  },
+  {
+   "name": "2026/7/10 UAE 放寬",
+   "composition": "UAE 移出 D:3／D:4，改為核准實體制",
+   "spec": "先進 AI 晶片",
+   "application": "限核准實體"
+  },
+  {
+   "name": "2026/7/15 BIS 次長作證",
+   "composition": "H200 實際出貨非常少",
+   "spec": "H200",
+   "application": "中國市場"
+  },
+  {
+   "name": "2026/8/26 Nvidia 財報",
+   "composition": "H200 對中國營收占資料中心不到 1%；近六個月因過剩 H200 庫存認列 4 億美元費用；財測中國資料中心營收仍為零",
+   "spec": "H200",
+   "application": "中國資料中心"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼稅率不是重點，配額才是",
+   "points": [
+    "台灣的優惠是配額內免稅，數量由企業在美國的計畫產能決定",
+    "配額 = 在美產能 ×（2.5 或 1.5）；完工認定與分配方式要靠 G2G 協商",
+    "產能留在台灣卻要賣美國的廠商，必須先把投資落到美國才拿得到配額，等於市場准入綁在在美投資",
+    "政府內部對加碼投資金額說法不一（Lutnick 說 300 億美元，經濟部說 200 億美元）"
+   ]
+  },
+  {
+   "title": "衍生品才是更大的暴露面",
+   "points": [
+    "232 調查範圍涵蓋晶片、設備與衍生品，窄版目前只抓特定 HTS 與算力區間",
+    "下一階段若納入伺服器、模組、電腦，暴露的不只晶圓代工廠，還有 AI 伺服器與系統組裝廠",
+    "美方已說可能對衍生品加稅並以抵減計畫獎勵美國投資；認定與計價方式尚無細節（報告推論）"
+   ]
+  },
+  {
+   "title": "H200 賣中國、美國抽 25% 為什麼要靠關稅做",
+   "points": [
+    "《出口管制改革法》禁止收出口許可費，所以用晶片進美國檢測時課關稅取得分成",
+    "中國出貨變成美中雙重許可：美國要核准，中國海關也要放行",
+    "中國擋了 Nvidia 就吃庫存減損（4 億美元），對台灣供應鏈而言中國 H200 訂單是可有可無的增量，不是基本盤"
+   ]
+  },
+  {
+   "title": "同一個政策台廠可能同時受惠與受傷",
+   "points": [
+    "受惠面：在美國有廠或有投資承諾者取得配額內免稅，並排擠沒有布局的競爭者（含南韓）",
+    "受傷面：赴美建廠成本較高，海外廠初期成本與產能調度壓力較大（專家看法）",
+    "結構面：沒有赴美計畫的中小廠，配額與豁免認定最不確定"
+   ]
+  }
+ ],
+ "conclusion": [
+  "美國半導體關稅設計為在美投資生產就免稅，台灣已在 2026/1 MOU 預先取得最惠待遇，但完整清單與配額細節未出",
+  "窄版 25% 關稅已生效且豁免寬，短期衝擊小",
+  "真正的不確定性在第二階段的清單與配額分配，目前沒有時間表",
+  "判斷誰受影響較大，看美國布局、產品路徑（晶圓封裝 vs 整機模組）、客戶用途、中國曝險與價格轉嫁",
+  "出口管制轉為許可加分成加雙邊卡關，H200 對中國營收占比不到 1%，對台灣是增量而非基本盤",
+  "2026/10/12 標題所指的新進展未查到，232 半導體關稅正式出爐視為未證實"
+ ],
+ "sources": [
+  {
+   "title": "美擬對半導體加徵新關稅 行政院：爭取落實232關稅最惠待遇 - 自由時報",
+   "url": "https://news.ltn.com.tw/news/politics/breakingnews/5562063"
+  },
+  {
+   "title": "美擬加徵半導體關稅 政院：將確保台灣享有最優惠待遇 - 華視新聞網",
+   "url": "https://news.cts.com.tw/cna/politics/202609/202609033074775.html"
+  },
+  {
+   "title": "美擬加徵半導體關稅 台廠剉咧等？政院喊免驚 - 工商時報",
+   "url": "https://www.ctee.com.tw/news/20260903701939-430101"
+  },
+  {
+   "title": "川普再度點名台灣 喊課晶片稅 政院：爭取半導體優惠不變 - 經濟日報",
+   "url": "https://money.udn.com/money/story/7307/9747502"
+  },
+  {
+   "title": "川普造勢又點名台灣！稱晶片早該課重稅「100%、200%都可以」- 聯合新聞網",
+   "url": "https://udn.com/news/story/6811/9745797"
+  },
+  {
+   "title": "誤會一場？川普點名台灣「早該課半導體關稅」分析師解讀：並非警告 - 聯合新聞網",
+   "url": "https://udn.com/news/story/6811/9749025"
+  },
+  {
+   "title": "Lutnick says US considering 'targeted' chip tariffs on firms that don't build in US - The Korea Herald",
+   "url": "https://www.koreaherald.com/article/10861036"
+  },
+  {
+   "title": "Lutnick Says Semiconductor Tariffs Are Coming, With Carveouts - Law360",
+   "url": "https://www.law360.com/technology/articles/2520719/lutnick-says-semiconductor-tariffs-are-coming-with-carveouts"
+  },
+  {
+   "title": "Lutnick confirms chip tariffs are coming, with relief tied to manufacturing in America - DIGITIMES",
+   "url": "https://www.digitimes.com/news/a20260903VL203/taiwan-investment-production-legal.html"
+  },
+  {
+   "title": "Commerce Secretary Lutnick Outlines Ambitious U.S. Semiconductor Production Targets - Tyrian Trade（社群轉貼，可信度低）",
+   "url": "https://tyriantrade.com/social/home/post/dd571f35-742b-4326-aea3-37f6544357ba"
+  },
+  {
+   "title": "A Month in Semiconductor Policy: Section 232 Measures, BIS Rule, and Taiwan Deal - Covington Global Policy Watch",
+   "url": "https://www.globalpolicywatch.com/2026/02/a-month-in-semiconductor-policy-section-232-measures-bis-rule-and-taiwan-deal-signal-strategic-push/"
+  },
+  {
+   "title": "Fact Sheet on U.S.-Taiwan Agreement on Reciprocal Trade - USTR",
+   "url": "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2026/february/fact-sheet-us-taiwan-agreement-reciprocal-trade"
+  },
+  {
+   "title": "US releases Section 232 tariff changes - Taipei Times",
+   "url": "https://www.taipeitimes.com/News/front/archives/2026/05/29/2003858165"
+  },
+  {
+   "title": "鄭麗君：美232半導體關稅定案前 擬先確認台廠優惠待遇 - 中央社",
+   "url": "https://www.cna.com.tw/news/afe/202606120257.aspx"
+  },
+  {
+   "title": "美國232半導體關稅何時出爐？鄭麗君給答案：預期優惠待遇不變 - 聯合新聞網",
+   "url": "https://udn.com/news/story/6656/9531327"
+  },
+  {
+   "title": "整理包／「232條款」是什麼？台灣取得最惠國待遇 為何比對等關稅更關鍵？- 經濟日報",
+   "url": "https://money.udn.com/money/story/124512/8921707"
+  },
+  {
+   "title": "台積法說前放招！半導體232條款出爐 符合這些條件免課稅 - 工商時報",
+   "url": "https://www.ctee.com.tw/news/20260115700726-430501"
+  },
+  {
+   "title": "美國232條款關稅下 台灣半導體的產能分流與戰略重塑 - 臺灣證券交易所",
+   "url": "https://www.twse.com.tw/market_insights/zh/detail/8a8216d69bde495d019bf9c3ffc00085"
+  },
+  {
+   "title": "台美關稅定案 15%，還拿到「232 條款」豁免權！- 經理人",
+   "url": "https://www.managertoday.com.tw/articles/view/71594"
+  },
+  {
+   "title": "台美關稅15％》半導體232條款優惠 台積電：樂見台美達成協議 - 工商時報",
+   "url": "https://www.ctee.com.tw/news/20260116700676-430501"
+  },
+  {
+   "title": "美官員：僅「非常少量」輝達H200已出口中國 採逐案審查許可 - 鉅亨網",
+   "url": "https://news.cnyes.com/news/id/6534950"
+  },
+  {
+   "title": "輝達H200晶片終於賣進中國但只占資料中心營收不到1% 北京仍踩煞車 - 鉅亨網",
+   "url": "https://news.cnyes.com/news/id/6588324"
+  },
+  {
+   "title": "英媒：中國鬆綁輝達H200晶片管制 字節跳動、騰訊各獲1萬顆 - 聯合新聞網",
+   "url": "https://udn.com/vote2026/story/7333/9700571"
+  },
+  {
+   "title": "中國傳有限放行H200，輝達高階晶片能重返中國？- 數位時代",
+   "url": "https://www.bnext.com.tw/article/91467/nvidia-h200-china-export-control"
+  },
+  {
+   "title": "BIS Revises Export Review Policy for Advanced AI Chips Destined for China and Macau - Morgan Lewis",
+   "url": "https://www.morganlewis.com/pubs/2026/01/bis-revises-export-review-policy-for-advanced-ai-chips-destined-for-china-and-macau"
+  },
+  {
+   "title": "BIS's New 2026 License Review Process for AI Chips - Finnegan",
+   "url": "https://www.finnegan.com/en/insights/articles/biss-new-2026-license-review-process-for-ai-chips.html"
+  },
+  {
+   "title": "BIS Upgrades UAE Export Control Status - Morgan Lewis",
+   "url": "https://www.morganlewis.com/pubs/2026/07/bis-upgrades-uae-export-control-status-with-ai-chip-access-limited-to-approved-entities"
+  },
+  {
+   "title": "US Chip Export Curbs Impact Nvidia in China - Model Diplomat（二手整理，可信度中）",
+   "url": "https://modeldiplomat.com/story/us-chip-export-curbs-impact-nvidia-in-china"
+  },
+  {
+   "title": "半導體獲232條款最惠國待遇「台灣模式」專家：要維持研發能根留台灣 - 聯合新聞網",
+   "url": "https://udn.com/news/story/124621/9269636"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "先進製程晶圓代工",
+   "description": "關稅配額的核心。台積電是美台協議中受惠與受壓並存者；美國資料中心等用途可豁免，並有投資換配額機制，但美國建廠成本高、配額認定仍待協商。",
+   "global_players": [
+    "台積電",
+    "三星",
+    "英特爾",
+    "格羅方德"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "先進製程晶圓代工，受惠投資換配額與豁免用途，但美廠成本高、配額認定待協商",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "成熟製程與特殊製程",
+   "description": "美方 2025/12 決定對中國晶片延後 18 個月課 301 關稅，台灣成熟製程廠的轉單紅利短期不會出現（報告推論）；232 廣泛關稅若涵蓋成熟製程，要看在美布局。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2303",
+     "name": "聯電",
+     "role": "成熟製程晶圓代工，若 301 加稅可能有轉單效益",
+     "impact": "中性"
+    },
+    {
+     "code": "5347",
+     "name": "世界",
+     "role": "成熟製程晶圓代工",
+     "impact": "中性"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "成熟製程晶圓代工",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "先進封裝與測試",
+   "description": "美方期望先進封裝也落地美國；證交所分析指關稅壁壘可能加速亞洲先進封裝外移。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3711",
+     "name": "日月光投控",
+     "role": "封測龍頭，美國布局細節未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "2449",
+     "name": "京元電子",
+     "role": "測試",
+     "impact": "中性"
+    },
+    {
+     "code": "6239",
+     "name": "力成",
+     "role": "封測",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "IC 設計",
+   "description": "中國客戶先進製程受限，ASIC 業者以美系雲端客戶為主，美系雲端用途受 232 豁免保護；中國相關案源受管制。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3443",
+     "name": "創意",
+     "role": "AI ASIC 設計服務",
+     "impact": "中性"
+    },
+    {
+     "code": "3661",
+     "name": "世芯-KY",
+     "role": "AI ASIC 設計服務",
+     "impact": "中性"
+    },
+    {
+     "code": "2454",
+     "name": "聯發科",
+     "role": "手機與消費性 IC，中國手機客戶為主，曝險在終端需求",
+     "impact": "中性"
+    },
+    {
+     "code": "2379",
+     "name": "瑞昱",
+     "role": "網通與消費性 IC，無直接管制",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "AI 伺服器與系統組裝",
+   "description": "屬衍生品暴露面。中國 H200 若放量對 HGX 伺服器組裝有增量但目前微小；若下一階段把伺服器列為衍生品，在美或墨西哥組裝比重高者較有彈性；美國資料中心用途可豁免。在美產能占比待確認。",
+   "global_players": [
+    "Nvidia",
+    "AMD"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "AI 伺服器組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "2356",
+     "name": "英業達",
+     "role": "AI 伺服器組裝",
+     "impact": "中性"
+    },
+    {
+     "code": "2376",
+     "name": "技嘉",
+     "role": "GPU 板卡與 PC，非資料中心用途窄版有豁免",
+     "impact": "中性"
+    },
+    {
+     "code": "2377",
+     "name": "微星",
+     "role": "GPU 板卡與 PC，非資料中心用途窄版有豁免",
+     "impact": "中性"
+    },
+    {
+     "code": "2357",
+     "name": "華碩",
+     "role": "GPU 板卡與 PC，非資料中心用途窄版有豁免",
+     "impact": "中性"
+    },
+    {
+     "code": "2353",
+     "name": "宏碁",
+     "role": "PC 與消費性應用",
+     "impact": "中性"
+    },
+    {
+     "code": "2345",
+     "name": "智邦",
+     "role": "網通交換器",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "半導體設備、廠務與無塵室",
+   "description": "美台 MOU 規定赴美建廠的設備與零組件可豁免對等關稅與 232，廠務工程需求隨台廠赴美增加。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6196",
+     "name": "帆宣",
+     "role": "廠務工程，跟隨台廠赴美",
+     "impact": "受惠"
+    },
+    {
+     "code": "2404",
+     "name": "漢唐",
+     "role": "無塵室與廠務工程",
+     "impact": "受惠"
+    },
+    {
+     "code": "6139",
+     "name": "亞翔",
+     "role": "無塵室與廠務工程",
+     "impact": "受惠"
+    },
+    {
+     "code": "5536",
+     "name": "聖暉*",
+     "role": "氣體與化學供應系統",
+     "impact": "受惠"
+    },
+    {
+     "code": "3413",
+     "name": "京鼎",
+     "role": "半導體設備",
+     "impact": "中性"
+    },
+    {
+     "code": "3131",
+     "name": "弘塑",
+     "role": "半導體設備",
+     "impact": "中性"
+    },
+    {
+     "code": "3583",
+     "name": "辛耘",
+     "role": "半導體設備",
+     "impact": "中性"
+    },
+    {
+     "code": "6515",
+     "name": "穎崴",
+     "role": "測試介面",
+     "impact": "中性"
+    },
+    {
+     "code": "6223",
+     "name": "旺矽",
+     "role": "測試介面",
+     "impact": "中性"
+    },
+    {
+     "code": "3680",
+     "name": "家登",
+     "role": "半導體載具，在美布局待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "矽晶圓與材料",
+   "description": "本次未查到矽晶圓的 232 專屬資訊。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6488",
+     "name": "環球晶",
+     "role": "矽晶圓，在美國有晶圓廠，可能屬美國本土供應",
+     "impact": "受惠"
+    },
+    {
+     "code": "5483",
+     "name": "中美晶",
+     "role": "環球晶母公司",
+     "impact": "受惠"
+    },
+    {
+     "code": "3532",
+     "name": "台勝科",
+     "role": "矽晶圓",
+     "impact": "中性"
+    },
+    {
+     "code": "6182",
+     "name": "合晶",
+     "role": "矽晶圓與磊晶",
+     "impact": "中性"
+    },
+    {
+     "code": "3016",
+     "name": "嘉晶",
+     "role": "磊晶",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "記憶體",
+   "description": "南韓壓力的對照組。Lutnick 對 SK 海力士與三星表示要在美國蓋廠（二手轉貼）；台灣記憶體廠赴美計畫本次未查到，曝險取決於是否有美國布局。",
+   "global_players": [
+    "SK 海力士",
+    "三星",
+    "美光"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "DRAM 製造，赴美計畫待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2337",
+     "name": "旺宏",
+     "role": "記憶體製造，赴美計畫待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "記憶體製造，赴美計畫待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "8299",
+     "name": "群聯",
+     "role": "NAND 控制 IC 與模組，屬衍生品路徑",
+     "impact": "中性"
+    },
+    {
+     "code": "3260",
+     "name": "威剛",
+     "role": "記憶體模組，屬衍生品路徑",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "載板與 PCB／CCL",
+   "description": "關稅與出口管制對載板、CCL 的直接影響本次沒查到證據，只屬衍生品範圍的潛在變數，不做結論。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "載板，衍生品範圍潛在變數",
+     "impact": "中性"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "載板，衍生品範圍潛在變數",
+     "impact": "中性"
+    },
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "CCL，衍生品範圍潛在變數",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
