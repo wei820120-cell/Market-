@@ -949,7 +949,7 @@ def test_gov_import_ban_is_supply_shock():
     from market_intel import config
     from market_intel.cli import shock_cause
     causes = config.news_keywords()["supply_shock"]["causes"]
-    assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "政策管制"
+    assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "進口管制公告"
 
 
 def test_real_chinese_qty_and_multi_price_sell():
@@ -961,3 +961,72 @@ def test_real_chinese_qty_and_multi_price_sell():
     assert [real.parse(p)["price"] for p in parts] == [204.5, 204.0, 203.5]
     assert all(real.parse(p)["side"] == "sell" and real.parse(p)["qty"] == 1 for p in parts)
     assert real.expand("亞泥 35.7 1口") == ["亞泥 35.7 1口"]
+
+
+def test_broker_rating_and_target_price_news():
+    from market_intel import config
+    from market_intel.analysis import news_signals as ns
+    from market_intel.fetchers.news import NewsItem
+    kw = config.news_keywords()
+
+    def score(title):
+        it = NewsItem(source="t", title=title)
+        return ns.score_item(it, kw).score
+    assert score("高盛調升大立光目標價至1.1萬元 看好FAU切入CPO") >= 3
+    assert score("外資升評台積電 目標價上調至2,750元") >= 3
+    assert score("瑞銀降評 喊賣大立光 目標價維持5,000元") <= -3
+    assert score("大摩調降台積電目標價") <= -3
+    assert score("大立光董事會通過配息") == 0
+
+def test_supply_shock_skips_unrelated_politics_and_major_events(tmp_path, monkeypatch):
+    from market_intel import cli, notify, research
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(cli, "MAJOR_PATH", tmp_path / "major.json")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    politics = [NewsItem(source="Google", title="美國擬制裁國際刑事法院 8國外長齊聲反對", summary=""),
+                NewsItem(source="Google", title="被指對俄羅斯運柴油助緩油荒 南韓：未列出口管制", summary="")]
+    assert cli.supply_shocks(politics, {}, {}) == []  # 對不到台股標的、產品或關鍵原料，不推
+    ev = [NewsItem(source="Google", title="美國總統特朗普：即刻生效，俄烏戰爭達成能源停火", summary="", url="http://x/1")]
+    assert cli.major_events(ev, {"2618": {"name": "長榮航"}}) == ["俄烏停火與能源"]
+    assert sent and sent[0][0] == "news" and "初步推論" in sent[0][1] and "供需事件：俄烏停火與能源價格" in sent[0][1]
+    assert (tmp_path / "queue").exists() and list((tmp_path / "queue").glob("*.json"))
+    assert cli.major_events(ev, {}) == []  # 同一事件一天只推一次
+
+
+def test_macro_snapshot_alerts_and_major_event_context(tmp_path, monkeypatch):
+    import pandas as pd
+    from market_intel import cli, notify, research
+    from market_intel.fetchers import macro, yahoo
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(macro, "SNAP_PATH", tmp_path / "snap.json")
+    monkeypatch.setattr(macro, "ALERT_PATH", tmp_path / "alerts.json")
+    idx = pd.date_range("2026-09-01", periods=25, freq="D", tz="UTC")
+
+    def fake_chart(sym, range_="1mo", interval="1d"):
+        closes = [80.0] * 24 + [75.0] if sym == "BZ=F" else [100.0] * 25  # 布蘭特單日 -6.25%
+        return pd.DataFrame({"close": closes, "open": closes, "high": closes, "low": closes, "volume": 1}, index=idx), {"regularMarketTime": 1789000000}
+    monkeypatch.setattr(yahoo, "fetch_chart", fake_chart)
+    rows = macro.snapshot()
+    brent = next(r for r in rows if r["symbol"] == "BZ=F")
+    assert brent["d1_pct"] == -6.25 and brent["d20_pct"] == -6.25 and brent["name"] == "布蘭特原油"
+    assert macro.save_if_changed(rows) and not macro.save_if_changed(rows)  # 沒變不重寫
+    assert macro.fresh()
+    msgs = macro.alerts(rows)
+    assert any("布蘭特原油" in m and "國際行情異動" in m for m in msgs)
+    assert macro.alerts(rows) == []  # 同方向一天一次
+    # 重大事件訊息附上國際行情，研究觸發附快照
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(cli, "MAJOR_PATH", tmp_path / "major.json")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    ev = [NewsItem(source="Google", title="特朗普：俄烏達成能源停火", summary="", url="http://x/1")]
+    assert cli.major_events(ev, {}, macro_rows=rows) == ["俄烏停火與能源"]
+    assert "📊 國際行情：布蘭特原油" in sent[0][1]
+    q = next((tmp_path / "queue").glob("*.json")).read_text(encoding="utf-8")
+    assert "國際行情快照" in q and "BZ=F" in q

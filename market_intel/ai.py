@@ -87,6 +87,18 @@ def record_usage(usage: Usage, topic: str) -> None:
     USAGE_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def budget_left() -> bool:
+    return month_spent() < float(settings().get("monthly_budget_usd", 20))
+
+
+def _translate(e: Exception) -> Exception:
+    """Anthropic 帳戶餘額不足（400 invalid_request）等，轉成 AIUnavailable，讓呼叫端可以保留題材、不要整個程式崩潰。"""
+    text = str(e).lower()
+    if "credit balance" in text or "plans & billing" in text:
+        return AIUnavailable("Anthropic 帳戶餘額不足，請到 Console 的 Billing 儲值（預算額度與帳戶餘額是兩回事）")
+    return e
+
+
 def check_budget() -> None:
     budget = float(settings().get("monthly_budget_usd", 20))
     spent = month_spent()
@@ -129,17 +141,20 @@ def web_research(system: str, prompt: str, usage: Usage) -> str:
     messages = [{"role": "user", "content": prompt}]
     msg = None
     for _ in range(6):  # 伺服器端工具跑太久會 pause_turn，原封不動送回即可續跑
-        with client.beta.messages.stream(
-            model=_model(),
-            max_tokens=64000,
-            system=system,
-            messages=messages,
-            tools=tools,
-            output_config={"effort": st.get("effort", "high")},
-            betas=[FALLBACK_BETA],
-            fallbacks="default",
-        ) as stream:
-            msg = stream.get_final_message()
+        try:
+            with client.beta.messages.stream(
+                model=_model(),
+                max_tokens=64000,
+                system=system,
+                messages=messages,
+                tools=tools,
+                output_config={"effort": st.get("effort", "high")},
+                betas=[FALLBACK_BETA],
+                fallbacks="default",
+            ) as stream:
+                msg = stream.get_final_message()
+        except Exception as e:  # noqa: BLE001
+            raise _translate(e) from e
         usage.add(msg, "research")
         _check_refusal(msg)
         if msg.stop_reason != "pause_turn":
@@ -155,14 +170,17 @@ def web_research(system: str, prompt: str, usage: Usage) -> str:
 def extract_json(instruction: str, text: str, schema: dict, usage: Usage, label: str = "extract") -> dict:
     """用結構化輸出（JSON schema）從文字中擷取資料。"""
     client = _client()
-    msg = client.beta.messages.create(
-        model=_model(),
-        max_tokens=16000,
-        messages=[{"role": "user", "content": f"{instruction}\n\n<content>\n{text}\n</content>"}],
-        output_config={"effort": "low", "format": {"type": "json_schema", "schema": schema}},
-        betas=[FALLBACK_BETA],
-        fallbacks="default",
-    )
+    try:
+        msg = client.beta.messages.create(
+            model=_model(),
+            max_tokens=16000,
+            messages=[{"role": "user", "content": f"{instruction}\n\n<content>\n{text}\n</content>"}],
+            output_config={"effort": "low", "format": {"type": "json_schema", "schema": schema}},
+            betas=[FALLBACK_BETA],
+            fallbacks="default",
+        )
+    except Exception as e:  # noqa: BLE001
+        raise _translate(e) from e
     usage.add(msg, label)
     _check_refusal(msg)
     raw = _text(msg)

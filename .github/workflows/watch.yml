@@ -72,6 +72,7 @@ jobs:
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
             timeout 600 python -m market_intel news --push || echo "news 失敗"
+            timeout 300 python -m market_intel macro || echo "macro 失敗"
             timeout 900 python -m market_intel trade --auto --commands || echo "trade 失敗"
             # Claude 研究好的題材放在開發分支，拿過來發布（同一份只發布一次）
             if git fetch -q origin "$RESEARCH_BRANCH" 2>/dev/null; then

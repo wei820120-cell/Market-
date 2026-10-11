@@ -49,6 +49,10 @@ def news_keywords() -> dict:
     return load("news_keywords")
 
 
+def major_events() -> dict:
+    return load("major_events")
+
+
 @lru_cache(maxsize=None)
 def sources() -> dict:
     base = dict(load("sources"))

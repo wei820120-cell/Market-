@@ -15,13 +15,13 @@ import logging
 import os
 import re
 import time
-from datetime import datetime, time as dtime
+from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
 from . import ai, config, notify, research, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
+from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -564,6 +564,10 @@ def push_news(listings: dict, min_score: float) -> None:
         supply_shocks(fresh, listings, futures)
     except Exception as e:  # noqa: BLE001
         log.warning("供需失衡偵測失敗：%s", e)
+    try:
+        major_events(fresh, listings)
+    except Exception as e:  # noqa: BLE001
+        log.warning("重大事件偵測失敗：%s", e)
     msgs = [mops_message(it, listings, futures) for it in mops_to_push(mops, listings, futures)]
     for i in range(0, len(msgs), 8):  # 重訊每 8 則合併成一則，避免洗版
         notify.send("📢 公司重大訊息\n\n" + "\n\n".join(msgs[i:i + 8]), channel="news")
@@ -610,6 +614,9 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
         if not cause or count >= int(conf.get("max_per_day", 4)):
             continue
         topic = shock_topic(it, listings)
+        if (cause in set(conf.get("need_relevance") or []) and not it.codes and topic.startswith("供需事件：")
+                and not re.search(conf.get("relevance_words") or "(?!)", text, flags=re.I)):
+            continue  # 一般國際政治新聞（制裁、出口管制…）對不到台股標的、產品題材或關鍵原料就不推
         if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}"):
             continue
         count += 1
@@ -624,6 +631,58 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
     return queued
+
+
+MAJOR_PATH = research.ROOT / "state" / "major_events.json"
+
+
+def major_events(items: list, listings: dict, macro_rows: list | None = None) -> list[str]:
+    """重大總經／地緣事件（config/major_events.yaml）：同一事件一天推一次到新聞機器人，並排入研究佇列。
+
+    只推清單上的事件；族群的方向是初步推論，研究完成才算數。
+    macro_rows：國際行情快照（預設讀 state/macro_snapshot.json，太舊就不附），事件相關資產的即時漲跌附在訊息與研究觸發裡。
+    """
+    events = config.major_events().get("events") or {}
+    if not events or not items:
+        return []
+    today = f"{now_tw():%Y-%m-%d}"
+    cutoff = f"{now_tw() - timedelta(days=7):%Y-%m-%d}"
+    st = json.loads(MAJOR_PATH.read_text(encoding="utf-8")) if MAJOR_PATH.exists() else {}
+    st = {k: v for k, v in st.items() if k.rsplit("|", 1)[-1] >= cutoff}
+    themes_tw = config.themes().get("tw") or {}
+    macro_rows = macro.fresh() if macro_rows is None else macro_rows
+    sent = []
+    for name, spec in events.items():
+        if f"{name}|{today}" in st:
+            continue
+        pats = [re.compile(p, flags=re.I) for p in spec.get("patterns", [])]
+        hits = [it for it in items if any(p.search(f"{it.title} {it.summary}") for p in pats)]
+        if not hits:
+            continue
+        st[f"{name}|{today}"] = 1
+        sent.append(name)
+        lines = [f"🌐 重大事件｜{name}"]
+        for it in hits[:3]:
+            lines.append(f"・{it.title[:90]}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
+        tag = {"+": "受惠", "-": "受傷", "?": "看細節"}
+        rows = []
+        for th, (d, why) in (spec.get("themes") or {}).items():
+            names = "、".join(f"{c} {(listings.get(str(c)) or {}).get('name', '')}" for c in (themes_tw.get(th) or [])[:4])
+            rows.append(f"・{th}｜{tag.get(d, d)}：{why}" + (f"\n  {names}" if names else ""))
+        if rows:
+            lines += ["", "初步推論（未驗證，研究完成才算數）："] + rows
+        market = macro.line(macro_rows, spec.get("watch") or [])
+        if market:
+            lines += ["", f"📊 國際行情：{market}"]
+        topic = f"供需事件：{spec.get('topic') or name}"
+        context = f"\n國際行情快照（Yahoo，延遲報價）：\n{macro.table_text(macro_rows)}" if macro_rows else ""
+        queued = research.queue_research(topic, f"{today} 重大事件：{hits[0].title}\n{hits[0].summary[:300]}\n{hits[0].url}{context}")
+        lines.append(f"\n→ {'已排入研究' if queued else '近期研究過或已在佇列'}：{topic}")
+        notify.send("\n".join(lines), channel="news")
+    if sent:
+        MAJOR_PATH.parent.mkdir(parents=True, exist_ok=True)
+        MAJOR_PATH.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
+    return sent
 
 
 def _focus_codes(futures: dict) -> set[str]:
@@ -824,7 +883,7 @@ def cmd_research(args) -> None:
     """題材研究員：手動題材、Telegram 指令、頻道貼文收件匣、資金流入題材佇列、每日新聞自動偵測。"""
     st = ai.settings()
     push = st.get("push_to", "research")
-    queue: list[tuple[str, str, bool]] = []  # (題材, 觸發來源, 是否自動)
+    queue: list[tuple] = []  # (題材, 觸發來源, 是否自動, 佇列檔)；佇列檔研究成功才刪，額度不足時保留給下一次
     listings_cache: dict = {}
 
     def listings() -> dict:
@@ -833,7 +892,7 @@ def cmd_research(args) -> None:
         return listings_cache
 
     if args.topic:
-        queue.append((args.topic, "手動指定", False))
+        queue.append((args.topic, "手動指定", False, None))
 
     if args.commands:
         token = notify.bot_token(push)
@@ -855,7 +914,7 @@ def cmd_research(args) -> None:
                     notify.send(f"⚠️ 收到「研究 {text}」，但還沒設定 ANTHROPIC_API_KEY，無法進行 AI 研究。", channel=push)
                 continue
             notify.send(f"🔬 收到，開始研究「{text}」，約 3～8 分鐘後回報。", channel=push)
-            queue.append((text, "Telegram 指令", False))
+            queue.append((text, "Telegram 指令", False, None))
 
     auto_texts: list[str] = []
     triggers: dict[str, str] = {}
@@ -875,12 +934,11 @@ def cmd_research(args) -> None:
         auto_texts += [it.title for it in ranked[:80]]
 
     cap = int(st.get("max_per_day", 4)) - research.researched_today()
-    if args.inbox and ai.available():  # 資金流入但還沒研究過的題材（盤中、盤後排入）
+    if args.inbox and ai.available() and ai.budget_left():  # 資金流入但還沒研究過的題材（盤中、盤後排入）
         for p, d in research.read_queue():
             if cap <= 0:
                 break
-            queue.append((d["topic"], d.get("trigger", "資金流入"), True))
-            p.unlink(missing_ok=True)
+            queue.append((d["topic"], d.get("trigger", "資金流入"), True, p))
             cap -= 1
 
     if auto_texts and ai.available():
@@ -895,7 +953,7 @@ def cmd_research(args) -> None:
             min_imp = int(st.get("min_importance", 3))
             for t in [x for x in found if x["importance"] >= min_imp][:cap]:
                 src = next((v for k, v in triggers.items() if t["topic"] in k), "")
-                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", True))
+                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", True, None))
     elif auto_texts:
         log.info("沒有 ANTHROPIC_API_KEY，略過自動題材偵測")
 
@@ -906,17 +964,28 @@ def cmd_research(args) -> None:
     for out in research.publish_pending(listings(), futures) if pending else []:
         notify.send(out["message"], channel=push)
         _send_card_for_topic(out["data"]["topic"], listings(), push, "🔬 研究完成")
-    for topic, trigger, is_auto in queue:
+    for i, (topic, trigger, is_auto, qfile) in enumerate(queue):
         try:
             out = research.research_topic(topic, trigger, listings(), futures, auto=is_auto)
+            if qfile:
+                qfile.unlink(missing_ok=True)
             notify.send(out["message"], channel=push)
             why = trigger.splitlines()[0][:80] if trigger else ""
             _send_card_for_topic(out["data"]["topic"], listings(), push, f"🔬 研究完成｜{why}" if why else "🔬 研究完成")
         except ai.AIUnavailable as e:
             log.warning("研究「%s」失敗：%s", topic, e)
-            notify.send(f"⚠️ 研究「{topic}」沒有完成：{e}", channel=push)
-            if "預算" in str(e) or "ANTHROPIC_API_KEY" in str(e):
+            if "預算" in str(e) or "ANTHROPIC_API_KEY" in str(e) or "餘額" in str(e):
+                # 額度問題：題材全部留在佇列（Telegram 指令的也補排進去），之後額度恢復或由 Claude 排程接手；通知一天一次就好
+                for t, trg, _, qf in queue[i:]:
+                    if qf is None:
+                        research.queue_research(t, trg)
+                if not theme_card.already_sent("warn:ai_unavailable"):
+                    notify.send(f"⚠️ AI 研究暫停：{e}。題材已留在研究佇列，不會遺失。", channel=push)
+                    theme_card.mark_sent("warn:ai_unavailable")
                 break
+            if qfile:
+                qfile.unlink(missing_ok=True)  # 模型拒答之類：不重試，避免每 2 分鐘重跑
+            notify.send(f"⚠️ 研究「{topic}」沒有完成：{e}", channel=push)
 
 
 def cmd_card(args) -> None:
@@ -1706,6 +1775,29 @@ def _trade_commands() -> None:
     real.save(st)
 
 
+def cmd_macro(args) -> None:
+    """國際原物料、匯率、利率與風險指標：更新快照（約每 15 分鐘）、單日大幅異動推新聞機器人。"""
+    snap = macro.load()
+    if not args.force and snap.get("fetched"):
+        try:
+            t = datetime.strptime(snap["fetched"], "%Y-%m-%d %H:%M").replace(tzinfo=now_tw().tzinfo)
+            if now_tw() - t < timedelta(minutes=args.every):
+                return
+        except ValueError:
+            pass
+    rows = macro.snapshot()
+    if not rows:
+        log.warning("國際行情一筆都沒抓到")
+        return
+    changed = macro.save_if_changed(rows)
+    print(macro.table_text(rows))
+    if not changed and snap:
+        return
+    if not args.no_push and snap:  # 第一次只存快照，不推（避免一開始就把今天已發生的異動全推一遍）
+        for m in macro.alerts(rows):
+            notify.send(m, channel="news")
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
     _verify_margin()
@@ -1783,6 +1875,12 @@ def main(argv: list[str] | None = None) -> None:
     nw.add_argument("--min-score", type=float, default=None)
     nw.add_argument("--push", action="store_true", help="推播新出現的新聞與漲價信（常駐監看用）")
     nw.set_defaults(func=cmd_news)
+
+    mc = sub.add_parser("macro", help="國際原物料、匯率、利率與風險指標（快照＋異動推播）")
+    mc.add_argument("--every", type=int, default=15, help="距離上次更新幾分鐘內就略過")
+    mc.add_argument("--force", action="store_true")
+    mc.add_argument("--no-push", action="store_true")
+    mc.set_defaults(func=cmd_macro)
 
     tg = sub.add_parser("target", help="計算目標價")
     tg.add_argument("symbols", nargs="+", help="台股代號（2330）或美股代號（NVDA）")

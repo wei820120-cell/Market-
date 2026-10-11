@@ -1,0 +1,89 @@
+# 國際原物料、匯率、利率與風險指標（Yahoo Finance 代號）。常駐監看約每 15 分鐘更新一次 state/macro_snapshot.json，
+# 單日漲跌超過 alert_pct（或殖利率變動超過 alert_abs 個百分點、VIX 超過 alert_level）就推新聞機器人一次（同方向一天一次）。
+# note 是異動時附上的「這代表什麼」，是推論不是結論。Yahoo 的期貨代號是連續近月合約，換月時價格可能跳動。
+assets:
+  BZ=F:
+    name: 布蘭特原油
+    group: 能源
+    alert_pct: 3
+    note: 油價走強：航空、航運燃油成本上升，煉油看價差；走弱相反
+  CL=F:
+    name: WTI 原油
+    group: 能源
+    alert_pct: 3
+    note: 同布蘭特原油
+  HO=F:
+    name: 柴油（取暖油期貨）
+    group: 能源
+    alert_pct: 3
+    note: 柴油價差與航空、航運燃油成本相關
+  NG=F:
+    name: 天然氣
+    group: 能源
+    alert_pct: 5
+    note: 能源與電價成本；歐洲供需事件常帶動
+  GC=F:
+    name: 黃金
+    group: 貴金屬
+    alert_pct: 2
+    note: 避險情緒與實質利率；大漲常伴隨風險事件
+  SI=F:
+    name: 白銀
+    group: 貴金屬
+    alert_pct: 3.5
+    note: 工業與避險雙重需求
+  HG=F:
+    name: 銅
+    group: 工業金屬
+    alert_pct: 3
+    note: 景氣與電力基建需求；影響銅箔、電線電纜成本
+  ALI=F:
+    name: 鋁
+    group: 工業金屬
+    alert_pct: 3
+    note: 能源成本與供給（中國產能）；影響鋁價相關成本
+  DX-Y.NYB:
+    name: 美元指數
+    group: 匯率
+    alert_pct: 0.8
+    note: 美元走強通常壓抑原物料與新興市場、外資匯出台股；走弱相反
+  TWD=X:
+    name: 美元兌新台幣
+    group: 匯率
+    alert_pct: 0.6
+    note: 數字上升＝台幣貶值，出口廠帳面匯兌受惠；外資賣超常伴隨台幣貶值
+  JPY=X:
+    name: 美元兌日圓
+    group: 匯率
+    alert_pct: 1.2
+    note: 日圓急升常伴隨全球風險資產去槓桿
+  EURUSD=X:
+    name: 歐元兌美元
+    group: 匯率
+    alert_pct: 0.8
+    note: 美元的另一面
+  CNY=X:
+    name: 美元兌人民幣
+    group: 匯率
+    alert_pct: 0.5
+    note: 人民幣貶值壓力與中美關係
+  ^TNX:
+    name: 美國10年期公債殖利率
+    group: 利率與風險
+    alert_abs: 0.12
+    note: 殖利率快速上升壓抑成長股評價；下降通常有利科技股
+  ^VIX:
+    name: VIX 恐慌指數
+    group: 利率與風險
+    alert_level: 25
+    note: 超過 25 代表市場緊張，風險資產常同步下跌
+  ^GSPC:
+    name: 標普500
+    group: 美股
+    alert_pct: 1.5
+    note: 美股大跌常帶動隔日亞股
+  ^SOX:
+    name: 費城半導體
+    group: 美股
+    alert_pct: 3
+    note: 台灣半導體與 AI 供應鏈的先行指標

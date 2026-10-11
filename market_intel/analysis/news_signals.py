@@ -17,6 +17,7 @@ def score_item(item: NewsItem, keywords: dict) -> NewsItem:
     for cat, spec in (keywords.get("categories") or {}).items():
         weight = float(spec.get("weight", 1))
         hit = [w for w in spec.get("words", []) if str(w).lower() in lower]
+        hit += [m.group(0) for pat in spec.get("patterns", []) if (m := re.search(pat, text, flags=re.I))]  # 正規表示式（詞序不固定的說法）
         if hit:
             score += weight
             tags.append(f"{cat}({hit[0]})")
