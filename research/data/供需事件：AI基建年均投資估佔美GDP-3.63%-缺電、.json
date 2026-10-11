@@ -1,0 +1,648 @@
+{
+ "topic": "供需事件：AI基建年均投資估佔美GDP 3.63% 缺電、缺料",
+ "one_line": "3.63%是Brookings對2025–2032年美國AI基建的預測年均占比，真正卡住擴建的是電力與電力設備（變壓器、渦輪、配電），台股受惠在重電與機櫃電源／BBU，但需留意融資與營收缺口疑慮。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "3.63%",
+  "Time-to-Power",
+  "800VDC",
+  "HVDC",
+  "±400V Sidecar",
+  "BBU",
+  "固態變壓器",
+  "SST",
+  "SOFC",
+  "變壓器缺貨",
+  "燃氣渦輪",
+  "Bain 4.2兆美元缺口",
+  "電網缺口"
+ ],
+ "catalysts": [
+  "2026Q3–Q4台達電±400V／800V開始量產，光寶800V第四季小量出貨",
+  "台達電SOFC預計年底起出貨",
+  "±400V Sidecar電源櫃訂單預計年底落地、2027Q1擴產",
+  "2026年10月下旬起美國雲端大廠季報與資本支出指引",
+  "2026年11月台廠10月營收公布，驗證重電認列速度",
+  "2027年2月華城台中廠超高壓變壓器產能倍增",
+  "2027年800V有意義的量、SST最快少量出貨",
+  "2028年起美國電網交付延遲加劇",
+  "各州資料中心電價與接網政策動向"
+ ],
+ "risks": [
+  "3.63%是預測，已發生占比僅約0.8–1.9%",
+  "Bain估4.2兆美元營收缺口，且大量依賴借貸與表外融資",
+  "規劃專案不一定蓋得出來，約227GW規劃項目可能無法建成",
+  "缺貨是雙面刃，客戶可能延後專案，重電營收認列慢（如華城2026上半年營收年減2.7%）",
+  "歐美日韓大廠擴產，缺貨溢價可能在2027–2028年後收斂",
+  "800V可能延後到2028年以後，部分客戶仍用50V",
+  "賓州、紐約州、德州收緊資料中心接網與電價規範",
+  "台廠客戶集中度高，AI營收占比數字未查到最新精確值"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表1：電力設備的交期、缺口與價格",
+   "columns": [
+    "設備",
+    "目前交期",
+    "缺口／價格",
+    "備註（來源）"
+   ],
+   "rows": [
+    [
+     "大型電力變壓器（高壓）",
+     "約2.5年（媒體）；全球大型交期2年以上（TechNews）",
+     "缺口約15%（WoodMac）；未來一年價格可能+4–10%",
+     "取向矽鋼片等關鍵原料吃緊，製造端短期難紓解〔豐雲學堂、工商時報〕"
+    ],
+    [
+     "變電站",
+     "—",
+     "缺口約8%（WoodMac）",
+     "〔Yahoo Finance〕"
+    ],
+    [
+     "斷路器、配電盤",
+     "未明列",
+     "「未來恐面臨更大缺口」",
+     "〔工商時報 10/2〕"
+    ],
+    [
+     "大型燃氣渦輪（重型）",
+     "OEM報價5–7年（優分析）；7–8年（WSJ經MoneyDJ，引BNEF）",
+     "GE Vernova在手訂單與預留容量116GW，預計2026年底超過125GW",
+     "〔優分析、MoneyDJ、理財周刊〕"
+    ],
+    [
+     "航改型渦輪（LM6000、SGT-A65等）",
+     "約24–36個月",
+     "—",
+     "〔優分析〕"
+    ],
+    [
+     "往復式天然氣引擎（Wärtsilä 50SG、MAN 51/60G等）",
+     "約18–30個月（優分析）；1–2年（MoneyDJ）",
+     "Caterpillar在手訂單達去年3.5倍以上；INNIO資料中心營收Q1翻倍；Rolls-Royce 2025Q4資料中心營收+35%",
+     "〔MoneyDJ 7/2、優分析〕"
+    ]
+   ],
+   "note": "全球燃氣渦輪2026Q2訂單約38GW，季增29%、年增71%。同一設備不同來源交期有落差，主要是口徑不同（報價交期vs實際交付、有無預留產能），引用時請標區間。"
+  },
+  {
+   "title": "規格比較表2：缺電有多大（各家口徑差很多）",
+   "columns": [
+    "來源",
+    "範圍",
+    "數字"
+   ],
+   "rows": [
+    [
+     "TrendForce（9/17）",
+     "全球2030",
+     "需求490.7GW、電網可供222.6GW、缺口268GW；美國缺口>170GW"
+    ],
+    [
+     "Morgan Stanley",
+     "美國2028",
+     "需求約74GW、缺口約49GW；單站規模1–4GW，傳統併網常卡在許可、利害關係人與水資源"
+    ],
+    [
+     "Goldman Sachs（二手轉述）",
+     "美國",
+     "缺口2026年約9.3GW→2028年約45GW（axis-intelligence轉述，可信度較低）；另一轉述為目前>11GW、2028年>40GW（Empower）"
+    ],
+    [
+     "LBNL",
+     "美國占用電比重",
+     "2024年4.7%→2030年11.8%（Forbes）"
+    ],
+    [
+     "Deloitte",
+     "美國AI資料中心電力需求",
+     "2024年4GW→2035年123GW（Empower轉述）"
+    ]
+   ],
+   "note": "數字從40GW到170GW都有，差在全球／美國、2028／2030、是否計入自備電力。方向一致，量級別當精確值用。"
+  },
+  {
+   "title": "規格比較表3：資料中心機櫃供電架構（800VDC的位置）",
+   "columns": [
+    "架構",
+    "電壓",
+    "現況／時程",
+    "台廠動態"
+   ],
+   "rows": [
+    [
+     "傳統機櫃電源",
+     "50V DC輸入（市場消息：輝達Rubin仍採此架構）",
+     "主流",
+     "PSU廠現有主力〔TechNews 6/10，屬市場消息〕"
+    ],
+    [
+     "±400VDC Sidecar",
+     "±400V",
+     "雲端大廠自研ASIC平台為主；Sidecar電源櫃訂單預計今年底落地、2027Q1擴產〔TechNews，市場消息〕",
+     "台達電說法：±400V與800V皆Q3開始量產，Q4與全年出貨仍有限，有意義的量偏2027〔台達2Q26法說逐字稿，經阿狗整理，二手〕"
+    ],
+    [
+     "800VDC（輝達參考設計）",
+     "800V",
+     "Computex 2026台達、光寶展出符合輝達660kW參考設計的800VDC電源櫃，含110kW AC／DC電源機架與BBU；Vertiv展出900kW級〔工商時報6/8〕",
+     "NVIDIA官方部落格（經阿狗引用）：Power Rack 2H26、row power center約2027"
+    ],
+    [
+     "固態變壓器（SST）",
+     "中壓直接轉800VDC",
+     "法人說法：台達電已具量產能力，最快2027年少量出貨〔工商時報6/8〕",
+     "待確認"
+    ],
+    [
+     "SOFC固態氧化物燃料電池",
+     "可與800VDC整合",
+     "台達電展出，法人說法預計今年底起出貨〔工商時報6/8〕",
+     "待確認實際客戶"
+    ]
+   ],
+   "note": "價值量：FTNN引述SemiAnalysis規劃，800VDC會在2026–2029年分四階段落地。每套40–50萬美元的HVDC側櫃中，BBU與BMS成本占比接近一半。屬券商／研究機構推估，非公司公告。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "交流＋UPS",
+   "composition": "市電→UPS→PDU→機櫃PSU（AC→12V／50V）",
+   "spec": "多次轉換",
+   "application": "傳統雲端"
+  },
+  {
+   "name": "50V機櫃Power Shelf",
+   "composition": "機櫃內集中式AC→50V",
+   "spec": "單櫃約數十kW（一般常識）",
+   "application": "目前AI伺服器主流"
+  },
+  {
+   "name": "±400VDC Sidecar",
+   "composition": "側櫃集中轉換，機櫃內不再AC→DC",
+   "spec": "單櫃約100kW級（待確認）",
+   "application": "雲端大廠ASIC平台"
+  },
+  {
+   "name": "800VDC Power Rack",
+   "composition": "800V直流入櫃＋BBU／超級電容",
+   "spec": "660kW–900kW級電源櫃（輝達參考設計／Vertiv）",
+   "application": "輝達Rubin世代、Kyber（待確認）"
+  },
+  {
+   "name": "SST直送",
+   "composition": "中壓交流經固態變壓器直接轉直流，取代傳統變壓器＋UPS",
+   "spec": "最快2027年少量",
+   "application": "未來架構（待確認）"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼變壓器比GPU更難趕快多生一點",
+   "points": [
+    "變壓器從新冠後需求反彈起，供不應求已持續約五年，供應增加速度跟不上",
+    "關鍵原料取向矽鋼片供應吃緊，製造端瓶頸短期難解（媒體說法）",
+    "交期從一年拉到數年，電力公司與開發商被迫提前多年預訂、分散採購，價格預期+4–10%",
+    "重電廠擴產多是三到五年的產能決策，廠商怕景氣反轉而保守，缺貨維持較久但訂單認列慢（一般產業常識，未逐項查證）",
+    "台廠案例：華城2026上半年營收102.12億元年減2.7%、毛利率43.55%，訂單滿手不等於營收立刻跳升（媒體彙整，需核對）"
+   ]
+  },
+  {
+   "title": "Time-to-Power：為什麼大家改自己發電",
+   "points": [
+    "重型渦輪要等5–8年，併網也常等多年，科技巨頭為縮短建置時間改採off-grid",
+    "往復式引擎與航改渦輪交期較短而受惠，北美共址能源設備首期容量2027年預計約23GW上線",
+    "往復式引擎效率低於燃氣渦輪、碳排較高、保養頻率較高，但啟動快、耐高溫、不需大量冷卻用水",
+    "自備電力主設備主要是歐美廠，台股要看機櫃端電源（台達電等）與場內配電"
+   ]
+  },
+  {
+   "title": "為什麼AI機櫃要走高壓直流（800VDC）",
+   "points": [
+    "機櫃功率從數十kW走向數百kW到MW級；P=V×I，電壓越高電流越小，銅排截面、發熱與轉換損耗下降",
+    "DIGITIMES Intelligence 10/8指出這是供電鏈路整體重構，可能重新分配供應鏈價值，GaN與SiC依電壓等級各司其職",
+    "市場傳出800V大規模導入可能從2027年延後到2028年以後，台達電不評論傳聞，稱已完整布局800V、±400V、50V（傳聞）",
+    "部分客戶認為不必先升到800V再降回50V，會增加轉換環節與複雜度",
+    "BBU仍是目前市場主流，超級電容模組與BBU已採用相同尺寸規格"
+   ]
+  },
+  {
+   "title": "怎麼讀3.63%：不要把預測當訂單",
+   "points": [
+    "它是累計預測的年均值，包含GPU、建築、電力與網路，不全是電力設備",
+    "對電力設備而言，真正需求是Forbes拆解的約35%電力、能源與水基建那一塊",
+    "債務與表外融資占比高，Brookings警告風險正轉移到合資企業、私人貸款與特殊目的實體",
+    "Bain的4.2兆營收缺口代表若AI營收跟不上，投資節奏可能放慢"
+   ]
+  }
+ ],
+ "conclusion": [
+  "3.63%是Brookings對2025–2032年美國AI基建的預測年均占比，已發生占比僅約0.8–1.9%，不可當成已發生支出或訂單",
+  "真正卡住擴建速度的是電與電力設備，變壓器、燃氣渦輪、斷路器、配電盤交期拉到數年，Time-to-Power比買得到晶片更關鍵",
+  "台股受惠分三層：電網／場內重電（華城、士電、中興電、亞力）、機櫃內電源與備援（台達電、光寶科、康舒、AES-KY、順達）、自備電力（直接標的少，待研究）",
+  "判斷誰勝出要看交期與產能時點、訂單來源與毛利、認證與客戶位置、架構風險（800V、±400V、50V並存）、以及財報兌現而非在手訂單",
+  "風險在於Bain 4.2兆美元營收缺口與融資疑慮、800V可能延後、歐美大廠擴產使缺貨溢價2027–2028年後收斂"
+ ],
+ "sources": [
+  {
+   "title": "美國AI基建投資規模空前，或成美國經濟史上最大單一賭注（金十數據）",
+   "url": "https://xnews.jin10.com/details/230931"
+  },
+  {
+   "title": "報告：美國AI基礎設施投資或將達10.3萬億美元（虎嗅）",
+   "url": "https://www.huxiu.com/article/4894067.html"
+  },
+  {
+   "title": "美國AI基建投資破紀錄 規模超越19世紀鐵路建設（Yam 轉載 Chosun Daily）",
+   "url": "https://n.yam.com/Article/20260925224001"
+  },
+  {
+   "title": "AI基建：200多年來美國經濟最大的一場「豪賭」（財聯社）",
+   "url": "https://www.wenxuecity.com/news/2026/09/26/126786662.html"
+  },
+  {
+   "title": "U.S. AI infrastructure investment is set to exceed past major projects（KuCoin）",
+   "url": "https://www.kucoin.com/news/flash/us-ai-infrastructure-investment-to-surpass-past-major-projects-report-says"
+  },
+  {
+   "title": "美明年AI支出將達GDP的5% SemiAnalysis（聯合報）",
+   "url": "https://udn.com/news/story/6811/9806947"
+  },
+  {
+   "title": "Data center buildout share of US GDP is still relatively small（Epoch AI）",
+   "url": "https://epoch.ai/data-insights/ai-datacenter-share-gdp"
+  },
+  {
+   "title": "Inside The Trillions Being Spent On The AI Data Center Buildout（Forbes 10/2）",
+   "url": "https://www.forbes.com/sites/giacomotognini/2026/10/02/inside-the-trillions-being-spent-on-the-ai-data-center-buildout/"
+  },
+  {
+   "title": "AI Investment Accounts for One-Third of US Growth（economy.ac）",
+   "url": "https://economy.ac/news/2026/08/202608289691"
+  },
+  {
+   "title": "AI投資大爆發營收跟不上 研究估缺口高達4.2兆美元（知新聞）",
+   "url": "https://www.knews.com.tw/news/32C8447ACC3BBCC032F2B8C38F5869A6"
+  },
+  {
+   "title": "AI基建進入回報驗證期（優分析）",
+   "url": "https://uanalyze.com.tw/articles/7815856429"
+  },
+  {
+   "title": "貝恩揭露AI基建狂飙背后的現實困境（網易）",
+   "url": "https://www.163.com/dy/article/L80L3OHD05198CJN.html"
+  },
+  {
+   "title": "DIGITIMES：AI基建恐現4.2兆美元營收缺口 封裝、電力再卡算力落地",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000770170_KYE0NSGG812MFYL5AVG96"
+  },
+  {
+   "title": "DIGITIMES：AI快速發展掀PCB缺料隱憂 2027前製造、材料、設備難鬆口氣",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000769640_P8Z5IWB05TZBK0LA2IL91"
+  },
+  {
+   "title": "《科技》AI需求爆發 研報預期全球資料中心電力年增逾3成（時報資訊／TrendForce）",
+   "url": "https://www.chinatimes.com/realtimenews/20260917001179-260410"
+  },
+  {
+   "title": "AI資料中心擴張 變壓器短缺（工商時報 10/2）",
+   "url": "https://www.ctee.com.tw/news/20261002700144-430704"
+  },
+  {
+   "title": "AI Data Center Boom Pushes U.S. Power Equipment to the Breaking Point（Yahoo Finance）",
+   "url": "https://finance.yahoo.com/technology/ai/articles/ai-data-center-boom-pushes-220000299.html"
+  },
+  {
+   "title": "AI資料中心搶電 燃氣渦輪機設備商迎爆單潮（MoneyDJ／工商時報 7/2）",
+   "url": "https://www.ctee.com.tw/news/20260702700917-430702"
+  },
+  {
+   "title": "當一台停產四年的引擎重新變搶手（優分析 8/18）",
+   "url": "https://uanalyze.com.tw/articles/4829553636"
+  },
+  {
+   "title": "能源即算力 當首批耗電量達1GW資料中心問世（TechNews 2/24）",
+   "url": "https://finance.technews.tw/2026/02/24/1gw-ai-data-center/"
+  },
+  {
+   "title": "Powering AI: Markets Race to Invest in AI Energy Solutions（Morgan Stanley）",
+   "url": "https://www.morganstanley.com/insights/articles/powering-ai-energy-market-outlook-2026"
+  },
+  {
+   "title": "AI資料中心掀電費政治海嘯（理財周刊）",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/243627"
+  },
+  {
+   "title": "華城：AI資料中心訂單逾120億元 明年業績占比逾10%（中央社 2025/12/12）",
+   "url": "https://www.cna.com.tw/news/afe/202512120172.aspx"
+  },
+  {
+   "title": "重電多頭再啟2：華城外銷比重破六成（人民報）",
+   "url": "https://www.peoplenews.tw/articles/economic-news/41464"
+  },
+  {
+   "title": "華城做什麼的？解析重電變壓器大廠 2026 最新財報（PressPlay）",
+   "url": "https://www.pressplay.cc/project/2667A183130728C4AE30928EF3CFF4DD/articles/E1CACC5D047058B1B3A229D59CF98A20"
+  },
+  {
+   "title": "AI 資料中心興建與電子業擴廠，華城、士電、中興電、亞力（豐雲學堂）",
+   "url": "https://www.sinotrade.com.tw/richclub/industry/AI-%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E8%88%88%E5%BB%BA%E8%88%87%E9%9B%BB%E5%AD%90%E6%A5%AD%E6%93%B4%E5%BB%A0-%E8%8F%AF%E5%9F%8E-%E5%A3%AB%E9%9B%BB-%E4%B8%AD%E8%88%88%E9%9B%BB-%E4%BA%9E%E5%8A%9B%E9%87%8D%E9%9B%BB%E5%BB%A0%E5%95%86%E6%8E%A5%E5%96%AE%E7%81%AB%E7%86%B1-%E7%94%A2%E6%A5%AD%E7%86%B1%E8%A9%B1-69ddf4043f76ec0ab4f49eff"
+  },
+  {
+   "title": "台達電、光寶科 啖HVDC大餅（工商時報 6/8）",
+   "url": "https://www.ctee.com.tw/news/20260608700165-439901"
+  },
+  {
+   "title": "輝達、Google率先導入 800V HVDC（工商時報 6/15）",
+   "url": "https://www.ctee.com.tw/news/20260615700083-439901"
+  },
+  {
+   "title": "市場傳 800V HVDC 延後導入，供應鏈：產品布局不變（TechNews 6/10）",
+   "url": "https://technews.tw/2026/06/10/800v-hvdc-is-going-to-be-postpone/"
+  },
+  {
+   "title": "AI電力革命四部曲 台達電、AES-KY…（工商時報 6/7）",
+   "url": "https://www.ctee.com.tw/news/20260607700012-430201"
+  },
+  {
+   "title": "AI電力大洗牌來了！台達電搶吃10倍商機（FTNN／Yahoo）",
+   "url": "https://tw.stock.yahoo.com/news/ai%E9%9B%BB%E5%8A%9B%E5%A4%A7%E6%B4%97%E7%89%8C%E4%BE%86%E4%BA%86-%E5%8F%B0%E9%81%94%E9%9B%BB%E6%90%B6%E5%90%8310%E5%80%8D%E5%95%86%E6%A9%9F-aes-ky%E7%B4%94%E5%BA%A6%E6%9C%80%E9%AB%98-800vdc%E9%9D%A9%E5%91%BD-004000512.html"
+  },
+  {
+   "title": "800VDC｜AI機櫃供電架構重建（阿狗，Vocus；二手整理）",
+   "url": "https://vocus.cc/article/6aacf6e1fd897800011d77fb"
+  },
+  {
+   "title": "供電是AI的下一個基礎設施挑戰：DIGITIMES解讀數據中心向800V直流電源架構轉型（PR Newswire 10/8）",
+   "url": "https://businessintelligence.mo/2026/10/08/%E4%BE%9B%E9%9B%BB%E6%98%AFai%E7%9A%84%E4%B8%8B%E4%B8%80%E5%80%8B%E5%9F%BA%E7%A4%8E%E8%A8%AD%E6%96%BD%E6%8C%91%E6%88%B0%EF%BC%9Adigitimes%E8%A7%A3%E8%AE%80%E6%95%B8%E6%93%9A%E4%B8%AD%E5%BF%83%E5%90%91/"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游關鍵原料：取向矽鋼、銅、絕緣材料",
+   "description": "媒體稱取向矽鋼片等關鍵原料供應緊俏，製造端瓶頸短期難紓解；未查到具體報價與稼動率，待確認。",
+   "global_players": [
+    "日本、歐洲、韓國電工鋼大廠"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2002",
+     "name": "中鋼",
+     "role": "鋼廠，是否供應取向矽鋼給變壓器廠待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "1609",
+     "name": "大亞",
+     "role": "電線電纜，銅價成本與資料中心用線需求兩面",
+     "impact": "中性"
+    },
+    {
+     "code": "1608",
+     "name": "華榮",
+     "role": "電線電纜，銅價成本與資料中心用線需求兩面",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "發電與自備電力：渦輪、往復式引擎、燃料電池、儲能",
+   "description": "非常緊。重型渦輪交期5–8年；Caterpillar在手訂單3.5倍以上；GE Vernova訂單能見度排到2029–2031年。台股直接受惠標的有限。",
+   "global_players": [
+    "GE Vernova",
+    "Siemens Energy",
+    "Mitsubishi Heavy",
+    "Caterpillar",
+    "Cummins",
+    "Wärtsilä",
+    "INNIO",
+    "Rolls-Royce"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2308",
+     "name": "台達電",
+     "role": "展出SOFC固態氧化物燃料電池，可整合800VDC，法人稱預計今年底起出貨，營收貢獻待確認",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "電網與場內中高壓設備：變壓器、GIS、配電盤、斷路器",
+   "description": "缺料最嚴重的一段。交期長、價格預期上漲4–10%，在手訂單能見度2027–2028年。",
+   "global_players": [
+    "Hitachi Energy",
+    "Siemens Energy",
+    "Schneider",
+    "ABB",
+    "Eaton",
+    "GE Vernova",
+    "Hyosung",
+    "HD Hyundai Electric"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1519",
+     "name": "華城",
+     "role": "高壓大容量變壓器，AI資料中心訂單逾120億元（2025/12法說），出貨到2028年，台中廠2027年2月產能倍增",
+     "impact": "受惠"
+    },
+    {
+     "code": "1503",
+     "name": "士電",
+     "role": "配電與重電設備，以台電為主、AI為加分",
+     "impact": "受惠"
+    },
+    {
+     "code": "1513",
+     "name": "中興電",
+     "role": "GIS、發電設施EPC，國內電網為主",
+     "impact": "受惠"
+    },
+    {
+     "code": "1514",
+     "name": "亞力",
+     "role": "變壓器、配電盤，偏中低壓與國內",
+     "impact": "受惠"
+    },
+    {
+     "code": "2371",
+     "name": "大同",
+     "role": "重電與發電相關業務，AI資料中心貢獻待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "1504",
+     "name": "東元",
+     "role": "重電與發電相關業務，AI資料中心貢獻待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "資料中心內電源轉換與備援：PSU、HVDC側櫃、BBU、UPS、SST",
+   "description": "量產剛起步。台達電±400V／800V第三季開始量產，全年量有限，2027年才有意義的量；800V可能延後的傳聞存在。",
+   "global_players": [
+    "Vertiv",
+    "Eaton",
+    "Schneider"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2308",
+     "name": "台達電",
+     "role": "800VDC、±400V、50V三路線布局，展示Power Rack、SST、SOFC",
+     "impact": "受惠"
+    },
+    {
+     "code": "2301",
+     "name": "光寶科",
+     "role": "展出符合輝達660kW參考設計的800VDC電源櫃，第四季小量出貨，進度較後",
+     "impact": "受惠"
+    },
+    {
+     "code": "6282",
+     "name": "康舒",
+     "role": "與行競科技發表800V浸沒式高壓直流BBU系統，預計2026下半年至2027年放量",
+     "impact": "受惠"
+    },
+    {
+     "code": "6781",
+     "name": "AES-KY",
+     "role": "高壓BBU，BBU營收占比預估75–80%（媒體推估）",
+     "impact": "受惠"
+    },
+    {
+     "code": "3211",
+     "name": "順達",
+     "role": "與台達電等合作開發400V／800V高壓BBU，800V產品2027年起量產",
+     "impact": "受惠"
+    },
+    {
+     "code": "4931",
+     "name": "新盛力",
+     "role": "BBU與儲能實際布局待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "8255",
+     "name": "朋程",
+     "role": "布局HVDC客製化電源模組（市場消息）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "功率半導體：SiC、GaN",
+   "description": "早期階段。DIGITIMES認為SiC與GaN將依電壓等級、頻率、功率密度各司其職。",
+   "global_players": [
+    "Infineon",
+    "Navitas",
+    "Wolfspeed"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3707",
+     "name": "漢磊",
+     "role": "化合物半導體製造，與AI電源訂單連結待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3016",
+     "name": "嘉晶",
+     "role": "磊晶，與AI電源訂單連結待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "GaN代工策略待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "省電方案：光互連、散熱",
+   "description": "屬需求端緩解方案；博通51.2T CPO交換器功耗比可插拔光模組最多低70%。液冷散熱未研究。",
+   "global_players": [
+    "Broadcom",
+    "NVIDIA"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3711",
+     "name": "日月光投控",
+     "role": "CPO封裝",
+     "impact": "受惠"
+    },
+    {
+     "code": "6223",
+     "name": "旺矽",
+     "role": "CPO相關設備",
+     "impact": "中性"
+    },
+    {
+     "code": "2360",
+     "name": "致茂",
+     "role": "CPO相關設備",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游與同源缺料：伺服器、PCB／CCL、記憶體",
+   "description": "PCB、載板與關鍵材料自2025下半年起供需趨緊，2027年前難喘息；若通電延遲或缺料，伺服器出貨與認列可能遞延。",
+   "global_players": [
+    "AWS",
+    "NVIDIA"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "伺服器ODM，需求強但可能遞延認列",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "伺服器ODM",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "伺服器ODM",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "伺服器與機櫃",
+     "impact": "中性"
+    },
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "CCL材料，缺料帶動漲價",
+     "impact": "受惠"
+    },
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "PCB板廠",
+     "impact": "受惠"
+    },
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "DRAM價格續漲帶動營收，對下游是成本壓力",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ]
+}
