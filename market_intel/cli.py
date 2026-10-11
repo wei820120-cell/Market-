@@ -21,7 +21,7 @@ import pandas as pd
 
 from . import ai, config, notify, research, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
+from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -636,10 +636,11 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
 MAJOR_PATH = research.ROOT / "state" / "major_events.json"
 
 
-def major_events(items: list, listings: dict) -> list[str]:
+def major_events(items: list, listings: dict, macro_rows: list | None = None) -> list[str]:
     """重大總經／地緣事件（config/major_events.yaml）：同一事件一天推一次到新聞機器人，並排入研究佇列。
 
     只推清單上的事件；族群的方向是初步推論，研究完成才算數。
+    macro_rows：國際行情快照（預設讀 state/macro_snapshot.json，太舊就不附），事件相關資產的即時漲跌附在訊息與研究觸發裡。
     """
     events = config.major_events().get("events") or {}
     if not events or not items:
@@ -649,6 +650,7 @@ def major_events(items: list, listings: dict) -> list[str]:
     st = json.loads(MAJOR_PATH.read_text(encoding="utf-8")) if MAJOR_PATH.exists() else {}
     st = {k: v for k, v in st.items() if k.rsplit("|", 1)[-1] >= cutoff}
     themes_tw = config.themes().get("tw") or {}
+    macro_rows = macro.fresh() if macro_rows is None else macro_rows
     sent = []
     for name, spec in events.items():
         if f"{name}|{today}" in st:
@@ -669,8 +671,12 @@ def major_events(items: list, listings: dict) -> list[str]:
             rows.append(f"・{th}｜{tag.get(d, d)}：{why}" + (f"\n  {names}" if names else ""))
         if rows:
             lines += ["", "初步推論（未驗證，研究完成才算數）："] + rows
+        market = macro.line(macro_rows, spec.get("watch") or [])
+        if market:
+            lines += ["", f"📊 國際行情：{market}"]
         topic = f"供需事件：{spec.get('topic') or name}"
-        queued = research.queue_research(topic, f"{today} 重大事件：{hits[0].title}\n{hits[0].summary[:300]}\n{hits[0].url}")
+        context = f"\n國際行情快照（Yahoo，延遲報價）：\n{macro.table_text(macro_rows)}" if macro_rows else ""
+        queued = research.queue_research(topic, f"{today} 重大事件：{hits[0].title}\n{hits[0].summary[:300]}\n{hits[0].url}{context}")
         lines.append(f"\n→ {'已排入研究' if queued else '近期研究過或已在佇列'}：{topic}")
         notify.send("\n".join(lines), channel="news")
     if sent:
@@ -1769,6 +1775,29 @@ def _trade_commands() -> None:
     real.save(st)
 
 
+def cmd_macro(args) -> None:
+    """國際原物料、匯率、利率與風險指標：更新快照（約每 15 分鐘）、單日大幅異動推新聞機器人。"""
+    snap = macro.load()
+    if not args.force and snap.get("fetched"):
+        try:
+            t = datetime.strptime(snap["fetched"], "%Y-%m-%d %H:%M").replace(tzinfo=now_tw().tzinfo)
+            if now_tw() - t < timedelta(minutes=args.every):
+                return
+        except ValueError:
+            pass
+    rows = macro.snapshot()
+    if not rows:
+        log.warning("國際行情一筆都沒抓到")
+        return
+    changed = macro.save_if_changed(rows)
+    print(macro.table_text(rows))
+    if not changed and snap:
+        return
+    if not args.no_push and snap:  # 第一次只存快照，不推（避免一開始就把今天已發生的異動全推一遍）
+        for m in macro.alerts(rows):
+            notify.send(m, channel="news")
+
+
 def cmd_check(args) -> None:
     """資料檢查：印出各資料來源的原始欄位，不推播。"""
     _verify_margin()
@@ -1846,6 +1875,12 @@ def main(argv: list[str] | None = None) -> None:
     nw.add_argument("--min-score", type=float, default=None)
     nw.add_argument("--push", action="store_true", help="推播新出現的新聞與漲價信（常駐監看用）")
     nw.set_defaults(func=cmd_news)
+
+    mc = sub.add_parser("macro", help="國際原物料、匯率、利率與風險指標（快照＋異動推播）")
+    mc.add_argument("--every", type=int, default=15, help="距離上次更新幾分鐘內就略過")
+    mc.add_argument("--force", action="store_true")
+    mc.add_argument("--no-push", action="store_true")
+    mc.set_defaults(func=cmd_macro)
 
     tg = sub.add_parser("target", help="計算目標價")
     tg.add_argument("symbols", nargs="+", help="台股代號（2330）或美股代號（NVDA）")

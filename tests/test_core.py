@@ -995,3 +995,38 @@ def test_supply_shock_skips_unrelated_politics_and_major_events(tmp_path, monkey
     assert sent and sent[0][0] == "news" and "初步推論" in sent[0][1] and "供需事件：俄烏停火與能源價格" in sent[0][1]
     assert (tmp_path / "queue").exists() and list((tmp_path / "queue").glob("*.json"))
     assert cli.major_events(ev, {}) == []  # 同一事件一天只推一次
+
+
+def test_macro_snapshot_alerts_and_major_event_context(tmp_path, monkeypatch):
+    import pandas as pd
+    from market_intel import cli, notify, research
+    from market_intel.fetchers import macro, yahoo
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(macro, "SNAP_PATH", tmp_path / "snap.json")
+    monkeypatch.setattr(macro, "ALERT_PATH", tmp_path / "alerts.json")
+    idx = pd.date_range("2026-09-01", periods=25, freq="D", tz="UTC")
+
+    def fake_chart(sym, range_="1mo", interval="1d"):
+        closes = [80.0] * 24 + [75.0] if sym == "BZ=F" else [100.0] * 25  # 布蘭特單日 -6.25%
+        return pd.DataFrame({"close": closes, "open": closes, "high": closes, "low": closes, "volume": 1}, index=idx), {"regularMarketTime": 1789000000}
+    monkeypatch.setattr(yahoo, "fetch_chart", fake_chart)
+    rows = macro.snapshot()
+    brent = next(r for r in rows if r["symbol"] == "BZ=F")
+    assert brent["d1_pct"] == -6.25 and brent["d20_pct"] == -6.25 and brent["name"] == "布蘭特原油"
+    assert macro.save_if_changed(rows) and not macro.save_if_changed(rows)  # 沒變不重寫
+    assert macro.fresh()
+    msgs = macro.alerts(rows)
+    assert any("布蘭特原油" in m and "國際行情異動" in m for m in msgs)
+    assert macro.alerts(rows) == []  # 同方向一天一次
+    # 重大事件訊息附上國際行情，研究觸發附快照
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(cli, "MAJOR_PATH", tmp_path / "major.json")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    ev = [NewsItem(source="Google", title="特朗普：俄烏達成能源停火", summary="", url="http://x/1")]
+    assert cli.major_events(ev, {}, macro_rows=rows) == ["俄烏停火與能源"]
+    assert "📊 國際行情：布蘭特原油" in sent[0][1]
+    q = next((tmp_path / "queue").glob("*.json")).read_text(encoding="utf-8")
+    assert "國際行情快照" in q and "BZ=F" in q
