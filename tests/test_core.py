@@ -949,7 +949,7 @@ def test_gov_import_ban_is_supply_shock():
     from market_intel import config
     from market_intel.cli import shock_cause
     causes = config.news_keywords()["supply_shock"]["causes"]
-    assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "政策管制"
+    assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "進口管制公告"
 
 
 def test_real_chinese_qty_and_multi_price_sell():
@@ -977,3 +977,21 @@ def test_broker_rating_and_target_price_news():
     assert score("瑞銀降評 喊賣大立光 目標價維持5,000元") <= -3
     assert score("大摩調降台積電目標價") <= -3
     assert score("大立光董事會通過配息") == 0
+
+def test_supply_shock_skips_unrelated_politics_and_major_events(tmp_path, monkeypatch):
+    from market_intel import cli, notify, research
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(cli, "MAJOR_PATH", tmp_path / "major.json")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    politics = [NewsItem(source="Google", title="美國擬制裁國際刑事法院 8國外長齊聲反對", summary=""),
+                NewsItem(source="Google", title="被指對俄羅斯運柴油助緩油荒 南韓：未列出口管制", summary="")]
+    assert cli.supply_shocks(politics, {}, {}) == []  # 對不到台股標的、產品或關鍵原料，不推
+    ev = [NewsItem(source="Google", title="美國總統特朗普：即刻生效，俄烏戰爭達成能源停火", summary="", url="http://x/1")]
+    assert cli.major_events(ev, {"2618": {"name": "長榮航"}}) == ["俄烏停火與能源"]
+    assert sent and sent[0][0] == "news" and "初步推論" in sent[0][1] and "供需事件：俄烏停火與能源價格" in sent[0][1]
+    assert (tmp_path / "queue").exists() and list((tmp_path / "queue").glob("*.json"))
+    assert cli.major_events(ev, {}) == []  # 同一事件一天只推一次
