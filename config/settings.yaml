@@ -15,6 +15,9 @@ research:                     # 題材研究員（需要 GitHub Secret：ANTHROP
   max_per_day: 4              # 每天「自動」研究的題材上限（手動指令不受限，但受預算限制）
   min_importance: 3           # 自動偵測的題材重要性 >= 此值才研究（1-5）
   monthly_budget_usd: 39      # 每月花費上限（美元），超過就停止，下個月自動恢復
+  read_channel_images: true    # 頻道的圖片貼文：用便宜的視覺模型把圖中文字抄下來再推播／送去研究（每張不到 US$0.01）
+  image_model: claude-haiku-5-5
+  image_price_per_mtok: {input: 0.1, output: 0.5}   # Haiku 5.5 每百萬 token 美元（提示超過 10 萬 token 的部分較貴，圖片貼文用不到）
   push_to: research           # 推到研究機器人（沒設定時用新聞機器人）
   # 以下用來估算花費，請以 Anthropic 官網價格為準
   price_per_mtok: {input: 2, output: 10}   # Claude Sonnet 5.5 每百萬 token 美元

@@ -453,14 +453,109 @@ TG_HTML = """
 def test_telegram_channel_parse_and_state():
     from market_intel.fetchers import telegram_channel as tg
     posts = tg.parse_channel_html(TG_HTML, "Gooaye")
-    assert [p.post_id for p in posts] == [1001, 1003]  # 純圖片貼文略過
+    assert [p.post_id for p in posts] == [1001, 1002, 1003]  # 純圖片貼文也要留著
+    assert posts[1].text == "" and posts[1].has_media and posts[1].images == []  # 沒抓到圖片網址也不能漏掉
     assert "3.2T" in posts[0].text and "\n" in posts[0].text
-    assert posts[1].text == "國巨 & 華新科 MLCC 喊漲" and posts[0].url == "https://t.me/Gooaye/1001"
+    assert posts[2].text == "國巨 & 華新科 MLCC 喊漲" and posts[0].url == "https://t.me/Gooaye/1001"
     state: dict = {}
     assert tg.new_posts("Gooaye", posts, state) == [] and state["Gooaye"] == 1003  # 第一次只記錄
     state["Gooaye"] = 1001
-    assert [p.post_id for p in tg.new_posts("Gooaye", posts, state)] == [1003]
+    assert [p.post_id for p in tg.new_posts("Gooaye", posts, state)] == [1002, 1003]
     assert state["Gooaye"] == 1003
+
+
+TG_IMG_HTML = """
+<div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="Gooaye/2001">
+<a class="tgme_widget_message_photo_wrap 5xx" href="https://t.me/Gooaye/2001" style="width:800px;background-image:url('https://cdn1.example/file/a.jpg')"><div class="tgme_widget_message_photo" style="padding-top:75%"></div></a>
+<a class="tgme_widget_message_photo_wrap 6xx" href="https://t.me/Gooaye/2001?single" style="background-image:url(&#39;https://cdn1.example/file/b.jpg&#39;)"></a>
+<time datetime="2026-10-12T08:00:00+00:00"></time></div></div>
+<div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="Gooaye/2002">
+<div class="tgme_widget_message_sticker_wrap"></div><time datetime="2026-10-12T08:05:00+00:00"></time></div></div>
+<div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="Gooaye/2003">
+<i class="tgme_widget_message_video_thumb" style="background-image:url('https://cdn1.example/file/v.jpg')"></i>
+<div class="tgme_widget_message_text js-message_text" dir="auto">影片附註</div><time datetime="2026-10-12T08:10:00+00:00"></time></div></div>
+"""
+
+
+def test_telegram_channel_image_posts():
+    from market_intel.fetchers import telegram_channel as tg
+    posts = tg.parse_channel_html(TG_IMG_HTML, "Gooaye")
+    assert [p.post_id for p in posts] == [2001, 2003]  # 貼圖（沒文字沒圖片）略過，相簿與影片縮圖留著
+    assert posts[0].text == "" and posts[0].images == ["https://cdn1.example/file/a.jpg", "https://cdn1.example/file/b.jpg"]
+    assert not posts[0].has_video and posts[1].has_video and posts[1].text == "影片附註"
+
+
+def test_channels_image_post_flow(tmp_path, monkeypatch):
+    """圖片貼文：先推圖片，再把 AI 辨識出的文字接在貼文後面推播，並送去題材偵測收件匣。"""
+    import argparse
+    from market_intel import ai, cli, notify, research
+    from market_intel.fetchers import telegram_channel as tg
+    post = tg.parse_channel_html(TG_IMG_HTML, "Gooaye")[0]
+    monkeypatch.setattr(config_mod := __import__("market_intel.config", fromlist=["x"]), "sources",
+                        lambda: {"telegram_channels": [{"name": "股癌", "handle": "Gooaye", "push_to": "research"}]})
+    monkeypatch.setattr(cli, "_listings", lambda: {"3081": {"name": "聯亞"}})
+    monkeypatch.setattr(cli, "_name_to_code", lambda l: {"聯亞": "3081"})
+    monkeypatch.setattr(cli.stock_futures, "load_stock_futures", lambda: {})
+    monkeypatch.setattr(tg, "STATE_PATH", tmp_path / "seen.json")
+    tg.save_state({"Gooaye": 2000})
+    monkeypatch.setattr(tg, "fetch_channel", lambda h: [post])
+    img = tmp_path / "a.jpg"
+    img.write_bytes(b"\xff\xd8fake")
+    monkeypatch.setattr(tg, "download_images", lambda p, **k: [img])
+    monkeypatch.setattr(ai, "available", lambda: True)
+    monkeypatch.setattr(ai, "budget_left", lambda: True)
+    monkeypatch.setattr(ai, "read_images", lambda images, prompt, usage: usage.calls.append("image") or "聯亞(3081) 目標價 500")
+    monkeypatch.setattr(ai, "record_usage", lambda usage, topic: None)
+    sent, photos, inbox = [], [], []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
+    monkeypatch.setattr(notify, "send_photos", lambda paths, caption="", channel="market": photos.append((paths, caption)))
+    monkeypatch.setattr(research, "add_to_inbox", lambda *a: inbox.append(a))
+    cli.cmd_channels(argparse.Namespace(latest=0))
+    assert photos and photos[0][0] == [img] and "圖片貼文" in photos[0][1]
+    assert "圖片文字（AI 辨識" in sent[0] and "聯亞(3081) 目標價 500" in sent[0] and "3081 聯亞" in sent[0]
+    assert "聯亞(3081) 目標價 500" in inbox[0][2]
+    # 沒有金鑰：圖片照推，文字訊息提示只有圖片
+    monkeypatch.setattr(ai, "available", lambda: False)
+    sent.clear(); photos.clear(); inbox.clear()
+    tg.save_state({"Gooaye": 2000})
+    cli.cmd_channels(argparse.Namespace(latest=0))
+    assert photos and "只有圖片" in sent[0]
+
+
+def test_read_post_images_never_breaks_channel_push(tmp_path, monkeypatch):
+    from market_intel import ai, cli
+    img = tmp_path / "a.png"
+    img.write_bytes(b"x")
+    monkeypatch.setattr(ai, "available", lambda: True)
+    monkeypatch.setattr(ai, "budget_left", lambda: True)
+
+    def boom(*a, **k):
+        raise RuntimeError("400 invalid_request_error")  # 例如模型不支援某個參數
+
+    monkeypatch.setattr(ai, "read_images", boom)
+    assert cli.read_post_images([img]) == ""  # 失敗就當沒辨識到，圖片照推
+    monkeypatch.setattr(ai, "settings", lambda: {"read_channel_images": False})
+    assert cli.read_post_images([img]) == ""
+
+
+def test_read_images_uses_cheap_price(monkeypatch):
+    from types import SimpleNamespace as NS
+    from market_intel import ai
+    seen = {}
+
+    class FakeMessages:
+        def create(self, **kw):
+            seen.update(kw)
+            return NS(content=[NS(type="text", text="抄錄結果")], stop_reason="end_turn",
+                      usage=NS(input_tokens=2000, output_tokens=500))
+
+    monkeypatch.setattr(ai, "_client", lambda: NS(messages=FakeMessages()))
+    monkeypatch.setattr(ai, "check_budget", lambda: None)
+    usage = ai.image_usage()
+    assert ai.read_images([(b"abc", "image/png")], "請抄錄", usage) == "抄錄結果"
+    block = seen["messages"][0]["content"][0]
+    assert block["type"] == "image" and block["source"]["media_type"] == "image/png" and seen["model"].startswith("claude-haiku")
+    assert 0 < usage.usd() < 0.01  # 用便宜模型單價，不是研究模型（Sonnet）的單價
 
 
 def test_channel_post_message(monkeypatch):

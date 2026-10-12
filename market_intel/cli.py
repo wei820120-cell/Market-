@@ -15,6 +15,8 @@ import logging
 import os
 import re
 import time
+from dataclasses import replace
+from pathlib import Path
 from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
@@ -770,6 +772,8 @@ def channel_post_message(name: str, post, listings: dict, futures: dict, themes_
     themes = list(dict.fromkeys(topic_themes_of(post.text) + item.themes))
     when = post.published[11:16] if len(post.published) >= 16 else ""
     text = post.text if len(post.text) <= max_chars else post.text[:max_chars] + "…（完整內容見連結）"
+    if not text:
+        text = "（只有圖片，沒有文字；圖片見上一則，或看連結）"
     lines = [f"📣 {name}　{post.published[5:10].replace('-', '/')} {when} UTC".strip(), "", text, "", "—"]
     tw_codes = [c for c in item.codes if c[:1].isdigit()][:8]
     if tw_codes:
@@ -791,6 +795,33 @@ def channel_post_message(name: str, post, listings: dict, futures: dict, themes_
         lines.append("🏷 " + "、".join(item.tags))
     lines.append(post.url)
     return "\n".join(lines)
+
+
+IMAGE_OCR_PROMPT = ("這是投資 Podcast／社群頻道貼文的圖片。請用繁體中文：1) 逐字抄錄圖中所有文字（保留數字、股票代號、單位）；"
+                    "2) 如果是圖表或表格，用兩三句話說明重點（標題、趨勢、關鍵數字）。不要加評論、不要編造看不清楚的字，看不清楚就寫「（看不清楚）」。")
+_MEDIA_TYPES = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp", ".gif": "image/gif"}
+
+
+def read_post_images(paths: list) -> str:
+    """頻道圖片貼文：用便宜的視覺模型把圖中文字抄下來。沒有金鑰／預算用完／失敗都回空字串（圖片照樣推播）。"""
+    if not paths or not ai.settings().get("read_channel_images", True) or not ai.available() or not ai.budget_left():
+        return ""
+    images = []
+    for p in paths:
+        raw = Path(p).read_bytes()
+        if len(raw) <= 5_000_000:  # API 單張上限 5MB
+            images.append((raw, _MEDIA_TYPES.get(Path(p).suffix.lower(), "image/jpeg")))
+    if not images:
+        return ""
+    usage = ai.image_usage()
+    try:
+        return ai.read_images(images, IMAGE_OCR_PROMPT, usage).strip()
+    except Exception as e:  # noqa: BLE001  額度、模型名稱、網路等任何問題都不能讓頻道推播中斷
+        log.warning("頻道圖片辨識失敗：%s", e)
+        return ""
+    finally:
+        if usage.calls:
+            ai.record_usage(usage, "頻道圖片")
 
 
 def cmd_channels(args) -> None:
@@ -821,8 +852,19 @@ def cmd_channels(args) -> None:
             if telegram_channel.is_ad(p.text, skip):
                 log.info("頻道 %s #%s 是業配／廣告，略過", handle, p.post_id)
                 continue
-            notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code),
-                        channel=ch.get("push_to", "news"))
+            push_to = ch.get("push_to", "news")
+            if p.images:  # 圖片貼文：先推圖片本身，再把圖中文字抄成文字（AI 辨識）接在貼文後面，一起送去題材偵測
+                shots = telegram_channel.download_images(p)
+                if shots:
+                    notify.send_photos(shots, caption=f"📣 {name}　圖片貼文{'（影片縮圖）' if p.has_video else ''}\n{p.url}",
+                                       channel=push_to)
+                seen = read_post_images(shots)
+                if seen:
+                    p = replace(p, text=(f"{p.text}\n\n" if p.text else "") + f"【圖片文字（AI 辨識，可能有誤）】\n{seen}")
+                    if telegram_channel.is_ad(p.text, skip):
+                        log.info("頻道 %s #%s 圖片內容是業配／廣告，略過", handle, p.post_id)
+                        continue
+            notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code), channel=push_to)
             if not args.latest and ch.get("research", True):
                 research.add_to_inbox(handle, p.post_id, p.text, p.url)  # 交給題材研究員判斷要不要研究
     if not args.latest:

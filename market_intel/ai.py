@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import base64
 import json
 import logging
 import os
@@ -29,6 +30,7 @@ class Usage:
     output_tokens: int = 0
     web_searches: int = 0
     calls: list[str] = field(default_factory=list)
+    price: dict | None = None  # 這次用的模型單價（美元／百萬 token）；沒給就用 settings 的 price_per_mtok
 
     def add(self, msg, label: str) -> None:
         u = getattr(msg, "usage", None)
@@ -43,7 +45,7 @@ class Usage:
 
     def usd(self) -> float:
         st = settings()
-        price = st.get("price_per_mtok") or {}
+        price = self.price or st.get("price_per_mtok") or {}
         return (self.input_tokens * float(price.get("input", 0)) + self.output_tokens * float(price.get("output", 0))) / 1e6 \
             + self.web_searches * float(st.get("web_search_usd_per_1k", 0)) / 1000
 
@@ -164,6 +166,33 @@ def web_research(system: str, prompt: str, usage: Usage) -> str:
         raise AIUnavailable("研究沒有產出內容")
     if msg.stop_reason == "max_tokens":
         log.warning("研究報告達到長度上限，內容可能被截斷")
+    return _text(msg)
+
+
+def image_usage() -> Usage:
+    """看圖用的便宜模型（預設 Haiku 5.5）的用量計價，不要套研究模型的單價。"""
+    return Usage(price=settings().get("image_price_per_mtok") or {"input": 0.1, "output": 0.5})
+
+
+def read_images(images: list[tuple[bytes, str]], instruction: str, usage: Usage) -> str:
+    """讓便宜的視覺模型讀圖（頻道圖片貼文：抄錄圖中文字、描述圖表重點）。images = [(圖片位元組, media_type)]。"""
+    check_budget()
+    client = _client()
+    content: list[dict] = [{"type": "image", "source": {"type": "base64", "media_type": mt,
+                                                         "data": base64.b64encode(raw).decode("ascii")}}
+                           for raw, mt in images]
+    content.append({"type": "text", "text": instruction})
+    try:
+        msg = client.messages.create(
+            model=settings().get("image_model", "claude-haiku-5-5"),
+            max_tokens=8000,
+            messages=[{"role": "user", "content": content}],
+            output_config={"effort": "low"},
+        )
+    except Exception as e:  # noqa: BLE001
+        raise _translate(e) from e
+    usage.add(msg, "image")
+    _check_refusal(msg)
     return _text(msg)
 
 
