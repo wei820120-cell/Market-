@@ -832,6 +832,31 @@ def cmd_channels(args) -> None:
 AUTO_SLOTS = ("14:05", "21:05")  # 每天從新聞自動偵測新題材的時間（台北）
 
 
+CANDIDATES_PATH = research.ROOT / "state" / "research_candidates.json"
+
+
+def _save_candidates(rows: list[dict]) -> int:
+    """自動研究關閉時：本來要交給 AI 偵測題材的新聞標題／頻道貼文先存起來，由 Claude 排程判斷（不花 API）。
+    只保留 3 天內最新 200 則；沒有新內容就不寫檔，避免監看迴圈每次都產生 commit。回傳新增則數。"""
+    now = now_tw()
+    old: list[dict] = []
+    if CANDIDATES_PATH.exists():
+        try:
+            old = json.loads(CANDIDATES_PATH.read_text(encoding="utf-8")).get("items", [])
+        except (ValueError, OSError):
+            old = []
+    seen = {r["text"] for r in old}
+    new = [{**r, "time": f"{now:%Y-%m-%d %H:%M}"} for r in rows if r["text"] not in seen]
+    if not new:
+        return 0
+    cutoff = f"{now - timedelta(days=3):%Y-%m-%d %H:%M}"
+    items = [r for r in old + new if r.get("time", "") >= cutoff][-200:]
+    CANDIDATES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CANDIDATES_PATH.write_text(json.dumps({"updated": f"{now:%Y-%m-%d %H:%M}", "items": items},
+                                          ensure_ascii=False, indent=1), encoding="utf-8")
+    return len(new)
+
+
 def _auto_due() -> bool:
     """監看迴圈用：到了 14:05／21:05 且這個時段還沒跑過。"""
     path = research.ROOT / "state" / "research_auto.json"
@@ -919,20 +944,25 @@ def cmd_research(args) -> None:
 
     auto_texts: list[str] = []
     triggers: dict[str, str] = {}
+    cands: list[dict] = []  # 自動研究關閉時存給 Claude 排程判斷的候選（新聞標題／頻道貼文）
+    api_detect = auto_on or bool(args.auto)  # 明確帶 --auto 的手動執行仍照舊走 API 偵測
     if args.inbox:
         items = research.read_inbox()
-        for _, d in (items if auto_on else []):
+        for _, d in items:
             auto_texts.append(d["text"][:600])
             triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
+            cands.append({"kind": "頻道貼文", "text": d["text"][:600], "trigger": triggers[d["text"][:600]]})
         for p, _ in items:  # 讀過就刪，避免重複偵測（沒有金鑰也刪，免得越積越多）
             p.unlink(missing_ok=True)
-    if auto_on and args.auto_slots and _auto_due():
+    if args.auto_slots and _auto_due():
         args.auto = True
     if args.auto:
         listings_ = listings()
         ranked = news_signals.rank(collect_news(), config.news_keywords(), _name_to_code(listings_), _us_symbols(),
                                    min_score=3, all_codes=set(listings_))
         auto_texts += [it.title for it in ranked[:80]]
+        cands += [{"kind": "新聞", "text": it.title, "trigger": f"{it.source}：{it.title}\n{it.url}",
+                   "score": round(float(it.score), 1)} for it in ranked[:80]]
 
     cap = int(st.get("max_per_day", 4)) - research.researched_today()
     if args.inbox:  # 資金流入但還沒研究過的題材（盤中、盤後排入）；read_queue 會順便清掉已研究過的，自動關閉時也要清
@@ -943,7 +973,11 @@ def cmd_research(args) -> None:
             queue.append((d["topic"], d.get("trigger", "資金流入"), True, p))
             cap -= 1
 
-    if auto_texts and ai.available():
+    if auto_texts and not api_detect:
+        n = _save_candidates(cands)
+        if n:
+            log.info("自動研究已關閉：%s 則候選題材來源存進 state/research_candidates.json，交給 Claude 排程判斷", n)
+    elif auto_texts and ai.available():
         if cap <= 0:
             log.info("今天自動研究已達上限 %s 個", st.get("max_per_day", 4))
         else:

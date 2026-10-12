@@ -548,6 +548,8 @@ def test_research_auto_switch(tmp_path, monkeypatch):
     monkeypatch.setattr(research, "INBOX_DIR", tmp_path / "inbox")
     monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
     monkeypatch.setattr(cli, "_listings", lambda: {})
+    monkeypatch.setattr(cli, "_auto_due", lambda: False)
+    monkeypatch.setattr(cli, "CANDIDATES_PATH", tmp_path / "cands.json")
     monkeypatch.setattr(ai, "available", lambda: True)
     monkeypatch.setattr(ai, "budget_left", lambda: True)
     research.queue_research("供需事件：甲", "測試")
@@ -563,6 +565,9 @@ def test_research_auto_switch(tmp_path, monkeypatch):
     cli.cmd_research(args)
     assert calls == [] and len(list((tmp_path / "queue").glob("*.json"))) == 1
     assert not list((tmp_path / "inbox").glob("*.json"))  # 收件匣照樣清空，免得越積越多
+    saved = json.loads((tmp_path / "cands.json").read_text(encoding="utf-8"))["items"]  # 但貼文存成候選，交給 Claude 排程判斷
+    assert [r["text"] for r in saved] == ["某則頻道貼文"] and saved[0]["kind"] == "頻道貼文" and saved[0]["time"]
+    assert cli._save_candidates([{"kind": "頻道貼文", "text": "某則頻道貼文", "trigger": ""}]) == 0  # 重複的不寫檔
     monkeypatch.setattr(ai, "settings", lambda: {"auto_enabled": True, "max_per_day": 4})
     cli.cmd_research(args)
     assert calls == ["供需事件：甲"]
