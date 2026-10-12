@@ -1,0 +1,488 @@
+{
+ "topic": "Lumentum喊AI光通訊嚴重供不應求 台廠3Q26營收報佳音",
+ "one_line": "Lumentum執行長稱光學元件產能已訂到2029年初、部分產品明年約70%需求無法滿足，瓶頸在InP雷射與磊晶；台廠聯亞、光環、聯鈞、華星光9月與3Q26營收明顯成長，但IET-KY僅年增11%，利益集中在握有雷射與磊晶產能者。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "Lumentum",
+  "InP",
+  "磷化銦",
+  "EML",
+  "CW雷射",
+  "矽光子",
+  "CPO",
+  "ELS",
+  "1.6T",
+  "800G",
+  "Pump雷射",
+  "照付不議",
+  "FCC禁令",
+  "COS"
+ ],
+ "catalysts": [
+  "台廠10月營收（2026/11/10前）",
+  "Lumentum下一次財報FQ1'27（11月初前後，待確認），觀察缺口與OCS營收是否超過1億美元",
+  "台積電法說（日期待確認）",
+  "FCC禁止中國光模組進口規定若公布生效",
+  "2026Q4華星光CW月產能提升至340萬顆、4吋線建置",
+  "Lumentum EML顆數2026/12季年增逾50%",
+  "CPO超高功率CW 2026年底帶來規模營收",
+  "2027年上詮FAU顯著放量、華星光月產能600萬顆以上",
+  "2028年初Greensboro工廠開始貢獻營收"
+ ],
+ "risks": [
+  "70%缺口僅是Lumentum對部分產品、明年的說法，不等於整個InP產業",
+  "客戶重複下單與預付款，AI資本支出降溫時需求會反轉",
+  "美國禁令是否實施、範圍與台廠是否受惠仍未定",
+  "台廠表現不均，IET-KY 9月僅年增11%、華星光累計僅增27%",
+  "評價偏高與處置風險，聯亞股價已在3,000元以上",
+  "InP基板來源集中，中國出口管制是風險",
+  "競爭與技術替代：Lumentum自己也擴CW、中國光晶片廠追趕、長期CPO取代可插拔",
+  "LITE、COHR股價一度下跌，缺貨利多不等於股價單向上漲"
+ ],
+ "spec_tables": [
+  {
+   "title": "光模組世代（需求從哪裡來）",
+   "columns": [
+    "世代",
+    "典型通道組成",
+    "單模組功耗（約值）",
+    "光源",
+    "備註"
+   ],
+   "rows": [
+    [
+     "400G",
+     "4×100G PAM4",
+     "約10–12 W",
+     "EML",
+     "逐年下滑"
+    ],
+    [
+     "800G",
+     "8×100G 或 4×200G",
+     "約14–16 W",
+     "100G／200G EML，或SiPh＋CW",
+     "2027–2029年主流（Yole）"
+    ],
+    [
+     "1.6T",
+     "8×200G",
+     "約25–30 W",
+     "200G EML，或SiPh＋CW",
+     "2026起放量"
+    ],
+    [
+     "3.2T",
+     "16×200G 或 8×400G",
+     "待確認",
+     "以SiPh＋CW為主（推論）",
+     "送驗階段；美中政策焦點之一"
+    ]
+   ],
+   "note": "速率組合和功耗是業界常見約值，非本次逐項查證。Yole預估400G以上光收發模組出貨：2025年5,684萬個，2026年1.02億個（年增79.7%），2027年1.46億個（年增42.8%），2029年1.68億個。"
+  },
+  {
+   "title": "Lumentum缺貨的產品線（雷射）",
+   "columns": [
+    "產品",
+    "用途",
+    "供需（已證實）",
+    "台廠關聯"
+   ],
+   "rows": [
+    [
+     "EML（100G／200G per lane）",
+     "800G／1.6T可插拔模組光源",
+     "缺口>30%（5月）；2026/12季顆數年增>50%",
+     "台灣自製EML極少，待確認"
+    ],
+    [
+     "CW雷射（含200G per lane版本）",
+     "矽光子、CPO的外部光源（ELS）",
+     "Lumentum也在增加CW產能配置",
+     "聯亞、華星光、光環等"
+    ],
+    [
+     "Pump雷射",
+     "EDFA光放大器、scale-across",
+     "比EML更缺；出貨未來數季增4倍",
+     "待確認"
+    ],
+    [
+     "窄線寬雷射",
+     "DCI／scale-across",
+     "DCI窄線寬營收年增逾130%（口袋證券整理）",
+     "待確認"
+    ],
+    [
+     "超高功率CW（CPO）",
+     "CPO光源",
+     "預計2026年底帶來規模營收（口袋證券整理）",
+     "待確認"
+    ]
+   ],
+   "note": "台廠CW規格參考：華星光2026年主力出貨70mW和100mW，研發200mW、400mW；晶圓由2吋轉3吋，4吋線預計2026Q4建置、2027量產。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "可插拔＋EML",
+   "composition": "模組內EML＋DSP",
+   "spec": "技術成熟，EML結構複雜（單晶片含DFB＋EAM）",
+   "application": "400G、800G、1.6T"
+  },
+  {
+   "name": "可插拔＋SiPh＋CW",
+   "composition": "CW雷射供光、矽光子調變",
+   "spec": "CW結構較單純，良率較高；Lumentum也在擴CW產能",
+   "application": "800G、1.6T"
+  },
+  {
+   "name": "LPO／NPO",
+   "composition": "拿掉DSP，或光引擎靠近ASIC",
+   "spec": "功耗較低，要求更高；多用外部雷射",
+   "application": "過渡方案"
+  },
+  {
+   "name": "CPO＋ELS",
+   "composition": "光引擎與交換器ASIC共封裝，雷射外置",
+   "spec": "雷射需求放大，InP依賴不變",
+   "application": "NVIDIA Spectrum-X、Quantum-X"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼瓶頸是InP雷射，而不是模組組裝",
+   "points": [
+    "InP磊晶、晶圓製程和測試每一關都複雜，EML要在單顆晶片上整合DFB雷射和EAM調變器",
+    "新增產能要3–5年，缺貨具結構性，不像一般IC缺貨半年能解",
+    "Lumentum的12倍擴產仍追不上需求，必須在客戶間分配產能，形成賣方市場"
+   ]
+  },
+  {
+   "title": "EML與CW＋矽光子兩條路線",
+   "points": [
+    "EML缺貨，客戶有誘因轉向矽光子＋外置CW，因CW結構簡單、良率高",
+    "Lumentum自己也把產能分配給CW，台廠並非獨占",
+    "判斷重點是台廠CW能否通過美系大客戶認證、穩定量產，而非只看產能數字"
+   ]
+  },
+  {
+   "title": "缺貨怎麼變成可預期的營收：長約、預付款、照付不議",
+   "points": [
+    "買方出資擴產，賣方產能被鎖，景氣波動被緩衝；Lumentum認為光通訊已脫離boom-bust週期（公司自己的說法）",
+    "風險是客戶先鎖再說的重複下單，使需求被高估",
+    "台廠也類似操作：聯亞與美日供應商簽InP基板採購合約，並與住友電工簽長約"
+   ]
+  },
+  {
+   "title": "中國模組廠與美國政策：缺口會被填還是被放大",
+   "points": [
+    "中國廠掌握約2/3光收發器供給，美國若禁用，Lumentum與Coherent短期補不上，叢集上線可能延後數季",
+    "即使台廠不在中國製造，政策也可能帶來轉單想像，但同時有全鏈擾動風險",
+    "政策範圍與執行仍不明，TechNews 9/28指出相關法案目前限制範圍仍聚焦聯邦政府國安系統"
+   ]
+  },
+  {
+   "title": "怎麼判斷誰勝出",
+   "points": [
+    "產能與良率：能不能量產，例如華星光CW月產能",
+    "料源保障：InP基板長約有沒有",
+    "客戶認證與長約：有沒有美系大客戶的長期訂單",
+    "資本支出可持續性：擴產由客戶預付還是自己扛"
+   ]
+  }
+ ],
+ "conclusion": [
+  "Lumentum稱產能訂到2029年初、部分產品明年缺口約70%，比半年前說的2028年售罄更嚴重，但70%僅指其部分產品",
+  "瓶頸在InP雷射與磊晶，新增產能需3–5年，缺貨具結構性",
+  "台廠9月與3Q26營收呼應缺貨敘事，聯亞、光環、聯鈞、華星光明顯成長，但IET-KY等表現不均，利益集中在握有雷射與磊晶產能者",
+  "美國對中國光模組的政策方向與範圍仍不確定，可能帶來轉單想像也可能擾亂全鏈",
+  "需留意重複下單、AI資本支出降溫、評價與處置風險，觀察Lumentum下次財報與台廠10月營收"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：AI需求看不到盡頭 Lumentum：光學元件訂單滿到2029年 部分產品缺口達七成",
+   "url": "https://news.cnyes.com/news/id/6626655"
+  },
+  {
+   "title": "UDN：AI光通訊缺貨看不到盡頭 Lumentum產能訂滿至2029年初",
+   "url": "https://udn.com/news/story/6811/9804638"
+  },
+  {
+   "title": "ETtoday：光通訊巨頭Lumentum喊訂單「排滿至2029年」",
+   "url": "https://finance.ettoday.net/news/3251826"
+  },
+  {
+   "title": "新浪財經：Lumentum稱部分產品70%需求無法滿足，Evercore維持目標價",
+   "url": "https://finance.sina.com.cn/stock/usstock/c/2026-10-12/doc-iniuytpc8381529.shtml"
+  },
+  {
+   "title": "Investing.com：Lumentum Q4 2026 法說逐字稿",
+   "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-lumentum-tops-q4-2026-forecasts-as-ai-demand-lifts-outlook-93CH-4852933"
+  },
+  {
+   "title": "Motley Fool：Lumentum Q3 2026 逐字稿",
+   "url": "https://www.fool.com/earnings/call-transcripts/2026/05/06/lumentum-lite-q3-2026-earnings-transcript/"
+  },
+  {
+   "title": "工商時報：Lumentum績昂卻回檔？外資喊價助陣 聯鈞等光通訊台鏈吃補",
+   "url": "https://www.ctee.com.tw/news/20260508700226-439901"
+  },
+  {
+   "title": "東森財經：Lumentum財報藏3大暗示 台廠光通訊有戲了",
+   "url": "https://fnc.ebc.net.tw/fncnews/business/216280"
+  },
+  {
+   "title": "PressPlay：Lumentum(LITE) 做什麼的？一文看懂2大業務與台股供應鏈",
+   "url": "https://www.pressplay.cc/project/2667A183130728C4AE30928EF3CFF4DD/articles/D800F5CA2D06C8B753F1C0C010CBC35C"
+  },
+  {
+   "title": "PhotonCap：The 8 Companies Behind Lumentum's $808M Quarter",
+   "url": "https://photoncap.net/p/the-8-companies-behind-lumentums"
+  },
+  {
+   "title": "Simple Tech Trend：Lumentum JPM Fireside Chat",
+   "url": "https://www.simpletechtrend.com/post/lumentum-jpm-2026-fireside-chat-inp-bottleneck"
+  },
+  {
+   "title": "工商時報：光通訊族群9月業績爆發",
+   "url": "https://www.chinatimes.com/newspapers/20261008000225-260202"
+  },
+  {
+   "title": "工商時報：光通訊需求爆發！800G、1.6T升級潮來襲",
+   "url": "https://www.ctee.com.tw/news/20261008700080-439901"
+  },
+  {
+   "title": "TechNews：聯亞9月營收創高！InP基板供應改善",
+   "url": "https://technews.tw/2026/10/06/goldman-sachs-see-landmark-2026-09-revenue/"
+  },
+  {
+   "title": "ETtoday：聯亞9月營收刷新高、一度漲停 4檔光通訊股伴飛",
+   "url": "https://finance.ettoday.net/news/3250531"
+  },
+  {
+   "title": "Yahoo 股市：華星光 2026年9月合併營收公告",
+   "url": "https://tw.stock.yahoo.com/news/%E5%85%AC%E5%91%8A-%E8%8F%AF%E6%98%9F%E5%85%89-2026%E5%B9%B49%E6%9C%88%E5%90%88%E4%BD%B5%E7%87%9F%E6%94%B65-75%E5%84%84%E5%85%83-%E5%B9%B4%E5%A2%9E97-100350957.html"
+  },
+  {
+   "title": "TechNews：華星光CW雷射出貨今年增四倍（2025/12 法說）",
+   "url": "https://finance.technews.tw/2025/12/23/luxnet/"
+  },
+  {
+   "title": "台視財經／MoneyDJ：華星光CW Laser能見度高，產能將逐年倍增",
+   "url": "https://www.ttv.com.tw/finance/view/122025230933BE591F8201AB4611AE3770AB949608359B00/587"
+  },
+  {
+   "title": "Yahoo 股市：2026成長確立！華星光EPS上看11.9元",
+   "url": "https://tw.stock.yahoo.com/news/2026%E6%88%90%E9%95%B7%E7%A2%BA%E7%AB%8B-%E8%8F%AF%E6%98%9F%E5%85%89eps%E4%B8%8A%E7%9C%8B11-9%E5%85%83-%E9%82%84%E8%83%BD%E8%BF%BD-033646508.html"
+  },
+  {
+   "title": "鉅亨網：川普擬禁中國光收發模組進口",
+   "url": "https://news.cnyes.com/news/id/6559657"
+  },
+  {
+   "title": "INSIDE：美禁中國光模組恐傷AI競爭力",
+   "url": "https://www.inside.com.tw/article/42017-us-ban-china-optical-transceivers-ai-datacenter-risk"
+  },
+  {
+   "title": "TechNews：美國擬限制中國光模組，中際旭創、新易盛雙雙重挫",
+   "url": "https://technews.tw/2026/09/28/us-aims-restrict-chinese-optical-modules-cig-eoptolink-shares-plunge/"
+  },
+  {
+   "title": "鉅亨網：美國若禁止中國光收發器進口（Counterpoint）",
+   "url": "https://hk.finance.yahoo.com/news/%E6%96%B0%E5%A0%B1%E5%91%8A%E8%AD%A6%E5%91%8A-%E7%BE%8E%E5%9C%8B%E8%8B%A5%E7%A6%81%E6%AD%A2%E4%B8%AD%E5%9C%8B%E5%85%89%E6%94%B6%E7%99%BC%E5%99%A8%E9%80%B2%E5%8F%A3-%E5%B0%87%E9%87%8D%E5%89%B5%E6%9C%AC%E5%9C%9FAI%E5%B7%A8%E9%A0%AD-100946835.html"
+  },
+  {
+   "title": "DIGITIMES via Google News（觸發來源，未能開啟原文）",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9aT1JMVHpxcWhRYjVkd2RuSzhodWRiRC1PRzhOY2Y3T3ZjMGlyaVZCN0xVVVlqdzBOeFAzSXR6NW9TVk9YbnBNbjNTdGNGMDNmR0RFU0hHRFdCNlptd1hGYkdyZndqb0VtemNj?oc=5"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "InP基板／材料",
+   "description": "整體仍緊，但聯亞9月營收獲高盛評論時提到基板供應改善，修正了先前InP缺料限制出貨的偏空說法；缺料仍在。",
+   "global_players": [
+    "住友電工",
+    "AXT",
+    "JX金屬"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2340",
+     "name": "台亞",
+     "role": "InP材料，用於1.6T模組（細節待確認）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "磊晶（InP／GaAs epi）",
+   "description": "產能緊、擴產中。聯亞董事會通過最高22.7億元設備採購，9月中旬宣布取得一批5.35億元新設備。",
+   "global_players": [
+    "IQE",
+    "Landmark（中）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3081",
+     "name": "聯亞",
+     "role": "磊晶＋CW；9月營收5.4億元、年增190%，3Q26營收15.61億元、年增約182%",
+     "impact": "受惠"
+    },
+    {
+     "code": "4971",
+     "name": "IET-KY",
+     "role": "磊晶；9月營收1.08億元、年增11.37%，訊號偏弱",
+     "impact": "受惠"
+    },
+    {
+     "code": "2455",
+     "name": "全新",
+     "role": "磊晶；處置中需注意風險",
+     "impact": "受惠"
+    },
+    {
+     "code": "4991",
+     "name": "環宇-KY",
+     "role": "InP／GaAs光電代工",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "雷射／光偵測晶粒（EML、CW、PD）",
+   "description": "Lumentum產能被訂到2029年初。華星光月產能計畫由約150萬顆提升到340萬顆（2026Q4），2027年600萬顆以上。",
+   "global_players": [
+    "Lumentum",
+    "Coherent",
+    "Broadcom",
+    "三菱電機"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4979",
+     "name": "華星光",
+     "role": "CW雷射；9月營收5.75億元、年增97.78%，但1-9月累計僅年增27.29%",
+     "impact": "受惠"
+    },
+    {
+     "code": "3234",
+     "name": "光環",
+     "role": "PD／雷射；9月營收1.21億元、年增140.31%，3Q營收3.26億元、年增115.95%",
+     "impact": "受惠"
+    },
+    {
+     "code": "3105",
+     "name": "穩懋",
+     "role": "GaAs代工；被媒體列為Lumentum概念股，實際合作關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "封裝（COS、ELS）",
+   "description": "量價俱增。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3450",
+     "name": "聯鈞",
+     "role": "COS雷射封裝、AOC；9月營收12.89億元、年增99.78%，3Q營收37.56億元、年增102.39%",
+     "impact": "受惠"
+    },
+    {
+     "code": "4977",
+     "name": "眾達-KY",
+     "role": "ELS組裝；本次無9月營收數據",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "光纖被動元件／FAU／連接",
+   "description": "上詮高通道數FAU 2026年起逐步量產、2027年顯著放量；波若威高密度光纖套件與Shuffle Box預計下半年量產（均為法人說法）。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3363",
+     "name": "上詮",
+     "role": "FAU，與台積電矽光子封裝合作",
+     "impact": "受惠"
+    },
+    {
+     "code": "3163",
+     "name": "波若威",
+     "role": "光纖被動元件",
+     "impact": "受惠"
+    },
+    {
+     "code": "6442",
+     "name": "光聖",
+     "role": "光纖連接器",
+     "impact": "受惠"
+    },
+    {
+     "code": "4903",
+     "name": "聯光通",
+     "role": "10/7同步漲停，角色待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3672",
+     "name": "康聯訊",
+     "role": "10/7同步漲停，角色待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "光收發模組",
+   "description": "缺貨使模組廠拿料有壓力。",
+   "global_players": [
+    "中際旭創",
+    "新易盛",
+    "Coherent",
+    "Fabrinet",
+    "Lumentum"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4908",
+     "name": "前鼎",
+     "role": "1.6T旺是受惠，但雷射缺貨與價格競爭可能壓縮利潤（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "6451",
+     "name": "訊芯-KY",
+     "role": "光模組與CPO封裝代工",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "外圍（CPO設備、先進封裝、CCL／PCB）",
+   "description": "本題間接關聯；CPO可能侵蝕高速板需求的擔憂僅見標題，待驗證。",
+   "global_players": [
+    "台積電",
+    "日月光投控"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2360",
+     "name": "致茂",
+     "role": "CPO設備",
+     "impact": "中性"
+    },
+    {
+     "code": "6187",
+     "name": "萬潤",
+     "role": "CPO設備",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
