@@ -1,0 +1,179 @@
+{
+ "topic": "供需事件：伊賽亞斯颶風衝擊美國能源供應 煉油產能吃緊",
+ "one_line": "本季第一個颶風伊賽亞斯讓美國墨西哥灣約六成海上產油停擺，煉油廠開工率約95%、柴油庫存為1982年以來同期最低，供應幾乎沒有緩衝；颶風路徑偏東、避開路易斯安那主要煉油區，實際衝擊取決於煉油廠是否停電或淹水（尚無登陸損害報導）。",
+ "status": "混合",
+ "horizon": "短期（數天到兩週，取決於煉油廠有無受損）",
+ "keywords": [
+  "伊賽亞斯颶風",
+  "墨西哥灣",
+  "煉油產能",
+  "柴油庫存",
+  "取暖油期貨",
+  "戰略石油儲備"
+ ],
+ "catalysts": [
+  "颶風迫使墨西哥灣石油公司關閉約130萬桶／日產能，約占當地產量63%",
+  "煉油廠開工率約95%，沒有多餘產能可補",
+  "柴油庫存為1982年有統計以來同期最低；戰略石油儲備也在1982年以來低點",
+  "10/8 美國11月柴油期貨結算 4.8829 美元／加侖，單日上漲約26美分"
+ ],
+ "risks": [
+  "截至10/10 的報導都是登陸前的預測，我沒有找到登陸、停電、淹水或煉油廠復工的報導",
+  "路徑偏東、避開路易斯安那主要煉油區，實際衝擊可能小於擔心",
+  "若沒有重大損害，設施通常約一週內可復工",
+  "美國10/9 才放寬俄羅斯柴油制裁、柴油期貨 10/9 已回落約3%（Yahoo 延遲報價 4.74），顯示價格同時受多條線影響",
+  "各來源數字略有出入（例如停產約130萬或150萬桶／日）"
+ ],
+ "spec_tables": [
+  {
+   "title": "關鍵數字",
+   "columns": [
+    "項目",
+    "數字",
+    "來源"
+   ],
+   "rows": [
+    [
+     "墨西哥灣海上停產",
+     "約130萬桶／日，約占當地產量63%",
+     "CBS12／CNBC 引用美國海洋礦產管理局"
+    ],
+    [
+     "煉油廠開工率",
+     "約95%",
+     "Energy News Beat"
+    ],
+    [
+     "受威脅煉油廠",
+     "雪佛龍 Pascagoula、Vertex Mobile 附近，合計約46.6萬桶／日（約占美國2.4%）",
+     "分析師估計（CNBC）"
+    ],
+    [
+     "預測路徑附近煉油產能",
+     "約270萬桶／日（約占14%）；後續報導稱路徑偏東、約50萬桶／日在或接近路徑",
+     "CNN／Energy News Beat"
+    ],
+    [
+     "庫存",
+     "汽油低於五年均值6%、餾分油低於12%（週 10/2）；柴油為1982年以來同期最低",
+     "EIA／Daily Caller／CNN"
+    ],
+    [
+     "價格",
+     "11月柴油期貨 4.8829（10/8）、RBOB 3.316；零售柴油約6.28 美元／加侖",
+     "Energy News Beat"
+    ]
+   ],
+   "note": "數字整理自新聞報導，已附來源；尚無登陸後損害數據。"
+  }
+ ],
+ "evolution": [],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "颶風前先關閉海上平台，原油供給先減少",
+    "煉油廠本來就接近滿載、庫存見底，一旦停電或淹水就沒有緩衝",
+    "同時荷莫茲海峽關閉、俄羅斯煉油廠遭攻擊，全球柴油本來就緊"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷（初步推論）",
+   "points": [
+    "受傷：航空、航運等燃油成本敏感產業",
+    "可能受惠：亞洲煉油廠（美國煉油產能受損時產品價差擴大），但本次尚未證實",
+    "替代供應：俄羅斯柴油（被放寬制裁）、中東以外的其他產地、美國戰略儲備"
+   ]
+  },
+  {
+   "title": "怎麼判讀",
+   "points": [
+    "先看颶風登陸後煉油廠是否真的停電或淹水，沒有損害的話價格效應通常很快消退",
+    "觀察柴油期貨與裂解價差是否重新走高",
+    "這是短期事件，不宜把價格波動當成長期趨勢"
+   ]
+  }
+ ],
+ "conclusion": [
+  "目前是『風險很高、損害未證實』：供應沒有緩衝，但路徑避開主要煉油區。",
+  "對台股：航空仍承受燃油成本壓力；台塑化是否受惠要看價差，需等實際停工資料。",
+  "需要補的資料：登陸後煉油廠狀況、柴油裂解價差、亞洲煉油利潤。"
+ ],
+ "sources": [
+  {
+   "title": "CNBC：Hurricane Isaias disrupts U.S. oil production in Gulf of Mexico, threatens refineries（10/9）",
+   "url": "https://www.cnbc.com/2026/10/09/hurricane-isaias-gulf-mexico-oil-refinery.html"
+  },
+  {
+   "title": "CNN：A hurricane could cripple US refining when the world can least afford it（10/8）",
+   "url": "https://www.cnn.com/2026/10/08/economy/isaias-oil-refineries-gulf-coast-hurricanes"
+  },
+  {
+   "title": "CNN：‘Zero tolerance for disruptions.’ Hurricane Isaias could mess with America’s refining nerve center（10/9）",
+   "url": "https://www.cnn.com/2026/10/09/economy/hurricane-isaias-oil-gas-refinery"
+  },
+  {
+   "title": "NBC News：Gas prices face new threat as Hurricane Isaias forces widespread Gulf oil shutdowns",
+   "url": "https://www.nbcnews.com/business/energy/gas-prices-hurricane-isaias-gulf-mexico-rcna602258"
+  },
+  {
+   "title": "NPR：Oil Platforms in the Gulf shut down in preparation for Hurricane Isaias（10/9）",
+   "url": "https://www.npr.org/2026/10/09/nx-s1-5995573/oil-platforms-in-the-gulf-shut-down-in-preparation-for-hurricane-isaias"
+  },
+  {
+   "title": "Energy News Beat：Hurricane Isaias Update: Track Stays East of the Big Louisiana Refineries",
+   "url": "https://energynewsbeat.co/big-oil-companies/hurricane-isaias-update-track-stays-east-of-the-big-louisiana-refineries-but-diesel-and-florida-fuel-remain-at-risk/"
+  },
+  {
+   "title": "Daily Caller：America Has Little Fuel Cushion Left If A Hurricane Knocks Out Gulf Coast Refineries（10/10）",
+   "url": "https://dailycaller.com/2026/10/10/hurricane-isaias-gulf-coast-refineries-fuel-inventories-strategic-petroleum-reserve-steve-milloy-ellen-wald/"
+  },
+  {
+   "title": "MoneyDJ：伊賽亞斯颶風衝擊美國能源供應 煉油產能吃緊（觸發新聞）",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOaGplNGRrLVRtaDF1dXZVQXRvaDBYZnJFS3h6UkZfWThUVWJjZURESmhoa1RVLXRzc3J2YzNZeUNYUVo1a1puei1WM09ndzVYd2hvWEV0cURHQjBOZFVtUUE2NXBrbjZHMGZON0RyM0ZVUnRueEdkdEJEaFhVWTJxbW5sR0UwMURMVnoxbjVDZDE?oc=5"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "燃油使用端：航空與航運",
+   "description": "柴油與油價走高會增加燃油成本；柴油期貨10/9約4.74 美元／加侖（Yahoo 延遲報價），仍在高檔。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2618",
+     "name": "長榮航",
+     "role": "航空，燃油成本敏感",
+     "impact": "受傷"
+    },
+    {
+     "code": "2610",
+     "name": "華航",
+     "role": "航空，燃油成本敏感",
+     "impact": "受傷"
+    },
+    {
+     "code": "2603",
+     "name": "長榮",
+     "role": "貨櫃航運，燃油成本之外運價更重要",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "煉油（亞洲）",
+   "description": "美國煉油產能若受損，產品價差可能擴大，利於產品外銷的亞洲煉油廠；本次尚未見損害，僅為推論。",
+   "global_players": [
+    "雪佛龍（Pascagoula）",
+    "Vertex Energy（Mobile）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6505",
+     "name": "台塑化",
+     "role": "煉油廠，產品價差與供應",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ]
+}
