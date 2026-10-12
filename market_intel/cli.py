@@ -865,7 +865,7 @@ def cmd_channels(args) -> None:
                         log.info("頻道 %s #%s 圖片內容是業配／廣告，略過", handle, p.post_id)
                         continue
             notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code), channel=push_to)
-            if not args.latest and ch.get("research", True):
+            if (not args.latest or args.research) and ch.get("research", True):
                 research.add_to_inbox(handle, p.post_id, p.text, p.url)  # 交給題材研究員判斷要不要研究
     if not args.latest:
         telegram_channel.save_state(state)
@@ -1903,6 +1903,7 @@ def main(argv: list[str] | None = None) -> None:
     fl.set_defaults(func=cmd_inflow)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
+    ch.add_argument("--research", action="store_true", help="搭配 --latest：這幾則也送進題材研究收件匣（補漏用）")
     ch.set_defaults(func=cmd_channels)
 
     rt = sub.add_parser("realtime", help="盤中即時監控")

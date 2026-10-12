@@ -510,15 +510,21 @@ def test_channels_image_post_flow(tmp_path, monkeypatch):
     monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
     monkeypatch.setattr(notify, "send_photos", lambda paths, caption="", channel="market": photos.append((paths, caption)))
     monkeypatch.setattr(research, "add_to_inbox", lambda *a: inbox.append(a))
-    cli.cmd_channels(argparse.Namespace(latest=0))
+    cli.cmd_channels(argparse.Namespace(latest=0, research=False))
     assert photos and photos[0][0] == [img] and "圖片貼文" in photos[0][1]
     assert "圖片文字（AI 辨識" in sent[0] and "聯亞(3081) 目標價 500" in sent[0] and "3081 聯亞" in sent[0]
     assert "聯亞(3081) 目標價 500" in inbox[0][2]
+    # --latest 預設不送研究收件匣（測試用）；加 --research 補漏才送
+    inbox.clear()
+    cli.cmd_channels(argparse.Namespace(latest=1, research=False))
+    assert not inbox
+    cli.cmd_channels(argparse.Namespace(latest=1, research=True))
+    assert inbox and "聯亞(3081) 目標價 500" in inbox[0][2]
     # 沒有金鑰：圖片照推，文字訊息提示只有圖片
     monkeypatch.setattr(ai, "available", lambda: False)
     sent.clear(); photos.clear(); inbox.clear()
     tg.save_state({"Gooaye": 2000})
-    cli.cmd_channels(argparse.Namespace(latest=0))
+    cli.cmd_channels(argparse.Namespace(latest=0, research=False))
     assert photos and "只有圖片" in sent[0]
 
 

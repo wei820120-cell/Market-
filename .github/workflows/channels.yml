@@ -1,5 +1,6 @@
 # 產業消息頻道：手動測試用。平常由 watch.yml 每 2 分鐘檢查（config/sources.yaml）。
 # 已推過的貼文編號記在 state/telegram_seen.json。
+# 補漏：latest=2、research=true → 重推最新 2 則（圖片會辨識文字），並送進研究收件匣，常駐監看下一輪就會判斷要不要研究。
 name: channels
 
 on:
@@ -8,6 +9,9 @@ on:
       latest:
         description: "測試：直接推最新 N 則（0＝正常模式，只推新貼文）"
         default: "0"
+      research:
+        description: "搭配 latest：這幾則也送進題材研究收件匣（補漏用，true／false）"
+        default: "false"
 
 permissions:
   contents: write
@@ -37,7 +41,8 @@ jobs:
           TELEGRAM_PICKS_CHAT_ID: ${{ secrets.TELEGRAM_PICKS_CHAT_ID }}
           TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
           TELEGRAM_RESEARCH_CHAT_ID: ${{ secrets.TELEGRAM_RESEARCH_CHAT_ID }}
-        run: python -m market_intel channels --latest "${{ inputs.latest || '0' }}"
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # 圖片貼文要看圖辨識文字
+        run: python -m market_intel channels --latest "${{ inputs.latest || '0' }}" ${{ inputs.research == 'true' && '--research' || '' }}
       - name: 存檔已讀記錄
         run: |
           git config user.name "github-actions[bot]"
