@@ -19,6 +19,23 @@
    "realized": 0.0,
    "alerts": [],
    "last_check": "2026-10-08"
+  },
+  {
+   "code": "2609",
+   "name": "陽明",
+   "contract": "DAF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry": 61.6,
+   "stop": 58.725688847062926,
+   "r0": 2.874311152937075,
+   "rate": 0.162,
+   "entry_date": "2026-10-12",
+   "days": 0,
+   "half_done": false,
+   "realized": 0.0,
+   "alerts": []
   }
  ],
  "closed": [
