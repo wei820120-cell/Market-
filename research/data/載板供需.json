@@ -1,0 +1,520 @@
+{
+ "topic": "載板供需",
+ "one_line": "AI 晶片載板面積變大、層數變多，使 ABF 與 BT 載板進入多年期結構性缺貨；瓶頸正由 T-glass 玻纖布、ABF 膜往製程設備移動，真空壓合設備交期已到 2027 年底。",
+ "status": "混合",
+ "horizon": "長期（1年以上）",
+ "keywords": [
+  "ABF載板",
+  "BT載板",
+  "T-glass",
+  "Low-CTE",
+  "Low-Dk",
+  "日東紡",
+  "味之素",
+  "真空壓合設備",
+  "SAP",
+  "CoWoS",
+  "等效加工面積",
+  "玻璃核心",
+  "CoWoP",
+  "EMIB-T",
+  "載板三雄"
+ ],
+ "catalysts": [
+  "台廠第三季法說：稼動率、資本支出、長約年限、材料配額",
+  "台廠月營收能否延續（8 月欣興約 177 億元 +56%、南電約 54 億元 +41%）",
+  "台積電與 Nvidia 對 CoWoS/Rubin 的產能指引",
+  "味之素是否擴大調價、韓廠是否跟進",
+  "設備商（如長廣）訂單與交期、2027 年長約價格條款",
+  "2026Q4 金居雲林三廠首線投產、南電崑山廠目標 100% 稼動",
+  "2027 景碩 ABF 擴產 25%、日東紡新產能下半年開出",
+  "FY3/2028 Ibiden EMIB-T 量產規劃"
+ ],
+ "risks": [
+  "缺口預估歧異大：高盛 9 月版 2026 下半/2027/2028 缺口 14%/34%/51%，美銀 7%/14%/19%，Counterpoint 約 10%/20%，數字反覆上修且不穩定",
+  "景氣反轉歷史：2021–22 PC 需求崩跌導致載板產能瞬間過剩，若 CSP 資本支出降溫，長約與擴產可能變包袱",
+  "擴產過度：欣興資本支出 537 億元（+57%），2027–2029 新廠量產期折舊壓力顯現",
+  "技術路線：玻璃核心、CoWoP 等若成熟可能改變 ABF 用量；Q-glass 仍有加工門檻",
+  "日東紡社長稱 2030 年後需求強度難以預測",
+  "價格傳導不確定：韓廠若不跟漲，台廠定價空間受限；載板廠 100% 成本轉嫁尚待財報驗證",
+  "股價已反映高預期：2026-09-22 三雄同步漲停（欣興 1,120 元、南電 1,165 元、景碩 909 元）",
+  "將「材料趨緩」誤讀為缺貨結束，會忽略 T-glass 仍滿載與設備荒"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表 A：關鍵玻纖布與材料",
+   "columns": [
+    "項目",
+    "E-glass（一般電子級）",
+    "T-glass（Low-CTE）",
+    "Q-glass（石英玻纖）",
+    "ABF 增層膜"
+   ],
+   "rows": [
+    [
+     "角色",
+     "一般 PCB/中低階載板補強",
+     "高階載板核心層補強，抑制翹曲",
+     "更低 Dk/Df 的次世代材料",
+     "增層絕緣（無玻纖或極少玻纖）"
+    ],
+    [
+     "CTE（ppm/°C）",
+     "約 5–6（通識估計）",
+     "約 2.5–3.5（通識估計），更接近矽晶片",
+     "更低（通識估計）",
+     "含填料約 10–40（隨料號差異大，通識估計）"
+    ],
+    [
+     "Dk（約）",
+     "約 6.5–7",
+     "約 4.7–5.3",
+     "約 3.5–4",
+     "約 3.0–3.5（通識估計）"
+    ],
+    [
+     "價格",
+     "約 US$3–5/kg",
+     "約 US$80–100/kg",
+     "高於 T-glass",
+     "2026 起漲價 30%+"
+    ],
+    [
+     "供應",
+     "充足，但 T-glass 擠占部分產能",
+     "日東紡市占約 87%，滿載",
+     "太硬，鑽孔/壓合良率受損，尚難大量導入",
+     "味之素 95%+"
+    ]
+   ],
+   "note": "價格欄 E-glass 與 T-glass 來自海外 Substack 文章，可信度較低；Q-glass 限制來自 TechNews；日東紡市占 87% 與 ABF 97% 來自 TEJ 整理。"
+  },
+  {
+   "title": "規格比較表 B：載板類型",
+   "columns": [
+    "項目",
+    "BT 載板",
+    "ABF 載板",
+    "玻璃核心載板（開發中）"
+   ],
+   "rows": [
+    [
+     "核心",
+     "BT 樹脂＋玻纖布",
+     "玻纖布核心＋ABF 增層",
+     "玻璃取代有機核心"
+    ],
+    [
+     "層數",
+     "低～中",
+     "PC 時代約 4–6 層；AI 加速器 8–16 層以上；最新 20–24 層",
+     "研發/試產階段"
+    ],
+    [
+     "尺寸",
+     "小",
+     "80×80 mm → 100×100 mm 以上",
+     "—"
+    ],
+    [
+     "典型應用",
+     "記憶體、射頻、非美系手機高階、部分 CPU",
+     "GPU/ASIC/CPU/高階交換器",
+     "次世代 AI 封裝（時程待確認）"
+    ],
+    [
+     "價格動向",
+     "2025/7 起部分 T-glass BT 漲幅最高約 20%",
+     "2026 年全面調漲約 15–20%（產業人士）；部分上看 25–40%（市場預期）",
+     "—"
+    ],
+    [
+     "台廠重點",
+     "景碩、南電",
+     "欣興、南電、景碩",
+     "欣興有布局"
+    ]
+   ],
+   "note": "線寬線距、Tg 等細部規格未查到可靠來源，不填。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "PC/傳統伺服器時代",
+   "composition": "PC CPU 用 ABF 載板",
+   "spec": "4–6 層（ABF）",
+   "application": "2021–22 缺貨後 PC 需求崩跌造成供過於求，是上一輪的教訓"
+  },
+  {
+   "name": "2020 Ampere",
+   "composition": "Nvidia Ampere 載板",
+   "spec": "約 3,000 mm²／10–12 層",
+   "application": "AI 載板規格放大起點"
+  },
+  {
+   "name": "2025 Blackwell",
+   "composition": "Nvidia Blackwell 載板",
+   "spec": "約 4,300 mm²（由 Rubin 9,500 mm²＋123% 反推，非原文）",
+   "application": "T-glass 開始缺貨"
+  },
+  {
+   "name": "2026 Rubin",
+   "composition": "Nvidia Rubin 載板",
+   "spec": "約 9,500 mm²／20 層以上（較前代面積 +123%）",
+   "application": "材料＋設備雙瓶頸"
+  },
+  {
+   "name": "2027–28 新 ASIC/GPU",
+   "composition": "新一代 ASIC/GPU 封裝",
+   "spec": "9,000–14,000 mm²／20–24 層",
+   "application": "良率每代再降約 5–10%（法人估）"
+  },
+  {
+   "name": "後續選項",
+   "composition": "EMIB-T、玻璃核心、CoWoP 等",
+   "spec": "—",
+   "application": "Ibiden 規劃最晚 FY3/28 量產 EMIB-T；欣興布局玻璃核心與 CoWoP"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 AI 載板一定要 T-glass（CTE 匹配）",
+   "points": [
+    "矽晶片 CTE 很低，載板熱膨脹係數差太多，升降溫時會翹曲、連接點受損",
+    "T-glass 有高剛性與低 CTE，可抑制翹曲，提高多層堆疊結構穩定性",
+    "法人指出 2026 年新晶片載板面積由 80×80 提升到 100×100 mm，核心層 T-glass 用量倍增，層數由 14–16 層升到 22–24 層",
+    "T-glass 幾乎由日東紡獨供，擴產週期約 12–18 個月且需客戶認證；BT 載板也要用，所以 AI 排擠 BT"
+   ]
+  },
+  {
+   "title": "為什麼晶片出貨量沒變，載板產能卻不夠（等效加工面積）",
+   "points": [
+    "載板變大，每片面板能排的載板數變少",
+    "層數變多，壓合、電鍍、曝光、蝕刻重複更多輪，設備駐留時間拉長",
+    "大尺寸加深翹曲、平整度與電鍍均勻度控制難度，有效良品產出下降",
+    "廠商要維持同等出貨量必須按比例增加設備，設備因此成為新瓶頸"
+   ]
+  },
+  {
+   "title": "為什麼砸錢蓋廠不等於供給增加（有效產能）",
+   "points": [
+    "扣掉設備交期，還有調機、良率爬坡與數季客戶可靠度驗證",
+    "TPCA：新產能集中在 2027–2029 年，高階材料還要經過認證",
+    "高盛指 T-glass 短缺使供應商推遲擴產 6–12 個月；日東紡新產能由預期的 2026 下半後延到 2027 下半",
+    "風險是 2021–22 前例：各家搶簽長約，PC 需求轉弱後產能一夕變剩"
+   ]
+  },
+  {
+   "title": "材料壟斷如何轉成載板價格（成本傳導）",
+   "points": [
+    "ABF 膜與 T-glass 都近乎獨供，味之素逐客戶調價；有報導稱載板廠具 100% 成本轉嫁能力（媒體說法，待財報驗證）",
+    "新長約出現先鎖產能、不鎖價格的模式，客戶更在意拿到貨",
+    "反向風險：若三星電機、LG Innotek 等韓廠不跟漲，台廠定價空間受影響"
+   ]
+  },
+  {
+   "title": "怎麼判斷誰勝出",
+   "points": [
+    "有效產能：看良率×層數×面積折算後能出多少 AI 級載板",
+    "材料取得：是否鎖定 T-glass 與 ABF 配額及第二來源認證",
+    "設備鎖定：是否提前下單鎖定壓合、SAP 設備，多家台灣頭部廠商已提前鎖定",
+    "客戶結構與長約：AI 客戶比重與長約年限，欣興已簽 5 年期產能預約",
+    "價格轉嫁與毛利：長約是否具調價機制"
+   ]
+  }
+ ],
+ "conclusion": [
+  "載板缺貨是由 AI 晶片載板面積與層數放大驅動的多年期結構性問題，需求、材料、設備三線同時吃緊。",
+  "「材料壓力趨緩」較像擴產計畫能見度提高，並非缺口填平；T-glass 仍滿載，TPCA 稱供應緊張至少延續到 2027 年。",
+  "新瓶頸為真空壓合與 SAP 濕製程設備，交期到 2027 年底，設備商如長廣精機受惠但營收認列落後出貨。",
+  "欣興、南電、景碩為載板主要受惠者，但材料配額、擴產折舊與韓廠定價是限制。",
+  "各機構缺口預估差異大且反覆上修，高盛 51% 應視為高端情境，並須留意 2021–22 景氣反轉前例。"
+ ],
+ "sources": [
+  {
+   "title": "DIGITIMES，迎AI卻陷材料與產能瓶頸 PCB、被動元件長交期不再偶然",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=761981"
+  },
+  {
+   "title": "理財周刊，設備交期排到2031年、高盛驚爆「2028缺口衝破51％」！ABF載板掀缺貨狂潮",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/250252"
+  },
+  {
+   "title": "半導體產業縱橫（DIGITIMES Intelligence 分析），设备紧缺，卡住载板扩产",
+   "url": "https://news.qq.com/rain/a/20260921A09WQ000"
+  },
+  {
+   "title": "TEJ 台灣經濟新報，ABF載板為什麼價格飆漲？上游材料瓶頸與台廠機遇",
+   "url": "https://www.tejwin.com/insight/abf%E8%BC%89%E6%9D%BF%E5%83%B9%E6%A0%BC%E9%A3%86%E6%BC%B2%E5%8F%B0%E5%BB%A0%E6%A9%9F%E9%81%87/"
+  },
+  {
+   "title": "TechNews，AI 出貨關鍵大洗牌！法人揭 CoWoS 瓶頸掀 ABF 產能競標戰",
+   "url": "https://finance.technews.tw/2026/08/28/cowososat"
+  },
+  {
+   "title": "經濟日報，ABF 載板供給續吃緊！欣興、景碩、南電迎成長契機",
+   "url": "https://money.udn.com/money/story/11162/9587080"
+  },
+  {
+   "title": "工商時報，ABF缺很大！今年報價估飆漲2成 欣興、南電、景碩準備賺飽飽",
+   "url": "https://www.ctee.com.tw/news/20260523700113-430201"
+  },
+  {
+   "title": "TechNews（MoneyDJ），玻纖布廠日東紡：T-Glass 供不應求、滿載生產",
+   "url": "https://technews.tw/2026/10/06/nittobo-t-glass-lines-running-at-full-capacity/"
+  },
+  {
+   "title": "自由時報，Palliser點火成功？味之素ABF漲價30％ 傳台系供應鏈恐重新定價",
+   "url": "https://stock.ltn.com.tw/article/jquqrxnkccec"
+  },
+  {
+   "title": "TechNews，味之素確認 ABF 漲價開始",
+   "url": "https://technews.tw/2026/05/11/ajinomoto-and-abf-unimicron-nan-ya/"
+  },
+  {
+   "title": "工商時報，AI載板荒還沒完...缺料一路燒到日本！欣興簡山傑首度談供應鏈挑戰",
+   "url": "https://www.ctee.com.tw/news/20260906700012-430502"
+  },
+  {
+   "title": "民報，AI搶料潮燒進PCB 材料、載板供應告急（引 TPCA）",
+   "url": "https://www.peoplenews.tw/articles/economic-news/57634"
+  },
+  {
+   "title": "Encyclopedia of Stocks，Why the Industry is Phasing Out E-Glass for T-Glass in ABF Substrates",
+   "url": "https://encyclopediaofstocks.substack.com/p/why-the-industry-is-phasing-out-e"
+  },
+  {
+   "title": "TechNews，一次搞懂「玻纖布」題材！為何 T-Glass 大缺貨",
+   "url": "https://technews.tw/2025/11/17/what-is-tglass-and-what-is-low-dk-low-cte/"
+  },
+  {
+   "title": "今周刊／Smart自學網，ABF載板需求爆發，「載板三雄」欣興、景碩、南電，誰能成為最大贏家？",
+   "url": "https://smart.businessweekly.com.tw/Reading/IndepArticle.aspx?id=6022472"
+  },
+  {
+   "title": "工商時報，T-Glass供應緊繃 BT載板漲20％ 這檔概念股受惠最大",
+   "url": "https://www.ctee.com.tw/news/20250722700063-430502"
+  },
+  {
+   "title": "工商時報，明年T-Glass短缺恐達高峰 法人點名這家IC載板潛力大",
+   "url": "https://www.ctee.com.tw/news/20251109700260-430201"
+  },
+  {
+   "title": "The Buildout，Bank of America raises estimates for substrate makers as ABF shortage persists through 2028",
+   "url": "https://thebuildout.ai/intel/229c44f2-da57-4f46-b5fa-e5d03702236c"
+  },
+  {
+   "title": "理財周刊，日東紡T-Glass缺貨潮延燒 台廠三雄攻上漲停！",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/202865"
+  },
+  {
+   "title": "TechNews，ABF 載板供應吃緊逐月惡化！高盛調升景碩、南電、欣興目標價",
+   "url": "https://technews.tw/2026/02/04/abf-carrier-board-supply-is-tight/"
+  },
+  {
+   "title": "數位時代，玻纖布是什麼？為什麼最近大缺貨？",
+   "url": "https://www.bnext.com.tw/article/89857/whats-glass-cloth"
+  },
+  {
+   "title": "鉅亨網，AI算力引爆ABF載板「超級大缺貨」！材料龍頭開漲，台廠搶下超額紅利",
+   "url": "https://news.cnyes.com/news/id/6467934"
+  },
+  {
+   "title": "ABMedia，ABF 載板漲價潮要來了！味之素擬漲價 30%",
+   "url": "https://abmedia.io/abf-substrate-ajinomoto-price-taiwan"
+  },
+  {
+   "title": "鉅亨網，ABF廠都在擴產，設備廠的營收卻沒動？法人為何敢估2027年成長147%",
+   "url": "https://news.cnyes.com/news/id/6581696"
+  },
+  {
+   "title": "優分析／鉅亨網，CoWoS擴產推升ABF需求 載板三雄同步漲停、稼動率全面走高",
+   "url": "https://news.cnyes.com/news/id/6612993"
+  },
+  {
+   "title": "東森財經，CoWoS越做越大！「這板子」有錢也搶不到",
+   "url": "https://fnc.ebc.net.tw/fncnews/business/218801"
+  },
+  {
+   "title": "TechNews，ABF 載板缺口 2030 年擴大至 22%！外資調升欣興、南電、臻鼎目標價",
+   "url": "https://finance.technews.tw/2026/05/19/supply-growth/"
+  },
+  {
+   "title": "ETtoday，載板十年一遇好行情 BT、ABF供給吃緊三雄雨露均霑",
+   "url": "https://finance.ettoday.net/news/3112578"
+  },
+  {
+   "title": "經濟日報，載板缺貨風暴才剛開始 外資高喊快「買」這二檔ABF載板廠",
+   "url": "https://udn.com/news/story/7251/9761399"
+  },
+  {
+   "title": "BestPCBs，ABF Substrate Shortage in 2026（引 Counterpoint）",
+   "url": "https://www.bestpcbs.com/blog/2026/08/abf-substrate-shortage/"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "玻纖紗／玻纖布（T-glass、Low-CTE、Low-Dk）",
+   "description": "最早缺貨的環節。Low-CTE 去年下半年先缺，Low-Dk2 與 HVLP4 銅箔接續吃緊。日東紡稱 T-glass 供不應求、產線滿載，2026 年度電子材料營業利益目標由 260 億上修至 280 億日圓，目標 2028 年度產能為 2025 年度 3 倍。新產能集中在 2027–2029 年。",
+   "global_players": [
+    "日東紡 Nittobo（市占約 87%）",
+    "尤尼吉可（規模小，細節待確認）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "Low-Dk 玻纖布，已獲台灣主要 CCL 大廠認證；Low-CTE 載板級放量時程待確認",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "切入多家載板與高速板廠供應鏈，載板級（T-glass）受惠待公司公告證實",
+     "impact": "受惠"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "與日東紡策略合作，2027 年前約 20% 特殊玻纖布由南亞代織；為南電集團母公司",
+     "impact": "受惠"
+    },
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "媒體稱為日東紡子公司，實際 T-glass 貢獻待確認",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "ABF 膜與其他材料（銅箔、化學藥水、金）",
+   "description": "味之素 ABF 膜漲價 30% 以上，下一季生效，預期推升載板報價約 3–6%。味之素 2025/3 宣布兩年投入 250 億日圓擴產，新產能 2026 年底才大幅開出（TEJ）；另一篇報導稱新廠最快 2032 年投產，說法不一致。銅金價走高也推升 BT 成本。",
+   "global_players": [
+    "味之素 Ajinomoto（ABF 膜市占 95% 以上）",
+    "三井金屬（HVLP 銅箔約 37%）",
+    "古河電工（HVLP 銅箔約 16%）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "HVLP 銅箔市占約 10%，雲林三廠首條產線預計 2026Q4 投產；載板用途待確認",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "製程設備與耗材",
+   "description": "本次題材核心。2026 H1 台灣 PCB 設備產值 460.8 億元，年增 27.8%，機械鑽孔設備與鑽針成長突出。真空壓合交期到 2027 年末，SAP 濕製程訂單能見度到 2027–2028 年；有報導稱壓膜機交期排到 2031 年（單一個案）。",
+   "global_players": [
+    "Meiki",
+    "Via Mechanics"
+   ],
+   "tw_stocks": [
+    {
+     "code": "7795",
+     "name": "長廣",
+     "role": "壓膜設備；法人預估營收從 2026 年約 29 億元增至 2027 年約 70 億元（+147%），設備驗收後才認列營收",
+     "impact": "受惠"
+    },
+    {
+     "code": "8021",
+     "name": "尖點",
+     "role": "鑽針廠，受惠機械鑽孔與鑽針成長，載板比重待確認",
+     "impact": "受惠"
+    },
+    {
+     "code": "2467",
+     "name": "志聖",
+     "role": "設備廠，可能與載板壓合相關，未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "3131",
+     "name": "弘塑",
+     "role": "設備廠，可能與濕製程相關，未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "3563",
+     "name": "牧德",
+     "role": "檢測設備廠，未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "6664",
+     "name": "群翊",
+     "role": "設備廠，未查證",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "ABF 載板",
+   "description": "價值最大環節。2026 全球報價預估調漲 15–20%，2026Q2 起平均報價升 5–10%，部分現貨漲逾 30%。欣興 2026Q2 ABF 稼動率超過 90%，南電約 85%。欣興 2026 年資本支出由 340 億追加至 537 億元；景碩規畫 2027 年 ABF 產能擴增 25%。",
+   "global_players": [
+    "Ibiden（GPU 載板市占約 70–80%，二手來源）",
+    "三星電機",
+    "LG Innotek",
+    "AT&S",
+    "Daeduck",
+    "Isu Petasys"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "ABF 載板龍頭，布局 CPO、玻璃核心與 CoWoP；材料配額是成長上限",
+     "impact": "受惠"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "ABF 產能修復與轉單，BT 滿載，崑山廠稼動率持續回升",
+     "impact": "受惠"
+    },
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "BT 起家切入 ABF，法人預估美系 AI 客戶 CPU 載板比重由約 10% 升至 50%",
+     "impact": "受惠"
+    },
+    {
+     "code": "4958",
+     "name": "臻鼎-KY",
+     "role": "外資報告納入 ABF 受惠名單，ABF 營收占比待確認",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "BT 載板",
+   "description": "因 T-glass 被 ABF 排擠與成本上升而調價，2025/7 起部分最高漲 20%，記憶體多頭使需求更旺。南電 BT 自 2026Q2 滿載，景碩約 75%（預估年底 85%），欣興約 80–85%。",
+   "global_players": [],
+   "tw_stocks": []
+  },
+  {
+   "layer": "下游：先進封裝與晶片客戶",
+   "description": "2026 年 AI 供應鏈出貨關鍵已由晶圓轉到 ABF 基板與上游材料。大摩預估 2028 年先進封裝總產能仍約增長 50%。此環節同時是需求拉動者與成本承擔者。",
+   "global_players": [
+    "Nvidia",
+    "AMD"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "CoWoS 擴產是載板需求最重要拉動力，載板短缺同時是出貨風險",
+     "impact": "中性"
+    },
+    {
+     "code": "3711",
+     "name": "日月光投控",
+     "role": "封測廠，載板漲價可轉嫁但短缺影響交付，毛利衝擊待確認",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
