@@ -960,15 +960,16 @@ def cmd_research(args) -> None:
             notify.send(f"🔬 收到，開始研究「{text}」，約 3～8 分鐘後回報。", channel=push)
             queue.append((text, "Telegram 指令", False, None))
 
-    auto_texts: list[str] = []
+    auto_texts: list[str] = []  # 當天重點新聞標題：偵測出的題材受 max_per_day 限制
+    chan_texts: list[str] = []  # 追蹤頻道（股癌等）貼文：偵測出的題材不受 max_per_day 限制（仍受每月預算）
     triggers: dict[str, str] = {}
+    inbox_files: list = []
     if args.inbox:
         items = research.read_inbox()
-        for _, d in items:
-            auto_texts.append(d["text"][:600])
+        for p, d in items:
+            chan_texts.append(d["text"][:600])
             triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
-        for p, _ in items:  # 讀過就刪，避免重複偵測（沒有金鑰也刪，免得越積越多）
-            p.unlink(missing_ok=True)
+            inbox_files.append(p)
     if args.auto_slots and _auto_due():
         args.auto = True
     if args.auto:
@@ -985,6 +986,30 @@ def cmd_research(args) -> None:
             queue.append((d["topic"], d.get("trigger", "資金流入"), True, p))
             cap -= 1
 
+    min_imp = int(st.get("min_importance", 3))
+    if chan_texts:
+        # 股癌等追蹤頻道的貼文：該研究就研究，不看每天上限（is_auto=False 也不計入上限）；偵測沒做成就先留著，下一輪再試
+        detected = False
+        if ai.available() and ai.budget_left():
+            try:
+                found = research.detect_topics(chan_texts)
+                detected = True
+            except ai.AIUnavailable as e:
+                log.warning("頻道貼文題材偵測失敗：%s", e)
+                found = []
+            for t in [x for x in found if x["importance"] >= min_imp]:
+                if any(q[0] == t["topic"] for q in queue):
+                    continue
+                src = next((v for k, v in triggers.items() if t["topic"] in k), "")
+                queue.append((t["topic"], f"頻道貼文偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", False, None))
+        if detected:
+            for p in inbox_files:  # 偵測完才刪，避免重複偵測
+                p.unlink(missing_ok=True)
+        else:
+            log.info("頻道貼文 %d 則暫時無法偵測題材（沒有金鑰、預算用完或失敗），先留在收件匣", len(inbox_files))
+            for p in sorted(inbox_files, key=lambda f: (len(f.name), f.name))[:-60]:  # 只留最新 60 則，免得越積越多
+                p.unlink(missing_ok=True)
+
     if auto_texts and ai.available():
         if cap <= 0:
             log.info("今天自動研究已達上限 %s 個", st.get("max_per_day", 4))
@@ -994,10 +1019,8 @@ def cmd_research(args) -> None:
             except ai.AIUnavailable as e:
                 log.warning("題材偵測失敗：%s", e)
                 found = []
-            min_imp = int(st.get("min_importance", 3))
-            for t in [x for x in found if x["importance"] >= min_imp][:cap]:
-                src = next((v for k, v in triggers.items() if t["topic"] in k), "")
-                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", True, None))
+            for t in [x for x in found if x["importance"] >= min_imp and not any(q[0] == x["topic"] for q in queue)][:cap]:
+                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}", True, None))
     elif auto_texts:
         log.info("沒有 ANTHROPIC_API_KEY，略過自動題材偵測")
 

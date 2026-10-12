@@ -639,6 +639,58 @@ def test_research_topic_end_to_end(tmp_path, monkeypatch):
     assert list(usage.values())[0]["runs"] == 1
 
 
+def test_channel_topics_ignore_daily_cap(tmp_path, monkeypatch):
+    """股癌等追蹤頻道貼文偵測出的題材不受每天上限；新聞偵測的題材照舊受限。偵測沒做成就把貼文留著。"""
+    import argparse
+    from types import SimpleNamespace as NS
+    from market_intel import ai, cli, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INBOX_DIR", tmp_path / "inbox")
+    monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
+    monkeypatch.setattr(cli, "_listings", lambda: {})
+    monkeypatch.setattr(cli, "_auto_due", lambda: False)
+    monkeypatch.setattr(cli.stock_futures, "load_stock_futures", lambda: {})
+    monkeypatch.setattr(cli.notify, "send", lambda *a, **k: None)
+    monkeypatch.setattr(cli, "_send_card_for_topic", lambda *a, **k: None)
+    monkeypatch.setattr(ai, "settings", lambda: {"max_per_day": 4, "min_importance": 3})
+    monkeypatch.setattr(ai, "available", lambda: True)
+    monkeypatch.setattr(ai, "budget_left", lambda: True)
+    monkeypatch.setattr(research, "researched_today", lambda: 99)  # 今天的自動研究額度早就用完
+    done, seen = [], []
+
+    def fake_detect(texts):
+        seen.append(list(texts))
+        if texts == ["新聞標題"]:
+            return [{"topic": "新聞題材", "reason": "r", "importance": 5}]
+        return [{"topic": "CPO光學", "reason": "股癌提到", "importance": 4}, {"topic": "低分", "reason": "x", "importance": 2}]
+
+    monkeypatch.setattr(research, "detect_topics", fake_detect)
+    monkeypatch.setattr(research, "research_topic", lambda topic, trigger, l, f, auto=False: done.append((topic, auto)) or {"message": "ok", "data": {"topic": topic}})
+    args = argparse.Namespace(topic=None, commands=False, inbox=True, auto=False, auto_slots=False)
+    research.add_to_inbox("Gooaye", 1, "某則貼文", "u")
+    cli.cmd_research(args)
+    assert done == [("CPO光學", False)]  # 不計入每天上限（auto=False），重要性不夠的不研究
+    assert not list((tmp_path / "inbox").glob("*.json"))  # 偵測完才刪
+    # 新聞偵測：額度用完就不做
+    done.clear()
+    monkeypatch.setattr(cli.news_signals, "rank", lambda *a, **k: [NS(title="新聞標題")])
+    monkeypatch.setattr(cli, "collect_news", lambda: [])
+    monkeypatch.setattr(cli, "_name_to_code", lambda l: {})
+    monkeypatch.setattr(cli, "_us_symbols", lambda: set())
+    cli.cmd_research(argparse.Namespace(topic=None, commands=False, inbox=False, auto=True, auto_slots=False))
+    assert done == []
+    # 偵測失敗／沒有金鑰：貼文留著，下一輪再試
+    research.add_to_inbox("Gooaye", 2, "另一則貼文", "u")
+    monkeypatch.setattr(research, "detect_topics", lambda texts: (_ for _ in ()).throw(ai.AIUnavailable("預算用完")))
+    cli.cmd_research(args)
+    assert len(list((tmp_path / "inbox").glob("*.json"))) == 1 and done == []
+    monkeypatch.setattr(ai, "available", lambda: False)
+    cli.cmd_research(args)
+    assert len(list((tmp_path / "inbox").glob("*.json"))) == 1
+
+
 def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     from market_intel import ai, research
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")
