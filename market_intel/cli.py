@@ -923,8 +923,31 @@ def push_trade_candidates(title: str, codes: list[str], listings: dict, context:
         log.warning("可卡位標的 %s 產生失敗：%s", title, e)
 
 
+def _research_trial(topic: str, trigger: str) -> None:
+    """試跑：用目前的研究模型（可用環境變數 RESEARCH_MODEL 換）研究一個題材，報告與擷取結果只印在紀錄裡。
+    不存報告、不推播、不動研究索引與佇列；花費照樣記進每月預算。拿來比較不同模型的品質與花費。"""
+    ai.check_budget()
+    usage = ai.research_usage()
+    prompt = research.REPORT_TEMPLATE.format(topic=topic, trigger=trigger[:3000] or "（試跑）",
+                                             knowledge=research.relevant_knowledge(topic, research.load_index()))
+    log.info("試跑研究：%s（模型 %s）", topic, ai._model())
+    try:
+        report = ai.web_research(research.SYSTEM, prompt, usage)
+        data = ai.extract_json(research.EXTRACT_INSTRUCTION, report, research.REPORT_SCHEMA, usage)
+    finally:
+        if usage.calls:
+            ai.record_usage(usage, f"試跑 {topic}")
+    print(f"\n===== 試跑結果｜模型 {ai._model()}｜約 US${usage.usd():.2f}｜搜尋 {usage.web_searches} 次 =====\n")
+    print(report)
+    print("\n===== 擷取出的結構化資料 =====\n")
+    print(json.dumps(data, ensure_ascii=False, indent=1))
+
+
 def cmd_research(args) -> None:
     """題材研究員：手動題材、Telegram 指令、頻道貼文收件匣、資金流入題材佇列、每日新聞自動偵測。"""
+    if getattr(args, "trial", None):
+        _research_trial(args.trial, getattr(args, "trial_trigger", ""))
+        return
     st = ai.settings()
     push = st.get("push_to", "research")
     queue: list[tuple] = []  # (題材, 觸發來源, 是否自動, 佇列檔)；佇列檔研究成功才刪，額度不足時保留給下一次
@@ -1895,6 +1918,8 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("check", help="資料檢查：印出資料來源原始欄位（不推播）").set_defaults(func=cmd_check)
     rs = sub.add_parser("research", help="題材研究員（AI 供應鏈研究）")
     rs.add_argument("--topic", help="直接研究這個題材，例如：玻纖布")
+    rs.add_argument("--trial", help="試跑：研究這個題材但只印在紀錄裡（不存檔不推播），搭配環境變數 RESEARCH_MODEL 比較模型")
+    rs.add_argument("--trial-trigger", default="", help="試跑時給的觸發新聞文字（和正式研究一樣放進提示）")
     rs.add_argument("--commands", action="store_true", help="處理 Telegram「研究 XXX」指令")
     rs.add_argument("--inbox", action="store_true", help="從頻道新貼文偵測新題材並研究")
     rs.add_argument("--auto", action="store_true", help="從今天的重點新聞偵測新題材並研究")

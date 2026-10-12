@@ -56,6 +56,15 @@ on:
       explain:
         description: "檢查股票的訊號與口數（只印在紀錄裡），例如：國巨 金像電"
         default: ""
+      trial:
+        description: "試跑：研究這個題材但只印在紀錄裡（不存檔不推播），用來比較模型"
+        default: ""
+      trial_model:
+        description: "試跑用的模型，例如 claude-haiku-5-5（空白＝用設定檔的模型）"
+        default: ""
+      trial_trigger:
+        description: "試跑的觸發新聞文字（可留空）"
+        default: ""
 
 permissions:
   contents: write
@@ -90,6 +99,9 @@ jobs:
           TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
           TOPIC: ${{ inputs.topic }}
           CARD: ${{ inputs.card }}
+          TRIAL: ${{ inputs.trial }}
+          TRIAL_TRIGGER: ${{ inputs.trial_trigger }}
+          RESEARCH_MODEL: ${{ inputs.trial_model }}
         run: |
           if [ -n "${{ inputs.explain }}" ]; then
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
@@ -115,6 +127,8 @@ jobs:
             python -m market_intel card "$CARD"
           elif [ "${{ inputs.inflow }}" = "true" ]; then
             python -m market_intel inflow
+          elif [ -n "$TRIAL" ]; then
+            python -m market_intel research --trial "$TRIAL" --trial-trigger "$TRIAL_TRIGGER"
           elif [ -n "$TOPIC" ]; then
             python -m market_intel research --topic "$TOPIC"
           else

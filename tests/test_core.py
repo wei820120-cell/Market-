@@ -691,6 +691,70 @@ def test_channel_topics_ignore_daily_cap(tmp_path, monkeypatch):
     assert len(list((tmp_path / "inbox").glob("*.json"))) == 1
 
 
+def _fake_research_client(calls):
+    from types import SimpleNamespace as NS
+
+    class Stream:
+        def __init__(self, kw):
+            calls.append(("stream", kw))
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def get_final_message(self):
+            return NS(content=[NS(type="text", text="報告")], stop_reason="end_turn",
+                      usage=NS(input_tokens=1_000_000, output_tokens=10_000))
+
+    class Msgs:
+        def stream(self, **kw):
+            return Stream(kw)
+
+    return NS(messages=Msgs(), beta=NS(messages=Msgs()))
+
+
+def test_research_model_switch_tools_and_price(monkeypatch):
+    """換成 Haiku：用舊版網頁工具、走一般 messages（不帶備援 beta）、用 Haiku 單價；Sonnet 維持新版工具。"""
+    from market_intel import ai
+    for model, modern in (("claude-sonnet-5-5", True), ("claude-haiku-5-5", False)):
+        calls = []
+        monkeypatch.setenv("RESEARCH_MODEL", model)
+        monkeypatch.setattr(ai, "_client", lambda calls=calls: _fake_research_client(calls))
+        usage = ai.research_usage()
+        assert ai.web_research("sys", "prompt", usage) == "報告"
+        kw = calls[0][1]
+        types = [t["type"] for t in kw["tools"]]
+        assert kw["model"] == model
+        assert (types == ["web_search_20260209", "web_fetch_20260209"]) == modern
+        assert ("fallbacks" in kw and "betas" in kw) == modern
+        expect = 1_000_000 * (2 if modern else 0.1) / 1e6 + 10_000 * (10 if modern else 0.5) / 1e6
+        assert abs(usage.usd() - expect) < 1e-6
+    monkeypatch.delenv("RESEARCH_MODEL")
+
+
+def test_research_trial_writes_nothing(tmp_path, monkeypatch, capsys):
+    """試跑只印在紀錄裡：不存報告、不動研究索引與佇列，花費照記。"""
+    from market_intel import ai, cli, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(ai, "check_budget", lambda: None)
+    recorded = []
+    monkeypatch.setattr(ai, "record_usage", lambda usage, topic: recorded.append(topic))
+    monkeypatch.setattr(ai, "web_research", lambda system, prompt, usage: usage.calls.append("r") or "試跑報告全文")
+    monkeypatch.setattr(ai, "extract_json", lambda *a, **k: {"topic": "和碩", "layers": []})
+    monkeypatch.setenv("RESEARCH_MODEL", "claude-haiku-5-5")
+    import argparse
+    cli.cmd_research(argparse.Namespace(topic=None, trial="和碩", trial_trigger="觸發", commands=False, inbox=False,
+                                        auto=False, auto_slots=False))
+    out = capsys.readouterr().out
+    assert "claude-haiku-5-5" in out and "試跑報告全文" in out and '"topic": "和碩"' in out
+    assert recorded == ["試跑 和碩"]
+    assert not (tmp_path / "research").exists() and not (tmp_path / "queue").exists()
+
+
 def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     from market_intel import ai, research
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")

@@ -387,7 +387,7 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
 def research_topic(topic: str, trigger: str, listings: dict, futures: dict, auto: bool = False) -> dict:
     """研究一個題材，存檔並回傳 {data, layers, file, message}。失敗時丟出 ai.AIUnavailable。"""
     ai.check_budget()
-    usage = ai.Usage()
+    usage = ai.research_usage()
     prompt = REPORT_TEMPLATE.format(topic=topic, trigger=trigger[:3000] or "（手動指定）",
                                     knowledge=relevant_knowledge(topic, load_index()))
     log.info("開始研究題材：%s", topic)
