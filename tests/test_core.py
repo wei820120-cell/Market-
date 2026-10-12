@@ -755,6 +755,22 @@ def test_research_trial_writes_nothing(tmp_path, monkeypatch, capsys):
     assert not (tmp_path / "research").exists() and not (tmp_path / "queue").exists()
 
 
+def test_save_report_keeps_queued_topic_name(tmp_path, monkeypatch):
+    """模型把題材名稱改寫（例如加上『供應鏈』）時，仍以佇列／指令的名稱為準，索引、檔名與推播才對得上。"""
+    from market_intel import ai, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "AUTO_THEMES_PATH", tmp_path / "research" / "auto_themes.yaml")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    data = {"topic": "和碩（4938）AI 伺服器整機櫃題材與產業供應鏈", "one_line": "x", "status": "混合", "horizon": "中期（3-12個月）",
+            "keywords": [], "catalysts": [], "risks": [], "spec_tables": [], "evolution": [], "concepts": [],
+            "conclusion": [], "sources": [], "layers": []}
+    out = research._save_report("和碩（4938）題材與產業", data, "報告", "觸發", {}, {}, ai.Usage(), True)
+    assert out["data"]["topic"] == "和碩（4938）題材與產業"
+    assert "和碩（4938）題材與產業" in research.load_index()
+    assert (tmp_path / "research" / "data" / f"{research.slug('和碩（4938）題材與產業')}.json").exists()
+
+
 def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     from market_intel import ai, research
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")
