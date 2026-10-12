@@ -1053,6 +1053,28 @@ def test_gov_import_ban_is_supply_shock():
     assert shock_cause("中國製玻璃纖維矽質套管 經部今公告即日起停止輸入", causes) == "進口管制公告"
 
 
+def test_mini_contract_shows_mini_name(tmp_path, monkeypatch):
+    """持倉是小型股期時，推播要顯示「小型金像電」，不能只寫「金像電」讓人以為是現股或一般契約。"""
+    import pandas as pd
+    from market_intel.trade import backtest as bt, paper, real
+    monkeypatch.setattr(real, "STATE_PATH", tmp_path / "real.json", raising=False)
+    assert bt.label("金像電", bt.MINI) == "小型金像電" and bt.label("小型金像電", bt.MINI) == "小型金像電"
+    assert bt.label("陽明", bt.STD) == "陽明"
+    st = {"capital": 100000, "equity": 100000, "positions": [], "closed": []}
+    msg = real.buy(st, "2368", "金像電", "VGF", bt.MINI, 1145.0, 1, 54.0, 0.2025)
+    assert "已記錄買進 小型金像電（2368）VGF" in msg
+    msg = real.buy(st, "2609", "陽明", "DAF", bt.STD, 61.6, 1, 1.9, 0.162)
+    assert "已記錄買進 陽明（2609）DAF" in msg
+    text = real.positions_text(st)
+    assert "・小型金像電 VGF 1 口" in text and "・陽明 DAF 1 口" in text
+    day = pd.Timestamp("2026-10-12")
+    prepped = {"2368": pd.DataFrame({"low": [1000.0], "high": [1200.0], "close": [1010.0], paper.PARAMS.exit_ma: [1100.0]},
+                                    index=[day])}
+    alerts = real.daily_check(st, day, prepped)
+    assert alerts and all("小型金像電 VGF" in a for a in alerts)
+    assert "已記錄賣出 小型金像電 VGF 1 口" in real.sell(st, "VGF", "金像電", 1100.0, 1)
+
+
 def test_real_chinese_qty_and_multi_price_sell():
     from market_intel.trade import real
     assert real.parse("賣出小聚陽 204.5 一口")["qty"] == 1
