@@ -14,11 +14,11 @@
    "r0": 107.7882982085739,
    "rate": 0.2025,
    "entry_date": "2026-10-05",
-   "days": 3,
+   "days": 4,
    "half_done": false,
    "realized": 0.0,
    "alerts": [],
-   "last_check": "2026-10-08"
+   "last_check": "2026-10-12"
   },
   {
    "code": "2609",
@@ -35,7 +35,8 @@
    "days": 0,
    "half_done": false,
    "realized": 0.0,
-   "alerts": []
+   "alerts": [],
+   "last_check": "2026-10-12"
   }
  ],
  "closed": [
