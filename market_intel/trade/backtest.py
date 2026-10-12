@@ -29,6 +29,12 @@ from ..analysis.indicators import atr, sma
 log = logging.getLogger(__name__)
 
 STD, MINI = 2000, 100
+
+
+def label(name: str, mult: int) -> str:
+    """持倉顯示名稱：小型契約（每口 100 股）加「小型」，例如「小型金像電」；一般契約維持原名。
+    避免小型股期的持倉、提醒被看成現股或一般契約。"""
+    return f"小型{name}" if mult == MINI and not name.startswith("小型") else name
 FEE, TAX, SLIP = 50.0, 0.00002, 0.001
 
 

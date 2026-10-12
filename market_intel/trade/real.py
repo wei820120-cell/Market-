@@ -193,13 +193,13 @@ def buy(st: dict, code: str, name: str, contract: str, mult: int, price: float, 
         same["stop"] = same["entry"] - p.atr_mult * atr
         same["r0"] = same["entry"] - same["stop"]
         x = same
-        head = f"➕ 加碼 {name} {contract} {qty} 口 @ {price:,.2f}，平均成本 {x['entry']:,.2f}，共 {total} 口"
+        head = f"➕ 加碼 {bt.label(name, mult)} {contract} {qty} 口 @ {price:,.2f}，平均成本 {x['entry']:,.2f}，共 {total} 口"
     else:
         x = {"code": code, "name": name, "contract": contract, "mult": mult, "qty": qty, "qty0": qty,
              "entry": price, "stop": stop, "r0": price - stop, "rate": rate, "entry_date": f"{now_tw():%Y-%m-%d}",
              "days": 0, "half_done": False, "realized": 0.0, "alerts": []}
         st["positions"].append(x)
-        head = f"🟢 已記錄買進 {name}（{code}）{contract} {qty} 口 @ {price:,.2f}"
+        head = f"🟢 已記錄買進 {bt.label(name, mult)}（{code}）{contract} {qty} 口 @ {price:,.2f}"
     lines = [head,
              f"停損 {x['stop']:,.2f}（−1.5ATR）｜+2R 目標 {x['entry'] + p.take_r * x['r0']:,.2f}",
              f"最大虧損約 {(x['entry'] - x['stop']) * mult * x['qty']:,.0f}｜原始保證金約 {margin:,.0f}，"
@@ -231,13 +231,14 @@ def remove(st: dict, code: str, today_only: bool = False, contract: str | None =
         return False, f"⚠️ {cands[0]['name']} 有多個契約的記錄（{'、'.join(contracts)}），不知道要刪哪一筆，請指定契約，例如：取消 {contracts[0]}"
     x = max(cands, key=lambda p: p.get("entry_date", ""))
     st["positions"].remove(x)
-    return True, f"🗑 已刪除記錄：{x['name']} {x['contract']} {x['qty']} 口 @ {x['entry']:,.2f}（不影響權益與損益）"
+    return True, f"🗑 已刪除記錄：{bt.label(x['name'], x['mult'])} {x['contract']} {x['qty']} 口 @ {x['entry']:,.2f}（不影響權益與損益）"
 
 
 def sell(st: dict, contract: str, name: str, price: float, qty: int) -> str:
     x = next((x for x in st["positions"] if x["contract"] == contract), None)
     if not x:
         return f"找不到 {name} {contract} 的持倉，請確認契約（打「持倉」查看）"
+    name = bt.label(x["name"], x["mult"])
     qty = min(qty, x["qty"])
     cost = bt.FEE * qty * 2 + (x["entry"] + price) * x["mult"] * qty * bt.TAX
     pnl = (price - x["entry"]) * x["mult"] * qty - cost
@@ -274,7 +275,7 @@ def positions_text(st: dict, closes: dict | None = None) -> str:
     for x in st["positions"]:
         c = closes.get(x["code"])
         u = f"｜現價 {c:,.2f} 未實現 {(c - x['entry']) * x['mult'] * x['qty']:+,.0f}" if c else ""
-        lines.append(f"・{x['name']} {x['contract']} {x['qty']} 口｜成本 {x['entry']:,.2f}｜停損 {x['stop']:,.2f}{u}")
+        lines.append(f"・{bt.label(x['name'], x['mult'])} {x['contract']} {x['qty']} 口｜成本 {x['entry']:,.2f}｜停損 {x['stop']:,.2f}{u}")
     used = sum(bt.reserve(x["entry"], x["mult"], x["qty"], x.get("rate", PARAMS.margin_rate), PARAMS)
                for x in st["positions"])
     lines.append(f"🧱 3 倍保證金準備：已用 {used:,.0f}／權益 {st['equity']:,.0f}，還可用 {max(0, st['equity'] - used):,.0f}")
@@ -296,14 +297,14 @@ def daily_check(st: dict, day: pd.Timestamp, prepped: dict) -> list[str]:
         if str(day.date()) > x["entry_date"]:
             x["days"] += 1
         if row["low"] <= x["stop"]:
-            out.append(f"🔴 {x['name']} {x['contract']} 今天碰到停損 {x['stop']:,.2f}（最低 {row['low']:,.2f}），請出場")
+            out.append(f"🔴 {bt.label(x['name'], x['mult'])} {x['contract']} 今天碰到停損 {x['stop']:,.2f}（最低 {row['low']:,.2f}），請出場")
         elif not x["half_done"] and row["high"] >= x["entry"] + p.take_r * x["r0"]:
-            out.append(f"🎯 {x['name']} {x['contract']} 到 +2R（{x['entry'] + p.take_r * x['r0']:,.2f}），"
+            out.append(f"🎯 {bt.label(x['name'], x['mult'])} {x['contract']} 到 +2R（{x['entry'] + p.take_r * x['r0']:,.2f}），"
                        f"建議先出一半（{max(1, x['qty'] // 2)} 口），剩下停損移到成本 {x['entry']:,.2f}")
         if row["close"] < row[p.exit_ma] and x["days"] >= 1:
-            out.append(f"⚠️ {x['name']} {x['contract']} 收盤 {row['close']:,.2f} 跌破 20 日線 {row[p.exit_ma]:,.2f}，明天開盤出場")
+            out.append(f"⚠️ {bt.label(x['name'], x['mult'])} {x['contract']} 收盤 {row['close']:,.2f} 跌破 20 日線 {row[p.exit_ma]:,.2f}，明天開盤出場")
         elif x["days"] >= p.time_stop and not x["half_done"] and row["close"] < x["entry"] + x["r0"]:
-            out.append(f"⏰ {x['name']} {x['contract']} 持有 {x['days']} 天未達 +1R，明天開盤出場")
+            out.append(f"⏰ {bt.label(x['name'], x['mult'])} {x['contract']} 持有 {x['days']} 天未達 +1R，明天開盤出場")
     return out
 
 

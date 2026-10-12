@@ -115,16 +115,16 @@ def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict, p: bt.Params
                 if half >= 1:
                     x["realized"] += (fill - x["entry"]) * x["mult"] * half - _cost(fill, x["mult"], half)
                     x["qty"] -= half
-                    events.append(f"🎯 {x['code']} {x['name']} 到 +2R {fill:,.1f}，先出 {half} 口，停損移到成本")
+                    events.append(f"🎯 {x['code']} {bt.label(x['name'], x['mult'])} 到 +2R {fill:,.1f}，先出 {half} 口，停損移到成本")
                 else:
-                    events.append(f"🎯 {x['code']} {x['name']} 到 +2R {fill:,.1f}，只有 1 口不分批，停損移到成本")
+                    events.append(f"🎯 {x['code']} {bt.label(x['name'], x['mult'])} 到 +2R {fill:,.1f}，只有 1 口不分批，停損移到成本")
                 x["half_done"], x["stop"] = True, x["entry"]
             if x["days"] > 1 and row["close"] < row[p.exit_ma]:
                 x["exit_next"] = "跌破20日線"
-                events.append(f"⚠️ {x['code']} {x['name']} 收盤跌破 20 日線，明天開盤出場")
+                events.append(f"⚠️ {x['code']} {bt.label(x['name'], x['mult'])} 收盤跌破 20 日線，明天開盤出場")
             elif x["days"] >= p.time_stop and not x["half_done"] and row["close"] < x["entry"] + x["r0"]:
                 x["exit_next"] = "時間停損"
-                events.append(f"⚠️ {x['code']} {x['name']} 持有 {x['days']} 天未達 +1R，明天開盤出場")
+                events.append(f"⚠️ {x['code']} {bt.label(x['name'], x['mult'])} 持有 {x['days']} 天未達 +1R，明天開盤出場")
         if px is not None:
             pnl = x["realized"] + (px - x["entry"]) * x["mult"] * x["qty"] - _cost(px, x["mult"], x["qty"])
             r = pnl / (x["r0"] * x["mult"] * x["qty0"]) if x["r0"] > 0 else 0
@@ -132,7 +132,7 @@ def settle(st: dict, day: pd.Timestamp, prepped: dict, rates: dict, p: bt.Params
             st["positions"].remove(x)
             st["closed"].append({**x, "exit_date": str(day.date()), "exit": px, "pnl": round(pnl), "r": round(r, 2),
                                  "reason": reason})
-            events.append(f"{'🔴' if pnl < 0 else '✅'} 模擬出場 {x['code']} {x['name']} @ {px:,.1f}（{reason}）"
+            events.append(f"{'🔴' if pnl < 0 else '✅'} 模擬出場 {x['code']} {bt.label(x['name'], x['mult'])} @ {px:,.1f}（{reason}）"
                           f"｜損益 {pnl:+,.0f}（{r:+.1f}R）")
     return events
 
@@ -218,7 +218,7 @@ def report(st: dict, day: pd.Timestamp, events: list[str], market_ok: bool, prep
             close = float(prepped[x["code"]]["close"].get(day, x["entry"])) if x["code"] in prepped else x["entry"]
             u = (close - x["entry"]) * x["mult"] * x["qty"] + x["realized"]
             mtm += u
-            lines.append(f"・{x['code']} {x['name']} {x['contract']} {x['qty']} 口｜成本 {x['entry']:,.1f} 現價 {close:,.1f}"
+            lines.append(f"・{x['code']} {bt.label(x['name'], x['mult'])} {x['contract']} {x['qty']} 口｜成本 {x['entry']:,.1f} 現價 {close:,.1f}"
                          f"｜未實現 {u:+,.0f}｜停損 {x['stop']:,.1f}｜第 {x['days']} 天")
     total = eq + mtm
     wins = [c for c in st["closed"] if c["pnl"] > 0]
@@ -324,7 +324,7 @@ def run_pre() -> str:
     st = load()
     mkt = st.get("regime") == "多頭"
     head = f"🌅 進出場（模擬）盤前 {now_tw():%m/%d}｜大盤：{'🟢 多頭' if mkt else '🔴 空頭／盤整，今天先不要下新單'}"
-    pos = "、".join(f"{x['code']} {x['name']}（停損 {x['stop']:,.1f}" + ("，開盤出場" if x["exit_next"] else "") + "）"
+    pos = "、".join(f"{x['code']} {bt.label(x['name'], x['mult'])}（停損 {x['stop']:,.1f}" + ("，開盤出場" if x["exit_next"] else "") + "）"
                     for x in st.get("positions", []))
     return "\n".join([head, f"持倉：{pos}" if pos else "持倉：無", "", plan_text(st, mkt)])
 

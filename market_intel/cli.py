@@ -40,7 +40,7 @@ def _listings() -> dict[str, dict]:
 
 
 # 公司簡稱同時是常用詞，用名稱比對會誤判（仍可用代號比對，例如「全新(2455)」）
-AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星"}
+AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界"}
 
 
 def _name_to_code(listings: dict[str, dict]) -> dict[str, str]:
@@ -797,8 +797,10 @@ def channel_post_message(name: str, post, listings: dict, futures: dict, themes_
     return "\n".join(lines)
 
 
-IMAGE_OCR_PROMPT = ("這是投資 Podcast／社群頻道貼文的圖片。請用繁體中文：1) 逐字抄錄圖中所有文字（保留數字、股票代號、單位）；"
-                    "2) 如果是圖表或表格，用兩三句話說明重點（標題、趨勢、關鍵數字）。不要加評論、不要編造看不清楚的字，看不清楚就寫「（看不清楚）」。")
+IMAGE_OCR_PROMPT = ("這是投資 Podcast／社群頻道貼文的圖片。請用繁體中文、純文字回答（不要用 Markdown、不要標題或粗體、不要編號）：\n"
+                    "先逐字抄錄圖中所有文字（保留數字、股票代號、單位）；如果是圖表或表格，再用兩三句話說明重點（標題、趨勢、關鍵數字）。"
+                    "如果只是聊天截圖、迷因或與投資無關的內容，抄錄文字後加一句「（與投資無關）」就好。"
+                    "不要加評論、不要編造看不清楚的字，看不清楚就寫「（看不清楚）」。")
 _MEDIA_TYPES = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp", ".gif": "image/gif"}
 
 
