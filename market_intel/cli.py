@@ -883,6 +883,7 @@ def cmd_research(args) -> None:
     """題材研究員：手動題材、Telegram 指令、頻道貼文收件匣、資金流入題材佇列、每日新聞自動偵測。"""
     st = ai.settings()
     push = st.get("push_to", "research")
+    auto_on = bool(st.get("auto_enabled", True))  # 關閉＝機器人不再自己呼叫 API 研究題材，佇列留給 Claude 排程接手
     queue: list[tuple] = []  # (題材, 觸發來源, 是否自動, 佇列檔)；佇列檔研究成功才刪，額度不足時保留給下一次
     listings_cache: dict = {}
 
@@ -920,12 +921,12 @@ def cmd_research(args) -> None:
     triggers: dict[str, str] = {}
     if args.inbox:
         items = research.read_inbox()
-        for _, d in items:
+        for _, d in (items if auto_on else []):
             auto_texts.append(d["text"][:600])
             triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
         for p, _ in items:  # 讀過就刪，避免重複偵測（沒有金鑰也刪，免得越積越多）
             p.unlink(missing_ok=True)
-    if args.auto_slots and _auto_due():
+    if auto_on and args.auto_slots and _auto_due():
         args.auto = True
     if args.auto:
         listings_ = listings()
@@ -934,8 +935,9 @@ def cmd_research(args) -> None:
         auto_texts += [it.title for it in ranked[:80]]
 
     cap = int(st.get("max_per_day", 4)) - research.researched_today()
-    if args.inbox and ai.available() and ai.budget_left():  # 資金流入但還沒研究過的題材（盤中、盤後排入）
-        for p, d in research.read_queue():
+    if args.inbox:  # 資金流入但還沒研究過的題材（盤中、盤後排入）；read_queue 會順便清掉已研究過的，自動關閉時也要清
+        waiting = research.read_queue()
+        for p, d in (waiting if auto_on and ai.available() and ai.budget_left() else []):
             if cap <= 0:
                 break
             queue.append((d["topic"], d.get("trigger", "資金流入"), True, p))

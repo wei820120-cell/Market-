@@ -538,6 +538,36 @@ def test_research_topic_end_to_end(tmp_path, monkeypatch):
     assert list(usage.values())[0]["runs"] == 1
 
 
+def test_research_auto_switch(tmp_path, monkeypatch):
+    """auto_enabled=false：不自動呼叫 API（不偵測、不消化佇列），但已研究過的題材仍會從佇列清掉。"""
+    import argparse
+    from market_intel import ai, cli, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INBOX_DIR", tmp_path / "inbox")
+    monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
+    monkeypatch.setattr(cli, "_listings", lambda: {})
+    monkeypatch.setattr(ai, "available", lambda: True)
+    monkeypatch.setattr(ai, "budget_left", lambda: True)
+    research.queue_research("供需事件：甲", "測試")
+    research.add_to_inbox("ch", 1, "某則頻道貼文", "")
+    calls = []
+    monkeypatch.setattr(research, "research_topic", lambda *a, **k: calls.append(a[0]) or {"message": "ok", "data": {"topic": a[0]}})
+    monkeypatch.setattr(cli.stock_futures, "load_stock_futures", lambda: {})
+    monkeypatch.setattr(cli.notify, "send", lambda *a, **k: None)
+    monkeypatch.setattr(cli, "_send_card_for_topic", lambda *a, **k: None)
+    monkeypatch.setattr(research, "detect_topics", lambda texts: calls.append("detect") or [])
+    args = argparse.Namespace(topic=None, commands=False, inbox=True, auto=False, auto_slots=True)
+    monkeypatch.setattr(ai, "settings", lambda: {"auto_enabled": False, "max_per_day": 4})
+    cli.cmd_research(args)
+    assert calls == [] and len(list((tmp_path / "queue").glob("*.json"))) == 1
+    assert not list((tmp_path / "inbox").glob("*.json"))  # 收件匣照樣清空，免得越積越多
+    monkeypatch.setattr(ai, "settings", lambda: {"auto_enabled": True, "max_per_day": 4})
+    cli.cmd_research(args)
+    assert calls == ["供需事件：甲"]
+
+
 def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     from market_intel import ai, research
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")
