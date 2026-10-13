@@ -24,7 +24,10 @@ from . import backtest as bt
 LEAD_MAX_RET5, LEAD_MAX_RET20 = 0.06, 0.20     # 台股對應股：近 5 日漲幅 ≤ 6%、近 20 日 ≤ 20% 才算「還沒跟上」
 LAG_DAYS, LAG_MAX_RET20, LAG_MAX_GAP = 3, 0.10, 0.10   # 龍頭 3 日內突破；補漲股近 20 日漲幅 ≤ 10%、離 20 日高 ≤ 10%
 LAG_MIN_VR = 0.8
-LEAD_NOTE = "（觀察名單，不是進場訊號；實際進場仍照策略 B 的突破／拉回規則。回測結果見 research/backtest/early.json）"
+LEAD_NOTE = ("說明：這是觀察名單，不是進場訊號。回測（近 3 年）這類領先訊號隔天開盤買進，進場時平均只漲 4%（現行突破已漲約 20%），"
+             "單獨做每筆平均約 +0.6R、勝率約 45%；放在 3 檔之外「另加 1 檔」專用時每筆約 +0.4～0.8R。"
+             "但只有 3 年、成分股是用現在的清單回頭套，僅供參考。實單仍照策略 B（2% 風險、大盤濾網、最多 3 檔），要不要多開 1 檔請自己決定。")
+LAG_NOTE = "（回測：同題材補漲單獨做不賺錢，要搭配相對強度前段班才有效；當觀察名單，停損與口數照 2% 規則。）"
 
 
 # ---------------------------------------------------------------- 寬表
@@ -249,6 +252,7 @@ def last_state(d: pd.DataFrame) -> dict | None:
     if not c or pd.isna(r["ma60"]) or pd.isna(r["hh"]):
         return None
     return {"close": c, "ret5": c / float(d["close"].iloc[-6]) - 1, "ret20": c / float(d["close"].iloc[-21]) - 1,
+            "ret120": c / float(d["close"].iloc[-121]) - 1 if len(d) > 121 else None,
             "gap": float(r["hh"]) / c - 1, "vr": float(r["vr"]) if not pd.isna(r["vr"]) else 0.0,
             "above60": c > float(r["ma60"]), "breakout": bool(d["sig_a"].tail(LAG_DAYS).any())}
 
@@ -294,6 +298,10 @@ def lead_picks(moves: list[dict], themes_tw: dict, states: dict[str, dict], futu
     return sorted(found.values(), key=lambda e: -e["score"])
 
 
+def _r120(x: dict) -> str:
+    return f"120日 {x['ret120'] * 100:+.0f}%｜" if x.get("ret120") is not None else ""
+
+
 def lead_message(day: str, moves: list[dict], picks: list[dict], rows: dict[str, dict], names: dict, market_ok: bool,
                  limit: int = 10, note: str = "") -> str:
     """盤前領先名單。rows：candidates.rows() 的結果（口數、停損），用代號查。"""
@@ -308,7 +316,7 @@ def lead_message(day: str, moves: list[dict], picks: list[dict], rows: dict[str,
         fut = "／".join(filter(None, [f"一般 {info['std']}" if info.get("std") else "",
                                        f"小型 {info['mini']}" if info.get("mini") else ""]))
         lines.append(f"\n{x['code']} {names.get(x['code'], x['code'])} 昨收 {x['close']:,.2f}"
-                     f"（5日 {x['ret5'] * 100:+.1f}%｜20日 {x['ret20'] * 100:+.1f}%｜離20日高 {x['gap'] * 100:.1f}%）"
+                     f"（5日 {x['ret5'] * 100:+.1f}%｜20日 {x['ret20'] * 100:+.1f}%｜{_r120(x)}離20日高 {x['gap'] * 100:.1f}%）"
                      + (f"｜{fut}" if fut else ""))
         lines.append(f"  因：{'、'.join(x['why'][:3])}｜族群：{'、'.join(x['themes'][:2])}")
         if r.get("qty"):
@@ -338,14 +346,15 @@ def laggard_picks(codes: list[str], states: dict[str, dict], days_ok: bool = Tru
 def laggard_section(lead: list[str], picks: list[dict], rows: dict[str, dict], names: dict, limit: int = 5) -> str:
     if not picks:
         return ""
-    lines = [f"\n📈 補漲候選｜龍頭剛放量突破：{'、'.join(f'{c} {names.get(c, c)}' for c in lead[:4])}；同題材這幾檔還沒跑"]
+    lines = [f"\n📈 補漲候選｜龍頭剛放量突破：{'、'.join(f'{c} {names.get(c, c)}' for c in lead[:4])}；同題材這幾檔還沒跑",
+             LAG_NOTE]
     for x in picks[:limit]:
         r = rows.get(x["code"]) or {}
         info = r.get("info") or {}
         fut = "／".join(filter(None, [f"一般 {info['std']}" if info.get("std") else "",
                                        f"小型 {info['mini']}" if info.get("mini") else ""]))
         lines.append(f"・{x['code']} {names.get(x['code'], x['code'])} {x['close']:,.2f}"
-                     f"（20日 {x['ret20'] * 100:+.1f}%｜離20日高 {x['gap'] * 100:.1f}%｜量比 {x['vr']:.1f}）"
+                     f"（20日 {x['ret20'] * 100:+.1f}%｜{_r120(x)}離20日高 {x['gap'] * 100:.1f}%｜量比 {x['vr']:.1f}）"
                      + (f"｜{fut}" if fut else ""))
         if r.get("qty"):
             lines.append(f"  🟢 可做 {r['contract']} {r['qty']} 口｜停損參考 {r['stop']:,.2f}｜最大虧損 {r['risk']:,.0f}")
