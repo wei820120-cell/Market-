@@ -936,9 +936,9 @@ def push_trade_candidates(title: str, codes: list[str], listings: dict, context:
         log.warning("可卡位標的 %s 產生失敗：%s", title, e)
 
 
-def push_lead_list(listings: dict, futures: dict, channel: str = "trade") -> str | None:
+def push_lead_list(listings: dict, futures: dict, channel: str = "trade", force: bool = False) -> str | None:
     """盤前領先名單：美股昨夜領先指標（config/us_lead.yaml）大漲 → 台股對應族群裡還沒跟上的股票（有股票期貨者）。
-    沒有領先指標達門檻就不推。回傳推播內容（沒推就回 None）。"""
+    沒有領先指標達門檻就不推（force＝手動執行時仍回一則「昨夜沒有」）。回傳推播內容（沒推就回 None）。"""
     from .trade import backtest as bt
     from .trade import candidates, early, real
     from .trade.paper import PARAMS
@@ -948,7 +948,13 @@ def push_lead_list(listings: dict, futures: dict, channel: str = "trade") -> str
     us_hist = yahoo.fetch_many(sorted(lead_map), range_="3mo")
     moves = early.us_moves(us_hist, lead_map)
     if not moves:
-        log.info("美股領先指標：昨夜沒有達門檻的大漲")
+        near = early.us_moves(us_hist, lead_map, floor_ratio=-100)[:3]
+        info = "、".join(f"{m['name']} {m['sym']} {m['pct']:+.1f}%（門檻 {m['thr']:.1f}%）" for m in near)
+        log.info("美股領先指標：昨夜沒有達門檻的大漲（%d/%d 檔有資料；最接近：%s）", len(us_hist), len(lead_map), info)
+        if force:
+            text = f"🌎 盤前領先名單 {now_tw():%m/%d}｜昨夜美股領先指標沒有達門檻的大漲 → 今天沒有領先名單\n最接近的：{info}"
+            notify.send(text, channel=channel)
+            return text
         return None
     themes_tw = {k: [str(c) for c in v] for k, v in (config.themes().get("tw") or {}).items()}
     codes = [c for m in moves for th in m["themes"] for c in map(str, themes_tw.get(th, []))
@@ -1906,7 +1912,7 @@ def cmd_trade(args) -> None:
     want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
                               and done.get("post") != today)
     if args.lead:
-        push_lead_list(_listings(), stock_futures.load_stock_futures())
+        push_lead_list(_listings(), stock_futures.load_stock_futures(), force=True)
         return
     if want_pre:
         from .trade import real

@@ -1441,6 +1441,8 @@ def test_early_live_lead_list_and_laggard_section(monkeypatch):
     lead_map = {"MU": {"name": "美光", "pct": 4.0, "themes": ["記憶體"]}, "NVDA": {"name": "輝達", "pct": 3.0, "themes": ["AI伺服器"]}}
     moves = early.us_moves({"MU": mu, "NVDA": nv}, lead_map)
     assert [m["sym"] for m in moves] == ["MU"] and round(moves[0]["pct"], 1) == 6.0
+    near = early.us_moves({"MU": mu, "NVDA": nv}, lead_map, floor_ratio=-100)  # 沒達門檻時用來看「最接近的是誰」
+    assert [m["sym"] for m in near] == ["MU", "NVDA"]
     quiet, ran = _early_stock(), _early_stock(spike=(120, 190))
     states = {c: early.last_state(bt.prepare(d, paper.PARAMS)) for c, d in {"1111": quiet, "2222": ran}.items()}
     fut = {"1111": {"mini": "QSF"}, "2222": {"std": "XXF"}}
@@ -1460,6 +1462,10 @@ def test_early_live_lead_list_and_laggard_section(monkeypatch):
     monkeypatch.setattr(real, "load", lambda: {"equity": 100_000, "positions": []})
     text = cli.push_lead_list({"1111": {"name": "甲"}, "2222": {"name": "乙"}}, fut)
     assert sent and sent[0][0] == "trade" and "美光 MU +6.0%" in text and "1111 甲" in text and "2222" not in text
+    monkeypatch.setattr(yahoo, "fetch_many", lambda syms, range_="3mo": {"NVDA": nv})  # 昨夜沒有達門檻的
+    sent.clear()
+    assert cli.push_lead_list({}, fut) is None and not sent  # 自動執行：沒有就不推
+    assert "沒有達門檻" in cli.push_lead_list({}, fut, force=True) and sent  # 手動：回一則說明
     # 題材補漲：龍頭放量突破 + 同題材還沒漲
     leader = _early_stock(last=140)
     st2 = {c: early.last_state(bt.prepare(d, paper.PARAMS)) for c, d in

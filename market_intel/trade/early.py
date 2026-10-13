@@ -257,8 +257,9 @@ def last_state(d: pd.DataFrame) -> dict | None:
             "above60": c > float(r["ma60"]), "breakout": bool(d["sig_a"].tail(LAG_DAYS).any())}
 
 
-def us_moves(us_hist: dict[str, pd.DataFrame], lead_map: dict) -> list[dict]:
-    """最新一個美股交易日漲幅達門檻的領先指標（由強到弱，以「漲幅 ÷ 門檻」排序）。"""
+def us_moves(us_hist: dict[str, pd.DataFrame], lead_map: dict, floor_ratio: float = 1.0) -> list[dict]:
+    """最新一個美股交易日漲幅達門檻的領先指標（由強到弱，以「漲幅 ÷ 門檻」排序）。
+    floor_ratio：漲幅達門檻的幾倍才算（1.0＝達門檻；設很小的負數可以列出全部，用來看「最接近門檻的是誰」）。"""
     out = []
     for sym, spec in lead_map.items():
         df = us_hist.get(sym)
@@ -267,7 +268,7 @@ def us_moves(us_hist: dict[str, pd.DataFrame], lead_map: dict) -> list[dict]:
         c = df["close"]
         pct = float(c.iloc[-1] / c.iloc[-2] - 1) * 100
         thr = float(spec.get("pct", 3.0))
-        if pct >= thr:
+        if pct >= thr * floor_ratio:
             vol = df["volume"]
             vr = float(vol.iloc[-1] / vol.iloc[-21:-1].mean()) if vol.iloc[-21:-1].mean() else None
             out.append({"sym": sym, "name": spec.get("name", sym), "pct": pct, "thr": thr, "vr": vr,
