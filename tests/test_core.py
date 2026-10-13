@@ -1323,3 +1323,209 @@ def test_macro_snapshot_alerts_and_major_event_context(tmp_path, monkeypatch):
     assert "📊 國際行情：布蘭特原油" in sent[0][1]
     q = next((tmp_path / "queue").glob("*.json")).read_text(encoding="utf-8")
     assert "國際行情快照" in q and "BZ=F" in q
+
+
+# ---------------------------------------------------------------- 提前進場訊號
+
+def _early_stock(n=160, last=None, spike=None, vol_last=None, base=(100, 112), spread=0.004):
+    import numpy as np
+    import pandas as pd
+    idx = pd.date_range("2025-01-01", periods=n, freq="B", tz="UTC")
+    close = pd.Series(np.linspace(base[0], base[1], n), index=idx)
+    if spike:  # (從第幾根起, 漲到多少)：已經先漲一段
+        k, v = spike
+        close.iloc[k:] = np.linspace(close.iloc[k - 1], v, n - k)
+    vol = pd.Series(1e6, index=idx)
+    if last is not None:
+        close.iloc[-1] = last
+        vol.iloc[-1] = vol_last or 3e6
+    return pd.DataFrame({"open": close.shift(1).fillna(close.iloc[0]), "high": close * (1 + spread),
+                         "low": close * (1 - spread), "close": close, "volume": vol})
+
+
+def test_early_lead_signals_skip_stocks_that_already_ran():
+    import pandas as pd
+    from market_intel.trade import backtest as bt, early
+    quiet, ran = _early_stock(), _early_stock(spike=(120, 190))
+    prepped = {c: bt.prepare(d, bt.Params()) for c, d in {"1111": quiet, "2222": ran}.items()}
+    fr = early.frames(prepped)
+    day = quiet.index[-3]
+    uidx = pd.DatetimeIndex([ts + pd.Timedelta(hours=13, minutes=30) for ts in quiet.index])  # 美股時間戳同一個日曆日
+    us_close = pd.Series(100.0, index=uidx)
+    us_close.iloc[-3] = 106.0  # +6%
+    us = pd.DataFrame({"close": us_close, "volume": 1e6}, index=uidx)
+    sig = early.lead_signals({"MU": us}, {"MU": {"pct": 4.0, "themes": ["記憶體"]}}, {"記憶體": ["1111", "2222"]}, fr)
+    assert [(c, n) for _, c, n in sig[day]] == [("1111", "領先")]  # 已經大漲過的 2222 不算
+    assert early.lead_signals({"MU": us}, {"MU": {"pct": 8.0, "themes": ["記憶體"]}}, {"記憶體": ["1111"]}, fr) == {}  # 沒到門檻
+
+
+def test_early_merge_interleaves_signal_types():
+    import pandas as pd
+    from market_intel.trade import early
+    ts = pd.Timestamp("2026-01-05", tz="UTC")
+    lead = {ts: [(5.0, "A", "領先"), (4.0, "B", "領先"), (3.0, "C", "領先")]}
+    lag = {ts: [(0.9, "D", "補漲"), (0.2, "E", "補漲")]}
+    got = [(c, n) for _, c, n in sorted(early.merge(lead, lag)[ts], reverse=True)]
+    assert got == [("A", "領先"), ("D", "補漲"), ("B", "領先"), ("E", "補漲"), ("C", "領先")]  # 輪流，不被量大的一種擠掉
+
+
+def test_early_laggard_signals_need_a_leader_breakout():
+    from market_intel.trade import backtest as bt, early
+    leader = _early_stock(last=140)  # 最後一天放量創高
+    prepped = {"1111": bt.prepare(leader, bt.Params()), "2222": bt.prepare(_early_stock(), bt.Params()),
+               "3333": bt.prepare(_early_stock(spike=(120, 190)), bt.Params())}
+    fr = early.frames(prepped)
+    assert bool(fr["sig_a"]["1111"].iloc[-1])
+    sig = early.laggard_signals({"光通訊": ["1111", "2222", "3333"]}, fr)
+    day = leader.index[-1]
+    assert [(c, n) for _, c, n in sig[day]] == [("2222", "補漲")]  # 龍頭本身、已經漲一大段的不算
+    assert early.laggard_signals({"光通訊": ["2222", "3333"]}, fr, min_members=3) == {}  # 沒人突破、成分股太少都不產生
+
+
+def test_backtest_extra_signal_enters_next_open_and_intraday_fills_at_breakout():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt
+    d = _early_stock(spread=0.004)
+    for col in ("open", "high", "low", "close"):  # 最後 5 天崩跌，讓持倉被停損出場（回測只回報已出場的交易）
+        d.iloc[-5:, d.columns.get_loc(col)] = 80.0
+    idx = d.index
+    index_df = pd.DataFrame({"close": np.linspace(100, 140, len(idx))}, index=idx)
+    fut = {"1111": {"mini": "QSF"}}
+    p = bt.Params(setups=(), exit_ma="ma20")
+    x = idx[-10]
+    res = bt.run({"1111": d}, fut, index_df, p, extra={x: [(1.0, "1111", "領先")]})
+    t = res["trades"][0]
+    assert t["setup"] == "領先" and t["entry_date"] == str(idx[-9].date()) and t["entry"] == float(d["open"].iloc[-9])
+    assert res["各型態"]["領先"]["筆數"] == 1
+    # 盤中突破：碰到前 20 日高就用「前高或開盤價」成交，當天進場（用 100／101 來回震盪的股票，平常不會創高）
+    d2 = _early_stock(spread=0.004)
+    flat = pd.Series([100.0 if i % 2 == 0 else 101.0 for i in range(len(idx))], index=idx)
+    for col in ("open", "close"):
+        d2[col] = flat
+    d2["high"], d2["low"] = flat * 1.004, flat * 0.996
+    hh = float(d2["high"].iloc[-30:-10].max())
+    d2.iloc[-10, d2.columns.get_loc("high")] = hh * 1.02
+    d2.iloc[-10, d2.columns.get_loc("close")] = hh * 1.01
+    for col in ("open", "high", "low", "close"):
+        d2.iloc[-5:, d2.columns.get_loc(col)] = 80.0
+    res2 = bt.run({"1111": d2}, fut, index_df, bt.Params(setups=(), exit_ma="ma20", intraday=True), None)
+    t2 = res2["trades"][0]
+    assert t2["setup"] == "盤中突破" and t2["entry_date"] == str(x.date())
+    assert abs(t2["entry"] - max(float(d2["open"].iloc[-10]), hh)) < 1e-6
+
+
+def test_early_forward_stats_compares_signal_types():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt, early
+    d = _early_stock(n=200)
+    prepped = {"1111": bt.prepare(d, bt.Params())}
+    fr = early.frames(prepped)
+    mkt = pd.Series(True, index=d.index)
+    sig = {d.index[100]: [(1.0, "1111", "領先")]}
+    tab = early.forward_stats(sig, fr, mkt)
+    row = tab[tab["訊號"] == "領先"].iloc[0]
+    assert row["筆數"] == 1 and row["5日平均%"] > 0 and "全部股票（基準）" in set(tab["訊號"])
+
+
+def test_early_live_lead_list_and_laggard_section(monkeypatch, tmp_path):
+    import pandas as pd
+    from market_intel import cli, config, notify
+    from market_intel.fetchers import stock_futures, tw_daily, yahoo
+    from market_intel.trade import backtest as bt, early, paper, real
+    # 美股：MU 昨夜 +6%（門檻 4）、NVDA +1%（沒到）
+    uidx = pd.date_range("2026-09-01", periods=30, freq="B", tz="UTC") + pd.Timedelta(hours=13, minutes=30)
+    mu = pd.DataFrame({"close": [100.0] * 29 + [106.0], "volume": 1e6}, index=uidx)
+    nv = pd.DataFrame({"close": [100.0] * 29 + [101.0], "volume": 1e6}, index=uidx)
+    lead_map = {"MU": {"name": "美光", "pct": 4.0, "themes": ["記憶體"]}, "NVDA": {"name": "輝達", "pct": 3.0, "themes": ["AI伺服器"]}}
+    moves = early.us_moves({"MU": mu, "NVDA": nv}, lead_map)
+    assert [m["sym"] for m in moves] == ["MU"] and round(moves[0]["pct"], 1) == 6.0
+    near = early.us_moves({"MU": mu, "NVDA": nv}, lead_map, floor_ratio=-100)  # 沒達門檻時用來看「最接近的是誰」
+    assert [m["sym"] for m in near] == ["MU", "NVDA"]
+    quiet, ran = _early_stock(), _early_stock(spike=(120, 190))
+    states = {c: early.last_state(bt.prepare(d, paper.PARAMS)) for c, d in {"1111": quiet, "2222": ran}.items()}
+    fut = {"1111": {"mini": "QSF"}, "2222": {"std": "XXF"}}
+    picks = early.lead_picks(moves, {"記憶體": ["1111", "2222", "3333"], "AI伺服器": ["1111"]}, states, fut)
+    assert [p["code"] for p in picks] == ["1111"] and picks[0]["why"] == ["美光 +6.0%"] and picks[0]["themes"] == ["記憶體"]
+    # 整個流程：推播到 trade 頻道
+    sent = []
+    monkeypatch.setenv("TELEGRAM_TRADE_BOT_TOKEN", "x")
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    monkeypatch.setattr(config, "us_lead", lambda: lead_map)
+    monkeypatch.setattr(config, "themes", lambda: {"tw": {"記憶體": ["1111", "2222"], "AI伺服器": ["1111"]}})
+    monkeypatch.setattr(yahoo, "fetch_many", lambda syms, range_="3mo": {"MU": mu, "NVDA": nv})
+    monkeypatch.setattr(yahoo, "fetch_chart", lambda sym, range_="1y", interval="1d": (pd.DataFrame(
+        {"close": [100 + i for i in range(200)]}, index=pd.date_range("2026-01-01", periods=200, freq="B", tz="UTC")), {}))
+    monkeypatch.setattr(cli, "_yahoo_histories", lambda codes, listings, range_="1y": {"1111": quiet, "2222": ran})
+    monkeypatch.setattr(cli, "_margin_rates", lambda: {})
+    monkeypatch.setattr(real, "load", lambda: {"equity": 100_000, "positions": []})
+    monkeypatch.setattr(paper, "STATE", tmp_path / "paper.json")  # 模擬帳戶 L 的狀態檔寫到暫存資料夾
+    monkeypatch.setattr(tw_daily, "load_alerts", lambda: {})
+    text = cli.push_lead_list({"1111": {"name": "甲"}, "2222": {"name": "乙"}}, fut)
+    assert sent and sent[0][0] == "trade" and "美光 MU +6.0%" in text and "1111 甲" in text and "2222" not in text
+    assert "模擬帳戶 L" in text and [x["code"] for x in paper.load("L")["plan"]] == ["1111"]  # 領先名單同時排進 L 的開盤計劃
+    monkeypatch.setattr(yahoo, "fetch_many", lambda syms, range_="3mo": {"NVDA": nv})  # 昨夜沒有達門檻的
+    sent.clear()
+    assert cli.push_lead_list({}, fut) is None and not sent  # 自動執行：沒有就不推
+    assert "沒有達門檻" in cli.push_lead_list({}, fut, force=True) and sent  # 手動：回一則說明
+    # 題材補漲：龍頭放量突破 + 同題材還沒漲
+    leader = _early_stock(last=140)
+    st2 = {c: early.last_state(bt.prepare(d, paper.PARAMS)) for c, d in
+           {"1111": leader, "2222": _early_stock(), "3333": _early_stock(spike=(120, 190))}.items()}
+    lead, lag = early.laggard_picks(["1111", "2222", "3333"], st2)
+    assert lead == ["1111"] and [x["code"] for x in lag] == ["2222"]
+    sec = early.laggard_section(lead, lag, {}, {"1111": "龍頭", "2222": "補漲股"})
+    assert "補漲候選" in sec and "1111 龍頭" in sec and "2222 補漲股" in sec
+    assert early.laggard_picks(["2222", "3333"], st2) == ([], [])  # 沒有龍頭突破就不列
+
+
+def test_backtest_extra_slots_do_not_compete_with_base_positions():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt
+    ds = {c: _early_stock(spread=0.03) for c in ("1111", "2222")}  # 振幅大 → 口數小，兩檔的保證金都放得下
+    for d in ds.values():
+        for col in ("open", "high", "low", "close"):
+            d.iloc[-5:, d.columns.get_loc(col)] = 80.0
+    idx = ds["1111"].index
+    index_df = pd.DataFrame({"close": np.linspace(100, 140, len(idx))}, index=idx)
+    fut = {"1111": {"mini": "QSF"}, "2222": {"mini": "QSF"}}
+    x = idx[-10]
+    ex = {x: [(1.0, "1111", "領先"), (0.9, "2222", "補漲")]}
+    one = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20", extra_slots=1), None, extra=ex)
+    two = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20", extra_slots=2), None, extra=ex)
+    assert len(one["trades"]) == 1 and len(two["trades"]) == 2  # 額外名額 1 → 只進分數高的；2 → 兩檔都進
+    shared = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20"), None, extra=ex)
+    assert len(shared["trades"]) == 1  # 沒設額外名額 → 和 max_pos 共用
+
+
+def test_paper_account_l_has_dedicated_lead_slot():
+    from market_intel.trade import backtest as bt, paper
+    label, p = paper.VARIANTS["L"]
+    assert p.extra_slots == 1 and p.max_pos == 3 and "領先" in label
+
+    def pos(code, setup):
+        return {"code": code, "name": code, "setup": setup, "contract": "QSF", "mult": 100, "qty": 1, "qty0": 1,
+                "entry_date": "2026-10-01", "entry": 100.0, "stop": 90.0, "r0": 10.0, "realized": 0.0,
+                "half_done": False, "days": 1, "exit_next": ""}
+    st = {"equity": 100_000, "positions": [pos("9001", "突破"), pos("9002", "突破"), pos("9003", "拉回")], "plan": []}
+    assert paper.slot_full(st, "突破", p) and not paper.slot_full(st, "領先", p)  # 3 檔滿了，領先位仍空著
+    assert paper.slot_full(st, "突破", paper.VARIANTS["A"][1]) is False            # A（4 檔）共用名額
+    # 領先計劃：進到 4 檔，領先位佔掉後不再加；大盤空頭、處置股不加；重算會取代舊的領先計劃
+    ds = {c: _early_stock(spread=0.03) for c in ("1111", "2222")}
+    prepped = {c: bt.prepare(d, paper.PARAMS) for c, d in ds.items()}
+    fut = {"1111": {"mini": "QSF"}, "2222": {"mini": "QSF"}}
+    names = {"1111": "甲", "2222": "乙"}
+    picks = [{"code": "1111", "themes": ["記憶體"], "why": ["美光 +6.0%"], "score": 1.5},
+             {"code": "2222", "themes": ["記憶體"], "why": ["美光 +6.0%"], "score": 1.2}]
+    assert paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, False, p) == []   # 大盤空頭
+    got = paper.add_lead_plan(st, picks, prepped, fut, names, {}, {"1111": ["處置股"]}, True, p)
+    assert [x["code"] for x in got] == ["2222"] and got[0]["setup"] == "領先"           # 處置股跳過
+    got = paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, True, p)
+    assert [x["code"] for x in got] == ["1111", "2222"] and len(st["plan"]) == 2          # 取代舊的，不重複
+    day = ds["1111"].index[-1]
+    events = paper.settle(st, day, prepped, {}, p)
+    held = [x["code"] for x in st["positions"] if x["setup"] == "領先"]
+    assert held == ["1111"] and any("模擬進場 1111" in e and "領先" in e for e in events)  # 領先位只佔 1 檔，第二個被名額擋掉
+    assert len(st["positions"]) == 4 and paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, True, p) == []
