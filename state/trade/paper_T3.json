@@ -1,7 +1,7 @@
 {
  "start": "2026-10-05",
  "capital": 100000,
- "equity": 97974.54469859567,
+ "equity": 96601.92069859567,
  "positions": [
   {
    "code": "1102",
@@ -17,7 +17,7 @@
    "r0": 0.8822281020503482,
    "realized": -122.11399688720704,
    "half_done": false,
-   "days": 3,
+   "days": 4,
    "exit_next": ""
   },
   {
@@ -34,25 +34,8 @@
    "r0": 0.9459572100168714,
    "realized": -101.51,
    "half_done": true,
-   "days": 3,
+   "days": 4,
    "exit_next": ""
-  },
-  {
-   "code": "2376",
-   "name": "技嘉",
-   "setup": "拉回",
-   "contract": "SLF",
-   "mult": 100,
-   "qty": 1,
-   "qty0": 1,
-   "entry_date": "2026-10-08",
-   "entry": 362.0,
-   "stop": 342.1380689457668,
-   "r0": 19.861931054233196,
-   "realized": -86.924,
-   "half_done": false,
-   "days": 2,
-   "exit_next": "跌破20日線"
   }
  ],
  "closed": [
@@ -77,21 +60,67 @@
    "pnl": -2025,
    "r": -1.1,
    "reason": "停損"
+  },
+  {
+   "code": "2376",
+   "name": "技嘉",
+   "setup": "拉回",
+   "contract": "SLF",
+   "mult": 100,
+   "qty": 1,
+   "qty0": 1,
+   "entry_date": "2026-10-08",
+   "entry": 362.0,
+   "stop": 342.1380689457668,
+   "r0": 19.861931054233196,
+   "realized": -86.924,
+   "half_done": false,
+   "days": 3,
+   "exit_next": "跌破20日線",
+   "exit_date": "2026-10-13",
+   "exit": 350.0,
+   "pnl": -1373,
+   "r": -0.69,
+   "reason": "跌破20日線"
   }
  ],
- "plan": [],
- "last_date": "2026-10-12",
+ "plan": [
+  {
+   "code": "1312",
+   "name": "國喬",
+   "setup": "突破",
+   "theme": "",
+   "atr": 0.7238227566139572,
+   "close": 17.649999618530273,
+   "vr": 8.987463790167293,
+   "info": {
+    "std": "EEF",
+    "mini": null,
+    "night": false
+   },
+   "contract": "EEF",
+   "mult": 2000,
+   "qty": 1,
+   "risk_pct": 0.03,
+   "score": 3,
+   "stop_est": 16.564265483609336,
+   "target_est": 19.821467888372148,
+   "margin_est": 5718.599876403809,
+   "risk_est": 2171.468269841874
+  }
+ ],
+ "last_date": "2026-10-13",
  "regime": "多頭",
  "blocked": [
   {
-   "code": "2409",
-   "name": "友達",
+   "code": "2330",
+   "name": "台積電",
    "setup": "拉回",
-   "theme": "鼎元（2426）題材與產業",
-   "contract": "CHF",
-   "risk_one": 6426.499532748721,
-   "need_capital": 214216.65109162405,
-   "reserve_one": 43193.24907302857
+   "theme": "ABF供需",
+   "contract": "QFF",
+   "risk_one": 5933.0051717595325,
+   "need_capital": 197766.8390586511,
+   "reserve_one": 100845.0
   },
   {
    "code": "2603",
@@ -99,9 +128,9 @@
    "setup": "突破",
    "theme": "供需事件：伊賽亞斯颶風衝擊美國能源供應 煉油產能吃緊",
    "contract": "CZF",
-   "risk_one": 21098.305294678652,
-   "need_capital": 703276.8431559551,
-   "reserve_one": 248346.0
+   "risk_one": 22919.733866107206,
+   "need_capital": 763991.1288702402,
+   "reserve_one": 256608.0
   },
   {
    "code": "2609",
@@ -109,39 +138,39 @@
    "setup": "突破",
    "theme": "供需事件：中東局勢與航運油價",
    "contract": "DAF",
-   "risk_one": 5770.2286301910135,
-   "need_capital": 192340.95433970046,
-   "reserve_one": 61819.1985168457
+   "risk_one": 5748.800385736502,
+   "need_capital": 191626.67952455007,
+   "reserve_one": 62694.0
   },
   {
-   "code": "3481",
-   "name": "群創",
-   "setup": "拉回",
-   "theme": "供需事件：卡位缺貨漲價飆股",
-   "contract": "DQF",
-   "risk_one": 7059.086421789005,
-   "need_capital": 235302.88072630018,
-   "reserve_one": 62329.499073028564
+   "code": "2340",
+   "name": "台亞",
+   "setup": "突破",
+   "theme": "供需事件：Lumentum喊AI光通訊嚴重供不應求 台廠3",
+   "contract": "FYF",
+   "risk_one": 9105.48234305888,
+   "need_capital": 303516.0781019627,
+   "reserve_one": 65245.500926971436
   },
   {
-   "code": "2455",
-   "name": "全新",
-   "setup": "拉回",
-   "theme": "穩懋（3105）題材與產業",
-   "contract": "GUF",
-   "risk_one": 91032.4938746303,
-   "need_capital": 3034416.4624876766,
-   "reserve_one": 685260.0000000001
+   "code": "2347",
+   "name": "聯強",
+   "setup": "突破",
+   "theme": "供需事件：AI 搶產能 輝達旗艦顯卡 RTX 5090 傳",
+   "contract": "GAF",
+   "risk_one": 7333.259335821168,
+   "need_capital": 244441.9778607056,
+   "reserve_one": 81405.0
   },
   {
    "code": "3008",
    "name": "大立光",
    "setup": "突破",
-   "theme": "CPO設備",
+   "theme": "光學鏡頭",
    "contract": "OLF",
-   "risk_one": 60936.60214175143,
-   "need_capital": 2031220.0713917143,
-   "reserve_one": 355995.0
+   "risk_one": 59115.173570322804,
+   "need_capital": 1970505.785677427,
+   "reserve_one": 353565.0
   },
   {
    "code": "3702",
@@ -149,19 +178,39 @@
    "setup": "拉回",
    "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
    "contract": "JPF",
-   "risk_one": 10943.342604759038,
-   "need_capital": 547167.1302379519,
-   "reserve_one": 93960.00000000001
+   "risk_one": 11907.628319044761,
+   "need_capital": 396920.94396815874,
+   "reserve_one": 95175.00000000001
   },
   {
-   "code": "6282",
-   "name": "康舒",
+   "code": "4938",
+   "name": "和碩",
    "setup": "突破",
-   "theme": "供需事件：AI基建年均投資估佔美GDP 3.63% 缺電、",
-   "contract": "KFF",
-   "risk_one": 3947.637617028647,
-   "need_capital": 197381.88085143236,
-   "reserve_one": 55525.500926971436
+   "theme": "和碩（4938）題材與產業",
+   "contract": "JSF",
+   "risk_one": 8684.886364771586,
+   "need_capital": 289496.2121590529,
+   "reserve_one": 83025.00000000001
+  },
+  {
+   "code": "6239",
+   "name": "力成",
+   "setup": "拉回",
+   "theme": "供需事件：關稅與晶片出口管制",
+   "contract": "KCF",
+   "risk_one": 39578.64762565259,
+   "need_capital": 1978932.3812826297,
+   "reserve_one": 287712.0
+  },
+  {
+   "code": "3406",
+   "name": "玉晶光",
+   "setup": "突破",
+   "theme": "光學鏡頭",
+   "contract": "QJF",
+   "risk_one": 10928.055438022238,
+   "need_capital": 364268.51460074127,
+   "reserve_one": 57105.0
   },
   {
    "code": "2355",
@@ -169,9 +218,29 @@
    "setup": "突破",
    "theme": "敬鵬（2355）題材與產業",
    "contract": "MBF",
-   "risk_one": 4130.191360308999,
-   "need_capital": 206509.56801544994,
-   "reserve_one": 48308.40074157715
+   "risk_one": 4430.190869847919,
+   "need_capital": 221509.54349239595,
+   "reserve_one": 49280.40074157715
+  },
+  {
+   "code": "5347",
+   "name": "世界",
+   "setup": "拉回",
+   "theme": "供需事件：關稅與晶片出口管制",
+   "contract": "NLF",
+   "risk_one": 24456.166677919668,
+   "need_capital": 1222808.3338959834,
+   "reserve_one": 170100.0
+  },
+  {
+   "code": "6488",
+   "name": "環球晶",
+   "setup": "拉回",
+   "theme": "供需事件：關稅與晶片出口管制",
+   "contract": "PBF",
+   "risk_one": 11475.542435455282,
+   "need_capital": 382518.0811818427,
+   "reserve_one": 61661.25
   },
   {
    "code": "5269",
@@ -179,29 +248,29 @@
    "setup": "突破",
    "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
    "contract": "PNF",
-   "risk_one": 6498.202996938539,
-   "need_capital": 216606.76656461798,
+   "risk_one": 6230.345854081406,
+   "need_capital": 207678.19513604688,
    "reserve_one": 93555.00000000001
   },
   {
-   "code": "3324",
-   "name": "雙鴻",
-   "setup": "拉回",
-   "theme": "散熱供需",
-   "contract": "ULF",
-   "risk_one": 14244.123765501308,
-   "need_capital": 712206.1882750654,
-   "reserve_one": 93555.00000000001
-  },
-  {
-   "code": "6223",
-   "name": "旺矽",
+   "code": "3706",
+   "name": "神達",
    "setup": "突破",
-   "theme": "供需事件：AI基建年均投資估佔美GDP 3.63% 缺電、",
-   "contract": "UWF",
-   "risk_one": 50500.74442927689,
-   "need_capital": 2525037.2214638446,
-   "reserve_one": 372397.50000000006
+   "theme": "AI伺服器",
+   "contract": "PSF",
+   "risk_one": 4745.424042822009,
+   "need_capital": 237271.20214110045,
+   "reserve_one": 100845.0
+  },
+  {
+   "code": "6505",
+   "name": "台塑化",
+   "setup": "突破",
+   "theme": "供需事件：伊賽亞斯颶風衝擊美國能源供應 煉油產能吃緊",
+   "contract": "UFF",
+   "risk_one": 17679.76617757222,
+   "need_capital": 589325.5392524073,
+   "reserve_one": 115668.0
   },
   {
    "code": "3665",
@@ -209,9 +278,9 @@
    "setup": "拉回",
    "theme": "散熱供需",
    "contract": "VFF",
-   "risk_one": 19806.364251569357,
-   "need_capital": 990318.2125784678,
-   "reserve_one": 143066.25
+   "risk_one": 20181.364251569357,
+   "need_capital": 1009068.2125784678,
+   "reserve_one": 137295.0
   },
   {
    "code": "2395",
@@ -219,13 +288,12 @@
    "setup": "拉回",
    "theme": "鴻海（2317）題材與產業",
    "contract": "VIF",
-   "risk_one": 74864.61587350414,
-   "need_capital": 2495487.195783471,
-   "reserve_one": 584010.0
+   "risk_one": 75507.47301636124,
+   "need_capital": 2516915.7672120417,
+   "reserve_one": 581580.0
   }
  ],
  "last_events": [
-  "🎯 1101 台泥 到 +2R 27.1，只有 1 口不分批，停損移到成本",
-  "⚠️ 2376 技嘉 收盤跌破 20 日線，明天開盤出場"
+  "🔴 模擬出場 2376 小型技嘉 @ 350.0（跌破20日線）｜損益 -1,373（-0.7R）"
  ]
 }
