@@ -1429,10 +1429,10 @@ def test_early_forward_stats_compares_signal_types():
     assert row["筆數"] == 1 and row["5日平均%"] > 0 and "全部股票（基準）" in set(tab["訊號"])
 
 
-def test_early_live_lead_list_and_laggard_section(monkeypatch):
+def test_early_live_lead_list_and_laggard_section(monkeypatch, tmp_path):
     import pandas as pd
     from market_intel import cli, config, notify
-    from market_intel.fetchers import stock_futures, yahoo
+    from market_intel.fetchers import stock_futures, tw_daily, yahoo
     from market_intel.trade import backtest as bt, early, paper, real
     # 美股：MU 昨夜 +6%（門檻 4）、NVDA +1%（沒到）
     uidx = pd.date_range("2026-09-01", periods=30, freq="B", tz="UTC") + pd.Timedelta(hours=13, minutes=30)
@@ -1460,8 +1460,11 @@ def test_early_live_lead_list_and_laggard_section(monkeypatch):
     monkeypatch.setattr(cli, "_yahoo_histories", lambda codes, listings, range_="1y": {"1111": quiet, "2222": ran})
     monkeypatch.setattr(cli, "_margin_rates", lambda: {})
     monkeypatch.setattr(real, "load", lambda: {"equity": 100_000, "positions": []})
+    monkeypatch.setattr(paper, "STATE", tmp_path / "paper.json")  # 模擬帳戶 L 的狀態檔寫到暫存資料夾
+    monkeypatch.setattr(tw_daily, "load_alerts", lambda: {})
     text = cli.push_lead_list({"1111": {"name": "甲"}, "2222": {"name": "乙"}}, fut)
     assert sent and sent[0][0] == "trade" and "美光 MU +6.0%" in text and "1111 甲" in text and "2222" not in text
+    assert "模擬帳戶 L" in text and [x["code"] for x in paper.load("L")["plan"]] == ["1111"]  # 領先名單同時排進 L 的開盤計劃
     monkeypatch.setattr(yahoo, "fetch_many", lambda syms, range_="3mo": {"NVDA": nv})  # 昨夜沒有達門檻的
     sent.clear()
     assert cli.push_lead_list({}, fut) is None and not sent  # 自動執行：沒有就不推
@@ -1495,3 +1498,34 @@ def test_backtest_extra_slots_do_not_compete_with_base_positions():
     assert len(one["trades"]) == 1 and len(two["trades"]) == 2  # 額外名額 1 → 只進分數高的；2 → 兩檔都進
     shared = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20"), None, extra=ex)
     assert len(shared["trades"]) == 1  # 沒設額外名額 → 和 max_pos 共用
+
+
+def test_paper_account_l_has_dedicated_lead_slot():
+    from market_intel.trade import backtest as bt, paper
+    label, p = paper.VARIANTS["L"]
+    assert p.extra_slots == 1 and p.max_pos == 3 and "領先" in label
+
+    def pos(code, setup):
+        return {"code": code, "name": code, "setup": setup, "contract": "QSF", "mult": 100, "qty": 1, "qty0": 1,
+                "entry_date": "2026-10-01", "entry": 100.0, "stop": 90.0, "r0": 10.0, "realized": 0.0,
+                "half_done": False, "days": 1, "exit_next": ""}
+    st = {"equity": 100_000, "positions": [pos("9001", "突破"), pos("9002", "突破"), pos("9003", "拉回")], "plan": []}
+    assert paper.slot_full(st, "突破", p) and not paper.slot_full(st, "領先", p)  # 3 檔滿了，領先位仍空著
+    assert paper.slot_full(st, "突破", paper.VARIANTS["A"][1]) is False            # A（4 檔）共用名額
+    # 領先計劃：進到 4 檔，領先位佔掉後不再加；大盤空頭、處置股不加；重算會取代舊的領先計劃
+    ds = {c: _early_stock(spread=0.03) for c in ("1111", "2222")}
+    prepped = {c: bt.prepare(d, paper.PARAMS) for c, d in ds.items()}
+    fut = {"1111": {"mini": "QSF"}, "2222": {"mini": "QSF"}}
+    names = {"1111": "甲", "2222": "乙"}
+    picks = [{"code": "1111", "themes": ["記憶體"], "why": ["美光 +6.0%"], "score": 1.5},
+             {"code": "2222", "themes": ["記憶體"], "why": ["美光 +6.0%"], "score": 1.2}]
+    assert paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, False, p) == []   # 大盤空頭
+    got = paper.add_lead_plan(st, picks, prepped, fut, names, {}, {"1111": ["處置股"]}, True, p)
+    assert [x["code"] for x in got] == ["2222"] and got[0]["setup"] == "領先"           # 處置股跳過
+    got = paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, True, p)
+    assert [x["code"] for x in got] == ["1111", "2222"] and len(st["plan"]) == 2          # 取代舊的，不重複
+    day = ds["1111"].index[-1]
+    events = paper.settle(st, day, prepped, {}, p)
+    held = [x["code"] for x in st["positions"] if x["setup"] == "領先"]
+    assert held == ["1111"] and any("模擬進場 1111" in e and "領先" in e for e in events)  # 領先位只佔 1 檔，第二個被名額擋掉
+    assert len(st["positions"]) == 4 and paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, True, p) == []

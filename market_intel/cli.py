@@ -971,8 +971,38 @@ def push_lead_list(listings: dict, futures: dict, channel: str = "trade", force:
     rows = {x["code"]: x for x in candidates.rows([p["code"] for p in picks_], hist, futures, names,
                                                   real.load()["equity"], _margin_rates())}
     text = early.lead_message(f"{now_tw():%m/%d}", moves, picks_, rows, names, mkt, note=early.LEAD_NOTE)
+    try:  # 模擬帳戶 L（B 3 檔＋領先專用 1 檔）：把領先名單排進今天開盤的計劃，盤後 15:30 用開盤價成交
+        text += "\n\n" + _lead_paper_plan(picks_, hist, futures, listings, mkt)
+    except Exception as e:  # noqa: BLE001
+        log.warning("模擬帳戶 L 領先計劃失敗：%s", e)
     notify.send(text, channel=channel)
     return text
+
+
+def _lead_paper_plan(picks_: list[dict], hist: dict, futures: dict, listings: dict, mkt: bool) -> str:
+    """有「額外名額」的模擬帳戶（L）收到領先名單：取第一檔算得出口數的排進今天開盤的計劃。回傳要附在推播後面的說明。"""
+    from .trade import backtest as bt
+    from .trade import paper
+    prepped = {c: bt.prepare(df, paper.PARAMS) for c, df in hist.items() if df is not None and len(df) > 80}
+    names = {c: (listings.get(c) or {}).get("name", c) for c in prepped}
+    try:
+        alerts = tw_daily.load_alerts()
+    except Exception as e:  # noqa: BLE001
+        log.warning("處置／注意股清單抓取失敗，領先計劃不排除處置股：%s", e)
+        alerts = {}
+    lines = []
+    for name, (label, p) in paper.VARIANTS.items():
+        if not p.extra_slots:
+            continue
+        st = paper.load(name)
+        added = paper.add_lead_plan(st, picks_, prepped, futures, names, _margin_rates(), alerts, mkt, p)
+        paper.save(st, name)
+        if added:
+            lines.append(f"🧪 模擬帳戶 {name} 今天開盤計劃（名額 {p.extra_slots} 檔，先成交的佔位）：" + "、".join(
+                f"{x['code']} {x['name']} {x['contract']} {x['qty']} 口（停損約 {x['stop_est']:,.1f}）" for x in added))
+        else:
+            lines.append(f"🧪 模擬帳戶 {name}：今天沒有領先計劃（大盤空頭、領先位已有持倉，或算不出口數）")
+    return "\n".join(lines)
 
 
 def _research_trial(topic: str, trigger: str) -> None:
