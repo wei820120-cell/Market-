@@ -53,6 +53,10 @@ on:
         description: "提前進場訊號回測：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行"
         type: boolean
         default: false
+      early2:
+        description: "提前進場第二輪回測：專用名額、強度濾網、盤中突破強度門檻"
+        type: boolean
+        default: false
       lead:
         description: "立刻推「盤前領先名單」（美股昨夜大漲 → 台股還沒跟上的對應股）"
         type: boolean
@@ -131,6 +135,8 @@ jobs:
             python -m market_intel backtest --speed
           elif [ "${{ inputs.early }}" = "true" ]; then
             python -m market_intel backtest --early
+          elif [ "${{ inputs.early2 }}" = "true" ]; then
+            python -m market_intel backtest --early2
           elif [ "${{ inputs.lead }}" = "true" ]; then
             python -m market_intel trade --lead
           elif [ "${{ inputs.backtest }}" = "true" ]; then

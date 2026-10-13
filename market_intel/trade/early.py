@@ -37,6 +37,7 @@ def frames(prepped: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     f = {k: wide(k) for k in ("open", "high", "low", "close", "ma20", "ma60", "hh", "vr", "ret120", "atr")}
     f["sig_a"] = wide("sig_a").fillna(False).astype(bool)
     f["sig_b"] = wide("sig_b").fillna(False).astype(bool)
+    f["f_hi"] = wide("f_hi").fillna(False).astype(bool)
     f["ret5"] = f["close"] / f["close"].shift(5) - 1
     f["ret20"] = f["close"] / f["close"].shift(20) - 1
     f["gap"] = f["hh"] / f["close"] - 1          # 離 20 日高還差幾 %（≤0＝已經在高點之上）
@@ -63,7 +64,8 @@ def _norm_index(idx: pd.DatetimeIndex) -> dict:
 
 def lead_signals(us_hist: dict[str, pd.DataFrame], lead_map: dict, themes_tw: dict, fr: dict[str, pd.DataFrame],
                  max5: float = LEAD_MAX_RET5, max20: float = LEAD_MAX_RET20, pct_scale: float = 1.0,
-                 min_vr: float = 0.0, require_trend: bool = True) -> dict:
+                 min_vr: float = 0.0, require_trend: bool = True, min_rs: float = 0.0, need_hi: bool = False,
+                 score_rs: bool = False) -> dict:
     """美股領先：美股某個交易日的漲幅達門檻 → 同一個日曆日的台股收盤後產生訊號、隔天開盤進場。
 
     台股對應股要「還沒跟上」：近 5 日、20 日漲幅不大，且站上 60 日線（趨勢沒壞）。
@@ -73,6 +75,10 @@ def lead_signals(us_hist: dict[str, pd.DataFrame], lead_map: dict, themes_tw: di
     ok = (fr["ret5"] <= max5) & (fr["ret20"] <= max20)
     if require_trend:
         ok &= fr["close"] > fr["ma60"]
+    if min_rs:
+        ok &= fr["rs"].fillna(0) >= min_rs      # 自己的相對強度（近 120 日漲幅排名）夠高
+    if need_hi:
+        ok &= fr["f_hi"]                         # 離 52 週高點 10% 內
     tw_days = _norm_index(fr["close"].index)
     for sym, spec in lead_map.items():
         df = us_hist.get(sym)
@@ -91,7 +97,9 @@ def lead_signals(us_hist: dict[str, pd.DataFrame], lead_map: dict, themes_tw: di
                 continue
             row = ok.loc[ts, members]
             for c in row[row].index:
-                out[ts].append((float(pct.loc[uts]) / float(spec.get("pct", 3.0)), c, "領先"))  # 分數＝漲幅 ÷ 門檻
+                us_score = float(pct.loc[uts]) / float(spec.get("pct", 3.0))  # 分數＝漲幅 ÷ 門檻
+                rs = fr["rs"].at[ts, c]
+                out[ts].append((0.0 if score_rs and pd.isna(rs) else (float(rs) if score_rs else us_score), c, "領先"))
     return out
 
 

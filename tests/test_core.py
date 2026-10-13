@@ -1469,3 +1469,23 @@ def test_early_live_lead_list_and_laggard_section(monkeypatch):
     sec = early.laggard_section(lead, lag, {}, {"1111": "龍頭", "2222": "補漲股"})
     assert "補漲候選" in sec and "1111 龍頭" in sec and "2222 補漲股" in sec
     assert early.laggard_picks(["2222", "3333"], st2) == ([], [])  # 沒有龍頭突破就不列
+
+
+def test_backtest_extra_slots_do_not_compete_with_base_positions():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt
+    ds = {c: _early_stock(spread=0.03) for c in ("1111", "2222")}  # 振幅大 → 口數小，兩檔的保證金都放得下
+    for d in ds.values():
+        for col in ("open", "high", "low", "close"):
+            d.iloc[-5:, d.columns.get_loc(col)] = 80.0
+    idx = ds["1111"].index
+    index_df = pd.DataFrame({"close": np.linspace(100, 140, len(idx))}, index=idx)
+    fut = {"1111": {"mini": "QSF"}, "2222": {"mini": "QSF"}}
+    x = idx[-10]
+    ex = {x: [(1.0, "1111", "領先"), (0.9, "2222", "補漲")]}
+    one = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20", extra_slots=1), None, extra=ex)
+    two = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20", extra_slots=2), None, extra=ex)
+    assert len(one["trades"]) == 1 and len(two["trades"]) == 2  # 額外名額 1 → 只進分數高的；2 → 兩檔都進
+    shared = bt.run(ds, fut, index_df, bt.Params(setups=(), max_pos=1, exit_ma="ma20"), None, extra=ex)
+    assert len(shared["trades"]) == 1  # 沒設額外名額 → 和 max_pos 共用

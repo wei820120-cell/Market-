@@ -1612,6 +1612,18 @@ def _backtest_early(data, futures, index_df, rates, capital: float, range_: str)
         "盤中突破（前一天相對強度前20%）＋領先＋補漲": ({"setups": ("拉回",), "intraday": True, "intraday_min_rs": 0.8},
                                          early.merge(lead, lag)),
     }
+    rows = _early_table(cases, base, data, futures, index_df, rates)
+    table = pd.DataFrame(rows)
+    print("\n【組合回測】")
+    print(table.drop(columns=["各型態"]).to_string(index=False))
+    for r in rows:
+        print(f"・{r['策略']}：{r['各型態']}")
+    (out / "early.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
+def _early_table(cases: dict, base, data, futures, index_df, rates) -> list[dict]:
+    """逐組情境回測：全期間＋前後半段。cases：{名稱: (Params 覆寫, 額外訊號)}。"""
+    from .trade import backtest as bt
     cut = index_df.index[len(index_df) // 2]
     warm = cut - pd.Timedelta(days=300)
     first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
@@ -1627,12 +1639,53 @@ def _backtest_early(data, futures, index_df, rates, capital: float, range_: str)
                      "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
                      "前半段%": a["報酬率%"], "後半段%": b["報酬率%"], "翻倍": full["翻倍日期"], "各型態": by})
         log.info("%s：%s", name, rows[-1])
+    return rows
+
+
+def _backtest_early2(data, futures, index_df, rates, capital: float, range_: str) -> None:
+    """提前進場第二輪：第一輪發現「現行每天約 7 檔突破訊號，額外訊號只補空位根本進不去」，所以改用
+    ① 額外訊號專用名額（另外加 1 檔，不和突破搶位）② 加相對強度／52 週高點濾網 ③ 盤中突破加強度門檻 來比。"""
+    from .trade import backtest as bt
+    from .trade import early
+    base = bt.Params(capital=capital, exit_ma="ma20")
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.load("themes").get("tw") or {}).items()}
+    lead_map = config.us_lead()
+    us_hist = yahoo.fetch_many(sorted(lead_map), range_=range_)
+    prepped = {c: bt.prepare(d, base) for c, d in data.items() if len(d) > 80}
+    fr = early.frames(prepped)
+    L = lambda **kw: early.lead_signals(us_hist, lead_map, themes_tw, fr, **kw)  # noqa: E731
+    lead, lead50, lead80 = L(), L(min_rs=0.5), L(min_rs=0.8)
+    lead_hi = L(need_hi=True)
+    lead_rs50 = L(min_rs=0.5, score_rs=True)
+    lag50, lag80 = early.laggard_signals(themes_tw, fr, min_rs=0.5), early.laggard_signals(themes_tw, fr, min_rs=0.8)
+    plus = {"extra_slots": 1}
+    cases = {
+        "B 現行（3 檔）": ({}, None),
+        "B 4 檔（對照：多一個位置本身的效果）": ({"max_pos": 4}, None),
+        "只做領先": ({"setups": ()}, lead),
+        "只做領先（相對強度≥50%）": ({"setups": ()}, lead50),
+        "只做領先（相對強度≥80%）": ({"setups": ()}, lead80),
+        "只做領先（離52週高10%內）": ({"setups": ()}, lead_hi),
+        "只做領先（相對強度≥50%、依自身強度排序）": ({"setups": ()}, lead_rs50),
+        "只做補漲（相對強度≥50%）": ({"setups": ()}, lag50),
+        "只做補漲（相對強度≥80%）": ({"setups": ()}, lag80),
+        "B 3 檔＋領先專用 1 檔": (plus, lead),
+        "B 3 檔＋領先專用 1 檔（相對強度≥50%）": (plus, lead50),
+        "B 3 檔＋領先專用 1 檔（相對強度≥80%）": (plus, lead80),
+        "B 3 檔＋領先專用 1 檔（離52週高10%內）": (plus, lead_hi),
+        "B 3 檔＋補漲專用 1 檔（相對強度≥50%）": (plus, lag50),
+        "B 3 檔＋領先＋補漲專用 1 檔（相對強度≥50%）": (plus, early.merge(lead50, lag50)),
+        "B＋盤中突破（前一天相對強度前20%）": ({"intraday": True, "intraday_min_rs": 0.8}, None),
+        "B＋盤中突破（前一天相對強度前10%）": ({"intraday": True, "intraday_min_rs": 0.9}, None),
+    }
+    rows = _early_table(cases, base, data, futures, index_df, rates)
     table = pd.DataFrame(rows)
-    print("\n【組合回測】")
     print(table.drop(columns=["各型態"]).to_string(index=False))
     for r in rows:
         print(f"・{r['策略']}：{r['各型態']}")
-    (out / "early.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "early2.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
 
 
 def cmd_backtest(args) -> None:
@@ -1676,6 +1729,9 @@ def cmd_backtest(args) -> None:
         return
     if args.early:
         _backtest_early(data, futures, index_df, rates, args.capital, args.range)
+        return
+    if args.early2:
+        _backtest_early2(data, futures, index_df, rates, args.capital, args.range)
         return
     if args.variants:
         variants = {
@@ -2085,6 +2141,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
     bk.add_argument("--early", action="store_true", help="提前進場訊號：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行")
+    bk.add_argument("--early2", action="store_true", help="提前進場第二輪：專用名額、強度濾網、盤中突破強度門檻")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)
     tr = sub.add_parser("trade", help="進出場機器人（模擬）")

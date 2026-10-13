@@ -36,6 +36,7 @@ def label(name: str, mult: int) -> str:
     避免小型股期的持倉、提醒被看成現股或一般契約。"""
     return f"小型{name}" if mult == MINI and not name.startswith("小型") else name
 FEE, TAX, SLIP = 50.0, 0.00002, 0.001
+BASE_SETUPS = ("突破", "拉回", "盤中突破")  # 現行進場型態；其他（領先、補漲…）都算「額外訊號」
 
 
 @dataclass
@@ -66,6 +67,7 @@ class Params:
     intraday: bool = False       # 盤中突破就進場（日 K 近似：價格碰到前 20 日高就以「前高或開盤價」成交），不等收盤確認、隔天開盤
     intraday_min_rs: float = 0.0  # 盤中進場只做前一天近 120 日漲幅排名 ≥ 此百分位的股票（0＝不限）；盤中看不到全天量，用這個代替量能確認
     extra_first: bool = False    # 額外訊號（領先、補漲…）排在現行突破／拉回前面；預設排後面，只補空位
+    extra_slots: int = 0         # 額外訊號專用的持倉數（另外加在 max_pos 之外，彼此不佔位）；0＝和突破／拉回共用 max_pos
 
 
 @dataclass
@@ -214,7 +216,13 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
             todo += [(c, s, px) for _, c, s, px in sorted(hits, reverse=True)]
         for item in todo:
             code, setup, *fill = item
-            if len(open_t) >= p.max_pos or any(t.code == code for t in open_t):
+            if any(t.code == code for t in open_t):
+                continue
+            n_extra = sum(t.setup not in BASE_SETUPS for t in open_t)
+            if p.extra_slots:  # 額外訊號有自己的名額，不和突破／拉回搶位
+                if (n_extra >= p.extra_slots) if setup not in BASE_SETUPS else (len(open_t) - n_extra >= p.max_pos):
+                    continue
+            elif len(open_t) >= p.max_pos:
                 continue
             d = prepped[code]
             if day not in d.index:
@@ -292,14 +300,21 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                         cands.append((float(row["vr"]) * 0.5, code, "拉回"))
             base = [(c, s) for _, c, s in sorted(cands, reverse=True)]
             more = [(c, s) for _, c, s in sorted((x for x in extra.get(day, []) if x[1] in prepped), reverse=True)]
-            merged = (more + base) if p.extra_first else (base + more)
+            if p.extra_slots:  # 兩邊各自取前幾名（同一檔以突破／拉回為主）
+                base = base[:p.max_pos * 2]
+                taken = {c for c, _ in base}
+                more = [(c, s) for c, s in more if c not in taken][:p.extra_slots * 2]
+                merged = base + more
+            else:
+                merged = (more + base) if p.extra_first else (base + more)
             seen_codes: set[str] = set()
             pending = []
             for c, s in merged:  # 同一檔只留排最前面的那個型態
                 if c not in seen_codes:
                     seen_codes.add(c)
                     pending.append((c, s))
-            pending = pending[:p.max_pos * 2]
+            if not p.extra_slots:
+                pending = pending[:p.max_pos * 2]
         mtm = sum((float(prepped[t.code]["close"].get(day, t.entry)) - t.entry) * t.mult * t.qty + t.realized
                   for t in open_t)
         curve.append((day, equity + mtm))
