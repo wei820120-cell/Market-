@@ -1,25 +1,7 @@
 {
  "capital": 100000,
- "equity": 99397.546,
+ "equity": 100192.948,
  "positions": [
-  {
-   "code": "2368",
-   "name": "金像電",
-   "contract": "VGF",
-   "mult": 100,
-   "qty": 1,
-   "qty0": 1,
-   "entry": 1145.0,
-   "stop": 1037.211701791426,
-   "r0": 107.7882982085739,
-   "rate": 0.2025,
-   "entry_date": "2026-10-05",
-   "days": 4,
-   "half_done": false,
-   "realized": 0.0,
-   "alerts": [],
-   "last_check": "2026-10-12"
-  },
   {
    "code": "2609",
    "name": "陽明",
@@ -60,6 +42,27 @@
    "exit": 203.5,
    "exit_date": "2026-10-08",
    "pnl": -602
+  },
+  {
+   "code": "2368",
+   "name": "金像電",
+   "contract": "VGF",
+   "mult": 100,
+   "qty": 0,
+   "qty0": 1,
+   "entry": 1145.0,
+   "stop": 1037.211701791426,
+   "r0": 107.7882982085739,
+   "rate": 0.2025,
+   "entry_date": "2026-10-05",
+   "days": 4,
+   "half_done": false,
+   "realized": 795.402,
+   "alerts": [],
+   "last_check": "2026-10-12",
+   "exit": 1154.0,
+   "exit_date": "2026-10-13",
+   "pnl": 795
   }
  ]
 }
