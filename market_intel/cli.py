@@ -922,9 +922,51 @@ def push_trade_candidates(title: str, codes: list[str], listings: dict, context:
         names = {c: (listings.get(c) or {}).get("name", c) for c in codes}
         rs = candidates.rows(codes, hist, futures, names, real.load()["equity"], _margin_rates())
         mkt = bool(bt.market_ok(index_df).iloc[-1]) if len(index_df) > 60 else False
-        notify.send(candidates.message(title, context, rs, mkt), channel="trade")
+        text = candidates.message(title, context, rs, mkt)
+        try:  # 題材補漲：龍頭剛放量突破時，同題材還沒漲的受惠股另列一段（失敗不影響主訊息）
+            from .trade import early
+            from .trade.paper import PARAMS
+            states = {c: early.last_state(bt.prepare(df, PARAMS)) for c, df in hist.items() if df is not None and len(df) >= 80}
+            lead, lag = early.laggard_picks(codes, {c: s for c, s in states.items() if s})
+            text += early.laggard_section(lead, lag, {x["code"]: x for x in rs}, names)
+        except Exception as e:  # noqa: BLE001
+            log.warning("補漲候選 %s 產生失敗：%s", title, e)
+        notify.send(text, channel="trade")
     except Exception as e:  # noqa: BLE001
         log.warning("可卡位標的 %s 產生失敗：%s", title, e)
+
+
+def push_lead_list(listings: dict, futures: dict, channel: str = "trade") -> str | None:
+    """盤前領先名單：美股昨夜領先指標（config/us_lead.yaml）大漲 → 台股對應族群裡還沒跟上的股票（有股票期貨者）。
+    沒有領先指標達門檻就不推。回傳推播內容（沒推就回 None）。"""
+    from .trade import backtest as bt
+    from .trade import candidates, early, real
+    from .trade.paper import PARAMS
+    lead_map = config.us_lead()
+    if not lead_map:
+        return None
+    us_hist = yahoo.fetch_many(sorted(lead_map), range_="3mo")
+    moves = early.us_moves(us_hist, lead_map)
+    if not moves:
+        log.info("美股領先指標：昨夜沒有達門檻的大漲")
+        return None
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.themes().get("tw") or {}).items()}
+    codes = [c for m in moves for th in m["themes"] for c in map(str, themes_tw.get(th, []))
+             if (futures.get(c) or {}).get("std") or (futures.get(c) or {}).get("mini")]
+    codes = list(dict.fromkeys(codes))
+    if not codes:
+        return None
+    hist = _yahoo_histories(codes, listings, range_="1y")
+    states = {c: early.last_state(bt.prepare(df, PARAMS)) for c, df in hist.items() if df is not None and len(df) >= 80}
+    picks_ = early.lead_picks(moves, themes_tw, {c: s for c, s in states.items() if s}, futures)
+    index_df, _ = yahoo.fetch_chart("^TWII", range_="1y")
+    mkt = bool(bt.market_ok(index_df).iloc[-1]) if len(index_df) > 60 else False
+    names = {c: (listings.get(c) or {}).get("name", c) for c in codes}
+    rows = {x["code"]: x for x in candidates.rows([p["code"] for p in picks_], hist, futures, names,
+                                                  real.load()["equity"], _margin_rates())}
+    text = early.lead_message(f"{now_tw():%m/%d}", moves, picks_, rows, names, mkt, note=early.LEAD_NOTE)
+    notify.send(text, channel=channel)
+    return text
 
 
 def _research_trial(topic: str, trigger: str) -> None:
@@ -1516,6 +1558,83 @@ def _backtest_speed(data, futures, index_df, rates, capital: float) -> None:
     (out / "speed.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
 
 
+def _backtest_early(data, futures, index_df, rates, capital: float, range_: str) -> None:
+    """提前進場訊號比較：美股領先、題材補漲，以及預突破、RS 新高、盤中突破進場，對照現行（收盤突破／拉回）。
+
+    先比「訊號品質」（不受口數、持倉數限制：隔天開盤買進後 1／3／5／10 日平均報酬，以及訊號當下近 20 日已經漲了多少），
+    再比「組合回測」（同一套停損、出場、2% 風險、最多 3 檔、前後半段檢查）。
+    """
+    from .trade import backtest as bt
+    from .trade import early
+    base = bt.Params(capital=capital, exit_ma="ma20")  # 策略 B
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.load("themes").get("tw") or {}).items()}  # 只用手動族群，避免研究題材的後見之明
+    lead_map = config.us_lead()
+    us_hist = yahoo.fetch_many(sorted(lead_map), range_=range_)
+    log.info("美股領先指標：%d/%d 檔有資料", len(us_hist), len(lead_map))
+    prepped = {c: bt.prepare(d, base) for c, d in data.items() if len(d) > 80}
+    fr = early.frames(prepped)
+    mkt = bt.market_ok(index_df)
+    lead = early.lead_signals(us_hist, lead_map, themes_tw, fr)
+    lag = early.laggard_signals(themes_tw, fr)
+    pre = early.prebreak_signals(fr)
+    rsl = early.rsline_signals(fr, index_df["close"])
+    count = lambda sig: sum(len(v) for v in sig.values())  # noqa: E731
+    log.info("訊號數：領先 %d、補漲 %d、預突破 %d、RS新高 %d", count(lead), count(lag), count(pre), count(rsl))
+
+    quality = early.forward_stats(early.merge(early.base_signals(fr), lead, lag, pre, rsl), fr, mkt)
+    print("【訊號品質：隔天開盤買進後的平均報酬（不受口數、持倉數限制）】")
+    print(quality.to_string(index=False))
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "early_signals.json").write_text(quality.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+    lead_lo = early.lead_signals(us_hist, lead_map, themes_tw, fr, pct_scale=0.7)
+    lead_hi = early.lead_signals(us_hist, lead_map, themes_tw, fr, pct_scale=1.5)
+    lag_rs = early.laggard_signals(themes_tw, fr, min_rs=0.5)
+    cases = {
+        "B 現行（收盤突破＋拉回）": ({}, None),
+        "B＋美股領先": ({}, lead),
+        "B＋美股領先（門檻×0.7）": ({}, lead_lo),
+        "B＋美股領先（門檻×1.5）": ({}, lead_hi),
+        "B＋題材補漲": ({}, lag),
+        "B＋題材補漲（相對強度≥50%）": ({}, lag_rs),
+        "B＋領先＋補漲": ({}, early.merge(lead, lag)),
+        "B＋預突破": ({}, pre),
+        "B＋RS新高": ({}, rsl),
+        "B＋全部提前訊號": ({}, early.merge(lead, lag, pre, rsl)),
+        "領先排在突破前面（B＋領先＋補漲）": ({"extra_first": True}, early.merge(lead, lag)),
+        "只做美股領先": ({"setups": ()}, lead),
+        "只做題材補漲": ({"setups": ()}, lag),
+        "只做預突破": ({"setups": ()}, pre),
+        "只做RS新高": ({"setups": ()}, rsl),
+        "盤中突破取代收盤突破（拉回照做）": ({"setups": ("拉回",), "intraday": True}, None),
+        "盤中突破（前一天相對強度前20%）": ({"setups": ("拉回",), "intraday": True, "intraday_min_rs": 0.8}, None),
+        "盤中突破（前一天相對強度前20%）＋領先＋補漲": ({"setups": ("拉回",), "intraday": True, "intraday_min_rs": 0.8},
+                                         early.merge(lead, lag)),
+    }
+    cut = index_df.index[len(index_df) // 2]
+    warm = cut - pd.Timedelta(days=300)
+    first = ({c: d[d.index < cut] for c, d in data.items()}, index_df[index_df.index < cut])
+    second = ({c: d[d.index >= warm] for c, d in data.items()}, index_df[index_df.index >= warm])
+    rows = []
+    for name, (kw, ex) in cases.items():
+        par = bt.Params(**{**base.__dict__, **kw})
+        full = bt.run(data, futures, index_df, par, rates, extra=ex)
+        a = bt.run(first[0], futures, first[1], par, rates, extra=ex)
+        b = bt.run(second[0], futures, second[1], par, rates, extra=ex)
+        by = "；".join(f"{k} {v['筆數']}筆 勝率{v['勝率']:.0f}% R{v['平均R']:+.2f}" for k, v in full["各型態"].items())
+        rows.append({"策略": name, "報酬%": full["報酬率%"], "年化%": full["年化%"], "最大回撤%": full["最大回撤%"],
+                     "筆數": full["交易筆數"], "勝率%": full["勝率%"], "平均R": full["平均R"],
+                     "前半段%": a["報酬率%"], "後半段%": b["報酬率%"], "翻倍": full["翻倍日期"], "各型態": by})
+        log.info("%s：%s", name, rows[-1])
+    table = pd.DataFrame(rows)
+    print("\n【組合回測】")
+    print(table.drop(columns=["各型態"]).to_string(index=False))
+    for r in rows:
+        print(f"・{r['策略']}：{r['各型態']}")
+    (out / "early.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def cmd_backtest(args) -> None:
     """股票期貨波段策略回測（只做多），結果存到 research/backtest/。"""
     from . import net
@@ -1554,6 +1673,9 @@ def cmd_backtest(args) -> None:
         return
     if args.speed:
         _backtest_speed(data, futures, index_df, rates, args.capital)
+        return
+    if args.early:
+        _backtest_early(data, futures, index_df, rates, args.capital, args.range)
         return
     if args.variants:
         variants = {
@@ -1727,10 +1849,17 @@ def cmd_trade(args) -> None:
                             and done.get("pre") != today)
     want_post = args.post or (args.auto and paper.is_weekday(now) and f"{now:%H:%M}" >= TRADE_POST
                               and done.get("post") != today)
+    if args.lead:
+        push_lead_list(_listings(), stock_futures.load_stock_futures())
+        return
     if want_pre:
         from .trade import real
         paper.push(paper.run_pre() + "\n\n" + real.positions_text(real.load()))
         mark("pre")
+        try:  # 美股昨夜領先指標 → 台股還沒跟上的對應股（失敗不影響盤前計劃）
+            push_lead_list(_listings(), stock_futures.load_stock_futures())
+        except Exception as e:  # noqa: BLE001
+            log.warning("盤前領先名單失敗：%s", e)
     if not want_post:
         return
     listings = _listings()
@@ -1955,11 +2084,13 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--exceptions", action="store_true", help="強勢股 1 口例外（風險上限放寬）回測")
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
+    bk.add_argument("--early", action="store_true", help="提前進場訊號：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)
     tr = sub.add_parser("trade", help="進出場機器人（模擬）")
     tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")
     tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
+    tr.add_argument("--lead", action="store_true", help="立即推盤前領先名單（美股昨夜大漲 → 台股還沒跟上的對應股）")
     tr.add_argument("--post", action="store_true", help="立即盤後結算")
     tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
     tr.add_argument("--explain", help="檢查某檔股票的訊號與口數，例如：--explain 國巨")

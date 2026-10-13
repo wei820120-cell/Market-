@@ -1,0 +1,44 @@
+# 美股領先指標 → 台股族群。前一晚美股這檔（或 ETF）大漲，台股對應族群裡「還沒跟上」的股票就排進盤前觀察名單。
+# pct：前一晚漲幅超過幾 % 才算（個股波動大要求高一點，ETF 低一點）。
+# themes：對應的台股族群名稱（themes.yaml 的 tw 族群，或研究產生的「研究:…」族群；找不到的名稱會自動略過）。
+# 這張對照是依產業邏輯手動整理的起點，可以隨時增減；用 `python -m market_intel backtest --early` 可以回測它有沒有用。
+leads:
+  NVDA: {name: 輝達,     pct: 3.0, themes: [AI伺服器, 散熱, PCB銅箔基板, CCL高速板材, 矽光子網通]}
+  AVGO: {name: 博通,     pct: 3.0, themes: [AI伺服器, 矽光子網通, IC設計, CPO設備]}
+  AMD:  {name: 超微,     pct: 4.0, themes: [AI伺服器, 封測, 先進封裝設備]}
+  MRVL: {name: 邁威爾,   pct: 4.0, themes: [矽光子網通, IC設計, AI伺服器]}
+  ANET: {name: Arista,   pct: 4.0, themes: [矽光子網通, AI伺服器]}
+  SMCI: {name: 美超微,   pct: 5.0, themes: [AI伺服器, 散熱]}
+  DELL: {name: 戴爾,     pct: 4.0, themes: [AI伺服器]}
+  CLS:  {name: Celestica, pct: 5.0, themes: [AI伺服器, PCB銅箔基板]}
+  VRT:  {name: Vertiv,   pct: 4.0, themes: [散熱, 重電綠能, AI伺服器]}
+  TSM:  {name: 台積電ADR, pct: 2.5, themes: [晶圓代工, 先進封裝設備, 矽晶圓, 封測]}
+  ASX:  {name: 日月光ADR, pct: 3.0, themes: [封測]}
+  AMKR: {name: Amkor,    pct: 4.0, themes: [封測, 先進封裝設備]}
+  MU:   {name: 美光,     pct: 4.0, themes: [記憶體, "研究:DRAM供需"]}
+  SNDK: {name: 閃迪,     pct: 5.0, themes: [記憶體]}
+  WDC:  {name: 威騰,     pct: 5.0, themes: [記憶體]}
+  AMAT: {name: 應材,     pct: 3.5, themes: [先進封裝設備, 晶圓代工, 矽晶圓]}
+  LRCX: {name: 科林研發, pct: 3.5, themes: [先進封裝設備, 晶圓代工, 矽晶圓]}
+  KLAC: {name: 科磊,     pct: 3.5, themes: [先進封裝設備, 晶圓代工]}
+  ASML: {name: 艾司摩爾, pct: 3.5, themes: [先進封裝設備, 晶圓代工]}
+  LITE: {name: Lumentum, pct: 6.0, themes: [光通訊雷射InP, 矽光子網通, CPO設備, "研究:光通訊雷射InP"]}
+  COHR: {name: Coherent, pct: 6.0, themes: [光通訊雷射InP, 矽光子網通, CPO設備, "研究:光通訊雷射InP"]}
+  AAOI: {name: 應用光電, pct: 8.0, themes: [光通訊雷射InP, 矽光子網通]}
+  CIEN: {name: Ciena,    pct: 5.0, themes: [矽光子網通, 光通訊雷射InP]}
+  GLW:  {name: 康寧,     pct: 4.0, themes: [玻纖布, 矽光子網通]}
+  TTMI: {name: TTM,      pct: 5.0, themes: [PCB銅箔基板, CCL高速板材]}
+  GEV:  {name: GE Vernova, pct: 4.0, themes: [重電綠能]}
+  ETN:  {name: 伊頓,     pct: 3.5, themes: [重電綠能]}
+  AAPL: {name: 蘋果,     pct: 2.5, themes: [光學鏡頭, 被動元件]}
+  QCOM: {name: 高通,     pct: 3.5, themes: [IC設計]}
+  LMT:  {name: 洛馬,     pct: 3.0, themes: [軍工航太]}
+  RTX:  {name: 雷神,     pct: 3.0, themes: [軍工航太]}
+  NOC:  {name: 諾格,     pct: 3.0, themes: [軍工航太]}
+  ITA:  {name: 軍工ETF,  pct: 1.8, themes: [軍工航太]}
+  DAL:  {name: 達美航空, pct: 4.0, themes: [航空]}
+  UAL:  {name: 聯合航空, pct: 4.5, themes: [航空]}
+  ZIM:  {name: 以星航運, pct: 6.0, themes: [航運]}
+  XBI:  {name: 生技ETF,  pct: 2.5, themes: [生技]}
+  SMH:  {name: 半導體ETF, pct: 2.2, themes: [晶圓代工, 先進封裝設備, AI伺服器, IC設計, 封測]}
+  SOXX: {name: 費半ETF,  pct: 2.2, themes: [晶圓代工, 先進封裝設備, AI伺服器, IC設計, 封測]}

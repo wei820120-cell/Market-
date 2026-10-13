@@ -63,6 +63,9 @@ class Params:
     exit_ma: str = "ma10"        # 移動停利均線：ma10 / ma20
     setups: tuple = ("突破", "拉回")
     trend_filter: bool = False   # 個股也要 20MA > 60MA 才做突破
+    intraday: bool = False       # 盤中突破就進場（日 K 近似：價格碰到前 20 日高就以「前高或開盤價」成交），不等收盤確認、隔天開盤
+    intraday_min_rs: float = 0.0  # 盤中進場只做前一天近 120 日漲幅排名 ≥ 此百分位的股票（0＝不限）；盤中看不到全天量，用這個代替量能確認
+    extra_first: bool = False    # 額外訊號（領先、補漲…）排在現行突破／拉回前面；預設排後面，只補空位
 
 
 @dataclass
@@ -171,9 +174,12 @@ def cost(price: float, mult: int, qty: int) -> float:
 
 
 def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.DataFrame,
-        p: Params | None = None, rates: dict[str, float] | None = None) -> dict:
+        p: Params | None = None, rates: dict[str, float] | None = None,
+        extra: dict | None = None) -> dict:
+    """extra：額外的進場訊號 {訊號日: [(分數, 代號, 型態名稱)]}，訊號日收盤產生、隔天開盤進場（和突破／拉回同一套出場與部位規則）。"""
     p = p or Params()
     rates = rates or {}
+    extra = extra or {}
     prepped = {c: prepare(df, p) for c, df in data.items() if len(df) > 80}
     mkt = market_ok(index_df)
     ic = index_df["close"]
@@ -184,17 +190,37 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
     open_t: list[Trade] = []
     closed: list[Trade] = []
     curve = []
-    pending: list[tuple[str, str]] = []  # 隔天開盤要進場的（代號, 型態）
+    shifted = {c: d.shift(1) for c, d in prepped.items()} if p.intraday else {}
+    rs_prev = rs_rank.shift(1)
+    pending: list[tuple] = []  # 隔天開盤要進場的（代號, 型態）；盤中進場多一個成交價
     for i, day in enumerate(dates):
-        # 1) 開盤進場
-        for code, setup in pending:
+        # 1) 開盤進場（盤中突破模式：再加上今天碰到前 20 日高的）
+        todo = list(pending)
+        if p.intraday and i > 0 and bool(mkt.get(dates[i - 1], False)):
+            hits = []
+            for code, d in prepped.items():
+                if day not in d.index:
+                    continue
+                row, pv = d.loc[day], shifted[code].loc[day]
+                hh = row["hh"]
+                if math.isnan(hh) or row["high"] <= hh or math.isnan(pv["atr"]) or not pv["close"] > pv["ma60"]:
+                    continue
+                rs = float(rs_prev[code].get(day, 0) or 0)
+                if rs < p.intraday_min_rs:
+                    continue
+                px = max(float(row["open"]), float(hh))
+                if px <= hh * 1.03:  # 開盤就跳空高過突破價 3% 以上不追
+                    hits.append((rs, code, "盤中突破", px))
+            todo += [(c, s, px) for _, c, s, px in sorted(hits, reverse=True)]
+        for item in todo:
+            code, setup, *fill = item
             if len(open_t) >= p.max_pos or any(t.code == code for t in open_t):
                 continue
             d = prepped[code]
             if day not in d.index:
                 continue
             row = d.loc[day]
-            entry = float(row["open"])
+            entry = float(fill[0]) if fill else float(row["open"])
             a = float(d["atr"].shift(1).get(day, np.nan))
             if not entry or math.isnan(a):
                 continue
@@ -264,7 +290,16 @@ def run(data: dict[str, pd.DataFrame], futures: dict[str, dict], index_df: pd.Da
                         cands.append((float(row["vr"]), code, "突破"))
                     elif row["sig_b"] and "拉回" in p.setups:
                         cands.append((float(row["vr"]) * 0.5, code, "拉回"))
-            pending = [(c, s) for _, c, s in sorted(cands, reverse=True)[:p.max_pos * 2]]
+            base = [(c, s) for _, c, s in sorted(cands, reverse=True)]
+            more = [(c, s) for _, c, s in sorted((x for x in extra.get(day, []) if x[1] in prepped), reverse=True)]
+            merged = (more + base) if p.extra_first else (base + more)
+            seen_codes: set[str] = set()
+            pending = []
+            for c, s in merged:  # 同一檔只留排最前面的那個型態
+                if c not in seen_codes:
+                    seen_codes.add(c)
+                    pending.append((c, s))
+            pending = pending[:p.max_pos * 2]
         mtm = sum((float(prepped[t.code]["close"].get(day, t.entry)) - t.entry) * t.mult * t.qty + t.realized
                   for t in open_t)
         curve.append((day, equity + mtm))
@@ -395,7 +430,7 @@ def summarize(closed: list[Trade], curve: list, p: Params, mkt: pd.Series) -> di
     dd = (eq / eq.cummax() - 1).min() if len(eq) else 0
     wins = [t for t in closed if t.pnl > 0]
     by_setup = {}
-    for s in ("突破", "拉回"):
+    for s in dict.fromkeys(["突破", "拉回"] + sorted({t.setup for t in closed})):
         ts = [t for t in closed if t.setup == s]
         if ts:
             by_setup[s] = {"筆數": len(ts), "勝率": round(sum(t.pnl > 0 for t in ts) / len(ts) * 100, 1),

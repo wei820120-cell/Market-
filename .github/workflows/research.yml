@@ -49,6 +49,14 @@ on:
         description: "翻倍速度回測：不同風險／持倉數、不同起點，多久翻倍與回撤"
         type: boolean
         default: false
+      early:
+        description: "提前進場訊號回測：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行"
+        type: boolean
+        default: false
+      lead:
+        description: "立刻推「盤前領先名單」（美股昨夜大漲 → 台股還沒跟上的對應股）"
+        type: boolean
+        default: false
       trade:
         description: "進出場機器人（模擬）：立即盤後結算並推播"
         type: boolean
@@ -121,6 +129,10 @@ jobs:
             python -m market_intel backtest --factors
           elif [ "${{ inputs.speed }}" = "true" ]; then
             python -m market_intel backtest --speed
+          elif [ "${{ inputs.early }}" = "true" ]; then
+            python -m market_intel backtest --early
+          elif [ "${{ inputs.lead }}" = "true" ]; then
+            python -m market_intel trade --lead
           elif [ "${{ inputs.backtest }}" = "true" ]; then
             python -m market_intel backtest --variants
           elif [ -n "$CARD" ]; then

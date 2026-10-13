@@ -85,3 +85,8 @@ def watch_item(code: str) -> dict:
         if isinstance(item, dict) and str(item.get("code") or item.get("symbol")) == code:
             return item
     return {}
+
+
+def us_lead() -> dict:
+    """美股領先指標對照（config/us_lead.yaml）：{美股代號: {name, pct, themes}}。"""
+    return load("us_lead").get("leads") or {}
