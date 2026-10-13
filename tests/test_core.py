@@ -771,6 +771,44 @@ def test_save_report_keeps_queued_topic_name(tmp_path, monkeypatch):
     assert (tmp_path / "research" / "data" / f"{research.slug('和碩（4938）題材與產業')}.json").exists()
 
 
+def test_theme_alias_pushes_candidates_once(tmp_path, monkeypatch):
+    """『光學鏡頭』與研究自動產生的『研究:光學鏡頭』是同一份研究，資金流入時可卡位標的與題材卡只推一次；
+    研究剛完成已推過的，資金流入不再重複推；研究完成的推播一天一次。"""
+    import pandas as pd
+    from market_intel import cli, research, theme_card
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(theme_card, "SENT_PATH", tmp_path / "sent.json")
+    research.save_index({"光學鏡頭": {"file": "x.md", "date": "2026-10-12", "keywords": [], "codes": ["3008", "3406", "3441"],
+                                    "status": "混合", "usd": 0, "auto": False}})
+    monkeypatch.setattr(cli.config, "themes", lambda: {"tw": {"光學鏡頭": ["3008", "3406"], "研究:光學鏡頭": ["3008", "3406", "3441"],
+                                                           "航運": ["2603"]}})
+    trade, cards = [], []
+    monkeypatch.setattr(cli, "push_trade_candidates", lambda title, codes, listings, context="", futures=None: trade.append((title, codes)))
+    monkeypatch.setattr(theme_card, "from_research", lambda topic: {"title": topic})
+    monkeypatch.setattr(theme_card, "build", lambda found, listings, context="", futures=None: found)
+    monkeypatch.setattr(theme_card, "send", lambda card, channel="research": cards.append(card["title"]))
+    monkeypatch.setattr(cli.notify, "send", lambda *a, **k: None)
+    flow = pd.DataFrame({"族群": ["光學鏡頭", "研究:光學鏡頭", "航運"], "判讀": ["資金流入🔥"] * 3,
+                         "資金增減(億)": [300.0, 280.0, 50.0], "量比(對5日均)": [2.8, 2.7, 1.9], "加權漲跌%": [8.6, 8.1, 3.0]})
+    cli.push_theme_cards(flow, None, {}, "盤後", top=3)
+    assert [t[0] for t in trade] == ["光學鏡頭", "航運"]  # 別名只算一個，航運照推
+    assert len(set(trade[0][1])) == len(trade[0][1])      # 代號不重複
+    assert cards.count("光學鏡頭（研究:光學鏡頭）") + cards.count("光學鏡頭") == 1
+    n = len(trade)
+    cli.push_theme_cards(flow, None, {}, "盤後", top=3)  # 同一天再跑一次也不重推
+    assert len(trade) == n
+    # 研究完成的推播一天一次；已經推過就不重複
+    monkeypatch.setattr(theme_card, "SENT_PATH", tmp_path / "sent2.json")
+    trade.clear()
+    cli._send_card_for_topic("光學鏡頭", {}, "research", "🔬 研究完成")
+    cli._send_card_for_topic("光學鏡頭", {}, "research", "🔬 研究完成")
+    assert len(trade) == 1
+    cli.push_theme_cards(flow[flow["族群"] == "光學鏡頭"], None, {}, "盤後", top=3)  # 研究剛完成推過 → 資金流入不再推可卡位標的
+    assert len(trade) == 1
+
+
 def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     from market_intel import ai, research
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")

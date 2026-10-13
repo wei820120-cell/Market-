@@ -897,7 +897,11 @@ def _send_card_for_topic(topic: str, listings: dict, push: str, context: str) ->
     except Exception as e:  # noqa: BLE001
         log.warning("題材卡 %s 產生失敗：%s", topic, e)
     codes = (research.load_index().get(topic) or {}).get("codes", [])
+    done_key = f"trade:研究完成:{topic}"
+    if theme_card.already_sent(done_key):  # 同一個題材一天只推一次研究完成的可卡位標的
+        return
     push_trade_candidates(f"{topic}（研究完成）", codes, listings, "🔬 研究完成，以下是研究裡有股期的標的")
+    theme_card.mark_sent(done_key)
 
 
 def push_trade_candidates(title: str, codes: list[str], listings: dict, context: str = "",
@@ -1160,16 +1164,28 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
         ratio_col = "量比(對5日均)" if "量比(對5日均)" in flow else "量能步調"
         ratio_name = "量比" if "量比" in ratio_col else ratio_col
         inflow = flow[flow["判讀"].astype(str).str.contains("資金流入") & (flow[money_col].fillna(0) > 0)]
-        for r in inflow.head(top).to_dict("records"):
+        # 同一份研究的別名族群（例如『光學鏡頭』與研究自動產生的『研究:光學鏡頭』）只算一個，不要各推一次
+        picked, seen_topics = [], set()
+        for r in inflow.to_dict("records"):
             name = r["族群"]
             codes = [str(c) for c in themes_tw.get(name, [])]
+            topic = research.topic_for_theme(name, codes)
+            canon = topic or name
+            if canon in seen_topics:
+                continue
+            seen_topics.add(canon)
+            picked.append((r, name, codes, topic, canon))
+            if len(picked) >= top:
+                break
+        for r, name, codes, topic, canon in picked:
             context = (f"🔥 {source}資金流入：{ratio_name} {r[ratio_col]}、資金 {r[money_col]:+.1f} 億、"
                        f"加權 {r['加權漲跌%']:+.1f}%")
-            topic = research.topic_for_theme(name, codes)
-            key_trade = f"trade:{source}:{name}"
-            if not theme_card.already_sent(key_trade):  # 一條龍第一步：不等研究，先推可卡位標的
-                push_trade_candidates(f"{name}", codes + list((research.load_index().get(topic) or {}).get("codes", [])),
-                                      listings, context + ("" if topic else "｜研究中"), futures)
+            key_trade = f"trade:{source}:{canon}"
+            # 研究剛完成時已經推過同一份可卡位標的，就不重複推
+            if not theme_card.already_sent(key_trade) and not (topic and theme_card.already_sent(f"trade:研究完成:{topic}")):
+                # 一條龍第一步：不等研究，先推可卡位標的
+                pool = list(dict.fromkeys(codes + list((research.load_index().get(topic) or {}).get("codes", []))))
+                push_trade_candidates(f"{name}", pool, listings, context + ("" if topic else "｜研究中"), futures)
                 theme_card.mark_sent(key_trade)
             if not topic:
                 if research.queue_research(name, f"{now_tw():%Y-%m-%d} {context}\n成分股：{'、'.join(codes)}"):
@@ -1177,7 +1193,7 @@ def push_theme_cards(flow: pd.DataFrame, picks_df: pd.DataFrame | None, listings
                 continue
             if research.research_age_days(topic) > 30:
                 research.queue_research(topic, f"{now_tw():%Y-%m-%d} 更新研究｜{context}")
-            key = f"{source}:{name}"
+            key = f"{source}:{canon}"
             if theme_card.already_sent(key):
                 continue
             try:
