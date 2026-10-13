@@ -639,6 +639,138 @@ def test_research_topic_end_to_end(tmp_path, monkeypatch):
     assert list(usage.values())[0]["runs"] == 1
 
 
+def test_channel_topics_ignore_daily_cap(tmp_path, monkeypatch):
+    """股癌等追蹤頻道貼文偵測出的題材不受每天上限；新聞偵測的題材照舊受限。偵測沒做成就把貼文留著。"""
+    import argparse
+    from types import SimpleNamespace as NS
+    from market_intel import ai, cli, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INBOX_DIR", tmp_path / "inbox")
+    monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
+    monkeypatch.setattr(cli, "_listings", lambda: {})
+    monkeypatch.setattr(cli, "_auto_due", lambda: False)
+    monkeypatch.setattr(cli.stock_futures, "load_stock_futures", lambda: {})
+    monkeypatch.setattr(cli.notify, "send", lambda *a, **k: None)
+    monkeypatch.setattr(cli, "_send_card_for_topic", lambda *a, **k: None)
+    monkeypatch.setattr(ai, "settings", lambda: {"max_per_day": 4, "min_importance": 3})
+    monkeypatch.setattr(ai, "available", lambda: True)
+    monkeypatch.setattr(ai, "budget_left", lambda: True)
+    monkeypatch.setattr(research, "researched_today", lambda: 99)  # 今天的自動研究額度早就用完
+    done, seen = [], []
+
+    def fake_detect(texts):
+        seen.append(list(texts))
+        if texts == ["新聞標題"]:
+            return [{"topic": "新聞題材", "reason": "r", "importance": 5}]
+        return [{"topic": "CPO光學", "reason": "股癌提到", "importance": 4}, {"topic": "低分", "reason": "x", "importance": 2}]
+
+    monkeypatch.setattr(research, "detect_topics", fake_detect)
+    monkeypatch.setattr(research, "research_topic", lambda topic, trigger, l, f, auto=False: done.append((topic, auto)) or {"message": "ok", "data": {"topic": topic}})
+    args = argparse.Namespace(topic=None, commands=False, inbox=True, auto=False, auto_slots=False)
+    research.add_to_inbox("Gooaye", 1, "某則貼文", "u")
+    cli.cmd_research(args)
+    assert done == [("CPO光學", False)]  # 不計入每天上限（auto=False），重要性不夠的不研究
+    assert not list((tmp_path / "inbox").glob("*.json"))  # 偵測完才刪
+    # 新聞偵測：額度用完就不做
+    done.clear()
+    monkeypatch.setattr(cli.news_signals, "rank", lambda *a, **k: [NS(title="新聞標題")])
+    monkeypatch.setattr(cli, "collect_news", lambda: [])
+    monkeypatch.setattr(cli, "_name_to_code", lambda l: {})
+    monkeypatch.setattr(cli, "_us_symbols", lambda: set())
+    cli.cmd_research(argparse.Namespace(topic=None, commands=False, inbox=False, auto=True, auto_slots=False))
+    assert done == []
+    # 偵測失敗／沒有金鑰：貼文留著，下一輪再試
+    research.add_to_inbox("Gooaye", 2, "另一則貼文", "u")
+    monkeypatch.setattr(research, "detect_topics", lambda texts: (_ for _ in ()).throw(ai.AIUnavailable("預算用完")))
+    cli.cmd_research(args)
+    assert len(list((tmp_path / "inbox").glob("*.json"))) == 1 and done == []
+    monkeypatch.setattr(ai, "available", lambda: False)
+    cli.cmd_research(args)
+    assert len(list((tmp_path / "inbox").glob("*.json"))) == 1
+
+
+def _fake_research_client(calls):
+    from types import SimpleNamespace as NS
+
+    class Stream:
+        def __init__(self, kw):
+            calls.append(("stream", kw))
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def get_final_message(self):
+            return NS(content=[NS(type="text", text="報告")], stop_reason="end_turn",
+                      usage=NS(input_tokens=1_000_000, output_tokens=10_000))
+
+    class Msgs:
+        def stream(self, **kw):
+            return Stream(kw)
+
+    return NS(messages=Msgs(), beta=NS(messages=Msgs()))
+
+
+def test_research_model_switch_tools_and_price(monkeypatch):
+    """換成 Haiku：用舊版網頁工具、走一般 messages（不帶備援 beta）、用 Haiku 單價；Sonnet 維持新版工具。"""
+    from market_intel import ai
+    for model, modern in (("claude-sonnet-5-5", True), ("claude-haiku-5-5", False)):
+        calls = []
+        monkeypatch.setenv("RESEARCH_MODEL", model)
+        monkeypatch.setattr(ai, "_client", lambda calls=calls: _fake_research_client(calls))
+        usage = ai.research_usage()
+        assert ai.web_research("sys", "prompt", usage) == "報告"
+        kw = calls[0][1]
+        types = [t["type"] for t in kw["tools"]]
+        assert kw["model"] == model
+        assert (types == ["web_search_20260209", "web_fetch_20260209"]) == modern
+        assert ("fallbacks" in kw and "betas" in kw) == modern
+        expect = 1_000_000 * (2 if modern else 0.1) / 1e6 + 10_000 * (10 if modern else 0.5) / 1e6
+        assert abs(usage.usd() - expect) < 1e-6
+    monkeypatch.delenv("RESEARCH_MODEL")
+
+
+def test_research_trial_writes_nothing(tmp_path, monkeypatch, capsys):
+    """試跑只印在紀錄裡：不存報告、不動研究索引與佇列，花費照記。"""
+    from market_intel import ai, cli, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(ai, "check_budget", lambda: None)
+    recorded = []
+    monkeypatch.setattr(ai, "record_usage", lambda usage, topic: recorded.append(topic))
+    monkeypatch.setattr(ai, "web_research", lambda system, prompt, usage: usage.calls.append("r") or "試跑報告全文")
+    monkeypatch.setattr(ai, "extract_json", lambda *a, **k: {"topic": "和碩", "layers": []})
+    monkeypatch.setenv("RESEARCH_MODEL", "claude-haiku-5-5")
+    import argparse
+    cli.cmd_research(argparse.Namespace(topic=None, trial="和碩", trial_trigger="觸發", commands=False, inbox=False,
+                                        auto=False, auto_slots=False))
+    out = capsys.readouterr().out
+    assert "claude-haiku-5-5" in out and "試跑報告全文" in out and '"topic": "和碩"' in out
+    assert recorded == ["試跑 和碩"]
+    assert not (tmp_path / "research").exists() and not (tmp_path / "queue").exists()
+
+
+def test_save_report_keeps_queued_topic_name(tmp_path, monkeypatch):
+    """模型把題材名稱改寫（例如加上『供應鏈』）時，仍以佇列／指令的名稱為準，索引、檔名與推播才對得上。"""
+    from market_intel import ai, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "AUTO_THEMES_PATH", tmp_path / "research" / "auto_themes.yaml")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    data = {"topic": "和碩（4938）AI 伺服器整機櫃題材與產業供應鏈", "one_line": "x", "status": "混合", "horizon": "中期（3-12個月）",
+            "keywords": [], "catalysts": [], "risks": [], "spec_tables": [], "evolution": [], "concepts": [],
+            "conclusion": [], "sources": [], "layers": []}
+    out = research._save_report("和碩（4938）題材與產業", data, "報告", "觸發", {}, {}, ai.Usage(), True)
+    assert out["data"]["topic"] == "和碩（4938）題材與產業"
+    assert "和碩（4938）題材與產業" in research.load_index()
+    assert (tmp_path / "research" / "data" / f"{research.slug('和碩（4938）題材與產業')}.json").exists()
+
+
 def test_research_budget_and_knowledge(tmp_path, monkeypatch):
     from market_intel import ai, research
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")

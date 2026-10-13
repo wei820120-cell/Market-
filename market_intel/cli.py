@@ -923,8 +923,31 @@ def push_trade_candidates(title: str, codes: list[str], listings: dict, context:
         log.warning("可卡位標的 %s 產生失敗：%s", title, e)
 
 
+def _research_trial(topic: str, trigger: str) -> None:
+    """試跑：用目前的研究模型（可用環境變數 RESEARCH_MODEL 換）研究一個題材，報告與擷取結果只印在紀錄裡。
+    不存報告、不推播、不動研究索引與佇列；花費照樣記進每月預算。拿來比較不同模型的品質與花費。"""
+    ai.check_budget()
+    usage = ai.research_usage()
+    prompt = research.REPORT_TEMPLATE.format(topic=topic, trigger=trigger[:3000] or "（試跑）",
+                                             knowledge=research.relevant_knowledge(topic, research.load_index()))
+    log.info("試跑研究：%s（模型 %s）", topic, ai._model())
+    try:
+        report = ai.web_research(research.SYSTEM, prompt, usage)
+        data = ai.extract_json(research.EXTRACT_INSTRUCTION, report, research.REPORT_SCHEMA, usage)
+    finally:
+        if usage.calls:
+            ai.record_usage(usage, f"試跑 {topic}")
+    print(f"\n===== 試跑結果｜模型 {ai._model()}｜約 US${usage.usd():.2f}｜搜尋 {usage.web_searches} 次 =====\n")
+    print(report)
+    print("\n===== 擷取出的結構化資料 =====\n")
+    print(json.dumps(data, ensure_ascii=False, indent=1))
+
+
 def cmd_research(args) -> None:
     """題材研究員：手動題材、Telegram 指令、頻道貼文收件匣、資金流入題材佇列、每日新聞自動偵測。"""
+    if getattr(args, "trial", None):
+        _research_trial(args.trial, getattr(args, "trial_trigger", ""))
+        return
     st = ai.settings()
     push = st.get("push_to", "research")
     queue: list[tuple] = []  # (題材, 觸發來源, 是否自動, 佇列檔)；佇列檔研究成功才刪，額度不足時保留給下一次
@@ -960,15 +983,16 @@ def cmd_research(args) -> None:
             notify.send(f"🔬 收到，開始研究「{text}」，約 3～8 分鐘後回報。", channel=push)
             queue.append((text, "Telegram 指令", False, None))
 
-    auto_texts: list[str] = []
+    auto_texts: list[str] = []  # 當天重點新聞標題：偵測出的題材受 max_per_day 限制
+    chan_texts: list[str] = []  # 追蹤頻道（股癌等）貼文：偵測出的題材不受 max_per_day 限制（仍受每月預算）
     triggers: dict[str, str] = {}
+    inbox_files: list = []
     if args.inbox:
         items = research.read_inbox()
-        for _, d in items:
-            auto_texts.append(d["text"][:600])
+        for p, d in items:
+            chan_texts.append(d["text"][:600])
             triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
-        for p, _ in items:  # 讀過就刪，避免重複偵測（沒有金鑰也刪，免得越積越多）
-            p.unlink(missing_ok=True)
+            inbox_files.append(p)
     if args.auto_slots and _auto_due():
         args.auto = True
     if args.auto:
@@ -985,6 +1009,30 @@ def cmd_research(args) -> None:
             queue.append((d["topic"], d.get("trigger", "資金流入"), True, p))
             cap -= 1
 
+    min_imp = int(st.get("min_importance", 3))
+    if chan_texts:
+        # 股癌等追蹤頻道的貼文：該研究就研究，不看每天上限（is_auto=False 也不計入上限）；偵測沒做成就先留著，下一輪再試
+        detected = False
+        if ai.available() and ai.budget_left():
+            try:
+                found = research.detect_topics(chan_texts)
+                detected = True
+            except ai.AIUnavailable as e:
+                log.warning("頻道貼文題材偵測失敗：%s", e)
+                found = []
+            for t in [x for x in found if x["importance"] >= min_imp]:
+                if any(q[0] == t["topic"] for q in queue):
+                    continue
+                src = next((v for k, v in triggers.items() if t["topic"] in k), "")
+                queue.append((t["topic"], f"頻道貼文偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", False, None))
+        if detected:
+            for p in inbox_files:  # 偵測完才刪，避免重複偵測
+                p.unlink(missing_ok=True)
+        else:
+            log.info("頻道貼文 %d 則暫時無法偵測題材（沒有金鑰、預算用完或失敗），先留在收件匣", len(inbox_files))
+            for p in sorted(inbox_files, key=lambda f: (len(f.name), f.name))[:-60]:  # 只留最新 60 則，免得越積越多
+                p.unlink(missing_ok=True)
+
     if auto_texts and ai.available():
         if cap <= 0:
             log.info("今天自動研究已達上限 %s 個", st.get("max_per_day", 4))
@@ -994,10 +1042,8 @@ def cmd_research(args) -> None:
             except ai.AIUnavailable as e:
                 log.warning("題材偵測失敗：%s", e)
                 found = []
-            min_imp = int(st.get("min_importance", 3))
-            for t in [x for x in found if x["importance"] >= min_imp][:cap]:
-                src = next((v for k, v in triggers.items() if t["topic"] in k), "")
-                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}\n{src}", True, None))
+            for t in [x for x in found if x["importance"] >= min_imp and not any(q[0] == x["topic"] for q in queue)][:cap]:
+                queue.append((t["topic"], f"自動偵測（重要性 {t['importance']}）：{t['reason']}", True, None))
     elif auto_texts:
         log.info("沒有 ANTHROPIC_API_KEY，略過自動題材偵測")
 
@@ -1872,6 +1918,8 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("check", help="資料檢查：印出資料來源原始欄位（不推播）").set_defaults(func=cmd_check)
     rs = sub.add_parser("research", help="題材研究員（AI 供應鏈研究）")
     rs.add_argument("--topic", help="直接研究這個題材，例如：玻纖布")
+    rs.add_argument("--trial", help="試跑：研究這個題材但只印在紀錄裡（不存檔不推播），搭配環境變數 RESEARCH_MODEL 比較模型")
+    rs.add_argument("--trial-trigger", default="", help="試跑時給的觸發新聞文字（和正式研究一樣放進提示）")
     rs.add_argument("--commands", action="store_true", help="處理 Telegram「研究 XXX」指令")
     rs.add_argument("--inbox", action="store_true", help="從頻道新貼文偵測新題材並研究")
     rs.add_argument("--auto", action="store_true", help="從今天的重點新聞偵測新題材並研究")

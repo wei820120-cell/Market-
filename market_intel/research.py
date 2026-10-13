@@ -38,6 +38,8 @@ SYSTEM = """你是台股產業研究員，專門把一個新題材拆解成完�
 - 台股公司一定要寫「代號 名稱」，只寫你確定是台灣上市櫃的公司；不確定的寫「（待確認）」，不要猜代號。
 - 分清楚「已證實」（公司公告、法說會、出貨數據）和「傳聞」（媒體消息、券商推測、社群）。
 - 同一家公司可能同時受惠與受傷（例如新技術取代舊材料），要講清楚。
+- 受惠／受傷／中性的標法：『受傷』只用在成本上升、需求被取代或失去訂單的公司；搶同一份訂單的同業（競爭者）標『中性』並在角色寫『競爭者』；
+  沒有證據顯示與這個題材有供貨關係的產業相關公司，標『中性』並寫『產業相關，供貨關係待確認』，不要標『受惠』（受惠股會被自動加進族群監控）。
 - 不給買賣建議，只做產業與供應鏈分析。"""
 
 REPORT_TEMPLATE = """請研究這個題材：「{topic}」
@@ -359,7 +361,7 @@ def update_auto_themes(topic: str, layers: list[dict], keywords: list[str]) -> N
 def _save_report(topic: str, data: dict, report: str, trigger: str, listings: dict, futures: dict,
                  usage: ai.Usage, auto: bool) -> dict:
     """核對代號、存報告、更新索引與族群監控，回傳 {data, layers, file, message}。"""
-    data["topic"] = data.get("topic") or topic
+    data["topic"] = topic  # 一律用佇列／指令的題材名稱，模型改寫的名稱會讓索引、檔名與推播對不上
     layers, dropped = validate_layers(data, listings, futures)
     fname = f"{now_tw():%Y-%m-%d}-{slug(topic)}.md"
     RESEARCH_DIR.mkdir(parents=True, exist_ok=True)
@@ -387,7 +389,7 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
 def research_topic(topic: str, trigger: str, listings: dict, futures: dict, auto: bool = False) -> dict:
     """研究一個題材，存檔並回傳 {data, layers, file, message}。失敗時丟出 ai.AIUnavailable。"""
     ai.check_budget()
-    usage = ai.Usage()
+    usage = ai.research_usage()
     prompt = REPORT_TEMPLATE.format(topic=topic, trigger=trigger[:3000] or "（手動指定）",
                                     knowledge=relevant_knowledge(topic, load_index()))
     log.info("開始研究題材：%s", topic)

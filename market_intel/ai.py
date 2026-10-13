@@ -118,8 +118,22 @@ def _client():
     return anthropic.Anthropic(max_retries=3)
 
 
+# 研究模型的單價（美元／百萬 token）；沒列在這裡的模型用 settings 的 price_per_mtok
+MODEL_PRICES = {"claude-haiku-5-5": {"input": 0.1, "output": 0.5}}
+
+
 def _model() -> str:
-    return settings().get("model", "claude-opus-5-5")
+    return os.environ.get("RESEARCH_MODEL") or settings().get("model", "claude-opus-5-5")  # 環境變數：試跑其他模型用
+
+
+def _modern(model: str | None = None) -> bool:
+    """新版（動態過濾）網頁工具與伺服器端備援只有 Opus／Sonnet／Fable 支援；Haiku 改用舊版工具、不帶備援。"""
+    return (model or _model()).startswith(("claude-opus-", "claude-sonnet-", "claude-fable-"))
+
+
+def research_usage() -> Usage:
+    """研究用的用量計價：依目前模型的單價，換模型時估價才會對。"""
+    return Usage(price=MODEL_PRICES.get(_model()))
 
 
 def _check_refusal(msg) -> None:
@@ -136,23 +150,28 @@ def web_research(system: str, prompt: str, usage: Usage) -> str:
     """讓 Claude 用網路搜尋研究，回傳 Markdown 報告。"""
     st = settings()
     client = _client()
+    model = _model()
+    modern = _modern(model)
     tools = [
-        {"type": "web_search_20260209", "name": "web_search", "max_uses": int(st.get("max_searches", 15))},
-        {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": int(st.get("max_fetches", 8))},
+        {"type": "web_search_20260209" if modern else "web_search_20250305", "name": "web_search",
+         "max_uses": int(st.get("max_searches", 15))},
+        {"type": "web_fetch_20260209" if modern else "web_fetch_20250910", "name": "web_fetch",
+         "max_uses": int(st.get("max_fetches", 8))},
     ]
+    api = client.beta.messages if modern else client.messages
+    extra = {"betas": [FALLBACK_BETA], "fallbacks": "default"} if modern else {}
     messages = [{"role": "user", "content": prompt}]
     msg = None
     for _ in range(6):  # 伺服器端工具跑太久會 pause_turn，原封不動送回即可續跑
         try:
-            with client.beta.messages.stream(
-                model=_model(),
+            with api.stream(
+                model=model,
                 max_tokens=64000,
                 system=system,
                 messages=messages,
                 tools=tools,
                 output_config={"effort": st.get("effort", "high")},
-                betas=[FALLBACK_BETA],
-                fallbacks="default",
+                **extra,
             ) as stream:
                 msg = stream.get_final_message()
         except Exception as e:  # noqa: BLE001
@@ -199,14 +218,14 @@ def read_images(images: list[tuple[bytes, str]], instruction: str, usage: Usage)
 def extract_json(instruction: str, text: str, schema: dict, usage: Usage, label: str = "extract") -> dict:
     """用結構化輸出（JSON schema）從文字中擷取資料。"""
     client = _client()
+    modern = _modern()
     try:
-        msg = client.beta.messages.create(
+        msg = (client.beta.messages if modern else client.messages).create(
             model=_model(),
             max_tokens=16000,
             messages=[{"role": "user", "content": f"{instruction}\n\n<content>\n{text}\n</content>"}],
             output_config={"effort": "low", "format": {"type": "json_schema", "schema": schema}},
-            betas=[FALLBACK_BETA],
-            fallbacks="default",
+            **({"betas": [FALLBACK_BETA], "fallbacks": "default"} if modern else {}),
         )
     except Exception as e:  # noqa: BLE001
         raise _translate(e) from e
