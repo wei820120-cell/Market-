@@ -1,0 +1,413 @@
+{
+ "topic": "聯電（2303）題材與產業",
+ "one_line": "聯電 22 奈米產能接近滿載，已由法說與月營收印證；三星 DDI 急單被拒與雙供應格芯則屬傳聞，時點最快 2027 年底。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "DDI",
+  "顯示驅動IC",
+  "OLED DDIC",
+  "TDDI",
+  "聯電",
+  "UMC",
+  "22奈米",
+  "22/28奈米",
+  "成熟製程",
+  "高壓製程",
+  "Z Fold8",
+  "格芯",
+  "GF",
+  "三星 System LSI",
+  "8吋漲價"
+ ],
+ "catalysts": [
+  "聯電 Q3 法說對稼動率與 22 奈米的說法，以及是否回應三星急單與雙供應",
+  "8 吋與 12 吋 2026 下半年漲價是否落實",
+  "三星是否正式公布或確認雙供應及時程",
+  "聯詠與其他 DDI 客戶毛利率變化，反映成本端壓力程度",
+  "每月月營收公告（慣例約次月 10 日前後）"
+ ],
+ "risks": [
+  "傳聞的規模可能很小：格芯 DDI 為 OLED Galaxy 中低價機型，且 2027 年底才開始，對聯電影響未必大",
+  "需求端可能疲弱：消費性電子因記憶體與零組件成本上升，下半年出貨動能恐受抑制",
+  "產業 DDIC 定位偏低毛利：二、三線廠轉向電源管理等產品並縮減面板驅動 IC，與聯電擴大 22 奈米 DDI 方向看似矛盾",
+  "中國競爭：HV 製程與 CIS 客戶為追求價格與產能穩定性，轉向陸系晶圓廠；DDI 價格戰說法主要來自部落格，可信度較低",
+  "獲利結構依賴業外：聯電第二季獲利成長動能主要來自業外投資收益，波動會放大 EPS 波動",
+  "產能擴建成本：2026 年資本支出上調，若需求不如預期，折舊壓力會上升",
+  "三星分散供應習慣：三星需求增加轉向格芯已有先例，可能只是常態策略，不一定代表聯電失去份額",
+  "媒體摘要不一致：聯電 Q3 稼動率寫法不同（逾 90% vs 約 85%），需看法說原文"
+ ],
+ "spec_tables": [
+  {
+   "title": "表 1：製程節點在 OLED DDI 的位置",
+   "columns": [
+    "製程",
+    "OLED DDI 採用狀況",
+    "與聯電的關係"
+   ],
+   "rows": [
+    [
+     "40 奈米",
+     "2024 年主要量產節點之一（OLED DDI 目前主要以 40nm、28nm 量產，22nm 技術也在開發中）",
+     "本次未查到聯電 40 奈米 DDI 的細節"
+    ],
+    [
+     "28 奈米",
+     "同上，主流量產節點",
+     "2022 年前後的舊報導指出 UMC has a 12-inch wafer line that makes these chips in the 28nm."
+    ],
+    [
+     "22 奈米（高壓）",
+     "手機 OLED DDIC 已採用 22 奈米高壓製程量產（聯詠副董事長 2026 年 8 月說法）",
+     "聯電 22 奈米為營收成長主力"
+    ],
+    [
+     "16 奈米",
+     "部分代工廠開始推出",
+     "本次未見聯電採用的資料"
+    ]
+   ],
+   "note": "範例中的 PCB 材料（Dk、Df、M8/M9）與光模組規格不適用聯電，本報告改用 DDI 與成熟製程的製程、產能、價格指標。公開來源沒有提供 DDI 晶片的電性規格數字，表中不編造。"
+  },
+  {
+   "title": "表 2：產能與價格指標（2026 年）",
+   "columns": [
+    "指標",
+    "數字",
+    "來源"
+   ],
+   "rows": [
+    [
+     "新加坡 Fab 12i 新廠",
+     "第一期 2026 年量產，月產能 3 萬片",
+     "2026 年開始量產 22／28 奈米製程技術，月產能 3 萬片"
+    ],
+    [
+     "新加坡月產能（2026 年中）",
+     "約 1.2～1.3 萬片，目標 2027 年提升到 1.8 萬片",
+     "目標明年提升至 1.8 萬片"
+    ],
+    [
+     "8 吋代工價（2026 上半年）",
+     "平均漲幅約 5%～15%",
+     "平均漲幅約 5% 至 15%"
+    ],
+    [
+     "8 吋產能利用率",
+     "2026 年前十大代工廠平均 88%，下半年預估 90%",
+     "2026 年全球前十大晶圓代工廠 8 吋產能平均利用率回升至 88%，下半年將達 90%"
+    ],
+    [
+     "2026 下半年價格預估",
+     "8 吋與 12 吋各 0～10%",
+     "8 吋 2026 下半年維持 0%∼10% 漲幅；12 吋成熟製程 2026 下半年可望調漲 0%∼10%"
+    ],
+    [
+     "聯電 Q3 稼動率",
+     "媒體摘要不一致：一說逾 90%，一說約 85%",
+     "一則稱使稼動率估升至逾 90% 水準；另一則引述執行長約 85%。作者判斷後者可能指 8 吋產品組合，需看法說簡報原文"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "40／28 奈米時代",
+   "composition": "DDI 主流製程",
+   "spec": "報告未提供具體數字",
+   "application": "三星在 2022 年前後的報導中計畫向聯電增購 DDI 產能，由約 13,000 片/月增至約 15,000 片/月（舊報導，僅供歷史參考）"
+  },
+  {
+   "name": "22 奈米高壓時代（2026）",
+   "composition": "手機 OLED DDIC 導入 22 奈米高壓製程",
+   "spec": "新加坡 P3 廠初期主打 22 奈米高壓製程",
+   "application": "手機 OLED DDIC 量產，聯電 22 奈米為營收成長主力"
+  },
+  {
+   "name": "下一步：12 奈米",
+   "composition": "聯電另一個節點，預計 2027 年量產",
+   "spec": "報告未提供具體數字",
+   "application": "是否用於 DDI 尚無證據"
+  },
+  {
+   "name": "OLED TDDI 支線",
+   "composition": "觸控與驅動整合元件，主要由 IC 設計端推動",
+   "spec": "報告未提供具體數字",
+   "application": "讓手機螢幕更薄、電池更大、觸控更省電（媒體分析）"
+  },
+  {
+   "name": "客戶端二元化",
+   "composition": "三星由單一供應轉為雙供應（聯電與格芯）的傳聞",
+   "spec": "報告未提供具體數字",
+   "application": "這一代的新變數，尚未確認"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 DDI 不能像 DRAM 那樣跨機種調貨？",
+   "points": [
+    "原因：DDI 是針對特定機種設計的客製晶片，Z Fold 8 Ultra、Z Flip 8 的 DDI 規格各不相同，無法像 LPDDR 在不同機型間調配庫存",
+    "影響：三星只能動用原本為 2027 年預留的晶圓，無法用其他機型庫存補位",
+    "代價：需求一超標就直接缺貨，庫存也難彈性調度",
+    "對聯電：單一客戶訂單排程彈性低，加急成本高；作者判斷這也是客戶願意開第二來源的原因之一"
+   ]
+  },
+  {
+   "title": "「超級加急」為什麼不是加錢就能解決？",
+   "points": [
+    "標準流程約需 4 個月，DDI 常規生產週期約 4 個月，之後還要與 OLED 面板配對，再由三星組裝整機",
+    "加急等於重排產線，需同時調整其他客戶半導體的生產日程",
+    "結果：三星據報把 Z Fold8 零件計畫量調降 10%，並把這部分改列入 10 月產量",
+    "作者判斷：拒絕加急反映聯電 22 奈米沒有緩衝產能，短期無法把需求變成加單收入，但也讓客戶有理由找第二來源"
+   ]
+  },
+  {
+   "title": "第二供應商的邏輯",
+   "points": [
+    "歷史先例：2021 年三星與聯電擴產 ISP 的合作破局，三星需求增加的產能轉向投產格芯（GF）",
+    "三星與聯電既是合作方，也是競爭者，業界指出雙方仍會有所顧慮",
+    "作者分析（非來源結論）：第二供應商不一定最便宜，但能在主供應商滿載或交期不穩時接溢出訂單，也增加議價籌碼；格芯能否穩定承接 DDI 取決於其 22/28 奈米良率與產能，本次未查到相關資料"
+   ]
+  }
+ ],
+ "conclusion": [
+  "製程相容與移植成本：三星 DDI 設計移植到格芯 22/28 奈米需要多長時間與多少驗證，本次未查到，待追蹤",
+  "產能與交期：聯電新加坡 P3 能否如期量產，2027 年 1.8 萬片目標能否達成，22 奈米產能要留給哪些客戶",
+  "成本與地點：新加坡生產成本高於台灣，但地緣政治避險需求使許多客戶願將新加坡作為第二來源據點；8 吋與 12 吋漲價能否落實亦待觀察，且多數客戶積極協商暫緩 2026 下半年漲價",
+  "判讀框架（分析，非建議）：若 2027 年三星增加格芯比重，但聯電 22 奈米新產能仍能被其他客戶消化，聯電受影響有限；若聯電產能不足以同時服務三星與其他客戶，份額流失速度會加快"
+ ],
+ "sources": [
+  {
+   "title": "DIGITIMES：三星 Galaxy Z Fold8 需求爆量 傳聯電 22 奈米 DDI 供應告急（2026-08-31）",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000766680_R4P5CUY095EN65L9X4DR0"
+  },
+  {
+   "title": "觸發來源（聯電傳婉拒 Galaxy Z Fold8 急單，Google News 連結）",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQdHpzMHk3WDFKakNHZGNhcmhfMWRyUVp5cXo4UFB0V2N4ajhkRkhQVkJxdm01bm1jdnQtcElNeU1PQlVTMHQwZzlPck9uX3Uyal9ReWhOeTU4Z0FjcklrbjBwUGhOdWJiNVRfYkxvUkZBemRVcXl2bHpYNEhjUHlxdWY5WmJIbDhaUW11dVd0Qm8xcTFLY2Jv?oc=5"
+  },
+  {
+   "title": "自由電子報 3C：Galaxy Z Fold8 全球熱銷，傳三星被迫預支新機開發晶片填補產能",
+   "url": "https://3c.ltn.com.tw/news/67412"
+  },
+  {
+   "title": "騰訊新聞（ZDNet Korea 轉述）：三星 Galaxy Z Fold 8 卖太好 DDI 供应跟不上了",
+   "url": "https://news.qq.com/rain/a/20260901A06W4700?id=20260901A06W4700&path=a&app=news&suid=&redirect_pc=1"
+  },
+  {
+   "title": "CNMO：三星 Z Fold 8 熱銷引爆 DDI 缺貨危機，或挪用明年庫存",
+   "url": "https://phone.cnmo.com/news/817191.html"
+  },
+  {
+   "title": "CNMO：曝三星 DDI 代工方將擴充，由聯電和格芯共同生產（2026-10-13）",
+   "url": "https://gadgets.cnmo.com/news/820221.html"
+  },
+  {
+   "title": "TechRitual：Samsung 考慮將 OLED Galaxy 顯示驅動 IC 代工生產二元化（2026-10-13）",
+   "url": "https://www.techritual.com/2026/10/13/591632/"
+  },
+  {
+   "title": "時報資訊：聯電 Q3 出貨季增 7～9%，稼動率估逾 9 成、毛利率續揚（2026-07-29）",
+   "url": "https://www.chinatimes.com/realtimenews/20260729003700-260410"
+  },
+  {
+   "title": "時報資訊：聯電 9 月營收創 253.5 億新高，Q3 季增 8%（2026-10-06）",
+   "url": "https://www.chinatimes.com/realtimenews/20261006003299-260410"
+  },
+  {
+   "title": "豐雲學堂：聯電法說，第二季 EPS 達 3.39 元，資本支出上調至 20 億美元",
+   "url": "https://www.sinotrade.com.tw/richclub/hotstock/%E8%81%AF%E9%9B%BB%E6%B3%95%E8%AA%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3EPS%E9%81%943-39%E5%85%83%E5%89%B5%E5%96%AE%E5%AD%A3%E6%96%B0%E9%AB%98-%E8%B3%87%E6%9C%AC%E6%94%AF%E5%87%BA%E4%B8%8A%E8%AA%BF%E8%87%B320%E5%84%84%E7%BE%8E%E5%85%83-Q3%E7%94%A2%E8%83%BD%E5%88%A9%E7%94%A8%E7%8E%87%E4%B8%8A%E7%9C%8B%E9%80%BE90--%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a69ce9b59e586efa18faba9"
+  },
+  {
+   "title": "豐雲學堂：聯電法說，全年 EPS 3.34 元，22 奈米全年營收暴增 93%",
+   "url": "https://www.sinotrade.com.tw/richclub/hotstock/%E8%81%AF%E9%9B%BB%E6%B3%95%E8%AA%AA-%E5%85%A8%E5%B9%B4EPS-3-34%E5%85%83-2026%E5%AF%A9%E6%85%8E%E6%A8%82%E8%A7%80%E5%B1%95%E6%9C%9B%E6%88%90%E9%95%B7%E5%B9%B4-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6979d7083961393fe057ab39"
+  },
+  {
+   "title": "聯電 2026 年 4 月法說摘要（鉅亨網／Vocus）：下半年調整價格以因應成本壓力",
+   "url": "https://vocus.cc/article/69f20c1afd89780001432e88"
+  },
+  {
+   "title": "工商時報：聯電衝刺 22 奈米與先進封裝，新加坡廠續擴產（2026-05-27）",
+   "url": "https://www.ctee.com.tw/news/20260527701109-430201"
+  },
+  {
+   "title": "自由財經：聯電新加坡廠擴建落成，2026 年量產，月產能 3 萬片",
+   "url": "https://ec.ltn.com.tw/article/paper/1699607"
+  },
+  {
+   "title": "財訊快報：晶圓代工漲價潮延續，下半年 8、12 吋成熟製程漲幅一成內（TrendForce，2026-07-01）",
+   "url": "https://www.investor.com.tw/onlineNews/NewsContent.asp?articleNo=14202607010084"
+  },
+  {
+   "title": "中央社：晶圓代工成熟製程供需結構轉變，估漲價至 2027 年（集邦科技，2026-06-30）",
+   "url": "https://www.cna.com.tw/news/afe/202606300323.aspx"
+  },
+  {
+   "title": "工商時報：成熟製程翻身，研調估漲價潮上看 2027 年（2026-06-30）",
+   "url": "https://www.ctee.com.tw/news/20260630701638-430503"
+  },
+  {
+   "title": "UDN：產能排擠、大廠減產加劇，晶圓代工成熟製程漲價效應延至 2027 年（TrendForce）",
+   "url": "https://udn.com/news/story/7240/9598042"
+  },
+  {
+   "title": "電子工程專輯：晶圓代工成熟製程漲價效應將延伸至 2027 年（2026-08-31）",
+   "url": "https://www.eettaiwan.com/20260831nt21-mature-node-wafer-foundry-capacity-shortage-price-hike-2027/"
+  },
+  {
+   "title": "時報資訊：大廠減產＋AI 周邊 IC 需求增，晶圓代工成熟製程漲聲蠢動（2026-05-07）",
+   "url": "https://www.chinatimes.com/realtimenews/20260507003308-260410"
+  },
+  {
+   "title": "鉅亨網／財報狗：驅動 IC 概念股受惠排名與完整分析",
+   "url": "https://statementdog.com/tags/1225"
+  },
+  {
+   "title": "財報狗：面板驅動 IC 概念股",
+   "url": "https://statementdog.com/tags/1416"
+  },
+  {
+   "title": "MoneyDJ（Yahoo 股市）：聯詠 Q3 續協商價格；手機 OLED 驅動 IC 後市可期（2026-08-07）",
+   "url": "https://tw.stock.yahoo.com/news/%E8%81%AF%E8%A9%A0q3%E7%BA%8C%E5%8D%94%E5%95%86%E5%83%B9%E6%A0%BC-%E6%89%8B%E6%A9%9Fi-OLED%E9%A9%85%E5%8B%95ic%E5%BE%8C%E5%B8%82%E5%8F%AF%E6%9C%9F-020500827.html"
+  },
+  {
+   "title": "工商時報：OLED DDI 滲透率升，TDDI 漸入佳境（2024-03-14）",
+   "url": "https://www.ctee.com.tw/news/20240314700218-430501"
+  },
+  {
+   "title": "工商時報：蘋果面板升級，聯詠、瑞鼎聞香（2024-11-25）",
+   "url": "https://www.ctee.com.tw/news/20241125700223-439901"
+  },
+  {
+   "title": "THE ELEC：Samsung System LSI to secure more OLED DDI capacity from UMC（舊報導）",
+   "url": "https://www.thelec.net/news/articleView.html?idxno=4203"
+  },
+  {
+   "title": "自由財經：三星買設備支持聯電擴產，雙方洽談破局（2021）",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/3497836"
+  },
+  {
+   "title": "工商時報：基於風險考量，三星助聯電擴產早就吹了（2021）",
+   "url": "https://www.chinatimes.com/newspapers/20210414000133-260202"
+  },
+  {
+   "title": "新聞鏡週刊 TNL：三星擬擴大台韓聯盟，委外代工聯電、世界先進與力積電（2025 年傳聞）",
+   "url": "https://www.thenewslens.com/article/175196"
+  },
+  {
+   "title": "INSIDE：傳聯電與 GlobalFoundries 有意合併（2025 年傳聞，聯電表示不回應）",
+   "url": "https://www.inside.com.tw/article/38010-umc-globalfoundries-reportedly-in-merger-talks-challenge-samsung-position"
+  },
+  {
+   "title": "Semiecosystem（引用 TrendForce 2025 年第三季市占）",
+   "url": "https://marklapedus.substack.com/p/tsmc-gains-foundry-share-but-others"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游：材料、設備與廠務",
+   "description": "矽晶圓、光阻與化學品、光罩、製程設備、廠務。半導體製造原物料通膨、大廠長期減產及AI新興應用持續侵蝕產能，推升成本；聯詠表示下半年部分晶圓材料及封測成本持續上漲。聯電 2026 年資本支出上調至 20 億美元，以支應新加坡與台南廠區分階段擴產，設備與材料受惠，但未查到個別供應商名單。",
+   "global_players": [
+    "國際設備與材料大廠（非台股，未逐一查證）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "晶圓代工（核心：聯電）",
+   "description": "12 吋 22／28 奈米高壓與特殊製程、8 吋電源管理與功率元件、新加坡新廠擴產。8 吋 2026 上半年漲價 5～15%，2H26 預估 0～10%，業者醞釀於 2026 下半年至 2027 持續漲價；12 吋 2H26 預估 0～10%，部分供給緊張製程已於 2026 Q2 至 Q3 漲價 5%至 10%。",
+   "global_players": [
+    "台積電（競爭者，減產外溢訂單）",
+    "三星晶圓代工（減產或轉移部分 8 吋產能）",
+    "格芯 GF（DDI 雙供應潛在對象）",
+    "中國晶合集成等（承接部分 HV 與 CIS 轉單）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2303",
+     "name": "聯電",
+     "role": "晶圓代工本體。受惠（已證實）：Q3 指引、9 月營收、22 奈米滿載；潛在受傷（傳聞）：三星 DDI 分給格芯後份額可能被分走",
+     "impact": "受惠"
+    },
+    {
+     "code": "5347",
+     "name": "世界",
+     "role": "8 吋類比與高壓製程競爭者，亦具報價彈性；2025 年傳聞三星曾評估委外",
+     "impact": "中性"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "12 吋成熟製程競爭者，2025 年傳聞三星委外評估對象之一",
+     "impact": "中性"
+    },
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "成熟製程減產，轉單外溢給二線廠，對聯電是間接利多",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "IC 設計（DDI 客戶）",
+   "description": "設計 OLED DDIC、TDDI、LCD DDIC，委外晶圓代工與封測。手機 OLED DDI、OLED TDDI 與 LCD TDDI 持續量產，2026 年 Q2 需求回溫，手機客戶恢復拉貨。三星 System LSI 設計 Z Fold8 DDI（非台股）。",
+   "global_players": [
+    "三星 System LSI（設計 Z Fold8 DDI，非台股）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3034",
+     "name": "聯詠",
+     "role": "聯電重要客戶，依賴其供應 28nm/40nm AMOLED DDI。Q3 毛利率預估 38.5～41.5%，低於上季 42.42%，原因為材料與封測成本上升，第三季將持續與供應商及客戶協商價格",
+     "impact": "受傷"
+    },
+    {
+     "code": "3592",
+     "name": "瑞鼎",
+     "role": "看好明年 LDDI 於筆電及顯示器溫和成長；與聯電代工關係未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "4961",
+     "name": "天鈺",
+     "role": "DDI 相關 IC 設計；與聯電供貨關係未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "3545",
+     "name": "敦泰",
+     "role": "DDI 相關 IC 設計；與聯電供貨關係未查證",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "封測與凸塊（DDI 後段）",
+   "description": "DDI 凸塊（bumping）、COF 封裝與測試。下半年部分晶圓材料及封測成本持續上漲。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6147",
+     "name": "頎邦",
+     "role": "DDI 後段封測；與聯電 22 奈米產品直接關係未查證",
+     "impact": "中性"
+    },
+    {
+     "code": "8150",
+     "name": "南茂",
+     "role": "DDI 後段封測；與聯電 22 奈米產品直接關係未查證",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "終端：手機與面板（非台股為主）",
+   "description": "OLED 面板由三星顯示等面板廠生產，DDI 成品需先交付三星顯示與 OLED 面板結合，再交由三星電子裝配整機。受惠於蘋果、三星與中國 3C 品牌擴大導入 AMOLED，手機用 AMOLED 面板滲透率逼近五成（2024 年舊資料）。台灣面板廠與聯電 DDI 下游關係待確認。",
+   "global_players": [
+    "Samsung Display",
+    "三星電子"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}
