@@ -1724,6 +1724,122 @@ def _backtest_early2(data, futures, index_df, rates, capital: float, range_: str
     (out / "early2.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
 
 
+def _backtest_launch(data, futures, index_df, rates, capital: float, range_: str) -> None:
+    """短線發動機率研究（trade/launch.py）：條件分組發動率、既有訊號對照、合成分數的樣本外提升倍數。"""
+    from .trade import backtest as bt
+    from .trade import early, launch
+    base = bt.Params(capital=capital, exit_ma="ma20")
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.load("themes").get("tw") or {}).items()}
+    lead_map = config.us_lead()
+    us_hist = yahoo.fetch_many(sorted(lead_map), range_=range_)
+    prepped = {c: bt.prepare(d, base) for c, d in data.items() if len(d) > 80}
+    fr = early.frames(prepped)
+    mkt = bt.market_ok(index_df)
+    lead = early.lead_signals(us_hist, lead_map, themes_tw, fr)
+    df = launch.dataset(fr, launch.feature_frames(fr, index_df, themes_tw, lead), launch.label_frame(fr), mkt)
+    log.info("樣本 %d 列（%d 檔、%d 天），基準發動率 A %.1f%%、B %.1f%%", len(df), df["code"].nunique(), df["date"].nunique(),
+             df["hit"].mean() * 100, df["hit_r"].mean() * 100)
+    labels = {"A": ("固定 +7%", "hit"), "B": ("+2R（R＝1.5×ATR，已扣掉波動大小）", "hit_r")}
+    res = {"定義": f"t 日收盤後的條件 → t+1 開盤買進，{launch.HORIZON} 個交易日內先碰到目標、且之前沒碰到停損"
+                   f"（開盤價 − {launch.ATR_MULT}×ATR；同日兩者都碰到算沒發動）。只算大盤多頭。A＝目標 +{launch.UP:.0%}；B＝目標 +2R。"
+                   "平均R＝先到目標 +2、先停損 −1、都沒到依收盤折算（−1～+2）。",
+           "樣本數": int(len(df)), "股票數": int(df["code"].nunique()), "交易日數": int(df["date"].nunique()),
+           "基準平均5日報酬%": round(float(df["fwd"].mean()) * 100, 2), "基準平均R": round(float(df["rr"].mean()), 2), "標籤": {}}
+    for key, (title, col) in labels.items():
+        res["標籤"][key] = {"說明": title, "基準發動率%": round(float(df[col].mean()) * 100, 1),
+                          "單一條件": launch.univariate(df, col=col), "既有訊號": launch.signal_rates(df, col=col),
+                          "評估": launch.evaluate(df, col=col)}
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "launch.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(res["定義"])
+    print(f"樣本 {res['樣本數']:,} 列｜{res['股票數']} 檔｜{res['交易日數']} 天｜基準平均5日 {res['基準平均5日報酬%']}%｜基準平均R {res['基準平均R']}")
+    for key, r in res["標籤"].items():
+        print(f"\n==================== 標籤 {key}：{r['說明']}｜基準發動率 {r['基準發動率%']}% ====================")
+        print("【單一條件：分 5 等分（由差異大到小）】")
+        print(pd.DataFrame(r["單一條件"]).drop(columns=["各組下限"]).to_string(index=False))
+        print("\n【既有訊號】")
+        print(pd.DataFrame(r["既有訊號"]).to_string(index=False))
+        ev = r["評估"]
+        print(f"\n【合成分數（切點 {ev['切點']}；前半 {ev['前半段筆數']:,} 列、後半 {ev['後半段筆數']:,} 列；基準發動率 "
+              f"{ev['前半段基準發動率%']}% / {ev['後半段基準發動率%']}%；基準平均R {ev['前半段基準平均R']} / {ev['後半段基準平均R']}）】")
+        for kind, runs in ev["模型"].items():
+            for name, x in runs.items():
+                print(f"\n▶ {kind}｜{name}")
+                print(pd.DataFrame(x["提升表"]).to_string(index=False))
+                if "現行突破群的提升表" in x:
+                    print("  （只看現行放量突破那群）")
+                    print(pd.DataFrame(x["現行突破群的提升表"]).to_string(index=False))
+                print(pd.DataFrame(x["校準"]).to_string(index=False))
+
+
+def _backtest_launch2(data, futures, index_df, rates, capital: float, range_: str) -> None:
+    """把『發動機率分數』放進策略：逐季向前訓練（不偷看未來），每天取分數最高的前幾檔當進場訊號，
+    和現行策略 B、B＋領先專用位做組合回測（只比有分數的後段期間）。回答：分數高的那群，實際交易會不會比較賺。"""
+    from .trade import backtest as bt
+    from .trade import early, launch
+    base = bt.Params(capital=capital, exit_ma="ma20")
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.load("themes").get("tw") or {}).items()}
+    lead_map = config.us_lead()
+    us_hist = yahoo.fetch_many(sorted(lead_map), range_=range_)
+    prepped = {c: bt.prepare(d, base) for c, d in data.items() if len(d) > 80}
+    fr = early.frames(prepped)
+    mkt = bt.market_ok(index_df)
+    lead = early.lead_signals(us_hist, lead_map, themes_tw, fr)
+    lead80 = early.lead_signals(us_hist, lead_map, themes_tw, fr, min_rs=0.8)
+    df = launch.dataset(fr, launch.feature_frames(fr, index_df, themes_tw, lead), launch.label_frame(fr), mkt)
+    sc_r = launch.walk_forward_scores(df, "hit_r", "linear", 5.0)
+    sc_a = launch.walk_forward_scores(df, "hit", "linear", 5.0)
+    if sc_r.empty:
+        print("資料不足，無法逐季向前訓練")
+        return
+    t_start = pd.Timestamp(sc_r["date"].min())
+    log.info("逐季向前分數：%d 列，自 %s 起", len(sc_r), t_start.date())
+    ex = {"R": {n: launch.top_signals(sc_r, n) for n in (1, 3)}, "A": {3: launch.top_signals(sc_a, 3)}}
+    warm = t_start - pd.Timedelta(days=300)
+    d2 = {c: d[d.index >= warm] for c, d in data.items()}
+    i2 = index_df[index_df.index >= warm]
+    plus = {"extra_slots": 1}
+    cases = {
+        "B 現行（3 檔）": ({}, None),
+        "B 4 檔（對照）": ({"max_pos": 4}, None),
+        "只做高分（+2R 模型，每天前 1 檔）": ({"setups": ()}, ex["R"][1]),
+        "只做高分（+2R 模型，每天前 3 檔）": ({"setups": ()}, ex["R"][3]),
+        "只做高分（+7% 模型，每天前 3 檔）": ({"setups": ()}, ex["A"][3]),
+        "B 3 檔＋高分專用 1 檔（+2R 模型，前 3 檔）": (plus, ex["R"][3]),
+        "B 3 檔＋高分專用 1 檔（+7% 模型，前 3 檔）": (plus, ex["A"][3]),
+        "B 3 檔＋領先專用 1 檔（對照，同期間）": (plus, lead),
+        "B 3 檔＋領先專用 1 檔（相對強度≥80%，對照）": (plus, lead80),
+    }
+    rows = []
+    for name, (kw, e) in cases.items():
+        par = bt.Params(**{**base.__dict__, **kw})
+        full = bt.run(d2, futures, i2, par, rates, extra=e)
+        # 只統計 t_start 之後進場的交易，並用權益曲線從 t_start 起算
+        eq = pd.Series([v for _, v in full["curve"]], index=pd.to_datetime([d for d, _ in full["curve"]]))
+        eq = eq[eq.index >= t_start.tz_localize(None) if t_start.tzinfo else eq.index >= t_start]
+        ratio = eq / float(eq.iloc[0]) if len(eq) else eq
+        trades = [x for x in full["trades"] if x["entry_date"] >= str(t_start.date())]
+        by: dict[str, list] = {}
+        for x in trades:
+            by.setdefault(x["setup"], []).append(x)
+        det = "；".join(f"{k} {len(v)}筆 勝率{sum(y['pnl'] > 0 for y in v) / len(v):.0%} R{sum(y['r'] for y in v) / len(v):+.2f}"
+                       for k, v in by.items())
+        rows.append({"策略": name, "期間報酬%": round((float(ratio.iloc[-1]) - 1) * 100, 1) if len(ratio) else None,
+                     "最大回撤%": round(float((ratio / ratio.cummax() - 1).min()) * 100, 1) if len(ratio) else None,
+                     "筆數": len(trades), "平均R": round(sum(x["r"] for x in trades) / len(trades), 2) if trades else None,
+                     "勝率%": round(sum(x["pnl"] > 0 for x in trades) / len(trades) * 100, 1) if trades else None, "各型態": det})
+        log.info("%s：%s", name, rows[-1])
+    table = pd.DataFrame(rows)
+    print(f"比較期間：{t_start.date()} 起（逐季向前訓練的分數）")
+    print(table.drop(columns=["各型態"]).to_string(index=False))
+    for r in rows:
+        print(f"・{r['策略']}：{r['各型態']}")
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "launch2.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+
+
 def cmd_backtest(args) -> None:
     """股票期貨波段策略回測（只做多），結果存到 research/backtest/。"""
     from . import net
@@ -1768,6 +1884,12 @@ def cmd_backtest(args) -> None:
         return
     if args.early2:
         _backtest_early2(data, futures, index_df, rates, args.capital, args.range)
+        return
+    if args.launch:
+        _backtest_launch(data, futures, index_df, rates, args.capital, args.range)
+        return
+    if args.launch2:
+        _backtest_launch2(data, futures, index_df, rates, args.capital, args.range)
         return
     if args.variants:
         variants = {
@@ -2177,6 +2299,8 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
     bk.add_argument("--early", action="store_true", help="提前進場訊號：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行")
+    bk.add_argument("--launch2", action="store_true", help="發動機率分數放進策略：逐季向前訓練、每天取前幾檔，和 B 比組合回測")
+    bk.add_argument("--launch", action="store_true", help="短線發動機率研究：條件分組發動率、合成分數的樣本外提升倍數")
     bk.add_argument("--early2", action="store_true", help="提前進場第二輪：專用名額、強度濾網、盤中突破強度門檻")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)

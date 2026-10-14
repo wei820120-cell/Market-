@@ -1529,3 +1529,62 @@ def test_paper_account_l_has_dedicated_lead_slot():
     held = [x["code"] for x in st["positions"] if x["setup"] == "領先"]
     assert held == ["1111"] and any("模擬進場 1111" in e and "領先" in e for e in events)  # 領先位只佔 1 檔，第二個被名額擋掉
     assert len(st["positions"]) == 4 and paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, True, p) == []
+
+
+def test_launch_labels_features_and_model():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt, early, launch
+    # 兩檔：甲在第 100 天後 5 日內先漲 10%（發動），乙一路下跌（碰停損）
+    up, down = _early_stock(n=160, spread=0.01), _early_stock(n=160, base=(120, 100), spread=0.01)
+    up.iloc[103, up.columns.get_loc("high")] = float(up["open"].iloc[101]) * 1.09   # 進場後第 3 天最高衝到 +9%
+    prepped = {"1111": bt.prepare(up, bt.Params()), "2222": bt.prepare(down, bt.Params())}
+    fr = early.frames(prepped)
+    lab = launch.label_frame(fr)
+    day = up.index[100]
+    assert lab["hit"].at[day, "1111"] == 1.0                       # 隔天開盤起 5 日內碰到 +7%
+    assert lab["hit_r"].at[day, "1111"] in (0.0, 1.0) and -1.0 <= lab["rr"].at[day, "1111"] <= 2.0
+    assert lab["hit"].at[down.index[100], "2222"] == 0.0
+    assert np.isnan(lab["hit"].iloc[-1]["1111"])                   # 最後幾天未來資料不足 → 不算
+    index_df = pd.DataFrame({"close": np.linspace(100, 140, 160)}, index=up.index)
+    feats = launch.feature_frames(fr, index_df, {"記憶體": ["1111", "2222", "9999"]}, {})
+    assert set(launch.FEATURES) <= set(feats) and feats["rs120"].at[up.index[150], "1111"] > feats["rs120"].at[up.index[150], "2222"]
+    df = launch.dataset(fr, feats, lab, pd.Series(True, index=up.index))
+    assert {"date", "code", "hit", "fwd", "mfe"} <= set(df.columns) and len(df) > 30
+    # 邏輯迴歸能學到簡單規則：特徵 ret5 越高越容易 hit
+    rng = np.random.default_rng(0)
+    n = 4000
+    syn = pd.DataFrame({f: rng.normal(size=n) for f in launch.FEATURES})
+    syn["hit"] = (rng.random(n) < 1 / (1 + np.exp(-(syn["ret5"] * 1.5 - 1.5)))).astype(float)
+    syn["fwd"], syn["mfe"], syn["sig_a"], syn["sig_b"] = 0.0, 0.0, 0.0, 0.0
+    syn["rr"] = np.where(syn["hit"] > 0, 2.0, -1.0)
+    for kind in ("linear", "binned"):
+        p = launch.Model(kind).fit(syn).predict(syn)
+        top = launch.lift_table(syn, p)[1]                          # 前 10%
+        assert top["倍數"] > 2.0, (kind, top)
+    tab = launch.univariate(syn)
+    assert tab[0]["特徵"] == launch.LABELS["ret5"] and tab[0]["最高組發動率%"] > tab[0]["最低組發動率%"]
+    assert len(launch.calibration(syn, p)) == 10
+
+
+def test_launch_walk_forward_scores_only_use_the_past():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import launch
+    rng = np.random.default_rng(1)
+    dates = pd.date_range("2024-01-01", periods=600, freq="B", tz="UTC")
+    rows = []
+    for d in dates:
+        for code in ("1111", "2222", "3333", "4444", "5555", "6666"):
+            f = {k: rng.normal() for k in launch.FEATURES}
+            rows.append({"date": d, "code": code, **f})
+    df = pd.DataFrame(rows)
+    df["hit_r"] = (rng.random(len(df)) < 1 / (1 + np.exp(-(df["ret5"] * 1.2 - 1.5)))).astype(float)
+    df["hit"], df["rr"], df["fwd"], df["mfe"], df["sig_a"], df["sig_b"] = df["hit_r"], df["hit_r"], 0.0, 0.0, 0.0, 0.0
+    sc = launch.walk_forward_scores(df, "hit_r", "linear", min_train_days=250, step_days=90)
+    assert sc["date"].min() >= dates[0] + pd.Timedelta(days=250) and len(sc) > 1000   # 前一年沒有分數
+    merged = sc.merge(df[["date", "code", "ret5", "hit_r"]], on=["date", "code"])
+    assert np.corrcoef(merged["score"], merged["ret5"])[0, 1] > 0.5                    # 向前訓練仍學得到 ret5 的關係
+    sig = launch.top_signals(sc, n=2)
+    day = next(iter(sig))
+    assert len(sig[day]) == 2 and sig[day][0][2] == "高分" and sig[day][0][0] >= sig[day][1][0]

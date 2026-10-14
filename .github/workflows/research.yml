@@ -53,6 +53,14 @@ on:
         description: "提前進場訊號回測：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行"
         type: boolean
         default: false
+      launch2:
+        description: "發動機率分數放進策略：逐季向前訓練、每天取前幾檔，和 B 比組合回測"
+        type: boolean
+        default: false
+      launch:
+        description: "短線發動機率研究：條件分組發動率、合成分數的樣本外提升倍數"
+        type: boolean
+        default: false
       early2:
         description: "提前進場第二輪回測：專用名額、強度濾網、盤中突破強度門檻"
         type: boolean
@@ -135,6 +143,10 @@ jobs:
             python -m market_intel backtest --speed
           elif [ "${{ inputs.early }}" = "true" ]; then
             python -m market_intel backtest --early
+          elif [ "${{ inputs.launch2 }}" = "true" ]; then
+            python -m market_intel backtest --launch2
+          elif [ "${{ inputs.launch }}" = "true" ]; then
+            python -m market_intel backtest --launch
           elif [ "${{ inputs.early2 }}" = "true" ]; then
             python -m market_intel backtest --early2
           elif [ "${{ inputs.lead }}" = "true" ]; then
