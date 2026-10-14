@@ -1,7 +1,25 @@
 {
  "capital": 100000,
  "equity": 106487.89199999999,
- "positions": [],
+ "positions": [
+  {
+   "code": "2027",
+   "name": "大成鋼",
+   "contract": "FEF",
+   "mult": 2000,
+   "qty": 2,
+   "qty0": 2,
+   "entry": 49.58,
+   "stop": 47.742364578131294,
+   "r0": 1.837635421868704,
+   "rate": 0.135,
+   "entry_date": "2026-10-14",
+   "days": 0,
+   "half_done": false,
+   "realized": 0.0,
+   "alerts": []
+  }
+ ],
  "closed": [
   {
    "code": "1477",
