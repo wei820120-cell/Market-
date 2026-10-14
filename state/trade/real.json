@@ -1,25 +1,7 @@
 {
  "capital": 100000,
- "equity": 105555.99160000001,
- "positions": [
-  {
-   "code": "1312",
-   "name": "國喬",
-   "contract": "EEF",
-   "mult": 2000,
-   "qty": 2,
-   "qty0": 2,
-   "entry": 18.1,
-   "stop": 16.954600521948187,
-   "r0": 1.1453994780518144,
-   "rate": 0.162,
-   "entry_date": "2026-10-14",
-   "days": 0,
-   "half_done": false,
-   "realized": 0.0,
-   "alerts": []
-  }
- ],
+ "equity": 104550.18760000002,
+ "positions": [],
  "closed": [
   {
    "code": "1477",
@@ -103,6 +85,26 @@
    "exit": 49.5,
    "exit_date": "2026-10-14",
    "pnl": -932
+  },
+  {
+   "code": "1312",
+   "name": "國喬",
+   "contract": "EEF",
+   "mult": 2000,
+   "qty": 0,
+   "qty0": 4,
+   "entry": 18.175,
+   "stop": 16.9867434199628,
+   "r0": 1.1882565800372014,
+   "rate": 0.162,
+   "entry_date": "2026-10-14",
+   "days": 0,
+   "half_done": false,
+   "realized": -1005.8039999999943,
+   "alerts": [],
+   "exit": 18.1,
+   "exit_date": "2026-10-14",
+   "pnl": -1006
   }
  ]
 }
