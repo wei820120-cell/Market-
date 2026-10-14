@@ -5,8 +5,11 @@
 2. 合成分數最高的那一群，在「沒看過的時期」發動機率比基準高多少倍？
 
 定義（全部以 t 日收盤的資訊，隔天 t+1 開盤買進）：
-- 發動（label）：t+1 起 5 個交易日內，最高價先碰到「開盤價 +7%」，而且在那之前沒有碰到停損（開盤價 − 1.5×ATR）。
+- 發動（label A）：t+1 起 5 個交易日內，最高價先碰到「開盤價 +7%」，而且在那之前沒有碰到停損（開盤價 − 1.5×ATR）。
   同一天既碰到目標又碰到停損，保守算「沒發動」。只算大盤多頭（和進場規則一致）。
+- 發動（label B）：改成先碰到 +2R（R＝開盤價到停損的距離＝1.5×ATR）。固定 +7% 對波動大的股票比較容易達成，B 把波動大小扣掉，
+  看的是真正的方向優勢，也更貼近實際策略（+2R 先出一半）。
+- 平均 R（rr）：同樣的停損與 +2R 目標，先到目標＝+2、先停損＝−1、5 日內都沒到＝依收盤價折算（限制在 −1～+2），代表這群的期望值。
 - 特徵：價量、均線、相對強度、離高點距離、量能、題材熱度（同題材其他股票剛突破幾檔）、美股領先。
 - 模型：純 numpy 的邏輯迴歸（透明、不易過度擬合）。「線性」用標準化後的特徵；「分箱」把每個特徵切成 5 等分、各自一個加分，能抓非線性。
 - 檢驗：時間切半、互換訓練與測試（先 A 訓練 B 測試，再反過來），訓練與測試之間空 5 天避免標籤重疊。
@@ -32,25 +35,38 @@ LABELS = {
 
 # ---------------------------------------------------------------- 特徵與標籤
 
-def label_frame(fr: dict[str, pd.DataFrame], horizon: int = HORIZON, up: float = UP, atr_mult: float = ATR_MULT) -> dict:
-    """發動標籤。回傳 {"hit": 0/1/NaN, "fwd": 持有 horizon 日收盤報酬, "mfe": 期間最大漲幅}（NaN＝未來資料不足）。"""
+def label_frame(fr: dict[str, pd.DataFrame], horizon: int = HORIZON, up: float = UP, atr_mult: float = ATR_MULT,
+                r_target: float = 2.0) -> dict:
+    """標籤。hit＝label A（先碰 +up）、hit_r＝label B（先碰 +r_target R）、rr＝期望值（以 R 計）、
+    fwd＝持有 horizon 日收盤報酬、mfe＝期間最大漲幅。NaN＝未來資料不足。"""
     entry = fr["open"].shift(-1)
-    stop = entry - atr_mult * fr["atr"]
+    risk = atr_mult * fr["atr"]
+    stop = entry - risk
     target = entry * (1 + up)
-    alive = pd.DataFrame(True, index=entry.index, columns=entry.columns)
-    hit = pd.DataFrame(False, index=entry.index, columns=entry.columns)
+    target_r = entry + r_target * risk
+    idx, cols = entry.index, entry.columns
+    alive_a = pd.DataFrame(True, index=idx, columns=cols)
+    alive_b = alive_a.copy()
+    hit_a = pd.DataFrame(False, index=idx, columns=cols)
+    hit_b, lose_b = hit_a.copy(), hit_a.copy()
+    hi_max = None
     for h in range(1, horizon + 1):
         hi, lo = fr["high"].shift(-h), fr["low"].shift(-h)
-        reached, stopped = hi >= target, lo <= stop
-        hit |= alive & reached & ~stopped          # 先到目標（同一天兩者都碰到＝算停損）
-        alive &= ~reached & ~stopped
+        stopped = lo <= stop
+        reached = hi >= target
+        hit_a |= alive_a & reached & ~stopped      # 先到目標（同一天兩者都碰到＝算停損）
+        alive_a &= ~reached & ~stopped
+        reached_b = hi >= target_r
+        hit_b |= alive_b & reached_b & ~stopped
+        lose_b |= alive_b & stopped
+        alive_b &= ~reached_b & ~stopped
+        hi_max = hi if hi_max is None else np.maximum(hi_max, hi)
     last = fr["close"].shift(-horizon)
     valid = last.notna() & entry.notna() & fr["atr"].notna()
-    hi_max = fr["high"].shift(-1)
-    for h in range(2, horizon + 1):
-        hi_max = np.maximum(hi_max, fr["high"].shift(-h))
-    return {"hit": hit.astype(float).where(valid), "fwd": (last / entry - 1).where(valid),
-            "mfe": (hi_max / entry - 1).where(valid)}
+    rest = ((last - entry) / risk).clip(-1.0, r_target)
+    rr = pd.DataFrame(np.where(hit_b, r_target, np.where(lose_b, -1.0, rest)), index=idx, columns=cols)
+    return {"hit": hit_a.astype(float).where(valid), "hit_r": hit_b.astype(float).where(valid), "rr": rr.where(valid),
+            "fwd": (last / entry - 1).where(valid), "mfe": (hi_max / entry - 1).where(valid)}
 
 
 def feature_frames(fr: dict[str, pd.DataFrame], index_df: pd.DataFrame, themes_tw: dict | None = None,
@@ -109,7 +125,8 @@ def dataset(fr: dict[str, pd.DataFrame], feats: dict[str, pd.DataFrame], labels:
         return frame.reindex(index=idx, columns=cols).to_numpy(dtype=float).ravel()
 
     data = {k: flat(feats[k]) for k in FEATURES}
-    data["hit"], data["fwd"], data["mfe"] = (flat(labels[k]) for k in ("hit", "fwd", "mfe"))
+    for k in ("hit", "hit_r", "rr", "fwd", "mfe"):
+        data[k] = flat(labels[k])
     data["sig_a"], data["sig_b"] = flat(fr["sig_a"].astype(float)), flat(fr["sig_b"].astype(float))
     df = pd.DataFrame(data, index=mi)
     ok = mkt.reindex(idx).fillna(False).to_numpy(dtype=bool).repeat(len(cols))
@@ -162,8 +179,8 @@ class Model:
             parts.append(onehot[:, 1:])                           # 以第一箱為基準
         return np.hstack(parts)
 
-    def fit(self, df: pd.DataFrame) -> "Model":
-        self.w = fit_logit(self._design(df, True), df["hit"].to_numpy(float), self.l2)
+    def fit(self, df: pd.DataFrame, col: str = "hit") -> "Model":
+        self.w = fit_logit(self._design(df, True), df[col].to_numpy(float), self.l2)
         return self
 
     def predict(self, df: pd.DataFrame) -> np.ndarray:
@@ -172,36 +189,38 @@ class Model:
 
 # ---------------------------------------------------------------- 評估
 
-def lift_table(df: pd.DataFrame, score: np.ndarray, tops=(0.10, 0.05, 0.01)) -> list[dict]:
-    """分數最高的前 x% 的發動率、倍數、平均5日報酬。"""
-    base = float(df["hit"].mean())
+def lift_table(df: pd.DataFrame, score: np.ndarray, tops=(0.10, 0.05, 0.01), col: str = "hit") -> list[dict]:
+    """分數最高的前 x% 的發動率、倍數、平均 R、平均5日報酬。"""
+    base = float(df[col].mean())
     order = np.argsort(-score)
     rows = [{"組別": "全部（基準）", "筆數": int(len(df)), "發動率%": round(base * 100, 1), "倍數": 1.0,
-             "平均5日%": round(float(df["fwd"].mean()) * 100, 2), "平均最大漲幅%": round(float(df["mfe"].mean()) * 100, 2)}]
+             "平均R": round(float(df["rr"].mean()), 2), "平均5日%": round(float(df["fwd"].mean()) * 100, 2),
+             "平均最大漲幅%": round(float(df["mfe"].mean()) * 100, 2)}]
     for q in tops:
         k = max(1, int(len(df) * q))
         sub = df.iloc[order[:k]]
-        rows.append({"組別": f"分數最高前 {q:.0%}", "筆數": int(k), "發動率%": round(float(sub["hit"].mean()) * 100, 1),
-                     "倍數": round(float(sub["hit"].mean()) / base, 2) if base else None,
-                     "平均5日%": round(float(sub["fwd"].mean()) * 100, 2),
+        rows.append({"組別": f"分數最高前 {q:.0%}", "筆數": int(k), "發動率%": round(float(sub[col].mean()) * 100, 1),
+                     "倍數": round(float(sub[col].mean()) / base, 2) if base else None,
+                     "平均R": round(float(sub["rr"].mean()), 2), "平均5日%": round(float(sub["fwd"].mean()) * 100, 2),
                      "平均最大漲幅%": round(float(sub["mfe"].mean()) * 100, 2)})
     return rows
 
 
-def calibration(df: pd.DataFrame, score: np.ndarray, bins: int = 10) -> list[dict]:
-    """依分數切 10 等分：預測平均 vs 實際發動率（看預測的機率準不準）。"""
+def calibration(df: pd.DataFrame, score: np.ndarray, bins: int = 10, col: str = "hit") -> list[dict]:
+    """依分數切 10 等分：預測平均 vs 實際發動率、平均 R（看預測的機率準不準、分數高是不是真的比較賺）。"""
     q = pd.qcut(pd.Series(score).rank(method="first"), bins, labels=False)
     out = []
     for b in range(bins):
         m = (q == b).to_numpy()
         out.append({"十分位(10=最高)": b + 1, "筆數": int(m.sum()), "預測%": round(float(score[m].mean()) * 100, 1),
-                    "實際發動率%": round(float(df["hit"].to_numpy()[m].mean()) * 100, 1)})
+                    "實際發動率%": round(float(df[col].to_numpy()[m].mean()) * 100, 1),
+                    "平均R": round(float(df["rr"].to_numpy()[m].mean()), 2)})
     return out
 
 
-def univariate(df: pd.DataFrame, features: list[str] = FEATURES, bins: int = 5) -> list[dict]:
-    """單一特徵分 5 等分的發動率（看哪些條件真的有差；描述用，不是預測）。"""
-    base = float(df["hit"].mean())
+def univariate(df: pd.DataFrame, features: list[str] = FEATURES, bins: int = 5, col: str = "hit") -> list[dict]:
+    """單一特徵分 5 等分的發動率與平均 R（看哪些條件真的有差；描述用，不是預測）。"""
+    base = float(df[col].mean())
     rows = []
     for f in features:
         s = df[f]
@@ -211,17 +230,18 @@ def univariate(df: pd.DataFrame, features: list[str] = FEATURES, bins: int = 5) 
             q = pd.qcut(s.rank(method="first"), bins, labels=False)
         except ValueError:
             continue
-        rates = [float(df["hit"][q == b].mean()) for b in range(bins)]
+        rates = [float(df[col][q == b].mean()) for b in range(bins)]
+        rr = [float(df["rr"][q == b].mean()) for b in range(bins)]
         lo = [float(s[q == b].min()) for b in range(bins)]
         rows.append({"特徵": LABELS.get(f, f), "最低組發動率%": round(rates[0] * 100, 1), "最高組發動率%": round(rates[-1] * 100, 1),
                      "最高組÷基準": round(rates[-1] / base, 2) if base else None, "各組發動率%": [round(r * 100, 1) for r in rates],
-                     "各組下限": [round(x, 4) for x in lo]})
+                     "各組平均R": [round(x, 2) for x in rr], "各組下限": [round(x, 4) for x in lo]})
     return sorted(rows, key=lambda r: -abs(r["最高組發動率%"] - r["最低組發動率%"]))
 
 
-def signal_rates(df: pd.DataFrame, extra: dict[str, pd.Series] | None = None) -> list[dict]:
-    """既有訊號的發動率：突破、拉回、美股領先、同題材有龍頭突破…，當成對照。"""
-    base = float(df["hit"].mean())
+def signal_rates(df: pd.DataFrame, extra: dict[str, pd.Series] | None = None, col: str = "hit") -> list[dict]:
+    """既有訊號的發動率與平均 R：突破、拉回、美股領先、同題材有龍頭突破…，當成對照。"""
+    base = float(df[col].mean())
     flags = {"收盤放量突破（現行）": df["sig_a"] > 0, "拉回（現行）": (df["sig_b"] > 0) & (df["sig_a"] == 0),
              "美股領先": df["us_lead"] > 0, "同題材近3日有突破": df["th_brk"] >= 1,
              "120日相對強度前20%": df["rs120"] >= 0.8, "離20日高3%內未突破": (df["gap"] > 0) & (df["gap"] <= 0.03)}
@@ -232,12 +252,13 @@ def signal_rates(df: pd.DataFrame, extra: dict[str, pd.Series] | None = None) ->
         if m.sum() < 30:
             continue
         sub = df[m]
-        rows.append({"訊號": name, "筆數": int(m.sum()), "發動率%": round(float(sub["hit"].mean()) * 100, 1),
-                     "倍數": round(float(sub["hit"].mean()) / base, 2), "平均5日%": round(float(sub["fwd"].mean()) * 100, 2)})
+        rows.append({"訊號": name, "筆數": int(m.sum()), "發動率%": round(float(sub[col].mean()) * 100, 1),
+                     "倍數": round(float(sub[col].mean()) / base, 2), "平均R": round(float(sub["rr"].mean()), 2),
+                     "平均5日%": round(float(sub["fwd"].mean()) * 100, 2)})
     return rows
 
 
-def evaluate(df: pd.DataFrame, embargo_days: int = 5) -> dict:
+def evaluate(df: pd.DataFrame, embargo_days: int = 5, col: str = "hit") -> dict:
     """時間切半、互換訓練與測試。回傳每種模型在「沒看過的那一半」的表現。"""
     dates = np.sort(df["date"].unique())
     cut = dates[len(dates) // 2]
@@ -245,16 +266,18 @@ def evaluate(df: pd.DataFrame, embargo_days: int = 5) -> dict:
     first = df[df["date"] < cut - emb]
     second = df[df["date"] >= cut]
     out = {"切點": str(pd.Timestamp(cut).date()), "前半段筆數": int(len(first)), "後半段筆數": int(len(second)),
-           "前半段基準發動率%": round(float(first["hit"].mean()) * 100, 1),
-           "後半段基準發動率%": round(float(second["hit"].mean()) * 100, 1), "模型": {}}
+           "前半段基準發動率%": round(float(first[col].mean()) * 100, 1),
+           "後半段基準發動率%": round(float(second[col].mean()) * 100, 1),
+           "前半段基準平均R": round(float(first["rr"].mean()), 2), "後半段基準平均R": round(float(second["rr"].mean()), 2),
+           "模型": {}}
     for kind, l2 in (("linear", 5.0), ("binned", 20.0)):
         res = {}
         for name, (tr, te) in {"前半訓練→後半測試": (first, second), "後半訓練→前半測試": (second, first)}.items():
-            m = Model(kind, l2).fit(tr)
+            m = Model(kind, l2).fit(tr, col)
             p = m.predict(te)
-            res[name] = {"提升表": lift_table(te, p), "校準": calibration(te, p)}
+            res[name] = {"提升表": lift_table(te, p, col=col), "校準": calibration(te, p, col=col)}
             brk = (te["sig_a"] > 0).to_numpy()                      # 只看「現行放量突破」那群：分數能不能把其中的好壞分開
             if brk.sum() >= 100:
-                res[name]["現行突破群的提升表"] = lift_table(te[brk], p[brk])
+                res[name]["現行突破群的提升表"] = lift_table(te[brk], p[brk], col=col)
         out["模型"][kind] = res
     return out

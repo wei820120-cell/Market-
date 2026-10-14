@@ -1543,6 +1543,7 @@ def test_launch_labels_features_and_model():
     lab = launch.label_frame(fr)
     day = up.index[100]
     assert lab["hit"].at[day, "1111"] == 1.0                       # 隔天開盤起 5 日內碰到 +7%
+    assert lab["hit_r"].at[day, "1111"] in (0.0, 1.0) and -1.0 <= lab["rr"].at[day, "1111"] <= 2.0
     assert lab["hit"].at[down.index[100], "2222"] == 0.0
     assert np.isnan(lab["hit"].iloc[-1]["1111"])                   # 最後幾天未來資料不足 → 不算
     index_df = pd.DataFrame({"close": np.linspace(100, 140, 160)}, index=up.index)
@@ -1556,6 +1557,7 @@ def test_launch_labels_features_and_model():
     syn = pd.DataFrame({f: rng.normal(size=n) for f in launch.FEATURES})
     syn["hit"] = (rng.random(n) < 1 / (1 + np.exp(-(syn["ret5"] * 1.5 - 1.5)))).astype(float)
     syn["fwd"], syn["mfe"], syn["sig_a"], syn["sig_b"] = 0.0, 0.0, 0.0, 0.0
+    syn["rr"] = np.where(syn["hit"] > 0, 2.0, -1.0)
     for kind in ("linear", "binned"):
         p = launch.Model(kind).fit(syn).predict(syn)
         top = launch.lift_table(syn, p)[1]                          # 前 10%

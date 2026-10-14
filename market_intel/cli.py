@@ -1737,33 +1737,40 @@ def _backtest_launch(data, futures, index_df, rates, capital: float, range_: str
     mkt = bt.market_ok(index_df)
     lead = early.lead_signals(us_hist, lead_map, themes_tw, fr)
     df = launch.dataset(fr, launch.feature_frames(fr, index_df, themes_tw, lead), launch.label_frame(fr), mkt)
-    log.info("樣本 %d 列（%d 檔、%d 天），基準發動率 %.1f%%", len(df), df["code"].nunique(), df["date"].nunique(),
-             df["hit"].mean() * 100)
-    res = {"定義": f"t 日收盤後的條件 → t+1 開盤買進，{launch.HORIZON} 個交易日內最高價先碰到 +{launch.UP:.0%} 且之前沒碰到停損"
-                   f"（開盤價 − {launch.ATR_MULT}×ATR；同日兩者都碰到算沒發動）。只算大盤多頭。",
+    log.info("樣本 %d 列（%d 檔、%d 天），基準發動率 A %.1f%%、B %.1f%%", len(df), df["code"].nunique(), df["date"].nunique(),
+             df["hit"].mean() * 100, df["hit_r"].mean() * 100)
+    labels = {"A": ("固定 +7%", "hit"), "B": ("+2R（R＝1.5×ATR，已扣掉波動大小）", "hit_r")}
+    res = {"定義": f"t 日收盤後的條件 → t+1 開盤買進，{launch.HORIZON} 個交易日內先碰到目標、且之前沒碰到停損"
+                   f"（開盤價 − {launch.ATR_MULT}×ATR；同日兩者都碰到算沒發動）。只算大盤多頭。A＝目標 +{launch.UP:.0%}；B＝目標 +2R。"
+                   "平均R＝先到目標 +2、先停損 −1、都沒到依收盤折算（−1～+2）。",
            "樣本數": int(len(df)), "股票數": int(df["code"].nunique()), "交易日數": int(df["date"].nunique()),
-           "基準發動率%": round(float(df["hit"].mean()) * 100, 1), "基準平均5日報酬%": round(float(df["fwd"].mean()) * 100, 2),
-           "單一條件": launch.univariate(df), "既有訊號": launch.signal_rates(df), "評估": launch.evaluate(df)}
+           "基準平均5日報酬%": round(float(df["fwd"].mean()) * 100, 2), "基準平均R": round(float(df["rr"].mean()), 2), "標籤": {}}
+    for key, (title, col) in labels.items():
+        res["標籤"][key] = {"說明": title, "基準發動率%": round(float(df[col].mean()) * 100, 1),
+                          "單一條件": launch.univariate(df, col=col), "既有訊號": launch.signal_rates(df, col=col),
+                          "評估": launch.evaluate(df, col=col)}
     out = research.RESEARCH_DIR / "backtest"
     out.mkdir(parents=True, exist_ok=True)
     (out / "launch.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     print(res["定義"])
-    print(f"樣本 {res['樣本數']:,} 列｜{res['股票數']} 檔｜{res['交易日數']} 天｜基準發動率 {res['基準發動率%']}%｜基準平均5日 {res['基準平均5日報酬%']}%")
-    print("\n【單一條件：分 5 等分的發動率（由差異大到小）】")
-    print(pd.DataFrame(res["單一條件"]).drop(columns=["各組下限"]).to_string(index=False))
-    print("\n【既有訊號的發動率】")
-    print(pd.DataFrame(res["既有訊號"]).to_string(index=False))
-    ev = res["評估"]
-    print(f"\n【合成分數（時間切半；切點 {ev['切點']}；前半 {ev['前半段筆數']:,} 列、後半 {ev['後半段筆數']:,} 列；基準 "
-          f"{ev['前半段基準發動率%']}% / {ev['後半段基準發動率%']}%）】")
-    for kind, runs in ev["模型"].items():
-        for name, r in runs.items():
-            print(f"\n▶ {kind}｜{name}")
-            print(pd.DataFrame(r["提升表"]).to_string(index=False))
-            if "現行突破群的提升表" in r:
-                print("  （只看現行放量突破那群）")
-                print(pd.DataFrame(r["現行突破群的提升表"]).to_string(index=False))
-            print(pd.DataFrame(r["校準"]).to_string(index=False))
+    print(f"樣本 {res['樣本數']:,} 列｜{res['股票數']} 檔｜{res['交易日數']} 天｜基準平均5日 {res['基準平均5日報酬%']}%｜基準平均R {res['基準平均R']}")
+    for key, r in res["標籤"].items():
+        print(f"\n==================== 標籤 {key}：{r['說明']}｜基準發動率 {r['基準發動率%']}% ====================")
+        print("【單一條件：分 5 等分（由差異大到小）】")
+        print(pd.DataFrame(r["單一條件"]).drop(columns=["各組下限"]).to_string(index=False))
+        print("\n【既有訊號】")
+        print(pd.DataFrame(r["既有訊號"]).to_string(index=False))
+        ev = r["評估"]
+        print(f"\n【合成分數（切點 {ev['切點']}；前半 {ev['前半段筆數']:,} 列、後半 {ev['後半段筆數']:,} 列；基準發動率 "
+              f"{ev['前半段基準發動率%']}% / {ev['後半段基準發動率%']}%；基準平均R {ev['前半段基準平均R']} / {ev['後半段基準平均R']}）】")
+        for kind, runs in ev["模型"].items():
+            for name, x in runs.items():
+                print(f"\n▶ {kind}｜{name}")
+                print(pd.DataFrame(x["提升表"]).to_string(index=False))
+                if "現行突破群的提升表" in x:
+                    print("  （只看現行放量突破那群）")
+                    print(pd.DataFrame(x["現行突破群的提升表"]).to_string(index=False))
+                print(pd.DataFrame(x["校準"]).to_string(index=False))
 
 
 def cmd_backtest(args) -> None:
