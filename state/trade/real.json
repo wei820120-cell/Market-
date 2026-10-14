@@ -1,25 +1,7 @@
 {
  "capital": 100000,
- "equity": 106487.89199999999,
- "positions": [
-  {
-   "code": "2027",
-   "name": "大成鋼",
-   "contract": "FEF",
-   "mult": 2000,
-   "qty": 3,
-   "qty0": 3,
-   "entry": 49.63666666666666,
-   "stop": 47.79903124479796,
-   "r0": 1.837635421868704,
-   "rate": 0.135,
-   "entry_date": "2026-10-14",
-   "days": 0,
-   "half_done": false,
-   "realized": 0.0,
-   "alerts": []
-  }
- ],
+ "equity": 104550.18760000002,
+ "positions": [],
  "closed": [
   {
    "code": "1477",
@@ -83,6 +65,46 @@
    "exit": 64.8,
    "exit_date": "2026-10-14",
    "pnl": 6295
+  },
+  {
+   "code": "2027",
+   "name": "大成鋼",
+   "contract": "FEF",
+   "mult": 2000,
+   "qty": 0,
+   "qty0": 3,
+   "entry": 49.63666666666666,
+   "stop": 47.79903124479796,
+   "r0": 1.837635421868704,
+   "rate": 0.135,
+   "entry_date": "2026-10-14",
+   "days": 0,
+   "half_done": false,
+   "realized": -931.9003999999903,
+   "alerts": [],
+   "exit": 49.5,
+   "exit_date": "2026-10-14",
+   "pnl": -932
+  },
+  {
+   "code": "1312",
+   "name": "國喬",
+   "contract": "EEF",
+   "mult": 2000,
+   "qty": 0,
+   "qty0": 4,
+   "entry": 18.175,
+   "stop": 16.9867434199628,
+   "r0": 1.1882565800372014,
+   "rate": 0.162,
+   "entry_date": "2026-10-14",
+   "days": 0,
+   "half_done": false,
+   "realized": -1005.8039999999943,
+   "alerts": [],
+   "exit": 18.1,
+   "exit_date": "2026-10-14",
+   "pnl": -1006
   }
  ]
 }
