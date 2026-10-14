@@ -1,0 +1,457 @@
+{
+ "topic": "供需事件：俄烏無視美「能源停火」續互襲　烏方60萬人停電基",
+ "one_line": "停火宣告未擋住電網攻擊，烏克蘭需求從修大型電廠擴大到分散式備援電源，但台股與此供應鏈目前無已證實的供貨關係，僅列為產業相關觀察項目。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "能源停火",
+  "變壓器交期",
+  "大型變壓器",
+  "500 kV",
+  "330 kV",
+  "400 kV",
+  "分散式備援",
+  "UPS電池",
+  "電網修復",
+  "Ukrenergo",
+  "DTEK",
+  "援助設備",
+  "布蘭特原油",
+  "TTF天然氣",
+  "供暖季"
+ ],
+ "catalysts": [
+  "俄方是否正式確認停火細節",
+  "10月下旬寒流與儲氣消耗加速",
+  "2026-27供暖季前修復6 GW目標能否達成",
+  "援助變壓器與發電機到貨",
+  "華城、士電等公司法說與財報（本次未查證最新內容）"
+ ],
+ "risks": [
+  "停火執行不確定，俄方未公開明確確認同意",
+  "油價主因在中東，停火不涵蓋中東",
+  "大量設備來自援助，非商業訂單，難以轉為台股營收",
+  "台股連結薄弱，台廠主要驅動為AI資料中心與美國訂單",
+  "修復人員傷亡為限制因素",
+  "部分變壓器與援助數據來自2023年，僅供量級參考"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表：電網修復的關鍵數字",
+   "columns": [
+    "指標",
+    "數字",
+    "說明"
+   ],
+   "rows": [
+    [
+     "受損發電容量",
+     "9 GW 以上",
+     "2025年10月以來攻擊損害的熱電、熱電聯產與水電容量"
+    ],
+    [
+     "修復進度",
+     "4 GW（4 月前）→ 目標 6 GW",
+     "目標在2026–27供暖季前完成，約為18 GW嚴冬尖峰需求基準的一半"
+    ],
+    [
+     "大型變壓器交期",
+     "一年或更久",
+     "變壓器取得時間長，特別珍貴"
+    ],
+    [
+     "大型變壓器單價與重量（2023 年資料）",
+     "約 200 萬美元，重數百噸",
+     "資料較舊，僅供量級參考"
+    ],
+    [
+     "替代規格",
+     "400 kV 可暫代 330 kV；60 Hz 可調整用於 50 Hz 電網",
+     "修復人員會臨時調用不同規格設備"
+    ],
+    [
+     "援助到貨（2026 年 1–7 月）",
+     "4,466 件發電相關設備",
+     "國際夥伴已提供的發電設備數量"
+    ],
+    [
+     "預計再到貨",
+     "882 台發電機、165 台變壓器",
+     "另有157件其他設備"
+    ],
+    [
+     "最新一批（10/5 公告）",
+     "253 噸，含 200 MVA 自耦變壓器",
+     "含76件輔助設備，供Ukrenergo使用"
+    ],
+    [
+     "油價（10/12）",
+     "布蘭特 12 月期約 102.88 美元，當日跌約 1.8%",
+     "國際基準原油"
+    ],
+    [
+     "歐洲天然氣（10/14）",
+     "TTF 近月約 84.45 歐元/MWh，前一日高點約 86",
+     "荷蘭天然氣近月合約"
+    ],
+    [
+     "美國戰略石油儲備",
+     "2 月約 4.15 億桶，10 月初約 2.82 億桶",
+     "衝突爆發前後比較"
+    ]
+   ],
+   "note": "原報告規格數字，部分來自2023年資料，僅供量級參考。"
+  },
+  {
+   "title": "世代演進：攻擊目標與因應設備一起變",
+   "columns": [
+    "階段",
+    "攻擊重點",
+    "烏方因應",
+    "設備需求"
+   ],
+   "rows": [
+    [
+     "2022–23",
+     "變電站與變壓器",
+     "大量引進小型與大型變壓器（資料來自2023年）",
+     "變壓器、開關設備"
+    ],
+    [
+     "2024",
+     "發電廠",
+     "發電機組、熱電廠修復設備相關需求",
+     "發電機組、熱電廠修復設備"
+    ],
+    [
+     "2025–26",
+     "重複攻擊已修復的設施",
+     "在關鍵設施上方加建防護，並增加難以被擊中的小型發電，如燃氣渦輪機",
+     "燃氣渦輪、柴油發電機、電池"
+    ],
+    [
+     "2026 年 10 月",
+     "彈道飛彈與無人機大規模齊發",
+     "依賴偵測與攔截，但預警不足",
+     "需求擴大到「分散式備援＋修復」"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "判斷維度",
+   "columns": [
+    "判斷維度",
+    "觀察重點",
+    "目前狀況"
+   ],
+   "rows": [
+    [
+     "規格相容",
+     "電壓等級、50/60 Hz、與既有蘇聯時代設備是否相容",
+     "修復人員已用臨時方式解決，但不是長期解方"
+    ],
+    [
+     "交期",
+     "能否在 2026–27 供暖季前到貨",
+     "大型變壓器交期一年以上，時間窗口很緊"
+    ],
+    [
+     "採購管道",
+     "援助採購 vs. 商業訂單",
+     "目前以援助為主；法國已表示有46批次發電機、變壓器等設備運送"
+    ],
+    [
+     "分散與防禦",
+     "小型、分散、較難被命中的設備",
+     "烏方已朝此方向調整"
+    ],
+    [
+     "台股角度",
+     "是否有已證實的供貨關係",
+     "目前沒有，因此不判斷誰勝出"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "2022–23 變電站與變壓器階段",
+   "composition": "變電站、變壓器、開關設備",
+   "spec": "大量引進小型與大型變壓器（2023年資料）",
+   "application": "修復電網輸配電節點"
+  },
+  {
+   "name": "2024 發電廠階段",
+   "composition": "發電機組、熱電廠",
+   "spec": "發電機組與熱電廠修復設備需求",
+   "application": "修復發電容量"
+  },
+  {
+   "name": "2025–26 重複攻擊與防護階段",
+   "composition": "防護結構、燃氣渦輪、柴油發電機、電池",
+   "spec": "在關鍵設施上方建防護，增加小型發電設施",
+   "application": "分散式備援與降低被擊中機率"
+  },
+  {
+   "name": "2026 年 10 月 大規模齊發階段",
+   "composition": "彈道飛彈與無人機攻擊",
+   "spec": "依賴偵測與攔截，預警不足",
+   "application": "需求擴大到分散式備援與修復"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "停火宣告不等於電網安全",
+   "points": [
+    "宣告未提供期限或執行機制細節",
+    "停火宣告後數小時攻擊即發生",
+    "俄方外長表示烏克蘭不值得獲得停火喘息",
+    "反覆攻擊已修復資產，消耗韌性緩衝與設備庫存"
+   ]
+  },
+  {
+   "title": "修復瓶頸在大型設備而非發電機",
+   "points": [
+    "大型變壓器採購慢，交期一年以上",
+    "規格不相容時需臨時變通（2023年資料）",
+    "修復鏈從採購、安裝、試運轉到保護，每段延遲都會限制速度",
+    "依賴援助是主要來源",
+    "華城有500 kV變壓器優勢，但主要訂單為美國AI資料中心，未見進入烏克蘭採購的紀錄"
+   ]
+  },
+  {
+   "title": "油價與電網的連動",
+   "points": [
+    "烏方無人機打擊俄羅斯煉油與出口設施，推升燃料價格，尤其是柴油",
+    "10/12原油上漲但ICE柴油期貨下跌2.3%",
+    "油價主要仍受中東影響，停火不涵蓋中東",
+    "高油價透過運輸與通膨傳導，但對台股的直接成本影響目前無證據"
+   ]
+  }
+ ],
+ "conclusion": [
+  "這個題材是修復時間窗口的競爭，而非單一技術競爭",
+  "規格相容目前靠臨時變通，交期是最大瓶頸",
+  "採購以援助為主，商業訂單與台股營收連結薄弱",
+  "台股目前無已證實的供貨關係，所有台股標為中性，不判斷受惠或受傷"
+ ],
+ "sources": [
+  {
+   "title": "經濟日報（編譯）〈基輔再響爆炸聲 俄要「凍倒」烏克蘭？紐時揭下波攻勢目標：斷水斷電〉，2026-10-02",
+   "url": "https://udn.com/news/story/6809/9790893"
+  },
+  {
+   "title": "民視新聞網〈俄羅斯空襲襲擊烏克蘭 首都基輔驚傳大規模停電〉",
+   "url": "https://www.ftvnews.com.tw/news/detail/2026A10W0435"
+  },
+  {
+   "title": "公視新聞網〈烏克蘭控能源設施仍被炸 俄國：不值得獲停火喘息機會〉",
+   "url": "https://news.pts.org.tw/article/831108"
+  },
+  {
+   "title": "Al Jazeera〈'Massive' Russian attack on Ukraine kills at least 9, damages power sites〉，2026-10-14",
+   "url": "https://www.aljazeera.com/news/2026/10/14/massive-russian-attack-on-ukraine-kills-at-least-six-cuts-power-in-kyiv"
+  },
+  {
+   "title": "ABC News〈600,000 without power in Ukraine as Russia launches 'massive' attack amid Trump's 'energy ceasefire'〉",
+   "url": "https://abcnews.com/International/600000-power-ukraine-russia-launches-missile-drone-attack/story?id=137248732"
+  },
+  {
+   "title": "Republic World〈Russia Strikes Ukraine's Energy Infrastructure Despite Trump's 'Energy Ceasefire'〉",
+   "url": "https://www.republicworld.com/world-news/russia-strikes-ukraine-s-energy-infrastructure-despite-trump-s-energy-ceasefire-2026-10-14-138925"
+  },
+  {
+   "title": "TRT/TOB〈Russian strikes kill 6, hit power sites after 'energy ceasefire'〉",
+   "url": "https://tob.news/russian-strikes-kill-6-hit-power-sites-after-energy-ceasefire"
+  },
+  {
+   "title": "美國之音中文版〈俄罗斯袭击乌克兰发电厂，泽连斯基称袭击违反能源停火〉，2026-10-14",
+   "url": "https://www.voachinese.com/a/russia-hits-ukrainian-power-plants-in-attacks-zelenskyy-says-go-against-energy-ceasefire-20261014/8211155.html"
+  },
+  {
+   "title": "星島日報〈基輔遭俄軍大規模空襲電網，自去年冬季後首次緊急停電〉，2026-09-30",
+   "url": "https://www.singtaousa.com/2026/09/30/news/world/emergency-power-outages-return-to-kyiv-as-russian-overnight-attacks-kill-3-injure-7/"
+  },
+  {
+   "title": "鉅亨/Yahoo〈俄無視川普停火提議 烏能源設施再遭轟炸〉",
+   "url": "https://tw.news.yahoo.com/%E4%BF%84%E7%84%A1%E8%A6%96%E5%B7%9D%E6%99%AE%E5%81%9C%E7%81%AB%E6%8F%90%E8%AD%B0-%E7%83%8F%E8%83%BD%E6%BA%90%E8%A8%AD%E6%96%BD%E5%86%8D%E9%81%AD%E8%BD%9F%E7%82%B8-180100962.html"
+  },
+  {
+   "title": "DIIS〈Repairing under fire – recovery chain constraints on Ukraine's energy resilience〉",
+   "url": "https://www.diis.dk/en/research/repairing-fire-recovery-chain-constraints-on-ukraines-energy-resilience"
+  },
+  {
+   "title": "IEEE Spectrum〈Engineers Risk Their Lives to Repair Ukraine Power Grid〉，2026-03-02",
+   "url": "https://spectrum.ieee.org/repair-ukraine-power-grid"
+  },
+  {
+   "title": "Wikipedia〈Ukrainian energy crisis〉",
+   "url": "https://en.wikipedia.org/wiki/Ukrainian_energy_crisis"
+  },
+  {
+   "title": "UNITED24 Media〈Lithuania Delivers 253 Tons of Power Equipment〉，2026-10-05",
+   "url": "https://united24media.com/war-in-ukraine/lithuania-delivers-253-tons-of-power-equipment-to-strengthen-ukrainian-grid-23137"
+  },
+  {
+   "title": "Atlantic Council〈Ukraine struggles to repair power grid as Russian airstrikes continue〉（2023 年資料）",
+   "url": "https://www.atlanticcouncil.org/blogs/ukrainealert/ukraine-struggles-to-repair-power-grid-as-russian-airstrikes-continue/"
+  },
+  {
+   "title": "UA.NEWS〈Ukraine has received nearly 4,500 pieces of power generation equipment〉，2026-07-20",
+   "url": "https://ua.news/en/ukraine/ukrayina-otrimala-maizhe-4-5-tisiachi-odinits-energetichnogo-obladnannia"
+  },
+  {
+   "title": "Yahoo〈France to send 150 generators to Ukraine in February〉",
+   "url": "https://www.yahoo.com/news/articles/france-send-150-generators-ukraine-100000723.html"
+  },
+  {
+   "title": "工商時報〈川普宣告烏俄「能源停火」！國際油價走跌約2％〉，2026-10-12",
+   "url": "https://www.ctee.com.tw/news/20261012700854-430702"
+  },
+  {
+   "title": "Investing.com〈歐洲天然氣價格回落，挪威供應恢復但寒流來襲限制跌幅〉，2026-10-14",
+   "url": "https://hk.investing.com/news/commodities-news/article-1698113"
+  },
+  {
+   "title": "vocus〈不是說能源停火了？油價還在漲，美股、台股真正要小心什麼？〉，2026-10-13",
+   "url": "https://vocus.cc/article/6acd5d07fd897800011b1a77"
+  },
+  {
+   "title": "智通財經/Investing.com〈特朗普拋出的",
+   "url": "https://hk.investing.com/news/stock-market-news/article-1693592"
+  },
+  {
+   "title": "FX168/Investing.com〈特朗普宣佈「能源停火」，油價卻突然飆升！〉",
+   "url": "https://hk.investing.com/news/commodities-news/article-1695707"
+  },
+  {
+   "title": "MoneyDJ〈川普喊能源停火 燃油供應短缺困局仍難解〉，2026-10-13",
+   "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=d433e0b3-1018-47c7-bf48-26bb832f7100"
+  },
+  {
+   "title": "自由時報〈台灣送暖烏克蘭 強力發電機抵基輔〉（2023 年）",
+   "url": "https://news.ltn.com.tw/news/politics/paper/1565812"
+  },
+  {
+   "title": "The News Lens〈基輔零下低溫缺電供暖，台灣第2批發電機運抵烏克蘭〉（2023 年）",
+   "url": "https://www.thenewslens.com/article/180131"
+  },
+  {
+   "title": "中央社〈烏克蘭能源設施遭轟炸 台灣發電機馳援〉（2023 年）",
+   "url": "https://www.cna.com.tw/news/aopl/202301030011.aspx"
+  },
+  {
+   "title": "財報狗〈電源供應器概念股〉",
+   "url": "https://statementdog.com/tags/1440"
+  },
+  {
+   "title": "理財網〈AI算力把電網逼瘋！12檔電力怪獸出爐〉",
+   "url": "https://www.linebank.com.tw/wealth-investment/topics/2618"
+  },
+  {
+   "title": "哈咪書〈12檔AI電力概念股出列！〉（引用商業周刊）",
+   "url": "https://blog.hamibook.com.tw/%E5%95%86%E7%AE%A1%E7%90%86%E8%B2%A1/12%E6%AA%94ai%E9%9B%BB%E5%8A%9B%E6%A6%82%E5%BF%B5%E8%82%A1%E5%87%BA%E5%88%97%EF%BC%81"
+  },
+  {
+   "title": "鉅亨/cnyes〈全台大停電　喚醒企業、全民加裝儲能裝置意識 台廠大啖商機〉（2023 年）",
+   "url": "https://news.cnyes.com/news/id/4823436"
+  },
+  {
+   "title": "世界日報〈Ukraine energy facility 相關報導〉",
+   "url": "https://www.worldjournal.com/wj/story/121256/9791088"
+  },
+  {
+   "title": "Yahoo〈Russia again violates partial ceasefire by attacking Kherson energy facility〉",
+   "url": "https://www.yahoo.com/news/russian-strike-kherson-energy-facility-102838050.html"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "需求端與採購",
+   "description": "烏方能源公司與國營電網公司決定修什麼、買什麼；DTEK為最大私營能源供應商，10/13起基輔再度大規模停電；主要買家與援助方包括烏克蘭能源部、Ukrenergo及立陶宛、德國、法國。",
+   "global_players": [
+    "DTEK",
+    "Ukrenergo",
+    "烏克蘭能源部",
+    "立陶宛",
+    "德國",
+    "法國"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "電網主設備（大型與中型變壓器、開關設備）",
+   "description": "大型變壓器需求多、交期一年以上，在AI資料中心與電網升級需求下全球交期被拉長。",
+   "global_players": [
+    "歐洲、日本、韓國、中國的大型電力設備廠（產業常識，本次未查證）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1519",
+     "name": "華城",
+     "role": "台廠中以500 kV變壓器與交期優勢著稱；主要訂單為美國AI資料中心，查無烏克蘭供貨證據",
+     "impact": "中性"
+    },
+    {
+     "code": "1503",
+     "name": "士電",
+     "role": "特高壓變壓器；查無烏克蘭供貨證據",
+     "impact": "中性"
+    },
+    {
+     "code": "1513",
+     "name": "中興電",
+     "role": "電力設備族群；本次未查到與烏克蘭的關係",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "發電機、備援與儲能（UPS、電池）",
+   "description": "烏方民眾囤積電池與小型暖爐，備援設備需求上升；台灣2023年曾捐助300萬美元採購發電機與供暖設備，供應商未列明。",
+   "global_players": [
+    "柴油發電機、燃氣渦輪與電池儲能大廠（產業常識，本次未查證）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2308",
+     "name": "台達電",
+     "role": "電源與儲能；主要營運驅動為AI資料中心，與烏克蘭無關",
+     "impact": "中性"
+    },
+    {
+     "code": "2301",
+     "name": "光寶科",
+     "role": "電源與資料中心相關設備，與烏克蘭無關",
+     "impact": "中性"
+    },
+    {
+     "code": "8038",
+     "name": "長園科",
+     "role": "2023年報導列為台積電UPS電池系統供應鏈，與烏克蘭無關",
+     "impact": "中性"
+    },
+    {
+     "code": "8028",
+     "name": "昇陽半導體",
+     "role": "2023年報導列為台積電UPS電池系統供應鏈，與烏克蘭無關",
+     "impact": "中性"
+    },
+    {
+     "code": "8104",
+     "name": "錸寶",
+     "role": "2023年報導列為台積電UPS電池系統供應鏈，與烏克蘭無關",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "能源價格（原油、柴油、天然氣）",
+   "description": "成本端間接變數，非直接供應鏈；10/12布蘭特12月期約102.88美元；10/14 TTF近月約84.45歐元/MWh；美國戰略石油儲備由4.15億桶降至2.82億桶。",
+   "global_players": [],
+   "tw_stocks": []
+  }
+ ]
+}
