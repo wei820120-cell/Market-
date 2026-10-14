@@ -1588,3 +1588,90 @@ def test_launch_walk_forward_scores_only_use_the_past():
     sig = launch.top_signals(sc, n=2)
     day = next(iter(sig))
     assert len(sig[day]) == 2 and sig[day][0][2] == "高分" and sig[day][0][0] >= sig[day][1][0]
+
+
+def test_research_bot_collects_shared_screenshots_and_long_text():
+    from market_intel import research
+    owner = "123"
+
+    def msg(uid, **kw):
+        return {"update_id": uid, "message": {"chat": {"id": int(owner)}, **kw}}
+    updates = [
+        msg(1, photo=[{"file_id": "small"}, {"file_id": "big1"}], caption="這個人看好 CPO", media_group_id="g1"),
+        msg(2, photo=[{"file_id": "small"}, {"file_id": "big2"}], media_group_id="g1"),           # 同一個相簿 → 合併
+        msg(3, text="研究 玻纖布"),                                                                  # 指令不算
+        msg(4, text="好"),                                                                           # 短閒聊不算
+        msg(5, text="這是一段很長的貼文內容，講 CPO 的光纖耦合、雷射光源和封裝整合三個技術節點，值得研究看看"),  # 長文字
+        msg(6, text="短轉傳", forward_origin={"type": "user"}),                                       # 轉傳即使短也算
+        msg(7, text="/start"),
+        {"update_id": 8, "message": {"chat": {"id": 999}, "photo": [{"file_id": "x"}]}},              # 不是主人
+        msg(9, document={"file_id": "doc1", "mime_type": "image/png"}),
+        msg(10, document={"file_id": "pdf1", "mime_type": "application/pdf"}),                       # 非圖片檔不算
+    ]
+    got = research.pending_shared(updates, owner)
+    assert [(x["id"], x["files"]) for x in got] == [(1, ["big1", "big2"]), (5, []), (6, []), (9, ["doc1"])]
+    assert got[0]["text"] == "這個人看好 CPO" and "光纖耦合" in got[1]["text"]
+    assert research.pending_requests(updates, owner, None)[0] == [("research", "玻纖布")]            # 原本的指令照舊
+
+
+def test_shared_post_flow_detects_topics_and_always_replies(tmp_path, monkeypatch):
+    import argparse
+    from market_intel import ai, cli, notify, research
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INBOX_DIR", tmp_path / "inbox")
+    monkeypatch.setattr(research, "PENDING_DIR", tmp_path / "pending")
+    monkeypatch.setattr(research, "COMMAND_STATE", tmp_path / "commands.json")
+    monkeypatch.setattr(cli, "_listings", lambda: {})
+    monkeypatch.setattr(cli, "_auto_due", lambda: False)
+    monkeypatch.setattr(cli.stock_futures, "load_stock_futures", lambda: {})
+    monkeypatch.setattr(cli, "_send_card_for_topic", lambda *a, **k: None)
+    monkeypatch.setattr(ai, "settings", lambda: {"max_per_day": 4, "min_importance": 3})
+    monkeypatch.setattr(ai, "available", lambda: True)
+    monkeypatch.setattr(ai, "budget_left", lambda: True)
+    monkeypatch.setattr(ai, "image_usage", lambda: ai.Usage())
+    monkeypatch.setattr(ai, "record_usage", lambda *a, **k: None)
+    monkeypatch.setattr(ai, "read_images", lambda images, prompt, usage: "光纖耦合、雷射光源、封裝整合三個 CPO 技術節點")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
+    monkeypatch.setattr(notify, "bot_token", lambda ch: "tok")
+    monkeypatch.setattr(notify, "owner_chat", lambda ch: "123")
+    monkeypatch.setattr(notify, "download_file", lambda ch, fid: (b"img", "image/png"))
+    updates = [{"update_id": 1, "message": {"chat": {"id": 123}, "photo": [{"file_id": "p"}], "caption": "threads 貼文"}}]
+    monkeypatch.setattr(notify, "get_updates", lambda ch, off: updates)
+    done, seen = [], []
+
+    def fake_detect(texts):
+        seen.append(list(texts))
+        return [{"topic": "CPO光纖耦合", "reason": "貼文談技術節點", "importance": 2}]  # 重要性 2：頻道貼文會略過，分享的貼文（門檻低一級）會研究
+
+    monkeypatch.setattr(research, "detect_topics", fake_detect)
+    monkeypatch.setattr(research, "research_topic", lambda topic, trigger, l, f, auto=False: done.append((topic, trigger)) or {"message": "研究完成", "data": {"topic": topic}})
+    args = argparse.Namespace(topic=None, commands=True, inbox=True, auto=False, auto_slots=False)
+    cli.cmd_research(args)
+    assert any("收到你分享的貼文" in s for s in sent)                                 # 先回報收到
+    assert "threads 貼文" in seen[0][0] and "三個 CPO 技術節點" in seen[0][0] and "AI 辨識" in seen[0][0]
+    assert done and done[0][0] == "CPO光纖耦合" and "你分享的貼文偵測" in done[0][1]
+    assert not list((tmp_path / "inbox").glob("*.json"))                              # 回覆完才刪
+    # 沒偵測到新題材 → 一定要回覆，不能默默吞掉
+    sent.clear(), done.clear()
+    updates[:] = [{"update_id": 2, "message": {"chat": {"id": 123}, "text": "這是一段很長的貼文內容，只是隨便聊聊市場心情，沒有點名任何公司或產業喔"}}]
+    monkeypatch.setattr(research, "detect_topics", lambda texts: [])
+    cli.cmd_research(args)
+    assert done == [] and any("沒有偵測到新的可研究題材" in s for s in sent)
+    # 讀不出圖片文字、也沒附文字 → 提醒改貼文字
+    sent.clear()
+    updates[:] = [{"update_id": 3, "message": {"chat": {"id": 123}, "photo": [{"file_id": "p"}]}}]
+    monkeypatch.setattr(ai, "read_images", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+    cli.cmd_research(args)
+    assert any("讀不出文字" in s for s in sent) and not list((tmp_path / "inbox").glob("*.json"))
+    # AI 不可用：貼文留在收件匣、只提醒一次
+    sent.clear()
+    monkeypatch.setattr(ai, "available", lambda: False)
+    monkeypatch.setattr(research, "pending_shared", lambda u, o: [])
+    research.add_to_inbox("user", 9, "一段分享的貼文", "")
+    monkeypatch.setattr(cli.theme_card, "SENT_PATH", tmp_path / "sent.json")
+    cli.cmd_research(args)
+    cli.cmd_research(args)
+    assert len([s for s in sent if "AI 目前無法使用" in s]) == 1 and len(list((tmp_path / "inbox").glob("*.json"))) == 1

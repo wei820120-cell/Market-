@@ -797,33 +797,46 @@ def channel_post_message(name: str, post, listings: dict, futures: dict, themes_
     return "\n".join(lines)
 
 
-IMAGE_OCR_PROMPT = ("這是投資 Podcast／社群頻道貼文的圖片。請用繁體中文、純文字回答（不要用 Markdown、不要標題或粗體、不要編號）：\n"
-                    "先逐字抄錄圖中所有文字（保留數字、股票代號、單位）；如果是圖表或表格，再用兩三句話說明重點（標題、趨勢、關鍵數字）。"
+IMAGE_OCR_PROMPT = ("這是投資 Podcast／社群貼文（Threads、Telegram 頻道等）的圖片。請用繁體中文、純文字回答（不要用 Markdown、不要標題或粗體、不要編號）：\n"
+                    "先逐字抄錄圖中所有文字（保留數字、股票代號、單位；忽略按讚數、時間、按鈕等介面文字）；如果是圖表或表格，再用兩三句話說明重點（標題、趨勢、關鍵數字）。"
                     "如果只是聊天截圖、迷因或與投資無關的內容，抄錄文字後加一句「（與投資無關）」就好。"
                     "不要加評論、不要編造看不清楚的字，看不清楚就寫「（看不清楚）」。")
 _MEDIA_TYPES = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp", ".gif": "image/gif"}
 
 
-def read_post_images(paths: list) -> str:
-    """頻道圖片貼文：用便宜的視覺模型把圖中文字抄下來。沒有金鑰／預算用完／失敗都回空字串（圖片照樣推播）。"""
-    if not paths or not ai.settings().get("read_channel_images", True) or not ai.available() or not ai.budget_left():
-        return ""
-    images = []
-    for p in paths:
-        raw = Path(p).read_bytes()
-        if len(raw) <= 5_000_000:  # API 單張上限 5MB
-            images.append((raw, _MEDIA_TYPES.get(Path(p).suffix.lower(), "image/jpeg")))
-    if not images:
+def ocr_images(images: list[tuple[bytes, str]]) -> str:
+    """用便宜的視覺模型把圖中文字抄下來。沒有金鑰／預算用完／失敗都回空字串。images＝[(位元組, media_type)]。"""
+    images = [(raw, mt) for raw, mt in images if len(raw) <= 5_000_000]  # API 單張上限 5MB
+    if not images or not ai.settings().get("read_channel_images", True) or not ai.available() or not ai.budget_left():
         return ""
     usage = ai.image_usage()
     try:
         return ai.read_images(images, IMAGE_OCR_PROMPT, usage).strip()
-    except Exception as e:  # noqa: BLE001  額度、模型名稱、網路等任何問題都不能讓頻道推播中斷
-        log.warning("頻道圖片辨識失敗：%s", e)
+    except Exception as e:  # noqa: BLE001  額度、模型名稱、網路等任何問題都不能讓推播中斷
+        log.warning("圖片辨識失敗：%s", e)
         return ""
     finally:
         if usage.calls:
-            ai.record_usage(usage, "頻道圖片")
+            ai.record_usage(usage, "圖片辨識")
+
+
+def read_post_images(paths: list) -> str:
+    """頻道圖片貼文：讀檔後交給 ocr_images。"""
+    return ocr_images([(Path(p).read_bytes(), _MEDIA_TYPES.get(Path(p).suffix.lower(), "image/jpeg")) for p in paths or []])
+
+
+def collect_shared(items: list[dict], channel: str) -> None:
+    """使用者分享給研究機器人的截圖／長文字：下載圖片、辨識文字、放進收件匣（之後和頻道貼文一樣偵測題材、研究）。"""
+    for it in items:
+        images = [got for got in (notify.download_file(channel, fid) for fid in it["files"]) if got]
+        ocr = ocr_images(images) if images else ""
+        if it["files"] and not ocr and not it["text"]:
+            notify.send("⚠️ 收到你傳的圖片，但目前讀不出文字（沒有 API 金鑰、預算用完或圖片太大）。請改貼文字，"
+                        "或直接傳「研究 題材名稱」。", channel=channel)
+            continue
+        body = "\n".join(x for x in (it["text"], f"【圖片文字（AI 辨識，可能有誤）】\n{ocr}" if ocr else "") if x)
+        research.add_to_inbox("user", it["id"], body, "")
+        notify.send("📥 收到你分享的貼文，辨識題材中（約 1～3 分鐘）…", channel=channel)
 
 
 def cmd_channels(args) -> None:
@@ -1046,8 +1059,10 @@ def cmd_research(args) -> None:
     if args.commands:
         token = notify.bot_token(push)
         offset = research.load_offset(token)
-        reqs, offset = research.pending_requests(notify.get_updates(push, offset), notify.owner_chat(push), offset)
+        updates = notify.get_updates(push, offset)
+        reqs, offset = research.pending_requests(updates, notify.owner_chat(push), offset)
         research.save_offset(token, offset)
+        collect_shared(research.pending_shared(updates, notify.owner_chat(push)), push)  # 截圖、貼上的長文字 → 收件匣
         for kind, text in reqs:
             if kind == "card":
                 if not theme_card.send_query(text, listings(), context=f"📩 查詢：{text}", channel=push):
@@ -1069,9 +1084,15 @@ def cmd_research(args) -> None:
     chan_texts: list[str] = []  # 追蹤頻道（股癌等）貼文：偵測出的題材不受 max_per_day 限制（仍受每月預算）
     triggers: dict[str, str] = {}
     inbox_files: list = []
+    user_texts: list[str] = []  # 你分享給研究機器人的貼文（截圖、長文字）：偵測結果一定回覆你，門檻比頻道貼文低一級
+    user_files: list = []
     if args.inbox:
         items = research.read_inbox()
         for p, d in items:
+            if d.get("channel") == "user":
+                user_texts.append(d["text"][:1500])
+                user_files.append(p)
+                continue
             chan_texts.append(d["text"][:600])
             triggers[d["text"][:600]] = f"{d['channel']}：{d['text'][:1500]}\n{d.get('url', '')}"
             inbox_files.append(p)
@@ -1114,6 +1135,30 @@ def cmd_research(args) -> None:
             log.info("頻道貼文 %d 則暫時無法偵測題材（沒有金鑰、預算用完或失敗），先留在收件匣", len(inbox_files))
             for p in sorted(inbox_files, key=lambda f: (len(f.name), f.name))[:-60]:  # 只留最新 60 則，免得越積越多
                 p.unlink(missing_ok=True)
+
+    if user_texts:
+        if ai.available() and ai.budget_left():
+            try:
+                found = research.detect_topics(user_texts)
+            except ai.AIUnavailable as e:
+                log.warning("分享貼文題材偵測失敗：%s", e)
+                found = None
+            if found is not None:
+                hits = [x for x in found if x["importance"] >= max(1, min_imp - 1) and not any(q[0] == x["topic"] for q in queue)]
+                for t in hits:
+                    queue.append((t["topic"], f"你分享的貼文偵測（重要性 {t['importance']}）：{t['reason']}\n{user_texts[0][:300]}", False, None))
+                if not hits:
+                    preview = user_texts[0].replace("\n", " ")[:80]
+                    notify.send(f"📭 你分享的貼文沒有偵測到新的可研究題材（可能已研究過，或內容沒有點名公司／產業）。\n內容：{preview}…\n"
+                                "想強制研究，傳「研究 題材名稱」。", channel=push)
+                for p in user_files:  # 回覆完才刪，避免重複處理
+                    p.unlink(missing_ok=True)
+        else:
+            for p in user_files:  # 沒有金鑰或預算用完：留在收件匣，每則只提醒一次
+                key = f"warn:user_inbox:{p.name}"
+                if not theme_card.already_sent(key):
+                    notify.send("⚠️ 收到你分享的貼文，但 AI 目前無法使用（沒有金鑰或預算用完），已留在收件匣，之後會再處理。", channel=push)
+                    theme_card.mark_sent(key)
 
     if auto_texts and ai.available():
         if cap <= 0:

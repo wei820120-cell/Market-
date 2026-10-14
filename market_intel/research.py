@@ -521,6 +521,46 @@ def pending_requests(updates: list[dict], owner_chat: str | None,
     return out, offset
 
 
+SHARE_MIN_CHARS = 30  # 貼上的文字至少這麼長才當成「分享的貼文」（短訊息當閒聊略過）
+
+
+def pending_shared(updates: list[dict], owner_chat: str | None) -> list[dict]:
+    """主人傳給研究機器人的「分享內容」：截圖（含說明文字）、轉傳或貼上的長文字。
+    「研究 XXX」「題材 XXX」這類指令、/start 和短訊息不算。同一個相簿（media_group_id）合併成一則。
+    回傳 [{"id": 第一則的 update_id, "text": 文字, "files": [Telegram file_id…]}]。"""
+    out: list[dict] = []
+    groups: dict[str, dict] = {}
+    for u in updates:
+        msg = u.get("message") or {}
+        if owner_chat and str((msg.get("chat") or {}).get("id")) != str(owner_chat):
+            continue
+        text = (msg.get("text") or msg.get("caption") or "").strip()
+        files = []
+        if msg.get("photo"):
+            files.append(msg["photo"][-1]["file_id"])  # 最後一個是最大張
+        doc = msg.get("document") or {}
+        if str(doc.get("mime_type", "")).startswith("image/") and doc.get("file_id"):
+            files.append(doc["file_id"])
+        forwarded = bool(msg.get("forward_origin") or msg.get("forward_date") or msg.get("forward_from_chat"))
+        if not files:
+            if not text or text.startswith("/") or parse_request(text):
+                continue
+            if len(text) < SHARE_MIN_CHARS and not forwarded:
+                continue
+        gid = msg.get("media_group_id")
+        if gid and str(gid) in groups:
+            g = groups[str(gid)]
+            g["files"] += files
+            if text and text not in g["text"]:
+                g["text"] = f"{g['text']}\n{text}".strip()
+            continue
+        item = {"id": int(u.get("update_id", 0)), "text": text, "files": files}
+        out.append(item)
+        if gid:
+            groups[str(gid)] = item
+    return out
+
+
 def find_for_codes(codes: list[str], min_overlap: int = 2) -> str | None:
     """族群成分股和哪一份研究重疊最多（至少 2 檔、且過半），回傳研究題材名稱。"""
     best, best_n = None, 0

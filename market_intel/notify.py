@@ -57,6 +57,26 @@ def get_updates(channel: str, offset: int | None) -> list[dict]:
     return data.get("result", []) if data.get("ok") else []
 
 
+def download_file(channel: str, file_id: str, max_bytes: int = 5_000_000) -> tuple[bytes, str] | None:
+    """下載使用者傳給機器人的檔案（Telegram getFile）。回傳（位元組, 圖片 media_type）；失敗或太大回 None。"""
+    token, _ = _telegram(channel)
+    if not token or not file_id:
+        return None
+    try:
+        info = requests.get(f"https://api.telegram.org/bot{token}/getFile", params={"file_id": file_id}, timeout=15).json()
+        path = (info.get("result") or {}).get("file_path") if info.get("ok") else None
+        if not path:
+            return None
+        r = requests.get(f"https://api.telegram.org/file/bot{token}/{path}", timeout=60)
+        if not r.ok or len(r.content) > max_bytes:
+            return None
+    except (requests.RequestException, ValueError) as e:
+        log.warning("下載 Telegram 檔案失敗：%s", e)
+        return None
+    ext = path.rsplit(".", 1)[-1].lower() if "." in path else "jpg"
+    return r.content, {"png": "image/png", "webp": "image/webp", "gif": "image/gif"}.get(ext, "image/jpeg")
+
+
 def owner_chat(channel: str) -> str | None:
     return _telegram(channel)[1]
 
