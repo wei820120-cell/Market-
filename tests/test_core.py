@@ -1529,3 +1529,37 @@ def test_paper_account_l_has_dedicated_lead_slot():
     held = [x["code"] for x in st["positions"] if x["setup"] == "領先"]
     assert held == ["1111"] and any("模擬進場 1111" in e and "領先" in e for e in events)  # 領先位只佔 1 檔，第二個被名額擋掉
     assert len(st["positions"]) == 4 and paper.add_lead_plan(st, picks, prepped, fut, names, {}, {}, True, p) == []
+
+
+def test_launch_labels_features_and_model():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt, early, launch
+    # 兩檔：甲在第 100 天後 5 日內先漲 10%（發動），乙一路下跌（碰停損）
+    up, down = _early_stock(n=160, spread=0.01), _early_stock(n=160, base=(120, 100), spread=0.01)
+    up.iloc[103, up.columns.get_loc("high")] = float(up["open"].iloc[101]) * 1.09   # 進場後第 3 天最高衝到 +9%
+    prepped = {"1111": bt.prepare(up, bt.Params()), "2222": bt.prepare(down, bt.Params())}
+    fr = early.frames(prepped)
+    lab = launch.label_frame(fr)
+    day = up.index[100]
+    assert lab["hit"].at[day, "1111"] == 1.0                       # 隔天開盤起 5 日內碰到 +7%
+    assert lab["hit"].at[down.index[100], "2222"] == 0.0
+    assert np.isnan(lab["hit"].iloc[-1]["1111"])                   # 最後幾天未來資料不足 → 不算
+    index_df = pd.DataFrame({"close": np.linspace(100, 140, 160)}, index=up.index)
+    feats = launch.feature_frames(fr, index_df, {"記憶體": ["1111", "2222", "9999"]}, {})
+    assert set(launch.FEATURES) <= set(feats) and feats["rs120"].at[up.index[150], "1111"] > feats["rs120"].at[up.index[150], "2222"]
+    df = launch.dataset(fr, feats, lab, pd.Series(True, index=up.index))
+    assert {"date", "code", "hit", "fwd", "mfe"} <= set(df.columns) and len(df) > 30
+    # 邏輯迴歸能學到簡單規則：特徵 ret5 越高越容易 hit
+    rng = np.random.default_rng(0)
+    n = 4000
+    syn = pd.DataFrame({f: rng.normal(size=n) for f in launch.FEATURES})
+    syn["hit"] = (rng.random(n) < 1 / (1 + np.exp(-(syn["ret5"] * 1.5 - 1.5)))).astype(float)
+    syn["fwd"], syn["mfe"], syn["sig_a"], syn["sig_b"] = 0.0, 0.0, 0.0, 0.0
+    for kind in ("linear", "binned"):
+        p = launch.Model(kind).fit(syn).predict(syn)
+        top = launch.lift_table(syn, p)[1]                          # 前 10%
+        assert top["倍數"] > 2.0, (kind, top)
+    tab = launch.univariate(syn)
+    assert tab[0]["特徵"] == launch.LABELS["ret5"] and tab[0]["最高組發動率%"] > tab[0]["最低組發動率%"]
+    assert len(launch.calibration(syn, p)) == 10

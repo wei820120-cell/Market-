@@ -37,7 +37,7 @@ def frames(prepped: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     def wide(col: str) -> pd.DataFrame:
         return pd.DataFrame({c: d[col] for c, d in prepped.items()})
 
-    f = {k: wide(k) for k in ("open", "high", "low", "close", "ma20", "ma60", "hh", "vr", "ret120", "atr")}
+    f = {k: wide(k) for k in ("open", "high", "low", "close", "volume", "ma20", "ma60", "hh", "vr", "ret120", "atr")}
     f["sig_a"] = wide("sig_a").fillna(False).astype(bool)
     f["sig_b"] = wide("sig_b").fillna(False).astype(bool)
     f["f_hi"] = wide("f_hi").fillna(False).astype(bool)
