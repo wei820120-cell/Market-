@@ -1,26 +1,7 @@
 {
  "capital": 100000,
- "equity": 100192.948,
- "positions": [
-  {
-   "code": "2609",
-   "name": "陽明",
-   "contract": "DAF",
-   "mult": 2000,
-   "qty": 1,
-   "qty0": 1,
-   "entry": 61.6,
-   "stop": 58.725688847062926,
-   "r0": 2.874311152937075,
-   "rate": 0.162,
-   "entry_date": "2026-10-12",
-   "days": 1,
-   "half_done": false,
-   "realized": 0.0,
-   "alerts": [],
-   "last_check": "2026-10-13"
-  }
- ],
+ "equity": 106487.89199999999,
+ "positions": [],
  "closed": [
   {
    "code": "1477",
@@ -63,6 +44,27 @@
    "exit": 1154.0,
    "exit_date": "2026-10-13",
    "pnl": 795
+  },
+  {
+   "code": "2609",
+   "name": "陽明",
+   "contract": "DAF",
+   "mult": 2000,
+   "qty": 0,
+   "qty0": 1,
+   "entry": 61.6,
+   "stop": 58.725688847062926,
+   "r0": 2.874311152937075,
+   "rate": 0.162,
+   "entry_date": "2026-10-12",
+   "days": 1,
+   "half_done": false,
+   "realized": 6294.943999999992,
+   "alerts": [],
+   "last_check": "2026-10-13",
+   "exit": 64.8,
+   "exit_date": "2026-10-14",
+   "pnl": 6295
   }
  ]
 }
