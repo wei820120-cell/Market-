@@ -1565,3 +1565,26 @@ def test_launch_labels_features_and_model():
     tab = launch.univariate(syn)
     assert tab[0]["特徵"] == launch.LABELS["ret5"] and tab[0]["最高組發動率%"] > tab[0]["最低組發動率%"]
     assert len(launch.calibration(syn, p)) == 10
+
+
+def test_launch_walk_forward_scores_only_use_the_past():
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import launch
+    rng = np.random.default_rng(1)
+    dates = pd.date_range("2024-01-01", periods=600, freq="B", tz="UTC")
+    rows = []
+    for d in dates:
+        for code in ("1111", "2222", "3333", "4444", "5555", "6666"):
+            f = {k: rng.normal() for k in launch.FEATURES}
+            rows.append({"date": d, "code": code, **f})
+    df = pd.DataFrame(rows)
+    df["hit_r"] = (rng.random(len(df)) < 1 / (1 + np.exp(-(df["ret5"] * 1.2 - 1.5)))).astype(float)
+    df["hit"], df["rr"], df["fwd"], df["mfe"], df["sig_a"], df["sig_b"] = df["hit_r"], df["hit_r"], 0.0, 0.0, 0.0, 0.0
+    sc = launch.walk_forward_scores(df, "hit_r", "linear", min_train_days=250, step_days=90)
+    assert sc["date"].min() >= dates[0] + pd.Timedelta(days=250) and len(sc) > 1000   # 前一年沒有分數
+    merged = sc.merge(df[["date", "code", "ret5", "hit_r"]], on=["date", "code"])
+    assert np.corrcoef(merged["score"], merged["ret5"])[0, 1] > 0.5                    # 向前訓練仍學得到 ret5 的關係
+    sig = launch.top_signals(sc, n=2)
+    day = next(iter(sig))
+    assert len(sig[day]) == 2 and sig[day][0][2] == "高分" and sig[day][0][0] >= sig[day][1][0]

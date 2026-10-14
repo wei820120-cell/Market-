@@ -281,3 +281,34 @@ def evaluate(df: pd.DataFrame, embargo_days: int = 5, col: str = "hit") -> dict:
                 res[name]["現行突破群的提升表"] = lift_table(te[brk], p[brk], col=col)
         out["模型"][kind] = res
     return out
+
+
+# ---------------------------------------------------------------- 把分數放進策略（逐季向前訓練，沒有偷看未來）
+
+def walk_forward_scores(df: pd.DataFrame, col: str = "hit_r", kind: str = "linear", l2: float = 5.0,
+                        min_train_days: int = 250, step_days: int = 63, embargo_days: int = 10) -> pd.DataFrame:
+    """逐季向前：每一季只用「那一季開始前（再空 embargo_days 天）」的資料訓練，預測那一季。
+    回傳每列（date, code）的分數；前 min_train_days 天沒有分數。"""
+    dates = pd.DatetimeIndex(df["date"].drop_duplicates().sort_values())
+    start = dates[0] + pd.Timedelta(days=min_train_days)
+    parts = []
+    t0 = start
+    while t0 <= dates[-1]:
+        t1 = t0 + pd.Timedelta(days=step_days)
+        train = df[df["date"] < t0 - pd.Timedelta(days=embargo_days)]
+        test = df[(df["date"] >= t0) & (df["date"] < t1)]
+        if len(train) > 2000 and len(test):
+            m = Model(kind, l2).fit(train, col)
+            parts.append(pd.DataFrame({"date": test["date"].to_numpy(), "code": test["code"].to_numpy(),
+                                       "score": m.predict(test)}))
+        t0 = t1
+    return pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=["date", "code", "score"])
+
+
+def top_signals(scores: pd.DataFrame, n: int = 3, name: str = "高分") -> dict:
+    """每天分數最高的前 n 檔 → 回測引擎的額外訊號 {訊號日: [(分數, 代號, 名稱)]}。"""
+    out: dict = {}
+    for ts, g in scores.groupby("date"):
+        top = g.nlargest(n, "score")
+        out[ts] = [(float(r.score), str(r.code), name) for r in top.itertuples()]
+    return out
