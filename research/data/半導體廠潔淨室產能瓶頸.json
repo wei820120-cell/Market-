@@ -1,0 +1,403 @@
+{
+ "topic": "半導體廠潔淨室產能瓶頸",
+ "one_line": "ASML與應材對潔淨室是否為需求主要限制說法不一；目前證據較支持局部暫時的排程約束，最直接受惠為廠務與無塵室統包商亞翔6139、漢唐2404、帆宣6196。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "潔淨室",
+  "無塵室",
+  "cleanroom",
+  "ISO 14644",
+  "EUV",
+  "ASML",
+  "應材",
+  "亞翔",
+  "漢唐",
+  "帆宣",
+  "廠務統包",
+  "MEP",
+  "P5",
+  "美光",
+  "未施工訂單",
+  "FFU",
+  "HEPA",
+  "ULPA",
+  "Low NA"
+ ],
+ "catalysts": [
+  "每月營收公告（10日前後）",
+  "亞翔、漢唐、帆宣等公司法說會",
+  "ASML與應材季度財報",
+  "美光第二座潔淨室（約27萬平方英尺）於2026會計年度結束前開工（待確認）",
+  "索爾維台南廠超純過氧化氫產能2026年底增加一倍以上",
+  "竹科Fab 20第三座廠潔淨室安裝完成，預計2026年第四季投產",
+  "ASML 2027年規劃產能增加30%",
+  "美光P5預期2028年開始出貨"
+ ],
+ "risks": [
+  "瓶頸判斷分歧：ASML認為潔淨室目前不是主要限制，應材則認為是主要限制",
+  "需求週期：存儲價格回落可能延緩擴產節奏，晶圓廠資本支出回落也是風險",
+  "認列時程與毛利波動：工程收入依進度認列，訂單到營收有時間差",
+  "客戶集中度：亞翔主要成長來源之一是美光新加坡專案（媒體推估）",
+  "人力與海外派工：工程管理人才短缺與海外缺工可能拖慢工期",
+  "地緣與出口管制：出口管制、關稅與地緣政治可能影響設備出貨",
+  "市場規模數字不一致：不同研究機構估計差距很大，引用需確認口徑",
+  "外溢效應為分析假說，尚無公司公告或數據支持"
+ ],
+ "spec_tables": [
+  {
+   "title": "表A：ISO 14644-1 潔淨等級（粒子上限，每立方公尺）",
+   "columns": [
+    "等級",
+    "≥0.1 µm 粒子上限",
+    "≥0.5 µm 粒子上限",
+    "常見位置（本報告整理）"
+   ],
+   "rows": [
+    [
+     "ISO 3",
+     "1,000",
+     "35.2",
+     "先進製程前段關鍵區"
+    ],
+    [
+     "ISO 5",
+     "100,000",
+     "3,520",
+     "微影與關鍵製程區"
+    ],
+    [
+     "ISO 6",
+     "1,000,000",
+     "35,200",
+     "成熟製程關鍵區、部分支援區"
+    ],
+    [
+     "ISO 7",
+     "—",
+     "352,000",
+     "支援區"
+    ],
+    [
+     "ISO 8",
+     "—",
+     "3,520,000",
+     "外圍輔助區"
+    ]
+   ],
+   "note": "數值為標準值，依一般工程慣例整理。先進節點（3nm）前段製程需要ISO 1到3等級；成熟製程（45nm到65nm）關鍵區通常是ISO 5到6；EUV微影潔淨等級常被列為ISO 3到5。過濾規格（常見慣例，非單一來源）：HEPA常以99.97%（0.3 µm）為基準，ULPA常以99.999%（0.12 µm）為基準。"
+  },
+  {
+   "title": "表B：每平方英尺建造成本（來源差異大，需留意）",
+   "columns": [
+    "口徑",
+    "每平方英尺成本"
+   ],
+   "rows": [
+    [
+     "潔淨室本體建造成本",
+     "1,200到2,500美元"
+    ],
+    [
+     "另一家顧問較寬範圍",
+     "400到2,500美元以上"
+    ],
+    [
+     "含設備可直接進機的完整交付",
+     "5,000到10,000美元以上"
+    ],
+    [
+     "等級差異的成本影響（高等級規格）",
+     "先進廠成本增加約30%到50%"
+    ]
+   ],
+   "note": "來源差異大，定義不同（有的含設備、有的不含），引用時必須標明口徑。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "第一代：現場分段施工",
+   "composition": "土建、機電、潔淨室、機台依序施工，典型是全新廠",
+   "spec": "業界普遍接受的整體時程為3到5年，關鍵路徑多半集中在後段",
+   "application": "全新廠建置"
+  },
+  {
+   "name": "第二代：統包與MEP整合",
+   "composition": "由單一承包商負責機電、潔淨室與廠務，典型代表是亞翔與漢唐",
+   "spec": "以亞翔新加坡案為例，從開工到機台搬入只花了14個月",
+   "application": "海外與大型新建廠專案"
+  },
+  {
+   "name": "第三代：買下既有廠房後改造",
+   "composition": "典型是美光收購力積電P5",
+   "spec": "約30萬平方英尺的300mm潔淨室空間，預計從既有廠房開始有實質出貨的時間是2028會計年度",
+   "application": "擴充先進DRAM（含HBM）供應"
+  },
+  {
+   "name": "第四代：大型分期新園區",
+   "composition": "典型是ASML的BIC North",
+   "spec": "總面積最終約35公頃，第一期含新組裝廳的建設要到2029年才開始",
+   "application": "設備商未來產能擴充"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼設備要等潔淨室？",
+   "points": [
+    "機台交付與空間綁在一起，若機台到了客戶端卻沒有可用空間，會空等數週，其他客戶也會不滿",
+    "施工順序決定機台何時能進場：殼體施工12到18個月，潔淨室試運轉9到12個月，工具認證12到15個月",
+    "設備出貨與裝機之間會出現時間差，客戶產能啟用也會延後",
+    "代價：設備商出貨進度與客戶產能時點不一定同步，財報認列時點也可能受影響（分析推論）",
+    "反向證據：ASML認為客戶潔淨室建設目前沒有成為需求上限，但警告2027到2028年施工需審慎執行，以避免機台安裝戰術性延誤"
+   ]
+  },
+  {
+   "title": "ISO等級與過濾系統為什麼貴？",
+   "points": [
+    "等級代表每立方公尺允許的粒子數，等級越高，過濾與氣流控制越嚴格",
+    "成本主要來自ULPA濾網、防靜電地板、防震設計與先進空調系統",
+    "先進製程需要更高等級，因此成本差距大",
+    "代價：等級要求提高，施工與認證時間變長，規格有偏差可能需要重做（分析推論）",
+    "風險：不同來源的每平方英尺成本數字相差數倍，引用時必須標明口徑"
+   ]
+  },
+  {
+   "title": "為什麼工程人力是瓶頸？",
+   "points": [
+    "建廠時程長，從動工到第一片量產晶圓可能需要18個月到數年",
+    "半導體工程案從接單到認列約需1到2年",
+    "亞翔曾在2025年12月新聞中被報導，工程管理人才是瓶頸",
+    "亞翔為應付東協市場需求已大幅增資新加坡子公司，以避免海外缺工影響建廠進度",
+    "代價：人力不足會拖慢工期，使後面設備進場也延後（分析推論）"
+   ]
+  }
+ ],
+ "conclusion": [
+  "ASML與應材說法不一致，目前證據較支持局部、暫時的排程約束，但2027到2028年建廠執行風險確實存在",
+  "最直接受惠為廠務與無塵室統包商亞翔6139、漢唐2404、帆宣6196，三家各自有獨立訂單來源故都標為受惠",
+  "判斷誰勝出不能只看單一指標，需同時看未施工訂單與認列速度、地區與客戶集中度、毛利率與認列品質、人力與海外派工能力、設備模組能力",
+  "引用市場規模與每平方英尺成本數字時需確認口徑，不同來源差異大"
+ ],
+ "sources": [
+  {
+   "title": "Benzinga，ASML Holding Q3 2026 Earnings Call Transcript",
+   "url": "https://www.benzinga.com/news/26/10/62356129/asml-holding-q3-2026-earnings-call-transcript"
+  },
+  {
+   "title": "Motley Fool，ASML (ASML) Q3 2026 Earnings Call Transcript",
+   "url": "https://www.fool.com/earnings/call-transcripts/2026/10/14/asml-asml-q3-2026-earnings-call-transcript/"
+  },
+  {
+   "title": "24/7 Wall St.，ASML Says Its Customers Want More Machines Than It Can Build Through 2028",
+   "url": "https://247wallst.com/investing/2026/10/14/asml-says-its-customers-want-more-machines-than-it-can-build-through-2028/"
+  },
+  {
+   "title": "Zero One Research，ASML warns of a 2027-2028 capacity shortfall",
+   "url": "https://zerooneresearch.substack.com/p/asml-warns-of-a-2027-2028-capacity"
+  },
+  {
+   "title": "DIGITIMES，Applied Materials tracks 100-plus fabs as cleanroom capacity limits equipment growth",
+   "url": "https://www.digitimes.com/news/a20261014PD256/applied-materials-capacity-equipment-cleanroom-growth.html"
+  },
+  {
+   "title": "DIGITIMES中文版，應材追蹤全球逾百項晶圓廠計畫 無塵室成設備需求主要限制",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000771546_DH14AHVZ5FAYIL5R3OI4W"
+  },
+  {
+   "title": "Newscase，ASML's Expansion Hinges on Assembly Lines, Not Order Books",
+   "url": "https://www.newscase.com/asmls-expansion-hinges-on-assembly-lines-not-order-books/"
+  },
+  {
+   "title": "24/7 Wall St.，There Is One Thing ASML's $400 Million Machine Still Cannot Do",
+   "url": "https://247wallst.com/investing/2026/09/15/there-is-one-thing-asmls-400-million-machine-still-cannot-do-ai-chips-keep-making-it-worse/"
+  },
+  {
+   "title": "Micron新聞稿，Micron Completes Acquisition of PSMC's Tongluo P5 Site in Taiwan",
+   "url": "https://investors.micron.com/news/press-release/2026/Micron-Completes-Acquisition-of-PSMCs-Tongluo-P5-Site-in-Taiwan-03-15-2026/default.aspx"
+  },
+  {
+   "title": "DIGITIMES，Micron completes acquisition of PSMC's Tongluo P5 site in Taiwan",
+   "url": "https://www.digitimes.com/news/a20260316VL200/micron-acquisition-taiwan-psmc-cleanroom.html"
+  },
+  {
+   "title": "Cleanroom Technology，Micron buys Taiwan fab for $1.8bn to boost cleanroom DRAM capacity",
+   "url": "https://cleanroomtechnology.com/micron-buys-taiwan-fab-for-1-8bn-to-boost"
+  },
+  {
+   "title": "亞翔法說會報導（壹蘋新聞網）",
+   "url": "https://news.nextapple.com/finance/20260724/FAA393CCC0AC1D201057DBBEC1C92CD9"
+  },
+  {
+   "title": "Vocus，2026/07/24 亞翔 (6139.TW) 法說會",
+   "url": "https://vocus.cc/article/6a68b0bcfd897800016798c5"
+  },
+  {
+   "title": "工商時報（亞翔相關報導彙整）",
+   "url": "https://www.ctee.com.tw/search/%E4%BA%9E%E7%BF%94"
+  },
+  {
+   "title": "旺得富理財網（帆宣、漢唐、亞翔比較）",
+   "url": "https://wantrich.chinatimes.com/news/20261008900242-420101"
+  },
+  {
+   "title": "經濟日報／UDN，台積電台美衝產能 漢唐、帆宣吃補",
+   "url": "https://money.udn.com/money/story/5612/9437501"
+  },
+  {
+   "title": "Vocus，帆宣系統科技（6196）深度研究",
+   "url": "https://vocus.cc/article/6acdb0d7fd897800012febc2"
+  },
+  {
+   "title": "Vocus，半導體廠務工程：AI建廠循環下的產業地圖",
+   "url": "https://vocus.cc/article/6a07f0a8fd897800011e0a47"
+  },
+  {
+   "title": "Vocus，亞翔（6139）投資分析",
+   "url": "https://vocus.cc/article/6acae3cefd8978000182d17b"
+  },
+  {
+   "title": "竹科管理局報導（UDN），竹科：台積電晶圓20廠第3廠安裝無塵室 第4季投產",
+   "url": "https://money.udn.com/money/story/5612/9471868"
+  },
+  {
+   "title": "中時／旺得富，索爾維擴建台南廠 過氧化物產能翻倍",
+   "url": "https://wantrich.chinatimes.com/news/20260903900394-420101"
+  },
+  {
+   "title": "SupplyICs，2026 Semiconductor Fab Construction Timeline",
+   "url": "https://supplyics.com/insights/supply-chain/semiconductor-fab-construction-timeline-2026/"
+  },
+  {
+   "title": "iRecruit，Semiconductor Fab Cost per Sq Ft 2026",
+   "url": "https://www.irecruit.co/insights/cost-per-square-foot-semiconductor-fab-construction-2026"
+  },
+  {
+   "title": "iRecruit，Cleanroom Construction Cost per Sq Ft",
+   "url": "https://www.irecruit.co/insights/cost-per-square-foot-cleanroom-construction-semiconductor-fab"
+  },
+  {
+   "title": "iFactory，Semiconductor Fab Greenfield Planning",
+   "url": "https://ifactoryapp.com/greenfield-consulting/semiconductor-fab-greenfield-planning-cleanroom-technology"
+  },
+  {
+   "title": "Transpire Insight，Semiconductor Cleanroom Market",
+   "url": "https://www.transpireinsight.com/blogdetails/semiconductor-cleanroom-market-how-ai-chip-demand-hbm-expansion-advanced-packaging-fab-localization-smart-contamination-control-and-energy-efficient-facilities-are-reshaping-semiconductor-manufacturing"
+  },
+  {
+   "title": "TRAX，Cleanrooms for the CHIPS Act Era",
+   "url": "https://www.traxindprod.com/cleanrooms-for-the-chips-act-era-scaling-semiconductor-grade-enclosures-in-2026/"
+  },
+  {
+   "title": "Westside Construction Group，America's Semiconductor Construction Boom",
+   "url": "https://www.buildwcg.com/blog-posts/semiconductor-fab-construction-boom-2026"
+  },
+  {
+   "title": "矽基前沿 [Si]gnals，AI算力供應鏈地圖",
+   "url": "https://signals.tw/maps/ai-compute-supply-chain/"
+  },
+  {
+   "title": "華經產業研究院，2026-2032年中國半導體洁净室行業市場深度調查",
+   "url": "https://www.huaon.com/channel/semicon/1181278.html"
+  },
+  {
+   "title": "股市爆料同學會（社群），6139 亞翔 - 針對世界先進法說",
+   "url": "https://mobile.cmoney.tw/forum/article/176689216"
+  },
+  {
+   "title": "財報狗，帆宣(6196) 的月營收成長率",
+   "url": "https://statementdog.com/analysis/6196/monthly-revenue-growth-rate"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游材料與潔淨系統元件（FFU、HEPA/ULPA、潔淨室板材、防靜電地板）",
+   "description": "本次研究未取得可靠的報價或稼動率數據，無法判斷景氣方向（待確認）。",
+   "global_players": [],
+   "tw_stocks": []
+  },
+  {
+   "layer": "特殊化學品與廠務供應（超純化學品、過氧化氫、氣體）",
+   "description": "超純過氧化氫在台灣產能預計到2026年底增加一倍以上，用於晶圓清洗；上游化學品供給正在擴充，但索爾維合資公司新碩先進化工非台股上市公司。",
+   "global_players": [
+    "索爾維",
+    "新碩先進化工"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3402",
+     "name": "漢科",
+     "role": "製程管理與工程設計占營收81%，無塵室約占4%，特殊氣體廢氣占12%，與潔淨室空間直接關聯不強，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "無塵室與廠務統包（EPC／MEP）",
+   "description": "本題材核心。亞翔2026年6月底未施工工程合約4,400.73億元創歷史新高，較去年底大增逾147%；漢唐2026年3月營收76.93億元，首季合併營收202.88億元；帆宣第3季營收219.12億元，年增91.1%。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6139",
+     "name": "亞翔",
+     "role": "無塵室與機電統包，未施工訂單4,400.73億元，半導體占81%、東協占76%",
+     "impact": "受惠"
+    },
+    {
+     "code": "2404",
+     "name": "漢唐",
+     "role": "無塵室統包，營收動能來自專案進入認列高峰",
+     "impact": "受惠"
+    },
+    {
+     "code": "6196",
+     "name": "帆宣",
+     "role": "廠務與機電為主，同時有設備模組業務",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "設備端：EUV機台與裝機前置",
+   "description": "ASML 2026年Low NA EUV出貨目標約65台，2025年為44台；2028年產能是否提高到30%以上仍在評估，ASML也考慮把2028年EUV產能提升到110台以上，但新園區要到2029年才組裝。",
+   "global_players": [
+    "ASML",
+    "應用材料"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3680",
+     "name": "家登",
+     "role": "負責製作承載與儲存EUV光罩的傳送盒，與潔淨室空間的直接關聯待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "需求端：晶圓廠（客戶）",
+   "description": "台積電2奈米已於2025年第四季量產，新竹與高雄同時展開五座晶圓廠產能爬坡；力積電已將P5廠區出售給美光；世界先進資本支出規劃為社群傳聞。",
+   "global_players": [
+    "美光"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "客戶端，擴產速度快",
+     "impact": "中性"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "出售P5廠區給美光，取得資金，標為中性",
+     "impact": "中性"
+    },
+    {
+     "code": "5347",
+     "name": "世界",
+     "role": "資本支出規劃為社群傳聞，未查證公司公告",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
