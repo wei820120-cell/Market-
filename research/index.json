@@ -2418,5 +2418,36 @@
   "status": "混合",
   "usd": 0.0,
   "auto": false
+ },
+ "生技": {
+  "file": "2026-10-16-生技.md",
+  "date": "2026-10-16",
+  "keywords": [
+   "BESREMi",
+   "Ropeg",
+   "ET",
+   "原發性血小板增多症",
+   "CDMO",
+   "BIOSECURE",
+   "Rockville",
+   "在手訂單",
+   "Lenalidomide",
+   "Alvogen",
+   "ON101",
+   "1260H",
+   "WuXi AppTec",
+   "PEG 化干擾素",
+   "生技避風港"
+  ],
+  "codes": [
+   "6446",
+   "4743",
+   "6589",
+   "6472",
+   "1795"
+  ],
+  "status": "混合",
+  "usd": 0.118,
+  "auto": true
  }
 }

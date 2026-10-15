@@ -1,0 +1,503 @@
+{
+ "topic": "生技",
+ "one_line": "藥華藥 BESREMi 獲美國 FDA 核准用於 ET 與保瑞 CDMO 訂單擴充，帶動生技族群，個股分化明顯",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "BESREMi",
+  "Ropeg",
+  "ET",
+  "原發性血小板增多症",
+  "CDMO",
+  "BIOSECURE",
+  "Rockville",
+  "在手訂單",
+  "Lenalidomide",
+  "Alvogen",
+  "ON101",
+  "1260H",
+  "WuXi AppTec",
+  "PEG 化干擾素",
+  "生技避風港"
+ ],
+ "catalysts": [
+  "每月 10 日前的月營收公告（美時、保瑞、合一）",
+  "保瑞 Rockville 廠 Q3 開始貢獻營收，預期下半年營收由負轉正",
+  "藥華藥 ET 在其他國家的藥證進度與 PMF 等適應症推進（法人觀點）",
+  "第三季財報（台股慣例約 11 月中前公告）",
+  "合一 FB825 預計 2026 年 7 月完成全部 114 位受試者收案，2027 年上半年完成試驗與解盲",
+  "BIOSECURE 法規委員會一年內修訂 FAR，2026 年底前後可能出現執行細則",
+  "藥華藥仲裁已決議向德國法蘭克福高等法院提出撤銷申請，法院時程未知"
+ ],
+ "risks": [
+  "法人目標價分歧大（2090 元與 1600 元）反映獲利持續性看法分歧",
+  "藥華藥國際仲裁：AOP 應支付 2019 年至 2023 年上半年積欠貨款與權利金，公司已提出撤銷，金額與結果未落地",
+  "ET 適用範圍外推風險：最強隨機試驗證據來自先前用過 hydroxyurea 的患者，且受試者多為亞洲人",
+  "合一獲利品質：2025 年全年 EPS -2.18 元，2026 上半年獲利主因業外收益",
+  "美時獲利下滑：上半年營收年增 84% 但淨利降 44%（獨立研究推算，非官方數字）",
+  "保瑞營運波動：7 月營收月減 17.23%，馬里蘭州針劑廠品質專案造成降載",
+  "BIOSECURE 五年寬限期使近期轉單壓力有限，回流製造成本高也可能讓客戶選擇其他地區而非台灣",
+  "資金輪動風險：若電子與 AI 股反彈，生技避風港資金可能撤出；新股供給增加也可能分散資金"
+ ],
+ "spec_tables": [
+  {
+   "title": "表一：ET（原發性血小板增多症）治療比較：Ropeg 對比既有標準",
+   "columns": [
+    "指標",
+    "Ropeg（BESREMi）",
+    "既有標準 Anagrelide",
+    "備註"
+   ],
+   "rows": [
+    [
+     "給藥方式",
+     "以注射方式給藥，每兩週一次",
+     "口服（一般藥理知識）",
+     "傳統干擾素通常需更頻繁注射（一般知識，未另查證）"
+    ],
+    [
+     "ET 持久反應率（SURPASS-ET 第三期）",
+     "43%",
+     "6%",
+     "第三期 SURPASS-ET 試驗中，持久反應率 43%，對照 anagrelide 為 6%"
+    ],
+    [
+     "血小板計數反應率",
+     "56.0%",
+     "21.7%",
+     "各項修正 ELN 指標的反應率均優於對照組"
+    ],
+    [
+     "血栓事件",
+     "12 個月內較少",
+     "較多",
+     "相較 anagrelide，12 個月內血栓事件減少"
+    ],
+    [
+     "適用範圍",
+     "成人 ET，不限基因型或疾病狀態",
+     "—",
+     "適應症涵蓋所有成人 ET 患者，不限基因型或疾病狀態"
+    ],
+    [
+     "上市時點",
+     "美國 2026/8/31",
+     "1997 年起的既有藥",
+     "是美國自 1997 年 anagrelide 以來首個新的 ET 治療藥物"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "表二：保瑞 CDMO 產能與訂單",
+   "columns": [
+    "指標",
+    "數值",
+    "來源說明"
+   ],
+   "rows": [
+    [
+     "Rockville 生物藥廠產能",
+     "1.2 萬公升",
+     "增加 12,000 公升產能，並於 2026Q3 開始貢獻營收"
+    ],
+    [
+     "收購 Rockville 廠區的價格",
+     "1.225 億美元",
+     "斥資 1.225 億美元收購該廠區"
+    ],
+    [
+     "Rockville 去年營收",
+     "約 5,200 萬美元",
+     "去年營收約 5,200 萬美元"
+    ],
+    [
+     "CDMO 在手訂單（Q2 底）",
+     "3.17 億美元",
+     "截至第二季底，CDMO 在手訂單為美金 3.17 億元"
+    ],
+    [
+     "CDMO 外部訂單營收（Q2）",
+     "21.2 億元，季增 40.2%",
+     "若僅計外部訂單，則年增 33.0%、季增 40.2%，達新台幣 21.2 億元"
+    ],
+    [
+     "集團毛利率（Q2，我的計算）",
+     "約 41%",
+     "毛利 24.3 億 ÷ 營收 58.9 億，數據來自 Q2 合併營收 58.9 億元、毛利 24.3 億元"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "表三：三家上市櫃公司營運規模比較",
+   "columns": [
+    "指標",
+    "6446 藥華藥",
+    "1795 美時",
+    "4743 合一"
+   ],
+   "rows": [
+    [
+     "規模",
+     "2025 年全年營收 156.3 億元，首度超過 5 億美元",
+     "2026 年 1-9 月累計營收 248.18 億元，年增 74.19%",
+     "2026 年上半年合併營收 7,652.8 萬元，年增 47%"
+    ],
+    [
+     "獲利結構",
+     "2026 年 Q1 EPS 5.79 元",
+     "第二季毛利率 53.7%，較第一季 50.7% 提升",
+     "本期淨利主要受惠於營業外收支，如外幣兌換利益與利息收入"
+    ],
+    [
+     "性質",
+     "已商業化的創新藥",
+     "已商業化的學名與品牌藥",
+     "研發中新藥為主，營收規模小"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "干擾素（ET／PV 藥物）第一代：傳統干擾素",
+   "composition": "傳統干擾素",
+   "spec": "半衰期短，需頻繁注射（一般藥理知識）",
+   "application": "ET／PV 等血液腫瘤治療"
+  },
+  {
+   "name": "干擾素第二代：聚乙二醇化（PEG 化）干擾素",
+   "composition": "藉由 PEG 修飾的干擾素",
+   "spec": "延長半衰期，降低注射頻率（一般藥理知識）",
+   "application": "ET／PV 等血液腫瘤治療"
+  },
+  {
+   "name": "干擾素第三代：Ropeg",
+   "composition": "長效、單聚乙二醇化（monopegylated）干擾素類藥物",
+   "spec": "每兩週給藥一次",
+   "application": "PV 已於全球 40 多國取得藥證；ET 美國 2026/8/31 獲批"
+  },
+  {
+   "name": "干擾素下一步：Pen 新劑型與 PMF 等適應症",
+   "composition": "Ropeg 的 Pen 新劑型（法人觀點）",
+   "spec": "Pen 新劑型有望提升病患使用便利性（法人觀點，尚未獲批）",
+   "application": "PMF 等適應症持續推進，有機會由單一藥品發展為完整治療平台"
+  },
+  {
+   "name": "CDMO 演進（保瑞為例）：從單一劑型代工擴展到完整劑型光譜",
+   "composition": "小分子口服製劑、無菌針劑、眼科製劑到大分子生物製劑",
+   "spec": "大分子生物製劑為目前產能重點",
+   "application": "Rockville 廠的意義所在"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼要做「長效化」（PEG 化）？",
+   "points": [
+    "原因：延長藥物在體內停留時間，減少注射次數，直接改善患者依從性；法人指出新上市的 Ropeg 注射筆有助提升用藥順應性。",
+    "影響：慢性用藥給藥頻率下降後，患者更容易長期持續用藥，帶動營收持續性。",
+    "代價一：藥物有嚴重副作用風險，需密切監測，嚴重時可能需要停藥。",
+    "代價二：SURPASS-ET 大多數參與者為亞洲人，外推到其他族群需保守解讀。",
+    "代價三：最強的隨機試驗證據來自先前已用過 hydroxyurea 而反應不佳或無法耐受的患者。"
+   ]
+  },
+  {
+   "title": "為什麼生技股看臨床里程碑，而不是財報？",
+   "points": [
+    "原因：多數新藥公司沒有足夠營收支撐，估值依賴風險調整後淨現值（rNPV），市場氛圍是股價走勢的決定性因素。",
+    "影響：臨床二期、三期結果往往促成股價與市值震盪，甚至短時間內出現數十億甚至數百億元的市值變化。",
+    "代價：現金充足度低於一年的公司，頻繁增資將稀釋原始股東權益。",
+    "反方觀點：2026 年市場偏好有業績支撐的公司，有業績者上升，無業績者被再次問價；有現金者存活，無現金者被淘汰。"
+   ]
+  },
+  {
+   "title": "為什麼 CDMO 要看在手訂單與產能利用率，而不是單月營收？",
+   "points": [
+    "原因：單月營收會受歲修、降載、訂單遞延影響。保瑞 7 月營收月減 17.23%，但年增 5.77%，仍創歷史同期新高，主因是竹南廠與加拿大廠客戶拉貨排程影響，以及馬里蘭州針劑廠品質專案採小規模降載生產。",
+    "影響：在手訂單是領先指標，保瑞表示未來 12 個月在手訂單持續處於歷史高檔。",
+    "代價：產能擴充需要資金，新廠需一段時間才貢獻營收；保瑞第二季底在手現金 84.3 億元，主要為交割 Rockville 廠區作準備。",
+    "技術移轉成本：業界分析指出移轉藥品生產通常需要 CMC 補件、FDA 審查與製程再驗證，每個產品約需 12 至 24 個月以上（業界分析估計，未經官方證實）。"
+   ]
+  },
+  {
+   "title": "為什麼 BIOSECURE 不會一夜之間把訂單搬到台灣？",
+   "points": [
+    "時程保護：法案對生效前已存在的合約設有五年寬限期，短期轉單壓力有限。",
+    "適用範圍：Medicare 與 Medicaid 協議不屬於 FAR 規範的合約，不在法案禁止範圍內。",
+    "替代者成本：西方 CDMO 通常營運成本較高，回流製造成本也更高。",
+    "台灣的位置：法案也為包括印度在內的 CDMO 進入美國市場提供機會；台灣 CDMO 是否接到相關轉單，本次搜尋未找到已證實的公司公告，待觀察。"
+   ]
+  }
+ ],
+ "conclusion": [
+  "生技個股勝負不能只看單一指標，應依商業模式拆開看。",
+  "新藥商業化（藥華藥）：看適應症數量、藥證覆蓋國家、市場滲透率，以及臨床風險與訴訟不確定性。",
+  "CDMO（保瑞）：看在手訂單、產能利用率、客戶結構與新廠爬坡速度，而非單月營收。",
+  "學名藥與通路（美時）：看毛利率能否抵銷財務成本與一次性費用；早期新藥（合一）：看臨床里程碑與現金跑道。"
+ ],
+ "sources": [
+  {
+   "title": "中國證券報／21 經濟網，〈北方华创，「吸金」超6亿元〉（2026/10/15）",
+   "url": "https://www.21jingji.com/article/20261015/herald/44453f596c93bd0b0e714b66dfe81a12.html"
+  },
+  {
+   "title": "CMoney，〈【10/15 產業即時新聞】新藥研發族群逆勢勁揚3.33%〉",
+   "url": "https://www.cmoney.tw/notes/note-detail.aspx?nid=1280859"
+  },
+  {
+   "title": "CMoney，〈【10/15 產業即時新聞】新藥族群盤中強勢反彈〉",
+   "url": "https://www.cmoney.tw/notes/note-detail.aspx?nid=1280860"
+  },
+  {
+   "title": "工商時報，〈10／15盤中熱門焦點股〉",
+   "url": "https://www.ctee.com.tw/news/20261015701020-430201"
+  },
+  {
+   "title": "經濟日報／UDN，〈生技股市值締新猷 截至9月底達1.7兆元〉",
+   "url": "https://money.udn.com/money/story/5607/9794408"
+  },
+  {
+   "title": "UDN 玩股網，〈生技展撞上AI殺盤...資金轉移！藥華藥強衝1380元〉",
+   "url": "https://udn.com/news/story/7251/9604552"
+  },
+  {
+   "title": "Yahoo 股市，〈1表看》生技神股狂潮再起？亞洲生技大展規模飆新高〉",
+   "url": "https://tw.stock.yahoo.com/news/1%E8%A1%A8%E7%9C%8B-%E7%94%9F%E6%8A%80%E7%A5%9E%E8%82%A1%E7%8B%82%E6%BD%AE%E5%86%8D%E8%B5%B7-%E4%BA%9E%E6%B4%B2%E7%94%9F%E6%8A%80%E5%A4%A7%E5%B1%95%E8%A6%8F%E6%A8%A1%E9%A3%86%E6%96%B0%E9%AB%98-%E5%A4%A7%E5%92%96%E6%B3%95%E4%BA%BA%E9%BB%9E%E5%90%8D-%E9%80%992%E6%AA%94-063115875.html"
+  },
+  {
+   "title": "Yahoo 股市，藥華藥個股公告",
+   "url": "https://tw.stock.yahoo.com/quote/6446.TWO/announcement"
+  },
+  {
+   "title": "Yahoo 新聞，〈藥華藥法說會後 新目標價〉",
+   "url": "https://tw.news.yahoo.com/%E8%97%A5%E8%8F%AF%E8%97%A5%E6%B3%95%E8%AA%AA%E6%9C%83%E5%BE%8C-%E6%96%B0%E7%9B%AE%E6%A8%99%E5%83%B9-190500702.html"
+  },
+  {
+   "title": "生技投資第一站（Genet），〈藥華藥(6446)第一季營收達51.2億元 EPS 5.79元〉",
+   "url": "https://www.genetinfo.com/investment/featured/item/95444.html"
+  },
+  {
+   "title": "生技投資第一站（Genet），〈藥華藥(6446)2025年EPS達13.64元〉",
+   "url": "https://www.genetinfo.com/investment/featured/item/93298.html"
+  },
+  {
+   "title": "富果，〈合一法說會重點內容備忘錄 20260116〉",
+   "url": "https://blog.fugle.tw/post/earnings-call-4743-2026-01-16"
+  },
+  {
+   "title": "富果，〈合一法說會重點內容備忘錄 20251224〉",
+   "url": "https://blog.fugle.tw/post/earnings-call-4743-2025-12-24"
+  },
+  {
+   "title": "Yahoo 股市，合一新聞",
+   "url": "https://tw.stock.yahoo.com/quote/4743.TWO/news"
+  },
+  {
+   "title": "nStock，〈合一做什麼？〉",
+   "url": "https://www.nstock.tw/%E5%90%88%E4%B8%80%E5%81%9A%E4%BB%80%E9%BA%BC.html"
+  },
+  {
+   "title": "散戶鬥嘴鼓，〈合一（4743）法說會2026-08-21〉",
+   "url": "https://poorstock.com/earningcall/4743"
+  },
+  {
+   "title": "鉅亨網，〈美時(1795)9月營收27.66億元〉（2026/10/12）",
+   "url": "https://news.cnyes.com/news/id/6628760"
+  },
+  {
+   "title": "鉅亨網，〈美時(1795)3月營收43.54億元〉",
+   "url": "https://news.cnyes.com/news/id/6416609"
+  },
+  {
+   "title": "UDN，〈美時2026年營收拚成長80%〉",
+   "url": "https://money.udn.com/money/story/5710/9388620"
+  },
+  {
+   "title": "生技投資第一站（Genet），〈美時製藥(1795)公告2026年1H營收174億元〉",
+   "url": "https://www.genetinfo.com/investment/featured/item/97564.html"
+  },
+  {
+   "title": "Theme Research Lab（vocus），〈2026.10 美時 營收大增 為何獲利縮水〉",
+   "url": "https://vocus.cc/article/6ace50d0fd89780001191d01"
+  },
+  {
+   "title": "HiStock，美時財報頁",
+   "url": "https://histock.tw/stock/1795/%E8%B2%A1%E5%8B%99%E5%A0%B1%E8%A1%A8"
+  },
+  {
+   "title": "CMoney 股市爆料同學會，〈1795 美時 - 2026 一月續併入Alvogen US 營收〉",
+   "url": "https://www.cmoney.tw/forum/article/176557335"
+  },
+  {
+   "title": "財報狗，〈美時(1795)2026年5月營收〉",
+   "url": "https://statementdog.com/analysis/1795/monthly-revenue-growth-rate"
+  },
+  {
+   "title": "FDA 核准相關報導（HealthTree，2026/8/31）",
+   "url": "https://healthtree.org/myelofibrosis/news/08-31-2026-fda-besremi-approval-for-et"
+  },
+  {
+   "title": "Biopharm International，〈FDA Approves Ropeginterferon Alfa-2b-njft (Besremi) for ET〉",
+   "url": "https://www.biopharminternational.com/view/fda-approves-ropeginterferon-alfa-2b-njft-besremi-essential-thrombocythemia"
+  },
+  {
+   "title": "OncLive，〈FDA Approves Ropeginterferon Alfa-2b for ET〉",
+   "url": "https://www.onclive.com/view/fda-approves-ropeginterferon-alfa-2b-for-essential-thrombocythemia"
+  },
+  {
+   "title": "PV Reporter，〈FDA Approves BESREMi For ET〉",
+   "url": "https://pvreporter.com/fda-approves-besremi-for-essential-thrombocythemia-et/"
+  },
+  {
+   "title": "Hematology Advisor，〈Besremi Approved for Adults With ET〉",
+   "url": "https://www.hematologyadvisor.com/news/fda-approves-besremi-essential-thrombocythemia/"
+  },
+  {
+   "title": "CureToday，〈FDA Accepts Besremi Application for ET〉",
+   "url": "https://www.curetoday.com/view/fda-accepts-besremi-application-for-essential-thrombocythemia"
+  },
+  {
+   "title": "Wikipedia，〈Biosecure Act〉",
+   "url": "https://en.wikipedia.org/wiki/Biosecure_Act"
+  },
+  {
+   "title": "FDA Law Blog，〈WuXi AppTec's 1260H Listing Brings the BIOSECURE Act Back to Center Stage〉（2026/6/10）",
+   "url": "https://www.thefdalawblog.com/2026/06/wuxi-apptecs-1260h-listing-brings-the-biosecure-act-back-to-center-stage/"
+  },
+  {
+   "title": "IJDRA，〈The BIOSECURE Act〉",
+   "url": "https://www.ijdra.com/index.php/journal/article/download/840/433"
+  },
+  {
+   "title": "Greenberg Traurig，〈BIOSECURE Act Advances in the US Senate〉",
+   "url": "https://www.gtlaw.com/en/insights/2025/11/biosecure-act-advances-in-the-us-senate"
+  },
+  {
+   "title": "IB Interview Questions，〈The BIOSECURE Act and Reshoring of Pharma Manufacturing〉（業界分析文章）",
+   "url": "https://ibinterviewquestions.com/guides/healthcare-investment-banking/biosecure-act-reshoring-manufacturing"
+  },
+  {
+   "title": "Fugle，〈保瑞法說會重點內容備忘錄 20260814〉",
+   "url": "https://blog.fugle.tw/post/earnings-call-6472-2026-08-14"
+  },
+  {
+   "title": "Fugle，〈保瑞法說會重點內容備忘錄 20260513〉",
+   "url": "https://blog.fugle.tw/post/earnings-call-6472-2026-05-13"
+  },
+  {
+   "title": "Fugle，〈保瑞法說會重點內容備忘錄 20260514〉",
+   "url": "https://blog.fugle.tw/post/earnings-call-6472-2026-05-14"
+  },
+  {
+   "title": "工商時報，〈《生醫股》保瑞6月營收寫新猷 7月美國CDMO大廠交割再添動能〉",
+   "url": "https://www.ctee.com.tw/news/20260708701032-430201"
+  },
+  {
+   "title": "工商時報，〈保瑞6月營收23億元創新高〉",
+   "url": "https://www.ctee.com.tw/news/20260708700779-430504"
+  },
+  {
+   "title": "鉅亨網，〈保瑞7月營收19億元創同期高〉",
+   "url": "https://news.cnyes.com/news/id/6568018"
+  },
+  {
+   "title": "UDN，〈保瑞公佈2026年第二季財務報告〉",
+   "url": "https://money.udn.com/money/story/12987/9690325"
+  },
+  {
+   "title": "vocus，〈2026/05/14 保瑞法說會：併購雙星補齊大分子與保健拼圖〉",
+   "url": "https://vocus.cc/article/69fee1d2fd89780001ee40ec"
+  },
+  {
+   "title": "Geneonline，〈CDMO 與生物相似藥雙引擎布局，台康掌握全球供應鏈重組契機〉",
+   "url": "https://geneonline.news/eirgenix-interview-cbo-026newsjune-utm_sourcegoogleutm_mediumpost_0611utm_campaigneirgenix/"
+  },
+  {
+   "title": "今周刊，〈2026年台灣生技100大排行榜〉",
+   "url": "https://www.businesstoday.com.tw/article/category/183015/post/202607010057/"
+  },
+  {
+   "title": "環球生技月刊，〈2026解盲、藥證關鍵決勝點將近〉",
+   "url": "https://news.gbimonthly.com/tw/invest/show.php?num=84401"
+  },
+  {
+   "title": "UDN，〈生技黃金收成年3／生技 IPO 熱潮〉",
+   "url": "https://money.udn.com/money/story/124921/9622108"
+  },
+  {
+   "title": "CMoney 股市爆料同學會，〈2026生技股生死簿〉",
+   "url": "https://www.cmoney.tw/forum/article/176974234"
+  },
+  {
+   "title": "vocus，〈2026 生技股四大盛事〉",
+   "url": "https://vocus.cc/article/69b4db6dfd897800016a1728"
+  },
+  {
+   "title": "藥華藥 PharmaEssentia（經 Business Wire 發布）新聞稿引述；FDA 核准公告，2026/8/31",
+   "url": ""
+  }
+ ],
+ "layers": [
+  {
+   "layer": "研發與臨床（候選藥物與試驗數據）",
+   "description": "那斯達克生技指數已創歷史新高；2025 年全球生技併購規模達 1,124 億美元，較 2024 年大增 145%；法人指出 2026 年國際大廠進入專利斷崖期，各廠積極接洽潛在合作授權夥伴。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6446",
+     "name": "藥華藥",
+     "role": "Ropeg 的研發與全球商業化；ET 美國獲批為已證實的最新催化",
+     "impact": "受惠"
+    },
+    {
+     "code": "4743",
+     "name": "合一",
+     "role": "代謝與傷口新藥研發（ON101）；營收規模小，與本題材無供貨關係",
+     "impact": "中性"
+    },
+    {
+     "code": "6589",
+     "name": "台康生技",
+     "role": "生物相似藥與 CDMO 布局，本次未找到具體訂單數據",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "CDMO 與製程產能（代工開發與生產）",
+   "description": "AI 導入新藥開發、CDMO 需求持續升溫，以及細胞與基因治療快速發展帶動產業鏈成為焦點；ADC、CGT、放射性藥物等新興療法快速崛起，帶動 CDMO 需求。",
+   "global_players": [
+    "Lonza",
+    "Samsung Biologics",
+    "Thermo Fisher（PPD）",
+    "Fujifilm Diosynth",
+    "WuXi AppTec（已列入 1260H 清單）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6472",
+     "name": "保瑞",
+     "role": "CDMO 與全球銷售並行；CDMO 營收佔比 36%；Rockville 廠於 7 月正式納入營運",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "製劑、學名與商業化（藥品製造、行銷與學名藥通路）",
+   "description": "美時暢銷血癌藥 Lenalidomide 原廠專利 2026 年 1 月到期後，各家搶進導致業績減半；但第二季起三項新產品推出，加上併購 Alvogen US 效益，2026 年營收年增 65% 至 80%（較早一次法說指引）。",
+   "global_players": [
+    "Alvogen"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1795",
+     "name": "美時",
+     "role": "學名與品牌藥商業化；Lenalidomide 為受傷項目，併購 Alvogen 帶動營收但產生一次性費用",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ]
+}
