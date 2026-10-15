@@ -13,11 +13,11 @@
    "qty0": 1,
    "entry_date": "2026-10-05",
    "entry": 35.79999923706055,
-   "stop": 34.944130864628754,
+   "stop": 35.79999923706055,
    "r0": 0.855868372431793,
    "realized": -123.03199844360353,
-   "half_done": false,
-   "days": 7,
+   "half_done": true,
+   "days": 8,
    "exit_next": ""
   },
   {
@@ -34,7 +34,7 @@
    "r0": 0.9459572100168714,
    "realized": -101.51,
    "half_done": true,
-   "days": 5,
+   "days": 6,
    "exit_next": ""
   },
   {
@@ -51,7 +51,7 @@
    "r0": 0.8932346558117885,
    "realized": -110.07800155639649,
    "half_done": false,
-   "days": 4,
+   "days": 5,
    "exit_next": ""
   }
  ],
@@ -80,178 +80,78 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-14",
+ "last_date": "2026-10-15",
  "regime": "多頭",
  "blocked": [
   {
-   "code": "1303",
-   "name": "南亞",
+   "code": "2891",
+   "name": "中信金",
    "setup": "突破",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "contract": "CAF",
-   "risk_one": 53456.799209857876,
-   "need_capital": 2672839.9604928936,
-   "reserve_one": 424035.0
+   "theme": "金融",
+   "contract": "CNF",
+   "risk_one": 5378.195980326382,
+   "need_capital": 268909.7990163191,
+   "reserve_one": 59049.001235961914
   },
   {
-   "code": "2330",
-   "name": "台積電",
+   "code": "2412",
+   "name": "中華電",
+   "setup": "突破",
+   "theme": "供需事件：台海局勢升溫",
+   "contract": "DLF",
+   "risk_one": 6329.333650653325,
+   "need_capital": 316466.68253266625,
+   "reserve_one": 123525.0
+  },
+  {
+   "code": "2884",
+   "name": "玉山金",
+   "setup": "突破",
+   "theme": "金融",
+   "contract": "DNF",
+   "risk_one": 3423.4445204693316,
+   "need_capital": 171172.2260234666,
+   "reserve_one": 39527.99938201904
+  },
+  {
+   "code": "3008",
+   "name": "大立光",
+   "setup": "拉回",
+   "theme": "光學鏡頭",
+   "contract": "OLF",
+   "risk_one": 63137.377811395796,
+   "need_capital": 3156868.89056979,
+   "reserve_one": 321003.0
+  },
+  {
+   "code": "3189",
+   "name": "景碩",
    "setup": "拉回",
    "theme": "封裝供需",
-   "contract": "QFF",
-   "risk_one": 5910.528533587512,
-   "need_capital": 295526.42667937564,
-   "reserve_one": 100845.0
+   "contract": "IXF",
+   "risk_one": 179547.42666314996,
+   "need_capital": 8977371.333157498,
+   "reserve_one": 1189485.0
   },
   {
-   "code": "1301",
-   "name": "台塑",
+   "code": "6278",
+   "name": "台表科",
    "setup": "突破",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "contract": "CFF",
-   "risk_one": 11309.468426406767,
-   "need_capital": 565473.4213203384,
-   "reserve_one": 86410.8014831543
+   "theme": "台表科（6278）題材與產業",
+   "contract": "KEF",
+   "risk_one": 45311.11001881129,
+   "need_capital": 2265555.5009405646,
+   "reserve_one": 245430.0
   },
   {
-   "code": "2409",
-   "name": "友達",
-   "setup": "拉回",
-   "theme": "ABF供需",
-   "contract": "CHF",
-   "risk_one": 6419.787084201573,
-   "need_capital": 320989.35421007866,
-   "reserve_one": 44043.75000000001
-  },
-  {
-   "code": "2371",
-   "name": "大同",
-   "setup": "拉回",
-   "theme": "供需事件：AI基建年均投資估佔美GDP 3.63% 缺電、",
-   "contract": "CXF",
-   "risk_one": 2741.8600752565253,
-   "need_capital": 137093.00376282627,
-   "reserve_one": 28965.59925842285
-  },
-  {
-   "code": "2609",
-   "name": "陽明",
+   "code": "6269",
+   "name": "台郡",
    "setup": "突破",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "contract": "DAF",
-   "risk_one": 5924.329572847071,
-   "need_capital": 296216.47864235356,
-   "reserve_one": 63180.0
-  },
-  {
-   "code": "1326",
-   "name": "台化",
-   "setup": "突破",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "contract": "DGF",
-   "risk_one": 11196.566390975364,
-   "need_capital": 559828.3195487682,
-   "reserve_one": 83106.0
-  },
-  {
-   "code": "3481",
-   "name": "群創",
-   "setup": "拉回",
-   "theme": "ABF供需",
-   "contract": "DQF",
-   "risk_one": 6655.283744167249,
-   "need_capital": 332764.18720836245,
-   "reserve_one": 61843.50185394287
-  },
-  {
-   "code": "1312",
-   "name": "國喬",
-   "setup": "突破",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "contract": "EEF",
-   "risk_one": 2451.346357870797,
-   "need_capital": 122567.31789353985,
-   "reserve_one": 18370.799629211426
-  },
-  {
-   "code": "1504",
-   "name": "東元",
-   "setup": "拉回",
-   "theme": "供需事件：AI基建年均投資估佔美GDP 3.63% 缺電、",
-   "contract": "EMF",
-   "risk_one": 5087.2380859088935,
-   "need_capital": 254361.90429544466,
-   "reserve_one": 86143.50185394289
-  },
-  {
-   "code": "1560",
-   "name": "中砂",
-   "setup": "拉回",
-   "theme": "矽晶圓供需",
-   "contract": "EOF",
-   "risk_one": 109909.37338313642,
-   "need_capital": 5495468.669156821,
-   "reserve_one": 1151820.0
-  },
-  {
-   "code": "2027",
-   "name": "大成鋼",
-   "setup": "突破",
-   "theme": "供需事件：《經濟》越南不銹鋼品反傾銷案 經部初步認定 國內",
-   "contract": "FEF",
-   "risk_one": 3782.547141848184,
-   "need_capital": 189127.3570924092,
-   "reserve_one": 40500.0
-  },
-  {
-   "code": "2347",
-   "name": "聯強",
-   "setup": "突破",
-   "theme": "供需事件：AI 搶產能 輝達旗艦顯卡 RTX 5090 傳",
-   "contract": "GAF",
-   "risk_one": 7160.091981619644,
-   "need_capital": 358004.59908098215,
-   "reserve_one": 83025.00000000001
-  },
-  {
-   "code": "3037",
-   "name": "欣興",
-   "setup": "拉回",
-   "theme": "封裝供需",
-   "contract": "IRF",
-   "risk_one": 191089.26085670237,
-   "need_capital": 9554463.042835118,
-   "reserve_one": 1439775.0000000002
-  },
-  {
-   "code": "3042",
-   "name": "晶技",
-   "setup": "拉回",
-   "theme": "被動元件",
-   "contract": "ITF",
-   "risk_one": 37822.93822620795,
-   "need_capital": 1891146.9113103976,
-   "reserve_one": 249075.0
-  },
-  {
-   "code": "1802",
-   "name": "台玻",
-   "setup": "突破",
-   "theme": "ABF供需",
-   "contract": "KUF",
-   "risk_one": 9255.44366789184,
-   "need_capital": 462772.18339459196,
-   "reserve_one": 86832.00000000001
-  },
-  {
-   "code": "3044",
-   "name": "健鼎",
-   "setup": "突破",
-   "theme": "供需事件：股海篩選/AI材料供不應求建滔積層板受惠價量齊升",
-   "contract": "LBF",
-   "risk_one": 63482.59136920751,
-   "need_capital": 3174129.5684603755,
-   "reserve_one": 586116.0
+   "theme": "銅箔供需",
+   "contract": "LIF",
+   "risk_one": 9068.420826905964,
+   "need_capital": 453421.0413452982,
+   "reserve_one": 72511.1985168457
   },
   {
    "code": "2355",
@@ -259,39 +159,29 @@
    "setup": "突破",
    "theme": "敬鵬（2355）題材與產業",
    "contract": "MBF",
-   "risk_one": 4800.2669107655865,
-   "need_capital": 240013.34553827933,
-   "reserve_one": 50446.8014831543
+   "risk_one": 5635.962077047168,
+   "need_capital": 281798.1038523584,
+   "reserve_one": 52099.1985168457
   },
   {
-   "code": "5347",
-   "name": "世界",
+   "code": "6257",
+   "name": "矽格",
    "setup": "拉回",
-   "theme": "供需事件：關稅與晶片出口管制",
-   "contract": "NLF",
-   "risk_one": 22969.85817056594,
-   "need_capital": 1148492.908528297,
-   "reserve_one": 171072.0
+   "theme": "封裝供需",
+   "contract": "MQF",
+   "risk_one": 45288.32185663509,
+   "need_capital": 2264416.0928317546,
+   "reserve_one": 250776.0
   },
   {
-   "code": "3706",
-   "name": "神達",
-   "setup": "突破",
-   "theme": "AI伺服器",
-   "contract": "PSF",
-   "risk_one": 4858.554015368725,
-   "need_capital": 242927.70076843625,
-   "reserve_one": 102302.99629211426
-  },
-  {
-   "code": "6505",
-   "name": "台塑化",
-   "setup": "突破",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "contract": "UFF",
-   "risk_one": 19030.913564014696,
-   "need_capital": 951545.6782007348,
-   "reserve_one": 116154.0
+   "code": "5269",
+   "name": "祥碩",
+   "setup": "拉回",
+   "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
+   "contract": "PNF",
+   "risk_one": 6855.339514880666,
+   "need_capital": 342766.9757440333,
+   "reserve_one": 90821.25000000001
   }
  ]
 }
