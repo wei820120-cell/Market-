@@ -1,25 +1,7 @@
 {
  "capital": 100000,
- "equity": 104550.18760000002,
- "positions": [
-  {
-   "code": "2355",
-   "name": "敬鵬",
-   "contract": "MBF",
-   "mult": 2000,
-   "qty": 1,
-   "qty0": 1,
-   "entry": 52.9,
-   "stop": 50.5214637020359,
-   "r0": 2.3785362979640965,
-   "rate": 0.162,
-   "entry_date": "2026-10-15",
-   "days": 0,
-   "half_done": false,
-   "realized": 0.0,
-   "alerts": []
-  }
- ],
+ "equity": 106045.92360000002,
+ "positions": [],
  "closed": [
   {
    "code": "1477",
@@ -123,6 +105,26 @@
    "exit": 18.1,
    "exit_date": "2026-10-14",
    "pnl": -1006
+  },
+  {
+   "code": "2355",
+   "name": "敬鵬",
+   "contract": "MBF",
+   "mult": 2000,
+   "qty": 0,
+   "qty0": 1,
+   "entry": 52.9,
+   "stop": 50.5214637020359,
+   "r0": 2.3785362979640965,
+   "rate": 0.162,
+   "entry_date": "2026-10-15",
+   "days": 0,
+   "half_done": false,
+   "realized": 1495.7360000000087,
+   "alerts": [],
+   "exit": 53.7,
+   "exit_date": "2026-10-15",
+   "pnl": 1496
   }
  ]
 }
