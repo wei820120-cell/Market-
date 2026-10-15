@@ -1,7 +1,25 @@
 {
  "capital": 100000,
  "equity": 104550.18760000002,
- "positions": [],
+ "positions": [
+  {
+   "code": "2355",
+   "name": "敬鵬",
+   "contract": "MBF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry": 52.9,
+   "stop": 50.5214637020359,
+   "r0": 2.3785362979640965,
+   "rate": 0.162,
+   "entry_date": "2026-10-15",
+   "days": 0,
+   "half_done": false,
+   "realized": 0.0,
+   "alerts": []
+  }
+ ],
  "closed": [
   {
    "code": "1477",
