@@ -21,7 +21,7 @@ from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
-from . import ai, config, notify, research, theme_card
+from . import ai, config, notify, prefetch, research, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
 from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
@@ -570,6 +570,13 @@ def push_news(listings: dict, min_score: float) -> None:
         major_events(fresh, listings)
     except Exception as e:  # noqa: BLE001
         log.warning("重大事件偵測失敗：%s", e)
+    for it in fresh:  # 新聞點名多檔個股的供應鏈名單：全部先排進研究
+        if it.source.startswith("MOPS") or len(it.codes) < 2:
+            continue
+        try:
+            prefetch.from_news(it.title, it.codes, listings, it.url)
+        except Exception as e:  # noqa: BLE001
+            log.warning("新聞連動預研失敗：%s", e)
     msgs = [mops_message(it, listings, futures) for it in mops_to_push(mops, listings, futures)]
     for i in range(0, len(msgs), 8):  # 重訊每 8 則合併成一則，避免洗版
         notify.send("📢 公司重大訊息\n\n" + "\n\n".join(msgs[i:i + 8]), channel="news")
@@ -1191,13 +1198,20 @@ def scan_new_themes(day: pd.DataFrame, listings: dict, futures: dict) -> list[st
     path = research.ROOT / "state" / "scan_seen.json"
     seen = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     today = f"{now_tw():%Y-%m-%d}"
-    picks_: list[tuple[str, str, str]] = []  # (代號, 名稱, 原因)
+    picks_: list[tuple[str, str, str, str]] = []  # (代號, 名稱, 原因, 觸發說明)
+    stale_: list[tuple[str, str, str, str]] = []
+    flows: dict[str, float] = {}  # 當天漲跌幅：連動預研時，已經動起來的相關個股排前面
+    index = research.load_index()
     if day is not None and not day.empty:
+        flows = {str(r.code): float(r.pct) for r in day.itertuples()}
         hot = day[(day["pct"] >= SCAN_LIMIT_PCT) & (day["value"] >= SCAN_MIN_VALUE)
                   & ~day["code"].astype(str).str.startswith("0")].sort_values("value", ascending=False)
         for r in hot.itertuples():
+            why = f"漲停 {r.pct:+.1f}%、成交 {r.value / 1e8:.1f} 億"
             if r.code not in known:
-                picks_.append((r.code, r.name, f"漲停 {r.pct:+.1f}%、成交 {r.value / 1e8:.1f} 億"))
+                picks_.append((r.code, r.name, why, "不在任何族群的強勢股"))
+            elif prefetch.is_stale(r.code, index):  # 已知族群，但最近沒有任何研究提到它（新敘事可能還沒研究）
+                stale_.append((r.code, r.name, why, "已知族群但近期沒研究過的強勢股"))
     revenue = tw_daily.load_revenue()
     for code, rv in sorted(revenue.items(), key=lambda kv: -(kv[1].get("yoy") or 0)):
         if code in known or code not in listings or (rv.get("yoy") or 0) < REV_MIN_YOY or (rv.get("rev") or 0) < REV_MIN_K:
@@ -1207,17 +1221,26 @@ def scan_new_themes(day: pd.DataFrame, listings: dict, futures: dict) -> list[st
             continue
         seen[key] = today
         picks_.append((code, listings[code].get("name", code),
-                       f"{rv.get('ym')} 營收年增 {rv['yoy']:+.0f}%（{(rv.get('rev') or 0) / 1e5:.1f} 億）"))
+                       f"{rv.get('ym')} 營收年增 {rv['yoy']:+.0f}%（{(rv.get('rev') or 0) / 1e5:.1f} 億）",
+                       "不在任何族群的強勢股"))
+    picks_ += stale_  # 全新的先排，已知族群但沒研究過的排後面（共用每天上限）
     lines, queued = [], []
-    for code, name, why in picks_:
+    for code, name, why, label in picks_:
         if len(queued) >= SCAN_MAX_PER_DAY:
             break
         topic = f"{name}（{code}）題材與產業"
-        if not research.queue_research(topic, f"{today} 不在任何族群的強勢股：{code} {name}｜{why}"):
+        if not research.queue_research(topic, f"{today} {label}：{code} {name}｜{why}"):
             continue
         queued.append(topic)
         fut = theme_card.fut_text(futures.get(code), known=bool(futures))
         lines.append(f"・{code} {name}｜{why}｜{fut if fut not in ('無', '未知') else '股票期貨：' + fut}")
+        try:  # 看到 A 就把同題材的 B、C 和上下游一起排進研究
+            near = prefetch.expand_known(code, listings, flows=flows)
+        except Exception as e:  # noqa: BLE001
+            log.warning("連動預研失敗：%s", e)
+            near = []
+        if near:
+            lines.append("  ↳ 連動預研：" + "、".join(t.split("（")[0] for t in near))
     if lines:
         notify.send("🚀 不在任何族群的強勢股（已排入研究，找出題材後推研究圖表）\n" + "\n".join(lines), channel="research")
     path.parent.mkdir(parents=True, exist_ok=True)

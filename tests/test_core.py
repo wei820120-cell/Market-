@@ -599,6 +599,7 @@ def test_research_topic_end_to_end(tmp_path, monkeypatch):
     monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
     monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
     monkeypatch.setattr(research, "AUTO_THEMES_PATH", tmp_path / "research" / "auto_themes.yaml")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "queue")
     monkeypatch.setattr(ai, "USAGE_PATH", tmp_path / "usage.json")
     monkeypatch.setattr(ai, "check_budget", lambda: None)
 
@@ -637,6 +638,10 @@ def test_research_topic_end_to_end(tmp_path, monkeypatch):
     assert research.recently_researched("石英布", idx)
     usage = __import__("json").loads((tmp_path / "usage.json").read_text(encoding="utf-8"))
     assert list(usage.values())[0]["runs"] == 1
+    # 連動預研：研究完成後，題材裡的個股先排進研究（看到 A 就把 B、C 一起研究起來）
+    queued = {d["topic"]: d for _, d in research.read_queue()}
+    assert set(queued) == {"富喬（1815）題材與產業", "台光電（2383）題材與產業"}
+    assert queued["富喬（1815）題材與產業"]["origin"] == "石英布" and queued["富喬（1815）題材與產業"]["depth"] == 1
 
 
 def test_channel_topics_ignore_daily_cap(tmp_path, monkeypatch):
@@ -1190,7 +1195,8 @@ def test_scan_new_themes(tmp_path, monkeypatch):
                         {"code": "8888", "name": "小股", "pct": 10.0, "value": 1e7}])
     listings = {"4573": {"name": "高明鐵"}, "1234": {"name": "X"}}
     q = cli.scan_new_themes(day, listings, {})
-    assert q == ["雙鴻（3324）題材與產業", "高明鐵（4573）題材與產業"]
+    # 全新的先排；已知族群（國巨）但近期沒有任何研究提到它，排在最後（共用每天上限）
+    assert q == ["雙鴻（3324）題材與產業", "高明鐵（4573）題材與產業", "國巨（2327）題材與產業"]
     assert sent[0][0] == "research" and "營收年增 +338%" in sent[0][1]
     assert cli.scan_new_themes(day, listings, {}) == []  # 已排入、營收同月份不重複
 
@@ -1588,3 +1594,134 @@ def test_launch_walk_forward_scores_only_use_the_past():
     sig = launch.top_signals(sc, n=2)
     day = next(iter(sig))
     assert len(sig[day]) == 2 and sig[day][0][2] == "高分" and sig[day][0][0] >= sig[day][1][0]
+
+
+# ---------------- 連動預研：看到 A 就把 B、C 和上下游一起排進研究 ----------------
+
+PTFE_LAYERS = [
+    {"layer": "PTFE 板材", "tw_stocks": [
+        {"code": "8039", "name": "台虹", "role": "PTFE CCL 送樣", "impact": "受惠"},
+        {"code": "4939", "name": "亞電", "role": "本次未查到數據，細節待確認", "impact": "中性"}]},
+    {"layer": "軟板", "tw_stocks": [
+        {"code": "6269", "name": "台郡", "role": "軟板大廠", "impact": "受惠"},
+        {"code": "9001", "name": "受害股", "role": "成本上升", "impact": "受傷"}]},
+    {"layer": "載板", "tw_stocks": [{"code": "3037", "name": "欣興", "role": "載板", "impact": "受惠"}]},
+    {"layer": "更遠", "tw_stocks": [{"code": "2330", "name": "台積電", "role": "x", "impact": "受惠"}]},
+]
+PTFE_LISTINGS = {"8039": {"name": "台虹"}, "4939": {"name": "亞電"}, "6269": {"name": "台郡"}, "3037": {"name": "欣興"},
+                 "2330": {"name": "台積電"}, "9001": {"name": "受害股"}, "0050": {"name": "ETF"}}
+
+
+def _prefetch_env(tmp_path, monkeypatch, **cfg):
+    from market_intel import config, prefetch, research
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "RESEARCH_DIR", tmp_path / "research")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    base = {"research": {"prefetch": cfg}}
+    monkeypatch.setattr(config, "settings", lambda: base)
+    return research, prefetch
+
+
+def test_prefetch_candidates_same_layer_first_then_adjacent():
+    from market_intel import prefetch
+    cands = prefetch.candidates(PTFE_LAYERS, {"6269"})
+    codes = [c["code"] for c in cands]
+    # 台郡在「軟板」層：同層沒有別人；相鄰層（PTFE 板材、載板）優先，同距離受惠先於中性；更遠的最後；受傷的不預研
+    assert codes == ["8039", "3037", "4939", "2330"]
+    assert "9001" not in codes and "6269" not in codes
+    # 事件／題材（沒有 A 個股）時：受惠先於中性
+    codes2 = [c["code"] for c in prefetch.candidates(PTFE_LAYERS, set())]
+    assert codes2.index("8039") < codes2.index("4939")
+
+
+def test_prefetch_expand_limits_and_dedupe(tmp_path, monkeypatch):
+    research, prefetch = _prefetch_env(tmp_path, monkeypatch, per_topic=3, per_day=4, max_depth=2)
+    # 台虹最近已經有專屬研究 → 不重複排
+    research.save_index({"台虹（8039）題材與產業": {"date": f"{research.now_tw():%Y-%m-%d}", "codes": ["8039"]}})
+    q = prefetch.expand("台郡（6269）題材與產業", PTFE_LAYERS, PTFE_LISTINGS, depth=0)
+    assert q == ["欣興（3037）題材與產業", "亞電（4939）題材與產業", "台積電（2330）題材與產業"]
+    items = {d["topic"]: d for _, d in research.read_queue()}
+    first = items["亞電（4939）題材與產業"]
+    assert first["origin"] == "台郡（6269）題材與產業" and first["depth"] == 1 and first["priority"] == 0
+    assert "連動預研" in first["trigger"] and "台郡" in first["trigger"]
+    assert prefetch.expand("台郡（6269）題材與產業", PTFE_LAYERS, PTFE_LISTINGS) == []  # 已在佇列，不重複
+    assert prefetch.used_today() == 3
+    # 每天上限：4 檔，只剩 1 檔
+    other = [{"layer": "x", "tw_stocks": [{"code": "9001", "name": "受害股", "role": "r", "impact": "受惠"},
+                                          {"code": "8039", "name": "台虹", "role": "r", "impact": "受惠"}]}]
+    assert prefetch.expand("某題材", other, {"9001": {"name": "受害股"}, "8039": {"name": "台虹"}}) == ["受害股（9001）題材與產業"]
+    assert prefetch.expand("又一題材", other, {"9001": {"name": "受害股"}}) == []  # 今天額度用完
+    # 往外擴的層數有上限（A→B→C 就停）
+    assert prefetch.expand("台郡（6269）題材與產業", PTFE_LAYERS, PTFE_LISTINGS, depth=2) == []
+
+
+def test_prefetch_off_and_hot_flows(tmp_path, monkeypatch):
+    research, prefetch = _prefetch_env(tmp_path, monkeypatch, enabled=False)
+    assert prefetch.expand("台郡（6269）題材與產業", PTFE_LAYERS, PTFE_LISTINGS) == []
+    research, prefetch = _prefetch_env(tmp_path, monkeypatch, per_topic=2)
+    # 當天已經動起來的相關個股（欣興 +9%）排在前面，優先度 2
+    q = prefetch.expand("台郡（6269）題材與產業", PTFE_LAYERS, PTFE_LISTINGS, flows={"3037": 9.0})
+    assert q[0] == "欣興（3037）題材與產業"
+    assert {d["topic"]: d.get("priority") for _, d in research.read_queue()}["欣興（3037）題材與產業"] == 2
+
+
+def test_prefetch_from_news_supply_chain_list(tmp_path, monkeypatch):
+    research, prefetch = _prefetch_env(tmp_path, monkeypatch)
+    title = "NVIDIA OCP 首秀 PTFE 交換器板 台郡、台虹入列合作夥伴名單"
+    assert prefetch.from_news(title, ["6269", "8039", "6269"], PTFE_LISTINGS) == ["台郡（6269）題材與產業", "台虹（8039）題材與產業"]
+    assert all(d["priority"] if "priority" in d else True for _, d in research.read_queue())
+    # 只點名一檔、或不是供應鏈名單的標題，不預研
+    assert prefetch.from_news(title, ["6269"], PTFE_LISTINGS) == []
+    assert prefetch.from_news("台郡與台虹同步上漲", ["6269", "8039"], PTFE_LISTINGS) == []
+    assert prefetch.from_news(title, ["0050", "6269"], PTFE_LISTINGS) == []  # ETF 不算
+
+
+def test_read_queue_groups_cluster_priority_and_expiry(tmp_path, monkeypatch):
+    research, prefetch = _prefetch_env(tmp_path, monkeypatch, expire_days=3)
+    assert research.queue_research("A（1111）題材與產業", "強勢股")
+    assert research.queue_research("B（2222）題材與產業", "預研", depth=1, origin="A（1111）題材與產業", priority=0)
+    assert research.queue_research("C（3333）題材與產業", "預研", depth=1, origin="A（1111）題材與產業", priority=0)
+    assert research.queue_research("X（9999）題材與產業", "另一個強勢股")
+    assert research.queue_research("Z（8888）題材與產業", "預研", depth=1, origin="Y（7777）題材與產業", priority=2)
+    old = tmp_path / "state" / "research_queue" / f"{research.slug('老（5555）題材與產業')}.json"
+    assert research.queue_research("老（5555）題材與產業", "預研", depth=1, origin="W", priority=0)
+    import json
+    d = json.loads(old.read_text(encoding="utf-8"))
+    d["time"] = "2020-01-01 00:00"
+    old.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    order = [d["topic"][0] for _, d in research.read_queue()]
+    # 動起來的相關個股整組先；同一個 A 和它的 B、C 排在一起；排太久的預研丟掉
+    assert order == ["Z", "A", "B", "C", "X"]
+    assert not old.exists()
+
+
+def test_scan_known_stock_without_recent_research_and_peers(tmp_path, monkeypatch):
+    import pandas as pd
+    from market_intel import cli, notify
+    from market_intel.fetchers import tw_daily
+    research, prefetch = _prefetch_env(tmp_path, monkeypatch, per_topic=2)
+    today = f"{research.now_tw():%Y-%m-%d}"
+    old = f"{research.now_tw() - pd.Timedelta(days=9):%Y-%m-%d}"
+    # 台郡 10/5 的銅箔研究提到過它（9 天前，早於 3 天）；台虹有專屬研究；欣興有最近研究提到
+    research.save_index({"銅箔供需": {"date": old, "codes": ["6269", "8039", "4939"]},
+                         "台虹（8039）題材與產業": {"date": today, "codes": ["8039"]},
+                         "載板供需": {"date": today, "codes": ["3037"]}})
+    (tmp_path / "research" / "data").mkdir(parents=True, exist_ok=True)
+    import json
+    (tmp_path / "research" / "data" / f"{research.slug('銅箔供需')}.json").write_text(json.dumps(
+        {"layers": PTFE_LAYERS}, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(cli, "_trade_theme_map", lambda: {"6269": "銅箔供需", "8039": "銅箔供需", "3037": "載板供需"})
+    monkeypatch.setattr(tw_daily, "load_revenue", lambda: {})
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
+    day = pd.DataFrame([{"code": "6269", "name": "台郡", "pct": 10.0, "value": 2e9},
+                        {"code": "3037", "name": "欣興", "pct": 10.0, "value": 3e9},   # 近期有研究提到 → 不排
+                        {"code": "8039", "name": "台虹", "pct": 10.0, "value": 1e9}])  # 已有專屬研究 → 不排
+    q = cli.scan_new_themes(day, PTFE_LISTINGS, {})
+    assert q == ["台郡（6269）題材與產業"]
+    assert "已知族群但近期沒研究過" in {d["topic"]: d for _, d in research.read_queue()}["台郡（6269）題材與產業"]["trigger"]
+    # 看到 A（台郡）就把相鄰層的亞電等一起排進研究（台虹已有專屬研究、欣興近期有研究，仍可因同題材被預研到）
+    topics = [d["topic"] for _, d in research.read_queue()]
+    assert "亞電（4939）題材與產業" in topics and "台虹（8039）題材與產業" not in topics
+    assert any("連動預研" in t for t in sent)

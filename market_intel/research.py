@@ -372,7 +372,12 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
                     "status": data.get("status"), "usd": round(usage.usd(), 3), "auto": auto}
     save_index(index)
     update_auto_themes(topic, layers, data.get("keywords", []))
-    (QUEUE_DIR / f"{slug(topic)}.json").unlink(missing_ok=True)  # 研究完成就移出佇列
+    qfile = QUEUE_DIR / f"{slug(topic)}.json"
+    try:
+        depth = int(json.loads(qfile.read_text(encoding="utf-8")).get("depth", 0))
+    except (OSError, ValueError):
+        depth = 0
+    qfile.unlink(missing_ok=True)  # 研究完成就移出佇列
     data_dir().mkdir(parents=True, exist_ok=True)
     keep = ("topic", "one_line", "status", "horizon", "keywords", "catalysts", "risks", "spec_tables", "evolution",
             "concepts", "conclusion", "sources")
@@ -382,6 +387,11 @@ def _save_report(topic: str, data: dict, report: str, trigger: str, listings: di
              "global_players": l.get("global_players", []),
              "tw_stocks": [{k: s[k] for k in ("code", "name", "role", "impact")} for s in l["tw_stocks"]]}
             for l in layers]}, ensure_ascii=False, indent=1), encoding="utf-8")
+    try:  # 連動預研：看到 A 就把 B、C 和上下游先排進研究；失敗不影響這份研究
+        from . import prefetch
+        prefetch.expand(topic, layers, listings, depth=depth)
+    except Exception as e:  # noqa: BLE001
+        log.warning("連動預研失敗：%s", e)
     return {"data": data, "layers": layers, "file": fname,
             "message": summary_message(data, layers, report_url(fname))}
 
@@ -576,23 +586,38 @@ def save_offset(token: str | None, offset: int | None) -> None:
 
 # ---------- 研究佇列（資金流入的題材） ----------
 
-def queue_research(topic: str, trigger: str) -> bool:
-    """把題材排入研究佇列；14 天內研究過或已在佇列就略過。回傳是否新排入。"""
+def queue_research(topic: str, trigger: str, *, depth: int = 0, origin: str = "", priority: int = 1) -> bool:
+    """把題材排入研究佇列；14 天內研究過或已在佇列就略過。回傳是否新排入。
+
+    連動預研（prefetch）排進來的會多帶：depth（從 A 往外第幾層）、origin（是為了哪個 A 排的，同一個 A 的一起研究）、
+    priority（預設 1；已經動起來的相關個股 2、一般預研 0）。
+    """
     if recently_researched(topic, load_index()):
         return False
     p = QUEUE_DIR / f"{slug(topic)}.json"
     if p.exists():
         return False
     QUEUE_DIR.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps({"topic": topic, "trigger": trigger, "time": f"{now_tw():%Y-%m-%d %H:%M}"},
-                            ensure_ascii=False), encoding="utf-8")
+    item = {"topic": topic, "trigger": trigger, "time": f"{now_tw():%Y-%m-%d %H:%M}"}
+    if depth:
+        item["depth"] = depth
+    if origin:
+        item["origin"] = origin
+    if priority != 1:
+        item["priority"] = priority
+    p.write_text(json.dumps(item, ensure_ascii=False), encoding="utf-8")
     return True
 
 
 def read_queue() -> list[tuple[os.PathLike, dict]]:
-    """待研究的題材；14 天內已研究過的直接移出。"""
+    """待研究的題材；14 天內已研究過的直接移出，預研排太久沒人研究的也丟掉。
+
+    順序：整組優先度高的先（動起來的 2、一般 1、預研 0），同一個 A 和它排出來的 B、C 排在一起，一起研究。
+    """
     out = []
     index = load_index()
+    expire = (now_tw() - timedelta(days=int(((config.settings().get("research") or {}).get("prefetch") or {})
+                                            .get("expire_days", 3)))).strftime("%Y-%m-%d")
     for p in sorted(QUEUE_DIR.glob("*.json")) if QUEUE_DIR.exists() else []:
         try:
             d = json.loads(p.read_text(encoding="utf-8"))
@@ -602,7 +627,15 @@ def read_queue() -> list[tuple[os.PathLike, dict]]:
         if recently_researched(d.get("topic", ""), index):
             p.unlink(missing_ok=True)
             continue
+        if d.get("origin") and d.get("time", "9999") < expire:  # 預研沒人研究就別讓它一直佔著
+            p.unlink(missing_ok=True)
+            continue
         out.append((p, d))
+    group = lambda d: d.get("origin") or d.get("topic", "")  # noqa: E731
+    top: dict[str, int] = {}
+    for _, d in out:
+        top[group(d)] = max(top.get(group(d), 0), d.get("priority", 1))
+    out.sort(key=lambda pd_: (-top[group(pd_[1])], group(pd_[1]), -pd_[1].get("priority", 1), pd_[1].get("time", "")))
     return out
 
 
