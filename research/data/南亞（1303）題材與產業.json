@@ -1,0 +1,563 @@
+{
+ "topic": "南亞（1303）題材與產業",
+ "one_line": "AI伺服器推動PCB材料升級至M9、M10，玻纖布、銅箔、CCL上游同步缺貨漲價，南亞為少數自產玻纖布、銅箔、樹脂並做CCL的整合型廠商。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "M9",
+  "M10",
+  "玻纖布",
+  "石英布",
+  "Q布",
+  "Low-Dk",
+  "Low-Dk2",
+  "T-glass",
+  "NE布",
+  "PTFE無布",
+  "Hybrid",
+  "CCL",
+  "HVLP銅箔",
+  "7628",
+  "CPO",
+  "Rubin"
+ ],
+ "catalysts": [
+  "2026年第4季台光電大園廠量產",
+  "2026年下半年南亞Low-Dk2玻纖布放量",
+  "2026年下半年M9量產放大",
+  "2027年1～3月日東紡福島新廠開始生產",
+  "2027年Hybrid首批產品、PTFE與M10驗證結果陸續出現",
+  "2027年下半年玻纖布缺口預估開始紓緩"
+ ],
+ "risks": [
+  "南亞獲利結構中業外占比高，本業營業利益約183.1億元（2026Q3），玻纖布僅占電子材料約5～6%",
+  "股價部分反映南亞科記憶體行情，題材與營收不對稱",
+  "缺貨漲價、產能開出後降價為材料業週期老劇本",
+  "台玻、日東紡、建滔正在建8座窯爐，2座預計2026年下半年投產；中國Jushi低Dk產能2026年倍增，2027～2028供需缺口可能收斂",
+  "PTFE無布化若成真，玻纖布需求減少；Hybrid路線仍保留玻纖布，目前看來更可能共存",
+  "CPO導入後CCL等級可降至M4傳聞，業者已闢謠",
+  "市場傳出南亞20%調價，總經理說明實際為5%～10%",
+  "法人目標價310元，南亞10/13盤中一度觸及漲停322元，股價接近或超過部分目標價；建榮本益比約64倍",
+  "經濟部10/7停止輸入中國玻璃纖維矽質套管，禁令未涵蓋德宏電子級玻纖布",
+  "AI資本支出若轉弱，缺貨格局可能反轉"
+ ],
+ "spec_tables": [
+  {
+   "title": "一、規格比較表",
+   "columns": [
+    "材料／等級",
+    "Dk（介電常數）",
+    "Df（損耗因子）",
+    "熱膨脹（CTE）",
+    "供給與價格",
+    "典型應用"
+   ],
+   "rows": [
+    [
+     "標準 E-glass 布（7628 等）",
+     "約 6 以上（產業經驗值，本次未查到來源）",
+     "待查",
+     "一般",
+     "7628 自 2025Q3 起約漲 140%",
+     "一般 FR-4 PCB、手機與筆電"
+    ],
+    [
+     "M9 等級 CCL（10 GHz 測試）",
+     "Dk 約 3.0～3.1",
+     "Df 約 0.00046～0.0005",
+     "依配方",
+     "M9 量產初期，最大買家先鎖單",
+     "AI 伺服器高速訊號鏈路"
+    ],
+    [
+     "T-glass（低 CTE 布）",
+     "Dk 約 3.8～4.0",
+     "Df 低於 0.001",
+     "極低",
+     "日東紡約占全球 90%，新產能要到 2027 年中才會開出",
+     "ABF 載板與 M9 以上 CCL"
+    ],
+    [
+     "Low-Dk 布（NE 玻璃、Low-Dk2）",
+     "待查（本次未查到確切數值）",
+     "待查",
+     "依型號",
+     "南亞與日東紡合作的 Low-Dk2 玻纖布，下半年有望放量",
+     "高速 CCL、M8 以上"
+    ],
+    [
+     "石英布（Q-glass）",
+     "待查",
+     "待查",
+     "極低（定性）",
+     "石英布供給較為吃緊",
+     "M10 等級、正交背板"
+    ],
+    [
+     "PTFE（填料型，無布）",
+     "Dk 可降至 2.1～2.2",
+     "Df 壓到 0.0004 以下",
+     "熱膨脹係數大、加工難度高",
+     "認證中，尚未大規模商用",
+     "高速連接線、背板（候選）"
+    ]
+   ],
+   "note": "上表 Dk、Df 多為特定測試條件下的數據，實際覆銅板數值還受填料、補強結構與測試方法影響，不能直接等同量產板材規格。Tg 本次未查證，不列入。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "第一代：標準 E-glass 布 + 一般樹脂（FR-4 類）",
+   "composition": "標準E-glass布＋一般樹脂",
+   "spec": "一般介電與熱膨脹",
+   "application": "手機、筆電等消費電子"
+  },
+  {
+   "name": "M6 → M7：中低階低損耗材料",
+   "composition": "E-Glass 供給吃緊",
+   "spec": "中低階低損耗",
+   "application": "帶動中低階 CCL 報價漲勢擴大"
+  },
+  {
+   "name": "M7 → M8：Low-Dk 布進入量產",
+   "composition": "建榮自2023年Q4量產NE布（Low Dk）",
+   "spec": "Low Dk",
+   "application": "M8 等級 CCL 需求2025年估計年增三倍"
+  },
+  {
+   "name": "M9：Low-Dk2 或 T-glass 搭配改性樹脂",
+   "composition": "Low-Dk2或T-glass＋改性樹脂",
+   "spec": "M9認證已完成，2026年下半年以量產為主",
+   "application": "台光電M9 2026年下半年進入量產，第三季隨GPU客戶放量"
+  },
+  {
+   "name": "M10 與無布路線",
+   "composition": "M10加二代布或Q布；另一條為PTFE無布路線",
+   "spec": "更低損耗",
+   "application": "高階高速傳輸"
+  },
+  {
+   "name": "Hybrid 混搭（PTFE + M9）",
+   "composition": "既有CCL配方加入PTFE，玻纖布需求仍在",
+   "spec": "由PTFE提升低損耗表現",
+   "application": "法人認為較容易銜接既有PCB製程，有機會率先切入2027年產品"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "概念 1：玻纖布的「編織節點」為什麼會影響高速訊號？",
+   "points": [
+    "玻纖布是經緯交織的結構，傳統玻纖布CCL的編織節點會帶來厚度差異與訊號不連續。",
+    "在極高頻傳輸環境下，玻纖布本身可能造成損耗與訊號失真。",
+    "解方有三條路：降低介電（Low-Dk布）、把布做薄、或完全不用布（PTFE無布）。",
+    "每一條路都牽動製程與成本；Low-Dk布產能難擴，PTFE則是製程挑戰。",
+    "交織處與樹脂區介電不一致的解釋為報告作者整理，非來源直述。"
+   ]
+  },
+  {
+   "title": "概念 2：為什麼玻纖布缺貨，補不快？",
+   "points": [
+    "T-glass難製造，需要特殊織機與化學處理，供給天花板不易擴張。",
+    "其他亞洲廠能做標準FR-4布，但缺乏超薄、低介電產品的成熟量產技術，跨產業認證要12～18個月。",
+    "日東紡福島新廠投資約150億日圓，預計2027年1～3月開始生產。",
+    "Low-Dk玻纖布的紓緩要等到2027年下半年新產能到位。",
+    "日東紡預期2029年3月年度產能會是2026年3月年度的三倍。"
+   ]
+  },
+  {
+   "title": "概念 3：PTFE「無布化」的代價是什麼？",
+   "points": [
+    "好處：PTFE採無布結構，可消除編織節點造成的厚度差異與訊號不連續。",
+    "代價一：PTFE熱膨脹係數大、加工難度高，當時尚未大規模商用。",
+    "代價二：高溫壓合、鑽孔參數與多層板良率都要重新累積經驗。",
+    "代價三：PTFE打孔易裂，部分上游廠透過掺入玻纖或調整樹脂體系改善，「無布」與「有布」的界線可能模糊。"
+   ]
+  }
+ ],
+ "conclusion": [
+  "單看Dk、Df不夠，需同時看性能、原料自主、良率與量產、定價權、產能時點五點。",
+  "原紗掌握度直接影響成本與供貨彈性：南亞靠日東紡供應NER原紗；建榮沒有自有紗廠，仰賴集團內部供應；富喬具備紗布整合能力。",
+  "缺貨時漲價是定價權，不是技術領先。",
+  "日東紡、台玻、南亞Low-Dk2的新產能開出時點，會決定2027年後的供需。",
+  "PTFE無布化若成真會取代部分玻纖布需求，但目前看來玻纖布與PTFE更可能先走向共存。"
+ ],
+ "sources": [
+  {
+   "title": "玻纖布大缺貨 複製記憶體市況 南亞、台玻等迎契機（經濟日報）",
+   "url": "https://money.udn.com/money/story/10871/9273482"
+  },
+  {
+   "title": "AI 浪潮催動玻纖布大缺貨！南亞攜手日東紡搶佔先機（豐雲學堂）",
+   "url": "https://www.sinotrade.com.tw/richclub/industry/AI-%E6%B5%AA%E6%BD%AE%E5%82%AC%E5%8B%95%E7%8E%BB%E7%BA%96%E5%B8%83%E5%A4%A7%E7%BC%BA%E8%B2%A8-%E5%8D%97%E4%BA%9E%E6%94%9C%E6%89%8B%E6%97%A5%E6%9D%B1%E7%B4%A1%E6%90%B6%E4%BD%94%E5%85%88%E6%A9%9F-%E5%8F%B0%E7%81%A3%E4%BE%9B%E6%87%89%E9%8F%88%E5%85%A8%E9%9D%A2%E5%8F%97%E6%83%A0-%E7%94%A2%E6%A5%AD%E7%86%B1%E8%A9%B1-692d3ab0711f0c41e5aa22f0"
+  },
+  {
+   "title": "高階玻纖布需求仍旺 南亞（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6386397"
+  },
+  {
+   "title": "南亞續看好中高階玻纖布，供需平衡還要一段時間（MoneyDJ／Yahoo）",
+   "url": "https://tw.stock.yahoo.com/news/%E5%8D%97%E4%BA%9E%E7%BA%8C%E7%9C%8B%E5%A5%BD%E4%B8%AD%E9%AB%98%E9%9A%8E%E7%8E%BB%E7%BA%96%E5%B8%83-%E4%BE%9B%E9%9C%80%E5%B9%B3%E8%A1%A1%E9%82%84%E8%A6%81-%E6%AE%B5%E6%99%82%E9%96%93-043800032.html"
+  },
+  {
+   "title": "南亞第 2 季 EPS 3.37 元、上半年 EPS 5.17 元皆創歷史新高（CMMedia）",
+   "url": "https://www.cmmedia.com.tw/home/articles/61737"
+  },
+  {
+   "title": "台塑集團暴衝，南亞盤中衝漲停322元（旺得富）",
+   "url": "https://wantrich.chinatimes.com/news/20261013900002-420101"
+  },
+  {
+   "title": "玻纖布＋AI材料點火！南亞衝逾2年高點（旺得富）",
+   "url": "https://wantrich.chinatimes.com/news/20260108900247-420101"
+  },
+  {
+   "title": "建榮(5340)－站上AI浪潮，但毛利結構與擴產策略限制評價速度（優分析）",
+   "url": "https://uanalyze.com.tw/articles/3608720306"
+  },
+  {
+   "title": "建榮（5340）深度解析（913 理財估測站）",
+   "url": "https://uc913.com/stock-5340/"
+  },
+  {
+   "title": "玻纖布股價分析：建榮與台玻的未來走勢（台灣新聞雲）",
+   "url": "https://886.news/archives/339578"
+  },
+  {
+   "title": "Why Glass Fiber Cloth Remains in Global Shortage in 2026",
+   "url": "https://www.xyhplastic.com/news/why-glass-fiber-cloth-remains-in-global-shortage-in-2026-374350.html"
+  },
+  {
+   "title": "PCB material shortage 2026（MPBxChange）",
+   "url": "https://www.mpbxchange.com/research/pcb-material-shortage-2026-glass-cloth-copper-foil"
+  },
+  {
+   "title": "AI Server PCB Material Shortage 2026（Tecsply）",
+   "url": "https://tecsply.com/materials/supply-watch/"
+  },
+  {
+   "title": "PCB Material Shortage Intensifies August 2026（AtlasPCB）",
+   "url": "https://www.atlaspcb.com/news/news-pcb-material-shortage-glass-cloth-price-august-2026/"
+  },
+  {
+   "title": "China Glass Fiber 2026（天下工廠研究）",
+   "url": "https://faxiangongchang.com/en/reports/china-glass-fiber-2026"
+  },
+  {
+   "title": "台虹新式 CCL 攻 M9 世代（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20251201700237-439901"
+  },
+  {
+   "title": "M10 材料升級戰開打！PTFE 躍新寵（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260831700082-439901"
+  },
+  {
+   "title": "PTFE 是什麼？PTFE 概念股有哪些？（數位時代）",
+   "url": "https://www.bnext.com.tw/article/92099/ptfe-concept-stocks"
+  },
+  {
+   "title": "焦點股：台虹 PTFE 材料有望取代玻纖布（自由財經）",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5551165"
+  },
+  {
+   "title": "PTFE + M9 混壓方案（東方財富）",
+   "url": "https://caifuhao.eastmoney.com/news/20260601142336013853160"
+  },
+  {
+   "title": "玻纖布 PK PTFE（Yahoo 股市）",
+   "url": "https://tw.stock.yahoo.com/news/%E7%8E%BB%E7%BA%96%E5%B8%83pk-ptfe%E5%8F%B0%E5%BB%A0%E9%99%A3%E7%87%9F%E7%AB%99%E5%87%BA%E4%BE%86%EF%BC%81ptfe%E8%83%BD%E5%8F%96%E4%BB%A3%E7%8E%BB%E7%B4%80%E5%B8%83%E5%97%8E%EF%BC%9F%E5%93%AA%E4%B8%80%E6%AA%94%E5%85%A9%E9%82%8A%E9%80%9A%E5%90%83%EF%BC%9F%EF%BD%9C%E7%9B%A4%E9%BB%9E%E6%A6%82%E5%BF%B5%E8%82%A1-091725800.html"
+  },
+  {
+   "title": "台虹新式 CCL 攻 M9 世代（Yahoo 股市）",
+   "url": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E8%99%B9%E6%96%B0%E5%BC%8Fccl-%E6%94%BBm9%E4%B8%96%E4%BB%A3-201000342.html"
+  },
+  {
+   "title": "德宏（5475）：玻纖布與石英布（數位時代）",
+   "url": "https://www.bnext.com.tw/article/92584/glotech-5475-glass-fiber-quartz-cloth"
+  },
+  {
+   "title": "南亞電子材料逐月調漲，看好下半年價量齊揚（MoneyDJ）",
+   "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=d52a09dc-a4f0-4000-8e01-1be466edaf95"
+  },
+  {
+   "title": "南亞 2026 年 9 月合併營業額公告（MoneyDJ）",
+   "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=f8a475e0-5a15-4e89-855a-f6a4810d5a97"
+  },
+  {
+   "title": "AI 電子材料缺口持續擴大 南亞 9 月營收創近 54 個月新高（DIGITIMES）",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000771207_CHE11LGI1OZRGM607Q6FW"
+  },
+  {
+   "title": "營收速報：南亞 9 月營收 344.23 億元（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6628256"
+  },
+  {
+   "title": "〈焦點股〉南亞受惠電子材料持續升級（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6621644"
+  },
+  {
+   "title": "電材漲價函傳聞滿天飛！南亞真的要漲 20％？（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260815700066-430503"
+  },
+  {
+   "title": "需求＋成本雙引擎推動 南亞總座：9 月電子材料漲勢延續（工商時報）",
+   "url": "https://www.chinatimes.com/realtimenews/20260814002942-260410"
+  },
+  {
+   "title": "台塑變局 2：電子材料占營收近六成（人間福報）",
+   "url": "https://www.peoplenews.tw/articles/economic-news/61191"
+  },
+  {
+   "title": "聯茂有「利」可圖（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260831700084-439901"
+  },
+  {
+   "title": "M9 進入放量、M10 提前卡位（風傳媒）",
+   "url": "https://www.storm.mg/article/11164365"
+  },
+  {
+   "title": "台光電、聯茂、台燿 CCL 三雄擴產盤點（優分析）",
+   "url": "https://uanalyze.com.tw/articles/8716957048"
+  },
+  {
+   "title": "CCL 三雄誰最會賺？（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6630357"
+  },
+  {
+   "title": "CPO 重擊 CCL 疑雲關鍵解碼（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260918700093-430201"
+  },
+  {
+   "title": "台光電、台燿、聯茂…CCL 三雄誰最賺（旺得富）",
+   "url": "https://wantrich.chinatimes.com/news/20261007900183-420101"
+  },
+  {
+   "title": "CCL 概念股有哪些？（Maple Feather）",
+   "url": "https://maplefeather.com/article/ai-server-ccl-concept-stocks-checklist-2026"
+  },
+  {
+   "title": "建榮(5340)強攻漲停，AI 高階玻纖布缺貨潮（CMoney）",
+   "url": "https://www.cmoney.tw/notes/note-detail.aspx?nid=1085495"
+  },
+  {
+   "title": "玻纖布族群火熱，南亞與台玻雙雙漲停（財報狗）",
+   "url": "https://statementdog.com/news/15572"
+  },
+  {
+   "title": "AI 搶料潮 玻纖布暴漲 165%、銅箔缺口破 3 成（聚財網）",
+   "url": "https://www.wearn.com/bbs/t1233973.html"
+  },
+  {
+   "title": "電子玻纖布迎漲價！「這台廠」7 月營收年增 264%（FTNN）",
+   "url": "https://www.ftnn.com.tw/news/568897"
+  },
+  {
+   "title": "德宏盤中再噴 4％（旺得富）",
+   "url": "https://wantrich.chinatimes.com/news/20260302900431-420101"
+  },
+  {
+   "title": "擺脫連虧 14 季谷底！「這家玻纖布大廠」一年股價飆 40 倍（三立新聞）",
+   "url": "https://inews.setn.com/news/1921165"
+  },
+  {
+   "title": "2026 玻纖布概念股有哪些？（豐雲學堂）",
+   "url": "https://www.sinotrade.com.tw/richclub/industry/%E7%8E%BB%E7%BA%96%E5%B8%83%E6%98%AF%E4%BB%80%E9%BA%BC-%E7%8E%BB%E7%BA%96%E5%B8%83%E6%A6%82%E5%BF%B5%E8%82%A1%E6%9C%89%E5%93%AA%E4%BA%9B-%E9%AB%98%E9%9A%8EPCB%E4%B8%8D%E5%8F%AF%E7%BC%BA%E5%B0%91%E7%9A%84%E6%9D%90%E6%96%99-%E5%88%A5%E5%8F%AA%E7%9F%A5%E9%81%93%E5%AF%8C%E5%96%AC-%E5%8F%B0%E7%8E%BB--%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-689b075063793f3efc2da52e"
+  },
+  {
+   "title": "CCL 概念股名單（FinLab）",
+   "url": "https://finlab.finance/stocks/themes/ccl"
+  },
+  {
+   "title": "東吳證券 AI 驅動 PCB 全面升級報告（PDF）",
+   "url": "https://pdf.dfcfw.com/pdf/H3_AP202509281752218825_1.pdf?1759081164000.pdf="
+  },
+  {
+   "title": "PTFE 無布化革命：M9 世代材料供應鏈大洗牌？（豐雲學堂）",
+   "url": "https://www.sinotrade.com.tw/richclub/industry/%E5%8F%B0%E8%99%B9PTFE-%E7%84%A1%E5%B8%83%E5%8C%96-%E9%9D%A9%E5%91%BD-M9%E4%B8%96%E4%BB%A3%E6%9D%90%E6%96%99%E4%BE%9B%E6%87%89%E9%8F%88%E5%A4%A7%E6%B4%97%E7%89%8C---%E7%94%A2%E6%A5%AD%E7%86%B1%E8%A9%B1-69367a7e62e42a422b8d242a"
+  },
+  {
+   "title": "PCB 專家聊 PTFE 總結（新浪微博，社群來源）",
+   "url": "https://www.sina.cn/weibo/detail/5346568044806192.html"
+  },
+  {
+   "title": "金居、富喬領軍走強（豐雲學堂）",
+   "url": "https://www.sinotrade.com.tw/richclub/news/6a433f4ade5d6e550418bd3f"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游：特殊玻纖紗（原絲）",
+   "description": "南亞玻纖絲因電子級細絲、低介電與低熱膨脹係數產品供應吃緊，增加細絲與特殊玻纖產量並調升售價。",
+   "global_players": [
+    "日東紡（日本，T-glass占比最高）",
+    "Saint-Gobain（NE玻璃）",
+    "中國巨石",
+    "泰山"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "玻纖絲自產",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "紗布整合能力強，玻纖布段競爭者",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "中游：電子級玻纖布",
+   "description": "7628標準布2026年8月相較2025Q3約漲140%；業界庫存降至約3～10天，織布廠改採預付款或配額制；高階布缺貨延伸至2027年下半年，法人估2026年全年漲幅至少20%～30%，市場預期年底有機會翻倍（口徑不一）。",
+   "global_players": [
+    "日東紡（T-glass）",
+    "Saint-Gobain（NE）",
+    "中國巨石",
+    "泰山"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "玻纖布約占電子材料營收5～6%，成長最快",
+     "impact": "受惠"
+    },
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "投入22.5億元擴產，預計至2026年產能成長3倍",
+     "impact": "中性"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "7月營收年增68.11%，創歷史新高",
+     "impact": "中性"
+    },
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "主力為電子級玻纖布，石英布também布局；注意股",
+     "impact": "中性"
+    },
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "日東紡持股近五成，營收百分之百來自玻纖布相關產品",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "中游：銅箔（高頻HVLP）",
+   "description": "媒體報導銅箔缺口超過三成；南亞銅箔因高頻需求強勁，接單占比提高。",
+   "global_players": [
+    "中國廠",
+    "日本廠（資料有限）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "高頻銅箔接單占比提高，HVLP5仍在開發中",
+     "impact": "受惠"
+    },
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "銅箔競爭者，7月營收年增54.87%",
+     "impact": "中性"
+    },
+    {
+     "code": "4989",
+     "name": "榮科",
+     "role": "銅箔競爭者，7月營收年增105.42%",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "中游：銅箔基板CCL",
+   "description": "南亞8、9月CCL售價逐月上修，單月幅度約3%～10%；TPCA與工研院預估2026年全球CCL市場約215億美元，年增約34.2%。",
+   "global_players": [
+    "中國生益",
+    "建滔"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "9月電子材料營收增加94.1億元，其中售價上漲貢獻約52.3億元",
+     "impact": "受惠"
+    },
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "大園廠2026年第4季量產，長約鎖料，受惠最扎實",
+     "impact": "中性"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "料源受限，稼動率70%～75%（媒體說法）",
+     "impact": "中性"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "M6以下營收占比超過9成，M9已通過美系GPU認證，2027小量出貨",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "替代路線：PTFE無布",
+   "description": "PTFE填料型CCL尚在認證中，瞄準2027年導入AI伺服器PCB；NVIDIA正交背板材料選擇傳聞可能轉向PTFE無布化技術，屬長線風險。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "8039",
+     "name": "台虹",
+     "role": "PTFE填料型CCL切入，傳聞為主、認證中",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "下游：PCB與載板",
+   "description": "2026年7月盤中隨PCB族群一起走強；與南亞供貨關係未確認；中低階PCB買方可能面臨成本上升（推論）。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3044",
+     "name": "健鼎",
+     "role": "盤面連動，供貨關係未確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "盤面連動，供貨關係未確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2316",
+     "name": "楠梓電",
+     "role": "盤面連動，供貨關係未確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "終端需求",
+   "description": "美系四大雲端服務供應商擴大資本支出，直接帶動電子材料缺貨與漲價；NVIDIA Rubin平台與資料中心擴建改寫高階玻纖布需求規則。",
+   "global_players": [
+    "美系四大雲端服務供應商",
+    "NVIDIA"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}
