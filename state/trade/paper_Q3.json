@@ -17,7 +17,7 @@
    "r0": 0.9785912777780794,
    "realized": -82.23200038909911,
    "half_done": true,
-   "days": 3,
+   "days": 4,
    "exit_next": ""
   },
   {
@@ -34,7 +34,7 @@
    "r0": 0.38168652877280707,
    "realized": -179.56,
    "half_done": false,
-   "days": 1,
+   "days": 2,
    "exit_next": ""
   }
  ],
@@ -63,33 +63,29 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-15",
+ "last_date": "2026-10-16",
  "regime": "多頭",
  "blocked": [
   {
-   "code": "2884",
-   "name": "玉山金",
+   "code": "2882",
+   "name": "國泰金",
    "setup": "突破",
    "theme": "金融",
-   "contract": "DNF",
-   "risk_one": 3423.4445204693316,
-   "need_capital": 171172.2260234666,
-   "reserve_one": 39527.99938201904
+   "contract": "CKF",
+   "risk_one": 9263.279815576027,
+   "need_capital": 463163.9907788013,
+   "reserve_one": 93960.00000000001
   },
   {
-   "code": "6278",
-   "name": "台表科",
+   "code": "2377",
+   "name": "微星",
    "setup": "突破",
-   "theme": "台表科（6278）題材與產業",
-   "contract": "KEF",
-   "risk_one": 45311.11001881129,
-   "need_capital": 2265555.5009405646,
-   "reserve_one": 245430.0
+   "theme": "供需事件：英特爾工廠爆炸 PC 業警戒 供貨宏碁、華碩等 ",
+   "contract": "GIF",
+   "risk_one": 14084.153157343962,
+   "need_capital": 704207.6578671981,
+   "reserve_one": 130815.0
   }
  ],
- "last_events": [
-  "🟢 模擬進場 1718 中纖｜EYF 1 口 @ 12.6｜停損 11.8｜突破",
-  "🟢 模擬進場 2002 中鋼｜CBF 2 口 @ 19.5｜停損 19.1｜突破",
-  "🔴 模擬出場 1718 中纖 @ 11.8（停損）｜損益 -1,843（-1.1R）"
- ]
+ "last_events": []
 }
