@@ -19,6 +19,13 @@ research:                     # 題材研究員（需要 GitHub Secret：ANTHROP
   image_model: claude-haiku-5-5
   image_price_per_mtok: {input: 0.1, output: 0.5}   # Haiku 5.5 每百萬 token 美元（提示超過 10 萬 token 的部分較貴，圖片貼文用不到）
   push_to: research           # 推到研究機器人（沒設定時用新聞機器人）
+  prefetch:                   # 連動預研：看到 A 就把 B、C 和上下游先排進研究，推播時才不會慢半拍
+    enabled: true
+    per_topic: 3              # 每份研究完成後，最多往外排幾檔相關個股（同層優先，其次上下游）
+    per_day: 8                # 每天最多排幾檔（研究完成、新聞點名、市場掃描共用）
+    max_depth: 2              # 最多往外擴幾層（A→B→C），不會無限擴下去
+    stale_days: 3             # 已知族群的個股漲停，超過幾天沒有任何研究提到它，就重新排進研究
+    expire_days: 3            # 預研排進佇列超過幾天還沒研究就丟掉
   # 以下用來估算花費，請以 Anthropic 官網價格為準
   price_per_mtok: {input: 2, output: 10}   # 預設單價（Sonnet 5.5）；Haiku 5.5 的單價在 ai.MODEL_PRICES，換模型會自動套用
   web_search_usd_per_1k: 10                # 網路搜尋每千次美元
