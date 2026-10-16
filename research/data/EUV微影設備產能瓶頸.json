@@ -1,0 +1,442 @@
+{
+ "topic": "EUV微影設備產能瓶頸",
+ "one_line": "ASML 確認 2027、2028 年 EUV 供給依目前規劃不足以完全滿足客戶需求，擴產速度追不上訂單；台股受惠點集中在 EUV 光罩傳送、次系統模組與精密零件，但多數與 ASML 的訂單關係尚未經公司公告證實。",
+ "status": "混合",
+ "horizon": "長期（1年以上）",
+ "keywords": [
+  "EUV",
+  "極紫外光",
+  "微影",
+  "ASML",
+  "High-NA",
+  "Low-NA",
+  "EXE:5200B",
+  "NXE:3800E",
+  "蔡司",
+  "光罩盒",
+  "光罩傳送",
+  "13.5奈米",
+  "帆宣",
+  "家登",
+  "京鼎"
+ ],
+ "catalysts": [
+  "2026 年第四季淨銷售額指引 142 至 152 億歐元",
+  "2027 年 6 月 10 日 ASML Capital Markets Day 更新長期觀點",
+  "EUV 訂單延伸到 2028 年，2027 年幾乎已全數售罄（路透報導）",
+  "ASML 研究 2028 年擴產超過 30%；摩根大通指 2028 年 EUV 產量可能提高至 110 台以上（研究中／傳聞）",
+  "部分客戶表達想下 2029 年訂單的意願",
+  "2030 年台積電目標導入 High-NA 先進邏輯",
+  "2031 年 12 吋 EUV 光罩試產線目標年份"
+ ],
+ "risks": [
+  "瓶頸可能轉移：若 ASML 組裝速度提升、蔡司擴產到位，瓶頸可能轉到光罩或光源",
+  "需求集中於 AI：若 AI 投資放緩，擴產與訂單都會受影響",
+  "股價已反映預期：ASML 預估本益比約 41 倍，高於產業平均與其自身五年平均",
+  "台股供應關係多為媒體描述，缺乏公司公告的金額與客戶資料",
+  "High-NA 時程與成本：單機售價超過 3.5 億歐元，台積電目前無計畫採用最新型機台，導入延後將使相關訂單後移",
+  "地緣政治：中國區約占 ASML 2026 年全年淨銷售額的 20%，出口管制仍是變數",
+  "替代技術與競爭：中國可能有多個團隊開發 EUV 原型機，尚未商業化（傳聞）"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表：Low-NA EUV 與 High-NA EUV",
+   "columns": [
+    "項目",
+    "Low-NA EUV（目前量產主力）",
+    "High-NA EUV（新一代）"
+   ],
+   "rows": [
+    [
+     "波長",
+     "13.5 nm（兩者相同）",
+     "13.5 nm（兩者相同）"
+    ],
+    [
+     "數值孔徑 NA",
+     "0.33",
+     "0.55"
+    ],
+    [
+     "單機售價（約）",
+     "約 2 億美元",
+     "約 4 億美元，幾乎是現行 EUV 的兩倍"
+    ],
+    [
+     "單次曝光面積",
+     "基準",
+     "因光學設計，單次曝光面積約縮小一半"
+    ],
+    [
+     "單次曝光成本",
+     "基準",
+     "約為 Low-NA 的 2.5 倍（引用 IBM 數據）"
+    ],
+    [
+     "產出速度（wph，晶圓/小時）",
+     "升級後可達 230 WPH；新世代機型規劃達 260 WPH；2029 年機型目標 300 WPH 以上",
+     "尚無公開量產產出目標；現有 High-NA 機台的可用率已接近九成"
+    ],
+    [
+     "光源功率",
+     "從 600 瓦提升至 1,000 瓦（ASML 宣示）",
+     "未見公開數據"
+    ],
+    [
+     "2030 年產出目標",
+     "每台每小時約 330 片，高於現在的約 220 片，產量提升約五成",
+     "2030 年前後才預計進入先進邏輯量產"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "Low-NA NXE:3800E",
+   "composition": "Low-NA EUV 機型",
+   "spec": "2025 年主力機型，銷售表現良好",
+   "application": "7 奈米及以下關鍵層；目前台積電 2 奈米與 A16 仍以 Low-NA 為主"
+  },
+  {
+   "name": "Low-NA NXE:3800F",
+   "composition": "Low-NA EUV 機型",
+   "spec": "規劃 2027 年推出，產能超過每小時 260 片",
+   "application": "2027 年擴產的主要機型"
+  },
+  {
+   "name": "Low-NA NXE:4200G",
+   "composition": "Low-NA EUV 機型",
+   "spec": "規劃 2029 年推出，產能突破每小時 300 片",
+   "application": "2029 年後的主力升級路線"
+  },
+  {
+   "name": "Low-NA NXE:4200H",
+   "composition": "Low-NA EUV 機型",
+   "spec": "規劃 2031 年推出，目標每小時 330 片",
+   "application": "2031 年後的成本下降路徑"
+  },
+  {
+   "name": "High-NA EXE:5000／5200B",
+   "composition": "High-NA EUV 機型",
+   "spec": "EXE:5200B 已於 2025 年完成驗收後認列營收；Intel 已曝光超過 100 萬片晶圓",
+   "application": "2 奈米以下；三星規劃 2028 年導入大量生產，台積電則為 2030 年"
+  },
+  {
+   "name": "未來：12 吋 EUV 光罩",
+   "composition": "12 吋 EUV 光罩與 12 吋 High-NA 技術",
+   "spec": "台積電與 ASML 目標 2031 年前建立 12 吋光罩試產線，2033 年前讓 12 吋 High-NA 達全面量產就緒",
+   "application": "取代 6 吋光罩需拼接的限制，支援大型 AI 晶片"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "概念 1：為什麼 High-NA 不是「換機就升級」——曝光面積減半",
+   "points": [
+    "原因：NA 從 0.33 提升到 0.55，收光角度變大，解析度提高，但單次曝光能涵蓋的面積縮小",
+    "影響：同一片晶圓需要多曝光一次，等於換了新機台，仍然要曝光兩次",
+    "代價：機台單價約為兩倍，單次曝光成本約 2.5 倍，兩者疊加後，每片晶圓成本的差距比機台價差更大",
+    "結論：High-NA 要能取代多重曝光方案，必須減少曝光層數或提高良率，否則經濟效益不足"
+   ]
+  },
+  {
+   "title": "概念 2：為什麼光源功率直接影響產能",
+   "points": [
+    "原因：曝光時間與光源強度成反比，光源越強，每片晶圓曝光時間越短",
+    "影響：光源功率從 600 瓦提高到 1,000 瓦，目標是 2030 年每小時產出提升約五成",
+    "代價：提高功率需要更高頻率的錫滴噴射與更穩定的雷射系統，技術門檻與維護成本同步上升",
+    "結論：光源是 Low-NA 產能擴充中，少數不靠增加機台數量就能提升產出的槓桿"
+   ]
+  },
+  {
+   "title": "概念 3：為什麼瓶頸在光學與組裝，而不只是機台數量",
+   "points": [
+    "原因：蔡司 SMT 獨家供應 ASML EUV 掃描機的透鏡、反射鏡與照明系統，是限制產量的關鍵之一",
+    "影響：ASML 2025 年向蔡司採購金額約 44.1 億歐元，並提供貸款與預付款支持蔡司擴產",
+    "代價：摩根大通認為 ASML 擴產限制並非供應鏈，而是 EUV 組裝速度；掃描機生產週期正從約 22 週壓縮至 15 至 16 週",
+    "分歧：ASML 財務長表示，此前困擾行業的零件短缺（尤其與蔡司光學相關者）已有效解決；兩種說法並存，需以後續交貨數據驗證"
+   ]
+  },
+  {
+   "title": "概念 4：為什麼擴產是「按訂單信號」而非「按合約」",
+   "points": [
+    "原因：EUV 機台從下單到交貨週期長，ASML 必須提前備料與擴產",
+    "影響：管理層表示，公司是依據客戶需求信號備貨，而非等待簽約合約",
+    "代價：若 AI 投資放緩，2027、2028 年的擴產計畫可能面臨產能利用率與庫存風險；對台股供應商也會放大訂單波動"
+   ]
+  }
+ ],
+ "conclusion": [
+  "性能：看解析度與產出速度（wph）",
+  "成本：看每片晶圓總成本，包含曝光次數與機台折舊；High-NA 若曝光次數不減，成本劣勢難以翻身",
+  "良率：客戶完成製程驗證並增加應用層別後，才會帶動更多機台訂單",
+  "量產可行性：光學、光源、組裝與零組件的產能能否同步擴張",
+  "目前判斷：2026 至 2028 年 Low-NA 仍是產能主角；High-NA 是 2029 年後的變數",
+  "台股供應商應追蹤：是否進入 ASML 供應鏈認證、訂單能見度是否延伸到 2027 年以後、毛利率是否隨產量放大而改善"
+ ],
+ "sources": [
+  {
+   "title": "ASML 2026 第三季財報新聞稿",
+   "url": "https://investor.asml.com/news-releases/news-release-details/asml-reports-eu11.7-billion-total-net-sales-and-eu5.0-billion-net-income-q3-2026"
+  },
+  {
+   "title": "ASML 2026 第三季法說簡報（SEC 6-K）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000937966/000162828026065813/a2026_10x14xpresentation.htm"
+  },
+  {
+   "title": "ASML 2026 第三季法說逐字稿摘要（Motley Fool）",
+   "url": "https://www.fool.com/earnings/call-transcripts/2026/10/14/asml-asml-q3-2026-earnings-call-transcript/"
+  },
+  {
+   "title": "ASML 2026 第二季財報新聞稿",
+   "url": "https://investor.asml.com/news-releases/news-release-details/q2-2026-financial-results"
+  },
+  {
+   "title": "ASML 2025 全年財報（SEC 6-K）",
+   "url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026003701/pressreleasefinancialresul.htm"
+  },
+  {
+   "title": "ASML 2025 第四季法說逐字稿",
+   "url": "https://ourbrand.asml.com/m/285dcba22c2bf203/original/2026_01_28-ASML-Transcript-investor-call-Q4-2025.pdf"
+  },
+  {
+   "title": "Investing.com，ASML Q3 2026 簡報摘要",
+   "url": "https://www.investing.com/news/company-news/asml-q3-2026-slides-record-sales-driven-by-ai-chip-demand-93CH-4949601"
+  },
+  {
+   "title": "Startup Fortune，ASML 上修 2026 指引",
+   "url": "https://startupfortune.com/asml-raises-its-2026-sales-outlook-for-the-third-time-this-year/"
+  },
+  {
+   "title": "Pomegra，ASML Q3 2026 分析",
+   "url": "https://pomegra.io/news/asml-q3-2026-euv-demand-outruns-2027-capacity"
+  },
+  {
+   "title": "ESM China，摩根大通分析",
+   "url": "https://www.esmchina.com/news/14598.html"
+  },
+  {
+   "title": "EET China，ASML 2027 產能分析",
+   "url": "https://www.eet-china.com/news/202604176679.html"
+  },
+  {
+   "title": "快科技，蔡司與 ASML 擴產",
+   "url": "https://news.mydrivers.com/1/1139/1139232.htm"
+  },
+  {
+   "title": "Vocus，2026 年 4 月法說整理",
+   "url": "https://vocus.cc/article/6a4d01b6fd89780001c177a2"
+  },
+  {
+   "title": "經濟日報，ASML 光源功率與帆宣",
+   "url": "https://money.udn.com/money/story/5612/9342741"
+  },
+  {
+   "title": "鉅亨，High-NA 時程",
+   "url": "https://news.cnyes.com/news/id/6630884"
+  },
+  {
+   "title": "豐雲學堂，台積電與 ASML 12 吋光罩",
+   "url": "https://www.sinotrade.com.tw/richclub/hotstock/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E6%94%9C%E6%89%8BASML%E6%8E%A8High-NA-EUV-%E5%AE%B6%E7%99%BB-%E5%85%89%E7%BD%A9%E7%AD%89%E5%8F%97%E6%83%A0%E8%82%A1%E5%8D%A1%E4%BD%8D2033%E5%85%88%E9%80%B2%E8%A3%BD%E7%A8%8B%E5%95%86%E6%A9%9F-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a9fc25dde836c356a512a9c"
+  },
+  {
+   "title": "科技新報，High-NA 與台積電",
+   "url": "https://technews.tw/2026/09/19/tsmc-high-na-euv/"
+  },
+  {
+   "title": "財訊雙週刊，台積電 High-NA",
+   "url": "https://www.wealth.com.tw/articles/fe219162-7908-4d42-8089-8349a38f71aa"
+  },
+  {
+   "title": "經濟日報，台積電暫緩 High-NA",
+   "url": "https://udn.com/news/story/6811/9458925"
+  },
+  {
+   "title": "上游洞見，兩奈米特用化學品",
+   "url": "https://vocus.cc/article/69799d60fd89780001e0336d"
+  },
+  {
+   "title": "財經 MoneyDJ，ASML 訂單與供應鏈",
+   "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=c442252f-bdd8-4114-bafd-3e5740a1fd68"
+  },
+  {
+   "title": "富果，京鼎法說備忘錄",
+   "url": "https://blog.fugle.tw/post/earnings-call-3413-2025-12-23"
+  },
+  {
+   "title": "經濟日報，台積電供應鏈整理（家登、迅得）",
+   "url": "https://money.udn.com/money/story/124512/9807393"
+  },
+  {
+   "title": "雅虎台灣，EUV 供應鏈（2024 年舊文）",
+   "url": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E7%A9%8Deuv%E5%A4%A7%E8%88%89%E6%8B%89%E8%B2%A8-%E4%BE%9B%E6%87%89%E9%8F%88%E6%A8%82-201000871.html"
+  },
+  {
+   "title": "Clarisonic，EUV 概念股整理（2023 年）",
+   "url": "https://www.clarisonic.com.tw/archives/111359"
+  },
+  {
+   "title": "雷天投資（RaySky），ASML 與台股概念股",
+   "url": "https://www.rayskyinvest.com/140635/asml-euv-stock-how-to-buy"
+  },
+  {
+   "title": "天下雜誌，台積電與 High-NA",
+   "url": "https://www.cw.com.tw/article/5142057"
+  },
+  {
+   "title": "Technosight，ASML 分析",
+   "url": "https://technosight.substack.com/p/asml-holdings-nv-asml-euv-monopoly"
+  },
+  {
+   "title": "Yahoo Finance，ASML 估值文章",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/asml-asml-euv-itself-41-121354133.html"
+  },
+  {
+   "title": "Robinhood，ASML 新聞摘要（替換零件調價）",
+   "url": "https://robinhood.com/us/en/stocks/ASML/"
+  },
+  {
+   "title": "經濟日報，TSMC N2 擴產（媒體報導）",
+   "url": "https://inews.setn.com/news/1906978"
+  },
+  {
+   "title": "Wikipedia，上海微電子（中國 EUV 進展）",
+   "url": "https://en.wikipedia.org/wiki/Shanghai_Micro_Electronics_Equipment"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "光學系統",
+   "description": "EUV 投影光學的透鏡、反射鏡與照明系統；蔡司 SMT 產能被視為 EUV 產量的關鍵瓶頸。",
+   "global_players": [
+    "蔡司（Zeiss SMT）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "光源系統",
+   "description": "以高功率雷射轟擊錫滴產生 13.5 奈米 EUV 光；光源功率從 600 瓦提升至 1,000 瓦是 ASML 當前的技術重點。",
+   "global_players": [
+    "ASML 子公司 Cymer",
+    "Gigaphoton"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "EUV 光罩與光罩傳送",
+   "description": "EUV 光罩需在真空與防塵環境下儲存與傳送；法人認為 EUV 機台增加，光罩盒使用量同步成長（引用 2024 年舊文，需再確認）。",
+   "global_players": [
+    "本次資料未列出完整名單，待補"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3680",
+     "name": "家登",
+     "role": "EUV 光罩載具與儲存；EUV 與 High-NA EUV 光罩盒通過 ASML 認證（網路整理資料）",
+     "impact": "受惠"
+    },
+    {
+     "code": "6438",
+     "name": "迅得",
+     "role": "國內率先切入晶圓廠自動化物料搬運，與家登合作 EUV 光罩儲存與搬運方案（金額待確認）",
+     "impact": "受惠"
+    },
+    {
+     "code": "2338",
+     "name": "光罩",
+     "role": "媒體列為 High-NA 相關概念股，光罩製造；供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "次系統、模組與廠務",
+   "description": "EUV 機台次系統模組代工、廠務與機電工程；帆宣在手訂單已突破 1,578 億元，以廠務工程為主，屬整體在手訂單而非 EUV 專屬金額。",
+   "global_players": [
+    "ASML 自身及其外包夥伴，本次未列出完整名單"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6196",
+     "name": "帆宣",
+     "role": "ASML EUV 機台次系統模組代工廠之一（網路整理資料）；EUV 營收占比未揭露",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "真空、密封與精密零組件",
+   "description": "真空吸盤、密封環與精密機械件是機台運作與晶圓傳送的必要零件；媒體報導 ASML 將對 EUV 與 DUV 替換零件調漲 10%（傳聞）。",
+   "global_players": [
+    "本次資料未列出完整名單，待補"
+   ],
+   "tw_stocks": [
+    {
+     "code": "7556",
+     "name": "意德士",
+     "role": "主力產品為全氟橡膠密封環，供應 EUV 機台真空吸盤（媒體報導，未見公司公告）",
+     "impact": "受惠"
+    },
+    {
+     "code": "3413",
+     "name": "京鼎",
+     "role": "法說提到自主研發 EUV 相關產品進入量產；主業為蝕刻、薄膜與檢測設備，客戶與金額待確認",
+     "impact": "受惠"
+    },
+    {
+     "code": "3178",
+     "name": "公準",
+     "role": "媒體常與家登、帆宣並列為 EUV 供應鏈受惠股，但無公開直接供應關係",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "光阻與化學材料",
+   "description": "EUV 光阻液全球主要供應商仍高度集中於日本三大廠（JSR、TOK、信越）。",
+   "global_players": [
+    "JSR",
+    "TOK",
+    "信越"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5434",
+     "name": "崇越",
+     "role": "媒體列為 High-NA 相關概念股，材料設備代理；供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "先進製程濕製程設備",
+   "description": "媒體文章認為 EUV 相關設備需求持續爆發（網路文章觀點，無公司證實）。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3131",
+     "name": "弘塑",
+     "role": "濕製程設備；產業相關，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "晶圓廠（下游客戶）",
+   "description": "英特爾已用 High-NA EUV 曝光超過 100 萬片晶圓；三星擬 2028 年量產；台積電目標 2030 年導入先進邏輯。台積電 N2 擴產為媒體引述傳聞。",
+   "global_players": [
+    "台積電",
+    "英特爾",
+    "三星"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "客戶端；需求強勁，但 EUV 機台取得受限，High-NA 導入時程與成本仍有爭議",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

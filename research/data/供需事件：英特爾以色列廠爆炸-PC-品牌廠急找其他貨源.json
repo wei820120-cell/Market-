@@ -1,0 +1,429 @@
+{
+ "topic": "供需事件：英特爾以色列廠爆炸 PC 品牌廠急找其他貨源",
+ "one_line": "10/14 英特爾以色列 Kiryat Gat 廠爆炸起火，Intel 7 產能本已吃緊且優先給伺服器，PC 端 CPU 缺貨可能再惡化；台股受傷標的僅為潛在，待證實。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "英特爾",
+  "Intel",
+  "Kiryat Gat",
+  "Fab 28",
+  "Fab 38",
+  "NF3",
+  "三氟化氮",
+  "Intel 7",
+  "Intel 18A",
+  "CPU缺貨",
+  "PC出貨",
+  "Raptor Lake",
+  "Panther Lake",
+  "三福化工"
+ ],
+ "catalysts": [
+  "英特爾對產線影響的說明",
+  "事故原因的官方調查結果",
+  "NF3 是否涉入",
+  "PC 品牌商 Q4 備貨與 CPU 報價調整",
+  "英特爾是否進一步推動 18A 導入",
+  "Fab 38 進度（預計 2026 年完工）"
+ ],
+ "risks": [
+  "衝擊可能有限，目前無證據顯示 Fab 28 已停產",
+  "PC 出貨大幅下滑可能使缺貨自然降溫",
+  "英特爾可能以低規格 SKU 回收、重分配產能分散影響",
+  "AMD 方案也受產能限制，替代有成本",
+  "CPU 漲價與交期拉長在事故前已發生，增量難以單獨量化"
+ ],
+ "spec_tables": [
+  {
+   "title": "英特爾製程與產品（供貨影響的核心）",
+   "columns": [
+    "項目",
+    "Intel 7（Fab 28 主力）",
+    "Intel 18A"
+   ],
+   "rows": [
+    [
+     "製程來歷",
+     "前身為 10nm Enhanced SuperFin，2021–2022 年導入",
+     "英特爾最先進製程"
+    ],
+    [
+     "代表產品",
+     "Raptor Lake 消費級、Xeon 6 I/O die 等（未必與本廠直接對應）",
+     "Panther Lake（Core Ultra Series 3）與 Wildcat Lake（Core Series 3）"
+    ],
+    [
+     "供貨狀況",
+     "英特爾向夥伴表示，18A 產品供貨比 Alder Lake、Raptor Lake、Arrow Lake 等舊製程健康",
+     "良率據報每月改善約 7%–8%（執行長在 CNBC 受訪時表示）"
+    ],
+    [
+     "擴產",
+     "無擴產計畫（見上）",
+     "以新產能接棒"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "三氟化氮（NF3）",
+   "columns": [
+    "項目",
+    "數值／說明",
+    "來源"
+   ],
+   "rows": [
+    [
+     "用途",
+     "腔體清潔、薄膜製程",
+     "主要用來清潔晶片設備的製程腔體"
+    ],
+    [
+     "危害性",
+     "不可燃；吸入有毒；具氧化性",
+     "消防指稱為不可燃、具氧化性的氣體"
+    ],
+    [
+     "供應商",
+     "全球主要四家，美國 Air Products 最大；台灣代理為三福化工",
+     "全球供應 NF3 的主要廠商有四家，三福化工是台灣代理商（待確認其股票代號）"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "供需指標",
+   "columns": [
+    "指標",
+    "數值",
+    "性質"
+   ],
+   "rows": [
+    [
+     "Q1 伺服器 CPU 均價",
+     "年增 27%，出貨量年減 5%",
+     "已證實（英特爾 10-Q 引述）"
+    ],
+    [
+     "PC 出貨",
+     "Q3 年減 20.1%",
+     "已證實（IDC）"
+    ],
+    [
+     "CPU 交期",
+     "Chromebook 等主流產品交期拉長至約一年",
+     "媒體報導"
+    ],
+    [
+     "報價",
+     "英特爾與 AMD 據報下半年再漲 8%–17%",
+     "據報，未證實"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "成熟世代",
+   "composition": "Intel 10 / Intel 7",
+   "spec": "產能吃緊，不擴產",
+   "application": "消費級 PC、Xeon I/O die"
+  },
+  {
+   "name": "過渡世代",
+   "composition": "Intel 3",
+   "spec": "英國與美國同為供給緊縮的製程節點之一（原文為 Intel 7 與 Intel 3 同時受限）",
+   "application": "伺服器"
+  },
+  {
+   "name": "新世代",
+   "composition": "Intel 18A",
+   "spec": "首款伺服器級 18A 產品 Xeon 6+ 已推出",
+   "application": "Panther Lake、Wildcat Lake、Xeon 6+"
+  },
+  {
+   "name": "下一步",
+   "composition": "Intel 14A",
+   "spec": "規劃於俄亥俄州 Fab 27 於 2030–2032 年間投產",
+   "application": "未來高階製程"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "不停工也會缺貨：產能分配如何排擠 PC",
+   "points": [
+    "英特爾的 Intel 7 產能有限，且公司不打算擴充這些節點的產能",
+    "產能被優先分配給利潤較高的伺服器與工業產品；有 PC 業者高層指出工業用 CPU 毛利約高約兩成",
+    "英特爾要求客戶接受新製程，不接受 18A 者將其配給其他 PC 廠商",
+    "許多 PC 廠為配合英特爾只做了少數 18A 機型，並非來自消費者需求",
+    "即使 Fab 28 恢復運作，PC 端 Intel 7 配額也難大幅回升，事故增量衝擊主要落在既有缺口上"
+   ]
+  },
+  {
+   "title": "為什麼 PC 廠急找其他貨源卻換不快",
+   "points": [
+    "換 CPU 還牽涉主機板平台、韌體、驅動與認證，通常要數月（產業常識推論，未有直接來源）",
+    "替代來源本身也吃緊：英特爾與 AMD 的產能都受限",
+    "目前實際做法是擴大 AMD 與高通方案（媒體報導，比例未揭露）",
+    "聯發科在 Chromebook 等低階 CPU 為供應不足下的受惠者角色，但與英特爾是競爭關係"
+   ]
+  },
+  {
+   "title": "NF3 事故對材料端的影響為何看不出來",
+   "points": [
+    "NF3 是製程清潔氣體，不直接進入晶片，單次事故不必然造成晶圓報廢（技術推論）",
+    "NF3 供應鏈集中，全球主要供應商只有四家，美國廠商市占最大；特定廠區供氣受阻，替代來源與認證需要時間",
+    "尚不清楚運送的是否為 NF3，或是否直接引發爆炸，材料端實際影響要等後續公告"
+   ]
+  }
+ ],
+ "conclusion": [
+  "判斷誰勝出不應只看單一規格，需同時比較產能可恢復性、18A 良率與量產、成本與價格、認證與平台、需求五點",
+  "五點中最關鍵的是 Fab 28 能否短期恢復 Intel 7 出貨，但英特爾尚未揭露，現階段無法判定",
+  "目前沒有任何台股公司有足夠證據被標為受惠；PC 品牌屬潛在受傷，待證實",
+  "PC 需求疲弱可能讓缺貨緩解，反而降低事故實際衝擊"
+ ],
+ "sources": [
+  {
+   "title": "經濟日報：英特爾以色列廠爆炸 PC 品牌廠急找其他貨源",
+   "url": "https://money.udn.com/money/story/5612/9817875"
+  },
+  {
+   "title": "經濟日報：英特爾工廠爆炸 PC 業警戒 供貨宏碁、華碩等 CPU 產品恐生變",
+   "url": "https://money.udn.com/money/story/5612/9817871"
+  },
+  {
+   "title": "鉅亨網：英特爾以色列工廠爆炸 冒出濃密黑煙 3人重傷",
+   "url": "https://news.cnyes.com/news/id/6630755"
+  },
+  {
+   "title": "TechNews：英特爾以色列先進晶圓廠驚傳爆炸、疑涉特殊氣體",
+   "url": "https://technews.tw/2026/10/15/intels-fab-38-explosion-in-israel-injures-3-people"
+  },
+  {
+   "title": "Calcalist：Three seriously injured in explosion at Intel's Kiryat Gat plant",
+   "url": "https://www.calcalistech.com/ctechnews/article/lny6n1xxx"
+  },
+  {
+   "title": "Yahoo：Two Workers Killed in Explosion at Intel's Kiryat Gat Chip Plant",
+   "url": "https://www.yahoo.com/news/world/articles/two-workers-killed-explosion-intel-170737525.html"
+  },
+  {
+   "title": "Data Center Dynamics：Two workers killed, third injured, in explosion at Intel's Kiryat Gat fab",
+   "url": "https://www.datacenterdynamics.com/en/news/two-workers-killed-third-injured-in-explosion-at-intels-kiryat-gat-fab-in-israel/"
+  },
+  {
+   "title": "Yahoo：Second factory worker injured ... pronounced dead",
+   "url": "https://www.yahoo.com/news/world/articles/second-factory-worker-injured-suspected-111914404.html"
+  },
+  {
+   "title": "Xinhua：3 seriously wounded in explosion in Israel Intel plant",
+   "url": "http://www.news.cn/english/20261014/bf9275bf4e5a4455a397ea3e8a59310f/c.html"
+  },
+  {
+   "title": "Wccftech：Intel's Fab 38 Explosion In Israel",
+   "url": "https://wccftech.com/intels-fab-38-explosion-in-israel-injures-3-people-and-draws-8-rescue-teams-including-hazmat-units-as-authorities-suspect-a-nitrogen-trifluoride-cylinder/"
+  },
+  {
+   "title": "TrendForce：Intel Flags CPU Shortages on Intel 10 and 7",
+   "url": "https://www.trendforce.com/news/2025/10/28/news-intel-flags-cpu-shortages-on-intel-10-and-7-nodes-as-demand-outpaces-supply-into-2026/"
+  },
+  {
+   "title": "Tom's Hardware：Intel tells PC makers to adopt 18A CPUs or lose their supply",
+   "url": "https://www.tomshardware.com/tech-industry/intel-tells-pc-makers-to-adopt-18a-cpus-or-lose-their-allocations"
+  },
+  {
+   "title": "Tom's Hardware：CPU requirements for AI workloads",
+   "url": "https://www.tomshardware.com/pc-components/cpus/shifting-need-for-cpus-in-ai-workloads-drives-intensifying-shortages-price-hikes"
+  },
+  {
+   "title": "Tom's Hardware：Intel hamstrung by supply shortages",
+   "url": "https://www.tomshardware.com/pc-components/cpus/intel-hamstrung-by-supply-shortages-across-its-business-including-production-capacity-says-it-will-prioritize-data-center-cpus-over-consumer-chips-warns-of-price-hikes"
+  },
+  {
+   "title": "TechSpot：Intel can't spin up 18A fast enough",
+   "url": "https://www.techspot.com/news/110004-intel-cant-spin-up-18a-fast-enough-intel.html"
+  },
+  {
+   "title": "Intel SEC 8-K（Q2 2026 財報）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000050863/000005086326000155/q226earningsrelease.htm"
+  },
+  {
+   "title": "Intel SEC ARS FY2026",
+   "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086326000060/intc014890-arsa.pdf"
+  },
+  {
+   "title": "鉅亨網：CPU 大缺貨 英特爾連低良率晶片都賣光",
+   "url": "https://news.cnyes.com/news/id/6434277"
+  },
+  {
+   "title": "經濟日報：CPU 漲價 PC 品牌廠頭疼",
+   "url": "https://money.udn.com/money/story/5607/9455750"
+  },
+  {
+   "title": "技術新報：先進產能全給 AI 伺服器",
+   "url": "https://technews.tw/2026/07/15/intel-amd-legacy-cpus-show-up-in-new-pc-builds-as-they-prioritize-server-market/"
+  },
+  {
+   "title": "技術新報：CPU 缺貨潮來了 英特爾、AMD 傳 3~4 月全面漲價",
+   "url": "https://technews.tw/2026/03/26/supply-crunch-in-intel-amd-cpus-deals-fresh-blow-to-pc-and-server-makers/"
+  },
+  {
+   "title": "商業周刊：CPU 大缺貨、英特爾翻身",
+   "url": "https://www.businessweekly.com.tw/focus/indep/6022044"
+  },
+  {
+   "title": "工商時報：CPU 大缺貨！英特爾連低良率晶片都賣光光",
+   "url": "https://www.ctee.com.tw/news/20260428700477-430704"
+  },
+  {
+   "title": "BusinessFocus：英特爾 AMD 下半年漲價 8% 至 17%",
+   "url": "https://businessfocus.io/article/353724/cpu%E6%BC%B2%E5%83%B9-%E8%8B%B1%E7%89%B9%E7%88%BE-amd-ai%E7%AE%97%E5%8A%9B"
+  },
+  {
+   "title": "日媒報導轉載（UDN）：英特爾靠「缺貨」促 PC 廠採購高價 18A 製程 CPU",
+   "url": "https://udn.com/news/story/6811/9511873"
+  },
+  {
+   "title": "Digitimes 報導（NF3 供應格局，較舊）",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000230908_7T08VIUA14YCJ97XIAPSD"
+  },
+  {
+   "title": "維基百科：List of Intel manufacturing sites",
+   "url": "https://en.wikipedia.org/wiki/List_of_Intel_manufacturing_sites"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "特殊氣體",
+   "description": "提供半導體腔體清潔與蝕刻用氣體；本次事故前後的報價與庫存資料未查得。",
+   "global_players": [
+    "Air Products（美）",
+    "三井",
+    "關東電化",
+    "Central Gas"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "晶圓製造",
+   "description": "英特爾執行長表示 AI 硬體缺貨可能持續兩至三年；Intel 7 無擴產計畫，Intel 18A 以新產能接棒。",
+   "global_players": [
+    "英特爾"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "晶圓代工；供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "封裝與載板",
+   "description": "全產業基板短缺，預計持續到 2026 年。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "載板；產業相關，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "CPU 設計與平台",
+   "description": "英特爾表示短缺橫跨多數業務，Intel 10 與 Intel 7 特別吃緊；Q1 伺服器 CPU 均價年增 27%。",
+   "global_players": [
+    "英特爾",
+    "AMD",
+    "高通"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2454",
+     "name": "聯發科",
+     "role": "競爭者；Chromebook 等 CPU 替代選項，待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "主機板與 PC 品牌",
+   "description": "華碩等業者已開始漲價；記憶體與英特爾 CPU 缺貨與漲價是主要壓力；Q3 全球 PC 出貨年減 20.1%。",
+   "global_players": [
+    "華碩",
+    "宏碁",
+    "聯想",
+    "惠普"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2353",
+     "name": "宏碁",
+     "role": "PC 品牌；英特爾機型供貨可能減少（潛在，待證實）",
+     "impact": "受傷"
+    },
+    {
+     "code": "2357",
+     "name": "華碩",
+     "role": "PC 品牌；英特爾機型供貨可能減少，已先行調漲價格（潛在，待證實）",
+     "impact": "受傷"
+    },
+    {
+     "code": "2376",
+     "name": "技嘉",
+     "role": "主機板／PC；英特爾機型供貨可能減少（潛在，待證實）",
+     "impact": "受傷"
+    },
+    {
+     "code": "2377",
+     "name": "微星",
+     "role": "主機板／PC；英特爾機型供貨可能減少（潛在，待證實）",
+     "impact": "受傷"
+    }
+   ]
+  },
+  {
+   "layer": "代工組裝（ODM）",
+   "description": "筆電與桌機代工組裝；產業相關，供貨關係待確認。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "ODM；供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2324",
+     "name": "仁寶",
+     "role": "ODM；供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "ODM；供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2356",
+     "name": "英業達",
+     "role": "ODM；供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "4938",
+     "name": "和碩",
+     "role": "ODM；供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

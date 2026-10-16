@@ -1,0 +1,468 @@
+{
+ "topic": "供需事件：荷姆茲海峽又出事！新加坡籍貨櫃船遇襲沉沒 21名",
+ "one_line": "荷姆茲海峽通行風險已轉為保險費率、運價與原料供應的成本問題，貨櫃航運受惠、航空受傷、石化雙面。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "荷姆茲海峽",
+  "Hormuz",
+  "GFS Pride",
+  "戰爭險",
+  "War risk",
+  "Kpler",
+  "布蘭特原油",
+  "SCFI",
+  "貨櫃附加費",
+  "燃油附加費",
+  "輕油",
+  "台塑化",
+  "VLCC",
+  "AIS關閉"
+ ],
+ "catalysts": [
+  "Kpler 初步數據是否上修（通常會上修 1.5 至 2 倍）",
+  "美國期中選舉前的伊朗攻擊強度（傳聞）",
+  "戰爭險 7 日續約報價的變化",
+  "美國 9 月 CPI 公布",
+  "航運與石化的第三季財報與法說（日期待確認）",
+  "俄羅斯柴油供應的傳聞"
+ ],
+ "risks": [
+  "事件真相未定：伊朗稱水雷，海事安全來源稱投射物，兩方說法未能獨立驗證",
+  "運價可能已先計價：10/12 三雄漲停早於沉船事件",
+  "供給未全斷：約 40% 的出口已繞過海峽",
+  "航運獲利不只來自戰爭：旺季、塞港與提前下單都在推升運價",
+  "停戰後的回落風險：6 月協議時保費曾回落到 2%",
+  "石化的反向風險：海峽重啟時石化股反而受益"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表（運輸、保險與原料）",
+   "columns": [
+    "指標",
+    "戰前／基準",
+    "目前（最新查到）",
+    "備註"
+   ],
+   "rows": [
+    [
+     "海峽原油通行量（Kpler 7 日平均）",
+     "17,145 kbd",
+     "9,275 kbd（10/12），低約 46%",
+     "初步值，常上修"
+    ],
+    [
+     "海峽油輪通行量（Kpler 7 日平均）",
+     "17,145 kbd",
+     "7,627 kbd，約低 56%",
+     "與上列口徑不同，勿直接相加"
+    ],
+    [
+     "戰爭險保費（占船價）",
+     "0.10%–0.25%",
+     "2026/7 新加坡海事局估 3.5%–7.5%（每趟）；Marsh 於 7/22 估 7.5%–10%",
+     "7 日一保，波動大"
+    ],
+    [
+     "1 億美元油輪單趟戰爭險",
+     "約 25 萬美元",
+     "約 300 萬至 1,000 萬美元",
+     "2026/7 數據"
+    ],
+    [
+     "貨櫃附加費（Gulf 相關）",
+     "—",
+     "Hapag-Lloyd 對波斯灣相關貨櫃最高加收 3,500 美元／櫃",
+     "二手分析網站，可信度中"
+    ],
+    [
+     "沙烏地東西輸油管",
+     "—",
+     "約 5.8 mbd",
+     "繞道產能"
+    ],
+    [
+     "布蘭特原油",
+     "—",
+     "10/14 約 106 美元",
+     "Kpler 預測 Q4 約 96 美元（2 日前由 90 上調）"
+    ]
+   ],
+   "note": "報告原文表格；口徑與來源不同，勿直接相加。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "第一階段（3 月）",
+   "composition": "保險公司改以 1% 船體價值承保，7 日一續，戰前費率為 0.25%；出現「有行無市」",
+   "spec": "運價報價高但實際無船開航",
+   "application": "風險定價初期，航運運價先行上揚"
+  },
+  {
+   "name": "第二階段（4–6 月）",
+   "composition": "美國 4/12 宣布封鎖進出伊朗港口；美軍護航 5 月 5 日暫停；6/17 MoU 後流量回升",
+   "spec": "6/17 後流量仍只約 2025 年日均 1,500 萬桶的四成",
+   "application": "封鎖與停戰交替，石化與航運股反向波動"
+  },
+  {
+   "name": "第三階段（7–8 月）",
+   "composition": "保費一度在 6 月協議下降至 2%，7 月再度回到約 5%；MoU 8/20 前後到期，無和平協議接續",
+   "spec": "保費約 5%",
+   "application": "風險溢價快速變化"
+  },
+  {
+   "name": "第四階段（10 月）",
+   "composition": "UKMTO 指出自 10/2 起海峽或亞丁灣每天至少發生一起攻擊；GFS Pride 沉沒",
+   "spec": "10/13 四起攻擊，10 月警告累計 24 則",
+   "application": "事件升級，保險與運價進一步推升"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼保險比飛彈更能卡住通行？",
+   "points": [
+    "保費以事件機率定價，海峽中載運油品或天然氣的船舶事件機率太高",
+    "若用船值 25%–50% 反映風險，商業上不可行，沒有船東負擔得起，保險商甚至可能不報價",
+    "全球船體承保能量估計 25 至 30 億美元，但保險商越來越不願提供即期條款",
+    "保費會轉嫁到運費上，附加費實質上就是保險成本轉嫁到供應鏈"
+   ]
+  },
+  {
+   "title": "「AIS 關閉」與「海上轉船」如何讓通行數字失真",
+   "points": [
+    "船隻可能關閉 AIS 通過，Kpler 統計不含這類船舶；GFS Pride 被報導沉沒前 AIS 已關閉 10 天",
+    "8 月通過海峽的原油中超過七成在途中換船，「通過」與「出口」並非同一件事",
+    "單看通行量會低估或高估實際供應，需同時看運價、保費與出口數據"
+   ]
+  },
+  {
+   "title": "同一事件，為何對台股方向不同？",
+   "points": [
+    "航運受惠：長榮指出客戶因應風險提前下單，運價自 3 月起明顯上揚",
+    "石化雙面：6/24 海峽重啟時台化漲停，短期供料缺口解除；封鎖延長則是原料成本與供應風險",
+    "航空受傷：航空燃油大幅上漲逾 120%，附加費覆蓋率低",
+    "創紀錄的運費推高原油到岸成本，並壓縮煉油利差"
+   ]
+  }
+ ],
+ "conclusion": [
+  "目前證據最完整的是「運價與保費」這條鏈，航運是最直接的受惠方向",
+  "石化是雙面：產品價格受惠，原料成本受傷，方向隨海峽通行狀態反向變化",
+  "航空是純成本端受傷，附加費只能覆蓋部分燃油成本",
+  "判斷都取決於通行能否恢復，本報告不做買賣建議"
+ ],
+ "sources": [
+  {
+   "title": "CNBC，Container ship sinks in Strait of Hormuz as Iran steps up attacks",
+   "url": "https://www.cnbc.com/2026/10/14/container-ship-sinks-strait-hormuz-as-iran-war-attacks.html"
+  },
+  {
+   "title": "WorldCargo News，BREAKING NEWS: Container ship sinks after being struck near Strait of Hormuz",
+   "url": "https://www.worldcargonews.com/news/2026/10/breaking-news-container-ship-sinks-after-being-struck-near-strait-of-hormuz/"
+  },
+  {
+   "title": "Seatrade Maritime，Update: Singapore confirms container ship sunk in Hormuz amid fresh Iran attacks",
+   "url": "https://www.seatrade-maritime.com/security/iran-claims-mine-sank-container-ship-amid-fresh-hormuz-attacks"
+  },
+  {
+   "title": "Free Malaysia Today，Iran says ship sank in Hormuz",
+   "url": "https://www.freemalaysiatoday.com/category/world/2026/10/15/iran-says-ship-sank-in-hormuz"
+  },
+  {
+   "title": "Washington Post，Iranian attack sinks container ship in Strait of Hormuz",
+   "url": "https://www.washingtonpost.com/world/2026/10/14/iranian-attack-sinks-container-ship-strait-hormuz/"
+  },
+  {
+   "title": "Kpler，Media Briefing 14 October 2026",
+   "url": "https://marketing.kpler.com/hubfs/Media%20Briefings%20pdfs/Kpler%20media%20briefing%2014%20Oct%202026.pdf"
+  },
+  {
+   "title": "Al Jazeera，Hormuz ship attacks surge: Are increased oil exports sustainable?",
+   "url": "https://www.aljazeera.com/news/2026/10/6/hormuz-ship-attacks-surge-are-increased-oil-exports-sustainable"
+  },
+  {
+   "title": "Oil & Gas 360，Hormuz attacks keep Brent crude unsteady",
+   "url": "https://www.oilandgas360.com/hormuz-attacks-keep-brent-crude-unsteady/"
+  },
+  {
+   "title": "Financefeeds，Brent Crude Price at $106 After a Houthi Missile Hits Aramco in Dhahran",
+   "url": "https://financefeeds.com/brent-crude-oil-price-106-aramco-dhahran-strike-cpi-day-bull-114-bear-97/"
+  },
+  {
+   "title": "Engine，Brent edges higher amid continued attacks on Saudi Arabia and Hormuz",
+   "url": "https://www.engine.online/news/brent-edges-higher-amid-continued-attacks-on-saudi-arabia-and-hormuz-82b2"
+  },
+  {
+   "title": "Congress.net（Kpler 摘要），Hormuz Clearance Remains a Third Below Pre-War Levels",
+   "url": "https://congress.net/hormuz-clearance-remains-a-third-below-pre-war-levels-as-saudi-exports-rebound-and-irans-crude-loadings-fall-to-zero/"
+  },
+  {
+   "title": "Daily Post UK，Crude oil exports from Strait of Hormuz return to pre-Iran war levels",
+   "url": "https://www.dailypost-uk.com/2026/10/crude-oil-exports-from-strait-of-hormuz.html"
+  },
+  {
+   "title": "Al Jazeera，Oil flows nearly tripled before US-Iran MoU expired",
+   "url": "https://www.aljazeera.com/economy/2026/8/20/oil-flows-nearly-tripled-before-us-iran-mou-expired"
+  },
+  {
+   "title": "OilPrice.com，Oil Jumps 5% as Iran Steps Up Attacks on Hormuz Tankers",
+   "url": "https://oilprice.com/Latest-Energy-News/World-News/Oil-Jumps-2-as-Iran-Steps-Up-Attacks-on-Hormuz-Tankers.html"
+  },
+  {
+   "title": "今周刊，貨櫃三雄買哪檔？（10/12）",
+   "url": "https://www.businesstoday.com.tw/article/category/183008/post/202610120025/"
+  },
+  {
+   "title": "工商時報，航海王再起！長榮揭航運業三大現象",
+   "url": "https://www.ctee.com.tw/news/20260425700065-439901"
+  },
+  {
+   "title": "中國時報，航運業遭夾殺 長榮：停戰仍傷",
+   "url": "https://www.chinatimes.com/newspapers/20260425000417-260110"
+  },
+  {
+   "title": "經濟日報／UDN，長榮明法說 展望受關注",
+   "url": "https://money.udn.com/money/story/5612/9458641"
+  },
+  {
+   "title": "MoneyDJ（Yahoo 轉載），貨櫃航運 Q3 運價估易漲難跌",
+   "url": "https://tw.stock.yahoo.com/news/%E8%B2%A8%E6%AB%83%E8%88%AA%E9%81%8Bq3%E9%81%8B%E5%83%B9%E4%BC%B0%E6%98%93%E6%BC%B2%E9%9B%A3%E8%B7%8C-%E9%95%B7%E6%A6%AE%E8%88%B9%E8%88%B6%E7%9A%86%E5%B7%B2%E8%84%AB%E5%9B%B0-021700867.html"
+  },
+  {
+   "title": "旺得富理財網，水手超嗨！SCFI 暴噴 156 點",
+   "url": "https://wantrich.chinatimes.com/news/20260306900515-420101"
+  },
+  {
+   "title": "旺得富理財網，荷姆茲海峽封喉！長榮、新興逆勢突圍",
+   "url": "https://wantrich.chinatimes.com/news/20260317900004-420101"
+  },
+  {
+   "title": "工商時報，台塑四寶：美伊衝突未解、石化歲修旺季",
+   "url": "https://www.ctee.com.tw/news/20260507701527-430503"
+  },
+  {
+   "title": "經濟日報／UDN，荷莫茲海峽重啟、原料壓力紓解 台化漲停",
+   "url": "https://udn.com/news/story/7251/9585348"
+  },
+  {
+   "title": "Vocus，6505 台塑化",
+   "url": "https://vocus.cc/article/6ac49a22fd89780001789a34"
+  },
+  {
+   "title": "Vocus，停戰也救不了油價？台灣塑化族群的三條岔路",
+   "url": "https://vocus.cc/article/69fdf58cfd89780001b0b2ed"
+  },
+  {
+   "title": "大紀元，石化供應鏈受阻 台塑：缺料或延續至年底",
+   "url": "https://www.epochtimes.com/b5/26/4/13/n14740806.htm"
+  },
+  {
+   "title": "自由財經，不只油價！荷姆茲海峽危機衝擊食品肥料塑膠",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5401920"
+  },
+  {
+   "title": "中央社，中東戰火油價飆漲 長榮航：第1季沒有太大影響",
+   "url": "https://www.cna.com.tw/news/ahel/202604190097.aspx"
+  },
+  {
+   "title": "旺得富理財網，需求暢旺 長榮單月營收創高",
+   "url": "https://wantrich.chinatimes.com/news/20260420900010-420101"
+  },
+  {
+   "title": "Caixin Global，War Risk Insurance Returns to Strait of Hormuz — at a Price",
+   "url": "https://www.caixinglobal.com/2026-03-07/war-risk-insurance-returns-to-strait-of-hormuz-at-a-price-102420420.html"
+  },
+  {
+   "title": "The National，Shipping insurance surges again as attacks intensify over Strait of Hormuz",
+   "url": "https://www.thenationalnews.com/business/2026/07/17/war-risk-shipping-premium-surges-again-as-tensions-escalate-at-strait-of-hormuz/"
+  },
+  {
+   "title": "S&P Global（Platts），Middle East shipping insurance costs rise on Hormuz risks: Marsh",
+   "url": "https://www.spglobal.com/energy/en/news-research/latest-news/shipping/072226-middle-east-shipping-insurance-costs-rise-on-hormuz-risks-marsh"
+  },
+  {
+   "title": "Singapore MOT，Increases in war risk insurance premiums",
+   "url": "https://www.mot.gov.sg/news-resources/newsroom/increases-in-war-risk-insurance-premiums--marine-insurance-costs-and-freight-rates-due-to-us-iran-conflict/"
+  },
+  {
+   "title": "The Opscon，War-risk cover settles at 5% of hull value",
+   "url": "https://theopscon.com/intelligence/hormuz-war-risk-cover-five-percent-norm-2026-07-14"
+  },
+  {
+   "title": "Argus Media，Hormuz Tensions: Impact on Maritime Insurance & Shipping Costs",
+   "url": "https://www.argusmedia.com/en/news-and-insights/market-opinion-and-analysis-blog/hormuz-tensions-maritime-insurance-shipping-costs"
+  },
+  {
+   "title": "Fairway ETA，War Risk Insurance 2026",
+   "url": "https://www.fairwayeta.com/insights/war-risk-insurance-2026-hidden-cost-shipping"
+  },
+  {
+   "title": "The National，Ships face 4,000-times higher insurance costs",
+   "url": "https://www.thenationalnews.com/business/economy/2026/06/03/hormuz-shipping-trade-iran-war/"
+  },
+  {
+   "title": "Wikipedia，List of ships attacked during the 2026 Iran war",
+   "url": "https://en.wikipedia.org/wiki/List_of_ships_attacked_during_the_2026_Iran_war"
+  },
+  {
+   "title": "OSINT613，GFS Pride Lost in Strait of Hormuz",
+   "url": "https://www.osint613.com/post/gfs-pride-lost-strait-of-hormuz-25268"
+  },
+  {
+   "title": "JPost，Container ship sinks near Hormuz after being hit by projectile",
+   "url": "https://www.jpost.com/middle-east/article-911694"
+  },
+  {
+   "title": "Fox News，Oil price hikes, Saudi-Houthi strikes carry on",
+   "url": "https://www.foxnews.com/live-news/us-iran-war-donald-trump-oil-nuclear-sites-hormuz-strait-october-14"
+  },
+  {
+   "title": "Dcard 股票板，美伊戰爭讓焦點再度回到航運（社群）",
+   "url": "https://www.dcard.tw/f/stock/p/260997701"
+  },
+  {
+   "title": "鉅亨網，荷姆茲封鎖令刺激油價大漲 台塑集團領塑化族群齊飆",
+   "url": "https://news.cnyes.com/news/id/6418451"
+  },
+  {
+   "title": "Yahoo Finance，Middle East oil exports return to pre-war levels, excluding Iran",
+   "url": "https://uk.finance.yahoo.com/news/middle-east-oil-exports-return-095332086.html"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "A. 上游：原油、LNG、石油腦、肥料的出口",
+   "description": "布蘭特約 106 美元；成品油經海峽的流量仍低於戰前兩成，柴油最緊。",
+   "global_players": [
+    "沙烏地阿美（Aramco）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "B. 運輸：貨櫃航運",
+   "description": "3 月 SCFI 單周大漲 11.71%，海峽封鎖後海運股搶到先機；6 月 SCFI 連續 8 週上漲，多數航商持續繞行好望角。",
+   "global_players": [
+    "馬士基（Maersk）",
+    "Hapag-Lloyd",
+    "HMM"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2603",
+     "name": "長榮",
+     "role": "貨櫃航運；美洲與歐洲航線合計約占營收近七成，已有船舶在海峽內遭撞擊的實際案例",
+     "impact": "受惠"
+    },
+    {
+     "code": "2609",
+     "name": "陽明",
+     "role": "貨櫃航運；法說提及中東戰事造成全球貨櫃供需失衡",
+     "impact": "受惠"
+    },
+    {
+     "code": "2615",
+     "name": "萬海",
+     "role": "貨櫃航運；供應鏈向東南亞轉移，帶動區域航線需求",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "C. 運輸：油輪與散裝船",
+   "description": "VLCC 日租金曾由去年低點飆升約 10 倍，達到每日 50 萬美元；戰爭險見規格表。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2605",
+     "name": "新興",
+     "role": "油輪；3 月曾出現漲停；社群指持有未綁定長約油輪（未證實）",
+     "impact": "中性"
+    },
+    {
+     "code": "2606",
+     "name": "裕民",
+     "role": "海運；3 月被列入海運股操作族群，未找到與海峽的實際供貨關係",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "D. 風險管理：戰爭險與保險",
+   "description": "戰爭險保費大幅上升，7 日一續，波動大。",
+   "global_players": [
+    "Marsh",
+    "各國海事保險市場"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "E. 中游：石化與煉油",
+   "description": "台塑四寶表示美伊衝突與海峽封鎖未解，亞洲下游石化廠安排歲修或降產，石化行情維持高檔。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "1301",
+     "name": "台塑",
+     "role": "石化產品價格與供應受惠，但原料成本也是風險",
+     "impact": "受惠"
+    },
+    {
+     "code": "1326",
+     "name": "台化",
+     "role": "主要原料輕油漲幅最大，經營壓力大；6/24 海峽重啟時股價大漲",
+     "impact": "受傷"
+    },
+    {
+     "code": "6505",
+     "name": "台塑化",
+     "role": "煉油利差擴大，1Q26 EPS 2.14 元；6 月煉油量戰略性降至 4 萬桶",
+     "impact": "受惠"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "查證中未取得其原料與海峽的具體關係",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "F. 下游：航空燃油",
+   "description": "航空燃油已大幅上漲逾 120%；10/7 起航空三雄國際線燃油附加費調漲 15.38%，長程線只能補 15% 成本，短程線補 30%。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2618",
+     "name": "長榮航",
+     "role": "燃油成本大增，附加費只能補部分",
+     "impact": "受傷"
+    },
+    {
+     "code": "2610",
+     "name": "華航",
+     "role": "燃油成本大增，附加費只能補部分",
+     "impact": "受傷"
+    },
+    {
+     "code": "2646",
+     "name": "星宇航空",
+     "role": "燃油成本大增，附加費只能補部分",
+     "impact": "受傷"
+    }
+   ]
+  },
+  {
+   "layer": "G. 肥料",
+   "description": "約三分之一國際肥料貿易需經此航道。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "1722",
+     "name": "台肥",
+     "role": "未查到具體供貨與原料關係",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

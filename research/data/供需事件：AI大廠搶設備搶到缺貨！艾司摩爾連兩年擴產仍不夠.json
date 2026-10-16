@@ -1,0 +1,457 @@
+{
+ "topic": "供需事件：AI大廠搶設備搶到缺貨！艾司摩爾連兩年擴產仍不夠",
+ "one_line": "ASML 表示 2027、2028 年供應量不足以完全滿足客戶需求，2027 年低 NA EUV 產能約 84 台且幾乎已訂滿；台股直接受惠點為家登（3680）與帆宣（6196），其餘多為待確認。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "ASML",
+  "EUV",
+  "High-NA",
+  "Low-NA",
+  "EUV Pod",
+  "光罩盒",
+  "家登",
+  "帆宣",
+  "次系統模組",
+  "12吋光罩",
+  "產能擴充30%",
+  "積壓訂單",
+  "資本支出",
+  "DUV ArFi"
+ ],
+ "catalysts": [
+  "ASML 2027-06-10 資本市場日是否將 2028 年增產 30% 轉為正式承諾",
+  "預付款與長約是否持續增加及取消率",
+  "High-NA 妥善率、良率與客戶驗證進度",
+  "美國對華出口管制是否升級",
+  "家登 High-NA 光罩盒驗證結果",
+  "帆宣 ASML 相關營收是否揭露",
+  "埃因霍溫新廠第一期 2029 年完工"
+ ],
+ "risks": [
+  "利多出盡：財報後 ASML 股價下跌 5.5%",
+  "估值偏高：約 55 倍，分析師下調目標價",
+  "AI 投資回報、融資成本與電力供應疑慮影響下游擴產",
+  "2028 年再增 30% 仍在調查，產能承諾有保留",
+  "中國客戶銷售貢獻減少與出口限制",
+  "記憶體景氣反轉將放大 ASML 營收波動",
+  "供應商能否每年拉升 30% 仍是未解問題",
+  "台股公司 ASML 相關營收占比多未揭露"
+ ],
+ "spec_tables": [
+  {
+   "title": "ASML 微影設備世代（數值與單位）",
+   "columns": [
+    "項目",
+    "DUV 浸潤式（ArFi，參考）",
+    "Low-NA EUV（現行主力）",
+    "High-NA EUV（新世代）"
+   ],
+   "rows": [
+    [
+     "數值孔徑 NA",
+     "不適用",
+     "約 0.33（一般產業常識）",
+     "0.55"
+    ],
+    [
+     "單價",
+     "數千萬美元級（一般產業常識）",
+     "約 2 億美元（以 2 億美元計）",
+     "單價高達 3.5 億歐元以上"
+    ],
+    [
+     "產出率（WPH）",
+     "不適用",
+     "升級後達 230 WPH，新世代機型可達 260 WPH",
+     "仍在晶圓量產測試階段"
+    ],
+    [
+     "妥善率",
+     "不適用",
+     "不適用",
+     "設備妥善率超過 80%"
+    ],
+    [
+     "2026 出貨",
+     "與 2025 年持平（公司預期）",
+     "約 65 台，較 2025 年成長逾 50%",
+     "2026 Q1 系統銷售含 2 台 High-NA"
+    ],
+    [
+     "2027 規劃",
+     "較 2026 增約 30%",
+     "約 84 台（自約 65 台提高）（已幾乎全被訂光）",
+     "未公布"
+    ],
+    [
+     "2028 狀態",
+     "再增約 30%（調查中）",
+     "規劃目標約 110 台，但公司正研究超越此目標（有報導稱可能再增加一打左右）",
+     "量產就緒目標見下方世代表"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "本季營運與產能的關鍵數字",
+   "columns": [
+    "指標",
+    "數值",
+    "來源意義"
+   ],
+   "rows": [
+    [
+     "Q3 2026 淨銷售額",
+     "116.6 億歐元，年增 55%",
+     "公司財報"
+    ],
+    [
+     "Q3 毛利率",
+     "57.5%（前一季 54.0%）",
+     "公司財報；毛利率較前一季擴大"
+    ],
+    [
+     "Q4 2026 營收指引",
+     "142–152 億歐元",
+     "第三方整理財報，Q4 毛利率指引約 57%"
+    ],
+    [
+     "2026 全年營收指引",
+     "440–450 億歐元",
+     "公司財報"
+    ],
+    [
+     "2026 EUV 營收成長",
+     "超過 45%（法說）",
+     "非 EUV 業務約成長 20%"
+    ],
+    [
+     "Q3 ArFi 出貨",
+     "40 台（前一季 23 台）",
+     "法說資料；EUV 單季出貨只比前一季多 1 台"
+    ],
+    [
+     "記憶體占營收比重",
+     "約 46%（Q3）",
+     "法說資料（記憶體占比上升，反映記憶體大廠加速投資）"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "DUV 浸潤式（ArFi）",
+   "composition": "較舊的深紫外光機台，用於較不關鍵的晶片層",
+   "spec": "Q3 出貨 40 台",
+   "application": "中階與成熟製程；同樣納入 2027 年 30% 增產計畫（2027 年 EUV 與 DUV 浸潤式產能計畫提高 30%）"
+  },
+  {
+   "name": "Low-NA EUV（現行）",
+   "composition": "先進邏輯與 DRAM 的關鍵層",
+   "spec": "230–260 WPH；2027 約 84 台",
+   "application": "2nm 等先進製程、高階記憶體；光罩盒、次系統模組、精密零組件為主要受惠"
+  },
+  {
+   "name": "High-NA EUV（0.55 NA）",
+   "composition": "單次曝光面積約減半，大晶片需拼接（Stitching），速度與良率都受影響",
+   "spec": "價格 3.5 億歐元以上；妥善率超過 80%",
+   "application": "2nm 以下先進製程；高階光罩盒，家登先前即推動 High-NA EUV 光罩盒的客戶驗證"
+  },
+  {
+   "name": "12 吋光罩與 12 吋 High-NA 就緒",
+   "composition": "台積電與 ASML 宣布推動 EUV 光罩由現行 6 吋升級至 12 吋，目標 2031 年前建立 12 吋試產線，2033 年前讓 12 吋 High-NA 系統達到量產就緒",
+   "spec": "光罩尺寸放大",
+   "application": "2033 前後；光罩與載具規格改寫，中長期題材"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼產能追不上？不是只要蓋廠房就能解決",
+   "points": [
+    "EUV 只有 ASML 一家能做，產能取決於 ASML 自己的組裝能力與專業供應商網路，外部無法替代。",
+    "2027、2028 年的 30% 增產主要來自既有無塵室空間，新園區則是為 2028 年以後的產能準備；荷蘭埃因霍溫新廠第一期要到 2029 年才會完成。",
+    "為了加快交機，快速出貨流程會跳過部分工廠測試，正式驗收延到客戶端，收入認列也會順延，但客戶能提早取得產能。",
+    "提速手段包括縮短組裝時間、升級已在現場運作的機台、推出速度更快的機型。",
+    "ASML 要求供應商每年拉升約 30%，部分供應商可能需要財務支援。"
+   ]
+  },
+  {
+   "title": "High-NA 為什麼又貴又慢？",
+   "points": [
+    "數值孔徑提升到 0.55，用來在 2nm 以下繼續微縮線寬。",
+    "新款 High-NA 剛開始出貨，初期毛利率較低，加上擴廠折舊，形成成本壓力。",
+    "單次曝光面積縮小後，大晶片要靠拼接，這曾是市場對 High-NA 的主要疑慮。",
+    "High-NA 的放量取決於客戶驗證與產能限制，時間仍不確定。"
+   ]
+  },
+  {
+   "title": "缺貨不等於馬上獲利：定價、預付款與訂單品質",
+   "points": [
+    "ASML 已與主要客戶完成以價值為基礎的定價談判，效益將在 2027 年部分顯現，2028 年及以後完全反映。",
+    "部分長期合約設定了最低價格與數量，是 ASML 過去很少見的協議。",
+    "2026 Q1 自由現金流為負 26 億歐元，主因是客戶預付款支付時點不同；若客戶取消，影響會很大。",
+    "ASML 自 2025 年後不再公布季度淨訂單，改為每年揭露積壓訂單（backlog）。",
+    "2029、2030 的意向不代表每台機器都已在具約束力的合約下付款。"
+   ]
+  }
+ ],
+ "conclusion": [
+  "2027 年產能已幾乎全數訂滿，但 2028 年再增 30% 仍在調查，需等 2027 年 6 月 10 日資本市場日確認。",
+  "價格效益預計 2027 年部分顯現、2028 年完全反映，尚待財報驗證。",
+  "訂單品質需同時檢視預付款比例、長約最低數量與 2029–30 意向是否具約束力。",
+  "台股直接受惠點集中於家登與帆宣；其餘台廠多為產業相關但供貨關係待確認，目前未發現明確受傷的台股公司。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網，客購訂單排到2030年！ASML揭示全球AI擴張最大隱憂",
+   "url": "https://news.cnyes.com/news/id/6630326"
+  },
+  {
+   "title": "鉅亨網，艾司摩爾AI需求旺到2030年！第三季獲利超預期、EUV設備產能吃緊",
+   "url": "https://news.cnyes.com/news/id/6630148"
+  },
+  {
+   "title": "UDN，ASML上修財測與產能！台灣拉貨升溫 2028年EUV擬擴產30%",
+   "url": "https://udn.com/news/story/6811/9629887"
+  },
+  {
+   "title": "TechOrange，AI 需求延伸至 2030 年：客戶搶先洽談訂單，ASML 坦言擴產 30% 恐仍不夠",
+   "url": "https://techorange.com/2026/10/15/asml-ai-chip-demand-stretching-2030-expects-supply-shortages/"
+  },
+  {
+   "title": "鏡週刊，AI需求旺到客戶先預定2030年訂單！ASML設備恐供不應求",
+   "url": "https://www.mirrormedia.mg/external/mirrordaily_91528"
+  },
+  {
+   "title": "SEC 6-K，ASML 2026 Q2 財報新聞稿",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000937966/000162828026048235/pressreleasefinancialresul.htm"
+  },
+  {
+   "title": "Globe and Mail，ASML's 'sold out' outlook forces investors to look beyond demand",
+   "url": "https://www.theglobeandmail.com/investing/article-asmls-sold-out-outlook-forces-investors-to-look-beyond-demand/"
+  },
+  {
+   "title": "Tom's Hardware，ASML record quarter and capacity expansion",
+   "url": "https://www.tomshardware.com/tech-industry/semiconductors/asml-reports-record-usd13-billion-quarter-vows-to-expand-capacity-as-demand-for-lithography-equipment-soars-customers-eager-to-secure-orders-in-2030-as-demand-is-expected-to-outstrip-2027-and-2028-supply"
+  },
+  {
+   "title": "TIKR，ASML Can't Build Machines Fast Enough",
+   "url": "https://www.tikr.com/zh/blog/asml-cant-build-machines-fast-enough-and-its-58-margin-shows-it"
+  },
+  {
+   "title": "Yahoo Finance，ASML Says Its Customers Want More Machines Than It Can Build Through 2028",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/asml-says-customers-want-more-111029114.html"
+  },
+  {
+   "title": "Investing.com（中文），ASML股價今日為何大跌？",
+   "url": "https://cn.investing.com/news/stock-market-news/article-93CH-3609918"
+  },
+  {
+   "title": "Investing.com（中文），ASML股價今日為何下滑？",
+   "url": "https://hk.investing.com/news/stock-market-news/article-93CH-1696093"
+  },
+  {
+   "title": "鈦媒體／fomosoc，擴產 30% 仍供不應求？財報解剖：ASML",
+   "url": "https://www.fomosoc.com/p/30-asml-2610"
+  },
+  {
+   "title": "淘金脈絡／vocus，ASML 2026 Q3 財報＋法說會重點",
+   "url": "https://vocus.cc/article/6ad04f11fd89780001c32e49"
+  },
+  {
+   "title": "vocus，2026/04/15 艾司摩爾 (ASML) 法說會",
+   "url": "https://vocus.cc/article/6a4d01b6fd89780001c177a2"
+  },
+  {
+   "title": "大紀元，芯片設備需求強勁 ASML上調財測並擬再擴產",
+   "url": "https://www.epochtimes.com/b5/26/10/14/n14869688.htm"
+  },
+  {
+   "title": "工商時報，AI設備需求旺到2030年！ASML擴產帶旺台鏈",
+   "url": "https://www.ctee.com.tw/news/20261015700058-439901"
+  },
+  {
+   "title": "三立新聞，ASML訂單爆滿 排到2030年！台積電3大訊號曝",
+   "url": "https://www.setn.com/news/1922664"
+  },
+  {
+   "title": "富果，家登法說會重點內容備忘錄 20260827",
+   "url": "https://blog.fugle.tw/post/earnings-call-3680-2026-08-27"
+  },
+  {
+   "title": "壹蘋新聞網，家登法說會｜下半年樂觀看！EUV Pod拚年增逾3成",
+   "url": "https://news.nextapple.com/finance/20260827/8A558DB87BFDE4E99F029F14B14980D5"
+  },
+  {
+   "title": "MoneyDJ，家登EUV/封裝載具齊增，美國產線Q4啟用",
+   "url": "https://tw.stock.yahoo.com/news/%E5%AE%B6%E7%99%BBeuv-%E5%B0%81%E8%A3%9D%E8%BC%89%E5%85%B7%E9%BD%8A%E5%A2%9E-%E7%BE%8E%E5%9C%8B%E7%94%A2%E7%B7%9Aq4%E5%95%9F%E7%94%A8-021500861.html"
+  },
+  {
+   "title": "小資報導，曾瀕臨破產，家登如何獲台積電及ASML青睞",
+   "url": "https://smart.businessweekly.com.tw/Reading/IndepArticle.aspx?id=6021645"
+  },
+  {
+   "title": "財報狗，帆宣首季 EPS 衝上 5.08 元創高",
+   "url": "https://statementdog.com/news/16387"
+  },
+  {
+   "title": "TTV／MoneyDJ，在手訂單破千億 帆宣Q2營收拚創高",
+   "url": "https://www.ttv.com.tw/finance/view/052026250923B4AF0320118242EDBA4E4C72B56B77AC50EB/587"
+  },
+  {
+   "title": "帆宣深度研究，千億訂單之後，獲利品質能否支撐新估值？",
+   "url": "https://vocus.cc/article/6acdb0d7fd897800012febc2"
+  },
+  {
+   "title": "富果，帆宣法說會重點內容備忘錄 20260520",
+   "url": "https://blog.fugle.tw/post/earnings-call-6196-2026-05-20"
+  },
+  {
+   "title": "鉅亨網，台積電法說上調資本支出衝破600億美元",
+   "url": "https://news.cnyes.com/news/id/6536791"
+  },
+  {
+   "title": "中央社，台積電重申今年資本支出約600億至640億美元",
+   "url": "https://www.cna.com.tw/news/afe/202610150148.aspx"
+  },
+  {
+   "title": "MoneyDJ，台積電今年資本支出600~640億美元 維持不變",
+   "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=1f7c0fb2-2ed1-4119-b912-60754212f835"
+  },
+  {
+   "title": "數位時代，台積電法說懶人包",
+   "url": "https://www.bnext.com.tw/article/91523/tsmc-2026q2"
+  },
+  {
+   "title": "財訊快報，台積電重申2026年資本支出600～640億美元",
+   "url": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E9%87%8D%E7%94%B32026%E5%B9%B4%E8%B3%87%E6%9C%AC%E6%94%AF%E5%87%BA600-640%E5%84%84%E7%BE%8E%E5%85%83-%E4%BC%B0q4%E7%87%9F%E6%94%B6%E4%B8%AD%E9%96%93%E5%80%BC%E5%AD%A3%E5%A2%9E14-062809317.html"
+  },
+  {
+   "title": "工商時報，EUV高速成長 半導體設備廠受惠（2021 年舊報導）",
+   "url": "https://www.chinatimes.com/newspapers/20210205000250-260206"
+  },
+  {
+   "title": "經濟日報／cnyes，台積電資本支出衝新高 台設備廠搭順風車（2021 年舊報導）",
+   "url": "https://news.cnyes.com/news/id/4630434"
+  },
+  {
+   "title": "TechNews，ASML 先進 EUV 設備訂單旺，台供應鏈有望沾光（2024 年舊報導）",
+   "url": "https://finance.technews.tw/2024/01/25/asml-euv-equipment-orders-are-booming-supply-chain-benefits/"
+  },
+  {
+   "title": "豐雲學堂，台積電攜手ASML推High NA EUV，家登、光罩等受惠股卡位2033先進製程商機",
+   "url": "https://www.sinotrade.com.tw/richclub/hotstock/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E6%94%9C%E6%89%8BASML%E6%8E%A8High-NA-EUV-%E5%AE%B6%E7%99%BB-%E5%85%89%E7%BD%A9%E7%AD%89%E5%8F%97%E6%83%A0%E8%82%A1%E5%8D%A1%E4%BD%8D2033%E5%85%88%E9%80%B2%E8%A3%BD%E7%A8%8B%E5%95%86%E6%A9%9F-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a9fc25dde836c356a512a9c"
+  },
+  {
+   "title": "Yahoo 股市，ASML財報倒數 台供應鏈聞香",
+   "url": "https://tw.stock.yahoo.com/news/asml%E8%B2%A1%E5%A0%B1%E5%80%92%E6%95%B8-%E5%8F%B0%E4%BE%9B%E6%87%89%E9%8F%88%E8%81%9E%E9%A6%99-201000700.html"
+  },
+  {
+   "title": "旺得富理財網，《熱門族群》ASML報憂重挫 概念股鬱卒啦",
+   "url": "https://wantrich.chinatimes.com/news/20240418900285-420101"
+  },
+  {
+   "title": "Investing.com（繁中），ASML第三季業績超預期，但股價仍下跌",
+   "url": "https://hk.investing.com/news/transcripts/article-93CH-1697901"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "精密零組件與次系統",
+   "description": "EUV 機台精密零件、真空吸盤曝光載台、光學與機械模組。早期光學元件缺料已大幅改善，但 ASML 要求供應商每年拉升約 30% 產能，成為新壓力點。",
+   "global_players": [
+    "ASML 內部光學與機械供應商多為歐洲與日本廠（一般產業常識，未逐一查證）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3413",
+     "name": "京鼎",
+     "role": "精密零組件製造、設備模組組裝與系統整合",
+     "impact": "中性"
+    },
+    {
+     "code": "4576",
+     "name": "大銀微系統",
+     "role": "運動平台（舊筆記提及，未查證）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "次系統模組代工與廠務整合",
+   "description": "把 EUV 部分次系統組裝成模組，並負責廠務與機電系統整合。2026 年上半年營收年增約 39%，營業利益年增約 129%，在手訂單約 1,081 億元以廠務工程為主。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6196",
+     "name": "帆宣",
+     "role": "EUV 次系統模組代工",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "光罩與光罩載具",
+   "description": "EUV 光罩移動與儲存所需光罩盒（EUV Pod）與傳送設備，本題最直接受惠段。2026 年 1–7 月 EUV Pod 營收已達 2025 全年的 82%，海外市場達 150%。",
+   "global_players": [
+    "另一家通過 ASML 認證的 EUV 光罩盒供應商（未確認）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3680",
+     "name": "家登",
+     "role": "EUV 光罩盒與 FOUP 供應商，全球少數通過 ASML 認證",
+     "impact": "受惠"
+    },
+    {
+     "code": "2338",
+     "name": "光罩",
+     "role": "12 吋 EUV 光罩相關",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "材料與設備代理",
+   "description": "High-NA 相關材料設備代理與濕製程設備，與 ASML 直接供貨關係未查證。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "5434",
+     "name": "崇越",
+     "role": "High-NA 相關材料設備代理",
+     "impact": "中性"
+    },
+    {
+     "code": "3131",
+     "name": "弘塑",
+     "role": "High-NA 相關濕製程設備，主要動能來自先進封裝",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游晶圓廠與記憶體（資本支出來源）",
+   "description": "決定 ASML 機台最終需求與交機優先順序。台積電 2026 資本支出維持 600–640 億美元，設備供應吃緊，設備價格受通膨影響。記憶體供不應求可能延續到 2028 年。",
+   "global_players": [
+    "Applied Materials",
+    "Lam Research",
+    "KLA",
+    "Tokyo Electron（同業設備廠，未取代 ASML EUV）",
+    "Micron",
+    "SK 海力士",
+    "三星"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "設備買家，資本支出來源",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
