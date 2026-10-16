@@ -1,0 +1,382 @@
+{
+ "topic": "建榮（5340）題材與產業",
+ "one_line": "5340 建榮是日商日東紡持股近半的台灣玻纖布廠，正從一般玻纖布轉向高階 Low-Dk 與 T-glass，T-glass 第二季量產為目前最明確的已證實利多，但原紗高度依賴母公司。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "玻纖布",
+  "T-glass",
+  "Low-Dk",
+  "Low-CTE",
+  "M8",
+  "M9",
+  "石英布",
+  "Q布",
+  "NE布",
+  "NER-Glass",
+  "日東紡",
+  "Nittobo",
+  "CCL",
+  "銅箔基板",
+  "Rubin",
+  "建榮",
+  "德宏"
+ ],
+ "catalysts": [
+  "建榮 10 月營收公告（每月約10日前後）",
+  "日東紡台灣熔爐與福島新廠進度（2026年12月竣工）",
+  "建榮 Q3 法說（時間未查證）",
+  "NER-Glass 量產（公司目標2027年初）",
+  "M9 石英布放量（部分文章認為2026下半年小量、2027放量，待確認）",
+  "經濟部 2026/10/7 公告停止進口中國玻纖矽質套管（次要利多）"
+ ],
+ "risks": [
+  "母公司依賴：原紗全部來自日東紡，且為 OEM 代工，產能與利潤分配受母公司安排",
+  "產能擴張與價格戰：日東紡產能估計2028年度增至2025年度三倍",
+  "陸廠競爭：陸系廠商擴產，但品質與認證仍是門檻",
+  "估值與籌碼：本益比約50倍，半年漲幅約153.6%，估值已反映大量利多（推論）",
+  "一般產品景氣：手機、電信、汽車電子等受景氣循環影響",
+  "資本支出壓力：2026資本支出增40%至60%，折舊拖累毛利率（推論）",
+  "專欄示警：謝金河示警玻纖布股價已大漲"
+ ],
+ "spec_tables": [
+  {
+   "title": "Low-Dk 與 T-glass 規格比較",
+   "columns": [
+    "材料",
+    "代際",
+    "Dk（約）",
+    "Df（約）",
+    "CTE／特性",
+    "典型用途"
+   ],
+   "rows": [
+    [
+     "E-glass 系 Low-Dk 第一代",
+     "基於 E 玻纖",
+     "4.3",
+     "0.002",
+     "—",
+     "消費電子、基站射頻"
+    ],
+    [
+     "Low-Dk 第二代",
+     "基於 D 玻纖",
+     "3.5",
+     "0.0015",
+     "—",
+     "伺服器、交換機"
+    ],
+    [
+     "石英布（Q 布）",
+     "第三代 Low-Dk",
+     "2.3（另一說法 3.4）",
+     "0.0009",
+     "純度 >99%",
+     "AI 伺服器（Rubin）、1.6T 光模組"
+    ],
+    [
+     "T-glass（Low-CTE）",
+     "載板用",
+     "約 5.2",
+     "約 0.0035",
+     "CTE 可低至 2.8 ppm/°C",
+     "IC 載板、多層封裝基板"
+    ]
+   ],
+   "note": "石英布 Dk 有分歧（2.3 與 3.4），未找到原始量測報告。另一文章給出 Low-DK 範圍 Dk 4.4-4.8（@1GHz）、Df 0.0015-0.003、CTE 約3.3-3.8 ppm/°C，與上表有出入，請以範圍看待。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "E-glass 通用布",
+   "composition": "E 玻纖",
+   "spec": "—",
+   "application": "傳統 PCB 與消費電子，附加價值低"
+  },
+  {
+   "name": "Low-Dk 第一代（E 系）",
+   "composition": "E 系低介電玻纖",
+   "spec": "Dk≈4.3、Df≈0.002",
+   "application": "約2018年起量產，消費電子、基站射頻"
+  },
+  {
+   "name": "Low-Dk 第二代（D 系，對應 M8）",
+   "composition": "D 玻纖",
+   "spec": "Dk≈3.5、Df≈0.0015",
+   "application": "目前最高等級 CCL M8 所用材料，伺服器、交換機"
+  },
+  {
+   "name": "T-glass（Low-CTE，載板用）",
+   "composition": "低 CTE 玻纖布",
+   "spec": "CTE 可低至 2.8 ppm/°C",
+   "application": "IC 載板、多層封裝基板；建榮 2026 Q2 量產"
+  },
+  {
+   "name": "NE／NER glass（日東紡低 Dk 系列）",
+   "composition": "日東紡低 Dk 系列",
+   "spec": "—",
+   "application": "建榮 NE 布已切入 AI 伺服器應用；NER-Glass 認證中，目標2027年初量產"
+  },
+  {
+   "name": "石英布（Q 布，對應 M9）",
+   "composition": "石英纖維（SiO2 >99%）",
+   "spec": "Dk≈2.3、Df≈0.0009",
+   "application": "下一代 M9 等級 CCL 主要材料，Rubin 平台指定（媒體說法）"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 Low-Dk 與 Low-CTE 是兩條不同的線",
+   "points": [
+    "Low-Dk 負責訊號速度與損耗，用在 AI 晶片更下層的基板（PCB）；Low-CTE 主要用在載板",
+    "兩者不能互相取代：Low-CTE 解決翹曲，Low-Dk 解決損耗",
+    "建榮 T-glass 屬載板端，NE 系列屬高速 PCB 端",
+    "代價：兩條線都要獨立認證，一家廠同時做好兩種材料難度很高"
+   ]
+  },
+  {
+   "title": "為什麼 AI 載板需要 T-glass（翹曲與層數）",
+   "points": [
+    "AI 伺服器功耗與頻寬需求高，載板面積增大，核心層 T-glass 用量倍增",
+    "熱膨脹不匹配會造成翹曲；Low CTE 可低至 2.8ppm/°C，接近矽，防止多層堆疊翹曲",
+    "代價：T-glass 的 Dk 比 Low-Dk 高，不能單獨撐高速訊號，只能用在載板"
+   ]
+  },
+  {
+   "title": "為什麼石英布這麼難做（拉絲與良率）",
+   "points": [
+    "電子級超細玻纖紗拉絲涉及流體力學與溫度控制，從投產到90%以上良率的上升期往往以年計",
+    "石英紗原料端量能有限，德宏公開說法是石英紗月產量從百公斤級拉到數公噸",
+    "客戶認證週期長，高階材料認證通常需6個月至1年以上",
+    "代價：即使有技術，量產爬坡與認證都要時間，短期供給仍偏緊"
+   ]
+  },
+  {
+   "title": "為什麼客戶願意付高價、認證不輕易換供應商",
+   "points": [
+    "玻纖布要過 CCL 與載板大廠認證，時程以季甚至以年計",
+    "NVIDIA 等客戶對品質要求嚴格，不考慮使用中國製上游材料",
+    "代價：認證通過後形成黏著性，但新供應商也需要很長時間才能切入"
+   ]
+  }
+ ],
+ "conclusion": [
+  "建榮目前主力是 NE 與 T-glass，屬 M8 至載板區段；石英布（M9）是下一個高階區段，目前較少廠商能做",
+  "德宏在石英紗端有先發優勢，認證進度比建榮的 T-glass 更後面",
+  "建榮原紗全向日東紡採購，議價與供應受母公司限制；台玻與富喬有紗布一貫產能，是建榮較弱之處",
+  "日東紡 2026 年第四季量產，產能約目前三倍，產能釋放後價格壓力可能出現",
+  "建榮 2026 Q1 毛利率 21.19%，獲利能力改善明確，但估值已反映大量利多"
+ ],
+ "sources": [
+  {
+   "title": "建榮 5340 法說會簡報（2026/5/15，公開資訊觀測站）",
+   "url": "https://mopsov.twse.com.tw/nas/STR/534020260515M001.pdf"
+  },
+  {
+   "title": "MoneyDJ：建榮 T-Glass 產品 Q2 已量產；今年資本支出增 4-6 成",
+   "url": "https://tw.stock.yahoo.com/news/%E5%BB%BA%E6%A6%AEt-glass%E7%94%A2%E5%93%81q2%E5%B7%B2%E9%87%8F%E7%94%A2-%E4%BB%8A%E5%B9%B4%E8%B3%87%E6%9C%AC%E6%94%AF%E5%87%BA%E5%A2%9E4-6%E6%88%90-091500684.html"
+  },
+  {
+   "title": "富果：建榮法說會重點備忘錄 2026/5/15",
+   "url": "https://blog.fugle.tw/post/earnings-call-5340-2026-05-15"
+  },
+  {
+   "title": "富果：建榮法說會重點備忘錄 2025/11/14",
+   "url": "https://blog.fugle.tw/post/earnings-call-5340-2025-11-14"
+  },
+  {
+   "title": "Goodinfo：5340 建榮個股概況與月營收",
+   "url": "https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=5340"
+  },
+  {
+   "title": "Anue 鉅亨：建榮 5340 總覽",
+   "url": "https://www.cnyes.com/twstock/5340"
+  },
+  {
+   "title": "理財周刊：3 月營收年月雙增，法人看好建榮",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/221111"
+  },
+  {
+   "title": "理財周刊：中國玻纖製品停止輸台，玻纖布五虎誰最受惠",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/254094"
+  },
+  {
+   "title": "Newtalk：陸製玻纖禁令發酵，台玻遇賣壓、富喬建榮逆勢撐盤",
+   "url": "https://newtalk.tw/news/view/2026-10-08/1064448"
+  },
+  {
+   "title": "工商時報：玻纖布熄火，富喬台玻翻黑重挫",
+   "url": "https://www.ctee.com.tw/news/20260701701148-430201"
+  },
+  {
+   "title": "工商時報：台玻啟動電子級玻纖布產線擴充",
+   "url": "https://www.ctee.com.tw/news/20260511701668-430503"
+  },
+  {
+   "title": "TechNews：玻纖布廠日東紡，T-Glass 供不應求、滿載生產",
+   "url": "https://technews.tw/2026/10/06/nittobo-t-glass-lines-running-at-full-capacity/"
+  },
+  {
+   "title": "TechNews：日東紡大舉擴產 T-glass",
+   "url": "https://finance.technews.tw/2025/09/20/nittobo-expanded-t-glass"
+  },
+  {
+   "title": "東森新聞：日東紡喊擴產，南亞、台玻亮燈",
+   "url": "https://news.ebc.net.tw/news/business/574617"
+  },
+  {
+   "title": "理財周刊：日東紡 150 億擴產，高階玻纖布已成 AI 基礎建設命脈",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/198146"
+  },
+  {
+   "title": "福島民報（日文）：日東紡福島新工廠",
+   "url": "https://www.minpo.jp/news/moredetail/20250830126640"
+  },
+  {
+   "title": "TechNews：AI 機櫃加劇 T-glass、Low Dk2 供不應求",
+   "url": "https://technews.tw/2026/04/01/ai-t-glass-low-dk2/"
+  },
+  {
+   "title": "電子工程專輯：一張玻纖布為何難倒全球巨頭",
+   "url": "https://www.eettaiwan.com/20260121nt61-why-glass-cloth-challenge-for-global-giants/"
+  },
+  {
+   "title": "TechNews：一次搞懂玻纖布題材",
+   "url": "https://technews.tw/2025/11/17/what-is-tglass-and-what-is-low-dk-low-cte/"
+  },
+  {
+   "title": "工商時報：輝達 Rubin 點名 M9、Q 布",
+   "url": "https://www.ctee.com.tw/news/20251205700272-439901"
+  },
+  {
+   "title": "DIGITIMES：Rubin 擬採含石英布 M9 級 CCL，德宏送樣",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000740014_D271GBT90JNDBG5RRBBUN"
+  },
+  {
+   "title": "TTV 台視財經：德宏石英纖維產品技術就緒送樣",
+   "url": "https://www.ttv.com.tw/finance/view/122025031812717BB50004074EDFAAF2F3912EF3478CF2E5/587"
+  },
+  {
+   "title": "新浪財經：M9 覆銅板增量材料，Q 布供應商梳理",
+   "url": "https://finance.sina.com.cn/roll/2025-10-22/doc-infuupri7830125.shtml"
+  },
+  {
+   "title": "富邦投信：AI 硬體浪潮產業報告（2026/1/28）",
+   "url": "https://www.fubon.com/banking/document/Corporate/Financial_Market/TW/%E4%B8%BB%E8%A6%81%E7%94%A2%E6%A5%AD%E7%B8%BD%E8%A9%95%EF%BC%9AAI%E7%A1%AC%E9%AB%94%E6%B5%AA%E6%BD%AE_20260128.pdf"
+  },
+  {
+   "title": "口袋學堂：建榮（5340）是做什麼的",
+   "url": "https://www.pocket.tw/school/report/SCHOOL/7035/"
+  },
+  {
+   "title": "統包：玻纖布五虎、謝金河示警專欄（財信）",
+   "url": "https://tw.stock.yahoo.com/news/%E6%95%A3%E6%88%B6%E7%95%B6%E5%BF%83-%E5%8F%B0%E7%8E%BB-%E5%AF%8C%E5%96%AC-%E5%BB%BA%E6%A6%AE-%E7%8E%BB%E7%BA%96%E5%B8%83%E5%88%A5%E5%86%8D%E8%BF%BD-111908415.html"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "玻纖原紗",
+   "description": "熔融玻璃拉絲成紗，決定介電與強度的起點。日東紡表示 T-Glass 需求非常強勁、供不應求，產線滿載生產，同時在台灣工廠增設玻纖絲熔爐。",
+   "global_players": [
+    "日東紡（TYO: 3110，非台股）",
+    "AGY（美國，非台股）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "有紗與布的產能，把4條線擴充到12條（董事長說法）；競爭者",
+     "impact": "中性"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "紗布垂直整合；競爭者",
+     "impact": "中性"
+    },
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "石英紗布，德宏是台廠唯一投入者；競爭者（Q 布方向）",
+     "impact": "中性"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "具日東紡合作與電子材料整合優勢；競爭者",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "玻纖布",
+   "description": "織布、浸膠前的加工，本題材核心。日東紡投資150億日圓在福島新建廠房，預計2026年底完工投產；陸系建滔、巨石、菲利華也在擴張高階布（待確認）。",
+   "global_players": [
+    "日東紡（非台股）",
+    "AGY（非台股）",
+    "建滔（陸系）",
+    "巨石（陸系）",
+    "菲利華（陸系）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5340",
+     "name": "建榮",
+     "role": "OEM 玻纖布廠，T-glass 與 NE 系列為主力；2026 Q2 T-glass 量產，高階佔營收約70%，受惠（已證實）",
+     "impact": "受惠"
+    },
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "競爭者",
+     "impact": "中性"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "競爭者",
+     "impact": "中性"
+    },
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "競爭者（Q 布方向）",
+     "impact": "中性"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "競爭者",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "CCL（銅箔基板）",
+   "description": "玻纖布、樹脂與銅箔壓合，是 PCB 基材。M8 和 M9 代表當前最先進的兩個 CCL 性能等級。供貨關係待確認。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "AI 整理說法為 M9 規格 CCL 領先供應商（待確認）；產業相關，中性",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "PCB、載板與 AI 伺服器",
+   "description": "把 CCL 做成 PCB 或 ABF／BT 載板，組裝成伺服器。AI 載板面積放大，T-glass 用量倍增。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "載板族群龍頭地位受關注；與建榮直接供貨關係未查證；產業相關，中性",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
