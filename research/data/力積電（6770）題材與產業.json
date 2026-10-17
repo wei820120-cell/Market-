@@ -1,0 +1,438 @@
+{
+ "topic": "力積電（6770）題材與產業",
+ "one_line": "力積電正從傳統記憶體代工，轉型為「記憶體＋邏輯＋3D AI Foundry」三支柱；9 月營收 76.65 億元年增 93.95%，3D AI 是 2027 年後的成長核心。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "力積電",
+  "6770",
+  "3D AI Foundry",
+  "矽電容",
+  "Si-Cap",
+  "IPD",
+  "Interposer",
+  "WoW",
+  "Hybrid Bonding",
+  "PWF",
+  "HBM 後段",
+  "EMIB",
+  "EMIB-T",
+  "CoWoS",
+  "DRAM 合約價",
+  "愛普",
+  "S-SiCap"
+ ],
+ "catalysts": [
+  "2026 年 10 月月營收公告（每月 10 日前後）",
+  "2026 年 11 月起 7 月 DRAM 漲價效益顯現",
+  "2026 年底 PWF 試產線完成建置",
+  "2027 年 WoW 4 層小量生產與 PWF 量產",
+  "2027 年下半年 12 吋 IPD 月產能 8,000–1 萬片"
+ ],
+ "risks": [
+  "DRAM 週期反轉：3Q26 整體價格漲幅縮減，7 月 45% 漲價能否維持是最大變數",
+  "產能受無塵室空間限制，產線遷移影響短期營收",
+  "Intel EMIB 放量時程有過延後紀錄，市場傳聞力積電為獨家供應商但未證實",
+  "PWF 量產時程說法不一（2027 Q2–Q3 或 Q4）",
+  "美光依賴：美光買下 P5 廠並提供 PWF 設備投資",
+  "Q1 淨利 142.3 億元含一次性處分利益，不能直接外推；2025 年 EPS 為 -1.86 元",
+  "3D AI 占比 20% 是公司 3 年目標，目前約 7%，不能當作已達成",
+  "2025 年營收數字不一致（472 億或 467.3 億）"
+ ],
+ "spec_tables": [
+  {
+   "title": "3D AI Foundry 四大產品",
+   "columns": [
+    "產品",
+    "技術重點",
+    "目前進度",
+    "量產／放量時程"
+   ],
+   "rows": [
+    [
+     "矽電容 IPD（Si-Cap）",
+     "8 吋與 12 吋矽電容代工，用於供電穩定",
+     "12 吋已通過 EMIB 認證；8 吋應用於光通訊模組",
+     "12 吋月產能目標 8,000 至 1 萬片、8 吋 5,000 片，預計明年下半年逐步到位"
+    ],
+    [
+     "Interposer 中介層",
+     "2.5D 封裝用矽中介層",
+     "需求供不應求，月產能由 2,000–3,000 片擴增至 5,000–6,000 片",
+     "銅鑼廠產線已搬回新竹，完成復線並開始量產爬坡"
+    ],
+    [
+     "WoW 晶圓堆疊",
+     "晶圓對晶圓堆疊，採 Hybrid Bonding",
+     "4 片堆疊已獲客戶驗證，8 片堆疊良率突破 9 成",
+     "WoW 4 層可望在明年陸續轉為小量生產，8 層開發順利、良率改善中"
+    ],
+    [
+     "PWF（HBM 後段製程）",
+     "與美光合作的 HBM 後段代工",
+     "美光已投入 3 億美元設備",
+     "時程說法不一：法說摘要寫 2027 年第二至三季量產；另一份規劃 2027 年第四季量產"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "價格與產能指標",
+   "columns": [
+    "指標",
+    "數值",
+    "來源狀態"
+   ],
+   "rows": [
+    [
+     "12／8 吋稼動率",
+     "雙破 90%",
+     "法說摘要"
+    ],
+    [
+     "邏輯訂單對投片比",
+     "1.4 倍",
+     "法說摘要"
+    ],
+    [
+     "全面調價幅度",
+     "10%～20%",
+     "法說摘要"
+    ],
+    [
+     "9 月營收",
+     "76.65 億元，年增 93.95%",
+     "公司月營收公告"
+    ],
+    [
+     "前 9 月累計營收",
+     "522.05 億元，年增 52.49%",
+     "公司月營收公告"
+    ]
+   ],
+   "note": "月營收序列（億元）：4 月 50.46、5 月 57.70、6 月 64.74、7 月 66.69、8 月 70.09、9 月 76.65（來源為鉅亨網營收速報）。"
+  },
+  {
+   "title": "DRAM 市場行情（TrendForce）",
+   "columns": [
+    "期間",
+    "一般型 DRAM 合約價季增",
+    "來源"
+   ],
+   "rows": [
+    [
+     "1Q26",
+     "季增 93%～98%",
+     "TrendForce"
+    ],
+    [
+     "2Q26 預估",
+     "季增 58%～63%",
+     "TrendForce"
+    ],
+    [
+     "3Q26 預估",
+     "季增 13%～18%",
+     "TrendForce"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "記憶體代工",
+   "composition": "以舊世代 DRAM 為主",
+   "spec": "受限於國際大廠技術轉移與量產時程，未來幾年仍以舊世代為供貨主力；1X 奈米預計 2027 至 2028 年導入",
+   "application": "利基型 DRAM 供貨"
+  },
+  {
+   "name": "邏輯代工",
+   "composition": "加速退出 DDIC，聚焦高毛利 PMIC",
+   "spec": "退出 DDIC 市場、產線重組",
+   "application": "8 吋、12 吋邏輯代工，7 月調漲 10%～15%"
+  },
+  {
+   "name": "3D AI Foundry",
+   "composition": "2.5D Interposer 與 IPD 先行量產，之後推進 WoW 4 層、8 層，最後為 2027 年 PWF 與 HBM 後段製程",
+   "spec": "2025 年 3D AI 僅占總營收 2%；目前約 7%，目標三年內 20%",
+   "application": "AI 封裝供電、中介層、晶圓堆疊、HBM 後段"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 AI 封裝需要矽電容（IPD / Si-Cap）？",
+   "points": [
+    "IPD 方案可協助改善 HBM4E 與 ASIC 封裝中的供電穩定與訊號完整性問題",
+    "矽電容體積更小，可更貼近 AI 晶片配置，提升供電穩定性並降低功耗",
+    "外資估單顆晶片內含價值可達近 100 美元（券商推估）",
+    "代價：產能受無塵室空間限制，設備交期也會影響擴產速度",
+    "愛普相關產品仍以 NRE 收入為主，多數專案還在 AI/HPC 開發驗證階段，真正放量需要時間"
+   ]
+  },
+  {
+   "title": "WoW 為什麼要用 Hybrid Bonding？",
+   "points": [
+    "Hybrid Bonding 可直接進行晶圓貼合，相較傳統 Micro-bump 提高堆疊密度並縮短訊號路徑",
+    "AI 模型變大後記憶體牆與耗能問題嚴重；3D AI DRAM 與邏輯整合可縮短資料傳輸路徑並降低功耗",
+    "WoW 4 層堆疊已通過一線大廠工程樣品認證，8 層仍在改善良率",
+    "代價：製程更複雜，良率是最大不確定性，8 層良率即使突破 90% 仍需看量產穩定性",
+    "力積電與愛普、晶豪科等合作共同展示 3D WoW 的 IP 與產品設計方案"
+   ]
+  },
+  {
+   "title": "為什麼舊世代 DRAM 還能賺錢？",
+   "points": [
+    "大廠退出成熟製程，利基型記憶體供給收斂，產能排擠效應推升合約價",
+    "漲勢集中在中容量產品，市場由賣方主導",
+    "力積電受限於技術轉移與量產時程，仍以舊世代產品為供貨主力",
+    "代價一：TrendForce 指出 PC、手機等消費端承受力已到極限，3Q26 整體價格漲幅縮減",
+    "代價二：3Q26 一般型 DRAM 合約價預估季增 13%～18%，相較 1Q26 高點已明顯降溫"
+   ]
+  },
+  {
+   "title": "為什麼 EMIB 會與 CoWoS 形成雙軌供應？",
+   "points": [
+    "台積電持續擴充 CoWoS 產能，但市場仍供不應求，Interposer 需求已外溢",
+    "英特爾利用 EMIB 省去昂貴的矽中介層，吸引面臨產能排擠的雲端客戶",
+    "力積電與愛普加入，會強化英特爾陣營的電力傳輸效率與系統穩定性",
+    "風險：EMIB 放量時程有過延後紀錄，把 2027 年當確定事件來估值本身就是風險"
+   ]
+  }
+ ],
+ "conclusion": [
+  "單看一個規格無法判斷，應同時看客戶認證、產能與時程、價格與獲利品質、良率與成本、客戶集中度",
+  "客戶認證：IPD 12 吋已過 EMIB 認證；WoW 4 層有客戶驗證，8 層仍在良率改善",
+  "產能與時程：無塵室空間、銅鑼廠設備遷回後的復線速度，以及 PWF 量產是 2027 Q2–Q3 還是 Q4",
+  "獲利品質：Q1 獲利含一次性處分利益，第二季毛利率 28% 才是較代表性的本業水準",
+  "推算：若 2026 年達成營收成長超過 50%，第四季只需約 180～190 億元，低於第三季的 213 億元，全年目標可達性不低，但仍要看價格能否維持"
+ ],
+ "sources": [
+  {
+   "title": "快訊／宜蘭南澳規模 4.6 地震！各地震度一次看｜東森新聞",
+   "url": "https://news.ebc.net.tw/news/living/576160"
+  },
+  {
+   "title": "上午 11 時 13 分宜蘭南澳規模 4.6 地震 9 縣市有感 最大震度 2 級｜聯合報",
+   "url": "https://udn.com/news/story/7266/9820631"
+  },
+  {
+   "title": "17:16 台灣東部海域地震規模 4.4 宜蘭南澳最大震度 2 級｜聯合新聞網",
+   "url": "https://udn.com/news/story/7266/9809815"
+  },
+  {
+   "title": "《半導體》力積電說明地震影響｜旺得富理財網（時報）",
+   "url": "https://wantrich.chinatimes.com/news/20240411900605-420101"
+  },
+  {
+   "title": "晶圓廠產能受地震影響（2024 年 4 月電子報）",
+   "url": "https://yolostories.substack.com/p/20240410"
+  },
+  {
+   "title": "力積電 9 月營收衝新高 Q3、前 3 季齊寫次高｜工商時報",
+   "url": "https://www.ctee.com.tw/news/20261012701018-430201"
+  },
+  {
+   "title": "力積電 9 月營收攀峰 獲利向上｜經濟日報",
+   "url": "https://udn.com/news/story/7252/9803777"
+  },
+  {
+   "title": "年增 93.95%！力積電 9 月營收衝上 76.65 億元｜科技新報",
+   "url": "https://technews.tw/2026/10/08/psmc-2026-09-revenue/"
+  },
+  {
+   "title": "營收速報 - 力積電 9 月營收 76.65 億元｜鉅亨網",
+   "url": "https://news.cnyes.com/news/id/6625905"
+  },
+  {
+   "title": "力積電 2026Q2 法說會｜BigGo 財經",
+   "url": "https://finance.biggo.com.tw/quote/6770.TW/earnings-call/TW_6770.TW_2026-07-14"
+  },
+  {
+   "title": "力積電 2026-06-29 法說會｜BigGo 財經",
+   "url": "https://finance.biggo.com.tw/quote/6770.TW/earnings-call/TW_6770.TW_2026-06-29"
+  },
+  {
+   "title": "力積電售廠大幅挹注獲利 首季獲利 142.3 億元｜經濟日報",
+   "url": "https://money.udn.com/money/story/5612/9455181"
+  },
+  {
+   "title": "2026/04/21 力積電法說會：轉虧為盈＋AI 轉型啟動｜方格子",
+   "url": "https://vocus.cc/article/69e6100afd89780001cecb2e"
+  },
+  {
+   "title": "2026/07/14 力積電法說會：Q2 毛利率飆至 28%｜方格子",
+   "url": "https://vocus.cc/article/6a562e19fd897800010aea6f"
+  },
+  {
+   "title": "力積電法說會｜黃崇仁：3D AI Foundry 三年拚營收 2 成｜壹蘋新聞網",
+   "url": "https://news.nextapple.com/finance/20260714/2D0D09044FD99B1B33C0E1A2F7008142"
+  },
+  {
+   "title": "力積電法說 8 層 WoW 良率突破 92%｜Yahoo 股市",
+   "url": "https://tw.stock.yahoo.com/news/%E5%8A%9B%E7%A9%8D%E9%9B%BB%E6%B3%95%E8%AA%AA-8%E5%B1%A4wow%E8%89%AF%E7%8E%87%E7%AA%81%E7%A0%B492-%E6%8B%BF%E4%B8%8B%E5%85%88%E9%80%B2%E5%B0%81%E8%A3%9D%E5%AE%A2%E6%88%B6%E9%A9%97%E8%AD%89-101320584.html"
+  },
+  {
+   "title": "力積電步入轉型 記憶體、邏輯、3D AI Foundry 將形成三支柱｜自由財經",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5411221"
+  },
+  {
+   "title": "力積電轉型 3D AI Foundry 打入美光 HBM 先進封裝｜理財周刊",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/241251"
+  },
+  {
+   "title": "力積電 COMPUTEX 攜手愛普、晶豪科 大秀 3D AI Foundry｜科技新報",
+   "url": "https://technews.tw/2026/05/26/psmc-computex-3d-ai-foundry/"
+  },
+  {
+   "title": "力積電推出 3D WoW 晶圓堆疊｜科技新報",
+   "url": "https://technews.tw/2026/05/26/powerchip-technology-launches-3d-wow-wafer-stacking-technology/"
+  },
+  {
+   "title": "TrendForce：3Q26 記憶體價格持續受 AI server 需求支撐｜TrendForce",
+   "url": "https://www.trendforce.com.tw/presscenter/news/20260703-13132.html"
+  },
+  {
+   "title": "DRAM 合約價預估第二季將續漲逾 6 成｜自由財經",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5456960"
+  },
+  {
+   "title": "2026 年 4 月利基型 DRAM 價格｜TrendForce",
+   "url": "https://www.trendforce.com.tw/research/download/RP260430BB"
+  },
+  {
+   "title": "受惠成熟製程復甦、愛普 IPD 打入 EMIB 供應鏈，大摩升力積電目標價｜科技新報",
+   "url": "https://technews.tw/2026/05/20/foreign-investor-see-psmc-2026-revenue/"
+  },
+  {
+   "title": "愛普切入 EMIB 供應鏈，雙引擎拚明年延續成長曲線｜MoneyDJ（股市爆料同學會轉載）",
+   "url": "https://www.cmoney.tw/forum/article/178918086"
+  },
+  {
+   "title": "力積電與愛普合作切入 EMIB 供應鏈，將如何衝擊先進封裝市場？｜科技新報",
+   "url": "https://technews.tw/ai-agent/psmc-computex-3d-ai-foundry/10989/"
+  },
+  {
+   "title": "目標價 777 攔不住！切入英特爾 EMIB-T 供應鏈 愛普一度漲停｜工商時報",
+   "url": "https://www.ctee.com.tw/news/20260424700822-430201"
+  },
+  {
+   "title": "矽電容是什麼？AI 封裝下一個瓶頸是供電，愛普、華邦電、力積電誰真的有量｜資本雷達（方格子）",
+   "url": "https://vocus.cc/article/6aa7fabbfd8978000167cdc0"
+  },
+  {
+   "title": "力積電（6770）股價與行情｜PChome 股市",
+   "url": "https://pchome.megatime.com.tw/stock/sid6770.html"
+  },
+  {
+   "title": "力積電（6770）即時行情｜Yahoo 股市",
+   "url": "https://tw.stock.yahoo.com/quote/6770.TW"
+  },
+  {
+   "title": "力積電 6770 績效｜鉅亨網",
+   "url": "https://www.cnyes.com/twstock/6770/analysis/performance"
+  },
+  {
+   "title": "6770 力積電 個股概況｜Goodinfo!",
+   "url": "https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=6770"
+  },
+  {
+   "title": "力積電（6770）個股基本資料｜BigGo 財經",
+   "url": "https://finance.biggo.com.tw/quote/6770.TW"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游：3D AI 的 IP 與矽電容設計",
+   "description": "愛普 IPD 方案已打入 EMIB 供應鏈，2026 年第二季開始小量出貨；摩根士丹利預期 S-SiCap 相關業務 2027 至 2028 年開始放量。",
+   "global_players": [
+    "英特爾（EMIB）",
+    "Google",
+    "ASIC 客戶"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6531",
+     "name": "愛普*",
+     "role": "IPD 已進入 EMIB 供應鏈；力積電是其 S-SiCap 業務的重要晶圓代工夥伴（合作夥伴）",
+     "impact": "受惠"
+    },
+    {
+     "code": "3006",
+     "name": "晶豪科",
+     "role": "與力積電在 COMPUTEX 同展，提供 3D WoW IP 設計，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2454",
+     "name": "聯發科",
+     "role": "供應鏈消息指 EMIB-T 測試導入的是愛普 IPD 矽電容，與力積電直接供貨關係未確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "中游：晶圓代工（核心）",
+   "description": "產能持續短缺，7 月已調漲邏輯代工價格 10%～15%，下半年仍有調價空間；券商預期 2027 年下半年成熟製程可能短缺（推估）。",
+   "global_players": [
+    "台積電",
+    "美光"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "主角；9 月營收 76.65 億元，3D AI 占比約 7%；DDIC 退出屬於失去部分舊訂單",
+     "impact": "受惠"
+    },
+    {
+     "code": "2303",
+     "name": "聯電",
+     "role": "在 Intel EMIB 線上，角色是製造矽橋，與力積電同屬 EMIB 體系晶圓端",
+     "impact": "中性"
+    },
+    {
+     "code": "5347",
+     "name": "世界",
+     "role": "成熟製程同業，本次未查到具體報導",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "中游：利基型 DRAM 同業",
+   "description": "利基型 DRAM 合約價大漲，3Q26 預估季增 13%～18%，漲幅已明顯降溫。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "受限於有限產能，客戶配置傾向企業級 SSD 大廠（競爭者）",
+     "impact": "中性"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "鎖定主流與低功耗記憶體，逐季調降舊世代低容量產品；媒體也放在矽電容討論中（競爭者）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游：先進封裝與客戶",
+   "description": "CoWoS 仍供不應求，Interposer 需求外溢到力積電；美光買下銅鑼廠並為 PWF 合作方。",
+   "global_players": [
+    "美光",
+    "英特爾"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "CoWoS 是主要替代方案，同時也是需求外溢來源（競爭者）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

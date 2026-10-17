@@ -1,0 +1,486 @@
+{
+ "topic": "南亞科（2408）題材與產業",
+ "one_line": "南亞科為台塑集團旗下 DRAM 製造商，題材核心是 AI 與伺服器需求推動 DRAM 供不應求，Q3 毛利率 85.7%，後續看 Q4 價格、5A 新廠進度與中國長鑫擴產速度。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "南亞科",
+  "2408",
+  "DRAM",
+  "DDR4",
+  "DDR5",
+  "LPDDR5X",
+  "HBM",
+  "5A 新廠",
+  "1B",
+  "1C",
+  "1D",
+  "1E",
+  "EUV",
+  "長鑫",
+  "4F²",
+  "KGD",
+  "Vera Rubin",
+  "長約"
+ ],
+ "catalysts": [
+  "Q4 DRAM 合約價（TrendForce 預估傳統 DRAM 季增 10%–15%）",
+  "南亞科月營收公告",
+  "2027 年第一季林口 5A 新廠開始裝機、1C 開始客戶驗證",
+  "2027 年下半年 5A 新廠開始投片",
+  "2026 年底長鑫 4F² DDR5 RDIMM 推出",
+  "LPDDR 打入 Vera Rubin 供應鏈是否獲公司證實"
+ ],
+ "risks": [
+  "價格循環高點風險；2023、2024 年曾虧損，毛利率甚至為負",
+  "Q3 ASP 跳升部分來自長約重新議價，非每季重複",
+  "消費性 PC 與手機需求受成本壓力影響",
+  "中國長鑫擴產與 4F² 架構良率待驗證",
+  "估值已高於過去上緣：統一投顧本淨比 2.2 倍，給中立評等",
+  "長約最高價機制限制上行空間",
+  "股東兼客戶的集中風險",
+  "私募預期稀釋 10.05% 股權",
+  "LPDDR 打入 Vera Rubin 尚未證實",
+  "強震時 EUV 保護性停機與晶圓報廢風險（本次地震規模小，風險低）"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表（DRAM 產品）",
+   "columns": [
+    "產品",
+    "典型用途",
+    "電壓／速率（業界通用）",
+    "南亞科現況（來源）",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "DDR4（8Gb／16Gb）",
+     "伺服器 eSSD Buffer、PC、工控",
+     "1.2V；速率上限約 3200 MT/s",
+     "2026Q2 DDR4 與 LPDDR4 合計超過 70%（第三方整理）[70-2]",
+     "第三方整理"
+    ],
+    [
+     "DDR5（16Gb；RDIMM 6400/7200）",
+     "AI 與雲端伺服器",
+     "1.1V；標準約 4800–6400 MT/s，高階 RDIMM 可到 6400／7200",
+     "DDR5 約占營收一成，必要時可提高到四成[32-1]；預計 2026 年底開始生產雲端伺服器用的 DDR5 6400/7200 RDIMM",
+     "公司說法＋媒體"
+    ],
+    [
+     "LPDDR4X／LPDDR5X",
+     "手機、車用、邊緣運算、AI CPU 系統記憶體",
+     "1.1V（LPDDR4X）；LPDDR5X 速率上限約 8533 MT/s",
+     "媒體報導其 LPDDR 打入輝達 Vera Rubin 供應鏈（傳出，待公司證實）[67-1]",
+     "媒體報導"
+    ],
+    [
+     "HBM（HBM3E／HBM4）",
+     "AI GPU 旁的高頻寬記憶體",
+     "多層 DRAM 垂直堆疊，HBM4 介面寬度 2048-bit",
+     "說法不一：有文章稱南亞科不切入標準型 HBM，專攻客製化 AI 記憶體；另有文章稱積極布局 HBM",
+     "說法不一"
+    ],
+    [
+     "特殊應用（KGD、可再加工裸晶）",
+     "模組廠、系統客戶自行封裝",
+     "—",
+     "出貨前完成測試的裸晶，客戶可搭配重佈線層封裝[70-2]",
+     "公司產品分類"
+    ]
+   ],
+   "note": "電壓與速率為業界通用規格（依 JEDEC 通用規格整理，非本次搜尋來源），南亞科現況以搜尋到的報導為準。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "第一代：DDR4／LPDDR4 成熟主力",
+   "composition": "成熟製程 DDR4、LPDDR4",
+   "spec": "目前出貨主力",
+   "application": "價格受三大原廠退出 DDR4 影響；美系外資認為 DDR4 漲價將在今年到頂（反方觀點）"
+  },
+  {
+   "name": "第二代：1B 製程（第二代 10 奈米級）",
+   "composition": "16Gb DDR5",
+   "spec": "1B 製程預計 2026 年第四季占產出約 40%",
+   "application": "目前量產 16Gb DDR5"
+  },
+  {
+   "name": "第三代：1C 製程（第三代 10 奈米級）",
+   "composition": "1C 製程",
+   "spec": "預計 2027 年第一季開始客戶驗證（較早說法 2026 下半年已被法說取代）",
+   "application": "製程升級關鍵"
+  },
+  {
+   "name": "第四、第五代：1D、1E 與 EUV",
+   "composition": "1D、1E 製程與 EUV 微影",
+   "spec": "5A 新廠預計導入 1B 到 1E 製程與 EUV",
+   "application": "5A 新廠主要世代"
+  },
+  {
+   "name": "客製化與先進封裝",
+   "composition": "客製化 AI 記憶體 UWIO；屏東 3D 封測（TSV、晶圓堆疊）",
+   "spec": "UWIO 已開始對營收產生實質貢獻；屏東 3D 封測預計 2028 年底前導入 TSV 等 3DIC 技術",
+   "application": "AI 相關營收占比超過 20%"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼老的 DDR4 也會大幅漲價？",
+   "points": [
+    "主要 DRAM 廠把產能轉向 HBM 與伺服器 DRAM，使一般 DDR4、DDR5 產量下降",
+    "媒體分析指出三星、SK 海力士與美光退出 DDR4 後留下供應缺口",
+    "南亞科 DDR4 占比高，在這波缺口中有較高價格彈性",
+    "DDR4 為成熟萎縮中產品；大摩 4 月報告認為 DDR4 供應緊張已見緩解，長鑫也在擴大 DDR4 產能"
+   ]
+  },
+  {
+   "title": "Q3 獲利的一次性部分：長約重新議價",
+   "points": [
+    "Q3 價格上漲除反映缺貨，也與先前長約陸續到期、重新議價有關",
+    "Q3 位元出貨量季減約 4%～6%，但營收大幅成長，代表部分產品按新合約價出貨",
+    "新合約討論最低價（Floor）與最高價（Ceiling）機制：下行有保護，上行可能被封頂",
+    "現貨價高於合約價時，長約會少賺這部分，Q3 與 Q4 獲利增速不一定相同"
+   ]
+  },
+  {
+   "title": "為什麼 EUV 與 1C、1D 是成本關鍵",
+   "points": [
+    "同一片晶圓能做出更多位元，單位成本下降，製程越先進每片位元產出越高",
+    "5A 新廠導入 EUV 微影，目標是把製程帶到 1B 之後的世代",
+    "Counterpoint 認為長鑫製程比最尖端企業落後 2～3 代",
+    "EUV 設備交期長，統一投顧認為 2027 年供給會受設備交期限制；2026 至 2029 年資本支出上限不超過新台幣 3,466 億元"
+   ]
+  },
+  {
+   "title": "AI 熱潮為什麼不一定直接讓南亞科吃到 HBM 紅利",
+   "points": [
+    "HBM 以多層 DRAM 垂直堆疊，吃掉大量晶圓產能，原廠優先給 HBM 與伺服器後，一般 DRAM 就缺貨",
+    "南亞科受惠路徑主要是一般 DRAM、伺服器 RDIMM 與 LPDDR，而非 HBM 本身",
+    "南亞科 AI 基礎設施營收占比已超過 20%，公司預期 2027 至 2029 年持續提高",
+    "AI 相關占比仍是少數，若 HBM 與 AI 伺服器需求放緩，受惠程度會改變"
+   ]
+  }
+ ],
+ "conclusion": [
+  "判斷南亞科競爭力需綜合六項：每片晶圓位元產出（1B–1E 與 EUV 良率）、單位成本、產品組合、長約比例與價格機制、5A 產能時點與設備交期、資本效率與現金",
+  "南亞科以約 2,700 億元淨現金加上持續累積現金，預期明年資本支出可由自有資金支應",
+  "與長鑫相比規模差距大（長鑫月產約 25 萬片，南亞科約 6 萬片，數字可能已過時），但技術落後，是中國廠主要競爭點",
+  "題材應以 DRAM 價格循環、長約與擴產為主軸；本次地震與南亞科 DRAM 供需無因果關係，本文不構成買賣建議"
+ ],
+ "sources": [
+  {
+   "title": "宜蘭南澳規模 4.6 地震 台北有感原因曝 氣象署：正常板塊活動能量釋放（UDN）",
+   "url": "https://udn.com/news/story/7266/9820641"
+  },
+  {
+   "title": "最新／11:13 東北部晃一下！宜蘭南澳規模 4.6 地震 最大震度 2 級（民視）",
+   "url": "https://www.ftvnews.com.tw/news/detail/2026A17W0201"
+  },
+  {
+   "title": "南亞科：宜蘭地震機台復原中 營運財務無重大影響（經濟日報）",
+   "url": "https://money.udn.com/money/story/5612/9232020"
+  },
+  {
+   "title": "7.0 強震衝擊，台積電財損嚴重？業界預估「驚人金額」（鏡新聞）",
+   "url": "https://www.storm.mg/article/11091187"
+  },
+  {
+   "title": "南亞科法說／上季賺逾 2 股本、毛利率 85.7%（今周刊）",
+   "url": "https://www.businesstoday.com.tw/article/category/183015/post/202610120029/"
+  },
+  {
+   "title": "快訊／記憶體南亞科賺爛！Q3 每股爆灌 25.4 元（ETtoday）",
+   "url": "https://finance.ettoday.net/news/3253294"
+  },
+  {
+   "title": "南亞科第 3 季營業利益達新台幣 1,069 億元（鉅亨網／優分析）",
+   "url": "https://news.cnyes.com/news/id/6628704"
+  },
+  {
+   "title": "〈南亞科法說〉屏科廠布局 3D 先進封測 2028 年導入 TSV（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6628183"
+  },
+  {
+   "title": "南亞科（2408）法說會解析（vocus，部落格）",
+   "url": "https://vocus.cc/article/6acf2171fd897800018dc9a3"
+  },
+  {
+   "title": "南亞科提高資本支出至 697 億元 啟動 5A 新廠佈局（鏡週刊）",
+   "url": "https://www.mirrormedia.mg/story/20260805-180fin-200737"
+  },
+  {
+   "title": "南亞科今年資本支出升至 697 億元，加強 5A 新廠產能建置（TechNews）",
+   "url": "https://technews.tw/2026/08/07/nanya-technology-corporation-stock/"
+  },
+  {
+   "title": "南亞科拚擴產 4 年豪砸 3,466 億不怕打水漂？（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260806700062-439901"
+  },
+  {
+   "title": "南亞科 5 月營收年增 7.3 倍（經濟日報）",
+   "url": "https://money.udn.com/money/story/5612/9544342"
+  },
+  {
+   "title": "南亞科營收連 7 月創史高（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20260603701595-430201"
+  },
+  {
+   "title": "南亞科 Q2 大賺逾 500 億元 毛利率衝 79.5%（財報狗）",
+   "url": "https://statementdog.com/news/16193"
+  },
+  {
+   "title": "〈南亞科法說〉Q1 雙率飆破 6 成 每股大賺 8.41 元（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6418612"
+  },
+  {
+   "title": "南亞科私募 3.51 億股，Sandisk、鎧俠等大廠入列（TechNews）",
+   "url": "https://finance.technews.tw/2026/03/25/nanya-2026-sandisk-kioxia-solidigm-cisco/"
+  },
+  {
+   "title": "南亞科：吃下 DDR4 缺口 私募 787 億入股全是客戶（Business Insider）",
+   "url": "https://www.businessinsider.tw/article/3252"
+  },
+  {
+   "title": "南亞科宣布私募四巨頭 小摩解析「三優勢」（經濟日報）",
+   "url": "https://money.udn.com/money/story/5607/9407120"
+  },
+  {
+   "title": "反將大摩一軍！南亞科一箭雙鵰（旺得富理財網）",
+   "url": "https://wantrich.chinatimes.com/news/20260326900266-420101"
+  },
+  {
+   "title": "TrendForce：Q4 2026 DRAM and NAND Contract Prices（Guru3D 轉載）",
+   "url": "https://www.guru3d.com/story/dram-and-nand-contract-prices-forecast-to-rise-as-much-as-in-q4-2026/"
+  },
+  {
+   "title": "AI keeps memory prices climbing in Q4 as consumer demand weakens（Evertiq）",
+   "url": "https://evertiq.com/news/2026-10-02-ai-keeps-memory-prices-climbing-in-q4-as-consumer-demand-weakens"
+  },
+  {
+   "title": "TrendForce Memory & Storage Research",
+   "url": "https://www.trendforce.com/research/category/Semiconductors/DRAM"
+  },
+  {
+   "title": "TrendForce Projects PC DRAM Contract Prices to Rise Up to 18 Percent in 4Q26（PC Master Insider）",
+   "url": "https://pcmasterinsider.com/pc-dram-contract-price-forecast-q4-2026/"
+  },
+  {
+   "title": "長鑫存儲啟動積極擴產（TechNews）",
+   "url": "https://technews.tw/2026/09/11/changxin-memory-initiates-active-capacity-expansion/"
+  },
+  {
+   "title": "大陸長鑫存儲 DRAM 產能猛追美光（中時）",
+   "url": "https://www.chinatimes.com/realtimenews/20260727003992-260408"
+  },
+  {
+   "title": "長鑫宣稱技術搶先三星與 SK 海力士（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6629359"
+  },
+  {
+   "title": "長鑫 DRAM 突破重創全球記憶體股（ABMedia）",
+   "url": "https://abmedia.io/memory-stocks-selloff-elon-musk-china"
+  },
+  {
+   "title": "長鑫存儲擴產 DRAM 的戰略目標是什麼？（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6528729"
+  },
+  {
+   "title": "統一投顧等法人評價（旺得富理財網）",
+   "url": "https://wantrich.chinatimes.com/news/20261013900165-420101"
+  },
+  {
+   "title": "台灣第一家！南亞科打入輝達記憶體供應鏈（經濟日報）",
+   "url": "https://money.udn.com/money/story/5612/9465844"
+  },
+  {
+   "title": "南亞科 DRAM 傳再漲 20％！紅鏈擴產壓不住（工商時報）",
+   "url": "https://www.ctee.com.tw/news/20261007700649-430201"
+  },
+  {
+   "title": "美光砸 240 億美元擴產，台股記憶體供應鏈怎麼看？（Pocket 證券）",
+   "url": "https://www.pocket.tw/school/report/perspective/7065/"
+  },
+  {
+   "title": "記憶體概念股：名單與量化數據（FinLab）",
+   "url": "https://finlab.finance/stocks/themes/memory"
+  },
+  {
+   "title": "南亞科做什麼的？解析台灣 DRAM 記憶體大廠 4 大業務（PressPlay，第三方）",
+   "url": "https://www.pressplay.cc/project/2667A183130728C4AE30928EF3CFF4DD/articles/57497F2FDC6F44F9362F937EBA72C112"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游：設備與材料",
+   "description": "5A 新廠設備預付款增加，擴產若正式落地並進入設備採購期，相關製程設備與材料需求有望增加；景氣待採購期確認。",
+   "global_players": [
+    "ASML（EUV，非台股）",
+    "應用材料（非台股）",
+    "Lam Research（非台股）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3131",
+     "name": "弘塑",
+     "role": "濕製程設備，產業相關，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3583",
+     "name": "辛耘",
+     "role": "濕製程設備，產業相關，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "6223",
+     "name": "旺矽",
+     "role": "探針卡，產業相關，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "晶圓製造（南亞科本體與同業）",
+   "description": "Q3 毛利率 85.7%，Q4 價格預期續升但速度趨緩；10/13 台股下跌時記憶體股同步下跌。",
+   "global_players": [
+    "美光（非台股）",
+    "SK 海力士（非台股）",
+    "三星（非台股）",
+    "中國長鑫（非台股，競爭者）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "DRAM 製造，已證實受惠（財報、法說、董事會）",
+     "impact": "受惠"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "DRAM 與 NOR Flash，利基型 DRAM 競爭者",
+     "impact": "中性"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "記憶體族群連動，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2337",
+     "name": "旺宏",
+     "role": "NOR 與 NAND，非 DRAM 產品",
+     "impact": "中性"
+    },
+    {
+     "code": "3006",
+     "name": "晶豪科",
+     "role": "利基型 DRAM 晶片設計，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "封測",
+   "description": "記憶體原廠高稼動率時封測需求同步增加，漲價效應可延伸到後段封測；南亞科自規劃屏東 3D 封測廠可能內部化（推論）。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "6239",
+     "name": "力成",
+     "role": "先進封裝布局，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "8150",
+     "name": "南茂",
+     "role": "記憶體與驅動 IC 封測，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "8110",
+     "name": "華東",
+     "role": "與華邦電供應鏈連動性高，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "模組與通路",
+   "description": "DRAM 價格上升，模組廠的成本與庫存評價同時受影響；未見與南亞科直接供貨證據。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "3260",
+     "name": "威剛",
+     "role": "DRAM 模組，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2451",
+     "name": "創見",
+     "role": "記憶體模組，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "8271",
+     "name": "宇瞻",
+     "role": "工控與車用記憶體，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "4967",
+     "name": "十銓",
+     "role": "記憶體模組，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游：PC、手機與伺服器",
+   "description": "消費性 PC 需求仍疲弱，但供應商議價力因標準 PC 記憶體供給縮減而增強；雲端與伺服器 OEM 增加記憶體採購量。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2357",
+     "name": "華碩",
+     "role": "PC 廠，成本端承壓（推論，待財報驗證）",
+     "impact": "受傷"
+    },
+    {
+     "code": "2353",
+     "name": "宏碁",
+     "role": "PC 廠，成本端承壓（推論，待財報驗證）",
+     "impact": "受傷"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器 OEM，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 OEM，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 OEM，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "媒體指出協助南亞科 LPDDR 通過輝達驗證，屬技術協助非供貨關係",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
