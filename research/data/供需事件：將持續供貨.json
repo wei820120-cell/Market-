@@ -1,0 +1,308 @@
+{
+ "topic": "供需事件：將持續供貨",
+ "one_line": "10/16 輝達個人運算業務資深副總裁費雪（Jeff Fisher）來台出席 RTX Spark 架構個人電腦開賣活動時被問到，直接否認 RTX 5090 停產的傳聞『並非事實』，稱 RTX 5090 是輝達極為重要的核心產品、會持續供貨，並坦言供應鏈吃緊不只輝達遇到、公司正盡力把產品送到市場。此前有外電傳輝達把 GB202 晶片改配 RTX PRO 專業卡、由 24GB RTX 5080 接替遊戲旗艦。駁斥化解的是『停產』，不是『缺貨』：官方價 US$1,999 但中位掛牌價約 US$4,699（部落格數字）、GDDR7 供應受限，供貨量是否被縮減仍沒有官方數字。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "RTX 5090",
+  "GB202",
+  "GDDR7",
+  "輝達",
+  "費雪",
+  "RTX PRO",
+  "RTX 5080",
+  "板卡廠",
+  "缺貨",
+  "停產傳聞",
+  "RTX Spark"
+ ],
+ "catalysts": [
+  "輝達官方說明供貨量：費雪稱『持續供貨』，但沒有說明 GB202 配給 RTX 5090 與 RTX PRO 的數量，也沒有時程",
+  "GDDR7 供應：三家 GDDR7 供應商都有產能限制、產能轉向 HBM；美光稱只能滿足核心客戶約 55～60% 的記憶體需求（部落格引述）",
+  "板卡廠月營收與庫存（華碩、技嘉、微星）：10 月營收（11 月 10 日前）與法說對顯卡供貨與毛利的說法",
+  "RTX 5080 24GB 或其他遊戲旗艦的時程傳聞（原傳聞，輝達未證實）",
+  "AMD、Intel 的替代供給與定價動向（未查到）"
+ ],
+ "risks": [
+  "駁斥不等於供貨改善：費雪承認供應鏈吃緊；Tech Times／RoIC.ai 推估 2026 上半年輝達對板卡廠 RTX 50 系列供貨量減少 20%～40%、官方價 US$1,999 但中位掛牌價約 US$4,699（部落格與推估，可信度低）",
+  "傳聞可能再起：原傳聞（Tom's Hardware、TechPowerUp 等）稱 GB202 改配 RTX PRO，輝達的否認針對『停產／EOL』，沒有回應配貨比例",
+  "記憶體成本與供給：GDDR7 2GB 模組價格據報約 US$20、台積電先進製程也調漲；RTX 5090 用 32GB GDDR7、512-bit，受影響特別大",
+  "台股影響以推論為主：板卡廠有配貨減少、庫存變貴、旗艦檔次下移的兩面效應，整體偏中性；沒有查到台廠回應或股價反應",
+  "輝達只說『並非事實、會持續供貨』，沒有說明 GB202 配給 RTX 5090 與 RTX PRO 的數量；板卡廠（華碩、技嘉、微星）的回應與營收影響、RTX 5090 在台灣的價格沒有查到；價格與供貨量數字出自低可信度部落格與推估"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表 A：事件經過（傳聞與駁斥）",
+   "columns": [
+    "時點",
+    "內容",
+    "來源性質"
+   ],
+   "rows": [
+    [
+     "傳聞（10 月初）",
+     "外電稱輝達停止把 GB202 配給 RTX 5090／5090D，改供 RTX PRO 專業卡，由 24GB RTX 5080 接替遊戲旗艦",
+     "Tom's Hardware、TechPowerUp 等（輝達未證實）"
+    ],
+    [
+     "10/16 駁斥",
+     "輝達個人運算業務資深副總裁費雪在台灣受訪：『並非事實』，RTX 5090 是極為重要的核心產品，將持續供貨",
+     "中央社／經濟日報／Newtalk"
+    ],
+    [
+     "場合",
+     "RTX Spark 架構個人電腦開賣的實體派對（來台）",
+     "同上"
+    ],
+    [
+     "輝達補充",
+     "供應鏈吃緊並非只有輝達遇到，公司正盡力把產品送到市場",
+     "同上"
+    ],
+    [
+     "未回應",
+     "GB202 配給 RTX 5090 與 RTX PRO 的比例、供貨量、RTX 5080 24GB 時程",
+     "未查到"
+    ]
+   ],
+   "note": "否認的是『停產』；供貨量是否縮減沒有官方數字。"
+  },
+  {
+   "title": "規格比較表 B：RTX 5090 供需與價格（低可信度來源，僅供背景）",
+   "columns": [
+    "項目",
+    "數字／說法",
+    "來源性質"
+   ],
+   "rows": [
+    [
+     "官方定價",
+     "US$1,999",
+     "輝達定價"
+    ],
+    [
+     "市場價",
+     "中位掛牌價約 US$4,699；有報導稱缺貨時掛牌價逾 US$5,000～6,000",
+     "部落格，推估"
+    ],
+    [
+     "美國通路",
+     "2026/9/14 Amazon、Newegg、Best Buy 無直接庫存，只剩第三方市集",
+     "部落格"
+    ],
+    [
+     "對板卡廠供貨",
+     "2026 上半年 RTX 50 系列供貨量估計減少 20%～40%",
+     "Tech Times／RoIC.ai 推估"
+    ],
+    [
+     "記憶體",
+     "GDDR7 2GB 模組約 US$20；三家供應商產能受限、轉向 HBM；美光稱只能滿足核心客戶 55%～60%",
+     "部落格引述"
+    ],
+    [
+     "規格",
+     "32GB GDDR7、512-bit 匯流排，為消費級 GPU 中最寬",
+     "部落格"
+    ]
+   ],
+   "note": "價格與供貨量數字非官方，可信度參差。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "RTX 5090（GB202，32GB GDDR7）",
+   "composition": "遊戲旗艦顯卡",
+   "spec": "官方價 US$1,999；缺貨加價",
+   "application": "高階遊戲與創作者"
+  },
+  {
+   "name": "RTX PRO 專業卡（GB202）",
+   "composition": "同一顆晶片賣工作站卡",
+   "spec": "單價高於 5090（傳聞的動機）",
+   "application": "AI 工作站、伺服器"
+  },
+  {
+   "name": "RTX 5080 24GB（傳聞）",
+   "composition": "傳接替遊戲旗艦",
+   "spec": "輝達未證實",
+   "application": "遊戲旗艦檔次下移"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的：AI 搶產能與記憶體",
+   "points": [
+    "同一顆 GB202 賣給 RTX PRO 專業卡的單價與毛利更高，外電傳輝達把配給改向專業卡（傳聞）",
+    "GDDR7 供應商產能受限、轉向 HBM，使 5090 的 32GB GDDR7 成本與取得更吃緊",
+    "費雪承認供應鏈吃緊不只輝達遇到，缺貨與加價的背景沒有因駁斥而消失"
+   ]
+  },
+  {
+   "title": "駁斥的意義與限制",
+   "points": [
+    "費雪否認的是『停產（EOL）』：RTX 5090 是核心產品、會持續供貨",
+    "他沒有談配貨量：『持續供貨』與『減量供貨』可以並存",
+    "傳聞與否認在 10 月初到 10/16 之間反覆，後續要看官方供貨說明與板卡廠庫存"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷（替代供應、轉單、成本上升）",
+   "points": [
+    "板卡廠（華碩、技嘉、微星）：停產傳聞破除讓出貨預期穩定，但配貨量與 GDDR7 成本仍是壓力，整體偏中性",
+    "記憶體廠（南亞科、華邦電、威剛）：GDDR7／DRAM 吃緊有利價格，但與 5090 的直接關係未查到",
+    "RTX PRO 與 AI 工作站（麗臺）：若 GB202 配給專業卡，受惠；若輝達維持 5090 配給，效應變小"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "看輝達是否公布 5090 與 RTX PRO 的配貨或新品時程",
+    "看華碩、技嘉、微星 10 月營收與法說對顯卡供貨與毛利的說法",
+    "看台灣與國際通路價格是否回落"
+   ]
+  }
+ ],
+ "conclusion": [
+  "輝達高層費雪 10/16 否認 RTX 5090 停產傳聞並稱會持續供貨，但承認供應鏈吃緊，且沒有談 GB202 配貨比例。",
+  "這化解的是『停產』的預期，不是缺貨與加價；GDDR7 與 AI 搶產能仍是缺口來源。",
+  "台廠影響以推論為主（板卡廠偏中性、記憶體與 RTX PRO 相關受惠有限），沒有廠商回應與營收數據。",
+  "要補的資料：輝達配貨說明、板卡廠回應與 10 月營收、台灣市場價格。"
+ ],
+ "sources": [
+  {
+   "title": "Newtalk：傳旗艦顯卡 RTX 5090 停產 輝達高層駁斥：將持續供貨（2026/10/16）",
+   "url": "https://newtalk.tw/news/view/2026-10-16/1066024"
+  },
+  {
+   "title": "經濟日報：旗艦遊戲顯卡 RTX 5090 停產？輝達高層駁斥：產品線超級重要一部分",
+   "url": "https://money.udn.com/money/story/5612/9819963"
+  },
+  {
+   "title": "中央社：傳旗艦顯卡 RTX 5090 停產 輝達高層駁斥：將持續供貨",
+   "url": "https://www.cna.com.tw/news/afe/202610160349.aspx"
+  },
+  {
+   "title": "三立：傳旗艦顯卡 RTX 5090 停產 輝達高層駁斥",
+   "url": "https://www.setn.com/news/1923851"
+  },
+  {
+   "title": "自由財經：傳輝達旗艦顯卡暫停供貨（原傳聞）",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5602787"
+  },
+  {
+   "title": "Tom's Hardware：Nvidia reportedly halts GeForce RTX 5090 production（原傳聞）",
+   "url": "https://www.tomshardware.com/pc-components/gpus/nvidia-reportedly-halts-geforce-rtx-5090-production-in-favor-of-ai-data-center-and-professional-gpus-impending-supply-drought-expected-to-drive-up-prices-rtx-5080-24gb-rumored-as-new-gaming-flagship"
+  },
+  {
+   "title": "TechPowerUp：NVIDIA reportedly ending the RTX 5090, reserves GB202 silicon for workstation GPUs（原傳聞）",
+   "url": "https://www.techpowerup.com/353578/nvidia-reportedly-ending-the-rtx-5090-reserves-gb202-silicon-for-workstation-gpus"
+  },
+  {
+   "title": "Capital and Compute：RTX 5090 Sold Out at $5,000 as Listings Pass $6,000（部落格，可信度低）",
+   "url": "https://capitalandcompute.net/blog/rtx-5090-price-5000-explained/"
+  },
+  {
+   "title": "Noobfeed：GeForce RTX 5090 price surges as GDDR7 supply falls behind demand（部落格，可信度低）",
+   "url": "https://noobfeed.com/hardware/geforce-rtx-5090-price-surge-gddr7"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "晶片與先進製程（GB202）",
+   "description": "RTX 5090／5090D 與 RTX PRO 同用 GB202；傳聞稱配給改向專業卡，輝達 10/16 否認停產但未談配貨量。",
+   "global_players": [
+    "輝達"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "GB202 晶圓代工；只是改賣給不同產品，沒有證據顯示產能被擠壓",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "GDDR7／DRAM 記憶體",
+   "description": "GDDR7 2GB 約 US$20，三家供應商產能受限、轉向 HBM；美光稱只能滿足核心客戶約 55%～60%（部落格引述）。與 5090 的直接供貨關係未查到。",
+   "global_players": [
+    "三星、SK 海力士、美光（GDDR7／HBM）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "DRAM；與 GDDR7 的直接關係未查到",
+     "impact": "中性"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "記憶體；與 GDDR7 的直接關係未查到",
+     "impact": "中性"
+    },
+    {
+     "code": "3260",
+     "name": "威剛",
+     "role": "記憶體模組通路；影響未查到",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "顯卡品牌與板卡廠（AIB）",
+   "description": "停產傳聞破除讓 5090 出貨預期穩定，但配貨量與 GDDR7 成本仍是壓力；品牌廠在缺貨時可能受惠價格、受傷庫存與配貨。台廠回應與營收影響沒有查到。",
+   "global_players": [
+    "國際板卡品牌（通識）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2357",
+     "name": "華碩",
+     "role": "顯卡品牌；回應未查到",
+     "impact": "中性"
+    },
+    {
+     "code": "2376",
+     "name": "技嘉",
+     "role": "顯卡品牌；回應未查到",
+     "impact": "中性"
+    },
+    {
+     "code": "2377",
+     "name": "微星",
+     "role": "顯卡品牌；回應未查到",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "RTX PRO 專業卡、AI 工作站與通路",
+   "description": "若 GB202 配給專業卡，RTX PRO 與 AI 工作站受惠；通路商受缺貨與價差影響。細項數據未查到。",
+   "global_players": [
+    "輝達"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2465",
+     "name": "麗臺",
+     "role": "RTX PRO 與工作站相關（前次研究判定受惠，細節待確認）",
+     "impact": "受惠"
+    },
+    {
+     "code": "2347",
+     "name": "聯強",
+     "role": "通路；影響未查到",
+     "impact": "中性"
+    },
+    {
+     "code": "3028",
+     "name": "增你強",
+     "role": "通路；影響未查到",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
