@@ -1,0 +1,476 @@
+{
+ "topic": "供需事件：印尼資料中心重鎮巴淡停電逾16小時 電力主管遭撤",
+ "one_line": "單一電網事故疊在供電容量吃緊之上，PLN全國執行長被換、巴淡改由Danantara管理；台股目前僅為備援電力與電網設備的題材聯想，無已證實供貨關係。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "巴淡",
+  "Batam",
+  "PLN Batam",
+  "Danantara",
+  "DayOne",
+  "資料中心 PPA",
+  "BBU",
+  "UPS",
+  "800VDC",
+  "不斷電系統",
+  "備援電源",
+  "缺電概念股",
+  "停電概念股",
+  "AI 電力",
+  "Sumatra blackout"
+ ],
+ "catalysts": [
+  "PLN 正式調查報告：決定故障型或容量型事件，影響設備需求方向",
+  "輪流限電何時解除",
+  "DayOne 分期供電進度（PPA 分 2026–2027 兩年供電）",
+  "Danantara 的投資與電網升級計畫是否公布具體金額",
+  "PLN 的需求預測機制：資料中心需提前提供需求預測，設備採購時程會更早確定"
+ ],
+ "risks": [
+  "這可能是一次性事故，若原因為動物或雷擊等外部因素，系統性需求不變",
+  "資料中心與停電的因果關係未證實",
+  "題材炒作與訂單脫鉤，例如 2022 年盈正漲停屬情緒反應",
+  "傳統 UPS 可能被 BBU 與高壓直流架構取代，對純 UPS 廠不利",
+  "地方用水與政治風險可能拉長資料中心審查與建廠時程",
+  "電網建設時程長，短期可能仍以輪流限電與自備電源為主",
+  "引用的台股概念股名單多來自 2023 年前後，需重新確認"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表 A：事件關鍵數字（已證實或媒體引述）",
+   "columns": [
+    "項目",
+    "數值",
+    "來源"
+   ],
+   "rows": [
+    [
+     "起始時間",
+     "2026-10-12 約 06:30 WIB",
+     "Based on Antara's observations"
+    ],
+    [
+     "停電時長",
+     "約 16 小時（媒體說法略有差異，有的寫超過 15 小時）",
+     "The outage in Batam and Bintan reportedly lasted more than 15 hours"
+    ],
+    [
+     "受影響用戶",
+     "超過 41.1 萬戶",
+     "affected more than 411,000 customers"
+    ],
+    [
+     "中斷負載（PLN 數據）",
+     "約 501.8 MW",
+     "the disruption reached approximately 501.8 megawatts (MW)"
+    ],
+    [
+     "恢復進度",
+     "10/13 凌晨 4 點約 99%",
+     "nearly 99 per cent"
+    ],
+    [
+     "水處理產能",
+     "約 30%",
+     "only 30 per cent of normal production"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "規格比較表 B：備援電力技術（關鍵差異）",
+   "columns": [
+    "項目",
+    "傳統 UPS（鉛酸電池）",
+    "鋰電 UPS",
+    "機櫃內 BBU（鋰電池備援模組）"
+   ],
+   "rows": [
+    [
+     "電能轉換路徑",
+     "多重 AC-DC-AC 轉換，效率較差",
+     "同屬 UPS 架構，轉換路徑仍在 UPS 內",
+     "DC-DC 設計，可直接放進機櫃，空間耗損小"
+    ],
+    [
+     "電池壽命",
+     "約 5 年",
+     "可達 10 年",
+     "依電芯規格"
+    ],
+    [
+     "備援時間",
+     "通常幾分鐘到幾十分鐘（市場文章說法）",
+     "同左",
+     "作為過渡與瞬時支撐，不取代長時間發電"
+    ],
+    [
+     "典型用途",
+     "傳統機房、醫療、工控",
+     "資料中心與半導體廠",
+     "AI 機櫃內備援"
+    ]
+   ],
+   "note": "以上數字來自市場文章與市調報告的整理，未經過供應商規格書核對，使用前請以原廠規格為準。"
+  },
+  {
+   "title": "規格比較表 C：巴淡電力供需（規劃數字，口徑需注意）",
+   "columns": [
+    "項目",
+    "2026 年",
+    "2035 年",
+    "來源與注意"
+   ],
+   "rows": [
+    [
+     "可用發電能力",
+     "約 970 MW",
+     "約 3,691 MW",
+     "印尼媒體引述 PLN 規劃"
+    ],
+    [
+     "尖峰負載",
+     "約 841 MW",
+     "約 2,540 MW",
+     "媒體引述 BP Batam 資料"
+    ],
+    [
+     "資料中心用電",
+     "約 89 MW",
+     "自 2031 年起約 1,150 MW",
+     "印尼媒體引述"
+    ]
+   ],
+   "note": "2026 年可用發電（970 MW）減去尖峰負載（841 MW）約剩 130 MW 餘裕；兩數字來自不同文件、口徑未必一致，僅供方向性判斷。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "1. 公用電網單線供電",
+   "composition": "天然氣發電 + 孤島電網",
+   "spec": "缺電時無法從全國電網支援",
+   "application": "巴淡目前的基本盤"
+  },
+  {
+   "name": "2. 傳統 UPS + 柴油／燃氣發電機",
+   "composition": "鉛酸電池 UPS + 發電機接手",
+   "spec": "UPS 撐短時間，發電機撐長時間",
+   "application": "傳統機房、工廠"
+  },
+  {
+   "name": "3. 鋰電 UPS",
+   "composition": "鋰電池取代鉛酸",
+   "spec": "壽命較長、體積較小",
+   "application": "資料中心與半導體廠"
+  },
+  {
+   "name": "4. 機櫃內 BBU",
+   "composition": "鋰電池模組放進機櫃",
+   "spec": "DC-DC 架構，轉換效率較高",
+   "application": "AI 伺服器機櫃"
+  },
+  {
+   "name": "5. 800VDC 架構",
+   "composition": "高壓直流配電 + BBU",
+   "spec": "台達電展示的 800VDC 電源櫃，內建 16kW BBU 模組，轉換效率高達 98.2%",
+   "application": "下一代 AI 資料中心（展示資料，尚未見獨立測試報告）"
+  },
+  {
+   "name": "6. 自備電廠／私有電網",
+   "composition": "大型燃氣機組直接供應園區",
+   "spec": "不必等待電網擴建，但需燃料與維護",
+   "application": "電網審批慢的地區"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "停電 ≠ 缺電，兩者的風險與對策完全不同",
+   "points": [
+    "故障型停電：保護裝置跳脫、外力（動物、雷擊）或操作失誤，多半數小時內可修復，但可能大範圍連鎖",
+    "容量不足型停電：發電能力不夠，只能靠輪流限電，恢復前提是新增發電或電網容量",
+    "巴淡兩者同時存在：初步原因指向單一變電站事故；停電後仍需輪流限電",
+    "資料中心業者會更重視保護系統能否限縮影響範圍，而不只是發電機夠不夠",
+    "若是容量型問題，需要長期投資，設備商訂單會比故障型事件更持續"
+   ]
+  },
+  {
+   "title": "為什麼 UPS 之後一定要有發電機",
+   "points": [
+    "UPS 的角色是過渡：在市電與備用電源切換的空檔維持關鍵設備運作",
+    "電池容量有限，電池與發電機的備援能力都有上限，無法撐過長時間停電",
+    "因此備援層級是「UPS 切換 + 發電機長時間供電」，兩者缺一不可",
+    "代價：電池需定期更換（約 3–5 年），發電機需定期測試",
+    "機櫃內 BBU 可能取代部分傳統 UPS，但不能取代長時間發電機，兩者需求消長可能不同步"
+   ]
+  },
+  {
+   "title": "巴淡的電與水綁在一起",
+   "points": [
+    "電停，水廠就減產：停電時水處理設施只能維持部分產能",
+    "水源本來就脆弱：巴淡高度依賴降雨，淡水資源有限",
+    "資料中心的水冷需求會與民生競爭，水源是長期限制（Fitch Solutions BMI 分析師引述）",
+    "資料中心在巴淡的擴張可能受用水與用電兩方面審查，建廠與取得電力時程可能拉長"
+   ]
+  }
+ ],
+ "conclusion": [
+  "目前能查證的只是備援電力與電網設備的題材聯想，尚無已證實直接供貨巴淡的台股公司，受惠欄位留空",
+  "判斷供應商優劣應同時看切換速度與備援層級、能效與空間、交期與在地化、認證與長期驗證、電源來源與電網獨立性五個維度",
+  "最有可能受益的是能同時提供 UPS、BBU、配電與發電的整合型供應商，但需要巴淡或東南亞在地交貨能力",
+  "只做單一設備（例如只有 UPS）的公司，受益程度取決於能否進入巴淡採購名單，目前沒有證據"
+ ],
+ "sources": [
+  {
+   "title": "The Star，Indonesia replaces state electricity chief after 16-hour blackout in Batam",
+   "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/10/15/indonesia-replaces-state-electricity-chief-after-16-hour-blackout-in-batam"
+  },
+  {
+   "title": "Indonesia Business Post，Danantara takes over PLN Batam following regional blackout",
+   "url": "https://indonesiabusinesspost.com/7584/corporate-affairs/danantara-takes-over-pln-batam-following-regional-blackout"
+  },
+  {
+   "title": "Danantara Indonesia 新聞稿，Danantara Indonesia Reaffirms Commitment to Improving PLN Services",
+   "url": "https://www.danantaraindonesia.co.id/media-center/press-releases/danantara-indonesia-commitment-improving-pln-services"
+  },
+  {
+   "title": "Tempo，PLN Batam Denies Viral Claim of Three-Day Power Outage",
+   "url": "https://en.tempo.co/read/2121475/pln-batam-denies-viral-claim-of-three-day-power-outage"
+  },
+  {
+   "title": "Tempo，Batam Blackout: What's Behind the Power Cut This Morning?",
+   "url": "https://en.tempo.co/read/2121420/batam-blackout-whats-behind-the-power-cut-this-morning"
+  },
+  {
+   "title": "Jakarta Globe，Widespread Blackout Leaves Much of Batam Without Power for Hours",
+   "url": "https://jakartaglobe.id/news/widespread-blackout-leaves-much-of-batam-without-power-for-hours"
+  },
+  {
+   "title": "Kompas，Batam Blackout Disrupts Industrial Production",
+   "url": "https://www.kompas.id/artikel/batam-blackout-disrupts-industrial-production"
+  },
+  {
+   "title": "PCN，Indonesia's Batam, Bintan islands hit by blackout, cause still unknown",
+   "url": "https://www.pcn-channel.com/indonesias-batam-bintan-islands-hit-by-blackout-cause-still-unknown/"
+  },
+  {
+   "title": "UMY，Batam Blackout a Warning for Public Service Readiness",
+   "url": "https://www.umy.ac.id/en/blackout-batam/"
+  },
+  {
+   "title": "Ulasan.co，Isu Data Center Picu Blackout, Amsakar: Belum Dapat Informasi",
+   "url": "https://ulasan.co/isu-data-center-picu-blackout-amsakar-belum-dapat-informasi"
+  },
+  {
+   "title": "Katalia.id，Blackout Batam Akibat Data Center? Cek Faktanya",
+   "url": "https://katalia.id/blog/blackout-batam-akibat-data-center-cek-faktanya"
+  },
+  {
+   "title": "Data Center Dynamics，DayOne inks 450MW PPA with PLN Batam",
+   "url": "https://www.datacenterdynamics.com/en/news/dayone-inks-450mw-ppa-with-pln-batam-to-power-planned-data-center-in-batam-indonesia/"
+  },
+  {
+   "title": "AI CERTs，Indonesia Powers Massive Batam Data Center Expansion（來源可靠度低）",
+   "url": "https://www.aicerts.ai/news/indonesia-powers-massive-batam-data-center-expansion/"
+  },
+  {
+   "title": "GATE.com（引述 Fitch Solutions BMI），Batam Data Center Boom Accelerates Amid Water and Energy Constraints",
+   "url": "https://www.gate.com/news/detail/batam-data-center-boom-accelerates-amid-water-and-energy-constraints-20360167"
+  },
+  {
+   "title": "Headtopics（引述印尼媒體專欄與 BP Batam 資料）",
+   "url": "https://id.headtopics.com/news/data-center-dan-masa-depan-batam-88927989"
+  },
+  {
+   "title": "東元 1504 新聞，storm.mg",
+   "url": "https://www.storm.mg/article/11172255"
+  },
+  {
+   "title": "StockFeel 股感，BBU 是什麼？",
+   "url": "https://www.stockfeel.com.tw/bbu%E5%82%99%E6%8F%B4%E9%9B%BB%E6%B1%A0%E6%A8%A1%E7%B5%84-%E6%8A%95%E8%B3%87-%E6%A6%82%E5%BF%B5%E8%82%A1/"
+  },
+  {
+   "title": "股市學院（市場文章，資料較舊）",
+   "url": "https://school.gugu.fund/blog/concept-stocks/8082978172"
+  },
+  {
+   "title": "GII（市調報告摘要）",
+   "url": "https://www.gii.tw/report/imarc1987133-uninterrupted-power-supply-ups-system-market-size.html"
+  },
+  {
+   "title": "GII（市調報告摘要，關稅影響）",
+   "url": "https://www.gii.tw/report/tbrc1973088-data-center-power-global-market-report.html"
+  },
+  {
+   "title": "工商時報（長園科技、Eaton 新聞）",
+   "url": "https://www.ctee.com.tw/search/UPS"
+  },
+  {
+   "title": "My-Finance，AI電力概念股有哪些（市場文章）",
+   "url": "https://www.my-finance.com.tw/tw/News_detail/2339/AI%E9%9B%BB%E5%8A%9B%E6%A6%82%E5%BF%B5%E8%82%A1%E6%9C%89%E5%93%AA%E4%BA%9B"
+  },
+  {
+   "title": "TechNews，晶圓龍頭 UPS 不斷電備援供應！安葆電能",
+   "url": "https://finance.technews.tw/2026/01/05/ups-uninterruptible-power-supply"
+  },
+  {
+   "title": "鉅亨網，停電概念股引聯想 UPS廠盈正噴漲停（2022 年）",
+   "url": "https://news.cnyes.com/news/id/4823045"
+  },
+  {
+   "title": "旺得富理財網，全台大停電嚇爆 這檔不斷電概念股噴至漲停（2022 年）",
+   "url": "https://wantrich.chinatimes.com/news/20220303900401-420101"
+  },
+  {
+   "title": "鉅亨網，513 全台停電 太陽能族群政策護體掀漲勢",
+   "url": "https://news.cnyes.com/news/id/4646012"
+  },
+  {
+   "title": "鏡週刊，北東電網大危機",
+   "url": "https://www.mirrormedia.mg/story/20260720fin002"
+  },
+  {
+   "title": "優分析，印尼 AI、雲端需求推升資料中心用電 PLN 已接入159家",
+   "url": "https://uanalyze.com.tw/articles/7471656003"
+  },
+  {
+   "title": "Wikipedia，2026 Sumatra blackout",
+   "url": "https://en.wikipedia.org/wiki/2026_Sumatra_blackout"
+  },
+  {
+   "title": "方格子／倍銳領域，Caterpillar：8.4 億美元的私有電網",
+   "url": "https://vocus.cc/article/69b4b22ffd897800015d1306"
+  },
+  {
+   "title": "東方日報（馬來西亞），巴淡岛停电断水 民众双重打击",
+   "url": "https://www.orientaldaily.com.my/news/videos/2026/10/13/854919"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "需求端：資料中心與工業用戶",
+   "description": "提出用電需求、簽訂供電協議、建置機房。DayOne 的 PPA 分兩年供電；BW Digital 的 NDP1 設施預計 2026 年中達到 144 MW 營運容量。本次查證沒有找到台股公司與這些業者有已證實的供貨關係。",
+   "global_players": [
+    "DayOne（新加坡）",
+    "BW Digital"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "電網與配電設備（變電、變壓器、配電盤）",
+   "description": "把發電廠的電送到用戶。本次查證沒有找到巴淡變電設備的價格或交期數字。",
+   "global_players": [
+    "PLN Batam（客戶與業主）",
+    "國際設備大廠（本段未查證）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1504",
+     "name": "東元",
+     "role": "正規劃在印尼設立變壓器相關生產設施，並擴充馬來西亞 Busway 與模組化設備產能",
+     "impact": "中性"
+    },
+    {
+     "code": "1519",
+     "name": "華城",
+     "role": "被列在 AI 電力概念股，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "1503",
+     "name": "士電",
+     "role": "被列在 AI 電力概念股，供貨關係待確認",
+     "impact": "中性"
+    },
+    {
+     "code": "1513",
+     "name": "中興電",
+     "role": "被列在 AI 電力概念股，供貨關係待確認",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "發電備援（柴油與燃氣發電機、自備電廠）",
+   "description": "在電網斷電時提供長時間電力，或作為園區自備電源。本次查證沒有找到發電機的價格或交期數字。",
+   "global_players": [
+    "Caterpillar（美）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "UPS 與電池備援",
+   "description": "市電中斷時提供瞬間電力並轉換電力形式。關稅推高進口 UPS 成本，對亞太主要是價格壓力。名單多來自較舊的市場文章，需更新。",
+   "global_players": [
+    "Eaton（伊頓）",
+    "ABB"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3628",
+     "name": "盈正",
+     "role": "UPS 與電力品質設備；2022 年停電當天曾漲停，屬題材反應",
+     "impact": "中性"
+    },
+    {
+     "code": "3617",
+     "name": "碩天",
+     "role": "被列在缺電概念股名單，名單資料較舊",
+     "impact": "中性"
+    },
+    {
+     "code": "6409",
+     "name": "旭隼",
+     "role": "被列在缺電概念股名單，名單資料較舊",
+     "impact": "中性"
+    },
+    {
+     "code": "2371",
+     "name": "大同",
+     "role": "被列在缺電概念股名單，名單資料較舊",
+     "impact": "中性"
+    },
+    {
+     "code": "8038",
+     "name": "長園科",
+     "role": "宣布切入 AIDC 產業，產品包括半導體 UPS、鋰鐵電池模組與備用電源",
+     "impact": "中性"
+    },
+    {
+     "code": "4931",
+     "name": "新盛力",
+     "role": "資料中心用 BBU 與 UPS 為近年發展重心",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "機櫃內電源與 BBU、800VDC 架構",
+   "description": "在伺服器機櫃內提供直流電源與瞬間備援。本次查證沒有找到報價數字。",
+   "global_players": [
+    "Delta（台達電）",
+    "Eaton"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2308",
+     "name": "台達電",
+     "role": "展示 800VDC 電源櫃與 BBU 模組；目前證據為 AI 資料中心整體佈局",
+     "impact": "中性"
+    },
+    {
+     "code": "2301",
+     "name": "光寶科",
+     "role": "伺服器電源、BBU 系統整合、電源管理（市場文章列為 AI 電源供應鏈）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "巴淡本地製造與台商",
+   "description": "巴淡是出口導向製造與自由貿易區，停電時工廠必須停工。本次查證沒有找到點名的台股公司在此次停電中停工。",
+   "global_players": [],
+   "tw_stocks": []
+  }
+ ]
+}
