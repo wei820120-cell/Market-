@@ -1173,6 +1173,28 @@ def cmd_card(args) -> None:
         print(f"找不到題材：{args.query}")
 
 
+def cmd_infographic(args) -> None:
+    """研究資訊圖（試作，不接推播）：HTML 版面＋ Gemini 主視覺（需要 GEMINI_API_KEY，沒有就純版面）。
+    例如：python -m market_intel infographic --topic 載板供需 --out /tmp/info；--list-models 確認可用的圖像模型。"""
+    from . import art, infographic
+    if args.list_models:
+        for line in art.list_models():
+            print(line)
+        return
+    index = research.load_index()
+    names = [t for t in index if args.topic and args.topic in t]
+    if not names:
+        raise SystemExit(f"找不到研究題材「{args.topic}」（research/index.json 的名稱，可只填部分文字）")
+    topic = names[0]
+    data = json.loads((research.data_dir() / f"{research.slug(topic)}.json").read_text(encoding="utf-8"))
+    data.setdefault("topic", topic)
+    files, art_file = infographic.build(data, Path(args.out) / research.slug(topic), use_art=not args.no_art,
+                                        force_art=args.regen_art)
+    print(f"{topic}：主視覺 {art_file if art_file else '沒有（沒金鑰、已關閉或生成失敗，改用純版面）'}")
+    for f in files:
+        print(f)
+
+
 def cmd_inflow(args) -> None:
     """盤後資金流入族群 → 研究機器人題材卡（不跑完整盤後報告）。"""
     listings = _listings()
@@ -2316,6 +2338,13 @@ def main(argv: list[str] | None = None) -> None:
     cd.add_argument("query")
     cd.add_argument("--channel", default="research")
     cd.set_defaults(func=cmd_card)
+    ig = sub.add_parser("infographic", help="研究資訊圖（HTML 版面＋ Gemini 主視覺，試作）")
+    ig.add_argument("--topic", help="研究題材名稱（可只填部分文字）")
+    ig.add_argument("--out", default="infographic_out", help="輸出資料夾")
+    ig.add_argument("--no-art", action="store_true", help="不畫主視覺，純版面")
+    ig.add_argument("--regen-art", action="store_true", help="主視覺重畫（預設有快取就重用）")
+    ig.add_argument("--list-models", action="store_true", help="列出這把金鑰可用的圖像模型")
+    ig.set_defaults(func=cmd_infographic)
     bk = sub.add_parser("backtest", help="股票期貨波段策略回測（只做多）")
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")

@@ -167,6 +167,12 @@ pip install -r requirements.txt
 
 進出場訊號（目標價、停損等）之後由另一個「進出場機器人」推播，不放在研究圖表裡。
 
+**資訊圖（試作，還沒接推播）**：雜誌風的長圖，做法是「混合」——文字、數字、表格、股票代號全部用 HTML 排版再截圖（精確，不會有 AI 寫錯字的風險），
+只有橫幅主視覺插畫交給 Gemini 圖像模型畫（提示詞禁止任何文字與數字），沒有金鑰或失敗就自動改用純版面（漸層＋底紋）。
+每個題材依名稱固定一組色系，同一題材三張圖一致；主視覺每個題材只畫一次，存到 `research/art/` 重複使用。
+- 需要環境變數／Secret `GEMINI_API_KEY`；模型名稱在 `config/settings.yaml` 的 `infographic.art_model`，不確定可用哪些模型先跑 `python -m market_intel infographic --list-models`
+- 試做：`python -m market_intel infographic --topic 載板供需 --out 輸出資料夾`（`--no-art` 純版面、`--regen-art` 重畫主視覺）；需要 Chrome／Chromium（GitHub Actions 的 ubuntu 映像檔內建）
+
 **什麼時候推**
 - 盤中：族群資金湧入（量能步調 ≥ 2 倍且上漲），每個族群每天一次
 - 盤後：資金流入前 3 名族群

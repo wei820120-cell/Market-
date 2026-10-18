@@ -30,6 +30,10 @@ research:                     # 題材研究員（需要 GitHub Secret：ANTHROP
   price_per_mtok: {input: 2, output: 10}   # 預設單價（Sonnet 5.5）；Haiku 5.5 的單價在 ai.MODEL_PRICES，換模型會自動套用
   web_search_usd_per_1k: 10                # 網路搜尋每千次美元
 
+infographic:                  # 研究資訊圖（試作）：HTML 排版文字與數字，Gemini 只畫沒有文字的主視覺插畫
+  art: true                   # 有 GEMINI_API_KEY 才會畫；沒金鑰、失敗都自動改用純版面
+  art_model: gemini-2.5-flash-image   # 圖像模型；不確定可用哪些時跑：python -m market_intel infographic --list-models
+
 premarket:                    # 開盤前環境：台指期夜盤、美股收盤、那指期貨、亞股早盤 → 風險燈號（只做參考，不擋單）
   enabled: true
   night_yellow: -0.8          # 台指期夜盤跌幅 %（相對前一日結算價）：黃燈／紅燈

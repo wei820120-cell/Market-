@@ -1809,3 +1809,92 @@ def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
     stale = [_tx("盤後", "20261016", "202610", 23100, -400)]
     t4, l4 = overnight.build(now, lambda s: {"d1_pct": 0.1, "last": 20.0, "asof": ""}, lambda: stale)
     assert l4 == "green" and "未採用" in t4
+
+
+# ---------------------------------------------------------------- 資訊圖混合版（HTML 排字＋Gemini 主視覺）
+class _FakeResp:
+    def __init__(self, status=200, body=None, text=""):
+        self.status_code, self._body, self.text = status, body or {}, text
+
+    def json(self):
+        return self._body
+
+
+def _fake_png_b64():
+    import base64
+    import io
+    from PIL import Image
+    buf = io.BytesIO()
+    Image.new("RGB", (1200, 900), (30, 90, 120)).save(buf, "PNG")
+    return base64.b64encode(buf.getvalue()).decode()
+
+
+def test_art_generate_cache_fallback_and_retry(tmp_path, monkeypatch):
+    from PIL import Image
+    from market_intel import art
+    monkeypatch.setattr(art, "ART_DIR", tmp_path / "art")
+    d = {"topic": "ABF供需", "keywords": ["ABF", "載板"], "one_line": "載板缺貨"}
+    calls = []
+    ok = {"candidates": [{"content": {"parts": [{"text": "好"}, {"inlineData": {"mimeType": "image/png", "data": _fake_png_b64()}}]}}]}
+
+    def post(url, json=None, headers=None, timeout=None):
+        calls.append((url, json, headers))
+        return _FakeResp(200, ok)
+    monkeypatch.setattr(art.requests, "post", post)
+    # 沒金鑰：不呼叫 API、回傳 None（資訊圖改純版面）
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+    assert art.generate(d, "deep teal") is None and calls == []
+    # 有金鑰：畫一次、裁成 3:1 的 JPEG、之後用快取
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    p = art.generate(d, "deep teal")
+    assert p and p.exists() and calls[0][2]["x-goog-api-key"] == "test-key"
+    assert "gemini-2.5-flash-image:generateContent" in calls[0][0]
+    assert "no text" in calls[0][1]["contents"][0]["parts"][0]["text"] and "ABF供需" in calls[0][1]["contents"][0]["parts"][0]["text"]
+    with Image.open(p) as im:
+        assert im.format == "JPEG" and im.size == (1620, 540)
+    assert art.generate(d, "deep teal") == p and len(calls) == 1
+    # 模型不支援指定比例（400 提到 imageConfig）→ 不指定比例再試一次
+    p.unlink()
+    seq = [_FakeResp(400, text="Unknown name imageConfig"), _FakeResp(200, ok)]
+    monkeypatch.setattr(art.requests, "post", lambda *a, **k: (calls.append(k["json"]), seq.pop(0))[1])
+    assert art.generate(d, "deep teal") and "imageConfig" not in calls[-1]["generationConfig"]
+    # 失敗、沒有圖片、關閉：都回傳 None，不丟例外
+    p.unlink()
+    monkeypatch.setattr(art.requests, "post", lambda *a, **k: _FakeResp(403, text="API key invalid"))
+    assert art.generate(d, "deep teal") is None
+    monkeypatch.setattr(art.requests, "post", lambda *a, **k: _FakeResp(200, {"candidates": [{"content": {"parts": [{"text": "抱歉"}]}}]}))
+    assert art.generate(d, "deep teal") is None
+
+    def boom(*a, **k):
+        raise RuntimeError("連線失敗")
+    monkeypatch.setattr(art.requests, "post", boom)
+    assert art.generate(d, "deep teal") is None
+    monkeypatch.setattr(art, "settings", lambda: {"art": False, "art_model": "x"})
+    assert art.generate({**d, "topic": "別的題材"}, "deep teal") is None
+
+
+def test_infographic_pages_art_overlay_keeps_text_exact(tmp_path):
+    from PIL import Image
+    from market_intel import infographic
+    d = {"topic": "測試題材", "one_line": "一句話摘要", "status": "混合", "horizon": "中期（3-12個月）", "sources": [1, 2, 3],
+         "evolution": [{"name": "第一代", "composition": "甲", "spec": "規格 9,500 mm²", "application": "乙"}],
+         "spec_tables": [{"title": "表 A", "columns": ["項目", "數字"], "rows": [["營收", "+123%"]], "note": "註記"}],
+         "concepts": [{"title": "概念一", "points": ["要點 <b>跳脫</b>"]}],
+         "layers": [{"layer": "上游", "description": "說明", "tw_stocks": [
+             {"code": "2330", "name": "台積電", "role": "x", "impact": "受惠"}, {"code": "2454", "name": "聯發科", "role": "x", "impact": "中性"}]}],
+         "catalysts": ["催化一"], "risks": ["風險一"], "conclusion": ["結論一"]}
+    plain = dict(infographic.pages(d))
+    assert set(plain) == {"1_overview", "2_chain", "3_conclusion"} and "data:image" not in plain["1_overview"]
+    art_file = tmp_path / "a.jpg"
+    Image.new("RGB", (160, 54), (10, 90, 90)).save(art_file, "JPEG")
+    withart = dict(infographic.pages(d, art_file))
+    assert "data:image/jpeg;base64," in withart["1_overview"] and "data:image" in withart["2_chain"]
+    # 文字與數字一律由 HTML 排，不受主視覺影響；HTML 跳脫
+    for html_text in (plain["1_overview"], withart["1_overview"]):
+        assert "測試題材" in html_text and "+123%" in html_text and "規格 9,500 mm²" in html_text
+    assert "2330 台積電" in withart["2_chain"] and "&lt;b&gt;跳脫" in withart["2_chain"] and "<b>跳脫" not in withart["2_chain"]
+    assert 'class="stat"' in withart["1_overview"]
+    # 色系依題材名稱固定
+    assert infographic.palette_for("測試題材") == infographic.palette_for("測試題材")
+    assert len({infographic.palette_for(t)[0] for t in "ABCDEFGHIJ"}) > 1
