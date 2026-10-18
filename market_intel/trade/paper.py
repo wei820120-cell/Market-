@@ -368,13 +368,19 @@ def last_date(df: pd.DataFrame) -> str:
     return f"{ts:%Y-%m-%d}"
 
 
-def run_pre() -> str:
+def run_pre(env: tuple[str, str] | None = None) -> str:
+    """env：overnight.build() 的（文字, 燈號），夜盤／美股／亞股的開盤前環境，放在大盤多空下面當參考（不擋單）。"""
     st = load()
     mkt = st.get("regime") == "多頭"
     head = f"🌅 進出場（模擬）盤前 {now_tw():%m/%d}｜大盤：{'🟢 多頭' if mkt else '🔴 空頭／盤整，今天先不要下新單'}"
     pos = "、".join(f"{x['code']} {bt.label(x['name'], x['mult'])}（停損 {x['stop']:,.1f}" + ("，開盤出場" if x["exit_next"] else "") + "）"
                     for x in st.get("positions", []))
-    return "\n".join([head, f"持倉：{pos}" if pos else "持倉：無", "", plan_text(st, mkt)])
+    env_lines = []
+    if env and env[0]:
+        env_lines = [env[0]]
+        if env[1] == "red" and mkt:
+            env_lines.append("⚠️ 加權日線雖是多頭，但隔夜環境偏空：下面的計劃先當候補名單，不要一開盤就追。")
+    return "\n".join([head, *env_lines, f"持倉：{pos}" if pos else "持倉：無", "", plan_text(st, mkt)])
 
 
 def push(text: str | None) -> None:

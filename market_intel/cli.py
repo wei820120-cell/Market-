@@ -21,7 +21,7 @@ from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
-from . import ai, config, notify, prefetch, research, theme_card
+from . import ai, config, notify, overnight, prefetch, research, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
 from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
@@ -2089,9 +2089,14 @@ def cmd_trade(args) -> None:
     if args.lead:
         push_lead_list(_listings(), stock_futures.load_stock_futures(), force=True)
         return
+    if args.overnight:
+        env_text, _ = overnight.build()
+        print(env_text or "開盤前環境已關閉（config/settings.yaml 的 premarket.enabled）")
+        paper.push(env_text)
+        return
     if want_pre:
         from .trade import real
-        paper.push(paper.run_pre() + "\n\n" + real.positions_text(real.load()))
+        paper.push(paper.run_pre(overnight.build()) + "\n\n" + real.positions_text(real.load()))
         mark("pre")
         try:  # 美股昨夜領先指標 → 台股還沒跟上的對應股（失敗不影響盤前計劃）
             push_lead_list(_listings(), stock_futures.load_stock_futures())
@@ -2331,6 +2336,7 @@ def main(argv: list[str] | None = None) -> None:
     tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")
     tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
     tr.add_argument("--lead", action="store_true", help="立即推盤前領先名單（美股昨夜大漲 → 台股還沒跟上的對應股）")
+    tr.add_argument("--overnight", action="store_true", help="立即推開盤前環境（台指期夜盤、美股收盤、那指期貨、亞股早盤＋風險燈號）")
     tr.add_argument("--post", action="store_true", help="立即盤後結算")
     tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
     tr.add_argument("--explain", help="檢查某檔股票的訊號與口數，例如：--explain 國巨")

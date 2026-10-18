@@ -1725,3 +1725,87 @@ def test_scan_known_stock_without_recent_research_and_peers(tmp_path, monkeypatc
     topics = [d["topic"] for _, d in research.read_queue()]
     assert "亞電（4939）題材與產業" in topics and "台虹（8039）題材與產業" not in topics
     assert any("連動預研" in t for t in sent)
+
+
+# ---------------------------------------------------------------- 開盤前環境（夜盤、美股、亞股）
+def _tx(session, date, month, last, chg, contract="TX"):
+    return {"Date": date, "Contract": contract, "ContractMonth(Week)": month, "Last": str(last), "Change": str(chg),
+            "TradingSession": session, "SettlementPrice": str(last)}
+
+
+def test_overnight_expected_night_date():
+    from market_intel import overnight
+    tz = TW_TZ
+    f = overnight.expected_night_date
+    assert f(datetime(2026, 10, 19, 8, 30, tzinfo=tz)) == "20261019"   # 週一早上：週五夜盤屬於週一
+    assert f(datetime(2026, 10, 16, 16, 0, tzinfo=tz)) == "20261019"   # 週五 15:00 後：夜盤屬於下週一
+    assert f(datetime(2026, 10, 17, 6, 0, tzinfo=tz)) == "20261019"    # 週六清晨
+    assert f(datetime(2026, 10, 20, 8, 30, tzinfo=tz)) == "20261020"   # 週二早上
+    assert f(datetime(2026, 10, 20, 16, 0, tzinfo=tz)) == "20261021"
+
+
+def test_overnight_tx_night_picks_near_month_checks_date_and_ignores_weekly():
+    from market_intel import overnight
+    now = datetime(2026, 10, 19, 8, 30, tzinfo=TW_TZ)  # 週一早上
+    rows = [_tx("一般", "20261016", "202610", 23500, 100),
+            _tx("盤後", "20261019", "202611", 23200, -250),
+            _tx("盤後", "20261019", "202610", 23100, -400),        # 近月：-400 / (23100+400)
+            _tx("盤後", "20261019", "202610W1", 23000, -500),      # 週契約，不採用
+            _tx("盤後", "20261019", "202610", 9999, -1, contract="TXO")]
+    n = overnight.tx_night(rows, now)
+    assert n["month"] == "202610" and n["last"] == 23100 and not n["stale"]
+    assert n["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01)
+    # 資料還是上週五的夜盤（週一的還沒更新）→ 標示過期，不拿來用
+    old = [_tx("盤後", "20261016", "202610", 23100, -400)]
+    assert overnight.tx_night(old, now)["stale"] is True
+    assert overnight.tx_night([_tx("一般", "20261019", "202610", 23500, 100)], now) is None
+
+
+def test_overnight_assess_levels():
+    from market_intel import overnight
+    cfg = dict(overnight.DEFAULTS)
+    assert overnight.assess({"night": 0.3, "nasdaq": 0.5, "sox": 0.2, "vix": 16}, cfg)["level"] == "green"
+    a = overnight.assess({"night": 1.0, "nasdaq": 0.5}, cfg)
+    assert a["level"] == "green" and a["bull"]
+    a = overnight.assess({"night": -1.0, "nasdaq": 0.2}, cfg)
+    assert a["level"] == "yellow" and a["reasons"] == ["夜盤 -1.0%"]
+    a = overnight.assess({"night": -1.0, "nasdaq": -2.4, "sox": -3.5}, cfg)  # 任何一項紅燈就是紅燈
+    assert a["level"] == "red" and "那指 -2.4%" in a["reasons"] and "費半 -3.5%" in a["reasons"]
+    assert overnight.assess({"n225": -2.5, "kospi": -2.5}, cfg)["level"] == "red"  # 亞股平均
+    assert overnight.assess({"n225": -2.5, "kospi": 1.0}, cfg)["level"] == "green"
+    assert overnight.assess({"vix": 31}, cfg)["level"] == "red"
+    assert overnight.assess({}, cfg)["level"] == "green"
+
+
+def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
+    from market_intel import overnight
+    from market_intel.trade import paper
+    now = datetime(2026, 10, 19, 8, 30, tzinfo=TW_TZ)
+    rows = [_tx("一般", "20261016", "202610", 23500, 100), _tx("盤後", "20261019", "202610", 23100, -400)]
+    quotes = {"^IXIC": -2.3, "^SOX": -3.4, "^GSPC": -1.5, "NQ=F": -0.6, "^N225": -1.9, "^KS11": -2.4, "^VIX": None}
+
+    def fetch_one(sym):
+        if sym == "^VIX":
+            raise RuntimeError("連線失敗")  # 單項失敗不影響其他
+        return {"d1_pct": quotes[sym], "last": 100.0, "asof": "10/17 05:00"}
+
+    text, level = overnight.build(now, fetch_one, lambda: rows)
+    assert level == "red"
+    assert "台指期夜盤 23,100（-1.70%，10/19 交易日）" in text
+    assert "那指 -2.3%" in text and "費半 -3.4%" in text and "日經 -1.9%" in text and "VIX" not in text
+    assert "不追開盤價" in text
+    # 夜盤抓不到：照樣用其他來源；全部抓不到：提示自己看，燈號空白（不影響盤前計劃）
+    t2, l2 = overnight.build(now, fetch_one, lambda: (_ for _ in ()).throw(RuntimeError("期交所掛了")))
+    assert l2 == "red" and "台指期夜盤" not in t2
+    t3, l3 = overnight.build(now, lambda s: None, lambda: [])
+    assert l3 == "" and "沒抓到" in t3
+    # 盤前計劃：多頭 + 紅燈 → 附警語；沒有環境資料 → 和以前一樣
+    monkeypatch.setattr(paper, "load", lambda: {"regime": "多頭", "positions": [], "orders": [], "equity": 100000})
+    monkeypatch.setattr(paper, "plan_text", lambda st, mkt: "計劃內容")
+    out = paper.run_pre((text, level))
+    assert "開盤前環境" in out and "加權日線雖是多頭" in out and "計劃內容" in out
+    assert "開盤前環境" not in paper.run_pre()
+    # 夜盤日期過期不納入燈號，但會說明原因
+    stale = [_tx("盤後", "20261016", "202610", 23100, -400)]
+    t4, l4 = overnight.build(now, lambda s: {"d1_pct": 0.1, "last": 20.0, "asof": ""}, lambda: stale)
+    assert l4 == "green" and "未採用" in t4
