@@ -1,0 +1,280 @@
+{
+ "topic": "華邦電（2344）題材與產業",
+ "one_line": "華邦電（2344）是利基型記憶體廠：客製化記憶體（CMS，由原 DRAM 事業更名，含 DDR4／LPDDR4 等利基型 DRAM）、NOR Flash 與 SLC NAND，另有子公司新唐科技（4919，MCU 等）。2026 年記憶體缺貨讓它業績爆發：Q2 合併營收 598.43 億元、毛利率 66.2%（記憶體事業 70.3%）、EPS 5.4 元，上半年 EPS 7.65 元皆創高；CMS 營收季增 78%、年增逾 400%（平均售價季增約一倍），NOR Flash 營收季增 65%、年增 176% 且供不應求；產能利用率約 100%，今、明兩年產能已售罄。9 月營收 282.49 億元（月增 3.44%、年增 256.67%），Q3 營收 823.31 億元，前 9 月 1,804.27 億元（年增 187.39%）。公司預期 Q3 價格續漲、營益率有機會突破 50%，2027 年供需比今年更緊；資本支出 421 億元創高，高雄廠下一階段擴產啟動。被排進研究是南亞科（DRAM 缺貨）的連動預研：同為利基型 DRAM 競爭者，但產品含 NOR／SLC NAND，漲價更廣。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "華邦電",
+  "利基型DRAM",
+  "客製化記憶體",
+  "CMS",
+  "NOR Flash",
+  "SLC NAND",
+  "DDR4",
+  "LPDDR4",
+  "CUBE",
+  "新唐",
+  "記憶體缺貨",
+  "漲價"
+ ],
+ "catalysts": [
+  "月營收（每月 10 日前）：9 月 282.49 億元（年增 256.67%），Q3 823.31 億元；10 月是否續創高",
+  "Q3 法說／財報（11 月初）：公司預期 Q3 價格續漲、營益率有機會突破 50%；Q2 毛利率 66.2%",
+  "價格：DDR4 合約價 2025 Q4～2026 Q1 季增 40～90%、NOR 與 SLC NAND 漲 15～30%；看 Q4 合約價",
+  "產能：高雄廠下一階段擴產啟動，DRAM 產能主要 2027 年到位，Flash 2026 Q3 起陸續量產；資本支出 421 億元",
+  "產品：20 奈米產品營收放大、8Gb DDR4／LPDDR4 2026 量產、CUBE 專案預期 2027 年顯著貢獻"
+ ],
+ "risks": [
+  "價格反轉：記憶體週期性強，Q2 毛利率 66.2% 為歷史高位；新產能（含大廠）預計 2027～2028 年逐步開出，供給增加時價格可能回落",
+  "客戶預訂與砍單風險：產能已售罄、客戶搶訂長期產能（標題），若終端需求放緩，拉貨可能調整",
+  "資本支出與折舊：2026 年資本支出 421 億元創高，產能開出後折舊增加",
+  "平均售價上升而位元出貨略減（CMS Q2 位元出貨因產品組合調整略減），營收成長主要靠漲價而非量",
+  "股價已大幅反映獲利暴增，對 Q3 指引與合約價敏感",
+  "Q3 毛利率與位元出貨量的正式數字未取得（公司只說營益率有機會突破 50%）；Q2 毛利率 66.2% 與記憶體事業毛利率 70.3% 為媒體整理；『客戶搶訂 2030 年產能』為 ETtoday 標題說法，細節未查；DDR4 合約價季增 40～90% 與 NOR／SLC NAND 漲 15～30% 是 2025 Q4 至 2026 Q1 的區間數字，最新價格未取得；CUBE 客戶名單未查到；第三季營收 823.31 億元為 Technews 報導（含新唐科技）"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表 A：華邦電營運數字（2026）",
+   "columns": [
+    "項目",
+    "數字",
+    "備註"
+   ],
+   "rows": [
+    [
+     "Q2 營收／毛利率／EPS",
+     "598.43 億元／66.2%（記憶體事業 70.3%）／5.4 元",
+     "8/6 法說"
+    ],
+    [
+     "上半年 EPS",
+     "7.65 元（創歷史新高）",
+     "媒體整理"
+    ],
+    [
+     "CMS（客製化記憶體）",
+     "營收季增 78%、年增逾 400%；ASP 季增約一倍、年增逾三倍；位元出貨略減",
+     "8/6 法說"
+    ],
+    [
+     "NOR Flash",
+     "營收季增 65%、年增 176%；仍供不應求",
+     "8/6 法說"
+    ],
+    [
+     "9 月與 Q3",
+     "9 月 282.49 億元（月增 3.44%、年增 256.67%）；Q3 823.31 億元；前 9 月 1,804.27 億元（年增 187.39%）",
+     "Technews"
+    ],
+    [
+     "產能與資本支出",
+     "產能利用率約 100%；今、明兩年產能售罄；2026 資本支出 421 億元；高雄廠下一階段擴產啟動",
+     "法說／財報狗"
+    ],
+    [
+     "價格",
+     "DDR4 合約價 2025 Q4～2026 Q1 季增約 40～90%；NOR 與 SLC NAND 漲 15～30%；Q3 價格預期續漲",
+     "報導／法說"
+    ]
+   ],
+   "note": "毛利率等數字為媒體整理，以公開資訊觀測站為準。"
+  },
+  {
+   "title": "規格比較表 B：利基型記憶體同業",
+   "columns": [
+    "公司",
+    "主力產品",
+    "備註"
+   ],
+   "rows": [
+    [
+     "華邦電 2344",
+     "利基型 DRAM（DDR4／LPDDR4）、NOR Flash、SLC NAND、CUBE",
+     "子公司新唐 4919"
+    ],
+    [
+     "南亞科 2408",
+     "DRAM",
+     "本題材母事件（連動預研來源）"
+    ],
+    [
+     "旺宏 2337",
+     "NOR 與 NAND",
+     "在佇列中，另案研究"
+    ],
+    [
+     "力積電 6770",
+     "記憶體與晶圓代工",
+     "在已研究／佇列中"
+    ],
+    [
+     "晶豪科 3006",
+     "DRAM 設計與通路",
+     "在佇列中，另案研究"
+    ]
+   ],
+   "note": "同業定位為概述，詳見各自研究。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "DDR3／NOR 傳統利基型",
+   "composition": "利基型 DRAM、NOR Flash",
+   "spec": "2025 以前價格低迷",
+   "application": "網通、消費性、工控、車用"
+  },
+  {
+   "name": "DDR4／LPDDR4 缺貨期（2025Q4～2026）",
+   "composition": "大廠轉產高階使利基型供給縮減，加 AI 外溢需求",
+   "spec": "DDR4 合約價季增 40～90%；NOR／SLC NAND 漲 15～30%",
+   "application": "伺服器周邊、網通、車用"
+  },
+  {
+   "name": "20 奈米與 CUBE（2026～2027）",
+   "composition": "20 奈米 DRAM、半客製化高頻寬 CUBE",
+   "spec": "8Gb DDR4／LPDDR4 2026 量產；CUBE 2027 顯著貢獻",
+   "application": "邊緣 AI、客製化記憶體"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "華邦電是誰：利基型記憶體 + 客製化",
+   "points": [
+    "三塊：客製化記憶體 CMS（原 DRAM 事業）、NOR Flash、SLC NAND；另有子公司新唐（MCU）",
+    "Q2 毛利率 66.2%、記憶體事業 70.3%，產能利用率約 100%，今明兩年產能售罄",
+    "CMS 靠平均售價翻倍，位元出貨略減，成長主要來自漲價與產品組合"
+   ]
+  },
+  {
+   "title": "為什麼被追：記憶體缺貨持續到 2027",
+   "points": [
+    "公司稱 2027 年供需比今年更緊，客戶搶訂長期產能",
+    "9 月營收年增 256.67%、前 9 月年增 187.39%",
+    "NOR 與 SLC NAND 也在漲價，不只 DRAM，漲價面比南亞科更廣"
+   ]
+  },
+  {
+   "title": "風險與驗證",
+   "points": [
+    "毛利率 66% 已在歷史高點，新產能 2027～2028 年逐步開出時價格才是關鍵",
+    "看 Q3 毛利率與營益率是否如公司預期突破 50%",
+    "看 Q4 DDR4、NOR 合約價與高雄廠擴產進度"
+   ]
+  }
+ ],
+ "conclusion": [
+  "華邦電是這波利基型記憶體缺貨的直接受惠者：Q2 毛利率 66.2%、EPS 5.4 元，9 月營收年增 256.67%，產能售罄到 2027 年。",
+  "漲價涵蓋 DDR4、NOR 與 SLC NAND，比單純 DRAM 廠更廣；CMS 成長靠平均售價翻倍而非位元出貨。",
+  "風險是週期反轉與新產能（2027～2028）、資本支出 421 億元的折舊。",
+  "要補的資料：Q3 毛利率、最新合約價、CUBE 客戶與高雄廠進度。"
+ ],
+ "layers": [
+  {
+   "layer": "利基型 DRAM／客製化記憶體（CMS）",
+   "description": "CMS 營收季增 78%、年增逾 400%，平均售價季增約一倍；DDR4 合約價 2025 Q4～2026 Q1 季增 40～90%；8Gb DDR4／LPDDR4 2026 量產、CUBE 2027 顯著貢獻。",
+   "global_players": [
+    "三星、SK 海力士、美光（大廠，通識）",
+    "長鑫存儲（中國，通識）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "利基型 DRAM、CMS；Q2 毛利率 66.2%；產能售罄",
+     "impact": "受惠"
+    },
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "DRAM 同業（本事件母題材，見南亞科研究）",
+     "impact": "受惠"
+    },
+    {
+     "code": "3006",
+     "name": "晶豪科",
+     "role": "DRAM 設計與通路（細節見該股研究）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "NOR Flash／SLC NAND",
+   "description": "NOR 營收季增 65%、年增 176% 仍供不應求；NOR 與 SLC NAND 漲價 15～30%；供給持續偏緊。",
+   "global_players": [
+    "兆易創新（中國，通識）",
+    "Infineon、Kioxia（通識）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "NOR Flash 與 SLC NAND 供給偏緊、價格上揚",
+     "impact": "受惠"
+    },
+    {
+     "code": "2337",
+     "name": "旺宏",
+     "role": "NOR 與 NAND 同業（另案研究）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "子公司與模組通路",
+   "description": "新唐科技（MCU 等）併入合併營收；記憶體模組廠面對成本上升，也可能有存貨利益（推論）。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "4919",
+     "name": "新唐",
+     "role": "華邦電子公司，MCU 等（業績占比待確認）",
+     "impact": "中性"
+    },
+    {
+     "code": "3260",
+     "name": "威剛",
+     "role": "記憶體模組廠，成本上升與存貨利益並存（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2451",
+     "name": "創見",
+     "role": "記憶體模組廠，成本上升與存貨利益並存（推論）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "trigger": "2026-10-18 連動預研：南亞科（2408）題材與產業 研究完成，相關個股先研究起來（晶圓製造（南亞科本體與同業）：DRAM 與 NOR Flash，利基型 DRAM 競爭者）",
+ "report": "# 華邦電（2344）題材與產業\n\n## 公司與題材\n- 華邦電（2344）：利基型 DRAM（CMS）、NOR Flash、SLC NAND；子公司新唐。\n- 觸發：2026-10-18 連動預研：南亞科（2408）題材與產業 研究完成，相關個股先研究起來（晶圓製造（南亞科本體與同業）：DRAM 與 NOR Flash，利基型 DRAM 競爭者）\n\n## 營運\n- Q2 營收 598.43 億元、毛利率 66.2%、EPS 5.4 元；9 月營收 282.49 億元（年增 256.67%）；產能售罄到 2027 年。\n\n## 風險與未驗證\n- Q3 毛利率與位元出貨量的正式數字未取得（公司只說營益率有機會突破 50%）；Q2 毛利率 66.2% 與記憶體事業毛利率 70.3% 為媒體整理；『客戶搶訂 2030 年產能』為 ETtoday 標題說法，細節未查；DDR4 合約價季增 40～90% 與 NOR／SLC NAND 漲 15～30% 是 2025 Q4 至 2026 Q1 的區間數字，最新價格未取得；CUBE 客戶名單未查到；第三季營收 823.31 億元為 Technews 報導（含新唐科技）。\n\n## 來源\n- [Technews：華邦電 9 月營收年增逾 250%（2026/10/5）](https://finance.technews.tw/2026/10/05/winbond-electronics-september-revenue-increased-by-over-250-year-on-year/)\n- [Technews：華邦電第二季獲利創高（2026/8/6 法說）](https://finance.technews.tw/2026/08/06/winbond-electronics-second-quarter-profit-hit-a-record-high/)\n- [優分析：華邦電法說 Q2 獲利創高 EPS 5.4 元 記憶體毛利率衝破 70%](https://uanalyze.com.tw/articles/3438152930)\n- [Technews：華邦電報告另一份亮眼財務結果（2026/8/7）](https://finance.technews.tw/2026/08/07/winbond-electronics-reports-another-positive-financial-result/)\n- [財報狗：華邦電看旺記憶體至 2027 年 產能全滿、資本支出衝 421 億元創高](https://statementdog.com/news/15759)\n- [ETtoday：記憶體供不應求！華邦電估明年缺貨更嚴重 客戶搶訂 2030 年產能](https://finance.ettoday.net/news/3214745)\n- [Technews：華邦電向 ASML 訂購設備 23.32 億元（2025/12）](https://finance.technews.tw/2025/12/16/winbond-electronics-spent-nt2-332-billion-to-purchase-equipment-from-asml/)",
+ "sources": [
+  {
+   "title": "Technews：華邦電 9 月營收年增逾 250%（2026/10/5）",
+   "url": "https://finance.technews.tw/2026/10/05/winbond-electronics-september-revenue-increased-by-over-250-year-on-year/"
+  },
+  {
+   "title": "Technews：華邦電第二季獲利創高（2026/8/6 法說）",
+   "url": "https://finance.technews.tw/2026/08/06/winbond-electronics-second-quarter-profit-hit-a-record-high/"
+  },
+  {
+   "title": "優分析：華邦電法說 Q2 獲利創高 EPS 5.4 元 記憶體毛利率衝破 70%",
+   "url": "https://uanalyze.com.tw/articles/3438152930"
+  },
+  {
+   "title": "Technews：華邦電報告另一份亮眼財務結果（2026/8/7）",
+   "url": "https://finance.technews.tw/2026/08/07/winbond-electronics-reports-another-positive-financial-result/"
+  },
+  {
+   "title": "財報狗：華邦電看旺記憶體至 2027 年 產能全滿、資本支出衝 421 億元創高",
+   "url": "https://statementdog.com/news/15759"
+  },
+  {
+   "title": "ETtoday：記憶體供不應求！華邦電估明年缺貨更嚴重 客戶搶訂 2030 年產能",
+   "url": "https://finance.ettoday.net/news/3214745"
+  },
+  {
+   "title": "Technews：華邦電向 ASML 訂購設備 23.32 億元（2025/12）",
+   "url": "https://finance.technews.tw/2025/12/16/winbond-electronics-spent-nt2-332-billion-to-purchase-equipment-from-asml/"
+  }
+ ]
+}
