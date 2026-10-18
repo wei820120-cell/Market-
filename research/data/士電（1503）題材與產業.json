@@ -1,0 +1,448 @@
+{
+ "topic": "士電（1503）題材與產業",
+ "one_line": "士電為台股重電廠，主力變壓器與配電盤，AI資料中心為公開布局方向；與巴淡島停電的供貨關係未證實。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "士電",
+  "1503",
+  "變壓器",
+  "配電盤",
+  "T4廠",
+  "345kV",
+  "200MVA",
+  "20GVA",
+  "AIDC",
+  "SST",
+  "固態變壓器",
+  "800VDC",
+  "HVDC",
+  "取向矽鋼",
+  "銅價",
+  "調價15%-20%",
+  "強韌電網",
+  "巴淡島停電",
+  "PLN Batam"
+ ],
+ "catalysts": [
+  "2026/10/19 觸發文日期，之後看PLN正式調查結論",
+  "2026年11月前後士電Q3財報與10月營收公告（待確認日期）",
+  "2026下半年調價效應逐步在財報中出現",
+  "2027年T4與另一座新廠投產時程",
+  "2027年NVIDIA 800VDC架構轉換時程",
+  "2027年伊頓與GE Vernova首批SST商業訂單",
+  "2027年9月士電T4規劃投產",
+  "2028–2030年士電訂單能見度延伸"
+ ],
+ "risks": [
+  "2026年8月營收連續兩個月減少，年增率為負；6月營收年減10.58%",
+  "銅價漲幅超過調價時獲利率先受壓",
+  "新廠投產後折舊壓縮獲利成長速度",
+  "2026年EPS估計9.3元與10.39元不一致，2025年EPS估計7.09元與實際6.27元有誤差",
+  "SST長期可能改寫資料中心電力架構",
+  "巴淡島事件可能影響AI資料中心投資人信心",
+  "美國政策變數：德州州長暫停核發資料中心相關環境許可（未另找一手來源）"
+ ],
+ "spec_tables": [
+  {
+   "title": "表1：變壓器產能與電壓等級（士電 vs 同業）",
+   "columns": [
+    "項目",
+    "士電 T3 廠（現有）",
+    "士電 T4 廠（規劃）",
+    "華城台中廠（規劃）"
+   ],
+   "rows": [
+    [
+     "製程能力",
+     "500kV",
+     "345kV / 200MVA",
+     "500kV 級以上"
+    ],
+    [
+     "主力訂單電壓",
+     "161–345kV",
+     "針對 AIDC 的高壓大容量",
+     "超高壓大容量，外銷為主"
+    ],
+    [
+     "時程／稼動",
+     "稼動率近 90%",
+     "2027 年 9 月投產",
+     "2027 年第二季投產"
+    ],
+    [
+     "總產能",
+     "T4 投產後合計 20GVA",
+     "—",
+     "—"
+    ]
+   ],
+   "note": "T3廠製程能力可達500kV，但訂單多集中在161kV-345kV。華城台中廠九成外銷。"
+  },
+  {
+   "title": "表2：AI 資料中心供電架構（電力路徑比較）",
+   "columns": [
+    "架構",
+    "轉換路徑",
+    "效率",
+    "現況與時程"
+   ],
+   "rows": [
+    [
+     "傳統交流供電",
+     "中壓→傳統變壓器→交直流轉換→UPS→機櫃",
+     "一般電力轉換約 97%",
+     "目前主流"
+    ],
+    [
+     "800VDC 架構（搭配傳統變壓器與整流）",
+     "變壓器降壓後整流成 800V 直流",
+     "—",
+     "NVIDIA 已宣布自 2027 年開始轉向 800V HVDC 架構"
+    ],
+    [
+     "SST 中壓固態變壓器",
+     "中壓直接轉為 800V 直流，中間轉換級數減少",
+     "98.5%（台達宣稱）",
+     "台達 SST 已量產、今年在中國出貨 100 台，美國大型 CSP 客戶測試中"
+    ]
+   ],
+   "note": "同一則報導提到台達13.8kV等級SST已量產；伊頓與GE Vernova的SST商業訂單最快2027年取得。"
+  },
+  {
+   "title": "表3：成本端指標",
+   "columns": [
+    "指標",
+    "數值",
+    "來源"
+   ],
+   "rows": [
+    [
+     "大型變壓器交期",
+     "約 2.5 年",
+     "交期已延長至約兩年半"
+    ],
+    [
+     "士電新接變壓器單的加價幅度",
+     "15%–20%（3 月起）",
+     "3 月起新接變壓器訂單將調漲價格，幅度約 15% 至 20%"
+    ],
+    [
+     "銅價（LME 三個月期，2026 年初）",
+     "約 12,500 美元／噸，年增逾四成",
+     "LME 三個月期銅價維持在每噸約 1 萬 2500 美元高檔，年漲幅逾四成"
+    ],
+    [
+     "銅期貨（2026/10）",
+     "每磅 6.5～6.7 美元附近，接近歷史高位",
+     "銅期貨價格升至每磅 6.70 美元以上，逼近歷史高位，智利多處礦場遭遇罷工與天氣影響"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "第一代：傳統中高壓油浸式電力變壓器",
+   "composition": "油浸式變壓器",
+   "spec": "161–345kV",
+   "application": "士電過去訂單主力，供應電網與一般工業"
+  },
+  {
+   "name": "第二代：超高壓與大容量",
+   "composition": "500kV級超高壓變壓器",
+   "spec": "500kV級",
+   "application": "士電T3廠能力已到500kV，華城台中廠也以500kV級為主；競爭重點轉向大型超高壓產能與交期"
+  },
+  {
+   "name": "第三代：AIDC專用高壓大容量＋模組化電源",
+   "composition": "AIDC專用高壓大容量變壓器與貨櫃型電源供應系統",
+   "spec": "345kV／200MVA（士電T4廠規格）",
+   "application": "目標為AI資料中心；士電傾向提供貨櫃型電源供應系統整合方案"
+  },
+  {
+   "name": "第四代：固態變壓器（SST）＋800VDC",
+   "composition": "SST與800VDC直流配電",
+   "spec": "中壓直接轉800V直流，效率目標98.5%",
+   "application": "台達、伊頓、ABB等推進中；ABB估計到2030年新增資料中心容量約25%～40%可能採用直流配電"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "概念1：為什麼變壓器交期會拉到兩年半？",
+   "points": [
+    "原因：取向矽鋼片等關鍵原料供應緊俏，製造端瓶頸短期難以紓解；銅價也在高檔",
+    "原因（人力與產能）：原物料需求增加、疫情期間供應不足與積壓訂單、勞動力不足及地緣政治",
+    "影響：交期拉長讓供應商報價與接單有議價空間；士電已接到2029、2030年訂單",
+    "代價：擴產需時間與資本；士電T4要到2027年9月才投產，華城台中廠也要到2027年；兩大新廠2027年下半年量產，折舊壓力可能讓獲利成長明顯降速（分析師觀點）"
+   ]
+  },
+  {
+   "title": "概念2：銅價為什麼會先壓獲利，再靠調價回補？",
+   "points": [
+    "成本端：士電董事總經理郭約瑟2月表示，銅價拉升速度超乎預期，既有報價難以完全反映，因此啟動新一波調價",
+    "時間差：調價對象以新接訂單為主，既有合約成本已固定，毛利會被壓縮（作者推論，文件未直接寫明）",
+    "報價力：士電、華城及亞力的最高調幅逾兩成",
+    "代價與風險：若銅價續強，報價可能再調；若銅價維持高檔甚至再往上，變壓器廠商全面調漲機率升高；若客戶拒絕或同業不跟，調價難以落地"
+   ]
+  },
+  {
+   "title": "概念3：SST會不會取代傳統變壓器？",
+   "points": [
+    "效率優勢：SST效率目標98.5%，高於傳統約97%；台達表示從電網到晶片端整體能源效率可提升約4～5%",
+    "技術門檻：SST前端AC-DC級通常需要2300至6500V等級的SiC元件，成本與可靠度仍需驗證",
+    "驗證期：台達800VDC SST方案已進入大型資料中心及Colocation業者測試驗證階段，尚無大規模取代訂單證據",
+    "對士電的影響：若資料中心電力路徑轉向SST，士電T4這類AIDC專用變壓器需求結構會改變，但需要幾年時間，目前無士電訂單流失證據"
+   ]
+  }
+ ],
+ "conclusion": [
+  "判斷重電廠勝出需綜合產能到位時程（T4是否如期2027年9月投產）、報價力（調價幅度與次數，以及銅價上漲時能否跟上）、接單結構（AIDC、台電與北美比重）、同業比較（訂單定義不同，不能直接比）、SST準備度（士電尚未查到公開SST產品資料）",
+  "士電經營面已證實：2026上半年營收211億元年增10%，淨利27億元年增25.4%，在手訂單逾600億元，擴產至20GVA",
+  "巴淡島停電事件可支持電網設備需求的長期邏輯，但不是士電訂單證據；與巴淡島供貨關係未證實",
+  "本報告只做產業與供應鏈分析，不構成買賣建議"
+ ],
+ "sources": [
+  {
+   "title": "富果：士電法說會重點內容備忘錄（2026/09/10）",
+   "url": "https://blog.fugle.tw/post/earnings-call-1503-2026-09-10"
+  },
+  {
+   "title": "理柴知道：士電法說會 2026/09",
+   "url": "https://vocus.cc/article/6aa369d3fd897800014e4614"
+  },
+  {
+   "title": "首席分析師追蹤報告：士電法說會確立 T4 規格升級",
+   "url": "https://vocus.cc/article/6aa552f1fd89780001c881cd"
+  },
+  {
+   "title": "財報狗：士電 6 月營收與個股動態",
+   "url": "https://statementdog.com/analysis/1503"
+  },
+  {
+   "title": "Goodinfo：士電月營收",
+   "url": "https://goodinfo.tw/tw/ShowSaleMonChart.asp?STOCK_ID=1503"
+  },
+  {
+   "title": "鉅亨網：士電 3 月營收",
+   "url": "https://news.cnyes.com/news/id/6415818"
+  },
+  {
+   "title": "CMoney：士電月營收查詢",
+   "url": "https://www.cmoney.tw/forum/stock/1503?s=revenue"
+  },
+  {
+   "title": "Win 投資：士電分析（2026/10/12 收盤與 EPS）",
+   "url": "https://winvest.tw/Stock/Symbol/Comment/1503"
+  },
+  {
+   "title": "口袋學堂：士電近期重點整理",
+   "url": "https://www.pocket.tw/school/report/SCHOOL/7518/"
+  },
+  {
+   "title": "豐雲學堂：士電 1Q26 EPS 2.79 元",
+   "url": "https://www.sinotrade.com.tw/richclub/StockNavigator/1503-%E5%A3%AB%E9%9B%BB-1Q26-EPS-2-79%E5%85%83%E7%95%A5%E5%84%AA%E9%A0%90%E6%9C%9F-2026%E5%B9%B4%E7%8D%B2%E5%88%A9%E5%8F%AF%E6%9C%9B%E7%A9%A9%E5%81%A5%E6%88%90%E9%95%B7-6a01270cda12e400d4bb2af9"
+  },
+  {
+   "title": "MoneyDJ：士電（台股焦點）",
+   "url": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=3e1e5dca-881a-4472-b1a0-3bc699eb0435"
+  },
+  {
+   "title": "FinLab：士電基本資料與估值",
+   "url": "https://finlab.finance/stocks/1503"
+  },
+  {
+   "title": "經濟日報：士電、華城及亞力變壓器漲價（2026/02/12）",
+   "url": "https://money.udn.com/money/story/5612/9325029"
+  },
+  {
+   "title": "經濟日報：士電、華城前兩月營收與調價",
+   "url": "https://money.udn.com/money/story/5607/9371414"
+  },
+  {
+   "title": "NOWnews：士電 3/1 變壓器全面漲 15–20%",
+   "url": "https://www.nownews.com/news/6785769"
+  },
+  {
+   "title": "工商時報：銅價飆高對線纜與電力業的影響",
+   "url": "https://www.ctee.com.tw/news/20260111700003-431003"
+  },
+  {
+   "title": "Trading Economics：銅價",
+   "url": "https://zh.tradingeconomics.com/commodity/copper"
+  },
+  {
+   "title": "豐雲學堂：AI 資料中心興建與重電廠接單（含變壓器交期）",
+   "url": "https://www.sinotrade.com.tw/richclub/industry/AI-%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E8%88%88%E5%BB%BA%E8%88%87%E9%9B%BB%E5%AD%90%E6%A5%AD%E6%93%B4%E5%BB%A0-%E8%8F%AF%E5%9F%8E-%E5%A3%AB%E9%9B%BB-%E4%B8%AD%E8%88%88%E9%9B%BB-%E4%BA%9E%E5%8A%9B%E9%87%8D%E9%9B%BB%E5%BB%A0%E5%95%86%E6%8E%A5%E5%96%AE%E7%81%AB%E7%86%B1-%E7%94%A2%E6%A5%AD%E7%86%B1%E8%A9%B1-69ddf4043f76ec0ab4f49eff"
+  },
+  {
+   "title": "鉅亨網：台達電、奇鋐等供應鏈吃香！AI 資料中心狂擴建",
+   "url": "https://news.cnyes.com/news/id/6594702"
+  },
+  {
+   "title": "中時新聞網：AI 資料中心電力架構大改變",
+   "url": "https://www.chinatimes.com/realtimenews/20260924001341-260410"
+  },
+  {
+   "title": "數位時代：伊頓 800VDC 新架構與 SST",
+   "url": "https://www.bnext.com.tw/article/92100/2026-eaton-sst"
+  },
+  {
+   "title": "數位時代：台達電首秀 SST 固態變壓器",
+   "url": "https://www.bnext.com.tw/article/92631/2026-delta-sst-energy-taiwan"
+  },
+  {
+   "title": "TechNews：台達電 800VDC SST 實機首度亮相",
+   "url": "https://technews.tw/2026/10/14/delta-electronics-800-vdc-sst-debut-sofc-pilot-production-starts-year-end/"
+  },
+  {
+   "title": "壹蘋新聞網：台達電 SST 搶攻 AI 資料中心",
+   "url": "https://news.nextapple.com/finance/20261014/B4A92709227D30EA19F9F52AEB3AF1EA"
+  },
+  {
+   "title": "TechNews：SST 崛起，AI 資料中心下一代供電技術解析",
+   "url": "https://technews.tw/2026/08/26/sst-rise-ai-data-center-next-gen-power-supply-tech-analysis/"
+  },
+  {
+   "title": "TechNews：ABB 直流架構 2–3 年內落地",
+   "url": "https://technews.tw/2026/09/24/800v-direction-clearer-abb-dc-architecture-deployed-2-3-years/"
+  },
+  {
+   "title": "澎湃新聞：固態變壓器是 AI 電源的終極答案嗎？",
+   "url": "https://m.thepaper.cn/newsDetail_forward_32893304"
+  },
+  {
+   "title": "機電四雄攻 AI 資料中心商機（Yahoo 財經）",
+   "url": "https://tw.stock.yahoo.com/news/%E6%A9%9F%E9%9B%BB%E5%9B%9B%E9%9B%84-%E6%94%BBai%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E5%95%86%E6%A9%9F-201000354.html"
+  },
+  {
+   "title": "經濟日報：華城 AI 資料中心訂單逾 120 億元",
+   "url": "https://money.udn.com/money/story/5612/9199443"
+  },
+  {
+   "title": "NOWnews：華城變壓器大單與 2028 年能見度",
+   "url": "https://www.nownews.com/news/6764303"
+  },
+  {
+   "title": "IEK 產業情報網：華城 估 2026 賺兩個資本額",
+   "url": "https://ieknet.iek.org.tw/ieknews/news_open.aspx?nsl_id=8b47f4afc2ad4c54b20a378c83568d05"
+  },
+  {
+   "title": "中央社：華城 AIDC 變壓器在手訂單逾 200 億元",
+   "url": "https://www.cna.com.tw/news/afe/202606120113.aspx"
+  },
+  {
+   "title": "東方日報：巴淡島停電斷水（2026/10/13）",
+   "url": "https://www.orientaldaily.com.my/news/videos/2026/10/13/854919"
+  },
+  {
+   "title": "Tempo：Batam Blackout 事件說明（英文）",
+   "url": "https://en.tempo.co/read/2121420/batam-blackout-whats-behind-the-power-cut-this-morning"
+  },
+  {
+   "title": "Batam Pos：市長要求 PLN 全面評估",
+   "url": "https://batampos.jawapos.com/batam/2610170009/wali-kota-desak-pln-evaluasi-total-usai-blackout-batam"
+  },
+  {
+   "title": "Katalia：Blackout Batam akibat data center? Cek faktanya（印尼文）",
+   "url": "https://katalia.id/blog/blackout-batam-akibat-data-center-cek-faktanya"
+  },
+  {
+   "title": "Kabar Batam：PLN Batam 說明停電經過（印尼文）",
+   "url": "https://kabarbatam.com/pln-batam-paparkan-kronologi-blackout-evaluasi-libatkan-bareskrim-dan-pastikan-hak-kompensasi-pelanggan-terpenuhi/"
+  },
+  {
+   "title": "Warta Kepri：PLN Batam 說明停電經過與補償（印尼文）",
+   "url": "https://wartakepri.co.id/2026/10/18/pln-batam-paparkan-kronologi-blackout-investigasi-berlanjut-dan-kompensasi-pelanggan-mengacu-pergub-kepri/"
+  },
+  {
+   "title": "AFU：PLN Batam 公布停電原因（印尼文）",
+   "url": "https://afu.id/nasional/pln-batam-ungkap-penyebab-blackout-bantah-isu-pusat-data-temukan-hewan-liar-hingga-cctv-bergeser"
+  },
+  {
+   "title": "BatamNow：Dahlan Iskan 談停電與投資人信心（印尼文）",
+   "url": "https://batamnow.com/dahlan-iskan-soroti-blackout-batam-khawatir-investor-data-center-berpikir-ulang/"
+  },
+  {
+   "title": "Media Kompeten：PLN Batam 否認資料中心導致停電（印尼文）",
+   "url": "https://www.mediakompeten.co.id/pln-batam-bantah-data-center"
+  },
+  {
+   "title": "Yahoo 新聞（BBC 轉載）：AI 資料中心熱潮讓巴淡島居民無水可用",
+   "url": "https://tw.news.yahoo.com/ai%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E7%86%B1%E6%BD%AE%E8%AE%93%E6%B0%91%E7%9C%BE%E7%84%A1%E6%B0%B4%E5%8F%AF%E7%94%A8-%E5%8D%B0%E5%B0%BC%E5%B7%B4%E6%B7%A1%E5%B3%B6%E5%B1%85%E6%B0%91%E6%96%B7%E6%B0%B43%E5%80%8B%E6%9C%88%E7%88%86%E6%8A%97%E8%AD%B0%E6%BD%AE-032800202.html"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游：原物料（矽鋼、銅、絕緣材料）",
+   "description": "取向矽鋼片等關鍵原料供應緊俏；銅價2026年維持高檔（LME三個月期約12,500美元／噸，年增逾四成），2026/10銅期貨每磅6.5～6.7美元附近，接近歷史高位。",
+   "global_players": [],
+   "tw_stocks": []
+  },
+  {
+   "layer": "中游：重電製造（變壓器、GIS、配電盤）",
+   "description": "核心環節。大型變壓器交期約2.5年；士電3月起新接變壓器訂單加價15%–20%，同業士電、華城及亞力最高調幅逾兩成；華城AIDC在手訂單超過200億元。",
+   "global_players": [
+    "韓國變壓器廠商",
+    "中國變壓器廠商",
+    "中國金盤科技（非台股，SST已應用於北美資料中心項目）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1503",
+     "name": "士電",
+     "role": "變壓器、配電盤、重電統包，AIDC與電網布局",
+     "impact": "受惠"
+    },
+    {
+     "code": "1519",
+     "name": "華城",
+     "role": "變壓器（AIDC與外銷）",
+     "impact": "中性"
+    },
+    {
+     "code": "1513",
+     "name": "中興電",
+     "role": "GIS開關與高壓設備",
+     "impact": "中性"
+    },
+    {
+     "code": "1514",
+     "name": "亞力",
+     "role": "變壓器與GIS開關",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "中游：新型供電（SST、800VDC電力電子）",
+   "description": "把中壓直接轉成800V直流的固態變壓器與整合模組；伊頓已加速中壓SST商業化，預計最快2027年落地；ABB自2025年10月起與輝達合作開發800VDC架構。",
+   "global_players": [
+    "伊頓",
+    "ABB",
+    "GE Vernova",
+    "英飛凌（SiC模組）",
+    "金盤科技（中國，非台股）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2308",
+     "name": "台達電",
+     "role": "SST與800VDC電源方案",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "下游：電網業主與AI資料中心",
+   "description": "台電強韌電網持續釋單；北美電網需求強勁；巴淡島資料中心群聚出現可靠度與投資人信心問題。未找到任何台股與PLN Batam或巴淡資料中心有供貨關係的證據。",
+   "global_players": [
+    "PLN Batam",
+    "北美電網業者",
+    "資料中心業者"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}
