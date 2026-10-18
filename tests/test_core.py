@@ -1811,90 +1811,100 @@ def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
     assert l4 == "green" and "未採用" in t4
 
 
-# ---------------------------------------------------------------- 資訊圖混合版（HTML 排字＋Gemini 主視覺）
-class _FakeResp:
-    def __init__(self, status=200, body=None, text=""):
-        self.status_code, self._body, self.text = status, body or {}, text
-
-    def json(self):
-        return self._body
-
-
-def _fake_png_b64():
-    import base64
-    import io
-    from PIL import Image
-    buf = io.BytesIO()
-    Image.new("RGB", (1200, 900), (30, 90, 120)).save(buf, "PNG")
-    return base64.b64encode(buf.getvalue()).decode()
+# ---------------------------------------------------------------- 研究資訊圖（HTML 排版，接進研究圖表推播）
+def _info_data():
+    return {"topic": "測試題材", "one_line": "一句話摘要", "status": "混合", "horizon": "中期（3-12個月）", "sources": [1, 2, 3],
+            "evolution": [{"name": "第一代", "composition": "甲", "spec": "規格 9,500 mm²", "application": "乙"}],
+            "spec_tables": [{"title": "表 A", "columns": ["項目", "數字"], "rows": [["營收", "+123%"]], "note": "註記"}],
+            "concepts": [{"title": "概念一", "points": ["要點 <b>跳脫</b>"]}],
+            "layers": [{"layer": "上游", "description": "說明", "tw_stocks": [
+                {"code": "2330", "name": "台積電", "role": "x", "impact": "受惠"},
+                {"code": "2454", "name": "聯發科", "role": "x", "impact": "中性"}]}],
+            "catalysts": ["催化一"], "risks": ["風險一"], "conclusion": ["結論一"]}
 
 
-def test_art_generate_cache_fallback_and_retry(tmp_path, monkeypatch):
-    from PIL import Image
-    from market_intel import art
-    monkeypatch.setattr(art, "ART_DIR", tmp_path / "art")
-    d = {"topic": "ABF供需", "keywords": ["ABF", "載板"], "one_line": "載板缺貨"}
-    calls = []
-    ok = {"candidates": [{"content": {"parts": [{"text": "好"}, {"inlineData": {"mimeType": "image/png", "data": _fake_png_b64()}}]}}]}
+def test_infographic_pages_text_exact_escaped_and_palette():
+    from market_intel import infographic
+    pages = dict(infographic.pages(_info_data()))
+    assert set(pages) == {"1_overview", "2_chain", "3_conclusion"}
+    p1, p2, p3 = pages["1_overview"], pages["2_chain"], pages["3_conclusion"]
+    assert "測試題材" in p1 and "+123%" in p1 and "規格 9,500 mm²" in p1 and 'class="stat"' in p1
+    assert "2330 台積電" in p2 and "&lt;b&gt;跳脫" in p2 and "<b>跳脫" not in p2  # HTML 跳脫
+    assert "結論一" in p3 and "催化一" in p3 and "風險一" in p3
+    assert "data:image" not in p1  # 純排版，沒有生成圖
+    assert infographic.palette_for("測試題材") == infographic.palette_for("測試題材")
+    assert len({infographic.palette_for(t)[0] for t in "ABCDEFGHIJ"}) > 1
+    assert infographic.pages({"topic": "空"}) == []  # 沒有內容的研究不產生圖
 
-    def post(url, json=None, headers=None, timeout=None):
-        calls.append((url, json, headers))
-        return _FakeResp(200, ok)
-    monkeypatch.setattr(art.requests, "post", post)
-    # 沒金鑰：不呼叫 API、回傳 None（資訊圖改純版面）
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
-    assert art.generate(d, "deep teal") is None and calls == []
-    # 有金鑰：畫一次、裁成 3:1 的 JPEG、之後用快取
-    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
-    p = art.generate(d, "deep teal")
-    assert p and p.exists() and calls[0][2]["x-goog-api-key"] == "test-key"
-    assert "gemini-2.5-flash-image:generateContent" in calls[0][0]
-    assert "no text" in calls[0][1]["contents"][0]["parts"][0]["text"] and "ABF供需" in calls[0][1]["contents"][0]["parts"][0]["text"]
-    with Image.open(p) as im:
-        assert im.format == "JPEG" and im.size == (1620, 540)
-    assert art.generate(d, "deep teal") == p and len(calls) == 1
-    # 模型不支援指定比例（400 提到 imageConfig）→ 不指定比例再試一次
-    p.unlink()
-    seq = [_FakeResp(400, text="Unknown name imageConfig"), _FakeResp(200, ok)]
-    monkeypatch.setattr(art.requests, "post", lambda *a, **k: (calls.append(k["json"]), seq.pop(0))[1])
-    assert art.generate(d, "deep teal") and "imageConfig" not in calls[-1]["generationConfig"]
-    # 失敗、沒有圖片、關閉：都回傳 None，不丟例外
-    p.unlink()
-    monkeypatch.setattr(art.requests, "post", lambda *a, **k: _FakeResp(403, text="API key invalid"))
-    assert art.generate(d, "deep teal") is None
-    monkeypatch.setattr(art.requests, "post", lambda *a, **k: _FakeResp(200, {"candidates": [{"content": {"parts": [{"text": "抱歉"}]}}]}))
-    assert art.generate(d, "deep teal") is None
+
+def _stub_market_charts(monkeypatch, legacy_calls):
+    from market_intel import charts
+
+    def stub(name, record=False):
+        def f(path, *a, **k):
+            if record:
+                legacy_calls.append(name)
+            return path
+        return f
+    for name in ("spec_table_slide_png", "evolution_slide_png", "concepts_slide_png"):
+        monkeypatch.setattr(charts, name, stub(name, True))
+    for name in ("supply_chain_png", "sector_perf_png", "table_png"):
+        monkeypatch.setattr(charts, name, stub(name))
+
+
+def test_theme_card_uses_infographic_and_falls_back_to_legacy_charts(tmp_path, monkeypatch):
+    from market_intel import infographic, theme_card
+    monkeypatch.setattr(theme_card, "CARD_DIR", tmp_path)
+    legacy = []
+    _stub_market_charts(monkeypatch, legacy)
+    d = _info_data()
+    card = theme_card.Card(title="測試題材", layers=d["layers"], spec_tables=d["spec_tables"], evolution=d["evolution"],
+                           concepts=d["concepts"], conclusion=d["conclusion"], data=d)
+    monkeypatch.setattr(infographic, "render_all",
+                        lambda data, out: [out / "1_overview.png", out / "2_chain.png", out / "3_conclusion.png"])
+    names = [p.name for p in theme_card.render(card)]
+    # 資訊圖 3 張在前，市場資料 3 張（供應鏈地圖、細項表現、資料表）保留；舊版技術細項圖不再產生
+    assert names[:3] == ["1_overview.png", "2_chain.png", "3_conclusion.png"]
+    assert names[3:] == ["1_supply_chain.png", "2_sectors.png", "3_table.png"] and legacy == []
+
+    def boom(data, out):
+        raise RuntimeError("找不到 Chrome")
+    monkeypatch.setattr(infographic, "render_all", boom)  # 資訊圖失敗 → 退回舊版圖表，推播照常
+    names = [p.name for p in theme_card.render(card)]
+    assert "00_spec.png" in names and "05_evolution.png" in names and "06_concepts.png" in names and "1_supply_chain.png" in names
+    legacy.clear()
+    card.data = None  # 族群卡沒有研究原始資料 → 舊版
+    assert "00_spec.png" in [p.name for p in theme_card.render(card)] and "spec_table_slide_png" in legacy
+
+
+def test_theme_card_from_research_carries_data(monkeypatch):
+    from market_intel import theme_card
+    monkeypatch.setattr(theme_card.research, "load_index", lambda: {"T": {"date": "2026-10-18", "file": ""}})
+    monkeypatch.setattr(theme_card, "research_data", lambda t: {"one_line": "x", "layers": []})
+    found = theme_card.from_research("T")
+    assert found["data"]["topic"] == "T" and found["data"]["one_line"] == "x"
+    monkeypatch.setattr(theme_card, "research_data", lambda t: None)
+    assert theme_card.from_research("T")["data"] is None
+
+
+# ---------------------------------------------------------------- 選股機器人 09:15 的隔夜環境一行
+def test_overnight_short_line_and_picks_header(monkeypatch):
+    from market_intel import cli, overnight
+    night = {"pct": -1.0, "stale": False, "date": "20261019", "last": 23100, "expected": "20261019", "month": "202610"}
+    quotes = {"nasdaq": {"d1_pct": -0.8}, "sox": {"d1_pct": -2.1}, "n225": {"d1_pct": -1.3}}
+    ass = overnight.assess({"night": -1.0, "nasdaq": -0.8, "sox": -2.1, "n225": -1.3})
+    line = overnight.short_line(night, quotes, ass, -0.45)
+    assert line.startswith("🌙 隔夜環境 🟡") and "夜盤 -1.0%" in line and "那指 -0.8%" in line and "加權現在 -0.45%" in line
+    assert overnight.short_line({**night, "stale": True}, {}, ass) == ""  # 夜盤過期又沒有其他資料 → 不推空的一行
+
+    class Q:
+        change_pct = -0.45
+    monkeypatch.setattr(overnight, "parts", lambda *a, **k: (night, quotes, ass))
+    assert "加權現在 -0.45%" in cli._overnight_line({"加權指數": Q()})
+    monkeypatch.setattr(overnight, "parts", lambda *a, **k: None)
+    assert cli._overnight_line({}) == ""
 
     def boom(*a, **k):
         raise RuntimeError("連線失敗")
-    monkeypatch.setattr(art.requests, "post", boom)
-    assert art.generate(d, "deep teal") is None
-    monkeypatch.setattr(art, "settings", lambda: {"art": False, "art_model": "x"})
-    assert art.generate({**d, "topic": "別的題材"}, "deep teal") is None
-
-
-def test_infographic_pages_art_overlay_keeps_text_exact(tmp_path):
-    from PIL import Image
-    from market_intel import infographic
-    d = {"topic": "測試題材", "one_line": "一句話摘要", "status": "混合", "horizon": "中期（3-12個月）", "sources": [1, 2, 3],
-         "evolution": [{"name": "第一代", "composition": "甲", "spec": "規格 9,500 mm²", "application": "乙"}],
-         "spec_tables": [{"title": "表 A", "columns": ["項目", "數字"], "rows": [["營收", "+123%"]], "note": "註記"}],
-         "concepts": [{"title": "概念一", "points": ["要點 <b>跳脫</b>"]}],
-         "layers": [{"layer": "上游", "description": "說明", "tw_stocks": [
-             {"code": "2330", "name": "台積電", "role": "x", "impact": "受惠"}, {"code": "2454", "name": "聯發科", "role": "x", "impact": "中性"}]}],
-         "catalysts": ["催化一"], "risks": ["風險一"], "conclusion": ["結論一"]}
-    plain = dict(infographic.pages(d))
-    assert set(plain) == {"1_overview", "2_chain", "3_conclusion"} and "data:image" not in plain["1_overview"]
-    art_file = tmp_path / "a.jpg"
-    Image.new("RGB", (160, 54), (10, 90, 90)).save(art_file, "JPEG")
-    withart = dict(infographic.pages(d, art_file))
-    assert "data:image/jpeg;base64," in withart["1_overview"] and "data:image" in withart["2_chain"]
-    # 文字與數字一律由 HTML 排，不受主視覺影響；HTML 跳脫
-    for html_text in (plain["1_overview"], withart["1_overview"]):
-        assert "測試題材" in html_text and "+123%" in html_text and "規格 9,500 mm²" in html_text
-    assert "2330 台積電" in withart["2_chain"] and "&lt;b&gt;跳脫" in withart["2_chain"] and "<b>跳脫" not in withart["2_chain"]
-    assert 'class="stat"' in withart["1_overview"]
-    # 色系依題材名稱固定
-    assert infographic.palette_for("測試題材") == infographic.palette_for("測試題材")
-    assert len({infographic.palette_for(t)[0] for t in "ABCDEFGHIJ"}) > 1
+    monkeypatch.setattr(overnight, "parts", boom)
+    assert cli._overnight_line({}) == ""  # 任何錯誤都不影響選股推播

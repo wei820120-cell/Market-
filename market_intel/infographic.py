@@ -1,7 +1,6 @@
 """研究資訊圖：把一份題材研究（research/data/*.json）排成手機好讀的長圖（HTML → 無頭瀏覽器截圖）。
 
-混合做法：版面、文字、數字、表格、股票代號全部由 HTML 排（精確、不會有 AI 寫錯字的風險），
-主視覺插畫（橫幅背景）由 art.py 用 Gemini 圖像模型畫，沒有金鑰或失敗就自動改用純版面（漸層＋幾何底紋）。
+版面、文字、數字、表格、股票代號全部由 HTML 排（精確，不經過 AI 畫圖，不會有寫錯字或錯數字的風險）。
 內容全部來自研究檔的既有欄位（one_line、evolution、spec_tables、concepts、layers、catalysts、risks、conclusion），不需要額外呼叫 AI 寫字。
 每個題材依名稱固定選一組色系（藍、青綠、紫、橘、綠），不同題材看起來不一樣，同一題材三張圖一致。
 
@@ -9,7 +8,6 @@
 """
 from __future__ import annotations
 
-import base64
 import glob
 import html
 import logging
@@ -140,28 +138,12 @@ def css(pal: tuple) -> str:
     return CSS.substitute(w=WIDTH, font=FONT, dark=pal[1], mid=pal[2], s1=s[0], s2=s[1], s3=s[2], s4=s[3], s5=s[4], s6=s[5])
 
 
-def _data_uri(path: Path | None) -> str:
-    if not path or not Path(path).exists():
-        return ""
-    return "data:image/jpeg;base64," + base64.b64encode(Path(path).read_bytes()).decode()
-
-
-def _rgb(hex_: str) -> str:
-    return ",".join(str(int(hex_[i:i + 2], 16)) for i in (1, 3, 5))
-
-
-def _banner(d: dict, pal: tuple, art: Path | None = None, subtitle: str = "", tag: str = "", compact: bool = False) -> str:
+def _banner(d: dict, subtitle: str = "", tag: str = "", compact: bool = False) -> str:
     tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in (d.get("status"), clip(d.get("horizon"), 22), tag) if t)
-    style, deco = "", '<div class="deco"></div><div class="glow"></div><div class="glow2"></div>'
-    uri = _data_uri(art)
-    if uri:  # 左邊壓深色漸層，白字才看得清楚；右邊露出插畫
-        dark = _rgb(pal[1])
-        style = (f' style="background-image:linear-gradient(90deg,rgba({dark},.94) 0%,rgba({dark},.80) 46%,rgba({dark},.12) 100%),'
-                 f'url({uri})"')
-        deco = ""
     sub = "" if compact else f'<div class="sub">{esc(clip(subtitle or d.get("one_line"), 150))}</div>'
-    return (f'<div class="hero{" compact" if compact else ""}"{style}>{deco}<div class="hero-in">'
-            f'<div class="kicker"><i></i>題材研究</div><h1>{esc(d["topic"])}</h1>{sub}<div class="tags">{tags}</div></div></div>')
+    return (f'<div class="hero{" compact" if compact else ""}"><div class="deco"></div><div class="glow"></div><div class="glow2"></div>'
+            f'<div class="hero-in"><div class="kicker"><i></i>題材研究</div><h1>{esc(d["topic"])}</h1>{sub}'
+            f'<div class="tags">{tags}</div></div></div>')
 
 
 def _stats(d: dict) -> str:
@@ -238,8 +220,8 @@ def _page(inner: str, foot: str, pal: tuple) -> str:
             f'<div class="foot">{esc(foot)}</div></body></html>')
 
 
-def pages(d: dict, art: Path | None = None) -> list[tuple[str, str]]:
-    """一份研究 → 最多 3 張長圖的 HTML：（檔名, html）。內容不足的頁面略過。art：主視覺圖檔（沒有就用純版面）。"""
+def pages(d: dict) -> list[tuple[str, str]]:
+    """一份研究 → 最多 3 張長圖的 HTML：（檔名, html）。內容不足的頁面略過。"""
     pal = palette_for(d["topic"])
     foot = f"資料來源 {len(d.get('sources') or [])} 篇｜AI 整理，僅供研究參考，非投資建議｜{now_tw():%Y-%m-%d}"
     out: list[tuple[str, str]] = []
@@ -252,7 +234,7 @@ def pages(d: dict, art: Path | None = None) -> list[tuple[str, str]]:
         n += 1
         body += _sec(n, clip(t.get("title"), 26) or "規格比較", _table(t))
     if body:
-        out.append(("1_overview", _page(_banner(d, pal, art) + _stats(d) + f'<div class="wrap">{body}</div>', foot, pal)))
+        out.append(("1_overview", _page(_banner(d) + _stats(d) + f'<div class="wrap">{body}</div>', foot, pal)))
     # 第 2 張：關鍵概念與供應鏈、誰受惠
     body, n = "", 0
     if d.get("concepts"):
@@ -262,7 +244,7 @@ def pages(d: dict, art: Path | None = None) -> list[tuple[str, str]]:
         n += 1
         body += _sec(n, "供應鏈與受惠股", _layers(d["layers"], pal), "綠＝受惠　灰＝中性　紅＝受傷")
     if body:
-        out.append(("2_chain", _page(_banner(d, pal, art, tag="供應鏈", compact=True) + f'<div class="wrap">{body}</div>', foot, pal)))
+        out.append(("2_chain", _page(_banner(d, tag="供應鏈", compact=True) + f'<div class="wrap">{body}</div>', foot, pal)))
     # 第 3 張：結論、催化與風險
     body, n = "", 0
     if d.get("conclusion"):
@@ -273,7 +255,7 @@ def pages(d: dict, art: Path | None = None) -> list[tuple[str, str]]:
                  + _panel("pos", "催化／優勢", d.get("catalysts") or [], 5, 62)
                  + _panel("neg", "風險／挑戰", d.get("risks") or [], 5, 62) + "</div></div>")
     if body:
-        out.append(("3_conclusion", _page(_banner(d, pal, art, tag="結論", compact=True) + f'<div class="wrap">{body}</div>', foot, pal)))
+        out.append(("3_conclusion", _page(_banner(d, tag="結論", compact=True) + f'<div class="wrap">{body}</div>', foot, pal)))
     return out
 
 
@@ -327,14 +309,7 @@ def render(html_text: str, out: Path, scale: float = 1.5) -> Path:
     return out
 
 
-def render_all(d: dict, out_dir: Path, art: Path | None = None) -> list[Path]:
-    """一份研究 → 最多 3 張長圖 PNG。"""
+def render_all(d: dict, out_dir: Path) -> list[Path]:
+    """一份研究 → 最多 3 張長圖 PNG（找不到 Chrome 或截圖失敗會丟出 RuntimeError，呼叫端自行退回舊版圖表）。"""
     out_dir = Path(out_dir)
-    return [render(h, out_dir / f"{name}.png") for name, h in pages(d, art)]
-
-
-def build(d: dict, out_dir: Path, use_art: bool = True, force_art: bool = False) -> tuple[list[Path], Path | None]:
-    """主視覺（有金鑰才畫、有快取就重用）＋ 3 張長圖。回傳（圖檔, 主視覺圖檔或 None）。"""
-    from . import art as art_mod
-    art = art_mod.generate(d, palette_for(d["topic"])[3], force=force_art) if use_art else None
-    return render_all(d, out_dir, art), art
+    return [render(h, out_dir / f"{name}.png") for name, h in pages(d)]

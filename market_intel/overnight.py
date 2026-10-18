@@ -180,19 +180,40 @@ def gather(now=None, fetch_one=None, futures_rows=None) -> tuple[dict | None, di
     return night, quotes
 
 
-def build(now=None, fetch_one=None, futures_rows=None) -> tuple[str, str]:
-    """（推播文字, 燈號 green／yellow／red）。關閉、或完全抓不到資料時回傳空字串，不影響盤前計劃。"""
+def parts(now=None, fetch_one=None, futures_rows=None) -> tuple[dict | None, dict, dict] | None:
+    """（夜盤, 各報價, 燈號評估）；功能關閉或整個流程出錯回傳 None。"""
     cfg = settings()
     if not cfg["enabled"]:
-        return "", ""
+        return None
     try:
         night, quotes = gather(now, fetch_one, futures_rows)
     except Exception as e:  # noqa: BLE001
         log.warning("開盤前環境失敗：%s", e)
-        return "", ""
-    if not night and not quotes:
-        return "🌙 開盤前環境：夜盤與國際行情都沒抓到（來源連線失敗），今天請自行查看夜盤與那指。", ""
+        return None
     d = {"night": None if (not night or night["stale"]) else night["pct"],
          **{k: _q(quotes, k) for k in ("nasdaq", "sox", "nq", "n225", "kospi")}, "vix": _q(quotes, "vix", "last")}
-    ass = assess(d, cfg)
+    return night, quotes, assess(d, cfg)
+
+
+def build(now=None, fetch_one=None, futures_rows=None) -> tuple[str, str]:
+    """（推播文字, 燈號 green／yellow／red）。關閉、或完全抓不到資料時回傳空燈號，不影響盤前計劃。"""
+    p = parts(now, fetch_one, futures_rows)
+    if p is None:
+        return "", ""
+    night, quotes, ass = p
+    if not night and not quotes:
+        return "🌙 開盤前環境：夜盤與國際行情都沒抓到（來源連線失敗），今天請自行查看夜盤與那指。", ""
     return text(night, quotes, ass), ass["level"]
+
+
+def short_line(night: dict | None, quotes: dict, ass: dict, taiex_pct: float | None = None) -> str:
+    """一行版（放在選股機器人 09:15 第一則）：燈號＋夜盤、美股、亞股漲跌；有加權即時漲跌就一起列，對照開盤有沒有照夜盤走。"""
+    segs = []
+    if night and not night["stale"]:
+        segs.append(f"夜盤 {night['pct']:+.1f}%")
+    segs += [f"{QUOTES[k][1]} {_q(quotes, k):+.1f}%" for k in ("nasdaq", "sox", "n225", "kospi") if _q(quotes, k) is not None]
+    if not segs:
+        return ""
+    if taiex_pct is not None:
+        segs.append(f"加權現在 {taiex_pct:+.2f}%")
+    return f"🌙 隔夜環境 {ICON[ass['level']]}｜" + "｜".join(segs)
