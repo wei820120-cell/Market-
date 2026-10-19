@@ -1,0 +1,409 @@
+{
+ "topic": "EMIB-T 基板良率瓶頸",
+ "one_line": "EMIB-T 的封裝組裝良率外界說法落在 90%–98%，真正卡關的是埋進基板的矽橋與基板製程；Ibiden 與欣興的基板良率查核數字為傳聞，欣興為受惠者但良率風險最高。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "EMIB-T",
+  "EMIB",
+  "矽橋",
+  "基板良率",
+  "欣興",
+  "Ibiden",
+  "矽電容",
+  "IPD",
+  "S-SiCap",
+  "力積電",
+  "愛普",
+  "Humufish",
+  "TSV",
+  "ABF",
+  "玻纖布",
+  "T-Glass",
+  "CoWoS"
+ ],
+ "catalysts": [
+  "欣興月營收與法說會中，對 EMIB-T 良率與設備進場時程的更新",
+  "基板廠是否公開良率數字，或 KeyBanc 後續查核的變化",
+  "Ibiden 新廠的進度（Ibiden 正式宣布投資 2,200 億日圓於 Gama 廠）",
+  "力積電與愛普的矽電容出貨與擴產數字",
+  "Google 與 MediaTek 的 EMIB-T 專案進度"
+ ],
+ "risks": [
+  "數據來源薄弱：多數良率數字來自通路查核與外媒轉述，英特爾並未揭露產品級封裝良率、微凸塊良率與矽橋放置公差等細節",
+  "口徑衝突：封裝良率有 90%、90%–92%、98% 三種說法；基板則有 50% 首階目標與 20%–60% 的查核估計，讀者常把兩者混在一起",
+  "欣興查核數字落後其自身目標：目標 50%，KeyBanc 查核 20%–30%；UBS 將欣興視為需求超預期時的第二供應商",
+  "量產時程不確定：能否在 2027 年底前達成量產目標仍有很大不確定性；另有媒體指 2027 下半年針對 Google 的驗證，與 2028 量產說法不同",
+  "利潤保護機制掩蓋良率風險：供應商即使良率不佳仍可獲利，但良率風險部分轉移，保護條件的期限與金額尚未公開",
+  "台積電的反制：外媒報導台積電可能推出類似 EMIB 的新方案，僅見標題，不列為已證實",
+  "支持方看法：Jeff Pu 認為即使 50% 良率下，英特爾仍因毛利吸引力而支持 EMIB-T"
+ ],
+ "spec_tables": [
+  {
+   "title": "規格比較表",
+   "columns": [
+    "指標",
+    "數值／範圍",
+    "性質與來源"
+   ],
+   "rows": [
+    [
+     "矽層型態",
+     "CoWoS-S 為整片矽中介層；EMIB 只在晶片交界處放矽橋",
+     "已知架構。全矽中介層會在晶粒底下形成大面積連續的佈線平面，EMIB 只在晶粒與晶粒相鄰處使用矽。"
+    ],
+    [
+     "封裝價格 vs CoWoS",
+     "低約 30%–50%（各家口徑不一）",
+     "媒體與分析師推估。Digitimes 報導，省掉昂貴矽中介層後，EMIB-T 整體封裝報價比 CoWoS 便宜約 40% 至 50%。另有 30%–40% 的推估。"
+    ],
+    [
+     "封裝組裝良率",
+     "約 90%–92%（UBS 驗證期）；約 90%；98%（KeyBanc 7 月查核）",
+     "傳聞。UBS 估計 EMIB-T 在驗證階段的封裝良率約 90%–92%，但高價運算晶粒與 HBM 需要接近 high-90% 的量產良率。"
+    ],
+    [
+     "基板良率（首階目標）",
+     "50%",
+     "已證實（欣興法說）。欣興於 7 月 29 日法說會表示，EMIB-T 首次量產爬坡的良率目標為 50%，預計 2027 年底前達成。"
+    ],
+    [
+     "基板良率（查核估計）",
+     "Ibiden 50%–60%；欣興 20%–30%",
+     "傳聞（KeyBanc 10/16 通路查核）"
+    ],
+    [
+     "微凸塊間距",
+     "EMIB 第二代由 55 µm 縮到 45 µm",
+     "英特爾技術資料（經分析師文章轉述）"
+    ],
+    [
+     "目標規模",
+     "約 12 倍光罩尺寸、超過 24 顆 HBM",
+     "目標。EMIB-T 預計 2027 年量產，目標是支援約 12 倍光罩尺寸、超過 24 顆 HBM 的 AI 加速器封裝。"
+    ],
+    [
+     "基板結構",
+     "有機板＋ABF 增層＋含 TSV 的矽橋，三層堆疊",
+     "已知結構。四家基板供應商（Ibiden、新光電氣、欣興、AT&S）由三層組成，即有機板、ABF 增層與含矽穿孔的矽橋。"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "evolution": [
+  {
+   "name": "CoWoS-S（全矽中介層）",
+   "composition": "整片大面積矽中介層提供完整佈線平面",
+   "spec": "成本高、面積大，有光罩拼接與矽良率問題",
+   "application": "台積電 CoWoS 的主流 AI 封裝路線"
+  },
+  {
+   "name": "EMIB（2.5D）",
+   "composition": "把局部矽橋嵌入有機基板，只處理相鄰晶粒的高速互連",
+   "spec": "省去大面積矽中介層，成本較低；英特爾自 2017 年起使用",
+   "application": "英特爾伺服器、HPC、網通等內部產品"
+  },
+  {
+   "name": "EMIB-T（2026 年 5 月發表）",
+   "composition": "在矽橋內加入 TSV，讓電力與訊號垂直傳輸，並可整合 MIM 電容",
+   "spec": "電力與訊號可直接穿過矽橋；基板製程明顯變難",
+   "application": "主打 HBM 持續供電與超大型 AI 處理器，預計 2027 年量產"
+  },
+  {
+   "name": "後續路線（EMIB-M 與玻璃基板）",
+   "composition": "EMIB-M 偏向效率；玻璃基板路線將在英特爾 Rio Rancho 廠生產，透過 EMIB 矽橋整合更多、更大的晶粒",
+   "spec": "報告未提供具體規格數字",
+   "application": "更大規模的晶粒整合"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼用「埋在基板裡的小矽橋」取代整片矽中介層",
+   "points": [
+    "原因：省掉大面積矽中介層，就能減少矽面積與拼接限制，這是成本優勢的來源",
+    "影響：高密度矽佈線功能移到小型矽橋，其餘佈線與機械支撐交給有機基板",
+    "成本佐證：CoWoS 中的全矽中介層約占封裝成本 40% 至 60%，EMIB 省掉它之後，媒體估計能省下 30%–40%",
+    "代價：基板要承擔更多高精度工序，包括矽橋放置、基板埋入、混合間距微凸塊的良率；注意成本優勢口徑不一（30%、40%–50%、約 50%），應以統一口徑的正式數字為準"
+   ]
+  },
+  {
+   "title": "TSV 為何讓基板更難做",
+   "points": [
+    "EMIB-T 的 TSV 穿過矽橋，電力與訊號從底部直接往上傳到處理器或記憶體，也讓 3D 堆疊成為可能",
+    "基板必須同時處理有機板的精密鑽孔（主導者為 Ibiden，Shinko、欣興與 AT&S 協力供應）與 ABF 增層（直接疊在埋入的矽橋上方，採用業界標準 Ajinomoto ABF 材料）",
+    "多種材料與工序疊加，熱膨脹差、對位誤差、埋入失敗都會放大（此為報告作者的工程推論）",
+    "材料與設備依賴日系供應鏈，材料與基板段的重要部分由日本企業掌握"
+   ]
+  },
+  {
+   "title": "良率的分母不同，不能混著比",
+   "points": [
+    "三種良率分母不同：矽橋良率、整合基板良率與最終封裝良率的分母不同；未標明製程階段、產品複雜度與測試標準的百分比，無法預測實際出貨",
+    "英特爾或外媒常提的 90%，多半指組裝段，只代表晶粒貼裝、互連與封裝完成的成功率",
+    "示意計算（作者推論，假設兩段獨立）：基板 50% × 組裝 90% ≈ 45%，基板段的損失會直接吃掉組裝段的良率優勢",
+    "兩段良率相乘，若基板門檻沒有跨過，成本優勢就很難出現"
+   ]
+  },
+  {
+   "title": "為什麼 AI 客戶的良率門檻這麼高",
+   "points": [
+    "高價晶片的封裝失敗損失很大：運算晶粒與多顆 HBM 整合後，單一封裝失敗可能同時報廢多個高價元件，客戶通常要求接近高 90% 的良率",
+    "業界參考基準是 FCBGA：英特爾用 FCBGA 作為 EMIB 良率比較基準，產業 FCBGA 良率普遍超過 98%",
+    "從 90% 到 98% 的難度遠高於從 0 到 90%，分析師郭明錤認為此階段的量產標準難度遠大於前段"
+   ]
+  }
+ ],
+ "conclusion": [
+  "單看一個良率數字不足以判斷誰勝出，應追蹤五個面向",
+  "基板良率爬升速度是最關鍵的變數：從 50% 首階目標，能否在 2027 年後爬到 90% 以上",
+  "成本結構：封裝段省下的成本能否被基板報廢損失抵銷",
+  "設備與產能配額：英特爾集中分配部分關鍵 EMIB-T 製程設備，原則上三家供應商各分得三分之一；客戶承諾（英特爾高層表示客戶願意預付基板廠款項以鎖定產能）與量產時程（Google TPU 相關驗證與出貨是否如期）也需同步追蹤"
+ ],
+ "sources": [
+  {
+   "title": "欣興法說（科技新聞）",
+   "url": "https://finance.technews.tw/2026/07/29/emib-t-advanced-packaging-substrate/"
+  },
+  {
+   "title": "欣興法說（緯來新聞網）",
+   "url": "https://news.videoland.com.tw/article/cbfe1552-550e-4dc3-8b96-c15fd89b7cb0.html"
+  },
+  {
+   "title": "欣興法說會（壹蘋新聞網）",
+   "url": "https://news.nextapple.com/finance/20260729/FF34B50B6B4C0E5FD6AC384797ACFAF6"
+  },
+  {
+   "title": "Digitimes：EMIB-T 2027 年邁量產，三家載板供應商先拚 50% 良率",
+   "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000763376_BVN4H9ZY62DCRZ7OE27Y2"
+  },
+  {
+   "title": "Digitimes（英文）：Unimicron says Intel's EMIB-T will not reach mass production until 2027",
+   "url": "https://www.digitimes.com/news/a20260730PD212/packaging-cowos-unimicron-tsmc-production.html"
+  },
+  {
+   "title": "ChainCatcher：Intel's EMIB-T advanced packaging faces yield challenges",
+   "url": "https://www.chaincatcher.com/en/article/2281751"
+  },
+  {
+   "title": "Gate：Intel's EMIB-T Packaging Targets 50% Yield in 2027",
+   "url": "https://www.gate.com/news/detail/intels-emib-t-packaging-targets-50-yield-in-2027-as-suppliers-face-maturity-23340518"
+  },
+  {
+   "title": "鉅亨網：英特爾代工傳獲蘋果、輝達等 6 大廠訂單（KeyBanc 查核）",
+   "url": "https://news.cnyes.com/news/id/6631443"
+  },
+  {
+   "title": "科技新報：外資指英特爾晶圓代工與先進封裝獲重大突破",
+   "url": "https://technews.tw/2026/10/16/foreign-investors-point-to-major-breakthroughs-in-intels-wafer-foundry-and-advanced-packaging/"
+  },
+  {
+   "title": "Wccftech：KeyBanc 報告（Intel 合約與 EMIB-T 基板良率）",
+   "url": "https://wccftech.com/keybanc-says-intel-has-won-contracts-from-broadcom-google-apple-amd-microsoft-and-nvidia-while-amazon-anthropic-and-spacexs-terafab-continue-to-evaluate-its-14a-and-18a-p-processes/"
+  },
+  {
+   "title": "BigGo Finance：Intel's Advanced Packaging Roadmap Revealed",
+   "url": "https://finance.biggo.com/news/03f6f05f-928f-44ea-a48e-4414bad68127"
+  },
+  {
+   "title": "BigGo Finance：Intel Reportedly Lands Foundry Deals",
+   "url": "https://finance.biggo.com/news/9e93e477-d0a3-489e-95f6-2fe2cb826bb4"
+  },
+  {
+   "title": "BigGo Finance：Intel's Advanced Packaging Yield Tops 90%（郭明錤評論）",
+   "url": "https://finance.biggo.com/news/zR8i9J0B2jrwCtglQ8Pg"
+  },
+  {
+   "title": "TechTimes：Intel Foundry Hits 85% Yield",
+   "url": "https://www.techtimes.com/articles/320581/20260715/intel-foundry-hits-85-yield-winning-chip-orders-asml-validates-high-na-euv.htm"
+  },
+  {
+   "title": "TechTimes：TSMC Copies Intel's Packaging Approach",
+   "url": "https://www.techtimes.com/articles/322276/20260730/tsmc-copies-intels-packaging-approach-new-emib-like-program-kinsus-shakes-ai-race.htm"
+  },
+  {
+   "title": "TrendForce：Intel Says EMIB Customers Back Substrate Prepayments",
+   "url": "https://www.trendforce.com/news/2026/05/20/news-intel-says-emib-customers-back-substrate-prepayments-4-taiwan-and-2-japan-suppliers-reportedly-seek-commitments/"
+  },
+  {
+   "title": "404K Research：Intel vs. TSMC in Advanced Packaging（UBS 報告摘要）",
+   "url": "https://404kresearch.substack.com/p/intel-vs-tsmc-in-advanced-packaging"
+  },
+  {
+   "title": "經濟日報：英特爾先進封裝報捷，力積電獨供矽電容",
+   "url": "https://money.udn.com/money/story/5612/9668769"
+  },
+  {
+   "title": "經濟日報：「聯電第二」來了！力積電躋身英特爾 EMIB 先進封裝夥伴",
+   "url": "https://money.udn.com/money/story/5612/9486614"
+  },
+  {
+   "title": "工商時報：英特爾 EMIB-T 傳良率破 9 成，力積電獨供矽電容",
+   "url": "https://www.ctee.com.tw/news/20260804700919-430201"
+  },
+  {
+   "title": "科技新報：力積電與愛普合作切入 EMIB 供應鏈",
+   "url": "https://technews.tw/ai-agent/psmc-computex-3d-ai-foundry/10989/"
+  },
+  {
+   "title": "工商時報：左拉聯發科 右牽力積電 愛普搭上英特爾布局先進封裝",
+   "url": "https://www.ctee.com.tw/news/20260602700223-439901"
+  },
+  {
+   "title": "MoneyDJ（經股市爆料同學會轉載）：愛普切入 EMIB 供應鏈",
+   "url": "https://www.cmoney.tw/forum/article/178918086"
+  },
+  {
+   "title": "理財周刊：英特爾 EMIB-T 喊降本五成",
+   "url": "https://www.moneyweekly.com.tw/ArticleData/Info/Article/241323"
+  },
+  {
+   "title": "旺得富：台積電 EMIB-T 卡脖英特爾，欣興、景碩、南電受惠",
+   "url": "https://wantrich.chinatimes.com/news/20260824900117-420101"
+  },
+  {
+   "title": "BestPCBs：EMIB-T Substrate: Structure, TSVs and Yield Challenges",
+   "url": "https://www.bestpcbs.com/blog/2026/10/emib-t-substrate/"
+  },
+  {
+   "title": "Vocus（EMIB 產業深度分析）",
+   "url": "https://vocus.cc/article/6a2abc6ffd8978000141f353"
+  },
+  {
+   "title": "SmBom：Intel EMIB-T Advanced Packaging Yield Reaches 90%",
+   "url": "https://www.smbom.com/news/46668"
+  },
+  {
+   "title": "Dan Nystedt（X，社群轉述）",
+   "url": "https://x.com/dnystedt/status/2084429378092732877"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "矽橋晶圓（12吋代工）",
+   "description": "生產埋入基板的矽橋（含 TSV）。聯電負責為英特爾代工埋設於基板內的關鍵元件矽橋，接單同步火熱（媒體報導，尚未見公司公告）。",
+   "global_players": [
+    "英特爾（自製與外部晶圓廠合作，細節待確認）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2303",
+     "name": "聯電",
+     "role": "矽橋代工",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "矽電容／IPD（電力完整性）",
+   "description": "嵌在封裝內，穩定高頻供電，降低電壓降與雜訊。力積電獨家供應英特爾關鍵矽電容，現有產能已被客戶全數包下並積極擴產；愛普 IPD 方案已打入 EMIB 供應鏈，第二季開始小量出貨。",
+   "global_players": [
+    "英特爾"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "12吋 IPD 平台切入 EMIB 供應鏈，預計自第二季放量，規劃 2027 年下半年單月投片需求逼近 1 萬片（媒體報導）",
+     "impact": "受惠"
+    },
+    {
+     "code": "6531",
+     "name": "愛普*",
+     "role": "矽電容（S-SiCap）供應商（法說層級）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "ABF 與有機基板材料",
+   "description": "ABF 增層膜與有機板材料，是基板的主要材料。材料以日系為主，目前未見台廠直接供貨的證據，列為產業相關、供貨關係待確認。",
+   "global_players": [
+    "日本材料供應商（報告未點名）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "EMIB-T 基板（本題材核心瓶頸）",
+   "description": "首階良率目標 50%，利潤保護機制存在，價格較一般 ABF 高。KeyBanc 通路查核為 Ibiden 50%–60%、欣興 20%–30%（傳聞）；欣興法說確認 2027 年量產與 50% 目標。欣興同時面對玻纖布（T-Glass）等原物料短缺。",
+   "global_players": [
+    "Ibiden（日本，4062.T）",
+    "新光電氣（Shinko，日本）",
+    "AT&S（奧地利）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "EMIB-T 基板三家供應商之一；公司法說確認 2027 年量產與 50% 首階良率目標；同時承受玻纖布成本壓力，良率風險最高",
+     "impact": "受惠"
+    },
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "ABF 同業，產業相關，供貨關係待確認，未見進入 EMIB-T 名單",
+     "impact": "中性"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "ABF 同業，產業相關，供貨關係待確認，未見進入 EMIB-T 名單",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "基板製程設備",
+   "description": "EMIB-T 專用的鑽孔、埋入、壓合與檢測設備。EMIB-T 占欣興整體投資比重不到 10%，其中專用設備只占該部分的 15% 至 20%，其餘為通用設備。欣興正在尋找第二、第三設備供應來源。",
+   "global_players": [
+    "英特爾（集中分配部分關鍵 EMIB-T 製程設備）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "封裝組裝（Intel 內部與外部）",
+   "description": "晶粒貼裝、互連與最終封裝。封裝段良率據報已高（約 90%–98%，傳聞），但仍待量產驗證；台積電 CoWoS 為競爭者。",
+   "global_players": [
+    "英特爾",
+    "台積電（CoWoS）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "CoWoS 主要供應商，與 EMIB-T 爭同一批 AI 封裝訂單（競爭者）",
+     "impact": "中性"
+    },
+    {
+     "code": "3711",
+     "name": "日月光投控",
+     "role": "封測業相關，供貨關係待確認；理財周刊評估短中期實質影響極微",
+     "impact": "中性"
+    },
+    {
+     "code": "2449",
+     "name": "京元電子",
+     "role": "封測業相關，供貨關係待確認；理財周刊評估短中期實質影響極微",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "客戶與需求端",
+   "description": "AI ASIC 設計與採購。KeyBanc 估計 EMIB-T 在 Google Humufish TPU v9 與 Icefish TPU v10 的封裝收入可達 120 億至 150 億美元。",
+   "global_players": [
+    "Google（TPU v9 採用 EMIB-T，預計 2028 年量產，已確認為報告所述案子）",
+    "Google TPU v10（Icefish）",
+    "MediaTek（聯發科，晶片設計合作）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2454",
+     "name": "聯發科",
+     "role": "傳出有 Intel 的 AI ASIC 專案（傳聞），屬需求方、非供貨方（客戶端）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
