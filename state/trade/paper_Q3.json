@@ -1,25 +1,8 @@
 {
  "start": "2026-10-12",
  "capital": 100000,
- "equity": 98157.4679565506,
+ "equity": 97993.0039557724,
  "positions": [
-  {
-   "code": "1312",
-   "name": "國喬",
-   "setup": "突破",
-   "contract": "EEF",
-   "mult": 2000,
-   "qty": 1,
-   "qty0": 1,
-   "entry_date": "2026-10-13",
-   "entry": 15.800000190734863,
-   "stop": 15.800000190734863,
-   "r0": 0.9785912777780794,
-   "realized": -82.23200038909911,
-   "half_done": true,
-   "days": 4,
-   "exit_next": ""
-  },
   {
    "code": "2002",
    "name": "中鋼",
@@ -34,7 +17,7 @@
    "r0": 0.38168652877280707,
    "realized": -179.56,
    "half_done": false,
-   "days": 2,
+   "days": 3,
    "exit_next": ""
   }
  ],
@@ -60,32 +43,46 @@
    "pnl": -1843,
    "r": -1.09,
    "reason": "停損"
+  },
+  {
+   "code": "1312",
+   "name": "國喬",
+   "setup": "突破",
+   "contract": "EEF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry_date": "2026-10-13",
+   "entry": 15.800000190734863,
+   "stop": 15.800000190734863,
+   "r0": 0.9785912777780794,
+   "realized": -82.23200038909911,
+   "half_done": true,
+   "days": 5,
+   "exit_next": "",
+   "exit_date": "2026-10-19",
+   "exit": 15.800000190734863,
+   "pnl": -164,
+   "r": -0.08,
+   "reason": "保本出場"
   }
  ],
  "plan": [],
- "last_date": "2026-10-16",
+ "last_date": "2026-10-19",
  "regime": "多頭",
  "blocked": [
   {
    "code": "2882",
    "name": "國泰金",
-   "setup": "突破",
+   "setup": "拉回",
    "theme": "金融",
    "contract": "CKF",
-   "risk_one": 9263.279815576027,
-   "need_capital": 463163.9907788013,
-   "reserve_one": 93960.00000000001
-  },
-  {
-   "code": "2377",
-   "name": "微星",
-   "setup": "突破",
-   "theme": "供需事件：英特爾工廠爆炸 PC 業警戒 供貨宏碁、華碩等 ",
-   "contract": "GIF",
-   "risk_one": 14084.153157343962,
-   "need_capital": 704207.6578671981,
-   "reserve_one": 130815.0
+   "risk_one": 9458.75981515482,
+   "need_capital": 472937.99075774103,
+   "reserve_one": 92745.00000000001
   }
  ],
- "last_events": []
+ "last_events": [
+  "🔴 模擬出場 1312 國喬 @ 15.8（保本出場）｜損益 -164（-0.1R）"
+ ]
 }

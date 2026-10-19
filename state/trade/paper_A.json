@@ -17,7 +17,7 @@
    "r0": 0.8822281020503482,
    "realized": -122.11399688720704,
    "half_done": true,
-   "days": 7,
+   "days": 8,
    "exit_next": ""
   },
   {
@@ -34,7 +34,7 @@
    "r0": 0.9459572100168714,
    "realized": -101.51,
    "half_done": true,
-   "days": 7,
+   "days": 8,
    "exit_next": ""
   },
   {
@@ -51,7 +51,7 @@
    "r0": 0.8927142007046491,
    "realized": -108.75199844360353,
    "half_done": false,
-   "days": 7,
+   "days": 8,
    "exit_next": ""
   },
   {
@@ -68,7 +68,7 @@
    "r0": 0.5447833000189952,
    "realized": -103.85599922180177,
    "half_done": false,
-   "days": 1,
+   "days": 2,
    "exit_next": ""
   }
  ],
@@ -141,98 +141,58 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-16",
+ "last_date": "2026-10-19",
  "regime": "多頭",
  "blocked": [
   {
-   "code": "2409",
-   "name": "友達",
-   "setup": "拉回",
-   "theme": "ABF供需",
-   "contract": "CHF",
-   "risk_one": 6250.223930118409,
-   "need_capital": 312511.19650592044,
-   "reserve_one": 43618.50185394288
-  },
-  {
    "code": "2882",
    "name": "國泰金",
-   "setup": "突破",
+   "setup": "拉回",
    "theme": "金融",
    "contract": "CKF",
-   "risk_one": 9263.279815576027,
-   "need_capital": 463163.9907788013,
-   "reserve_one": 93960.00000000001
+   "risk_one": 9458.75981515482,
+   "need_capital": 472937.99075774103,
+   "reserve_one": 92745.00000000001
   },
   {
-   "code": "1605",
-   "name": "華新",
-   "setup": "拉回",
-   "theme": "供需事件：《經濟》越南不銹鋼品反傾銷案 經部初步認定 國內",
-   "contract": "CSF",
-   "risk_one": 4469.912872675493,
-   "need_capital": 223495.64363377466,
-   "reserve_one": 46777.50000000001
-  },
-  {
-   "code": "2610",
-   "name": "華航",
+   "code": "2412",
+   "name": "中華電",
    "setup": "突破",
+   "theme": "供需事件：台海局勢升溫",
+   "contract": "DLF",
+   "risk_one": 6597.741745805706,
+   "need_capital": 329887.08729028533,
+   "reserve_one": 125145.0
+  },
+  {
+   "code": "1718",
+   "name": "中纖",
+   "setup": "拉回",
+   "theme": "供需事件：OPEC產量決策與油價",
+   "contract": "EYF",
+   "risk_one": 1879.1886708979853,
+   "need_capital": 93959.43354489926,
+   "reserve_one": 14337.000231742859
+  },
+  {
+   "code": "2618",
+   "name": "長榮航",
+   "setup": "拉回",
    "theme": "供需事件：荷姆茲海峽又出事！新加坡籍貨櫃船遇襲沉沒 21名",
-   "contract": "DBF",
-   "risk_one": 987.5924351128517,
-   "need_capital": 49379.62175564258,
-   "reserve_one": 17050.499382019043
+   "contract": "HSF",
+   "risk_one": 2696.014139617418,
+   "need_capital": 134800.7069808709,
+   "reserve_one": 34587.00061798096
   },
   {
-   "code": "2027",
-   "name": "大成鋼",
-   "setup": "突破",
-   "theme": "供需事件：《經濟》越南不銹鋼品反傾銷案 經部初步認定 國內",
-   "contract": "FEF",
-   "risk_one": 3887.5031097018536,
-   "need_capital": 194375.1554850927,
-   "reserve_one": 41229.001235961914
-  },
-  {
-   "code": "2377",
-   "name": "微星",
-   "setup": "突破",
-   "theme": "供需事件：英特爾工廠爆炸 PC 業警戒 供貨宏碁、華碩等 ",
-   "contract": "GIF",
-   "risk_one": 14084.153157343962,
-   "need_capital": 704207.6578671981,
-   "reserve_one": 130815.0
-  },
-  {
-   "code": "3034",
-   "name": "聯詠",
-   "setup": "突破",
-   "theme": "聯電（2303）題材與產業",
-   "contract": "QHF",
-   "risk_one": 2629.985359102602,
-   "need_capital": 131499.2679551301,
-   "reserve_one": 23368.500000000004
-  },
-  {
-   "code": "3036",
-   "name": "文曄",
+   "code": "3533",
+   "name": "嘉澤",
    "setup": "拉回",
-   "theme": "大聯大（3702）題材與產業",
-   "contract": "IQF",
-   "risk_one": 17858.196608798095,
-   "need_capital": 892909.8304399047,
-   "reserve_one": 204120.0
-  },
-  {
-   "code": "3673",
-   "name": "TPK-KY",
-   "setup": "拉回",
-   "theme": "供需事件：卡位缺貨漲價飆股",
-   "contract": "JNF",
-   "risk_one": 9592.528947991383,
-   "need_capital": 479626.44739956915,
-   "reserve_one": 69206.3970336914
+   "theme": "供需事件：飆股幕後》三大領域需求爆發 正淩3個半月來漲逾9",
+   "contract": "RFF",
+   "risk_one": 12827.990418078753,
+   "need_capital": 641399.5209039376,
+   "reserve_one": 110261.25
   },
   {
    "code": "6285",
@@ -240,62 +200,90 @@
    "setup": "拉回",
    "theme": "昇達科（3491）題材與產業",
    "contract": "KGF",
-   "risk_one": 33139.86598675223,
-   "need_capital": 1656993.2993376115,
-   "reserve_one": 309825.0
+   "risk_one": 33451.30405346629,
+   "need_capital": 1672565.2026733144,
+   "reserve_one": 299497.5
   },
   {
-   "code": "6269",
-   "name": "台郡",
-   "setup": "突破",
-   "theme": "銅箔供需",
-   "contract": "LIF",
-   "risk_one": 10070.6757633435,
-   "need_capital": 503533.788167175,
-   "reserve_one": 79704.0
+   "code": "3044",
+   "name": "健鼎",
+   "setup": "拉回",
+   "theme": "南亞（1303）題材與產業",
+   "contract": "LBF",
+   "risk_one": 67408.61953438025,
+   "need_capital": 3370430.9767190125,
+   "reserve_one": 560844.0
   },
   {
-   "code": "5880",
-   "name": "合庫金",
-   "setup": "突破",
-   "theme": "金融",
-   "contract": "LOF",
-   "risk_one": 1551.4171692488433,
-   "need_capital": 77570.85846244216,
-   "reserve_one": 22801.499691009525
+   "code": "3406",
+   "name": "玉晶光",
+   "setup": "拉回",
+   "theme": "光學鏡頭",
+   "contract": "QJF",
+   "risk_one": 13364.712355784888,
+   "need_capital": 668235.6177892444,
+   "reserve_one": 50787.0
+  },
+  {
+   "code": "4958",
+   "name": "臻鼎-KY",
+   "setup": "拉回",
+   "theme": "南電（8046）題材與產業",
+   "contract": "LUF",
+   "risk_one": 92019.9685534219,
+   "need_capital": 4600998.427671095,
+   "reserve_one": 664605.0000000001
+  },
+  {
+   "code": "8046",
+   "name": "南電",
+   "setup": "拉回",
+   "theme": "EMIB-T 基板良率瓶頸",
+   "contract": "QSF",
+   "risk_one": 12009.86660838646,
+   "need_capital": 600493.3304193229,
+   "reserve_one": 95012.99999999999
   },
   {
    "code": "6274",
    "name": "台燿",
    "setup": "拉回",
-   "theme": "供需事件：明年EPS飆4.3元！「這大廠」挾AI高階材料缺",
+   "theme": "南電（8046）題材與產業",
    "contract": "OVF",
-   "risk_one": 302851.6349383667,
-   "need_capital": 15142581.746918336,
-   "reserve_one": 1962225.0
+   "risk_one": 311219.3754205737,
+   "need_capital": 15560968.771028684,
+   "reserve_one": 1980450.0
   },
   {
-   "code": "5269",
-   "name": "祥碩",
+   "code": "8086",
+   "name": "宏捷科",
    "setup": "拉回",
-   "theme": "供需事件：義隆PC動能3Q26卡關 缺料、客戶去庫存雙面夾",
-   "contract": "PNF",
-   "risk_one": 7062.101009475509,
-   "need_capital": 353105.0504737755,
-   "reserve_one": 90517.50000000001
+   "theme": "穩懋（3105）題材與產業",
+   "contract": "PRF",
+   "risk_one": 22663.46905143939,
+   "need_capital": 1133173.4525719695,
+   "reserve_one": 157342.5
   },
   {
    "code": "3005",
    "name": "神基",
-   "setup": "突破",
+   "setup": "拉回",
    "theme": "供需事件：台海局勢升溫",
    "contract": "SJF",
-   "risk_one": 6758.60102184069,
-   "need_capital": 337930.0510920345,
-   "reserve_one": 119070.0
+   "risk_one": 7025.843732793561,
+   "need_capital": 351292.186639678,
+   "reserve_one": 97200.00000000001
+  },
+  {
+   "code": "2367",
+   "name": "燿華",
+   "setup": "拉回",
+   "theme": "PCB供需",
+   "contract": "VBF",
+   "risk_one": 6117.3484252229,
+   "need_capital": 305867.421261145,
+   "reserve_one": 56376.00185394287
   }
  ],
- "last_events": [
-  "🟢 模擬進場 9904 寶成｜KLF 1 口 @ 26.4｜停損 25.9｜突破"
- ]
+ "last_events": []
 }
