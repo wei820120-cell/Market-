@@ -1,0 +1,537 @@
+{
+ "topic": "PCB供需",
+ "one_line": "PCB 材料缺貨從 AI 高階品擴散到一般品：CCL（銅箔基板）、電子銅箔、玻纖布、預浸材（PP1080／PP2116）、高性能樹脂，連鑽孔用碳化鎢都吃緊，已延伸到一般 FR-4；玻纖布最嚴重，產業預期 2028 年前供給限制不會明顯緩解，台玻、富喬訂單滿載到 2027 年，Low-DK 玻纖布與 T-glass 交期拉長到 30 週以上。AI 伺服器把 CCL 由 M8 推到 M9，玻纖布往石英布、Low-DK 升級，但產量少、驗證長，缺口擴大：HVLP4 銅箔 2026／2027 年缺口估 48%／43%（另有 25% 的說法），石英布 2027 年缺口估超過 60%。替代路線尚不成熟：無玻纖 CCL 在探索階段、PTFE 受壓合製程窗口窄與可靠性限制，較有實質進展的是樹脂配方升級與『等效板材』驗證。台灣 PCB 全年產值估首破兆元（年增 24%），議價力順序上游材料 ＞ 高階載板 ＞ AI 高層數板，吃緊估延續到 2027。",
+ "status": "已證實",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "PCB",
+  "印刷電路板",
+  "高層數板",
+  "HLC",
+  "HDI",
+  "ABF",
+  "載板",
+  "CCL",
+  "PCB 漲價",
+  "TPCA",
+  "PCB材料缺貨",
+  "石英布",
+  "Low-DK",
+  "T-glass",
+  "HVLP4",
+  "銅箔",
+  "玻纖布",
+  "替代材料",
+  "樹脂配方",
+  "FR-4",
+  "無玻纖CCL",
+  "碳化鎢"
+ ],
+ "catalysts": [
+  "每月 10 日前月營收（欣興、金像電、台光電）",
+  "Rubin／ASIC 主板層數升級放量",
+  "建滔等材料廠續發漲價通知",
+  "材料廠漲價通知與報價：CCL、銅箔、玻纖布、PP 持續調漲；缺料已擴散到一般 FR-4",
+  "玻纖布擴產與交期：台玻、富喬訂單滿載到 2027 年；Low-DK 與 T-glass 交期 30 週以上；看新產能開出時點（產業預期 2028 年前難明顯緩解）",
+  "規格升級：CCL M8→M9，玻纖布往石英布、Low-DK 升級；看石英布與 HVLP4 銅箔量產與良率",
+  "替代材料驗證進度：等效板材認證、樹脂配方升級、無玻纖 CCL／PTFE 的量產可行性（目前都不成熟）"
+ ],
+ "risks": [
+  "關稅、匯率、地緣政治、AI 需求能見度（TPCA 四不確定）",
+  "材料漲價轉嫁不及壓縮毛利",
+  "中國廠高階擴產",
+  "替代材料不成熟：無玻纖 CCL 仍在探索、PTFE 在 PCB 大規模量產受壓合製程窗口窄與可靠性限制；認證時間長，短期無法紓解缺口",
+  "缺口數字不一：HVLP4 缺口有 25% 與 48% 兩種估計，石英布缺口 2027 超過 60% 為法人預估，不是公司財測",
+  "終端需求與庫存：材料缺貨使下游提前備庫，若 AI 需求放緩或客戶砍單，備庫會反向調整",
+  "成本轉嫁：材料與鑽針等耗材同步漲價，PCB 廠轉嫁不及會壓縮毛利",
+  "觸發標題（自由財經〈財經週報—台股熱點〉『PCB 上游材料供不應求 新替代材料躍為市場焦點』）原文沒有取得，『新替代材料』具體指哪一種無法確認；本次依同期報導整理替代與升級方向（石英布、Low-DK 玻纖布、HVLP4 銅箔、樹脂配方、無玻纖 CCL／PTFE），其中無玻纖 CCL 與 PTFE 仍處探索或製程瓶頸階段；各數字出自投顧或財經媒體，彼此不一（HVLP4 缺口有 25% 與 48% 兩種說法），不是公司財測；雙鍵、長興、國精化、三晃是報導點名『缺料消息下走強』的個股，與替代材料的關係沒有查到"
+ ],
+ "spec_tables": [
+  {
+   "title": "PCB 產品比較",
+   "columns": [
+    "種類",
+    "層數／線寬",
+    "主要用途",
+    "AI 帶動",
+    "2026 上半年產值年增"
+   ],
+   "rows": [
+    [
+     "一般多層板",
+     "4～12 層",
+     "消費、工控",
+     "低",
+     "—"
+    ],
+    [
+     "高層數板 HLC",
+     "16～30 層以上",
+     "AI 伺服器主板、交換器",
+     "高（層數＋材料升級）",
+     "多層板 +47.6%"
+    ],
+    [
+     "HDI",
+     "多次增層、微孔",
+     "手機、AI 加速卡、交換器",
+     "中高",
+     "—"
+    ],
+    [
+     "ABF 載板",
+     "細線路 <10μm",
+     "GPU、ASIC、CPU 封裝",
+     "高（晶片面積變大）",
+     "載板 +36.7%"
+    ],
+    [
+     "BT 載板",
+     "細線路",
+     "記憶體、射頻",
+     "中（HBM、記憶體）",
+     "—"
+    ],
+    [
+     "軟板",
+     "可彎折",
+     "手機、穿戴",
+     "低",
+     "—"
+    ]
+   ],
+   "note": "產值年增為 TPCA 公布之台灣 PCB 2026 上半年數據"
+  },
+  {
+   "title": "AI 伺服器 PCB 成本結構變化",
+   "columns": [
+    "項目",
+    "傳統伺服器",
+    "AI 伺服器（M8／M9）"
+   ],
+   "rows": [
+    [
+     "CCL 占 PCB 成本",
+     "30～40%",
+     "50% 以上"
+    ],
+    [
+     "層數",
+     "12～16 層",
+     "24～30 層以上"
+    ],
+    [
+     "材料等級",
+     "M4～M6",
+     "M8～M9（Low-Dk 玻纖布、HVLP 銅箔）"
+    ]
+   ],
+   "note": "依法人與產業報導整理"
+  },
+  {
+   "title": "規格比較表 C：PCB 材料缺口與交期",
+   "columns": [
+    "材料",
+    "缺口／交期",
+    "原因",
+    "備註"
+   ],
+   "rows": [
+    [
+     "玻纖布（含 Low-DK、T-glass）",
+     "最嚴重；2028 年前難明顯緩解；Low-DK 與 T-glass 交期 30 週以上；台玻、富喬訂單滿載到 2027",
+     "AI 升級使需求暴增，高階布種產量少、驗證長",
+     "南亞稱玻纖布是 CCL 上游中最緊的環節"
+    ],
+    [
+     "石英布",
+     "2027 年缺口估超過 60%",
+     "M9 與次世代需求，供應鏈提前備庫",
+     "法人預估"
+    ],
+    [
+     "HVLP4 銅箔",
+     "2026／2027 年缺口估 48%／43%（另有 25% 的說法）",
+     "良率與量產難度",
+     "有利 CCL 廠與銅箔廠議價，報導提到金居"
+    ],
+    [
+     "PP（PP1080、PP2116）與高性能樹脂",
+     "吃緊",
+     "CCL 與載板升級帶動",
+     "Evertiq"
+    ],
+    [
+     "鑽孔與成型耗材（碳化鎢）",
+     "吃緊",
+     "層數與孔數增加",
+     "尖點等鑽針廠受惠（見供應鏈）"
+    ]
+   ],
+   "note": "數字為投顧與財經媒體估計，彼此不一；以公司公告與法說為準。"
+  },
+  {
+   "title": "規格比較表 D：替代與升級方向",
+   "columns": [
+    "方向",
+    "內容",
+    "成熟度",
+    "備註"
+   ],
+   "rows": [
+    [
+     "石英布（Q-glass）",
+     "玻纖布升級，介電損耗更低",
+     "量產中但產量少",
+     "供應緊、驗證長"
+    ],
+    [
+     "Low-DK 玻纖布／T-glass",
+     "低介電、低熱膨脹",
+     "量產中，交期長",
+     "台玻、富喬、德宏為台灣主要布廠（見各自研究）"
+    ],
+    [
+     "樹脂配方升級",
+     "CCL 升級的驅動力轉向樹脂專利配方",
+     "較有實質進展",
+     "報導觀點，廠商與配方細節未查"
+    ],
+    [
+     "等效板材驗證",
+     "在技術可接受時核准等效板材、以性能規格取代指定材料",
+     "客戶端做法",
+     "Evertiq／產業建議"
+    ],
+    [
+     "無玻纖 CCL",
+     "不使用玻纖布的基板",
+     "探索階段",
+     "短期無法量產"
+    ],
+    [
+     "PTFE 路線",
+     "低損耗",
+     "量產受阻",
+     "壓合製程窗口窄、可靠性問題"
+    ]
+   ],
+   "note": "替代路線多數尚未成熟，短期缺口仍要靠擴產與升級材料。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "傳統伺服器",
+   "composition": "12～16 層、M4～M6",
+   "spec": "一般玻纖布、銅箔",
+   "application": "通用伺服器"
+  },
+  {
+   "name": "AI 伺服器（Hopper／Blackwell）",
+   "composition": "20～26 層、M7～M8",
+   "spec": "Low-Dk 玻纖布、HVLP 銅箔",
+   "application": "GPU 主板、交換器"
+  },
+  {
+   "name": "Rubin／ASIC 世代",
+   "composition": "26～30 層以上、M8～M9，混用 HDI",
+   "spec": "Q布、更大面積、更多壓合",
+   "application": "GPU／ASIC 主板、1.6T 交換器"
+  },
+  {
+   "name": "下一代",
+   "composition": "無布 HC／Hybrid PTFE、玻璃基板、CPO",
+   "spec": "224G／448G",
+   "application": "超高速互連"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "AI 板層數與面積倍增，同一條產線能做的平方米大減，等於產能被吃掉",
+    "高層數板良率較低、壓合次數多，再吃一次產能",
+    "CCL、玻纖布、銅箔同步缺料，材料廠發漲價通知",
+    "高階 ABF 轉賣方市場，產能由低階往高階移"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠：高階材料（台光電、台燿、金居）＞ 載板（欣興、景碩、南電）＞ AI 高層數板（金像電、健鼎、博智）＞ 設備耗材（尖點、志聖、群翊）",
+    "受傷：消費性、低階 PCB 廠材料成本上升又難轉嫁",
+    "中低階載板仍供過於求，不是全面缺貨"
+   ]
+  },
+  {
+   "title": "替代材料：誰在補位、補得上嗎",
+   "points": [
+    "石英布與 Low-DK 玻纖布是『升級』而非替代：性能更好但產量更少、驗證更長，反而加劇缺口",
+    "真正的替代路線（無玻纖 CCL、PTFE）仍在探索或卡在製程與可靠性，短期無法大量導入",
+    "較務實的是樹脂配方升級與等效板材驗證——客戶允許以性能規格取代指定材料，讓供應來源更多元",
+    "對台廠的意義：替代材料不成熟，上游布廠、銅箔廠與 CCL 廠的議價力在 2027 年前仍強"
+   ]
+  }
+ ],
+ "conclusion": [
+  "PCB 缺料已由高階擴散到一般 FR-4；玻纖布最緊，產業預期 2028 年前難緩解，台玻、富喬訂單到 2027。",
+  "替代材料多數不成熟：無玻纖 CCL、PTFE 受製程與可靠性限制，短期補位有限；較務實的是樹脂配方與等效板材驗證。",
+  "議價力順序：上游材料（玻纖布、石英布、HVLP4 銅箔）＞ 高階載板 ＞ AI 高層數板；風險在需求備庫反轉與成本轉嫁。",
+  "要補的資料：自由財經原文所指的『新替代材料』、玻纖布與銅箔新產能時點、等效板材的客戶認證進度。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網 台灣PCB業H1總產值創同期新高",
+   "url": "https://news.cnyes.com/news/id/6614798"
+  },
+  {
+   "title": "工商時報 AI點火 台灣PCB產值估突破兆元",
+   "url": "https://www.ctee.com.tw/news/20260925700162-439901"
+  },
+  {
+   "title": "Evertiq：PCB 材料短缺加劇，AI 基礎建設吃掉層壓板產能（2026/9/8）",
+   "url": "https://evertiq.com/news/2026-09-08-pcb-material-shortages-intensify-as-ai-infrastructure-absorbs-laminate-capacity"
+  },
+  {
+   "title": "Evertiq：PCB 材料短缺擴散到一般 FR-4（2026/8/19）",
+   "url": "https://evertiq.com/news/2026-08-19-pcb-material-shortage-spreads-to-standard-fr-4-as-structural-shift-deepens"
+  },
+  {
+   "title": "Evertiq：全球 PCB 材料供給收緊（2026/5/27）",
+   "url": "https://evertiq.com/news/2026-05-27-global-pcb-material-supply-tightening-what-the-market-is-experiencing-today"
+  },
+  {
+   "title": "永豐金：2026 PCB 全面缺貨漲價完整解析——四大戰略物資短缺、ABF 載板超級循環與台灣供應鏈投資地圖",
+   "url": "https://www.sinotrade.com.tw/richclub/hotstock/2026-PCB-%E5%85%A8%E9%9D%A2%E7%BC%BA%E8%B2%A8%E6%BC%B2%E5%83%B9%E5%AE%8C%E6%95%B4%E8%A7%A3%E6%9E%90-%E5%9B%9B%E5%A4%A7%E6%88%B0%E7%95%A5%E7%89%A9%E8%B3%87%E7%9F%AD%E7%BC%BA-ABF-%E8%BC%89%E6%9D%BF%E8%B6%85%E7%B4%9A%E5%BE%AA%E7%92%B0%E8%88%87%E5%8F%B0%E7%81%A3%E4%BE%9B%E6%87%89%E9%8F%88%E6%8A%95%E8%B3%87%E5%9C%B0%E5%9C%96-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a226b1f6c6d82bf0a7d4803"
+  },
+  {
+   "title": "聯合報：PCB 材料供應緊俏仍是主旋律 南亞亮燈漲停再寫新天價",
+   "url": "https://udn.com/news/story/6656/9724503"
+  },
+  {
+   "title": "Technews：CPO 對高速 CCL 影響有限，大廠持續受惠（2026/9/24）",
+   "url": "https://finance.technews.tw/2026/09/24/cpo-has-a-limited-impact-on-high-speed-ccl-under-the-ai-%e2%80%8b%e2%80%8btrend-the-big-players-in-the-industry-will-continue-to-thrive/"
+  },
+  {
+   "title": "iTiger：高階 PCB 材料因 AI 缺貨漲價",
+   "url": "https://www.itiger.com/news/1109026133"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "上游材料（CCL／銅箔／玻纖布）",
+   "description": "缺料漲價，CCL 占 PCB 成本升到 50% 以上",
+   "global_players": [
+    "生益",
+    "建滔",
+    "松下",
+    "斗山"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭（M8／M9）",
+     "impact": "受惠"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "高階 CCL，已漲價",
+     "impact": "受惠"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "CCL",
+     "impact": "受惠"
+    },
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "HVLP 低粗糙度銅箔",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "IC 載板（ABF／BT）",
+   "description": "高階 ABF 轉賣方市場，載板產值年增 36.7%",
+   "global_players": [
+    "Ibiden",
+    "新光電氣",
+    "AT&S",
+    "深南電路"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "ABF 載板龍頭，AI GPU／ASIC",
+     "impact": "受惠"
+    },
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "ABF／BT 載板",
+     "impact": "受惠"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "ABF 載板",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "高層數板 HLC",
+   "description": "AI 伺服器、交換器主板 24～30 層以上，多層板產值年增 47.6%",
+   "global_players": [
+    "TTM",
+    "勝宏",
+    "滬電"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2368",
+     "name": "金像電",
+     "role": "AI 伺服器／交換器高層數板",
+     "impact": "受惠"
+    },
+    {
+     "code": "3044",
+     "name": "健鼎",
+     "role": "伺服器、網通板",
+     "impact": "受惠"
+    },
+    {
+     "code": "8155",
+     "name": "博智",
+     "role": "高層數測試與伺服器板",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "HDI",
+   "description": "AI 加速卡、交換器開始混用 HDI",
+   "global_players": [
+    "勝宏",
+    "AT&S"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2313",
+     "name": "華通",
+     "role": "HDI，AI 伺服器與衛星",
+     "impact": "受惠"
+    },
+    {
+     "code": "2367",
+     "name": "燿華",
+     "role": "HDI",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "軟板與模組",
+   "description": "消費性為主，AI 受惠有限",
+   "global_players": [
+    "Nippon Mektron"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4958",
+     "name": "臻鼎-KY",
+     "role": "全球最大 PCB 廠，載板與 HLC 擴產",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "設備與耗材",
+   "description": "擴產帶動鑽孔、壓合、曝光設備與鑽針需求",
+   "global_players": [
+    "Schmoll",
+    "日立Via"
+   ],
+   "tw_stocks": [
+    {
+     "code": "8021",
+     "name": "尖點",
+     "role": "PCB 鑽針、鑽孔代工",
+     "impact": "受惠"
+    },
+    {
+     "code": "2467",
+     "name": "志聖",
+     "role": "壓合、曝光設備",
+     "impact": "受惠"
+    },
+    {
+     "code": "6664",
+     "name": "群翊",
+     "role": "壓合、烘烤設備",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "替代與升級材料（石英布、Low-DK、HVLP4、樹脂配方）",
+   "description": "石英布 2027 年缺口估超過 60%、HVLP4 銅箔 2026／2027 缺口估 48%／43%；玻纖布 2028 年前難緩解、台玻與富喬訂單到 2027；樹脂配方升級是較有實質進展的替代方向；無玻纖 CCL 與 PTFE 仍不成熟。",
+   "global_players": [
+    "日東紡（T-glass，通識）",
+    "旭化成、信越（石英與樹脂，通識）",
+    "三井金屬（HVLP 銅箔，通識）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "玻纖布，訂單滿載到 2027（見台玻研究）",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "玻纖布與紗，訂單滿載到 2027（見富喬研究）",
+     "impact": "受惠"
+    },
+    {
+     "code": "5475",
+     "name": "德宏",
+     "role": "玻纖布（見德宏研究）",
+     "impact": "受惠"
+    },
+    {
+     "code": "8358",
+     "name": "金居",
+     "role": "HVLP 銅箔，缺口有利議價（報導點名）",
+     "impact": "受惠"
+    },
+    {
+     "code": "1303",
+     "name": "南亞",
+     "role": "CCL 與玻纖布，稱玻纖布供應最緊；股價創新高（聯合報）",
+     "impact": "受惠"
+    },
+    {
+     "code": "4764",
+     "name": "雙鍵",
+     "role": "樹脂相關材料，報導點名缺料消息下走強；與替代材料的關係未查",
+     "impact": "中性"
+    },
+    {
+     "code": "1717",
+     "name": "長興",
+     "role": "報導點名缺料消息下走強；與替代材料的關係未查",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "trigger": "2026-10-19 供需失衡（需求爆發）：〈財經週報-台股熱點〉PCB上游材料供不應求 新替代材料躍為市場焦點 - 自由財經\n〈財經週報-台股熱點〉PCB上游材料供不應求 新替代材料躍為市場焦點&nbsp;&nbsp;自由財經\nhttps://news.google.com/rss/articles/CBMiVkFVX3lxTE5XWVQwdGF2aGpGcURCeE1hRmRZRE40aDlYSTc1M3pVRlpjNkpnV2xfQ21IemNZREo0STRsSGxhcVYxcmVoSEo5MVROR3ZrZFlkSUNfZENB0gFbQVVfeXFMTXVGNzA5UVBhRFRubl9JQlZ2M2M2WVJ0a2U1NG1pZ2xJdHFnQXNVQmpMWlJuNGRQcnVTMWRfNkdEeVJyX3EyOTl0Tm83dmxmVFEtSHdCRGFHMnJQbw?oc=5",
+ "report": "# PCB供需（更新：材料缺料與替代材料）\n\n## 事件\n- 觸發：2026-10-19 供需失衡（需求爆發）：〈財經週報-台股熱點〉PCB上游材料供不應求 新替代材料躍為市場焦點 - 自由財經\n〈財經週報-台股熱點〉PCB上游材料供不應求 新替代材料躍為市場焦點&nbsp;&nbsp;自由財經\nhttps://news.google.com/r\n- 本次更新：在 2026-10-04 的研究上補充材料缺口、交期與替代／升級方向。\n\n## 材料缺口\n- 玻纖布最緊（2028 年前難緩解、台玻與富喬訂單到 2027、Low-DK 與 T-glass 交期 30 週以上）；HVLP4 銅箔 2026／2027 缺口估 48%／43%；石英布 2027 缺口估超過 60%；PP 與高性能樹脂、碳化鎢鑽針同樣吃緊；缺料已擴散到一般 FR-4。\n\n## 替代材料\n- 石英布、Low-DK 是升級；樹脂配方與等效板材驗證較務實；無玻纖 CCL、PTFE 不成熟。\n\n## 風險與未驗證\n- 觸發標題（自由財經〈財經週報—台股熱點〉『PCB 上游材料供不應求 新替代材料躍為市場焦點』）原文沒有取得，『新替代材料』具體指哪一種無法確認；本次依同期報導整理替代與升級方向（石英布、Low-DK 玻纖布、HVLP4 銅箔、樹脂配方、無玻纖 CCL／PTFE），其中無玻纖 CCL 與 PTFE 仍處探索或製程瓶頸階段；各數字出自投顧或財經媒體，彼此不一（HVLP4 缺口有 25% 與 48% 兩種說法），不是公司財測；雙鍵、長興、國精化、三晃是報導點名『缺料消息下走強』的個股，與替代材料的關係沒有查到。\n\n## 來源\n- [鉅亨網 台灣PCB業H1總產值創同期新高](https://news.cnyes.com/news/id/6614798)\n- [工商時報 AI點火 台灣PCB產值估突破兆元](https://www.ctee.com.tw/news/20260925700162-439901)\n- [Evertiq：PCB 材料短缺加劇，AI 基礎建設吃掉層壓板產能（2026/9/8）](https://evertiq.com/news/2026-09-08-pcb-material-shortages-intensify-as-ai-infrastructure-absorbs-laminate-capacity)\n- [Evertiq：PCB 材料短缺擴散到一般 FR-4（2026/8/19）](https://evertiq.com/news/2026-08-19-pcb-material-shortage-spreads-to-standard-fr-4-as-structural-shift-deepens)\n- [Evertiq：全球 PCB 材料供給收緊（2026/5/27）](https://evertiq.com/news/2026-05-27-global-pcb-material-supply-tightening-what-the-market-is-experiencing-today)\n- [永豐金：2026 PCB 全面缺貨漲價完整解析——四大戰略物資短缺、ABF 載板超級循環與台灣供應鏈投資地圖](https://www.sinotrade.com.tw/richclub/hotstock/2026-PCB-%E5%85%A8%E9%9D%A2%E7%BC%BA%E8%B2%A8%E6%BC%B2%E5%83%B9%E5%AE%8C%E6%95%B4%E8%A7%A3%E6%9E%90-%E5%9B%9B%E5%A4%A7%E6%88%B0%E7%95%A5%E7%89%A9%E8%B3%87%E7%9F%AD%E7%BC%BA-ABF-%E8%BC%89%E6%9D%BF%E8%B6%85%E7%B4%9A%E5%BE%AA%E7%92%B0%E8%88%87%E5%8F%B0%E7%81%A3%E4%BE%9B%E6%87%89%E9%8F%88%E6%8A%95%E8%B3%87%E5%9C%B0%E5%9C%96-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a226b1f6c6d82bf0a7d4803)\n- [聯合報：PCB 材料供應緊俏仍是主旋律 南亞亮燈漲停再寫新天價](https://udn.com/news/story/6656/9724503)\n- [Technews：CPO 對高速 CCL 影響有限，大廠持續受惠（2026/9/24）](https://finance.technews.tw/2026/09/24/cpo-has-a-limited-impact-on-high-speed-ccl-under-the-ai-%e2%80%8b%e2%80%8btrend-the-big-players-in-the-industry-will-continue-to-thrive/)\n- [iTiger：高階 PCB 材料因 AI 缺貨漲價](https://www.itiger.com/news/1109026133)"
+}
