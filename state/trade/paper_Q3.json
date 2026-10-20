@@ -17,7 +17,7 @@
    "r0": 0.38168652877280707,
    "realized": -179.56,
    "half_done": false,
-   "days": 3,
+   "days": 4,
    "exit_next": ""
   }
  ],
@@ -68,21 +68,19 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-19",
+ "last_date": "2026-10-20",
  "regime": "多頭",
  "blocked": [
   {
-   "code": "2882",
-   "name": "國泰金",
+   "code": "2885",
+   "name": "元大金",
    "setup": "拉回",
    "theme": "金融",
-   "contract": "CKF",
-   "risk_one": 9458.75981515482,
-   "need_capital": 472937.99075774103,
-   "reserve_one": 92745.00000000001
+   "contract": "DOF",
+   "risk_one": 5167.682973917835,
+   "need_capital": 258384.14869589172,
+   "reserve_one": 57105.0
   }
  ],
- "last_events": [
-  "🔴 模擬出場 1312 國喬 @ 15.8（保本出場）｜損益 -164（-0.1R）"
- ]
+ "last_events": []
 }
