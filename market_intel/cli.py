@@ -21,7 +21,7 @@ from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
-from . import ai, config, notify, prefetch, research, theme_card
+from . import ai, config, notify, overnight, prefetch, research, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
 from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
@@ -439,6 +439,7 @@ def cmd_realtime(args) -> None:
     news_map: dict[str, dict] = {}  # 今天看過的新聞依個股彙總（題材、漲價）
     alerted: set[str] = set()
     pushed_times: set[str] = set()
+    env_done = False
     last_news = 0.0
     first_news = True
     checked_open = False
@@ -474,8 +475,15 @@ def cmd_realtime(args) -> None:
                 if due:
                     pushed_times.update(due)
                     notify.send((f"{head}\n" if head else "") + _flow_message(flow, now))
+                    env_line = ""
+                    if not env_done:  # 隔夜環境一天只放在選股機器人第一則（約 09:15）
+                        env_done = True
+                        env_line = _overnight_line(idx)
                     if not picks_df.empty:
-                        notify.send(picks.picks_message(picks_df, f"🎯 {now:%H:%M} 強勢標的"), channel="picks")
+                        body = picks.picks_message(picks_df, f"🎯 {now:%H:%M} 強勢標的")
+                        notify.send((env_line + "\n\n" if env_line else "") + body, channel="picks")
+                    elif env_line and "🟢" not in env_line:  # 沒有強勢標的時，只有黃燈／紅燈才單獨提醒
+                        notify.send(env_line, channel="picks")
                 # 漲價題材＋資金湧入＋上漲：立即推播（每檔每天一次）
                 for r in picks_df.to_dict("records") if not picks_df.empty else []:
                     key = f"hike:{r['代號']}:{now:%Y%m%d}"
@@ -1171,6 +1179,34 @@ def cmd_card(args) -> None:
     """產生並推播題材卡（圖片＋目標價＋股票期貨），例如：python -m market_intel card 玻纖布"""
     if not theme_card.send_query(args.query, _listings(), context="", channel=args.channel):
         print(f"找不到題材：{args.query}")
+
+
+def _overnight_line(idx: dict | None) -> str:
+    """選股機器人第一則的隔夜環境一行（夜盤、美股、亞股＋加權現在漲跌）；任何錯誤都回傳空字串，不影響選股推播。"""
+    try:
+        p = overnight.parts()
+        if not p:
+            return ""
+        taiex = (idx or {}).get("加權指數")
+        return overnight.short_line(*p, getattr(taiex, "change_pct", None))
+    except Exception as e:  # noqa: BLE001
+        log.warning("隔夜環境一行失敗：%s", e)
+        return ""
+
+
+def cmd_infographic(args) -> None:
+    """研究資訊圖（HTML 排版截圖）：只輸出圖檔，不推播。例如：python -m market_intel infographic --topic 載板供需 --out /tmp/info"""
+    from . import infographic
+    index = research.load_index()
+    names = [t for t in index if args.topic and args.topic in t]
+    if not names:
+        raise SystemExit(f"找不到研究題材「{args.topic}」（research/index.json 的名稱，可只填部分文字）")
+    topic = names[0]
+    data = json.loads((research.data_dir() / f"{research.slug(topic)}.json").read_text(encoding="utf-8"))
+    data.setdefault("topic", topic)
+    print(topic)
+    for f in infographic.render_all(data, Path(args.out) / research.slug(topic)):
+        print(f)
 
 
 def cmd_inflow(args) -> None:
@@ -2089,9 +2125,14 @@ def cmd_trade(args) -> None:
     if args.lead:
         push_lead_list(_listings(), stock_futures.load_stock_futures(), force=True)
         return
+    if args.overnight:
+        env_text, _ = overnight.build()
+        print(env_text or "開盤前環境已關閉（config/settings.yaml 的 premarket.enabled）")
+        paper.push(env_text)
+        return
     if want_pre:
         from .trade import real
-        paper.push(paper.run_pre() + "\n\n" + real.positions_text(real.load()))
+        paper.push(paper.run_pre(overnight.build()) + "\n\n" + real.positions_text(real.load()))
         mark("pre")
         try:  # 美股昨夜領先指標 → 台股還沒跟上的對應股（失敗不影響盤前計劃）
             push_lead_list(_listings(), stock_futures.load_stock_futures())
@@ -2311,6 +2352,10 @@ def main(argv: list[str] | None = None) -> None:
     cd.add_argument("query")
     cd.add_argument("--channel", default="research")
     cd.set_defaults(func=cmd_card)
+    ig = sub.add_parser("infographic", help="研究資訊圖（HTML 排版截圖，只輸出圖檔）")
+    ig.add_argument("--topic", required=True, help="研究題材名稱（可只填部分文字）")
+    ig.add_argument("--out", default="infographic_out", help="輸出資料夾")
+    ig.set_defaults(func=cmd_infographic)
     bk = sub.add_parser("backtest", help="股票期貨波段策略回測（只做多）")
     bk.add_argument("--capital", type=float, default=100_000)
     bk.add_argument("--range", default="3y")
@@ -2331,6 +2376,7 @@ def main(argv: list[str] | None = None) -> None:
     tr.add_argument("--auto", action="store_true", help="常駐監看用：到時間才執行")
     tr.add_argument("--pre", action="store_true", help="立即推盤前計劃")
     tr.add_argument("--lead", action="store_true", help="立即推盤前領先名單（美股昨夜大漲 → 台股還沒跟上的對應股）")
+    tr.add_argument("--overnight", action="store_true", help="立即推開盤前環境（台指期夜盤、美股收盤、那指期貨、亞股早盤＋風險燈號）")
     tr.add_argument("--post", action="store_true", help="立即盤後結算")
     tr.add_argument("--commands", action="store_true", help="處理機器人收到的成交回報")
     tr.add_argument("--explain", help="檢查某檔股票的訊號與口數，例如：--explain 國巨")

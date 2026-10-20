@@ -29,3 +29,17 @@ research:                     # 題材研究員（需要 GitHub Secret：ANTHROP
   # 以下用來估算花費，請以 Anthropic 官網價格為準
   price_per_mtok: {input: 2, output: 10}   # 預設單價（Sonnet 5.5）；Haiku 5.5 的單價在 ai.MODEL_PRICES，換模型會自動套用
   web_search_usd_per_1k: 10                # 網路搜尋每千次美元
+
+premarket:                    # 開盤前環境：台指期夜盤、美股收盤、那指期貨、亞股早盤 → 風險燈號（只做參考，不擋單）
+  enabled: true
+  night_yellow: -0.8          # 台指期夜盤跌幅 %（相對前一日結算價）：黃燈／紅燈
+  night_red: -1.5
+  nasdaq_yellow: -1.2         # 那斯達克（也套用在那指期貨）
+  nasdaq_red: -2.0
+  sox_yellow: -2.0            # 費城半導體（台股權值股與 AI 供應鏈最直接）
+  sox_red: -3.0
+  asia_yellow: -1.0           # 日經、韓國綜合的平均漲跌（早上 08:30 已開盤 30 分鐘）
+  asia_red: -2.0
+  vix_yellow: 25              # VIX 水位
+  vix_red: 30
+  bull_night: 0.8             # 沒有黃紅燈、且夜盤漲幅達此值（或那指 +1.2%）時標示「隔夜偏多」

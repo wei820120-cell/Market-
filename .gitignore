@@ -6,3 +6,4 @@ venv/
 .env
 data/*
 !data/.gitkeep
+infographic_out/

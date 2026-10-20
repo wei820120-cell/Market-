@@ -87,3 +87,28 @@ assets:
     group: 美股
     alert_pct: 3
     note: 台灣半導體與 AI 供應鏈的先行指標
+  ^IXIC:
+    name: 那斯達克
+    group: 美股
+    alert_pct: 2
+    note: 科技股主要指標；大跌常讓隔天台股電子權值開低
+  NQ=F:
+    name: 那指期貨
+    group: 美股
+    alert_pct: 2
+    note: 美股收盤後、週末與亞洲時段仍在交易，反映最新消息（連續近月合約，換月時可能跳動）
+  ^N225:
+    name: 日經225
+    group: 亞洲股市
+    alert_pct: 2.5
+    note: 08:00（台北時間）開盤，是台股開盤前最先看到的亞股走勢
+  ^KS11:
+    name: 韓國綜合
+    group: 亞洲股市
+    alert_pct: 2.5
+    note: 半導體、記憶體權值高，與台股電子同步性高
+  ^HSI:
+    name: 恆生指數
+    group: 亞洲股市
+    alert_pct: 2.5
+    note: 09:30（台北時間）開盤，晚於台股；盤中看中概與風險情緒

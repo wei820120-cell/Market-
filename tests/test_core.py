@@ -1725,3 +1725,186 @@ def test_scan_known_stock_without_recent_research_and_peers(tmp_path, monkeypatc
     topics = [d["topic"] for _, d in research.read_queue()]
     assert "亞電（4939）題材與產業" in topics and "台虹（8039）題材與產業" not in topics
     assert any("連動預研" in t for t in sent)
+
+
+# ---------------------------------------------------------------- 開盤前環境（夜盤、美股、亞股）
+def _tx(session, date, month, last, chg, contract="TX"):
+    return {"Date": date, "Contract": contract, "ContractMonth(Week)": month, "Last": str(last), "Change": str(chg),
+            "TradingSession": session, "SettlementPrice": str(last)}
+
+
+def test_overnight_expected_night_date():
+    from market_intel import overnight
+    tz = TW_TZ
+    f = overnight.expected_night_date
+    assert f(datetime(2026, 10, 19, 8, 30, tzinfo=tz)) == "20261019"   # 週一早上：週五夜盤屬於週一
+    assert f(datetime(2026, 10, 16, 16, 0, tzinfo=tz)) == "20261019"   # 週五 15:00 後：夜盤屬於下週一
+    assert f(datetime(2026, 10, 17, 6, 0, tzinfo=tz)) == "20261019"    # 週六清晨
+    assert f(datetime(2026, 10, 20, 8, 30, tzinfo=tz)) == "20261020"   # 週二早上
+    assert f(datetime(2026, 10, 20, 16, 0, tzinfo=tz)) == "20261021"
+
+
+def test_overnight_tx_night_picks_near_month_checks_date_and_ignores_weekly():
+    from market_intel import overnight
+    now = datetime(2026, 10, 19, 8, 30, tzinfo=TW_TZ)  # 週一早上
+    rows = [_tx("一般", "20261016", "202610", 23500, 100),
+            _tx("盤後", "20261019", "202611", 23200, -250),
+            _tx("盤後", "20261019", "202610", 23100, -400),        # 近月：-400 / (23100+400)
+            _tx("盤後", "20261019", "202610W1", 23000, -500),      # 週契約，不採用
+            _tx("盤後", "20261019", "202610", 9999, -1, contract="TXO")]
+    n = overnight.tx_night(rows, now)
+    assert n["month"] == "202610" and n["last"] == 23100 and not n["stale"]
+    assert n["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01)
+    # 資料還是上週五的夜盤（週一的還沒更新）→ 標示過期，不拿來用
+    old = [_tx("盤後", "20261016", "202610", 23100, -400)]
+    assert overnight.tx_night(old, now)["stale"] is True
+    assert overnight.tx_night([_tx("一般", "20261019", "202610", 23500, 100)], now) is None
+
+
+def test_overnight_assess_levels():
+    from market_intel import overnight
+    cfg = dict(overnight.DEFAULTS)
+    assert overnight.assess({"night": 0.3, "nasdaq": 0.5, "sox": 0.2, "vix": 16}, cfg)["level"] == "green"
+    a = overnight.assess({"night": 1.0, "nasdaq": 0.5}, cfg)
+    assert a["level"] == "green" and a["bull"]
+    a = overnight.assess({"night": -1.0, "nasdaq": 0.2}, cfg)
+    assert a["level"] == "yellow" and a["reasons"] == ["夜盤 -1.0%"]
+    a = overnight.assess({"night": -1.0, "nasdaq": -2.4, "sox": -3.5}, cfg)  # 任何一項紅燈就是紅燈
+    assert a["level"] == "red" and "那指 -2.4%" in a["reasons"] and "費半 -3.5%" in a["reasons"]
+    assert overnight.assess({"n225": -2.5, "kospi": -2.5}, cfg)["level"] == "red"  # 亞股平均
+    assert overnight.assess({"n225": -2.5, "kospi": 1.0}, cfg)["level"] == "green"
+    assert overnight.assess({"vix": 31}, cfg)["level"] == "red"
+    assert overnight.assess({}, cfg)["level"] == "green"
+
+
+def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
+    from market_intel import overnight
+    from market_intel.trade import paper
+    now = datetime(2026, 10, 19, 8, 30, tzinfo=TW_TZ)
+    rows = [_tx("一般", "20261016", "202610", 23500, 100), _tx("盤後", "20261019", "202610", 23100, -400)]
+    quotes = {"^IXIC": -2.3, "^SOX": -3.4, "^GSPC": -1.5, "NQ=F": -0.6, "^N225": -1.9, "^KS11": -2.4, "^VIX": None}
+
+    def fetch_one(sym):
+        if sym == "^VIX":
+            raise RuntimeError("連線失敗")  # 單項失敗不影響其他
+        return {"d1_pct": quotes[sym], "last": 100.0, "asof": "10/17 05:00"}
+
+    text, level = overnight.build(now, fetch_one, lambda: rows)
+    assert level == "red"
+    assert "台指期夜盤 23,100（-1.70%，10/19 交易日）" in text
+    assert "那指 -2.3%" in text and "費半 -3.4%" in text and "日經 -1.9%" in text and "VIX" not in text
+    assert "不追開盤價" in text
+    # 夜盤抓不到：照樣用其他來源；全部抓不到：提示自己看，燈號空白（不影響盤前計劃）
+    t2, l2 = overnight.build(now, fetch_one, lambda: (_ for _ in ()).throw(RuntimeError("期交所掛了")))
+    assert l2 == "red" and "台指期夜盤" not in t2
+    t3, l3 = overnight.build(now, lambda s: None, lambda: [])
+    assert l3 == "" and "沒抓到" in t3
+    # 盤前計劃：多頭 + 紅燈 → 附警語；沒有環境資料 → 和以前一樣
+    monkeypatch.setattr(paper, "load", lambda: {"regime": "多頭", "positions": [], "orders": [], "equity": 100000})
+    monkeypatch.setattr(paper, "plan_text", lambda st, mkt: "計劃內容")
+    out = paper.run_pre((text, level))
+    assert "開盤前環境" in out and "加權日線雖是多頭" in out and "計劃內容" in out
+    assert "開盤前環境" not in paper.run_pre()
+    # 夜盤日期過期不納入燈號，但會說明原因
+    stale = [_tx("盤後", "20261016", "202610", 23100, -400)]
+    t4, l4 = overnight.build(now, lambda s: {"d1_pct": 0.1, "last": 20.0, "asof": ""}, lambda: stale)
+    assert l4 == "green" and "未採用" in t4
+
+
+# ---------------------------------------------------------------- 研究資訊圖（HTML 排版，接進研究圖表推播）
+def _info_data():
+    return {"topic": "測試題材", "one_line": "一句話摘要", "status": "混合", "horizon": "中期（3-12個月）", "sources": [1, 2, 3],
+            "evolution": [{"name": "第一代", "composition": "甲", "spec": "規格 9,500 mm²", "application": "乙"}],
+            "spec_tables": [{"title": "表 A", "columns": ["項目", "數字"], "rows": [["營收", "+123%"]], "note": "註記"}],
+            "concepts": [{"title": "概念一", "points": ["要點 <b>跳脫</b>"]}],
+            "layers": [{"layer": "上游", "description": "說明", "tw_stocks": [
+                {"code": "2330", "name": "台積電", "role": "x", "impact": "受惠"},
+                {"code": "2454", "name": "聯發科", "role": "x", "impact": "中性"}]}],
+            "catalysts": ["催化一"], "risks": ["風險一"], "conclusion": ["結論一"]}
+
+
+def test_infographic_pages_text_exact_escaped_and_palette():
+    from market_intel import infographic
+    pages = dict(infographic.pages(_info_data()))
+    assert set(pages) == {"1_overview", "2_chain", "3_conclusion"}
+    p1, p2, p3 = pages["1_overview"], pages["2_chain"], pages["3_conclusion"]
+    assert "測試題材" in p1 and "+123%" in p1 and "規格 9,500 mm²" in p1 and 'class="stat"' in p1
+    assert "2330 台積電" in p2 and "&lt;b&gt;跳脫" in p2 and "<b>跳脫" not in p2  # HTML 跳脫
+    assert "結論一" in p3 and "催化一" in p3 and "風險一" in p3
+    assert "data:image" not in p1  # 純排版，沒有生成圖
+    assert infographic.palette_for("測試題材") == infographic.palette_for("測試題材")
+    assert len({infographic.palette_for(t)[0] for t in "ABCDEFGHIJ"}) > 1
+    assert infographic.pages({"topic": "空"}) == []  # 沒有內容的研究不產生圖
+
+
+def _stub_market_charts(monkeypatch, legacy_calls):
+    from market_intel import charts
+
+    def stub(name, record=False):
+        def f(path, *a, **k):
+            if record:
+                legacy_calls.append(name)
+            return path
+        return f
+    for name in ("spec_table_slide_png", "evolution_slide_png", "concepts_slide_png"):
+        monkeypatch.setattr(charts, name, stub(name, True))
+    for name in ("supply_chain_png", "sector_perf_png", "table_png"):
+        monkeypatch.setattr(charts, name, stub(name))
+
+
+def test_theme_card_uses_infographic_and_falls_back_to_legacy_charts(tmp_path, monkeypatch):
+    from market_intel import infographic, theme_card
+    monkeypatch.setattr(theme_card, "CARD_DIR", tmp_path)
+    legacy = []
+    _stub_market_charts(monkeypatch, legacy)
+    d = _info_data()
+    card = theme_card.Card(title="測試題材", layers=d["layers"], spec_tables=d["spec_tables"], evolution=d["evolution"],
+                           concepts=d["concepts"], conclusion=d["conclusion"], data=d)
+    monkeypatch.setattr(infographic, "render_all",
+                        lambda data, out: [out / "1_overview.png", out / "2_chain.png", out / "3_conclusion.png"])
+    names = [p.name for p in theme_card.render(card)]
+    # 資訊圖 3 張在前，市場資料 3 張（供應鏈地圖、細項表現、資料表）保留；舊版技術細項圖不再產生
+    assert names[:3] == ["1_overview.png", "2_chain.png", "3_conclusion.png"]
+    assert names[3:] == ["1_supply_chain.png", "2_sectors.png", "3_table.png"] and legacy == []
+
+    def boom(data, out):
+        raise RuntimeError("找不到 Chrome")
+    monkeypatch.setattr(infographic, "render_all", boom)  # 資訊圖失敗 → 退回舊版圖表，推播照常
+    names = [p.name for p in theme_card.render(card)]
+    assert "00_spec.png" in names and "05_evolution.png" in names and "06_concepts.png" in names and "1_supply_chain.png" in names
+    legacy.clear()
+    card.data = None  # 族群卡沒有研究原始資料 → 舊版
+    assert "00_spec.png" in [p.name for p in theme_card.render(card)] and "spec_table_slide_png" in legacy
+
+
+def test_theme_card_from_research_carries_data(monkeypatch):
+    from market_intel import theme_card
+    monkeypatch.setattr(theme_card.research, "load_index", lambda: {"T": {"date": "2026-10-18", "file": ""}})
+    monkeypatch.setattr(theme_card, "research_data", lambda t: {"one_line": "x", "layers": []})
+    found = theme_card.from_research("T")
+    assert found["data"]["topic"] == "T" and found["data"]["one_line"] == "x"
+    monkeypatch.setattr(theme_card, "research_data", lambda t: None)
+    assert theme_card.from_research("T")["data"] is None
+
+
+# ---------------------------------------------------------------- 選股機器人 09:15 的隔夜環境一行
+def test_overnight_short_line_and_picks_header(monkeypatch):
+    from market_intel import cli, overnight
+    night = {"pct": -1.0, "stale": False, "date": "20261019", "last": 23100, "expected": "20261019", "month": "202610"}
+    quotes = {"nasdaq": {"d1_pct": -0.8}, "sox": {"d1_pct": -2.1}, "n225": {"d1_pct": -1.3}}
+    ass = overnight.assess({"night": -1.0, "nasdaq": -0.8, "sox": -2.1, "n225": -1.3})
+    line = overnight.short_line(night, quotes, ass, -0.45)
+    assert line.startswith("🌙 隔夜環境 🟡") and "夜盤 -1.0%" in line and "那指 -0.8%" in line and "加權現在 -0.45%" in line
+    assert overnight.short_line({**night, "stale": True}, {}, ass) == ""  # 夜盤過期又沒有其他資料 → 不推空的一行
+
+    class Q:
+        change_pct = -0.45
+    monkeypatch.setattr(overnight, "parts", lambda *a, **k: (night, quotes, ass))
+    assert "加權現在 -0.45%" in cli._overnight_line({"加權指數": Q()})
+    monkeypatch.setattr(overnight, "parts", lambda *a, **k: None)
+    assert cli._overnight_line({}) == ""
+
+    def boom(*a, **k):
+        raise RuntimeError("連線失敗")
+    monkeypatch.setattr(overnight, "parts", boom)
+    assert cli._overnight_line({}) == ""  # 任何錯誤都不影響選股推播

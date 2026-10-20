@@ -10,7 +10,8 @@
 - 處置股、注意股警示；研究後漲跌
 
 圖片：
-1. 供應鏈地圖：依細項產業分層
+0. 研究資訊圖（3 張長圖，HTML 排版：世代演進、規格比較、關鍵概念、供應鏈與受惠股、結論與風險；失敗退回舊版圖表）
+1. 供應鏈地圖：依細項產業分層，每檔標收盤、漲跌、營收年增、股票期貨
 2. 細項產業表現：各細項等權走勢比較＋5 日／20 日漲跌與量比（看資金流向哪個細項）
 3. 研究資料表
 
@@ -27,7 +28,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import charts, config, notify, research
+from . import charts, config, infographic, notify, research
 from .analysis import target_price
 from .fetchers import stock_futures, tw_daily, yahoo
 from .utils import CACHE_DIR, now_tw
@@ -54,6 +55,7 @@ class Card:
     evolution: list[dict] = field(default_factory=list)    # 世代演進
     concepts: list[dict] = field(default_factory=list)     # 關鍵概念解說
     conclusion: list[str] = field(default_factory=list)
+    data: dict | None = None                               # 研究原始資料（資訊圖用；族群卡沒有）
 
 
 # ---------------------------------------------------------------- 找題材
@@ -97,7 +99,8 @@ def from_research(topic: str) -> dict:
             "report_url": research.report_url(e["file"]) if e.get("file") else "",
             "catalysts": d.get("catalysts", []), "risks": d.get("risks", []),
             "spec_tables": d.get("spec_tables") or [], "evolution": d.get("evolution") or [],
-            "concepts": d.get("concepts") or [], "conclusion": d.get("conclusion") or []}
+            "concepts": d.get("concepts") or [], "conclusion": d.get("conclusion") or [],
+            "data": {**d, "topic": topic} if d else None}
 
 
 def from_theme(name: str, codes: list) -> dict:
@@ -175,7 +178,7 @@ def build(found: dict, listings: dict, context: str = "", futures: dict | None =
                 research_date=found.get("research_date"), report_url=found.get("report_url", ""),
                 catalysts=found.get("catalysts", []), risks=found.get("risks", []),
                 spec_tables=found.get("spec_tables") or [], evolution=found.get("evolution") or [],
-                concepts=found.get("concepts") or [], conclusion=found.get("conclusion") or [])
+                concepts=found.get("concepts") or [], conclusion=found.get("conclusion") or [], data=found.get("data"))
     seen: set[str] = set()
     layers = []
     for layer in found["layers"]:
@@ -225,13 +228,9 @@ def _by_layer(card: Card) -> list[tuple[str, list[dict]]]:
     return out
 
 
-def render(card: Card) -> list[Path]:
-    """產生研究圖表，回傳檔案路徑。"""
-    out_dir = CARD_DIR / f"{now_tw():%Y%m%d-%H%M%S}-{research.slug(card.title)}"
-    paths = []
-    groups = _by_layer(card)
-    topic = re.split(r"[（(]研究", card.title)[0]
-    # 技術細項解說（像產業懶人包）：規格比較表 → 世代演進 → 關鍵概念與結論
+def _legacy_explainers(card: Card, topic: str, out_dir: Path) -> list[Path]:
+    """舊版技術細項圖（matplotlib）：規格比較表 → 世代演進 → 關鍵概念與結論。資訊圖產生失敗時的備援。"""
+    paths: list[Path] = []
     for i, t in enumerate(card.spec_tables[:3]):
         try:
             paths.append(charts.spec_table_slide_png(out_dir / f"0{i}_spec.png", topic, t))
@@ -244,6 +243,24 @@ def render(card: Card) -> list[Path]:
                 paths.append(fn(out_dir / f"0{5 if name == 'evolution' else 6}_{name}.png", topic, *args))
             except Exception as e:  # noqa: BLE001
                 log.warning("%s 產生失敗：%s", name, e)
+    return paths
+
+
+def render(card: Card) -> list[Path]:
+    """產生研究圖表，回傳檔案路徑。"""
+    out_dir = CARD_DIR / f"{now_tw():%Y%m%d-%H%M%S}-{research.slug(card.title)}"
+    paths = []
+    groups = _by_layer(card)
+    topic = re.split(r"[（(]研究", card.title)[0]
+    # 技術細項解說（產業懶人包）：優先用資訊圖（HTML 排版：世代演進、規格比較、關鍵概念、供應鏈、結論與風險，3 張）；
+    # 研究資料不齊、找不到 Chrome 或截圖失敗就退回舊版 matplotlib 圖表
+    explainers: list[Path] = []
+    if card.data:
+        try:
+            explainers = infographic.render_all(card.data, out_dir)
+        except Exception as e:  # noqa: BLE001
+            log.warning("研究資訊圖產生失敗，改用舊版圖表：%s", e)
+    paths += explainers or _legacy_explainers(card, topic, out_dir)
     try:
         if card.layers:
             paths.append(charts.supply_chain_png(out_dir / "1_supply_chain.png", card.title,
