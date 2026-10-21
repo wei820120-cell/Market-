@@ -2254,6 +2254,11 @@ def cmd_trade(args) -> None:
     if args.overnight:
         env_text, _ = overnight.build()
         print(env_text or "開盤前環境已關閉（config/settings.yaml 的 premarket.enabled）")
+        try:  # 資料診斷只印在日誌，不推播
+            from .fetchers import taifex
+            print("[診斷] 期交所 TX：\n" + overnight.describe_tx(taifex.fetch("futures_daily")))
+        except Exception as e:  # noqa: BLE001
+            print(f"[診斷] 期交所 TX 抓取失敗：{e}")
         paper.push(env_text)
         return
     if want_pre:

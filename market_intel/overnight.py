@@ -94,6 +94,22 @@ def tx_night(rows: list[dict], now=None) -> dict | None:
             "stale": latest != expected}
 
 
+def describe_tx(rows: list[dict]) -> str:
+    """診斷用：TX 各交易時段（一般／盤後）的最新三個資料日期，與每個時段最新一天的近月原始資料。
+    夜盤日期對不上預期時，用它看期交所 OpenAPI 實際給了什麼（日期歸屬、更新時間）。"""
+    tx = [r for r in rows if str(pick(r, "Contract", "契約", default="")).strip() == "TX" and _month(r)]
+    if not tx:
+        return "TX 沒有近月資料"
+    out = []
+    for sess in sorted({str(pick(r, "TradingSession", "交易時段", default="?")) for r in tx}):
+        rs = [r for r in tx if str(pick(r, "TradingSession", "交易時段", default="?")) == sess]
+        dates = sorted({_digits(pick(r, "Date", "日期")) for r in rs})
+        latest = min((r for r in rs if _digits(pick(r, "Date", "日期")) == dates[-1]), key=_month)
+        out.append(f"{sess}：日期 {'、'.join(dates[-3:])}｜最新 {dates[-1]} 月份 {_month(latest)} "
+                   f"收 {pick(latest, 'Last', 'Close', '收盤價')} 漲跌 {pick(latest, 'Change', '漲跌價')}")
+    return "\n".join(out)
+
+
 def assess(d: dict, cfg: dict | None = None) -> dict:
     """d：{night, nasdaq, sox, nq, n225, kospi（皆為漲跌 %）, vix（指數）}，缺的略過。回傳 {level, reasons, bull}。"""
     cfg = cfg or settings()
