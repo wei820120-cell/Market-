@@ -77,6 +77,10 @@ on:
         description: "進出場機器人（模擬）：立即盤後結算並推播"
         type: boolean
         default: false
+      overnight:
+        description: "立刻推「開盤前環境」（台指期夜盤、美股收盤、那指期貨、亞股早盤＋風險燈號），並把原始資料印在紀錄裡"
+        type: boolean
+        default: false
       explain:
         description: "檢查股票的訊號與口數（只印在紀錄裡），例如：國巨 金像電"
         default: ""
@@ -129,6 +133,8 @@ jobs:
         run: |
           if [ -n "${{ inputs.explain }}" ]; then
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
+          elif [ "${{ inputs.overnight }}" = "true" ]; then
+            python -m market_intel trade --overnight
           elif [ "${{ inputs.trade }}" = "true" ]; then
             python -m market_intel trade --post
           elif [ "${{ inputs.highwin }}" = "true" ]; then

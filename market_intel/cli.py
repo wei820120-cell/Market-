@@ -2254,6 +2254,7 @@ def cmd_trade(args) -> None:
     if args.overnight:
         env_text, _ = overnight.build()
         print(env_text or "開盤前環境已關閉（config/settings.yaml 的 premarket.enabled）")
+        print(overnight.diagnose())  # 資料診斷只印在日誌，不推播
         paper.push(env_text)
         return
     if want_pre:

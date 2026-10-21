@@ -11,6 +11,9 @@ from __future__ import annotations
 import json
 import logging
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+
+import pandas as pd
 
 from .. import config
 from ..utils import ROOT, now_tw
@@ -26,11 +29,27 @@ def assets() -> dict:
     return config.load("macro_assets").get("assets") or {}
 
 
+def _with_live_price(c, index, meta: dict):
+    """日K收盤序列；若 Yahoo 日K少了「當地今天」那一根（亞洲市場過了當地午夜後實測會這樣），
+    用 meta 的最新價補成最後一個收盤，不然漲跌幅會拿前天對大前天，方向都可能錯。"""
+    price, ts, tz = meta.get("regularMarketPrice"), meta.get("regularMarketTime"), meta.get("exchangeTimezoneName")
+    if not (price and ts and tz and len(c)):
+        return c
+    try:
+        today = datetime.fromtimestamp(ts, ZoneInfo(tz)).date()
+        last_bar = index[-1].tz_convert(tz).date()
+    except Exception:  # noqa: BLE001 — 時區或索引格式不對就維持原樣
+        return c
+    if last_bar >= today:
+        return c
+    return pd.concat([c, pd.Series([float(price)])], ignore_index=True)
+
+
 def fetch_one(symbol: str) -> dict | None:
     df, meta = yahoo.fetch_chart(symbol, range_="1mo", interval="1d")
     if df.empty or len(df) < 2:
         return None
-    c = df["close"].astype(float)
+    c = _with_live_price(df["close"].astype(float), df.index, meta)
     last, prev = float(c.iloc[-1]), float(c.iloc[-2])
 
     def pct(n: int) -> float | None:

@@ -74,3 +74,24 @@ def get(url: str, params=None, headers=None, timeout: float = 15, retries: int =
 
 def get_json(url: str, params=None, headers=None, timeout: float = 15, retries: int = 3):
     return get(url, params=params, headers=headers, timeout=timeout, retries=retries).json()
+
+
+def post_json(url: str, body: dict, headers=None, timeout: float = 15, retries: int = 2):
+    """POST JSON、回傳 JSON；和 get 一樣重試，4xx 不重試。"""
+    host = urlparse(url).netloc
+    last_exc: Exception | None = None
+    for attempt in range(retries):
+        _throttle(host)
+        try:
+            r = session().post(url, json=body, headers=headers, timeout=timeout)
+            r.raise_for_status()
+            return r.json()
+        except (requests.RequestException, ValueError) as e:
+            last_exc = e
+            log.debug("POST %s 失敗（第 %d 次）：%s", url, attempt + 1, e)
+            status = getattr(getattr(e, "response", None), "status_code", None)
+            if status is not None and 400 <= status < 500 and status != 429:
+                break
+            time.sleep(2 ** attempt)
+    assert last_exc is not None
+    raise last_exc
