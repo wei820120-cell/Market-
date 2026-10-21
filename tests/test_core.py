@@ -1737,11 +1737,13 @@ def test_overnight_expected_night_date():
     from market_intel import overnight
     tz = TW_TZ
     f = overnight.expected_night_date
-    assert f(datetime(2026, 10, 19, 8, 30, tzinfo=tz)) == "20261019"   # 週一早上：週五夜盤屬於週一
-    assert f(datetime(2026, 10, 16, 16, 0, tzinfo=tz)) == "20261019"   # 週五 15:00 後：夜盤屬於下週一
-    assert f(datetime(2026, 10, 17, 6, 0, tzinfo=tz)) == "20261019"    # 週六清晨
+    assert f(datetime(2026, 10, 19, 8, 30, tzinfo=tz)) == "20261019"   # 週一早上：週五夜盤收在週六清晨，交易日算週一
+    assert f(datetime(2026, 10, 17, 6, 0, tzinfo=tz)) == "20261019"    # 週六清晨夜盤收盤後
+    assert f(datetime(2026, 10, 17, 4, 0, tzinfo=tz)) == "20261016"    # 週六 04:00 還在夜盤：最近收盤的是週五清晨那場
+    assert f(datetime(2026, 10, 18, 12, 0, tzinfo=tz)) == "20261019"   # 週日
     assert f(datetime(2026, 10, 20, 8, 30, tzinfo=tz)) == "20261020"   # 週二早上
-    assert f(datetime(2026, 10, 20, 16, 0, tzinfo=tz)) == "20261021"
+    assert f(datetime(2026, 10, 21, 22, 58, tzinfo=tz)) == "20261021"  # 週三晚上：今晚那場還沒收，最近收盤的是今天清晨
+    assert f(datetime(2026, 10, 16, 16, 0, tzinfo=tz)) == "20261016"
 
 
 def test_overnight_tx_night_picks_near_month_checks_date_and_ignores_weekly():
@@ -1759,6 +1761,30 @@ def test_overnight_tx_night_picks_near_month_checks_date_and_ignores_weekly():
     old = [_tx("盤後", "20261016", "202610", 23100, -400)]
     assert overnight.tx_night(old, now)["stale"] is True
     assert overnight.tx_night([_tx("一般", "20261019", "202610", 23500, 100)], now) is None
+
+
+def _mis(sym, last, ref, date="20261019", t="050000", vol=1000):
+    return {"SymbolID": sym, "DispCName": "臺指期貨", "CLastPrice": str(last), "CRefPrice": str(ref), "CDiff": str(last - ref),
+            "CDate": date, "CTime": t, "CTotalVolume": str(vol)}
+
+
+def test_overnight_mis_night_picks_busiest_contract_and_checks_time():
+    from market_intel import overnight
+    now = datetime(2026, 10, 19, 8, 30, tzinfo=TW_TZ)  # 週一早上
+    rows = [_mis("TXFK6-M", 23200, 23500, vol=300), _mis("TXFJ6-M", 23100, 23500, vol=90000),
+            _mis("TXFJ6/K6-M", 100, 50, vol=999999),               # 價差單，不採用
+            _mis("MXFJ6-M", 23100, 23500, vol=999999)]             # 小台，不採用
+    n = overnight.mis_night(rows, now)
+    assert n["month"] == "TXFJ6-M" and n["last"] == 23100 and not n["stale"] and n["src"] == "MIS"
+    assert n["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01) and n["date"] == "20261019"
+    # 最後成交是上週五的夜盤（週一的還沒開始報價）→ 過期
+    assert overnight.mis_night([_mis("TXFJ6-M", 23100, 23500, date="20261016")], now)["stale"] is True
+    assert overnight.mis_night([_mis("TXFJ6-M", 23100, 23500, date="")], now)["stale"] is True  # 沒時間：不敢用
+    assert overnight.mis_night([], now) is None and overnight.mis_night([_mis("MXFJ6-M", 1, 1)], now) is None
+    # 沒有參考價時用漲跌；時間格式帶冒號也能解析
+    r = _mis("TXFJ6-M", 23100, 23500, t="05:00:00")
+    r["CRefPrice"] = ""
+    assert overnight.mis_night([r], now)["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01)
 
 
 def test_overnight_assess_levels():
@@ -1789,15 +1815,16 @@ def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
             raise RuntimeError("連線失敗")  # 單項失敗不影響其他
         return {"d1_pct": quotes[sym], "last": 100.0, "asof": "10/17 05:00"}
 
-    text, level = overnight.build(now, fetch_one, lambda: rows)
+    no_mis = lambda: []  # noqa: E731  不連線
+    text, level = overnight.build(now, fetch_one, lambda: rows, no_mis)
     assert level == "red"
     assert "台指期夜盤 23,100（-1.70%，10/19 交易日）" in text
     assert "那指 -2.3%" in text and "費半 -3.4%" in text and "日經 -1.9%" in text and "VIX" not in text
     assert "不追開盤價" in text
     # 夜盤抓不到：照樣用其他來源；全部抓不到：提示自己看，燈號空白（不影響盤前計劃）
-    t2, l2 = overnight.build(now, fetch_one, lambda: (_ for _ in ()).throw(RuntimeError("期交所掛了")))
+    t2, l2 = overnight.build(now, fetch_one, lambda: (_ for _ in ()).throw(RuntimeError("期交所掛了")), no_mis)
     assert l2 == "red" and "台指期夜盤" not in t2
-    t3, l3 = overnight.build(now, lambda s: None, lambda: [])
+    t3, l3 = overnight.build(now, lambda s: None, lambda: [], no_mis)
     assert l3 == "" and "沒抓到" in t3
     # 盤前計劃：多頭 + 紅燈 → 附警語；沒有環境資料 → 和以前一樣
     monkeypatch.setattr(paper, "load", lambda: {"regime": "多頭", "positions": [], "orders": [], "equity": 100000})
@@ -1807,8 +1834,14 @@ def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
     assert "開盤前環境" not in paper.run_pre()
     # 夜盤日期過期不納入燈號，但會說明原因
     stale = [_tx("盤後", "20261016", "202610", 23100, -400)]
-    t4, l4 = overnight.build(now, lambda s: {"d1_pct": 0.1, "last": 20.0, "asof": ""}, lambda: stale)
+    t4, l4 = overnight.build(now, lambda s: {"d1_pct": 0.1, "last": 20.0, "asof": ""}, lambda: stale, no_mis)
     assert l4 == "green" and "未採用" in t4
+    # MIS 有最新夜盤就用 MIS（OpenAPI 過期也不影響）；MIS 連線失敗退回 OpenAPI
+    mis = [_mis("TXFJ6-M", 23100, 23500)]
+    t5, l5 = overnight.build(now, fetch_one, lambda: stale, lambda: mis)
+    assert "台指期夜盤 23,100（-1.70%，10/19 交易日）" in t5
+    t6, _ = overnight.build(now, fetch_one, lambda: rows, lambda: (_ for _ in ()).throw(RuntimeError("MIS 掛了")))
+    assert "台指期夜盤 23,100" in t6
 
 
 # ---------------------------------------------------------------- 研究資訊圖（HTML 排版，接進研究圖表推播）
