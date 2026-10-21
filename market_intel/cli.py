@@ -627,14 +627,17 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
         text = f"{it.title} {it.summary}"
         if any(w in it.title for w in exclude) or it.score < 0 and "減產" not in text:
             continue
+        if any(w in it.title for w in conf.get("skip_title_words") or []):
+            continue  # 已被駁斥、澄清的傳聞不是供需事件
         cause = shock_cause(text, conf.get("causes") or {})
         if not cause or count >= int(conf.get("max_per_day", 4)):
             continue
         topic = shock_topic(it, listings)
-        if (cause in set(conf.get("need_relevance") or []) and not it.codes and topic.startswith("供需事件：")
+        need = set(conf.get("need_relevance") or [])
+        if (("all" in need or cause in need) and not it.codes and topic.startswith("供需事件：")
                 and not re.search(conf.get("relevance_words") or "(?!)", text, flags=re.I)):
-            continue  # 一般國際政治新聞（制裁、出口管制…）對不到台股標的、產品題材或關鍵原料就不推
-        if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}"):
+            continue  # 對不到台股標的、產品題材或關鍵原料的新聞（國際政治、民生、地震…）不研究、不推
+        if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}", cause=cause):
             continue
         count += 1
         queued.append(topic)
@@ -693,7 +696,8 @@ def major_events(items: list, listings: dict, macro_rows: list | None = None) ->
             lines += ["", f"📊 國際行情：{market}"]
         topic = f"供需事件：{spec.get('topic') or name}"
         context = f"\n國際行情快照（Yahoo，延遲報價）：\n{macro.table_text(macro_rows)}" if macro_rows else ""
-        queued = research.queue_research(topic, f"{today} 重大事件：{hits[0].title}\n{hits[0].summary[:300]}\n{hits[0].url}{context}")
+        queued = research.queue_research(topic, f"{today} 重大事件：{hits[0].title}\n{hits[0].summary[:300]}\n{hits[0].url}{context}",
+                                         dedupe=False)
         lines.append(f"\n→ {'已排入研究' if queued else '近期研究過或已在佇列'}：{topic}")
         notify.send("\n".join(lines), channel="news")
     if sent:
@@ -1832,6 +1836,32 @@ def _backtest_launch(data, futures, index_df, rates, capital: float, range_: str
                 print(pd.DataFrame(x["校準"]).to_string(index=False))
 
 
+def _backtest_volprice(data, futures, index_df, rates, capital: float, range_: str) -> None:
+    """題材群「量增價未漲」預警回測（trade/volprice.py）：比放量突破早一步盯上第一波，值不值得？"""
+    from .trade import backtest as bt
+    from .trade import early, launch, volprice
+    base = bt.Params(capital=capital, exit_ma="ma20")
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.load("themes").get("tw") or {}).items()}
+    for name, meta in research.load_index().items():  # 研究完的題材整群納入（成分＝該研究列出的台股）
+        cs = [str(x) for x in meta.get("codes", [])]
+        if len(cs) >= 3:
+            themes_tw.setdefault(f"研究:{name}", cs)
+    prepped = {c: bt.prepare(d, base) for c, d in data.items() if len(d) > 80}
+    fr = early.frames(prepped)
+    labels = launch.label_frame(fr)
+    mkt = bt.market_ok(index_df)
+    res = volprice.run(fr, mkt, themes_tw, labels)
+    res["定義"] = volprice.__doc__.strip()
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "volprice.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"題材 {res['題材數']} 個、成分股 {res['成分股數']} 檔｜基準 F0（站上60日線、近20日≤15%、未突破、大盤多頭）：{res['基準F0']}")
+    print("\n【訊號 vs 對照（沒放量）vs 基準】")
+    print(pd.DataFrame(res["組合"]).to_string(index=False))
+    print("\n【前半段／後半段（時間切半）】")
+    print(pd.DataFrame(res["前後半"]).to_string(index=False))
+
+
 def _backtest_launch2(data, futures, index_df, rates, capital: float, range_: str) -> None:
     """把『發動機率分數』放進策略：逐季向前訓練（不偷看未來），每天取分數最高的前幾檔當進場訊號，
     和現行策略 B、B＋領先專用位做組合回測（只比有分數的後段期間）。回答：分數高的那群，實際交易會不會比較賺。"""
@@ -1906,7 +1936,12 @@ def cmd_backtest(args) -> None:
     listings = _listings()
     futures = stock_futures.load_stock_futures()
     codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
-    log.info("回測標的：%d 檔（有股票期貨或小型股期）", len(codes))
+    if getattr(args, "volprice", False):  # 量增價未漲：標的要涵蓋題材成分股和所有研究過的股票（很多小型題材股沒有股票期貨）
+        extra = set(config.all_tw_theme_codes())
+        for e in research.load_index().values():
+            extra.update(str(x) for x in e.get("codes", []))
+        codes = sorted(set(codes) | {x for x in extra if x in listings and not x.startswith("00")})
+    log.info("回測標的：%d 檔（有股票期貨或小型股期%s）", len(codes), "；加上題材成分股與研究過的股票" if getattr(args, "volprice", False) else "")
     data = _yahoo_histories(codes, listings, range_=args.range)
     index_df, _ = yahoo.fetch_chart("^TWII", range_=args.range)
     rates = {}
@@ -1946,6 +1981,9 @@ def cmd_backtest(args) -> None:
         return
     if args.launch:
         _backtest_launch(data, futures, index_df, rates, args.capital, args.range)
+        return
+    if args.volprice:
+        _backtest_volprice(data, futures, index_df, rates, args.capital, args.range)
         return
     if args.launch2:
         _backtest_launch2(data, futures, index_df, rates, args.capital, args.range)
@@ -2367,6 +2405,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--daytrade", action="store_true", help="當沖（日K近似）vs 現行波段")
     bk.add_argument("--factors", action="store_true", help="看對的條件：依進場前條件分組比較勝率與平均 R")
     bk.add_argument("--early", action="store_true", help="提前進場訊號：美股領先、題材補漲、預突破、RS 新高、盤中突破 vs 現行")
+    bk.add_argument("--volprice", action="store_true", help="題材群量增價未漲預警：比放量突破早一步盯上第一波的發動率與平均 R")
     bk.add_argument("--launch2", action="store_true", help="發動機率分數放進策略：逐季向前訓練、每天取前幾檔，和 B 比組合回測")
     bk.add_argument("--launch", action="store_true", help="短線發動機率研究：條件分組發動率、合成分數的樣本外提升倍數")
     bk.add_argument("--early2", action="store_true", help="提前進場第二輪：專用名額、強度濾網、盤中突破強度門檻")

@@ -1908,3 +1908,161 @@ def test_overnight_short_line_and_picks_header(monkeypatch):
         raise RuntimeError("連線失敗")
     monkeypatch.setattr(overnight, "parts", boom)
     assert cli._overnight_line({}) == ""  # 任何錯誤都不影響選股推播
+
+
+# ---------------------------------------------------------------- 事件去重（同一件事不重複研究、推播）
+
+def test_events_subjects_longest_alias_wins():
+    from market_intel import events
+    s = events.subjects_of("高階銅箔基板缺貨恐延至2029年")
+    assert s == {"CCL"}                      # 「銅箔基板」不會再被算成「銅箔」
+    assert events.subjects_of("HVLP4 銅箔供不應求") == {"銅箔"}
+    assert events.subjects_of("DDR5 價格飆漲") == {"記憶體"}
+    assert events.subjects_of("加拿大羊肉需求急升") == set()
+
+
+def test_events_same_event_real_examples():
+    from market_intel import events
+    same = events.same_event
+    # 同一件事、不同標題
+    assert same("供需事件：光纖缺貨喊漲 年增上看5倍", "", "供需", "供需事件：AI掀光纖搶貨潮！庫存水位剩1個月、價格飆5倍", "", "供需")
+    assert same("DDR供需", "", "供需", "記憶體供需", "", "供需")
+    assert same("銅箔基板供需", "", "供需", "CCL供需", "", "供需")
+    assert same("載板供需", "", "供需", "ABF供需", "", "供需")
+    assert same("供需事件：英特爾工廠爆炸 PC 業警戒 供貨宏碁、華碩等", "", "事故", "供需事件：英特爾以色列廠爆炸 PC 品牌廠急找其他貨源", "", "事故")
+    # 不同事件：主題不同、家族不同、只共用籠統字眼（地震、AI、台廠）
+    assert not same("銅箔供需", "", "供需", "CCL供需", "", "供需")
+    assert not same("供需事件：光纖出口管制", "", "政策", "供需事件：AI掀光纖搶貨潮", "", "供需")
+    assert not same("供需事件：宜蘭規模4.6地震 9縣市有感", "", "事故", "供需事件：花蓮規模5.1地震", "", "事故")
+    assert not same("供需事件：台廠手握核心技術「應更自信」", "", "供需", "供需事件：AI掀光纖搶貨潮", "", "供需")
+    assert not same("供需事件：希捷硬碟缺貨能讓財測再上修", "", "供需", "記憶體供需", "", "供需")
+
+
+def test_events_find_duplicate_window_queue_and_company_topics():
+    from datetime import datetime
+    from market_intel import events
+    now = datetime(2026, 10, 21, 12, 0)
+    index = {"供需事件：AI掀光纖搶貨潮！庫存水位剩1個月": {"date": "2026-10-20"},
+             "記憶體供需": {"date": "2026-09-01"},               # 超過 14 天
+             "光聖（6442）題材與產業": {"date": "2026-10-20"}}     # 個股題材不當事件比對
+    dup = events.find_duplicate("供需事件：光纖缺貨喊漲 年增上看5倍", "2026-10-21 供需失衡（產能吃緊）：光纖缺貨喊漲", index, [], cause="產能吃緊", now=now)
+    assert dup and dup["kind"] == "study" and dup["by"] == "光纖"
+    assert events.find_duplicate("DDR供需", "", index, [], now=now) is None                 # 舊研究超過 14 天，可以再研究
+    assert events.find_duplicate("光聖（6442）題材與產業", "", index, [], now=now) is None  # 個股題材不處理
+    queued = [{"topic": "供需事件：光通訊與AI伺服器需求爆發！光纖缺口上看1.8億", "trigger": "2026-10-21 供需失衡（需求爆發）：光纖缺口"}]
+    d2 = events.find_duplicate("供需事件：光纖缺貨喊漲 年增上看5倍", "光纖缺貨", {}, queued, cause="產能吃緊", now=now)
+    assert d2 and d2["kind"] == "queue"
+    # 政策類的新事件不算光纖供需的重複
+    assert events.find_duplicate("供需事件：中國擬對光纖實施出口管制", "光纖出口管制", index, [], cause="政策管制", now=now) is None
+
+
+def test_queue_research_skips_same_event_and_logs_related(tmp_path, monkeypatch):
+    import json
+    from market_intel import research
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "state" / "research_related.json")
+    today = research.now_tw().strftime("%Y-%m-%d")
+    (tmp_path / "research").mkdir()
+    (tmp_path / "research" / "index.json").write_text(json.dumps({"CCL供需": {"date": today}}), encoding="utf-8")
+    # 近期已研究 CCL供需 → 銅箔基板供需 是同一件事，略過並記錄
+    assert not research.queue_research("銅箔基板供需", f"{today} 供需失衡（產能吃緊）：高階銅箔基板缺貨恐延至2029年\nhttps://x/1", cause="產能吃緊")
+    rel = json.loads((tmp_path / "state" / "research_related.json").read_text(encoding="utf-8"))
+    assert rel["CCL供需"][0]["url"] == "https://x/1" and "銅箔基板缺貨" in rel["CCL供需"][0]["title"]
+    # 全新事件正常排入；同一件事的第二則新聞併進佇列項目，不另排
+    assert research.queue_research("供需事件：光纖缺貨喊漲", f"{today} 供需失衡（產能吃緊）：光纖缺貨喊漲", cause="產能吃緊")
+    assert not research.queue_research("供需事件：光纖缺口上看1.8億", f"{today} 供需失衡（需求爆發）：光纖缺口上看1.8億\nhttps://x/2", cause="需求爆發")
+    q = json.loads(next((tmp_path / "state" / "research_queue").glob("*.json")).read_text(encoding="utf-8"))
+    assert q["cause"] == "產能吃緊" and q["related"][0]["url"] == "https://x/2"
+    # 重大事件清單不套用事件去重
+    assert research.queue_research("供需事件：光纖重大事件", "重大事件：光纖", dedupe=False)
+    # 個股題材不受影響
+    assert research.queue_research("光聖（6442）題材與產業", "強勢股")
+
+
+def test_supply_shock_relevance_applies_to_all_causes_and_skips_denied(tmp_path, monkeypatch):
+    from market_intel import cli, notify, research
+    from market_intel.fetchers.news import NewsItem
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "related.json")
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": None)
+    noise = [NewsItem(source="Google", title="加拿大人轉口味？羊肉需求急升 農民稱產量翻倍仍供不應求", summary=""),
+             NewsItem(source="Google", title="宜蘭南澳規模4.6地震 9縣市有感 停電", summary=""),
+             NewsItem(source="Google", title="RTX 5090 停產傳聞遭輝達駁斥 缺貨", summary="")]
+    assert cli.supply_shocks(noise, {}, {}) == []   # 對不到個股、產品或關鍵原料；被駁斥的傳聞也不算
+
+
+# ---------------------------------------------------------------- 題材群量增價未漲預警
+
+def _volprice_frames(spike_vol=4.0, n=220):
+    """四檔同題材：1111 在倒數第 8 天量放大、價格沒動（訊號），隨後突破；2222~4444 安靜。"""
+    import numpy as np
+    import pandas as pd
+    from market_intel.trade import backtest as bt, early
+    stocks = {}
+    for k, code in enumerate(["1111", "2222", "3333", "4444"]):
+        d = _early_stock(n=n, base=(100, 118))
+        if code == "1111":
+            d.iloc[-8, d.columns.get_loc("volume")] = 1e6 * spike_vol          # 放量、價格不動
+            for col in ("open", "high", "low", "close"):                          # 隨後 5 天往上突破
+                d.iloc[-5:, d.columns.get_loc(col)] = np.linspace(d["close"].iloc[-6] * 1.03, d["close"].iloc[-6] * 1.18, 5)
+            d.iloc[-5:, d.columns.get_loc("volume")] = 3e6
+        stocks[code] = d
+    prepped = {c: bt.prepare(d, bt.Params()) for c, d in stocks.items()}
+    fr = early.frames(prepped)
+    mkt = pd.Series(True, index=stocks["1111"].index)
+    return fr, mkt
+
+
+def test_volprice_signal_needs_volume_without_price_move():
+    from market_intel.trade import volprice
+    fr, mkt = _volprice_frames()
+    day = fr["close"].index[-8]
+    uni = ["1111", "2222", "3333", "4444"]
+    f0 = volprice.base_mask(fr, mkt, uni)
+    sig = volprice.signal_mask(fr, f0, 2.0, 0.03)
+    assert bool(sig.loc[day, "1111"]) and not sig.loc[day, ["2222", "3333", "4444"]].any()
+    ctl = volprice.control_mask(fr, f0, 0.03)
+    assert not bool(ctl.loc[day, "1111"]) and bool(ctl.loc[day, "2222"])      # 沒放量的才是對照
+    assert not volprice.signal_mask(fr, f0, 6.0, 0.03).loc[day, "1111"]        # 量比門檻拉高就不算
+    assert not volprice.base_mask(fr, mkt, ["2222"]).loc[day, "1111"]          # 不在題材成分裡不算
+
+
+def test_volprice_follow_and_run_report_structure():
+    import pandas as pd
+    from market_intel.trade import launch, volprice
+    fr, mkt = _volprice_frames()
+    day = fr["close"].index[-8]
+    f0 = volprice.base_mask(fr, mkt, ["1111", "2222", "3333", "4444"])
+    sig = volprice.signal_mask(fr, f0, 2.0, 0.03)
+    fol = volprice.breakout_follow(fr, sig)
+    assert fol["後續突破比例%"] == 100.0 and fol["進場到突破日已漲%"] > 0       # 進場後 10 日內果然突破，比追突破早
+    labels = launch.label_frame(fr)
+    res = volprice.run(fr, mkt, {"光通訊": ["1111", "2222", "3333", "4444"]}, labels, grid=((2.0, 0.03),))
+    assert res["題材數"] == 1 and res["成分股數"] == 4 and res["基準F0"]["筆數"] > 100
+    names = [r["訊號"] for r in res["組合"]]
+    assert any(n.startswith("量比≥2") for n in names) and any(n.startswith("對照") for n in names)
+    assert {r["段"] for r in res["前後半"]} == {"前半", "後半"}
+    # 同題材其他股近 3 日放量上漲 → peers 計數
+    peers = volprice.peer_hot(fr, volprice.members({"光通訊": ["1111", "2222", "3333", "4444"]}, fr["close"].columns))
+    assert float(peers.loc[fr["close"].index[-2], "2222"]) >= 1                 # 1111 已放量上漲
+    assert float(peers.loc[day, "1111"]) == 0
+
+
+def test_volprice_watch_candidates_filters():
+    from types import SimpleNamespace
+    from market_intel.trade import volprice
+    themes = {"光通訊": ["1111", "2222", "3333"], "其他": ["9999"]}
+    lv = {c: {"hh20": 110.0, "ma60": 95.0, "avg_lots": 1000.0, "ret20": 0.05} for c in ("1111", "2222", "3333", "9999")}
+    q = lambda price, pct, lots: SimpleNamespace(price=price, change_pct=pct, volume_lots=lots, name="X")  # noqa: E731
+    quotes = {"1111": q(100.0, 1.0, 900),     # 量能步調 3 倍、漲幅小、未突破 → 預警
+              "2222": q(100.0, 1.0, 250),     # 量不夠
+              "3333": q(112.0, 4.0, 900),     # 已經突破 20 日高
+              "9999": q(100.0, 1.0, 900)}     # 不在 ≥2 檔的題材……（只有 1 檔）
+    got = volprice.watch_candidates(quotes, lv, themes, frac=0.3, min_pace=2.0, min_members=2)
+    assert [s["code"] for s in got] == ["1111"] and got[0]["pace"] == pytest.approx(3.0) and got[0]["themes"] == ["光通訊"]
+    lv["1111"]["ret20"] = 0.30
+    assert volprice.watch_candidates(quotes, lv, themes, frac=0.3, min_members=2) == []   # 已經漲一段就不預警

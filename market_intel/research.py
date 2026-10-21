@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 
 import yaml
 
-from . import ai, config
+from . import ai, config, events
 from .fetchers import stock_futures
 from .utils import ROOT, now_tw
 
@@ -29,6 +29,7 @@ INDEX_PATH = RESEARCH_DIR / "index.json"
 AUTO_THEMES_PATH = RESEARCH_DIR / "auto_themes.yaml"
 INBOX_DIR = ROOT / "state" / "inbox"
 QUEUE_DIR = ROOT / "state" / "research_queue"  # 資金流入但還沒研究過的題材，等有 API 金鑰時研究
+RELATED_PATH = ROOT / "state" / "research_related.json"  # 被視為「同一事件」而略過的後續新聞（既有研究的後續報導）
 PENDING_DIR = RESEARCH_DIR / "pending"  # 已寫好、等待發布的研究（JSON：REPORT_SCHEMA 欄位＋report＋trigger）
 
 SYSTEM = """你是台股產業研究員，專門把一個新題材拆解成完整的供應鏈地圖，給做波段的投資人參考。
@@ -586,17 +587,29 @@ def save_offset(token: str | None, offset: int | None) -> None:
 
 # ---------- 研究佇列（資金流入的題材） ----------
 
-def queue_research(topic: str, trigger: str, *, depth: int = 0, origin: str = "", priority: int = 1) -> bool:
+def queue_research(topic: str, trigger: str, *, depth: int = 0, origin: str = "", priority: int = 1,
+                   cause: str | None = None, dedupe: bool = True) -> bool:
     """把題材排入研究佇列；14 天內研究過或已在佇列就略過。回傳是否新排入。
 
     連動預研（prefetch）排進來的會多帶：depth（從 A 往外第幾層）、origin（是為了哪個 A 排的，同一個 A 的一起研究）、
     priority（預設 1；已經動起來的相關個股 2、一般預研 0）。
+    事件類題材（供需事件：…、XXX供需）另外做「同一事件」比對（events.py）：不同標題講同一件事，近期已研究或已在佇列就略過，
+    只把新聞記在 state/research_related.json（dedupe=False 可關掉，重大事件清單用）。
     """
-    if recently_researched(topic, load_index()):
+    index = load_index()
+    if recently_researched(topic, index):
         return False
     p = QUEUE_DIR / f"{slug(topic)}.json"
     if p.exists():
         return False
+    if dedupe and events.is_event_topic(topic):
+        dup = events.find_duplicate(topic, trigger, index, _queued_items(), cause=cause, now=now_tw())
+        if dup:
+            log.info("事件重複，略過研究：%s ≈ %s（%s）", topic, dup["name"], dup["by"])
+            events.note_related(RELATED_PATH, dup["name"], trigger, f"{now_tw():%Y-%m-%d}")
+            if dup["kind"] == "queue":
+                _add_related_to_queue(dup["name"], trigger)
+            return False
     QUEUE_DIR.mkdir(parents=True, exist_ok=True)
     item = {"topic": topic, "trigger": trigger, "time": f"{now_tw():%Y-%m-%d %H:%M}"}
     if depth:
@@ -605,8 +618,38 @@ def queue_research(topic: str, trigger: str, *, depth: int = 0, origin: str = ""
         item["origin"] = origin
     if priority != 1:
         item["priority"] = priority
+    if cause:
+        item["cause"] = cause
     p.write_text(json.dumps(item, ensure_ascii=False), encoding="utf-8")
     return True
+
+
+def _queued_items() -> list[dict]:
+    out = []
+    for p in sorted(QUEUE_DIR.glob("*.json")) if QUEUE_DIR.exists() else []:
+        try:
+            d = json.loads(p.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            continue
+        if isinstance(d, dict) and d.get("topic"):
+            out.append(d)
+    return out
+
+
+def _add_related_to_queue(name: str, trigger: str) -> None:
+    """已在佇列的事件又出現相似新聞：把新聞標題附在佇列項目的 related 裡，研究時一起參考。"""
+    p = QUEUE_DIR / f"{slug(name)}.json"
+    try:
+        d = json.loads(p.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return
+    lines = (trigger or "").split("\n")
+    url = next((x.strip() for x in reversed(lines) if x.strip().startswith("http")), "")
+    rel = d.setdefault("related", [])
+    row = {"title": events._title_of(trigger)[:120], "url": url}
+    if row not in rel:
+        rel.append(row)
+        p.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
 
 
 def read_queue() -> list[tuple[os.PathLike, dict]]:
