@@ -1797,6 +1797,29 @@ def test_overnight_mis_night_picks_busiest_contract_and_checks_time():
     assert overnight.mis_night([r], now)["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01)
 
 
+def test_macro_fetch_one_appends_live_price_when_daily_bar_missing(monkeypatch):
+    import pandas as pd
+    from datetime import timezone
+    from market_intel.fetchers import macro, yahoo
+    days = ["2026-10-15", "2026-10-16", "2026-10-19", "2026-10-20"]
+    idx = pd.to_datetime([f"{d} 00:00" for d in days], utc=True)  # 日經日K時間戳＝東京 09:00
+    closes = [64425.95, 65324.29, 64916.70, 64075.42]
+    ts = int(datetime(2026, 10, 21, 6, 5, tzinfo=timezone.utc).timestamp())  # 東京 10/21 15:05，已收盤
+    meta = {"regularMarketPrice": 64621.24, "regularMarketTime": ts, "exchangeTimezoneName": "Asia/Tokyo"}
+    df = pd.DataFrame({"close": closes}, index=idx)
+    monkeypatch.setattr(yahoo, "fetch_chart", lambda sym, range_="1y", interval="1d": (df, meta))
+    r = macro.fetch_one("^N225")
+    assert r["last"] == 64621.24 and r["prev"] == 64075.42 and r["d1_pct"] == pytest.approx(0.85, abs=0.01)
+    # 日K已有當天那一根（盤中）→ 照舊，不重複補
+    df2 = pd.DataFrame({"close": closes + [64600.0]}, index=idx.append(pd.to_datetime(["2026-10-21 00:00"], utc=True)))
+    monkeypatch.setattr(yahoo, "fetch_chart", lambda sym, range_="1y", interval="1d": (df2, meta))
+    r2 = macro.fetch_one("^N225")
+    assert r2["last"] == 64600.0 and r2["prev"] == 64075.42
+    # 沒有 meta 欄位（或時區壞掉）→ 維持原本算法
+    monkeypatch.setattr(yahoo, "fetch_chart", lambda sym, range_="1y", interval="1d": (df, {}))
+    assert macro.fetch_one("^N225")["d1_pct"] == pytest.approx((64075.42 / 64916.70 - 1) * 100, abs=0.01)
+
+
 def test_overnight_assess_levels():
     from market_intel import overnight
     cfg = dict(overnight.DEFAULTS)
