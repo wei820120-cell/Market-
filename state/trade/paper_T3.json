@@ -17,7 +17,7 @@
    "r0": 0.8822281020503482,
    "realized": -122.11399688720704,
    "half_done": true,
-   "days": 9,
+   "days": 10,
    "exit_next": ""
   },
   {
@@ -34,7 +34,24 @@
    "r0": 0.9459572100168714,
    "realized": -101.51,
    "half_done": true,
-   "days": 9,
+   "days": 10,
+   "exit_next": ""
+  },
+  {
+   "code": "1718",
+   "name": "中纖",
+   "setup": "拉回",
+   "contract": "EYF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry_date": "2026-10-21",
+   "entry": 11.550000190734863,
+   "stop": 10.623948307817942,
+   "r0": 0.9260518829169211,
+   "realized": -73.56200038909913,
+   "half_done": false,
+   "days": 1,
    "exit_next": ""
   }
  ],
@@ -128,53 +145,39 @@
    "reason": "停損"
   }
  ],
- "plan": [
-  {
-   "code": "1718",
-   "name": "中纖",
-   "setup": "拉回",
-   "theme": "供需事件：OPEC產量決策與油價",
-   "atr": 0.617367921944614,
-   "close": 11.350000381469727,
-   "vr": 0.7131973868149973,
-   "info": {
-    "std": "EYF",
-    "mini": null,
-    "night": false
-   },
-   "contract": "EYF",
-   "mult": 2000,
-   "qty": 1,
-   "risk_pct": 0.02,
-   "score": 2,
-   "stop_est": 10.423948498552805,
-   "target_est": 13.202104147303569,
-   "margin_est": 4596.750154495239,
-   "risk_est": 1852.103765833842
-  }
- ],
- "last_date": "2026-10-20",
+ "plan": [],
+ "last_date": "2026-10-21",
  "regime": "多頭",
  "blocked": [
+  {
+   "code": "2881",
+   "name": "富邦金",
+   "setup": "拉回",
+   "theme": "金融",
+   "contract": "CEF",
+   "risk_one": 13307.806783090655,
+   "need_capital": 443593.5594363552,
+   "reserve_one": 128385.0
+  },
+  {
+   "code": "2882",
+   "name": "國泰金",
+   "setup": "拉回",
+   "theme": "金融",
+   "contract": "CKF",
+   "risk_one": 9908.318415532478,
+   "need_capital": 330277.28051774926,
+   "reserve_one": 92340.00000000001
+  },
   {
    "code": "2609",
    "name": "陽明",
    "setup": "拉回",
    "theme": "供需事件：荷姆茲海峽又出事！新加坡籍貨櫃船遇襲沉沒 21名",
    "contract": "DAF",
-   "risk_one": 6170.468866983754,
-   "need_capital": 308523.4433491877,
-   "reserve_one": 60458.40074157715
-  },
-  {
-   "code": "1326",
-   "name": "台化",
-   "setup": "拉回",
-   "theme": "供需事件：荷姆茲海峽又出事！新加坡籍貨櫃船遇襲沉沒 21名",
-   "contract": "DGF",
-   "risk_one": 11892.947549354176,
-   "need_capital": 594647.3774677088,
-   "reserve_one": 89667.00370788576
+   "risk_one": 6072.577852275544,
+   "need_capital": 303628.8926137772,
+   "reserve_one": 60361.1985168457
   },
   {
    "code": "2885",
@@ -182,29 +185,29 @@
    "setup": "拉回",
    "theme": "金融",
    "contract": "DOF",
-   "risk_one": 5167.682973917835,
-   "need_capital": 172256.0991305945,
-   "reserve_one": 57105.0
+   "risk_one": 5055.70495982974,
+   "need_capital": 252785.24799148698,
+   "reserve_one": 57753.00247192383
   },
   {
-   "code": "2492",
-   "name": "華新科",
-   "setup": "拉回",
-   "theme": "蜜望實（8043）題材與產業",
-   "contract": "HBF",
-   "risk_one": 82765.57526218562,
-   "need_capital": 4138278.763109281,
-   "reserve_one": 448335.0
+   "code": "3231",
+   "name": "緯創",
+   "setup": "突破",
+   "theme": "AMAX-KY（6933）題材與產業",
+   "contract": "DXF",
+   "risk_one": 22238.82407766058,
+   "need_capital": 1111941.203883029,
+   "reserve_one": 189540.0
   },
   {
-   "code": "6285",
-   "name": "啟碁",
+   "code": "2347",
+   "name": "聯強",
    "setup": "拉回",
-   "theme": "昇達科（3491）題材與產業",
-   "contract": "KGF",
-   "risk_one": 33311.925192504415,
-   "need_capital": 1665596.2596252207,
-   "reserve_one": 300712.5
+   "theme": "供需事件：將持續供貨",
+   "contract": "GAF",
+   "risk_one": 7995.530579952884,
+   "need_capital": 399776.5289976442,
+   "reserve_one": 80756.99752807617
   },
   {
    "code": "2328",
@@ -212,42 +215,12 @@
    "setup": "突破",
    "theme": "鴻海（2317）題材與產業",
    "contract": "KWF",
-   "risk_one": 4740.426113736973,
-   "need_capital": 237021.30568684865,
-   "reserve_one": 49474.8014831543
-  },
-  {
-   "code": "8086",
-   "name": "宏捷科",
-   "setup": "拉回",
-   "theme": "穩懋（3105）題材與產業",
-   "contract": "PRF",
-   "risk_one": 22544.649833479412,
-   "need_capital": 1127232.4916739706,
-   "reserve_one": 153090.0
-  },
-  {
-   "code": "2368",
-   "name": "金像電",
-   "setup": "拉回",
-   "theme": "大量（3167）題材與產業",
-   "contract": "VGF",
-   "risk_one": 12273.65742999566,
-   "need_capital": 613682.8714997829,
-   "reserve_one": 71988.75
-  },
-  {
-   "code": "3005",
-   "name": "神基",
-   "setup": "拉回",
-   "theme": "供需事件：台海局勢升溫",
-   "contract": "SJF",
-   "risk_one": 7809.71203759401,
-   "need_capital": 390485.6018797005,
-   "reserve_one": 99630.0
+   "risk_one": 5387.538143769035,
+   "need_capital": 269376.90718845173,
+   "reserve_one": 52779.59925842285
   }
  ],
  "last_events": [
-  "🔴 模擬出場 2610 華航 @ 20.5（停損）｜損益 -1,184（-1.2R）"
+  "🟢 模擬進場 1718 中纖｜EYF 1 口 @ 11.6｜停損 10.6｜拉回"
  ]
 }
