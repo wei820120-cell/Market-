@@ -30,7 +30,8 @@ def levels(hist: dict[str, pd.DataFrame]) -> dict[str, dict]:
         if df is None or len(df) < 61:
             continue
         out[code] = {"hh20": float(df["high"].tail(20).max()), "ma60": float(sma(df["close"], 60).iloc[-1]),
-                     "atr": float(atr(df).iloc[-1]), "avg_lots": float(df["volume"].tail(20).mean()) / 1000}
+                     "atr": float(atr(df).iloc[-1]), "avg_lots": float(df["volume"].tail(20).mean()) / 1000,
+                     "ret20": float(df["close"].iloc[-1] / df["close"].iloc[-21] - 1) if len(df) >= 21 else None}
     return out
 
 

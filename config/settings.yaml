@@ -6,6 +6,17 @@ realtime:
   alert_stock_pct: 7.0        # 個股漲幅 >= 此 % 時推播
   news_min_score: 3           # 盤中新聞分數 >= 此值才推播（3 = 至少命中「漲價」，或兩個利多類別）
   flow_push_times: ["09:15", "10:00", "11:00", "12:00", "13:00", "13:25"]   # 定時推播族群資金流向排行
+  volprice_watch:             # 題材群「量增價未漲」觀察預警（推研究機器人；回測：不是進場訊號，只是比突破更早盯上）
+    enabled: true
+    start: "10:00"            # 開盤前段量能步調不穩，10:00 之後才看
+    min_pace: 3.0             # 量能步調（累積量 ÷ 20 日均量 ÷ 同時段正常比例）>= 此倍數
+    min_pct: -1.0             # 今日漲幅在 min_pct～max_pct（%）之間才算「價格還沒動」
+    max_pct: 3.0
+    max_per_day: 6            # 每天最多預警幾檔
+    repeat_days: 3            # 同一檔幾天內不重複預警
+    study_days: 30            # 研究過的題材（近幾天內）整群納入觀察
+    queue_research: true      # 預警到、研究庫沒有任何研究提到的個股，順便排進研究
+    queue_max_per_day: 3
 
 research:                     # 題材研究員（需要 GitHub Secret：ANTHROPIC_API_KEY）
   model: claude-haiku-5-5     # 研究用的 Claude 模型。Haiku 5.5 試跑和碩：約 US$0.13／題、品質足夠（Sonnet 5.5 約 US$2／題；要更深入改 claude-sonnet-5-5 或 claude-opus-5-5）
