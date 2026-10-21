@@ -2066,3 +2066,36 @@ def test_volprice_watch_candidates_filters():
     assert [s["code"] for s in got] == ["1111"] and got[0]["pace"] == pytest.approx(3.0) and got[0]["themes"] == ["光通訊"]
     lv["1111"]["ret20"] = 0.30
     assert volprice.watch_candidates(quotes, lv, themes, frac=0.3, min_members=2) == []   # 已經漲一段就不預警
+
+
+def test_volprice_check_pushes_once_and_queues_unresearched(tmp_path, monkeypatch):
+    import json
+    from datetime import datetime
+    from types import SimpleNamespace
+    from market_intel import cli, notify, research
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "state" / "related.json")
+    monkeypatch.setattr(cli, "VOLPRICE_SEEN", tmp_path / "state" / "volprice_seen.json")
+    (tmp_path / "research").mkdir()
+    (tmp_path / "research" / "index.json").write_text(json.dumps({"光通訊雷射InP": {"date": "2026-10-20", "codes": ["2222"]}}), encoding="utf-8")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    lv = {c: {"hh20": 110.0, "ma60": 95.0, "avg_lots": 1000.0, "ret20": 0.05} for c in ("1111", "2222", "3333")}
+    q = lambda lots: SimpleNamespace(price=100.0, change_pct=1.0, volume_lots=lots, name="X")  # noqa: E731
+    quotes = {"1111": q(2400), "2222": q(2400), "3333": q(100)}
+    vp = {"levels": lv, "groups": {"光通訊": ["1111", "2222", "3333"]}, "seen": {}, "today": 0, "queued": 0,
+          "conf": {"start": "10:00", "min_pace": 3.0, "max_per_day": 6, "repeat_days": 3, "queue_research": True, "queue_max_per_day": 3}}
+    monkeypatch.setattr(cli.sector_flow, "expected_fraction", lambda now: 0.5)     # pace ＝ 2400 ÷ (1000×0.5) ＝ 4.8
+    now = datetime(2026, 10, 21, 10, 30, tzinfo=research.now_tw().tzinfo)
+    cli._volprice_check(vp, quotes, {}, now)
+    assert len(sent) == 1 and sent[0][0] == "research" and "1111" in sent[0][1] and "2222" in sent[0][1] and "3333" not in sent[0][1]
+    assert "不是進場訊號" in sent[0][1] and "已有研究：光通訊雷射InP" in sent[0][1] and "已排入研究" in sent[0][1]
+    assert [d["topic"] for d in research._queued_items()] == ["X（1111）題材與產業"]
+    cli._volprice_check(vp, quotes, {}, now)                                          # 同一檔 3 天內不重複
+    assert len(sent) == 1
+    early = datetime(2026, 10, 22, 9, 30, tzinfo=now.tzinfo)
+    vp["seen"] = {}
+    cli._volprice_check(vp, quotes, {}, early)                                         # 10:00 之前不看
+    assert len(sent) == 1

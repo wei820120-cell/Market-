@@ -401,6 +401,82 @@ def intraday_picks(quotes: dict, listings: dict, flow: pd.DataFrame, theme_map: 
     return picks.rank_picks(cands, futures, min_ratio=1.5)
 
 
+VOLPRICE_SEEN = research.ROOT / "state" / "volprice_seen.json"
+VOLPRICE_NOTE = ("回測（近 2 年、343 檔）：這類股票之後 10 日內出現放量突破的機率約 41%（沒放量約 27%），進場價比突破日低約 6%；"
+                 "但勝率只有 42%、平均 R≈0，同題材有人放量上漲也沒有加分。所以是『比突破更早盯上』的觀察名單，不是進場訊號。")
+
+
+def _upto_yesterday(df: pd.DataFrame) -> pd.DataFrame:
+    today = f"{now_tw():%Y-%m-%d}"
+    idx = df.index.tz_convert("Asia/Taipei") if df.index.tz is not None else df.index
+    return df[[f"{d:%Y-%m-%d}" < today for d in idx]]
+
+
+def _volprice_setup(listings: dict, themes_tw: dict) -> dict | None:
+    """題材群量增價未漲預警的準備：題材成分股＋近期研究過的題材整群，到昨天為止的 20 日高、60 日線、均量。"""
+    conf = (config.settings().get("realtime") or {}).get("volprice_watch") or {}
+    if not conf.get("enabled", True):
+        return None
+    from .trade import intraday
+    groups = {k: [str(c) for c in v] for k, v in themes_tw.items()}
+    cutoff = (now_tw() - timedelta(days=int(conf.get("study_days", 30)))).strftime("%Y-%m-%d")
+    for name, meta in research.load_index().items():
+        cs = [str(c) for c in meta.get("codes", [])]
+        if meta.get("date", "") >= cutoff and len(cs) >= 3:
+            groups.setdefault(f"研究:{name}", cs)
+    codes = sorted({c for v in groups.values() for c in v if c in listings and not c.startswith("00")})
+    hist = {c: _upto_yesterday(df) for c, df in _yahoo_histories(codes, listings, range_="6mo").items()}
+    lv = intraday.levels(hist)
+    log.info("量增價未漲預警：監控 %d 檔（%d 個題材）", len(lv), len(groups))
+    seen = {}
+    if VOLPRICE_SEEN.exists():
+        try:
+            seen = json.loads(VOLPRICE_SEEN.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            seen = {}
+    return {"levels": lv, "groups": groups, "conf": conf, "seen": seen, "today": 0, "queued": 0}
+
+
+def _volprice_check(vp: dict, quotes: dict, listings: dict, now: datetime) -> None:
+    from .trade import volprice
+    conf = vp["conf"]
+    if f"{now:%H:%M}" < str(conf.get("start", "10:00")) or vp["today"] >= int(conf.get("max_per_day", 6)):
+        return
+    cands = volprice.watch_candidates(quotes, vp["levels"], vp["groups"], sector_flow.expected_fraction(now),
+                                      min_pace=float(conf.get("min_pace", 3.0)), max_pct=float(conf.get("max_pct", 3.0)),
+                                      min_pct=float(conf.get("min_pct", -1.0)))
+    today = f"{now:%Y-%m-%d}"
+    repeat = timedelta(days=int(conf.get("repeat_days", 3)))
+    fresh = []
+    for s in cands:
+        last = vp["seen"].get(s["code"])
+        if last and (datetime.strptime(today, "%Y-%m-%d") - datetime.strptime(last, "%Y-%m-%d")) < repeat:
+            continue
+        fresh.append(s)
+    fresh = fresh[: int(conf.get("max_per_day", 6)) - vp["today"]]
+    if not fresh:
+        return
+    lines = []
+    for s in fresh:
+        vp["seen"][s["code"]] = today
+        vp["today"] += 1
+        themes = "、".join(t.replace("研究:", "")[:14] for t in s["themes"][:2])
+        studied = research.find_for_codes([s["code"]], min_overlap=1)
+        status = f"已有研究：{studied}" if studied else "還沒研究過"
+        if not studied and conf.get("queue_research", True) and vp["queued"] < int(conf.get("queue_max_per_day", 3)):
+            if research.queue_research(f"{s['name']}（{s['code']}）題材與產業",
+                                       f"{today} 量增價未漲（觀察）：{s['code']} {s['name']}｜量能步調 {s['pace']:.1f} 倍、漲幅 {s['pct']:+.1f}%｜題材：{themes}",
+                                       priority=2):
+                vp["queued"] += 1
+                status = "還沒研究過，已排入研究"
+        lines.append(f"・{s['code']} {s['name']}〔{themes}〕 {s['price']:,.2f}（{s['pct']:+.1f}%）量能步調 {s['pace']:.1f} 倍｜"
+                     f"離 20 日高還差 {s['gap'] * 100:.1f}%｜{status}")
+    VOLPRICE_SEEN.parent.mkdir(parents=True, exist_ok=True)
+    cut = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=30)).strftime("%Y-%m-%d")
+    VOLPRICE_SEEN.write_text(json.dumps({k: v for k, v in vp["seen"].items() if v >= cut}, ensure_ascii=False), encoding="utf-8")
+    notify.send(f"👀 {now:%H:%M} 題材群量增價未漲（觀察，不是進場訊號）\n\n" + "\n".join(lines) + "\n\n" + VOLPRICE_NOTE, channel="research")
+
+
 def cmd_realtime(args) -> None:
     ensure_dirs()
     st = (config.settings().get("realtime") or {})
@@ -436,6 +512,13 @@ def cmd_realtime(args) -> None:
         log.warning("盤中進場訊號準備失敗：%s", e)
     if trade_rt:
         codes = list(dict.fromkeys(codes + list(trade_rt["levels"])))
+    vp = None
+    try:
+        vp = _volprice_setup(listings, themes_tw)
+    except Exception as e:  # noqa: BLE001
+        log.warning("量增價未漲預警準備失敗：%s", e)
+    if vp:
+        codes = list(dict.fromkeys(codes + list(vp["levels"])))
     news_map: dict[str, dict] = {}  # 今天看過的新聞依個股彙總（題材、漲價）
     alerted: set[str] = set()
     pushed_times: set[str] = set()
@@ -464,6 +547,11 @@ def cmd_realtime(args) -> None:
                     _trade_intraday_check(trade_rt, quotes, futures, now)
                 except Exception as e:  # noqa: BLE001
                     log.warning("盤中進場訊號失敗：%s", e)
+            if vp and _in_session(now):
+                try:
+                    _volprice_check(vp, quotes, listings, now)
+                except Exception as e:  # noqa: BLE001
+                    log.warning("量增價未漲預警失敗：%s", e)
             flow = sector_flow.theme_flow_intraday(quotes, themes_tw, listings, now)
             head = " ｜ ".join(f"{k} {q.price:,.2f} ({q.change_pct:+.2f}%)" for k, q in idx.items()
                                if q.price is not None and q.change_pct is not None)
