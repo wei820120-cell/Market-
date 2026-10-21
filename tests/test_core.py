@@ -1763,7 +1763,7 @@ def test_overnight_tx_night_picks_near_month_checks_date_and_ignores_weekly():
     assert overnight.tx_night([_tx("一般", "20261019", "202610", 23500, 100)], now) is None
 
 
-def _mis(sym, last, ref, date="20261019", t="050000", vol=1000):
+def _mis(sym, last, ref, date="20261017", t="050000", vol=1000):  # 預設：週五夜盤，週六清晨收盤
     return {"SymbolID": sym, "DispCName": "臺指期貨", "CLastPrice": str(last), "CRefPrice": str(ref), "CDiff": str(last - ref),
             "CDate": date, "CTime": t, "CTotalVolume": str(vol)}
 
@@ -1776,11 +1776,21 @@ def test_overnight_mis_night_picks_busiest_contract_and_checks_time():
             _mis("MXFJ6-M", 23100, 23500, vol=999999)]             # 小台，不採用
     n = overnight.mis_night(rows, now)
     assert n["month"] == "TXFJ6-M" and n["last"] == 23100 and not n["stale"] and n["src"] == "MIS"
-    assert n["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01) and n["date"] == "20261019"
+    assert n["pct"] == pytest.approx(-400 / 23500 * 100, abs=0.01) and n["date"] == "20261019" and not n["live"]
     # 最後成交是上週五的夜盤（週一的還沒開始報價）→ 過期
     assert overnight.mis_night([_mis("TXFJ6-M", 23100, 23500, date="20261016")], now)["stale"] is True
     assert overnight.mis_night([_mis("TXFJ6-M", 23100, 23500, date="")], now)["stale"] is True  # 沒時間：不敢用
     assert overnight.mis_night([], now) is None and overnight.mis_night([_mis("MXFJ6-M", 1, 1)], now) is None
+    # 今晚這場還在進行（平日晚上／凌晨）：標示進行中，交易日算下一個營業日；週五晚上算下週一
+    live = overnight.mis_night([_mis("TXFK6-M", 47270, 47013, date="20261021", t="230429")],
+                               datetime(2026, 10, 21, 23, 4, tzinfo=TW_TZ))
+    assert live["live"] and not live["stale"] and live["date"] == "20261022" and live["month"] == "TXFK6-M"
+    early = overnight.mis_night([_mis("TXFK6-M", 47270, 47013, date="20261022", t="015000")],
+                                datetime(2026, 10, 22, 2, 0, tzinfo=TW_TZ))
+    assert early["live"] and early["date"] == "20261022"
+    fri = overnight.mis_night([_mis("TXFK6-M", 47270, 47013, date="20261016", t="163000")],
+                              datetime(2026, 10, 16, 17, 0, tzinfo=TW_TZ))
+    assert fri["live"] and fri["date"] == "20261019"
     # 沒有參考價時用漲跌；時間格式帶冒號也能解析
     r = _mis("TXFJ6-M", 23100, 23500, t="05:00:00")
     r["CRefPrice"] = ""
@@ -1839,7 +1849,10 @@ def test_overnight_build_text_partial_failures_and_pre_plan(monkeypatch):
     # MIS 有最新夜盤就用 MIS（OpenAPI 過期也不影響）；MIS 連線失敗退回 OpenAPI
     mis = [_mis("TXFJ6-M", 23100, 23500)]
     t5, l5 = overnight.build(now, fetch_one, lambda: stale, lambda: mis)
-    assert "台指期夜盤 23,100（-1.70%，10/19 交易日）" in t5
+    assert "台指期夜盤 23,100（-1.70%，10/19 交易日）" in t5 and "進行中" not in t5
+    t5b, _ = overnight.build(datetime(2026, 10, 21, 23, 4, tzinfo=TW_TZ), fetch_one, lambda: [],
+                             lambda: [_mis("TXFK6-M", 47270, 47013, date="20261021", t="230429")])
+    assert "台指期夜盤 47,270（+0.55%，10/22 交易日，夜盤進行中）" in t5b
     t6, _ = overnight.build(now, fetch_one, lambda: rows, lambda: (_ for _ in ()).throw(RuntimeError("MIS 掛了")))
     assert "台指期夜盤 23,100" in t6
 

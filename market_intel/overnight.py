@@ -150,10 +150,18 @@ def mis_night(rows: list[dict], now=None) -> dict | None:
         return None
     ts = _mis_ts(r, now.tzinfo)
     end = last_night_end(now)
-    stale = ts is None or not (end - timedelta(hours=1) <= ts <= now + timedelta(minutes=30))
-    expected = expected_night_date(now)
-    return {"last": last, "pct": round(pct, 2), "date": expected if not stale else f"{ts or end:%Y%m%d}", "month": sym,
-            "expected": expected, "stale": stale, "asof": f"{ts:%m/%d %H:%M}" if ts else "未知", "src": "MIS"}
+    lo, hi = end - timedelta(hours=1), now + timedelta(minutes=30)
+    stale = ts is None or not lo <= ts <= hi
+    live = not stale and ts > end + timedelta(hours=1)  # 比最近收盤的夜盤還新＝今晚這場還在進行
+    if live:
+        day = ts.date() + timedelta(days=1 if ts.hour >= 15 else 0)
+        while day.weekday() >= 5:
+            day += timedelta(days=1)
+        date = f"{day:%Y%m%d}"
+    else:
+        date = expected_night_date(now) if not stale else f"{ts or end:%Y%m%d}"
+    return {"last": last, "pct": round(pct, 2), "date": date, "month": sym, "expected": expected_night_date(now),
+            "stale": stale, "live": live, "asof": f"{ts:%m/%d %H:%M}" if ts else "未知", "src": "MIS"}
 
 
 def describe_tx(rows: list[dict]) -> str:
@@ -194,7 +202,19 @@ def diagnose() -> str:
             out.append(f"[診斷] {name}：\n{fn()}")
         except Exception as e:  # noqa: BLE001
             out.append(f"[診斷] {name} 抓取失敗：{e}")
+    out.append("[診斷] Yahoo 最近日K：\n" + "\n".join(_describe_bars(sym) for sym in ("^N225", "^KS11", "^IXIC")))
     return "\n".join(out)
+
+
+def _describe_bars(symbol: str) -> str:
+    from .fetchers import yahoo
+    try:
+        df, meta = yahoo.fetch_chart(symbol, range_="1mo", interval="1d")
+    except Exception as e:  # noqa: BLE001
+        return f"{symbol}：抓取失敗 {e}"
+    bars = "、".join(f"{i:%m/%d %H:%M}={c:.2f}" for i, c in df["close"].tail(4).items())
+    return (f"{symbol}：{bars}｜regularMarketTime={meta.get('regularMarketTime')} 價={meta.get('regularMarketPrice')} "
+            f"前收={meta.get('previousClose')}/{meta.get('chartPreviousClose')} 時區={meta.get('exchangeTimezoneName')}")
 
 
 def assess(d: dict, cfg: dict | None = None) -> dict:
@@ -242,7 +262,8 @@ def text(night: dict | None, quotes: dict, ass: dict) -> str:
         if night["stale"]:
             lines.append(f"  台指期夜盤：資料時間 {night['asof']} 不是最近一場夜盤（預期 {night['expected']} 交易日），未採用（可能還沒更新）")
         else:
-            lines.append(f"  台指期夜盤 {night['last']:,.0f}（{night['pct']:+.2f}%，{night['date'][4:6]}/{night['date'][6:]} 交易日）")
+            lines.append(f"  台指期夜盤 {night['last']:,.0f}（{night['pct']:+.2f}%，{night['date'][4:6]}/{night['date'][6:]} 交易日"
+                         + ("，夜盤進行中" if night.get("live") else "") + "）")
     us = [f"{QUOTES[k][1]} {_q(quotes, k):+.1f}%" for k in ("nasdaq", "sox", "spx") if _q(quotes, k) is not None]
     if _q(quotes, "vix", "last") is not None:
         us.append(f"VIX {_q(quotes, 'vix', 'last'):.1f}")
