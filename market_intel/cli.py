@@ -23,7 +23,7 @@ import pandas as pd
 
 from . import ai, config, net, notify, overnight, prefetch, research, signals, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import macro, news, ptt, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
+from .fetchers import macro, news, ptt, stock_futures, taifex, telegram_channel, threads, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -1024,8 +1024,8 @@ def _ptt_items(boards: list, name_map: dict[str, str], dry: bool, latest: int, m
     return items
 
 
-def _probe(urls: list[str]) -> None:
-    """測試：雲端機房讀得到哪些網址（狀態碼、網頁標題、og:description、有沒有出現關鍵字）。"""
+def _probe(urls: list[str], browser: bool = False) -> None:
+    """測試：雲端機房讀得到哪些網址（狀態碼、網頁標題、og:description、有沒有出現關鍵字）；browser＝再用無頭瀏覽器讀一次。"""
     import re as _re
     for u in urls:
         try:
@@ -1036,17 +1036,27 @@ def _probe(urls: list[str]) -> None:
         body = r.text
         title = _re.search(r"<title[^>]*>(.*?)</title>", body, flags=_re.S)
         desc = _re.search(r'<meta[^>]+property="og:description"[^>]+content="([^"]*)"', body)
-        hits = [k for k in ("南亞", "台燿", "AWS", "Trainium") if k in body]
+        hits = [k for k in ("南亞", "台燿", "AWS", "Trainium", "thread_items", "data-sjs", "bigmanj87", "\\u53f0\\u71ff") if k in body]
         print(f"{u} → {r.status_code}（最後網址 {r.url}，{len(body)} 字）")
         print(f"  標題：{(title.group(1).strip() if title else '')[:80]}")
         print(f"  og:description：{(desc.group(1) if desc else '')[:200]}")
         print(f"  出現關鍵字：{hits}")
+        if browser:
+            try:
+                d = threads.render(u)
+            except Exception as e:  # noqa: BLE001
+                print(f"  瀏覽器讀取失敗：{e}")
+                continue
+            print(f"  [瀏覽器] 標題：{d['title']}（{d['url']}），貼文連結 {len(d['posts'])} 個")
+            print("  [瀏覽器] 頁面文字：" + d["text"][:800].replace("\n", " / "))
+            for post in d["posts"][:6]:
+                print(f"  [貼文] {post['href']} {post['time']}：{post['text'][:300]!r}")
 
 
 def cmd_signals(args) -> None:
     """早期訊號：論壇、RSS／Atom 來源、供應鏈關鍵字的 Google 新聞 → 偵測供應鏈換料、轉單、淘汰 → 推播＋排求證研究。"""
     if args.probe:
-        _probe(args.probe)
+        _probe(args.probe, args.browser)
         return
     cfg = signals.settings()
     if not cfg.get("enabled", True):
@@ -2632,6 +2642,7 @@ def main(argv: list[str] | None = None) -> None:
     sg.add_argument("--text", help="偵錯：直接檢查一段文字（不連網、不推播）")
     sg.add_argument("--relay", action="store_true", help="搭配 --text：當成使用者轉傳（放寬條件）")
     sg.add_argument("--probe", nargs="+", metavar="URL", help="測試：只看這些網址雲端機房讀不讀得到（不偵測、不推播）")
+    sg.add_argument("--browser", action="store_true", help="搭配 --probe：再用無頭瀏覽器（Playwright）讀一次")
     sg.set_defaults(func=cmd_signals)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")

@@ -84,6 +84,10 @@ on:
       probe:
         description: "測試雲端機房讀不讀得到這些網址（空白分隔），例如 Threads 個人頁"
         default: ""
+      browser:
+        description: "搭配 probe：再用無頭瀏覽器（Playwright）讀一次"
+        type: boolean
+        default: false
       overnight:
         description: "立刻推「開盤前環境」（台指期夜盤、美股收盤、那指期貨、亞股早盤＋風險燈號），並把原始資料印在紀錄裡"
         type: boolean
@@ -121,6 +125,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: 安裝中文字型（題材卡圖片）
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
+      - name: 安裝無頭瀏覽器（只在測試瀏覽器讀取時）
+        if: ${{ inputs.browser }}
+        run: pip install playwright && playwright install --with-deps chromium
       - name: 題材研究
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -134,6 +141,7 @@ jobs:
           TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
           TOPIC: ${{ inputs.topic }}
           PROBE: ${{ inputs.probe }}
+          BROWSER: ${{ inputs.browser }}
           CARD: ${{ inputs.card }}
           TRIAL: ${{ inputs.trial }}
           TRIAL_TRIGGER: ${{ inputs.trial_trigger }}
@@ -142,7 +150,7 @@ jobs:
           if [ -n "${{ inputs.explain }}" ]; then
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ -n "$PROBE" ]; then
-            python -m market_intel signals --probe $PROBE
+            if [ "$BROWSER" = "true" ]; then python -m market_intel signals --probe $PROBE --browser; else python -m market_intel signals --probe $PROBE; fi
           elif [ "${{ inputs.signals }}" = "true" ]; then
             python -m market_intel signals --dry --latest 40
           elif [ "${{ inputs.overnight }}" = "true" ]; then
