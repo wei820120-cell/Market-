@@ -2431,6 +2431,9 @@ def test_signals_post_tags_needs_something_happening():
     assert score >= 4 and "台光電（2383）" in tags and "AWS" in tags and "M9" in tags
     assert signals.post_tags("今天去台積電附近吃午餐", names, SIG_LISTINGS)[1] < 2            # 只提到公司
     assert signals.post_tags("今天天氣很好", names, SIG_LISTINGS)[1] < 2
+    assert signals.post_tags("這批商品是客製化的訂單，不販售", names, SIG_LISTINGS)[1] < 2       # 沒有公司／客戶／技術詞，只有一個字眼
+    assert signals.post_tags("獨自鎖漲停太孤單了", names, SIG_LISTINGS)[1] < 2
+    assert signals.post_tags("光纖缺貨，產能吃緊", names, SIG_LISTINGS)[1] >= 2               # 題材層級的事件（沒有公司名）：兩個以上的說法就收
     tags, score = signals.post_tags("聽說南亞科下半年要擴產", names, SIG_LISTINGS)
     assert score >= 2 and tags == ["南亞科（2408）"]
 
@@ -2445,3 +2448,101 @@ def test_threads_inbox_dedupes_and_prunes(tmp_path, monkeypatch):
         threads.add_to_inbox([e("b/1")], d)
     assert sorted(f.name for f in (tmp_path / "inbox").glob("*.json")) == ["2026-10-21.json", "2026-10-22.json", "2026-10-23.json"]
     assert [i["id"] for i in threads.load_inbox("2026-10-22")] == ["b/1"] and threads.load_inbox("2026-01-01") == []
+
+
+def test_cli_ambiguous_names_keep_common_words_out_of_company_matches():
+    from market_intel import cli, signals
+    listings = {"3167": {"name": "大量"}, "5287": {"name": "數字"}, "6486": {"name": "互動"}, "6274": {"name": "台燿"}}
+    names = signals.signal_names(listings, cli.AMBIGUOUS_NAMES)
+    assert names == {"台燿": "6274"}
+
+
+# ---------------------------------------------------------------- Podcast（RSS、逐字稿、待檢視清單）
+POD_RSS = """<?xml version="1.0"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0"><channel><title>t</title>
+<item><title>EP2 新集數</title><guid>g2</guid><link>https://x/2</link><pubDate>Wed, 21 Oct 2026 07:49:00 +0000</pubDate><enclosure url="https://cdn/2.mp3" length="123" type="audio/mpeg"/><itunes:duration>50:03</itunes:duration><description>&lt;p&gt;說明&lt;/p&gt;</description></item>
+<item><title>EP1</title><guid>g1</guid><pubDate>Sat, 17 Oct 2026 06:49:00 +0000</pubDate><enclosure url="https://cdn/1.mp3"/><itunes:duration>3600</itunes:duration></item>
+<item><title>EP0 很舊</title><guid>g0</guid><pubDate>Mon, 01 Jun 2026 10:00:00 +0000</pubDate><enclosure url="https://cdn/0.mp3"/></item>
+<item><title>沒有音檔</title></item></channel></rss>"""
+
+
+def test_podcast_parse_feed_and_pick_new():
+    from datetime import datetime, timezone
+    from market_intel.fetchers import podcast as pc
+    eps = pc.parse_feed(POD_RSS, "測試")
+    assert [e.title for e in eps] == ["EP2 新集數", "EP1", "EP0 很舊"]
+    assert eps[0].duration_s == 3003 and eps[1].duration_s == 3600 and eps[0].size == 123 and eps[0].summary == "說明"
+    assert eps[0].published == "2026-10-21T07:49:00+00:00"
+    now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+    seen: dict = {}
+    todo = pc.pick_new("測試", eps, seen, first=1, now=now)         # 第一次：只處理最新 1 集，其他標記已處理（不標記要處理的，失敗才會重試）
+    assert [e.title for e in todo] == ["EP2 新集數"] and set(seen["測試"]) == {eps[1].key, eps[2].key}
+    seen["測試"].append(eps[0].key)
+    assert pc.pick_new("測試", eps, seen, now=now) == []            # 都處理過了
+    assert [e.title for e in pc.pick_new("測試", eps, {"測試": [eps[0].key]}, now=now)] == ["EP1"]   # 沒處理過的新集數；太舊的 EP0 略過
+
+
+def test_podcast_paragraphs_transcript_and_timestamps(tmp_path, monkeypatch):
+    from market_intel.fetchers import podcast as pc
+    segs = [pc.Segment(0.0, 5.0, "今天聊台燿跟南亞。"), pc.Segment(5.0, 9.0, "AWS 的訂單有變化。"), pc.Segment(9.0, 12.0, "接著聊別的")]
+    paras = pc.paragraphs(segs, max_chars=15)
+    assert paras == [(0.0, "今天聊台燿跟南亞。AWS 的訂單有變化。"), (9.0, "接著聊別的")]
+    assert pc.mmss(75) == "01:15" and pc.mmss(3725) == "1:02:05"
+    monkeypatch.setattr(pc, "TRANSCRIPT_DIR", tmp_path / "podcasts")
+    ep = pc.parse_feed(POD_RSS, "股癌")[0]
+    path = pc.save_transcript(ep, paras)
+    text = path.read_text(encoding="utf-8")
+    assert path.name.startswith("2026-10-21_") and "標題：EP2 新集數" in text and "[00:09] 接著聊別的" in text
+    old = tmp_path / "podcasts" / "股癌" / "2026-01-01_abc.txt"
+    old.write_text("x", encoding="utf-8")
+    assert pc.prune_transcripts(14) >= 1 and not old.exists() and path.exists()
+
+
+def test_podcasts_cmd_end_to_end(tmp_path, monkeypatch):
+    import argparse
+    import json
+    import sys
+    import types
+    from datetime import datetime, timezone
+    from market_intel import cli, config, notify, research, signals
+    from market_intel.fetchers import podcast as pc
+    monkeypatch.setitem(sys.modules, "faster_whisper", types.ModuleType("faster_whisper"))
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "state" / "research_related.json")
+    monkeypatch.setattr(signals, "STATE_PATH", tmp_path / "state" / "signals.json")
+    monkeypatch.setattr(pc, "SEEN_PATH", tmp_path / "state" / "podcasts_seen.json")
+    monkeypatch.setattr(pc, "TRANSCRIPT_DIR", tmp_path / "state" / "podcasts")
+    monkeypatch.setattr(pc, "INBOX_DIR", tmp_path / "state" / "podcast_inbox")
+    monkeypatch.setattr(config, "sources", lambda: {"podcasts": [{"name": "股癌", "feed": "https://f"}], "podcast_max_age_days": 3650})
+    monkeypatch.setattr(cli, "_listings", lambda: SIG_LISTINGS)
+    monkeypatch.setattr(cli, "now_tw", lambda: research.now_tw().replace(year=2026, month=10, day=22, hour=12, minute=0))
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
+    monkeypatch.setattr(pc, "fetch_episodes", lambda show: pc.parse_feed(POD_RSS, show["name"]))
+    downloads = []
+    monkeypatch.setattr(pc, "download", lambda url, dest, max_mb=300: downloads.append(url) or dest)
+    segs = [pc.Segment(0.0, 20.0, "今天來聊今年的大盤。" * 60),
+            pc.Segment(400.0, 420.0, "聽說 AWS 把 M9 訂單轉給台光電，聯茂出局，這個傳聞還沒有證實，台燿也被提到。"),
+            pc.Segment(800.0, 820.0, "最後聊聊生活。")]
+    monkeypatch.setattr(pc, "transcribe", lambda path, model, minutes, prompt, threads: segs)
+    args = argparse.Namespace(list=False, dry=False, show=None, max_episodes=2, max_minutes=0, first=1, force=False, model=None, threads=0)
+    cli.cmd_podcasts(args)
+    assert downloads == ["https://cdn/2.mp3"]                          # 第一次只處理最新 1 集
+    assert sent == []                                                  # 不推播
+    transcripts = list((tmp_path / "state" / "podcasts" / "股癌").glob("*.txt"))
+    assert len(transcripts) == 1 and "[06:40]" in transcripts[0].read_text(encoding="utf-8")
+    inbox = json.loads((tmp_path / "state" / "podcast_inbox" / "2026-10-22.json").read_text(encoding="utf-8"))["items"]
+    assert len(inbox) == 1 and inbox[0]["t"] == "06:40" and "台光電（2383）" in inbox[0]["tags"] and inbox[0]["show"] == "股癌" and inbox[0]["transcript"].endswith(".txt")
+    queued = list((tmp_path / "state" / "research_queue").glob("*.json"))
+    assert len(queued) == 1 and "Podcast 股癌" in json.loads(queued[0].read_text(encoding="utf-8"))["trigger"]   # 轉單說法排求證研究
+    seen = json.loads((tmp_path / "state" / "podcasts_seen.json").read_text(encoding="utf-8"))["股癌"]
+    assert len(seen) == 3
+    cli.cmd_podcasts(args)                                             # 沒有新集數：不再下載
+    assert downloads == ["https://cdn/2.mp3"]
+    # 測試用：--dry 只印出，不存任何東西
+    args.dry, args.force = True, True
+    for f in transcripts:
+        f.unlink()
+    cli.cmd_podcasts(args)
+    assert not list((tmp_path / "state" / "podcasts" / "股癌").glob("*.txt"))

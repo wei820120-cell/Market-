@@ -296,6 +296,8 @@ def post_tags(text: str, name_map: dict[str, str], listings: dict | None = None,
     score = (2 if words else 0) + (1 if custs else 0) + (1 if products else 0) + (2 if rumor else 0) + min(len(comps), 3)
     if not words and not rumor:
         score = min(score, 1)  # 沒有任何「有事發生」的說法，只提到公司或技術詞，不收
+    if not comps and not custs and not products and len(words) < 2:
+        score = 0  # 沒有公司、客戶、技術詞，又只有一個「訂單」「漲停」之類的字，多半是閒聊
     codes = list(dict.fromkeys(c[2] for c in comps))
     tags = [_name(c, listings) if listings else c for c in codes] + list(dict.fromkeys(k[2] for k in custs)) + products
     return tags, score

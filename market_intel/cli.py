@@ -40,7 +40,7 @@ def _listings() -> dict[str, dict]:
 
 
 # 公司簡稱同時是常用詞，用名稱比對會誤判（仍可用代號比對，例如「全新(2455)」）
-AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界"}
+AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界", "數字", "互動", "大量", "新天地"}
 
 
 def _name_to_code(listings: dict[str, dict]) -> dict[str, str]:
@@ -1182,7 +1182,8 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
             entries.append({"id": f"{ep.show}/{ep.key}/{int(t)}", "show": ep.show, "episode": ep.title, "url": ep.link, "at": ep.published,
                             "seen_at": now.isoformat(timespec="seconds"), "t": podcast.mmss(t), "text": text[:600], "tags": tags, "score": score})
     entries = sorted(entries, key=lambda e: -e["score"])[:25]
-    items = [signals.Item(f"Podcast {ep.show}", text, ep.link, "頻道") for _, text in paras]
+    # 每段用不同的網址（#t=開始秒數）：偵測的「看過了」記錄是以網址為準，同一集的段落共用網址會只看到第一段
+    items = [signals.Item(f"Podcast {ep.show}", text, f"{ep.link or ep.audio_url}#t={int(t)}", "頻道") for t, text in paras]
     skip = config.sources().get("skip_patterns") or []
     if args.dry:
         print("逐字稿開頭：" + "".join(t for _, t in paras)[:600].replace("\n", " "))
