@@ -22,6 +22,7 @@ HOST_MIN_INTERVAL = {
     "mis.twse.com.tw": 1.0,
     "www.tpex.org.tw": 1.0,
     "www.sec.gov": 0.2,
+    "www.ptt.cc": 1.0,
 }
 
 _session: requests.Session | None = None
@@ -49,7 +50,7 @@ def _throttle(host: str) -> None:
         _last_call[host] = time.monotonic()
 
 
-def get(url: str, params=None, headers=None, timeout: float = 15, retries: int = 3) -> requests.Response:
+def get(url: str, params=None, headers=None, timeout: float = 15, retries: int = 3, cookies=None) -> requests.Response:
     host = urlparse(url).netloc
     if host == "www.sec.gov":
         # SEC 規定 User-Agent 要帶聯絡 email
@@ -58,7 +59,7 @@ def get(url: str, params=None, headers=None, timeout: float = 15, retries: int =
     for attempt in range(retries):
         _throttle(host)
         try:
-            r = session().get(url, params=params, headers=headers, timeout=timeout)
+            r = session().get(url, params=params, headers=headers, timeout=timeout, cookies=cookies)
             r.raise_for_status()
             return r
         except requests.RequestException as e:

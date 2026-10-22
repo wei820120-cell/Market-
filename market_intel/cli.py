@@ -21,9 +21,9 @@ from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
-from . import ai, config, notify, overnight, prefetch, research, theme_card
+from . import ai, config, notify, overnight, prefetch, research, signals, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
+from .fetchers import macro, news, ptt, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -658,6 +658,12 @@ def push_news(listings: dict, min_score: float) -> None:
     hits = [it for it in scored if abs(it.score) >= min_score and it not in letters and it not in mops]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+    try:  # 媒體標題裡的供應鏈換料、轉單、淘汰（現有詞表抓不到）
+        signals.process([signals.Item(it.source, f"{it.title}\n{it.summary}", it.url, "媒體") for it in fresh
+                         if not it.source.startswith("MOPS")], listings, signals.signal_names(listings, AMBIGUOUS_NAMES),
+                        skip_patterns=config.sources().get("skip_patterns") or [])
+    except Exception as e:  # noqa: BLE001
+        log.warning("早期訊號偵測失敗：%s", e)
     try:
         supply_shocks(fresh, listings, futures)
     except Exception as e:  # noqa: BLE001
@@ -945,6 +951,7 @@ def cmd_channels(args) -> None:
     themes_tw = config.themes().get("tw") or {}
     state = telegram_channel.load_state()
     skip = config.sources().get("skip_patterns") or []
+    sig_names = signals.signal_names(listings, AMBIGUOUS_NAMES)
     for ch in channels:
         handle, name = ch["handle"], ch.get("name", ch["handle"])
         try:
@@ -974,10 +981,86 @@ def cmd_channels(args) -> None:
                         log.info("頻道 %s #%s 圖片內容是業配／廣告，略過", handle, p.post_id)
                         continue
             notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code), channel=push_to)
+            if ch.get("signal", True) and not args.latest:  # 供應鏈換料、轉單、淘汰這類早期訊號：立刻推＋排求證
+                try:
+                    signals.process([signals.Item(f"頻道 {name}", p.text, p.url, "頻道")], listings, sig_names, skip_patterns=skip)
+                except Exception as e:  # noqa: BLE001
+                    log.warning("頻道早期訊號偵測失敗：%s", e)
             if (not args.latest or args.research) and ch.get("research", True):
                 research.add_to_inbox(handle, p.post_id, p.text, p.url)  # 交給題材研究員判斷要不要研究
     if not args.latest:
         telegram_channel.save_state(state)
+
+
+def _ptt_items(boards: list, name_map: dict[str, str], dry: bool, latest: int, max_fetch: int = 12) -> list:
+    """PTT 看板新文章 → 標題像供應鏈換料／轉單的才抓內文 → 早期訊號偵測用的文字。"""
+    cfg = signals.settings()
+    seen = ptt.load_seen()
+    items = []
+    for b in boards:
+        board, pages = b["board"], int(b.get("pages", 2))
+        try:
+            posts = ptt.fetch_index(board, pages)
+        except Exception as e:  # noqa: BLE001
+            log.warning("PTT %s 網頁版抓取失敗（%s），改試 Atom 摘要", board, e)
+            try:
+                for it in ptt.fetch_atom(board)[-max(latest, 40):]:
+                    items.append(signals.Item(f"PTT {board}", f"{it.title}\n{it.summary}", it.url, "論壇"))
+            except Exception as e2:  # noqa: BLE001
+                log.warning("PTT %s Atom 也抓取失敗：%s", board, e2)
+            continue
+        fresh = posts[-latest:] if latest else ptt.new_posts(board, posts, seen)
+        ranked = sorted(((signals.title_candidate(p.title, name_map, cfg), p) for p in fresh), key=lambda x: -x[0])
+        for score, p in [x for x in ranked if x[0] >= 2][:max_fetch]:
+            try:
+                body = ptt.fetch_article(p.url)
+            except Exception as e:  # noqa: BLE001
+                log.warning("PTT 文章 %s 抓取失敗：%s", p.url, e)
+                body = ""
+            items.append(signals.Item(f"PTT {board}", f"{p.title}\n{body}", p.url, "論壇"))
+        log.info("PTT %s：讀到 %d 篇，新文章 %d 篇，標題像供應鏈訊號 %d 篇", board, len(posts), len(fresh), len(items))
+    if not dry and not latest:
+        ptt.save_seen(seen)
+    return items
+
+
+def cmd_signals(args) -> None:
+    """早期訊號：論壇、RSS／Atom 來源、供應鏈關鍵字的 Google 新聞 → 偵測供應鏈換料、轉單、淘汰 → 推播＋排求證研究。"""
+    cfg = signals.settings()
+    if not cfg.get("enabled", True):
+        return
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    src = config.sources()
+    skip = src.get("skip_patterns") or []
+    if args.text:  # 偵錯：直接檢查一段文字
+        sigs = signals.process([signals.Item("手動文字", args.text, kind="使用者轉傳" if args.relay else "頻道")], listings, names,
+                               dry=True, skip_patterns=skip)
+        if not sigs:
+            print("沒有偵測到供應鏈訊號")
+        return
+    st = signals.load_state()
+    last = st.get("last_run")
+    if last and not (args.dry or args.latest):
+        try:
+            if now_tw() - datetime.fromisoformat(last) < timedelta(minutes=args.every):
+                return
+        except ValueError:
+            pass
+    items: list = []
+    items += _ptt_items(src.get("ptt_boards") or [], names, args.dry, args.latest)
+    for f in src.get("signal_feeds") or []:
+        for it in news.fetch_feed(f["url"], f.get("name", f["url"]))[:30]:
+            items.append(signals.Item(f.get("name", "來源"), f"{it.title}\n{it.summary}", it.url, "媒體"))
+    for q in src.get("signal_queries") or []:
+        for it in news.fetch_google_news(q, "zh-TW")[:15]:
+            items.append(signals.Item("Google新聞搜尋", f"{it.title}\n{it.summary}", it.url, "媒體"))
+    log.info("早期訊號：共 %d 段文字待檢查", len(items))
+    signals.process(items, listings, names, dry=args.dry, skip_patterns=skip)
+    if not args.dry:
+        st = signals.load_state()
+        st["last_run"] = now_tw().isoformat(timespec="seconds")
+        signals.save_state(st)
 
 
 AUTO_SLOTS = ("14:05", "21:05")  # 每天從新聞自動偵測新題材的時間（台北）
@@ -1153,9 +1236,17 @@ def cmd_research(args) -> None:
     if args.commands:
         token = notify.bot_token(push)
         offset = research.load_offset(token)
-        reqs, offset = research.pending_requests(notify.get_updates(push, offset), notify.owner_chat(push), offset)
+        reqs, offset = research.pending_requests(
+            notify.get_updates(push, offset), notify.owner_chat(push), offset,
+            free_text=lambda t: len(t or "") >= 8 and signals.looks_like_intel(t, signals.signal_names(listings(), AMBIGUOUS_NAMES)))
         research.save_offset(token, offset)
         for kind, text in reqs:
+            if kind == "intel":  # 使用者轉傳的情報：不需要 AI 金鑰，立刻偵測、推播、排求證
+                reply = signals.handle_relay(text, listings(), signals.signal_names(listings(), AMBIGUOUS_NAMES), channel=push,
+                                             skip_patterns=config.sources().get("skip_patterns") or [])
+                if reply:
+                    notify.send(reply, channel=push)
+                continue
             if kind == "card":
                 if not theme_card.send_query(text, listings(), context=f"📩 查詢：{text}", channel=push):
                     names = list(research.load_index()) + list((config.themes().get("tw") or {}))[:30]
@@ -2512,6 +2603,13 @@ def main(argv: list[str] | None = None) -> None:
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
     fl.set_defaults(func=cmd_inflow)
+    sg = sub.add_parser("signals", help="早期訊號：論壇／RSS／供應鏈關鍵字 → 偵測供應鏈換料、轉單、淘汰 → 推播＋排求證研究")
+    sg.add_argument("--dry", action="store_true", help="只印出偵測結果，不推播、不存記錄、不排研究")
+    sg.add_argument("--latest", type=int, default=0, help="測試：PTT 每個看板直接看最新 N 篇（不看已讀記錄）")
+    sg.add_argument("--every", type=int, default=10, help="距離上次掃描幾分鐘內就略過")
+    sg.add_argument("--text", help="偵錯：直接檢查一段文字（不連網、不推播）")
+    sg.add_argument("--relay", action="store_true", help="搭配 --text：當成使用者轉傳（放寬條件）")
+    sg.set_defaults(func=cmd_signals)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
     ch.add_argument("--research", action="store_true", help="搭配 --latest：這幾則也送進題材研究收件匣（補漏用）")

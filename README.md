@@ -245,6 +245,15 @@ GitHub 的排程常常延遲 30 分鐘以上，所以 `.github/workflows/watch.y
 - 也可以到 **Actions → daily-report → Run workflow** 手動執行
 - 國定假日沒有新資料，報告會沿用最近一個交易日
 
+**早期訊號（供應鏈換料、轉單、淘汰、認證：比媒體早一步）**：現有新聞流程只看媒體標題，詞表也只有漲價、缺貨、接單、升評、利空，
+「台燿掉 AWS、訂單去南亞」這種先出現在頻道、論壇、法人圈的傳聞抓不到。`market_intel/signals.py`（詞表在 `config/signals.yaml`，不需要 AI 金鑰）：
+文字裡有上市櫃公司，加上客戶（AWS、輝達、蘋果…）或技術詞（CCL、M9、CPO…），再加上換料／轉單／淘汰／認證的說法，就解析誰受惠、誰受傷，
+**立刻推研究機器人（標「未證實」）並排入求證研究（優先順序最高、佇列觸發文字附求證要點）**；同一件事一天只推一次，方向相反的說法會特別標出並併進原本的求證項目。
+來源：① 你直接傳給研究機器人的「情報 …」（或不加「情報」直接貼，有公司＋轉單說法就會抓），不需要金鑰；② Telegram 頻道貼文（`config/sources.yaml` 的 `telegram_channels`，每則都檢查）；
+③ PTT 股版（`ptt_boards`；實測 GitHub 機房被擋 403，預設關閉）；④ RSS／Atom 來源（`signal_feeds`：AWS What's New、NVIDIA Blog、SemiAnalysis，可加 YouTube 頻道與公司新聞室）；
+⑤ 供應鏈關鍵字的 Google 新聞搜尋（`signal_queries`）；⑥ 一般新聞標題（用同一套偵測）。監看迴圈每輪執行 `python -m market_intel signals`（內建 10 分鐘節流）；
+除錯：`signals --text "台燿掉AWS，訂單去南亞"`（只檢查一段文字）、`signals --dry --latest 40`（乾跑，不推播、不存記錄；Actions 的 research 工作流程有 `signals` 輸入）。
+
 ## 資料來源與限制
 
 | 資料 | 來源 | 即時性 |

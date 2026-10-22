@@ -172,6 +172,36 @@ def parse_rss(xml_text: str, source: str) -> list[NewsItem]:
     return items
 
 
+ATOM_NS = {"a": "http://www.w3.org/2005/Atom"}
+
+
+def parse_feed(xml_text: str, source: str) -> list[NewsItem]:
+    """RSS 或 Atom 都能讀（早期訊號的來源清單用：YouTube 頻道、公司新聞室、產業部落格…）。"""
+    root = ET.fromstring(xml_text)
+    if root.findall("a:entry", ATOM_NS):
+        items = []
+        for e in root.findall("a:entry", ATOM_NS):
+            link = e.find("a:link", ATOM_NS)
+            body = e.findtext("a:summary", default="", namespaces=ATOM_NS) or e.findtext("a:content", default="", namespaces=ATOM_NS)
+            items.append(NewsItem(
+                source=source,
+                title=(e.findtext("a:title", default="", namespaces=ATOM_NS)).strip(),
+                url=link.get("href", "") if link is not None else "",
+                published=e.findtext("a:updated", default="", namespaces=ATOM_NS) or e.findtext("a:published", default="", namespaces=ATOM_NS),
+                summary=re.sub(r"<[^>]+>", " ", body).strip()[:500],
+            ))
+        return items
+    return parse_rss(xml_text, source)
+
+
+def fetch_feed(url: str, name: str) -> list[NewsItem]:
+    try:
+        return parse_feed(net.get(url, timeout=20).text, name)
+    except Exception as e:  # noqa: BLE001
+        log.warning("來源 %s 抓取失敗：%s", name, e)
+        return []
+
+
 _google_last: dict[str, float] = {}
 GOOGLE_MIN_INTERVAL = 180  # 同一個搜尋最快 3 分鐘查一次，避免被 Google 限流
 
@@ -205,8 +235,6 @@ def fetch_yahoo_rss(symbols: list[str]) -> list[NewsItem]:
 
 
 # ---------- SEC 8-K（美股重大事件申報） ----------
-
-ATOM_NS = {"a": "http://www.w3.org/2005/Atom"}
 
 
 def parse_sec_atom(xml_text: str) -> list[NewsItem]:

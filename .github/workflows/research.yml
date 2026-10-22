@@ -77,6 +77,10 @@ on:
         description: "進出場機器人（模擬）：立即盤後結算並推播"
         type: boolean
         default: false
+      signals:
+        description: "早期訊號乾跑：掃 PTT 股版最新文章、RSS 來源、供應鏈關鍵字 Google 新聞，只印出偵測結果（不推播、不排研究），驗證真實網站格式"
+        type: boolean
+        default: false
       overnight:
         description: "立刻推「開盤前環境」（台指期夜盤、美股收盤、那指期貨、亞股早盤＋風險燈號），並把原始資料印在紀錄裡"
         type: boolean
@@ -133,6 +137,8 @@ jobs:
         run: |
           if [ -n "${{ inputs.explain }}" ]; then
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
+          elif [ "${{ inputs.signals }}" = "true" ]; then
+            python -m market_intel signals --dry --latest 40
           elif [ "${{ inputs.overnight }}" = "true" ]; then
             python -m market_intel trade --overnight
           elif [ "${{ inputs.trade }}" = "true" ]; then
