@@ -1095,6 +1095,50 @@ def cmd_signals(args) -> None:
         signals.save_state(st)
 
 
+def cmd_threads(args) -> None:
+    """追蹤指定的 Threads 帳號（sources.yaml 的 threads_accounts）：新貼文與他們回覆的原貼文 → 早期訊號偵測 → 推播＋排求證研究。"""
+    cfg = signals.settings()
+    if not cfg.get("enabled", True):
+        return
+    src = config.sources()
+    handles = [h.lstrip("@") for h in (args.accounts or src.get("threads_accounts") or [])][:12]
+    if not handles:
+        return
+    st = signals.load_state()
+    last = st.get("threads_last_run")
+    if last and not (args.dry or args.latest):
+        try:
+            if now_tw() - datetime.fromisoformat(last) < timedelta(minutes=args.every):
+                return
+        except ValueError:
+            pass
+    try:
+        got = threads.fetch_accounts(handles)
+    except ImportError:
+        log.warning("Threads：沒有安裝 playwright，略過（watch.yml 會安裝；本機要用請先 pip install playwright && playwright install chromium）")
+        return
+    seen = threads.load_seen()
+    items = []
+    for h, posts in got.items():
+        fresh = posts[-args.latest:] if args.latest else threads.new_posts(h, posts, seen)
+        log.info("Threads @%s：讀到 %d 則，要檢查 %d 則", h, len(posts), len(fresh))
+        if args.dry:
+            print(f"@{h}：讀到 {len(posts)} 則，要檢查 {len(fresh)} 則")
+            for p in fresh:
+                print(f"  - {p.posted_at[:16]} @{p.author}{'（回覆 @' + p.reply_to + '）' if p.reply_to else ''}：{p.text[:60]!r}")
+        for p in fresh:
+            items.append(signals.Item(f"Threads @{p.author}", p.text, p.url, "論壇"))
+    if not args.dry and not args.latest:
+        threads.save_seen(seen)
+    listings = _listings()
+    signals.process(items, listings, signals.signal_names(listings, AMBIGUOUS_NAMES), dry=args.dry,
+                    skip_patterns=src.get("skip_patterns") or [])
+    if not args.dry:
+        st = signals.load_state()
+        st["threads_last_run"] = now_tw().isoformat(timespec="seconds")
+        signals.save_state(st)
+
+
 AUTO_SLOTS = ("14:05", "21:05")  # 每天從新聞自動偵測新題材的時間（台北）
 
 
@@ -2644,6 +2688,12 @@ def main(argv: list[str] | None = None) -> None:
     sg.add_argument("--probe", nargs="+", metavar="URL", help="測試：只看這些網址雲端機房讀不讀得到（不偵測、不推播）")
     sg.add_argument("--browser", action="store_true", help="搭配 --probe：再用無頭瀏覽器（Playwright）讀一次")
     sg.set_defaults(func=cmd_signals)
+    th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）→ 早期訊號偵測 → 推播＋排求證研究")
+    th.add_argument("--dry", action="store_true", help="只印出讀到的貼文與偵測結果，不推播、不存記錄、不排研究")
+    th.add_argument("--latest", type=int, default=0, help="測試：每個帳號直接看最新 N 則（不看已讀記錄）")
+    th.add_argument("--every", type=int, default=5, help="距離上次掃描幾分鐘內就略過")
+    th.add_argument("--accounts", nargs="+", metavar="HANDLE", help="覆蓋設定檔的帳號（測試用）")
+    th.set_defaults(func=cmd_threads)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
     ch.add_argument("--research", action="store_true", help="搭配 --latest：這幾則也送進題材研究收件匣（補漏用）")

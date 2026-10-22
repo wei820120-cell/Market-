@@ -122,7 +122,7 @@ jobs:
       - name: 安裝中文字型（題材卡圖片）
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 安裝無頭瀏覽器（只在測試瀏覽器讀取時）
-        if: ${{ contains(inputs.probe, 'browser') }}
+        if: ${{ contains(inputs.probe, 'browser') || inputs.signals }}
         run: pip install playwright && playwright install --with-deps chromium
       - name: 題材研究
         env:
@@ -150,6 +150,7 @@ jobs:
             python -m market_intel signals --probe $URLS $B
           elif [ "${{ inputs.signals }}" = "true" ]; then
             python -m market_intel signals --dry --latest 40
+            python -m market_intel threads --dry --latest 8
           elif [ "${{ inputs.overnight }}" = "true" ]; then
             python -m market_intel trade --overnight
           elif [ "${{ inputs.trade }}" = "true" ]; then

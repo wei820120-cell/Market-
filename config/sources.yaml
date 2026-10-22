@@ -17,6 +17,11 @@ ptt_boards: []
 #  - board: Stock
 #    pages: 2
 
+# Threads 個人帳號（填 @ 後面的帳號）：用無頭瀏覽器讀公開頁，每 5 分鐘看一次新貼文，也會讀到他們回覆的原貼文
+# （例如有人貼傳聞、被追蹤的人回「台燿掉AWS，訂單去南亞」，兩則都會進早期訊號偵測）。最多 12 個。
+threads_accounts:
+  - bigmanj87
+
 # RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道；雲端機房讀不到的網站（回 403）不要放 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
 signal_feeds:
   - name: AWS What's New

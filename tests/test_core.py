@@ -2327,3 +2327,73 @@ def test_signals_detects_rumor_with_company_denial():
     assert signals.find_conflict(t2, {a.key: {"date": "2026-10-22", "c": a.customers, "w": a.winners, "l": a.losers}}) is None
     assert a.key != t2.key  # 傳聞本身與「傳聞被否認」是兩件事，都會推
     assert "傳聞已被否認" in signals.message(t2, SIG_LISTINGS, None, "供需事件：x", True)
+
+
+# ---------------------------------------------------------------- Threads 帳號追蹤（頁面內容取自真實讀取結果）
+TH_RAW_A = {"href": "/@hua___83/post/Dex-qNZoP2z", "time": "2026-10-22T03:06:50.000Z",
+            "text": "hua___83\n12小時\n" + SIG_POST_A + "\n這是真的假的…….有沒有老闆說一下\xa0\xa0\n翻譯\n256\n68\n37"}
+TH_RAW_B = {"href": "/@bigmanj87/post/DezGAWDH4WF", "time": "2026-10-22T13:30:16.000Z",
+            "text": "bigmanj87\n1小時\n台燿掉AWS，訂單去南亞\xa0\xa0\n翻譯\n963\n18\n8\n344"}
+
+
+def test_threads_parse_posts_and_pages():
+    from market_intel.fetchers import threads
+    a = threads.parse_post(TH_RAW_A)
+    assert a.author == "hua___83" and a.code == "Dex-qNZoP2z" and a.url == "https://www.threads.com/@hua___83/post/Dex-qNZoP2z"
+    assert a.text.startswith("南亞塑膠 M9 遭 AWS 淘汰") and a.text.endswith("有沒有老闆說一下") and "翻譯" not in a.text and a.posted_at.startswith("2026-10-22T03")
+    b = threads.parse_post(TH_RAW_B)
+    assert b.text == "台燿掉AWS，訂單去南亞" and b.reply_to == ""
+    # 沒有「翻譯」按鈕：去掉最後的讚／回覆數；日期格式的時間列、「正在回覆」都要處理
+    short = threads.parse_post({"href": "/@bigmanj87/post/Dev5rpTn4EQ", "time": "2026-10-21T07:44:51.000Z", "text": "bigmanj87\n1天\n真的嗎🥷\n26\n1"})
+    assert short.text == "真的嗎🥷"
+    rep = threads.parse_post({"href": "/@doudouniu63/post/DeuHZwqI2Ev", "time": "", "text": "doudouniu63\n2026-10-7\n正在回覆@st_lyrics_ock\n巨人頭上套一個紙袋我都認得出來\xa0\xa0\n翻譯\n19\n2"})
+    assert rep.reply_to == "st_lyrics_ock" and rep.text == "巨人頭上套一個紙袋我都認得出來"
+    assert threads.parse_post({"href": "/@x/follow", "text": "x\n1天\n內文"}) is None
+    # 同一則的 /media 連結只留一個
+    page = {"posts": [TH_RAW_B, {**TH_RAW_B, "href": "/@bigmanj87/post/DezGAWDH4WF/media"}, TH_RAW_A]}
+    assert [p.code for p in threads.parse_page(page)] == ["DezGAWDH4WF", "Dex-qNZoP2z"]
+
+
+def test_threads_new_posts_first_read_records_only_and_skips_old():
+    from datetime import datetime, timezone
+    from market_intel.fetchers import threads
+    now = datetime(2026, 10, 22, 15, 0, tzinfo=timezone.utc)
+    a, b = threads.parse_post(TH_RAW_A), threads.parse_post(TH_RAW_B)
+    seen: dict = {}
+    assert threads.new_posts("bigmanj87", [a], seen, now=now) == [] and seen == {"bigmanj87": ["Dex-qNZoP2z"]}
+    assert [p.code for p in threads.new_posts("bigmanj87", [a, b], seen, now=now)] == ["DezGAWDH4WF"]
+    old = threads.ThreadsPost("x", "OLD1", "u", "舊貼文", "2026-10-01T00:00:00.000Z")
+    assert threads.new_posts("bigmanj87", [old], seen, now=now) == [] and "OLD1" in seen["bigmanj87"]
+
+
+def test_threads_cmd_pushes_new_posts_only(tmp_path, monkeypatch):
+    import argparse
+    import json
+    from market_intel import cli, config, notify, research, signals
+    from market_intel.fetchers import threads
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "state" / "research_related.json")
+    monkeypatch.setattr(signals, "STATE_PATH", tmp_path / "state" / "signals.json")
+    monkeypatch.setattr(threads, "STATE_PATH", tmp_path / "state" / "threads_seen.json")
+    monkeypatch.setattr(config, "sources", lambda: {"threads_accounts": ["bigmanj87"]})
+    monkeypatch.setattr(cli, "_listings", lambda: SIG_LISTINGS)
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    posts = [threads.parse_post(TH_RAW_A)]
+    monkeypatch.setattr(threads, "fetch_accounts", lambda handles: {"bigmanj87": list(posts)})
+    args = argparse.Namespace(dry=False, latest=0, every=5, accounts=None)
+    cli.cmd_threads(args)                      # 第一次：只記錄，不推
+    assert not sent and json.loads((tmp_path / "state" / "threads_seen.json").read_text(encoding="utf-8")) == {"bigmanj87": ["Dex-qNZoP2z"]}
+    posts.append(threads.parse_post(TH_RAW_B))
+    args.every = 0
+    cli.cmd_threads(args)                      # 新貼文：偵測出台燿掉單、南亞接單
+    assert len(sent) == 1 and sent[0][0] == "research"
+    assert "來源：Threads @bigmanj87" in sent[0][1] and "受傷：台燿（6274）" in sent[0][1] and "受惠：南亞（1303）" in sent[0][1] and "個人帳號的貼文" in sent[0][1]
+    cli.cmd_threads(args)                      # 沒有新貼文：不重複推
+    assert len(sent) == 1
+    # 沒裝 playwright：略過、不出錯
+    monkeypatch.setattr(threads, "fetch_accounts", lambda handles: (_ for _ in ()).throw(ImportError("playwright")))
+    cli.cmd_threads(args)
+    assert len(sent) == 1

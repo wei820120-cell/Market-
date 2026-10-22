@@ -398,6 +398,8 @@ def message(sig: Signal, listings: dict, conflict: dict | None, topic: str | Non
     lines.append("原文：" + re.sub(r"\s+", " ", sig.text)[:260])
     if sig.url:
         lines.append(sig.url)
+    if sig.source.startswith("Threads"):
+        lines.append("提醒：這是個人帳號的貼文，多半沒附出處，也可能是轉述或猜測；先找原始出處再當真。")
     if conflict:
         lines.append(f"⚠️ 與 {conflict.get('date', '')[5:]} 的訊號方向相反（先前：{conflict.get('source', '')}說 "
                      f"受傷 {_names(conflict.get('l', []), listings)}、受惠 {_names(conflict.get('w', []), listings)}）。"

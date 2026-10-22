@@ -1,5 +1,6 @@
 # 常駐監看：每 2 分鐘檢查一次
 #   - 股癌等 Telegram 頻道新貼文 → 推研究機器人（業配略過）
+#   - 追蹤的 Threads 帳號新貼文（含他們回覆的原貼文）→ 早期訊號偵測（供應鏈換料、轉單）→ 推研究機器人＋排求證研究
 #   - 新聞、漲價信 → 新聞機器人（假日也推）
 #   - 進出場機器人：你回報的成交（記帳、停損）；平日 08:30 盤前計劃、15:30 後盤後結算與出場提醒
 #   - 開發分支 research/pending 的研究（Claude 研究好的）→ 發布並推研究圖表
@@ -39,6 +40,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: 安裝中文字型（題材卡圖片）
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
+      - name: 安裝無頭瀏覽器（追蹤 Threads 帳號用；失敗就略過，不影響其他監看）
+        run: (pip install playwright && playwright install --with-deps chromium) || echo "playwright 安裝失敗，Threads 追蹤略過"
       - name: 監看（約 5 小時 45 分）
         env:
           RESEARCH_BRANCH: claude/funny-goodall-fft1u6
@@ -72,6 +75,7 @@ jobs:
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
             timeout 300 python -m market_intel signals || echo "signals 失敗"
+            timeout 300 python -m market_intel threads || echo "threads 失敗"
             timeout 600 python -m market_intel news --push || echo "news 失敗"
             timeout 300 python -m market_intel macro || echo "macro 失敗"
             timeout 900 python -m market_intel trade --auto --commands || echo "trade 失敗"
