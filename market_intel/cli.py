@@ -21,7 +21,7 @@ from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
-from . import ai, config, notify, overnight, prefetch, research, signals, theme_card
+from . import ai, config, net, notify, overnight, prefetch, research, signals, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
 from .fetchers import macro, news, ptt, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
@@ -1024,8 +1024,30 @@ def _ptt_items(boards: list, name_map: dict[str, str], dry: bool, latest: int, m
     return items
 
 
+def _probe(urls: list[str]) -> None:
+    """測試：雲端機房讀得到哪些網址（狀態碼、網頁標題、og:description、有沒有出現關鍵字）。"""
+    import re as _re
+    for u in urls:
+        try:
+            r = net.session().get(u, timeout=20, allow_redirects=True)
+        except Exception as e:  # noqa: BLE001 - 只要看連不連得上
+            print(f"{u} → 連線失敗：{e}")
+            continue
+        body = r.text
+        title = _re.search(r"<title[^>]*>(.*?)</title>", body, flags=_re.S)
+        desc = _re.search(r'<meta[^>]+property="og:description"[^>]+content="([^"]*)"', body)
+        hits = [k for k in ("南亞", "台燿", "AWS", "Trainium") if k in body]
+        print(f"{u} → {r.status_code}（最後網址 {r.url}，{len(body)} 字）")
+        print(f"  標題：{(title.group(1).strip() if title else '')[:80]}")
+        print(f"  og:description：{(desc.group(1) if desc else '')[:200]}")
+        print(f"  出現關鍵字：{hits}")
+
+
 def cmd_signals(args) -> None:
     """早期訊號：論壇、RSS／Atom 來源、供應鏈關鍵字的 Google 新聞 → 偵測供應鏈換料、轉單、淘汰 → 推播＋排求證研究。"""
+    if args.probe:
+        _probe(args.probe)
+        return
     cfg = signals.settings()
     if not cfg.get("enabled", True):
         return
@@ -2609,6 +2631,7 @@ def main(argv: list[str] | None = None) -> None:
     sg.add_argument("--every", type=int, default=10, help="距離上次掃描幾分鐘內就略過")
     sg.add_argument("--text", help="偵錯：直接檢查一段文字（不連網、不推播）")
     sg.add_argument("--relay", action="store_true", help="搭配 --text：當成使用者轉傳（放寬條件）")
+    sg.add_argument("--probe", nargs="+", metavar="URL", help="測試：只看這些網址雲端機房讀不讀得到（不偵測、不推播）")
     sg.set_defaults(func=cmd_signals)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")

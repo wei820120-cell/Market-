@@ -81,6 +81,9 @@ on:
         description: "早期訊號乾跑：掃 PTT 股版最新文章、RSS 來源、供應鏈關鍵字 Google 新聞，只印出偵測結果（不推播、不排研究），驗證真實網站格式"
         type: boolean
         default: false
+      probe:
+        description: "測試雲端機房讀不讀得到這些網址（空白分隔），例如 Threads 個人頁"
+        default: ""
       overnight:
         description: "立刻推「開盤前環境」（台指期夜盤、美股收盤、那指期貨、亞股早盤＋風險燈號），並把原始資料印在紀錄裡"
         type: boolean
@@ -130,6 +133,7 @@ jobs:
           TELEGRAM_TRADE_BOT_TOKEN: ${{ secrets.TELEGRAM_TRADE_BOT_TOKEN }}
           TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
           TOPIC: ${{ inputs.topic }}
+          PROBE: ${{ inputs.probe }}
           CARD: ${{ inputs.card }}
           TRIAL: ${{ inputs.trial }}
           TRIAL_TRIGGER: ${{ inputs.trial_trigger }}
@@ -137,6 +141,8 @@ jobs:
         run: |
           if [ -n "${{ inputs.explain }}" ]; then
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
+          elif [ -n "$PROBE" ]; then
+            python -m market_intel signals --probe $PROBE
           elif [ "${{ inputs.signals }}" = "true" ]; then
             python -m market_intel signals --dry --latest 40
           elif [ "${{ inputs.overnight }}" = "true" ]; then
