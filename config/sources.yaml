@@ -11,10 +11,11 @@ telegram_channels:
 # 你自己看到的消息，直接傳給研究機器人：「情報 台燿掉AWS，訂單去南亞」（或不加「情報」直接貼，有公司＋轉單說法也會抓），
 # 幾分鐘內就會偵測、推播（標未證實）並排入求證研究。
 
-# PTT 看板（公開網頁版）：標題像供應鏈訊號的文章才抓內文
-ptt_boards:
-  - board: Stock
-    pages: 2
+# PTT 看板（公開網頁版與 Atom 摘要）：實測 GitHub 機房回 403（PTT 擋資料中心 IP），所以預設關閉。
+# 換到不被擋的環境執行時，把下面兩行取消註解即可（標題像供應鏈訊號的文章才抓內文）。
+ptt_boards: []
+#  - board: Stock
+#    pages: 2
 
 # RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道；雲端機房讀不到的網站（回 403）不要放 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
 signal_feeds:
