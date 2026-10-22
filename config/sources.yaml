@@ -6,6 +6,37 @@ telegram_channels:
     handle: Gooaye
     push_to: research    # news / picks / market / research
 
+# ---------- 早期訊號來源（供應鏈換料、轉單、淘汰、認證：config/signals.yaml 的詞表） ----------
+# 每個頻道貼文也會做早期訊號偵測（頻道設定 signal: false 可關掉）。要追更多頻道，在上面 telegram_channels 加帳號即可。
+# 你自己看到的消息，直接傳給研究機器人：「情報 台燿掉AWS，訂單去南亞」（或不加「情報」直接貼，有公司＋轉單說法也會抓），
+# 幾分鐘內就會偵測、推播（標未證實）並排入求證研究。
+
+# PTT 看板（公開網頁版）：標題像供應鏈訊號的文章才抓內文
+ptt_boards:
+  - board: Stock
+    pages: 2
+
+# RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
+signal_feeds:
+  - name: AWS What's New
+    url: https://aws.amazon.com/about-aws/whats-new/recent/feed/
+  - name: NVIDIA Blog
+    url: https://blogs.nvidia.com/feed/
+  - name: SemiAnalysis
+    url: https://semianalysis.substack.com/feed
+
+# 供應鏈關鍵字的 Google 新聞搜尋（比一般新聞詞表更早抓到「傳出」「供應鏈」這類消息）
+signal_queries:
+  - AWS 供應鏈 轉單
+  - AWS Trainium 供應商 認證
+  - AWS 淘汰 供應商
+  - 輝達 供應鏈 淘汰 轉單
+  - 輝達 新供應商 認證 通過
+  - 蘋果 供應鏈 掉單 轉單
+  - 谷歌 TPU 供應鏈 轉單
+  - 台廠 掉單 訂單轉向
+  - 供應鏈傳出 認證失敗 良率
+
 # 業配／廣告：貼文含這些字就不推播、也不送去研究（正規表示式）
 skip_patterns:
   - 詳情請看資訊欄

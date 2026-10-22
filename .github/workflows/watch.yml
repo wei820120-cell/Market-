@@ -71,6 +71,7 @@ jobs:
           while [ "$(date +%s)" -lt "$end" ]; do
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
+            timeout 300 python -m market_intel signals || echo "signals 失敗"
             timeout 600 python -m market_intel news --push || echo "news 失敗"
             timeout 300 python -m market_intel macro || echo "macro 失敗"
             timeout 900 python -m market_intel trade --auto --commands || echo "trade 失敗"

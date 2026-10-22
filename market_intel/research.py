@@ -503,6 +503,7 @@ def parse_command(text: str) -> str | None:
 
 
 CARD_RE = re.compile(r"^\s*/?(題材|族群|卡片?|目標價|card)\s*[:：]?\s*(.+)$", re.I)
+INTEL_RE = re.compile(r"^\s*/?(情報|消息|傳聞|爆料|intel)\s*[:：]?\s*(.+)$", re.I | re.S)
 
 
 def parse_request(text: str) -> tuple[str, str] | None:
@@ -510,6 +511,9 @@ def parse_request(text: str) -> tuple[str, str] | None:
     t = parse_command(text)
     if t:
         return "research", t
+    mi = INTEL_RE.match(text or "")
+    if mi and len(mi.group(2).strip()) >= 4:
+        return "intel", mi.group(2).strip()[:1500]  # 轉傳的情報（供應鏈換料、轉單…），整段文字交給早期訊號偵測
     m = CARD_RE.match(text or "")
     if m:
         q = m.group(2).strip().splitlines()[0].strip()[:40]
@@ -518,8 +522,11 @@ def parse_request(text: str) -> tuple[str, str] | None:
 
 
 def pending_requests(updates: list[dict], owner_chat: str | None,
-                     offset: int | None) -> tuple[list[tuple[str, str]], int | None]:
-    """從 getUpdates 取出主人傳的指令，回傳（[(種類, 內容)], 下一次的 offset）。"""
+                     offset: int | None, free_text=None) -> tuple[list[tuple[str, str]], int | None]:
+    """從 getUpdates 取出主人傳的指令，回傳（[(種類, 內容)], 下一次的 offset）。
+
+    free_text：沒有加指令詞的訊息，這個函式回傳 True 就當成情報（例如「台燿掉AWS，訂單去南亞」）。
+    """
     out = []
     for u in updates:
         offset = max(offset or 0, int(u.get("update_id", 0)) + 1)
@@ -527,6 +534,8 @@ def pending_requests(updates: list[dict], owner_chat: str | None,
         if owner_chat and str((msg.get("chat") or {}).get("id")) != str(owner_chat):
             continue
         req = parse_request(msg.get("text", ""))
+        if not req and free_text and free_text(msg.get("text", "")):
+            req = ("intel", (msg.get("text") or "").strip()[:1500])
         if req:
             out.append(req)
     return out, offset

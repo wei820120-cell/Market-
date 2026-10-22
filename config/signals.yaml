@@ -1,0 +1,75 @@
+# 早期訊號：供應鏈換料、轉單、淘汰、認證這類「還沒上媒體」的消息（頻道、論壇、使用者轉傳、媒體標題都用同一套偵測）。
+# 偵測到就立刻推研究機器人（標「未證實」）並排入求證研究；同一件事一天只推一次，方向相反的訊號會特別標出來。
+
+enabled: true
+max_push_per_day: 12      # 每天最多推幾則早期訊號
+max_queue_per_day: 6      # 每天最多排幾個求證研究
+keep_days: 14             # 訊號記錄保留天數（用來比對重複與相反訊號）
+min_text_len: 8           # 太短的貼文不看
+
+# 終端客戶／平台（訊號裡要有它們，或使用者轉傳，才算供應鏈訊號）。鍵是顯示名稱，值是文字裡可能的寫法。
+customers:
+  AWS: [AWS, 亞馬遜, Amazon, Trainium, Inferentia]
+  輝達: [輝達, NVIDIA, Nvidia, GB200, GB300, Rubin, NVL72, NVL144]
+  谷歌: [谷歌, Google, TPU]
+  Meta: [Meta, MTIA]
+  微軟: [微軟, Microsoft, Maia, Azure]
+  蘋果: [蘋果, Apple, iPhone]
+  OpenAI: [OpenAI]
+  特斯拉: [特斯拉, Tesla]
+  超微: [超微, AMD]
+  英特爾: [英特爾, Intel]
+  高通: [高通, Qualcomm]
+  博通: [博通, Broadcom]
+  台積電: [台積電, TSMC]
+  三星: [三星, Samsung]
+  美光: [美光, Micron]
+  SK海力士: [海力士, Hynix]
+
+# 公司別名 → 清單上的簡稱（文字裡常用的寫法與英文縮寫）
+aliases:
+  南亞塑膠: 南亞
+  南塑: 南亞
+  Nan Ya: 南亞
+  NanYa: 南亞
+  TUC: 台燿
+  Taiwan Union: 台燿
+  EMC: 台光電
+  Elite Material: 台光電
+  台光: 台光電
+  ITEQ: 聯茂
+  Foxconn: 鴻海
+  鴻海精密: 鴻海
+  Quanta: 廣達
+  Wistron: 緯創
+  Wiwynn: 緯穎
+  Pegatron: 和碩
+  Gigabyte: 技嘉
+  ASUS: 華碩
+  Delta: 台達電
+  ASE: 日月光投控
+  Unimicron: 欣興
+  Zhen Ding: 臻鼎-KY
+  Tripod: 健鼎
+  Gold Circuit: 金像電
+  Compeq: 華通
+  Taiwan Glass: 台玻
+  Nittobo: 日東紡
+
+# 會讓這家公司「受傷」的說法（主詞在前：台燿掉單、台燿認證失敗…）
+loss_subject_cues: [掉單, 丟單, 被砍單, 遭砍單, 砍單, 認證失敗, 測試失敗, 驗證失敗, 未通過, 沒通過, 沒過, 故障, 良率問題, 良率不佳, 良率偏低, 出局, 落馬, 被踢出, 遭踢出, 流失訂單, 訂單流失, 拉貨減少, 減量, 縮減]
+# 被動句：「南亞 M9 遭 AWS 淘汰」「被取代」「被換掉」
+passive_markers: [遭, 被]
+elim_verbs: [淘汰, 剔除, 取代, 換掉, 踢出, 移出, 擠下, 頂替, 汰換]
+# 這些字後面接的公司是「受惠」（轉單去哪、改用誰）
+win_dest_cues: [訂單去, 訂單轉給, 訂單轉到, 訂單轉向, 訂單流向, 訂單歸, 轉單給, 轉單到, 轉向, 轉由, 改由, 改用, 改採, 交由, 轉給, 其中包括, 包括, 新增供應商, 第二供應商, 二供]
+# 主詞在前的受惠說法：「X 拿下 / 打入 / 通過認證」
+win_subject_cues: [拿下, 搶下, 搶到, 搶進, 打入, 切入, 入列, 取得訂單, 獲得訂單, 通過認證, 認證通過, 驗證通過, 通過驗證, 送樣, 擴大供貨, 追加訂單, 追單, 首度供貨]
+# 「樣品測試結果樂觀」這類句子，主詞公司算受惠
+win_result_patterns:
+  - '(樣品|送樣|測試|驗證).{0,8}(樂觀|順利|良好|正面|通過)'
+# 沒有明確角色也算「供應鏈變動」的字眼（使用者轉傳時用來判斷是不是情報）
+change_words: [換料, 換供應商, 供應商調整, 供應鏈調整, 轉單, 掉單, 淘汰, 剔除, 移出, 認證, 驗證, 送樣, 拿下, 打入, 切入, 取代, 改用, 改由, 轉向]
+
+# 技術／產品詞：沒有客戶名但有這些詞也可以算供應鏈訊號
+product_terms: [CCL, 銅箔基板, M6, M7, M8, M9, M10, 玻纖布, 石英布, PTFE, HVLP, ABF, 載板, 高頻板, 液冷, CPO, 矽光子, HBM, CoWoS, 800G, 1.6T]
