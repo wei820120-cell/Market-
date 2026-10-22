@@ -1,7 +1,7 @@
 {
  "start": "2026-10-04",
  "capital": 100000,
- "equity": 97974.54469859567,
+ "equity": 97854.28517116036,
  "positions": [
   {
    "code": "1102",
@@ -17,7 +17,7 @@
    "r0": 0.855868372431793,
    "realized": -123.03199844360353,
    "half_done": true,
-   "days": 12,
+   "days": 13,
    "exit_next": ""
   },
   {
@@ -34,25 +34,8 @@
    "r0": 0.9459572100168714,
    "realized": -101.51,
    "half_done": true,
-   "days": 10,
+   "days": 11,
    "exit_next": ""
-  },
-  {
-   "code": "9945",
-   "name": "潤泰新",
-   "setup": "拉回",
-   "contract": "KPF",
-   "mult": 2000,
-   "qty": 1,
-   "qty0": 1,
-   "entry_date": "2026-10-08",
-   "entry": 29.450000762939453,
-   "stop": 28.556766107127665,
-   "r0": 0.8932346558117885,
-   "realized": -110.07800155639649,
-   "half_done": false,
-   "days": 9,
-   "exit_next": "跌破20日線"
   }
  ],
  "closed": [
@@ -77,81 +60,32 @@
    "pnl": -2025,
    "r": -1.1,
    "reason": "停損"
+  },
+  {
+   "code": "9945",
+   "name": "潤泰新",
+   "setup": "拉回",
+   "contract": "KPF",
+   "mult": 2000,
+   "qty": 1,
+   "qty0": 1,
+   "entry_date": "2026-10-08",
+   "entry": 29.450000762939453,
+   "stop": 28.556766107127665,
+   "r0": 0.8932346558117885,
+   "realized": -110.07800155639649,
+   "half_done": false,
+   "days": 10,
+   "exit_next": "跌破20日線",
+   "exit_date": "2026-10-22",
+   "exit": 29.5,
+   "pnl": -120,
+   "r": -0.07,
+   "reason": "跌破20日線"
   }
  ],
  "plan": [],
- "last_date": "2026-10-21",
- "regime": "多頭",
- "blocked": [
-  {
-   "code": "2881",
-   "name": "富邦金",
-   "setup": "拉回",
-   "theme": "金融",
-   "contract": "CEF",
-   "risk_one": 13307.806783090655,
-   "need_capital": 665390.3391545328,
-   "reserve_one": 128385.0
-  },
-  {
-   "code": "2882",
-   "name": "國泰金",
-   "setup": "拉回",
-   "theme": "金融",
-   "contract": "CKF",
-   "risk_one": 9908.318415532478,
-   "need_capital": 495415.9207766239,
-   "reserve_one": 92340.00000000001
-  },
-  {
-   "code": "2609",
-   "name": "陽明",
-   "setup": "拉回",
-   "theme": "供需事件：荷姆茲海峽又出事！新加坡籍貨櫃船遇襲沉沒 21名",
-   "contract": "DAF",
-   "risk_one": 6072.577852275544,
-   "need_capital": 303628.8926137772,
-   "reserve_one": 60361.1985168457
-  },
-  {
-   "code": "2885",
-   "name": "元大金",
-   "setup": "拉回",
-   "theme": "金融",
-   "contract": "DOF",
-   "risk_one": 5055.70495982974,
-   "need_capital": 252785.24799148698,
-   "reserve_one": 57753.00247192383
-  },
-  {
-   "code": "3231",
-   "name": "緯創",
-   "setup": "突破",
-   "theme": "AMAX-KY（6933）題材與產業",
-   "contract": "DXF",
-   "risk_one": 22238.82407766058,
-   "need_capital": 1111941.203883029,
-   "reserve_one": 189540.0
-  },
-  {
-   "code": "2347",
-   "name": "聯強",
-   "setup": "拉回",
-   "theme": "供需事件：將持續供貨",
-   "contract": "GAF",
-   "risk_one": 7995.530579952884,
-   "need_capital": 399776.5289976442,
-   "reserve_one": 80756.99752807617
-  },
-  {
-   "code": "2328",
-   "name": "廣宇",
-   "setup": "突破",
-   "theme": "鴻海（2317）題材與產業",
-   "contract": "KWF",
-   "risk_one": 5387.538143769035,
-   "need_capital": 269376.90718845173,
-   "reserve_one": 52779.59925842285
-  }
- ]
+ "last_date": "2026-10-22",
+ "regime": "空頭／盤整",
+ "blocked": []
 }

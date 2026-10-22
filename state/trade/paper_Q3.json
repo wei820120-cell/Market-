@@ -17,7 +17,7 @@
    "r0": 0.38168652877280707,
    "realized": -179.56,
    "half_done": false,
-   "days": 5,
+   "days": 6,
    "exit_next": ""
   }
  ],
@@ -68,29 +68,8 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-21",
- "regime": "多頭",
- "blocked": [
-  {
-   "code": "2881",
-   "name": "富邦金",
-   "setup": "拉回",
-   "theme": "金融",
-   "contract": "CEF",
-   "risk_one": 13307.806783090655,
-   "need_capital": 665390.3391545328,
-   "reserve_one": 128385.0
-  },
-  {
-   "code": "2882",
-   "name": "國泰金",
-   "setup": "拉回",
-   "theme": "金融",
-   "contract": "CKF",
-   "risk_one": 9908.318415532478,
-   "need_capital": 495415.9207766239,
-   "reserve_one": 92340.00000000001
-  }
- ],
+ "last_date": "2026-10-22",
+ "regime": "空頭／盤整",
+ "blocked": [],
  "last_events": []
 }
