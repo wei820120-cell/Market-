@@ -2231,6 +2231,7 @@ def test_signals_process_pushes_dedupes_flags_conflict_and_merges_queue(tmp_path
     assert len(out) == 1 and len(sent) == 1 and sent[0][0] == "research"
     msg = sent[0][1]
     assert "未證實" in msg and "受傷：南亞（1303）" in msg and "受惠：台燿（6274）" in msg and "既有研究：台燿（6274）題材與產業" in msg
+    assert msg.count("台燿（6274）題材與產業") == 1                        # 同一份研究只列一次
     queued = list((tmp_path / "state" / "research_queue").glob("*.json"))
     assert len(queued) == 1
     q = json.loads(queued[0].read_text(encoding="utf-8"))

@@ -150,7 +150,7 @@ jobs:
             python -m market_intel signals --probe $URLS $B
           elif [ "${{ inputs.signals }}" = "true" ]; then
             python -m market_intel signals --dry --latest 40
-            python -m market_intel threads --dry --latest 8
+            python -m market_intel threads --dry --latest 3
           elif [ "${{ inputs.overnight }}" = "true" ]; then
             python -m market_intel trade --overnight
           elif [ "${{ inputs.trade }}" = "true" ]; then

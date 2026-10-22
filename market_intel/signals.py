@@ -346,11 +346,14 @@ def coverage(codes: list[str], listings: dict, limit: int = 4) -> list[str]:
     """這些公司已有的研究（題材名稱＋日期），讓訊號一出來就知道上下文。"""
     out = []
     index = research.load_index()
-    for code in codes:
+    shown: set[str] = set()
+    for code in dict.fromkeys(codes):  # 呼叫端傳進來的清單可能有重複（受惠＋受傷＋提到）
         name = (listings.get(code) or {}).get("name", code)
         for topic, e in index.items():
             if f"（{code}）" in topic or (topic.startswith(name) and "題材與產業" in topic):
-                out.append(f"{topic}（{str(e.get('date', ''))[5:]}）")
+                if topic not in shown:
+                    shown.add(topic)
+                    out.append(f"{topic}（{str(e.get('date', ''))[5:]}）")
                 break
     return out[:limit]
 

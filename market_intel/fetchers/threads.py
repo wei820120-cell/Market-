@@ -1,7 +1,8 @@
 """Threads 個人帳號（公開貼文）。
 
 網頁版只回一個空殼，貼文要靠 JavaScript 才會載入，所以用無頭瀏覽器（Playwright）讀；
-沒登入時每個分頁只看得到最新的幾則（約 5～7 則），之後是登入牆，拿來追「新貼文」夠用。
+沒登入時每個分頁只看得到最新的幾則（約 5～7 則），之後是登入牆，拿來追「新貼文」夠用；
+多個分頁同時讀（預設 4 個），幾十個帳號一輪約幾分鐘。
 Playwright 不在 requirements.txt（每次安裝太慢），只有要用到的 workflow 才安裝；沒裝就略過、不影響其他監看。
 
 每個帳號讀兩個分頁：串文（本人發的）和回覆（本人回覆的，連同被回覆的原貼文一起出現——
@@ -97,57 +98,72 @@ def parse_page(data: dict) -> list[ThreadsPost]:
     return list(out.values())
 
 
-def render_pages(urls: list[str], wait_ms: int = 6000, scrolls: int = 1) -> dict[str, dict | None]:
-    """用同一個無頭瀏覽器依序打開網址；讀不到的網址對應 None。"""
-    from playwright.sync_api import sync_playwright
+async def _render_async(urls: list[str], wait_ms: int, concurrency: int) -> dict[str, dict | None]:
+    import asyncio
+
+    from playwright.async_api import async_playwright
 
     out: dict[str, dict | None] = {}
-    with sync_playwright() as p:
-        browser = p.chromium.launch(args=["--no-sandbox"])
+    sem = asyncio.Semaphore(concurrency)
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(args=["--no-sandbox"])
         try:
-            ctx = browser.new_context(locale="zh-TW", user_agent=net.BROWSER_UA, viewport={"width": 1280, "height": 2000})
-            page = ctx.new_page()
-            for u in urls:
-                try:
-                    page.goto(u, wait_until="domcontentloaded", timeout=30000)
-                    page.wait_for_timeout(wait_ms)
-                    for _ in range(scrolls):
-                        page.mouse.wheel(0, 2500)
-                        page.wait_for_timeout(1500)
-                    out[u] = page.evaluate(_JS)
-                except Exception as e:  # noqa: BLE001 - 單一網址失敗不影響其他帳號
-                    log.warning("Threads %s 讀取失敗：%s", u, e)
-                    out[u] = None
+            ctx = await browser.new_context(locale="zh-TW", user_agent=net.BROWSER_UA, viewport={"width": 1280, "height": 2000})
+
+            async def one(u: str) -> None:
+                async with sem:
+                    page = await ctx.new_page()
+                    try:
+                        await page.goto(u, wait_until="domcontentloaded", timeout=30000)
+                        try:
+                            await page.wait_for_selector('a[href*="/post/"]', timeout=wait_ms)
+                        except Exception:  # noqa: BLE001 - 沒有貼文（空的、被擋）就照樣取頁面內容，由呼叫端判斷
+                            pass
+                        await page.wait_for_timeout(1200)  # 第一則出現後，讓同一屏的其他貼文也載入
+                        out[u] = await page.evaluate(_JS)
+                    except Exception as e:  # noqa: BLE001 - 單一網址失敗不影響其他帳號
+                        log.warning("Threads %s 讀取失敗：%s", u, e)
+                        out[u] = None
+                    finally:
+                        await page.close()
+
+            await asyncio.gather(*(one(u) for u in urls))
         finally:
-            browser.close()
+            await browser.close()
     return out
 
 
-def render(url: str, wait_ms: int = 6000, scrolls: int = 2) -> dict:
+def render_pages(urls: list[str], wait_ms: int = 8000, concurrency: int = 4) -> dict[str, dict | None]:
+    """用同一個無頭瀏覽器同時打開幾個網址（concurrency 個分頁）；讀不到的網址對應 None。"""
+    import asyncio
+    return asyncio.run(_render_async(urls, wait_ms, concurrency))
+
+
+def render(url: str) -> dict:
     """單一網址（測試用）：回傳 {title, url, text, posts: [{href, text, time}]}。"""
-    return render_pages([url], wait_ms, scrolls)[url] or {"title": "", "url": url, "text": "", "posts": []}
+    return render_pages([url])[url] or {"title": "", "url": url, "text": "", "posts": []}
 
 
-def fetch_accounts(handles: list[str]) -> dict[str, list[ThreadsPost]]:
-    """每個帳號的串文＋回覆分頁 → 貼文（舊的在前）。整個帳號都讀不到時不放進結果。"""
+def fetch_accounts(handles: list[str], concurrency: int = 4) -> dict[str, list[ThreadsPost]]:
+    """每個帳號的串文＋回覆分頁 → 貼文（舊的在前）。兩個分頁都沒讀到貼文的帳號不放進結果
+    （可能被擋或暫時失敗；放進去會讓下次當成『第一次讀』或把舊貼文全當新的）。"""
     handles = [h.lstrip("@") for h in handles]
     urls = [f"{BASE}/@{h}{tab}" for h in handles for tab in ("", "/replies")]
-    pages = render_pages(urls)
+    pages = render_pages(urls, concurrency=concurrency)
     out: dict[str, list[ThreadsPost]] = {}
+    failed = []
     for h in handles:
         got: dict[tuple[str, str], ThreadsPost] = {}
-        ok = False
         for tab in ("", "/replies"):
             data = pages.get(f"{BASE}/@{h}{tab}")
-            if data is None:
-                continue
-            ok = True
-            for p in parse_page(data):
+            for p in parse_page(data) if data else []:
                 got.setdefault((p.author, p.code), p)
-        if ok:
+        if got:
             out[h] = sorted(got.values(), key=lambda p: p.posted_at)
         else:
-            log.warning("Threads @%s 兩個分頁都讀不到", h)
+            failed.append(h)
+    if failed:
+        log.warning("Threads：%d／%d 個帳號沒讀到貼文：%s", len(failed), len(handles), "、".join(failed[:20]))
     return out
 
 

@@ -1101,7 +1101,7 @@ def cmd_threads(args) -> None:
     if not cfg.get("enabled", True):
         return
     src = config.sources()
-    handles = [h.lstrip("@") for h in (args.accounts or src.get("threads_accounts") or [])][:12]
+    handles = [h.lstrip("@") for h in (args.accounts or src.get("threads_accounts") or [])][:120]
     if not handles:
         return
     st = signals.load_state()
@@ -1112,6 +1112,7 @@ def cmd_threads(args) -> None:
                 return
         except ValueError:
             pass
+    started = time.monotonic()
     try:
         got = threads.fetch_accounts(handles)
     except ImportError:
@@ -1119,9 +1120,11 @@ def cmd_threads(args) -> None:
         return
     seen = threads.load_seen()
     items = []
+    log.info("Threads：%d／%d 個帳號讀到貼文（%d 則），耗時 %.0f 秒", len(got), len(handles), sum(len(v) for v in got.values()), time.monotonic() - started)
+    if args.dry:
+        print(f"Threads：{len(got)}／{len(handles)} 個帳號讀到貼文（共 {sum(len(v) for v in got.values())} 則），耗時 {time.monotonic() - started:.0f} 秒")
     for h, posts in got.items():
         fresh = posts[-args.latest:] if args.latest else threads.new_posts(h, posts, seen)
-        log.info("Threads @%s：讀到 %d 則，要檢查 %d 則", h, len(posts), len(fresh))
         if args.dry:
             print(f"@{h}：讀到 {len(posts)} 則，要檢查 {len(fresh)} 則")
             for p in fresh:
