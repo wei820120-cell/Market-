@@ -131,13 +131,15 @@ def to_traditional(text: str) -> str:
     return _CC.convert(text)
 
 
-def transcribe(path: Path, model_name: str = "small", max_minutes: int = 0, prompt: str = "", threads: int = 0) -> list[Segment]:
-    """faster-whisper（CPU、int8）。max_minutes>0 只轉前幾分鐘（測試用）。"""
+def transcribe(path: Path, model_name: str = "small", max_minutes: int = 0, prompt: str = "", threads: int = 0,
+               from_minutes: int = 0) -> list[Segment]:
+    """faster-whisper（CPU、int8）。max_minutes>0 只轉前幾分鐘、from_minutes>0 從第幾分鐘開始（測試用）。"""
     from faster_whisper import WhisperModel
 
     model = WhisperModel(model_name, device="cpu", compute_type="int8", cpu_threads=threads or (os.cpu_count() or 4))
+    kwargs = {"clip_timestamps": f"{from_minutes * 60},{max_minutes * 60}"} if from_minutes and max_minutes else {}
     segments, info = model.transcribe(str(path), language="zh", beam_size=1, vad_filter=True,
-                                      initial_prompt=prompt or None, condition_on_previous_text=False)
+                                      initial_prompt=prompt or None, condition_on_previous_text=False, **kwargs)
     out = []
     for s in segments:
         if max_minutes and s.start > max_minutes * 60:
@@ -150,14 +152,15 @@ def transcribe(path: Path, model_name: str = "small", max_minutes: int = 0, prom
 
 
 def paragraphs(segments: list[Segment], max_chars: int = 500) -> list[tuple[float, str]]:
-    """把連續的短句併成段落（約 max_chars 字、在句尾斷開），回傳（開始秒數, 文字）。"""
+    """把連續的短句併成段落（約 max_chars 字）：寫到 max_chars 之後，在句尾（。！？）斷開；
+    語音轉文字常常整段沒有句號，所以超過 1.6 倍 max_chars 就算沒有句號也在句子邊界斷開。回傳（開始秒數, 文字）。"""
     out: list[tuple[float, str]] = []
     start, buf = 0.0, ""
     for s in segments:
         if not buf:
             start = s.start
         buf += s.text
-        if len(buf) >= max_chars and re.search(r"[。！？!?…]$", s.text):
+        if len(buf) >= max_chars and (re.search(r"[。！？!?…]$", s.text) or len(buf) >= max_chars * 1.6):
             out.append((start, buf))
             buf = ""
     if buf:

@@ -113,7 +113,7 @@ podcasts:
   - name: 股癌
     apple_id: 1500839292
 podcast_model: small               # tiny／base／small／medium：越大越準也越慢（small 在 GitHub 的 4 核心 CPU 上約 3～6 倍速，待實測）
-podcast_prompt: 以下是繁體中文的台灣財經投資節目，會提到台積電、鴻海、廣達、緯創、台光電、台燿、南亞、聯茂、AWS、輝達、AI 伺服器、銅箔基板、CoWoS、HBM。
+podcast_prompt: 以下是繁體中文的台灣財經投資節目「股癌」，主持人謝孟恭，會提到台積電、鴻海、廣達、緯創、台光電、台燿、南亞、聯茂、金像電、AWS、輝達、AI 伺服器、銅箔基板、CoWoS、HBM。
 podcast_max_age_days: 7            # 超過幾天的集數不轉
 podcast_max_minutes: 180           # 超過幾分鐘的集數不轉
 podcast_max_mb: 300

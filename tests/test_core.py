@@ -2486,6 +2486,10 @@ def test_podcast_paragraphs_transcript_and_timestamps(tmp_path, monkeypatch):
     segs = [pc.Segment(0.0, 5.0, "今天聊台燿跟南亞。"), pc.Segment(5.0, 9.0, "AWS 的訂單有變化。"), pc.Segment(9.0, 12.0, "接著聊別的")]
     paras = pc.paragraphs(segs, max_chars=15)
     assert paras == [(0.0, "今天聊台燿跟南亞。AWS 的訂單有變化。"), (9.0, "接著聊別的")]
+    # 整段沒有句號：超過 1.6 倍長度也要斷開
+    nop = [pc.Segment(i * 5.0, i * 5.0 + 5, "今天聊聊大盤跟個股，") for i in range(100)]
+    long = pc.paragraphs(nop, max_chars=100)
+    assert len(long) > 3 and all(len(t) < 170 for _, t in long) and long[1][0] > 0
     assert pc.mmss(75) == "01:15" and pc.mmss(3725) == "1:02:05"
     monkeypatch.setattr(pc, "TRANSCRIPT_DIR", tmp_path / "podcasts")
     ep = pc.parse_feed(POD_RSS, "股癌")[0]
@@ -2525,8 +2529,8 @@ def test_podcasts_cmd_end_to_end(tmp_path, monkeypatch):
     segs = [pc.Segment(0.0, 20.0, "今天來聊今年的大盤。" * 60),
             pc.Segment(400.0, 420.0, "聽說 AWS 把 M9 訂單轉給台光電，聯茂出局，這個傳聞還沒有證實，台燿也被提到。"),
             pc.Segment(800.0, 820.0, "最後聊聊生活。")]
-    monkeypatch.setattr(pc, "transcribe", lambda path, model, minutes, prompt, threads: segs)
-    args = argparse.Namespace(list=False, dry=False, show=None, max_episodes=2, max_minutes=0, first=1, force=False, model=None, threads=0)
+    monkeypatch.setattr(pc, "transcribe", lambda path, model, minutes, prompt, threads, start: segs)
+    args = argparse.Namespace(list=False, dry=False, show=None, max_episodes=2, max_minutes=0, from_minutes=0, first=1, force=False, model=None, threads=0)
     cli.cmd_podcasts(args)
     assert downloads == ["https://cdn/2.mp3"]                          # 第一次只處理最新 1 集
     assert sent == []                                                  # 不推播

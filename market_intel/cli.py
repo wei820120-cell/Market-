@@ -40,7 +40,7 @@ def _listings() -> dict[str, dict]:
 
 
 # 公司簡稱同時是常用詞，用名稱比對會誤判（仍可用代號比對，例如「全新(2455)」）
-AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界", "數字", "互動", "大量", "新天地"}
+AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界", "數字", "互動", "大量", "新天地", "巨大", "大中"}
 
 
 def _name_to_code(listings: dict[str, dict]) -> dict[str, str]:
@@ -1167,7 +1167,7 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
         audio = podcast.download(ep.audio_url, tmp / "audio", max_mb=int(src.get("podcast_max_mb", 300)))
         t1 = time.monotonic()
         segs = podcast.transcribe(audio, args.model or src.get("podcast_model", "small"), args.max_minutes,
-                                  src.get("podcast_prompt", ""), args.threads)
+                                  src.get("podcast_prompt", ""), args.threads, args.from_minutes)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     t2 = time.monotonic()
@@ -1175,8 +1175,11 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
     covered = (segs[-1].end if segs else 0) / 60
     print(f"{ep.show}｜{ep.title}：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{covered:.0f} 分鐘的內容，約 {covered * 60 / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段")
     now = now_tw()
+    skip = config.sources().get("skip_patterns") or []
     entries = []
     for t, text in paras:
+        if any(re.search(p, text) for p in skip):
+            continue  # 業配、優惠碼這類段落不看
         tags, score = signals.post_tags(text, names, listings, cfg)
         if score >= 3:
             entries.append({"id": f"{ep.show}/{ep.key}/{int(t)}", "show": ep.show, "episode": ep.title, "url": ep.link, "at": ep.published,
@@ -1184,9 +1187,8 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
     entries = sorted(entries, key=lambda e: -e["score"])[:25]
     # 每段用不同的網址（#t=開始秒數）：偵測的「看過了」記錄是以網址為準，同一集的段落共用網址會只看到第一段
     items = [signals.Item(f"Podcast {ep.show}", text, f"{ep.link or ep.audio_url}#t={int(t)}", "頻道") for t, text in paras]
-    skip = config.sources().get("skip_patterns") or []
     if args.dry:
-        print("逐字稿開頭：" + "".join(t for _, t in paras)[:600].replace("\n", " "))
+        print("逐字稿開頭：" + "".join(t for _, t in paras)[:1600].replace("\n", " "))
         for e in entries[:8]:
             print(f"  ＋待檢視（{e['score']} 分，{e['t']}）{e['tags']}：{e['text'][:80]!r}")
         signals.process(items, listings, names, dry=True, skip_patterns=skip, push=False)
@@ -2801,7 +2803,8 @@ def main(argv: list[str] | None = None) -> None:
     pcp.add_argument("--dry", action="store_true", help="下載並轉文字，但只印出結果，不存逐字稿、不放待檢視清單、不排研究")
     pcp.add_argument("--show", help="只處理名稱含這段文字的節目")
     pcp.add_argument("--max-episodes", type=int, default=2, help="這次最多轉幾集")
-    pcp.add_argument("--max-minutes", type=int, default=0, help="只轉前幾分鐘（測試用）")
+    pcp.add_argument("--max-minutes", type=int, default=0, help="只轉到第幾分鐘為止（測試用）")
+    pcp.add_argument("--from-minutes", type=int, default=0, help="搭配 --max-minutes：從第幾分鐘開始轉（測試用）")
     pcp.add_argument("--first", type=int, default=1, help="第一次看到的節目，最新幾集要處理（其他舊集數略過）")
     pcp.add_argument("--force", action="store_true", help="不看已處理記錄，直接處理每個節目最新一集（測試用，不更新記錄）")
     pcp.add_argument("--model", help="語音辨識模型（預設用設定檔 podcast_model）")
