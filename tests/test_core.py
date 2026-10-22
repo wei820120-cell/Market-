@@ -488,8 +488,9 @@ def test_telegram_channel_image_posts():
 def test_channels_image_post_flow(tmp_path, monkeypatch):
     """圖片貼文：先推圖片，再把 AI 辨識出的文字接在貼文後面推播，並送去題材偵測收件匣。"""
     import argparse
-    from market_intel import ai, cli, notify, research
+    from market_intel import ai, cli, notify, research, signals
     from market_intel.fetchers import telegram_channel as tg
+    monkeypatch.setattr(signals, "STATE_PATH", tmp_path / "signals.json")  # 頻道貼文也會做早期訊號偵測，記錄不要寫進真的 state
     post = tg.parse_channel_html(TG_IMG_HTML, "Gooaye")[0]
     monkeypatch.setattr(config_mod := __import__("market_intel.config", fromlist=["x"]), "sources",
                         lambda: {"telegram_channels": [{"name": "股癌", "handle": "Gooaye", "push_to": "research"}]})

@@ -21,11 +21,11 @@ from dataclasses import dataclass, field
 from datetime import timedelta
 
 from . import config, notify, research
-from .utils import ROOT, now_tw
+from .utils import now_tw
 
 log = logging.getLogger(__name__)
 
-STATE_PATH = ROOT / "state" / "signals.json"
+STATE_PATH = None  # 測試可指定；預設跟著 research.ROOT（測試把 research.ROOT 換成暫存資料夾時，這裡也跟著換）
 SENTENCE_END = re.compile(r"[。！？!?\n]+")
 
 
@@ -300,18 +300,24 @@ def title_candidate(title: str, name_map: dict[str, str], cfg: dict | None = Non
 
 # ---------------------------------------------------------------- 狀態
 
+def _path():
+    return STATE_PATH or (research.ROOT / "state" / "signals.json")
+
+
 def load_state() -> dict:
-    if STATE_PATH.exists():
+    p = _path()
+    if p.exists():
         try:
-            return json.loads(STATE_PATH.read_text(encoding="utf-8"))
+            return json.loads(p.read_text(encoding="utf-8"))
         except (ValueError, OSError):
             pass
     return {}
 
 
 def save_state(st: dict) -> None:
-    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    STATE_PATH.write_text(json.dumps(st, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    p = _path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(st, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
 def _prune(st: dict, keep_days: int) -> None:

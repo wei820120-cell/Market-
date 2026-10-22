@@ -16,14 +16,12 @@ ptt_boards:
   - board: Stock
     pages: 2
 
-# RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
+# RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道；雲端機房讀不到的網站（回 403）不要放 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
 signal_feeds:
   - name: AWS What's New
     url: https://aws.amazon.com/about-aws/whats-new/recent/feed/
   - name: NVIDIA Blog
     url: https://blogs.nvidia.com/feed/
-  - name: SemiAnalysis
-    url: https://semianalysis.substack.com/feed
 
 # 供應鏈關鍵字的 Google 新聞搜尋（比一般新聞詞表更早抓到「傳出」「供應鏈」這類消息）
 signal_queries:

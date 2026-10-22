@@ -1002,7 +1002,12 @@ def _ptt_items(boards: list, name_map: dict[str, str], dry: bool, latest: int, m
         try:
             posts = ptt.fetch_index(board, pages)
         except Exception as e:  # noqa: BLE001
-            log.warning("PTT %s 抓取失敗：%s", board, e)
+            log.warning("PTT %s 網頁版抓取失敗（%s），改試 Atom 摘要", board, e)
+            try:
+                for it in ptt.fetch_atom(board)[-max(latest, 40):]:
+                    items.append(signals.Item(f"PTT {board}", f"{it.title}\n{it.summary}", it.url, "論壇"))
+            except Exception as e2:  # noqa: BLE001
+                log.warning("PTT %s Atom 也抓取失敗：%s", board, e2)
             continue
         fresh = posts[-latest:] if latest else ptt.new_posts(board, posts, seen)
         ranked = sorted(((signals.title_candidate(p.title, name_map, cfg), p) for p in fresh), key=lambda x: -x[0])

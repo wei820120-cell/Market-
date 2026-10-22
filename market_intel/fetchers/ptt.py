@@ -76,6 +76,12 @@ def fetch_index(board: str = "Stock", pages: int = 2) -> list[PttPost]:
     return out
 
 
+def fetch_atom(board: str = "Stock") -> list:
+    """雲端機房常被網頁版擋（403）；PTT 的 Atom 摘要（標題＋內文開頭）有時還讀得到，當備援。"""
+    from . import news
+    return news.parse_feed(net.get(f"{BASE}/atom/{board}.xml", cookies=COOKIES, timeout=20).text, f"PTT {board}")
+
+
 def fetch_article(url: str) -> str:
     return parse_article(net.get(url, cookies=COOKIES, timeout=20).text)
 
