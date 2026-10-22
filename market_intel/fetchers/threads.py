@@ -181,6 +181,53 @@ def save_seen(seen: dict[str, list[str]], keep: int = 400) -> None:
     STATE_PATH.write_text(json.dumps({k: v[-keep:] for k, v in seen.items()}, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+INBOX_DIR = ROOT / "state" / "threads_inbox"
+
+
+def _inbox_path(day: str):
+    return INBOX_DIR / f"{day}.json"
+
+
+def load_inbox(day: str) -> list[dict]:
+    path = _inbox_path(day)
+    if path.exists():
+        try:
+            return json.loads(path.read_text(encoding="utf-8")).get("items", [])
+        except (ValueError, OSError):
+            pass
+    return []
+
+
+def add_to_inbox(entries: list[dict], day: str, keep_days: int = 3) -> int:
+    """把值得看看的貼文放進「待檢視清單」（每天一個檔，state/threads_inbox/日期.json），回傳新增幾則。
+    研究員（每小時的研究佇列例行任務）會來讀，決定有沒有要研究的東西；這裡不推播。"""
+    items = load_inbox(day)
+    have = {it["id"] for it in items}
+    new = [e for e in entries if e["id"] not in have]
+    if new:
+        items += new
+        INBOX_DIR.mkdir(parents=True, exist_ok=True)
+        _inbox_path(day).write_text(json.dumps({"day": day, "items": items}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    if INBOX_DIR.exists():
+        for f in sorted(INBOX_DIR.glob("*.json"))[:-keep_days]:
+            f.unlink()
+    return len(new)
+
+
+def recent_posts(posts: list[ThreadsPost], hours: int = 24, now: datetime | None = None) -> list[ThreadsPost]:
+    """最近幾小時內的貼文（沒有時間的當成新的）。"""
+    cutoff = (now or datetime.now(timezone.utc)) - timedelta(hours=hours)
+    out = []
+    for p in posts:
+        try:
+            ok = datetime.fromisoformat(p.posted_at.replace("Z", "+00:00")) >= cutoff
+        except ValueError:
+            ok = True
+        if ok:
+            out.append(p)
+    return out
+
+
 def new_posts(handle: str, posts: list[ThreadsPost], seen: dict[str, list[str]], max_age_hours: int = 72,
               now: datetime | None = None) -> list[ThreadsPost]:
     """還沒看過、而且不太舊的貼文，並更新 seen。第一次看這個帳號只記錄、不處理（避免一次推一堆舊貼文）。"""

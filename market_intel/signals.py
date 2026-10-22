@@ -282,6 +282,25 @@ def detect(item: Item, name_map: dict[str, str], cfg: dict | None = None, skip_p
                   products=products, strong=strong, denied=denied, text=text, source=item.source, url=item.url, kind=item.kind)
 
 
+def post_tags(text: str, name_map: dict[str, str], listings: dict | None = None, cfg: dict | None = None) -> tuple[list[str], int]:
+    """一段貼文值不值得拿去給人看看要不要研究：回傳（提到的公司／客戶／技術詞, 分數）。分數不到 2 的不收。
+    公司或客戶＋「漲價、缺貨、認證、轉單…」這類說法（research_words）才夠；單純提到一家公司不算。"""
+    cfg = cfg or settings()
+    customers = cfg.get("customers") or {}
+    cust_words = {w for words in customers.values() for w in words}
+    comps = find_companies(text, name_map, cfg.get("aliases") or {}, cust_words)
+    custs = find_customers(text, customers)
+    products = [t for t in cfg.get("product_terms") or [] if re.search(r"(?<![A-Za-z0-9])" + re.escape(t) + r"(?![A-Za-z0-9])", text, re.I)]
+    words = [w for w in (cfg.get("research_words") or []) + (cfg.get("change_words") or []) if w in text]
+    rumor = any(w in text for w in cfg.get("rumor_words") or [])
+    score = (2 if words else 0) + (1 if custs else 0) + (1 if products else 0) + (2 if rumor else 0) + min(len(comps), 3)
+    if not words and not rumor:
+        score = min(score, 1)  # 沒有任何「有事發生」的說法，只提到公司或技術詞，不收
+    codes = list(dict.fromkeys(c[2] for c in comps))
+    tags = [_name(c, listings) if listings else c for c in codes] + list(dict.fromkeys(k[2] for k in custs)) + products
+    return tags, score
+
+
 def title_candidate(title: str, name_map: dict[str, str], cfg: dict | None = None) -> int:
     """論壇標題值不值得點進去看內文：換料／轉單說法 2 分、有公司 +1、有客戶 +1；2 分以上才抓內文。"""
     cfg = cfg or settings()
@@ -416,8 +435,9 @@ def message(sig: Signal, listings: dict, conflict: dict | None, topic: str | Non
 
 
 def process(items: list[Item], listings: dict, name_map: dict[str, str], *, dry: bool = False,
-            channel: str = "research", skip_patterns: list[str] | None = None) -> list[Signal]:
-    """偵測、去重、推播、排入求證研究。回傳這次新推的訊號。dry=True 只印出不推、不存、不排。"""
+            channel: str = "research", skip_patterns: list[str] | None = None, push: bool = True) -> list[Signal]:
+    """偵測、去重、推播、排入求證研究。回傳這次新處理的訊號。dry=True 只印出不推、不存、不排。
+    push=False：不推播原始訊號（例如個人帳號貼文），只排入求證研究，研究好了才推。"""
     cfg = settings()
     if not cfg.get("enabled", True):
         return []
@@ -441,7 +461,7 @@ def process(items: list[Item], listings: dict, name_map: dict[str, str], *, dry:
         old = seen.get(sig.key)
         if old and not relay:
             continue  # 同一件事已經推過
-        if day["push"] >= int(cfg.get("max_push_per_day", 12)) and not relay:
+        if push and day["push"] >= int(cfg.get("max_push_per_day", 12)) and not relay:
             log.info("早期訊號今天已推 %d 則，略過：%s", day["push"], sig.text[:40])
             continue
         conflict = find_conflict(sig, {k: v for k, v in seen.items() if k != sig.key})
@@ -464,8 +484,11 @@ def process(items: list[Item], listings: dict, name_map: dict[str, str], *, dry:
         if dry:
             print(text + "\n" + "-" * 40)
         else:
-            notify.send(text, channel=channel)
-            day["push"] += 1
+            if push:
+                notify.send(text, channel=channel)
+                day["push"] += 1
+            else:
+                log.info("早期訊號（不推播、只排研究）：%s", text.replace("\n", " ")[:200])
             seen[sig.key] = {"date": today, "c": sig.customers, "w": sig.winners, "l": sig.losers, "d": sig.denied,
                              "source": sig.source, "text": sig.text[:300], "topic": topic or ""}
         fresh.append(sig)

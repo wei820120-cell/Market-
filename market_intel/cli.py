@@ -1096,7 +1096,8 @@ def cmd_signals(args) -> None:
 
 
 def cmd_threads(args) -> None:
-    """追蹤指定的 Threads 帳號（sources.yaml 的 threads_accounts）：新貼文與他們回覆的原貼文 → 早期訊號偵測 → 推播＋排求證研究。"""
+    """追蹤指定的 Threads 帳號（sources.yaml 的 threads_accounts）。他們發的東西不推播：
+    供應鏈訊號只排入求證研究（研究好了才推），其他值得看的貼文放進 state/threads_inbox/，由研究員每小時檢視、決定要不要研究。"""
     cfg = signals.settings()
     if not cfg.get("enabled", True):
         return
@@ -1119,23 +1120,37 @@ def cmd_threads(args) -> None:
         log.warning("Threads：沒有安裝 playwright，略過（watch.yml 會安裝；本機要用請先 pip install playwright && playwright install chromium）")
         return
     seen = threads.load_seen()
-    items = []
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    items, entries = [], []
     log.info("Threads：%d／%d 個帳號讀到貼文（%d 則），耗時 %.0f 秒", len(got), len(handles), sum(len(v) for v in got.values()), time.monotonic() - started)
     if args.dry:
         print(f"Threads：{len(got)}／{len(handles)} 個帳號讀到貼文（共 {sum(len(v) for v in got.values())} 則），耗時 {time.monotonic() - started:.0f} 秒")
+    now = now_tw()
     for h, posts in got.items():
+        first = h not in seen
         fresh = posts[-args.latest:] if args.latest else threads.new_posts(h, posts, seen)
+        # 第一次讀到的帳號：不做訊號偵測，但最近 24 小時內值得看的貼文先放進待檢視清單
+        review = fresh if not first or args.latest else threads.recent_posts(posts, 24)
         if args.dry:
-            print(f"@{h}：讀到 {len(posts)} 則，要檢查 {len(fresh)} 則")
-            for p in fresh:
-                print(f"  - {p.posted_at[:16]} @{p.author}{'（回覆 @' + p.reply_to + '）' if p.reply_to else ''}：{p.text[:60]!r}")
+            print(f"@{h}：讀到 {len(posts)} 則，要偵測 {len(fresh)} 則，待檢視 {len(review)} 則")
+        for p in review:
+            tags, score = signals.post_tags(p.text, names, listings, cfg)
+            if score >= 2:
+                entries.append({"id": f"{p.author}/{p.code}", "author": p.author, "url": p.url, "at": p.posted_at,
+                                "seen_at": now.isoformat(timespec="seconds"), "reply_to": p.reply_to, "text": p.text[:500],
+                                "tags": tags, "score": score})
+                if args.dry:
+                    print(f"  ＋待檢視（{score} 分）@{p.author}：{p.text[:50]!r} {tags}")
         for p in fresh:
             items.append(signals.Item(f"Threads @{p.author}", p.text, p.url, "論壇"))
     if not args.dry and not args.latest:
         threads.save_seen(seen)
-    listings = _listings()
-    signals.process(items, listings, signals.signal_names(listings, AMBIGUOUS_NAMES), dry=args.dry,
-                    skip_patterns=src.get("skip_patterns") or [])
+    if entries and not args.dry:
+        added = threads.add_to_inbox(entries, f"{now:%Y-%m-%d}")
+        log.info("Threads：%d 則放進待檢視清單", added)
+    # 個人帳號的貼文不推播原文：偵測到供應鏈訊號只排入求證研究，研究好了才推
+    signals.process(items, listings, names, dry=args.dry, skip_patterns=src.get("skip_patterns") or [], push=False)
     if not args.dry:
         st = signals.load_state()
         st["threads_last_run"] = now_tw().isoformat(timespec="seconds")
@@ -2691,7 +2706,7 @@ def main(argv: list[str] | None = None) -> None:
     sg.add_argument("--probe", nargs="+", metavar="URL", help="測試：只看這些網址雲端機房讀不讀得到（不偵測、不推播）")
     sg.add_argument("--browser", action="store_true", help="搭配 --probe：再用無頭瀏覽器（Playwright）讀一次")
     sg.set_defaults(func=cmd_signals)
-    th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）→ 早期訊號偵測 → 推播＋排求證研究")
+    th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）：不推播，供應鏈訊號排求證研究，值得看的貼文放進待檢視清單")
     th.add_argument("--dry", action="store_true", help="只印出讀到的貼文與偵測結果，不推播、不存記錄、不排研究")
     th.add_argument("--latest", type=int, default=0, help="測試：每個帳號直接看最新 N 則（不看已讀記錄）")
     th.add_argument("--every", type=int, default=5, help="距離上次掃描幾分鐘內就略過")

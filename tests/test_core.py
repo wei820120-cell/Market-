@@ -2367,7 +2367,7 @@ def test_threads_new_posts_first_read_records_only_and_skips_old():
     assert threads.new_posts("bigmanj87", [old], seen, now=now) == [] and "OLD1" in seen["bigmanj87"]
 
 
-def test_threads_cmd_pushes_new_posts_only(tmp_path, monkeypatch):
+def test_threads_cmd_does_not_push_but_queues_research_and_fills_inbox(tmp_path, monkeypatch):
     import argparse
     import json
     from market_intel import cli, config, notify, research, signals
@@ -2378,23 +2378,70 @@ def test_threads_cmd_pushes_new_posts_only(tmp_path, monkeypatch):
     monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "state" / "research_related.json")
     monkeypatch.setattr(signals, "STATE_PATH", tmp_path / "state" / "signals.json")
     monkeypatch.setattr(threads, "STATE_PATH", tmp_path / "state" / "threads_seen.json")
+    monkeypatch.setattr(threads, "INBOX_DIR", tmp_path / "state" / "threads_inbox")
     monkeypatch.setattr(config, "sources", lambda: {"threads_accounts": ["bigmanj87"]})
     monkeypatch.setattr(cli, "_listings", lambda: SIG_LISTINGS)
+    monkeypatch.setattr(cli, "now_tw", lambda: research.now_tw().replace(year=2026, month=10, day=22, hour=23, minute=30))
     sent = []
     monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
-    posts = [threads.parse_post(TH_RAW_A)]
+    a, b = threads.parse_post(TH_RAW_A), threads.parse_post(TH_RAW_B)
+    a.posted_at = "2026-10-22T14:00:00.000Z"       # 第一次讀到時還在 24 小時內
+    posts = [a]
     monkeypatch.setattr(threads, "fetch_accounts", lambda handles: {"bigmanj87": list(posts)})
-    args = argparse.Namespace(dry=False, latest=0, every=5, accounts=None)
-    cli.cmd_threads(args)                      # 第一次：只記錄，不推
-    assert not sent and json.loads((tmp_path / "state" / "threads_seen.json").read_text(encoding="utf-8")) == {"bigmanj87": ["Dex-qNZoP2z"]}
-    posts.append(threads.parse_post(TH_RAW_B))
-    args.every = 0
-    cli.cmd_threads(args)                      # 新貼文：偵測出台燿掉單、南亞接單
-    assert len(sent) == 1 and sent[0][0] == "research"
-    assert "來源：Threads @bigmanj87" in sent[0][1] and "受傷：台燿（6274）" in sent[0][1] and "受惠：南亞（1303）" in sent[0][1] and "個人帳號的貼文" in sent[0][1]
-    cli.cmd_threads(args)                      # 沒有新貼文：不重複推
-    assert len(sent) == 1
+    args = argparse.Namespace(dry=False, latest=0, every=0, accounts=None)
+    cli.cmd_threads(args)                      # 第一次：只記錄、不偵測不排研究；但值得看的貼文進待檢視清單
+    assert not sent and not list((tmp_path / "state" / "research_queue").glob("*.json"))
+    assert json.loads((tmp_path / "state" / "threads_seen.json").read_text(encoding="utf-8")) == {"bigmanj87": ["Dex-qNZoP2z"]}
+    inbox = json.loads((tmp_path / "state" / "threads_inbox" / "2026-10-22.json").read_text(encoding="utf-8"))["items"]
+    assert [i["id"] for i in inbox] == ["hua___83/Dex-qNZoP2z"] and "南亞（1303）" in inbox[0]["tags"] and "AWS" in inbox[0]["tags"]
+    posts.append(b)
+    cli.cmd_threads(args)                      # 新貼文：偵測出台燿掉單、南亞接單 → 不推播，只排求證研究＋進待檢視清單
+    assert not sent
+    queued = [json.loads(f.read_text(encoding="utf-8")) for f in (tmp_path / "state" / "research_queue").glob("*.json")]
+    assert len(queued) == 1 and queued[0]["topic"].startswith("供需事件：台燿掉AWS") and "Threads @bigmanj87" in queued[0]["trigger"]
+    inbox = json.loads((tmp_path / "state" / "threads_inbox" / "2026-10-22.json").read_text(encoding="utf-8"))["items"]
+    assert [i["id"] for i in inbox] == ["hua___83/Dex-qNZoP2z", "bigmanj87/DezGAWDH4WF"]
+    cli.cmd_threads(args)                      # 沒有新貼文：不重複
+    assert not sent and len(list((tmp_path / "state" / "research_queue").glob("*.json"))) == 1
     # 沒裝 playwright：略過、不出錯
     monkeypatch.setattr(threads, "fetch_accounts", lambda handles: (_ for _ in ()).throw(ImportError("playwright")))
     cli.cmd_threads(args)
-    assert len(sent) == 1
+    assert not sent
+
+
+def test_signals_process_push_false_queues_without_notifying(tmp_path, monkeypatch):
+    from market_intel import notify, research, signals
+    from market_intel.signals import Item
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    monkeypatch.setattr(signals, "STATE_PATH", tmp_path / "state" / "signals.json")
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
+    names = signals.signal_names(SIG_LISTINGS)
+    out = signals.process([Item("Threads @x", SIG_POST_A, "https://t/1", "論壇")], SIG_LISTINGS, names, push=False)
+    assert len(out) == 1 and not sent and len(list((tmp_path / "state" / "research_queue").glob("*.json"))) == 1
+    assert signals.process([Item("Threads @y", SIG_POST_A, "https://t/2", "論壇")], SIG_LISTINGS, names, push=False) == []   # 同一件事不重複排
+
+
+def test_signals_post_tags_needs_something_happening():
+    from market_intel import signals
+    names = signals.signal_names(SIG_LISTINGS)
+    tags, score = signals.post_tags("台光電 M9 CCL 缺貨，AWS 追單", names, SIG_LISTINGS)
+    assert score >= 4 and "台光電（2383）" in tags and "AWS" in tags and "M9" in tags
+    assert signals.post_tags("今天去台積電附近吃午餐", names, SIG_LISTINGS)[1] < 2            # 只提到公司
+    assert signals.post_tags("今天天氣很好", names, SIG_LISTINGS)[1] < 2
+    tags, score = signals.post_tags("聽說南亞科下半年要擴產", names, SIG_LISTINGS)
+    assert score >= 2 and tags == ["南亞科（2408）"]
+
+
+def test_threads_inbox_dedupes_and_prunes(tmp_path, monkeypatch):
+    from market_intel.fetchers import threads
+    monkeypatch.setattr(threads, "INBOX_DIR", tmp_path / "inbox")
+    e = lambda i: {"id": i, "text": "x"}  # noqa: E731
+    assert threads.add_to_inbox([e("a/1"), e("a/2")], "2026-10-20") == 2
+    assert threads.add_to_inbox([e("a/2"), e("a/3")], "2026-10-20") == 1
+    for d in ("2026-10-21", "2026-10-22", "2026-10-23"):
+        threads.add_to_inbox([e("b/1")], d)
+    assert sorted(f.name for f in (tmp_path / "inbox").glob("*.json")) == ["2026-10-21.json", "2026-10-22.json", "2026-10-23.json"]
+    assert [i["id"] for i in threads.load_inbox("2026-10-22")] == ["b/1"] and threads.load_inbox("2026-01-01") == []
