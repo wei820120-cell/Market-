@@ -2311,3 +2311,18 @@ def test_signals_title_candidate_and_ptt_parsing_and_feed_parser():
             '<updated>2026-10-22T01:00:00Z</updated><summary>S &lt;b&gt;1&lt;/b&gt;</summary></entry></feed>')
     rss = '<rss><channel><item><title>R1</title><link>http://x/2</link><description>D</description></item></channel></rss>'
     assert nw.parse_feed(atom, "a")[0].title == "T1" and nw.parse_feed(rss, "r")[0].url == "http://x/2"
+
+
+def test_signals_detects_rumor_with_company_denial():
+    from market_intel import signals
+    from market_intel.signals import Item
+    names = signals.signal_names(SIG_LISTINGS)
+    t = signals.detect(Item("工商時報", "南亞董座吳嘉昭：高階電子材料認證、推展依計畫執行 不合格傳言「非事實」"), names)
+    assert t and t.denied and t.strong and t.label == "傳聞已被否認" and t.mentioned == ["1303"]
+    t2 = signals.detect(Item("t", "南亞高階材料 M9 遭 AWS 驗證不合格傳言，南亞澄清並非事實"), names)
+    assert t2.denied and t2.losers == ["1303"] and t2.customers == ["AWS"]
+    # 否認的訊息不當成「方向相反的新說法」
+    a = signals.detect(Item("t", SIG_POST_A), names)
+    assert signals.find_conflict(t2, {a.key: {"date": "2026-10-22", "c": a.customers, "w": a.winners, "l": a.losers}}) is None
+    assert a.key != t2.key  # 傳聞本身與「傳聞被否認」是兩件事，都會推
+    assert "傳聞已被否認" in signals.message(t2, SIG_LISTINGS, None, "供需事件：x", True)

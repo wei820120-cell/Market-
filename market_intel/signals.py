@@ -53,6 +53,7 @@ class Signal:
     mentioned: list[str] = field(default_factory=list)  # 文字裡出現的所有公司代號
     products: list[str] = field(default_factory=list)
     strong: bool = False
+    denied: bool = False   # 文字裡有「傳言…非事實／澄清」：公司或媒體已否認這個傳聞
     text: str = ""
     source: str = ""
     url: str = ""
@@ -60,6 +61,8 @@ class Signal:
 
     @property
     def label(self) -> str:
+        if self.denied:
+            return "傳聞已被否認"
         if self.winners and self.losers:
             return "轉單"
         if self.losers:
@@ -70,7 +73,7 @@ class Signal:
 
     @property
     def key(self) -> str:
-        raw = json.dumps({"c": sorted(self.customers), "w": sorted(self.winners), "l": sorted(self.losers),
+        raw = json.dumps({"c": sorted(self.customers), "w": sorted(self.winners), "l": sorted(self.losers), "d": self.denied,
                           "m": [] if (self.winners or self.losers) else sorted(self.mentioned)}, ensure_ascii=False)
         return hashlib.md5(raw.encode()).hexdigest()[:12]
 
@@ -269,12 +272,14 @@ def detect(item: Item, name_map: dict[str, str], cfg: dict | None = None, skip_p
     winners, losers = parse_roles(text, comps, custs, cfg)
     mentioned = list(dict.fromkeys(c[2] for c in comps))
     has_change = any(w in text for w in cfg.get("change_words") or [])
-    strong = bool((custs or products) and (winners or losers))
+    rumor = any(w in text for w in (cfg.get("rumor_words") or []) + (cfg.get("denial_words") or []))
+    denied = any(w in text for w in cfg.get("denial_words") or []) and rumor
+    strong = bool((custs or products) and (winners or losers)) or bool(rumor and has_change and comps)
     relay = item.kind == "使用者轉傳"
     if not strong and not (relay and (has_change or winners or losers)):
         return None
     return Signal(customers=list(dict.fromkeys(k[2] for k in custs)), winners=winners, losers=losers, mentioned=mentioned,
-                  products=products, strong=strong, text=text, source=item.source, url=item.url, kind=item.kind)
+                  products=products, strong=strong, denied=denied, text=text, source=item.source, url=item.url, kind=item.kind)
 
 
 def title_candidate(title: str, name_map: dict[str, str], cfg: dict | None = None) -> int:
@@ -317,7 +322,11 @@ def _prune(st: dict, keep_days: int) -> None:
 
 def find_conflict(sig: Signal, seen: dict) -> dict | None:
     """近期有沒有同一批公司、角色相反的訊號（先前說 A 受傷 B 受惠，現在說 B 受傷 A 受惠）。"""
+    if sig.denied:
+        return None  # 否認的是傳聞本身，不是方向相反的新說法
     for key, e in seen.items():
+        if e.get("d"):
+            continue
         if e.get("c") and sig.customers and not (set(e["c"]) & set(sig.customers)):
             continue
         if (set(sig.winners) & set(e.get("l", []))) or (set(sig.losers) & set(e.get("w", []))):
@@ -351,6 +360,8 @@ def _names(codes: list[str], listings: dict) -> str:
 def build_topic(sig: Signal, listings: dict) -> str:
     short = lambda codes: "、".join((listings.get(c) or {}).get("name", c) for c in codes[:2])  # noqa: E731
     cust = sig.customers[0] if sig.customers else ""
+    if sig.denied and not (sig.winners or sig.losers):
+        return f"供需事件：{short(sig.mentioned)}{cust}認證傳聞與澄清（傳聞求證）"
     if sig.losers and sig.winners:
         return f"供需事件：{short(sig.losers)}掉{cust}訂單 {short(sig.winners)}接單（傳聞求證）"
     if sig.losers:
@@ -372,8 +383,10 @@ def message(sig: Signal, listings: dict, conflict: dict | None, topic: str | Non
     lines = [f"⚡ 早期訊號（未證實）｜{sig.label}｜來源：{sig.source}"]
     if sig.customers:
         lines.append(f"客戶：{'、'.join(sig.customers)}")
+    if sig.denied:
+        lines.append("這則是在說某個傳聞「已被否認／澄清」，不是新的消息；傳聞本身仍未證實，要看原文裡誰在否認、否認什麼。")
     if sig.winners or sig.losers:
-        lines.append(f"受傷：{_names(sig.losers, listings)}　受惠：{_names(sig.winners, listings)}")
+        lines.append(("傳聞內容——" if sig.denied else "") + f"受傷：{_names(sig.losers, listings)}　受惠：{_names(sig.winners, listings)}")
     else:
         lines.append(f"提到：{_names(sig.mentioned[:6], listings)}（方向看不出來，請看原文）")
     lines.append("原文：" + re.sub(r"\s+", " ", sig.text)[:260])
@@ -442,8 +455,8 @@ def process(items: list[Item], listings: dict, name_map: dict[str, str], *, dry:
         else:
             notify.send(text, channel=channel)
             day["push"] += 1
-            seen[sig.key] = {"date": today, "c": sig.customers, "w": sig.winners, "l": sig.losers, "source": sig.source,
-                             "text": sig.text[:300], "topic": topic or ""}
+            seen[sig.key] = {"date": today, "c": sig.customers, "w": sig.winners, "l": sig.losers, "d": sig.denied,
+                             "source": sig.source, "text": sig.text[:300], "topic": topic or ""}
         fresh.append(sig)
     if not dry:
         st["items"] = done[-3000:]
