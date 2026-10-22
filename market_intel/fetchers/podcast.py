@@ -90,13 +90,19 @@ def parse_feed(xml_text: str, show: str) -> list[Episode]:
 
 
 def resolve_feed(show: dict) -> str:
-    """節目設定 → RSS 網址。直接給 feed，或給 Apple Podcasts 節目編號（網址最後 id 後面的數字），由 iTunes 查出 RSS。"""
+    """節目設定 → RSS 網址：直接給 feed；或給 Apple Podcasts 節目編號 apple_id（網址最後 id 後面的數字）；
+    或給 search（節目名稱關鍵字），用 iTunes 搜尋，取節目名稱包含 name 的第一個。"""
     if show.get("feed"):
         return show["feed"]
-    data = net.get_json(f"https://itunes.apple.com/lookup?id={show['apple_id']}&country=tw", timeout=20)
-    results = data.get("results") or []
+    if show.get("apple_id"):
+        results = net.get_json(f"https://itunes.apple.com/lookup?id={show['apple_id']}&country=tw", timeout=20).get("results") or []
+    else:
+        term = show.get("search") or show["name"]
+        found = net.get_json("https://itunes.apple.com/search", params={"media": "podcast", "entity": "podcast", "country": "tw", "limit": 8, "term": term},
+                             timeout=20).get("results") or []
+        results = [r for r in found if show["name"].lower() in (r.get("collectionName") or "").lower()]
     if not results or not results[0].get("feedUrl"):
-        raise ValueError(f"iTunes 查不到 {show.get('name')}（id {show.get('apple_id')}）的 RSS")
+        raise ValueError(f"iTunes 查不到 {show.get('name')} 的 RSS（apple_id={show.get('apple_id')}, search={show.get('search')}）")
     return results[0]["feedUrl"]
 
 

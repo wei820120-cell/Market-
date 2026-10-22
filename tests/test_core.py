@@ -2550,3 +2550,23 @@ def test_podcasts_cmd_end_to_end(tmp_path, monkeypatch):
         f.unlink()
     cli.cmd_podcasts(args)
     assert not list((tmp_path / "state" / "podcasts" / "股癌").glob("*.txt"))
+
+
+def test_podcast_resolve_feed_by_feed_id_or_search(monkeypatch):
+    from market_intel import net
+    from market_intel.fetchers import podcast as pc
+    calls = []
+
+    def fake(url, params=None, **kw):
+        calls.append((url, params))
+        if "lookup" in url:
+            return {"results": [{"feedUrl": "https://feeds/by-id"}]}
+        return {"results": [{"collectionName": "別的節目", "feedUrl": "https://feeds/wrong"},
+                            {"collectionName": "M觀點 | 科技X商業X投資", "feedUrl": "https://feeds/m"}]}
+    monkeypatch.setattr(net, "get_json", fake)
+    assert pc.resolve_feed({"name": "x", "feed": "https://direct"}) == "https://direct" and not calls
+    assert pc.resolve_feed({"name": "股癌", "apple_id": 1500839292}) == "https://feeds/by-id"
+    assert pc.resolve_feed({"name": "M觀點", "search": "M觀點"}) == "https://feeds/m" and calls[-1][1]["term"] == "M觀點"
+    import pytest
+    with pytest.raises(ValueError):
+        pc.resolve_feed({"name": "沒有這個節目"})
