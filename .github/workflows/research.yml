@@ -119,7 +119,8 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: 安裝中文字型（題材卡圖片）
+      - name: 安裝中文字型（題材卡圖片；早期訊號乾跑與網址測試用不到）
+        if: ${{ !inputs.signals && inputs.probe == '' }}
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 安裝無頭瀏覽器（只在測試瀏覽器讀取時）
         if: ${{ contains(inputs.probe, 'browser') || inputs.signals }}
