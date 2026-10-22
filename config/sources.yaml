@@ -106,6 +106,18 @@ threads_accounts:
   - goohaiboxer
   - miulaviewpoint
 
+# Podcast：新集數下載後用 faster-whisper 轉成逐字稿（state/podcasts/），值得看的段落放進 state/podcast_inbox/日期.json，
+# 由研究員每小時檢視、決定有沒有要研究的東西；供應鏈換料／轉單的說法只排求證研究。不推播。轉文字很慢，由 podcast.yml 每 3 小時跑一次。
+# 每個節目填 name 與 apple_id（Apple Podcasts 節目網址最後 id 後面的數字）或直接填 feed（RSS 網址）。
+podcasts:
+  - name: 股癌
+    apple_id: 1500839292
+podcast_model: small               # tiny／base／small／medium：越大越準也越慢（small 在 GitHub 的 4 核心 CPU 上約 3～6 倍速，待實測）
+podcast_prompt: 以下是繁體中文的台灣財經投資節目，會提到台積電、鴻海、廣達、緯創、台光電、台燿、南亞、聯茂、AWS、輝達、AI 伺服器、銅箔基板、CoWoS、HBM。
+podcast_max_age_days: 7            # 超過幾天的集數不轉
+podcast_max_minutes: 180           # 超過幾分鐘的集數不轉
+podcast_max_mb: 300
+
 # RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道；雲端機房讀不到的網站（回 403）不要放 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
 signal_feeds:
   - name: AWS What's New

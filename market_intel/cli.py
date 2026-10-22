@@ -23,7 +23,7 @@ import pandas as pd
 
 from . import ai, config, net, notify, overnight, prefetch, research, signals, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import macro, news, ptt, stock_futures, taifex, telegram_channel, threads, tw_daily, tw_realtime, yahoo
+from .fetchers import macro, news, podcast, ptt, stock_futures, taifex, telegram_channel, threads, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -1155,6 +1155,95 @@ def cmd_threads(args) -> None:
         st = signals.load_state()
         st["threads_last_run"] = now_tw().isoformat(timespec="seconds")
         signals.save_state(st)
+
+
+def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict) -> None:
+    """一集：下載 → 轉文字 → 逐字稿存檔 → 值得看的段落放進待檢視清單；供應鏈訊號只排求證研究（不推播）。"""
+    import shutil
+    import tempfile
+    tmp = Path(tempfile.mkdtemp(prefix="podcast_"))
+    try:
+        t0 = time.monotonic()
+        audio = podcast.download(ep.audio_url, tmp / "audio", max_mb=int(src.get("podcast_max_mb", 300)))
+        t1 = time.monotonic()
+        segs = podcast.transcribe(audio, args.model or src.get("podcast_model", "small"), args.max_minutes,
+                                  src.get("podcast_prompt", ""), args.threads)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    t2 = time.monotonic()
+    paras = podcast.paragraphs(segs)
+    covered = (segs[-1].end if segs else 0) / 60
+    print(f"{ep.show}｜{ep.title}：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{covered:.0f} 分鐘的內容，約 {covered * 60 / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段")
+    now = now_tw()
+    entries = []
+    for t, text in paras:
+        tags, score = signals.post_tags(text, names, listings, cfg)
+        if score >= 3:
+            entries.append({"id": f"{ep.show}/{ep.key}/{int(t)}", "show": ep.show, "episode": ep.title, "url": ep.link, "at": ep.published,
+                            "seen_at": now.isoformat(timespec="seconds"), "t": podcast.mmss(t), "text": text[:600], "tags": tags, "score": score})
+    entries = sorted(entries, key=lambda e: -e["score"])[:25]
+    items = [signals.Item(f"Podcast {ep.show}", text, ep.link, "頻道") for _, text in paras]
+    skip = config.sources().get("skip_patterns") or []
+    if args.dry:
+        print("逐字稿開頭：" + "".join(t for _, t in paras)[:600].replace("\n", " "))
+        for e in entries[:8]:
+            print(f"  ＋待檢視（{e['score']} 分，{e['t']}）{e['tags']}：{e['text'][:80]!r}")
+        signals.process(items, listings, names, dry=True, skip_patterns=skip, push=False)
+        return
+    path = podcast.save_transcript(ep, paras)
+    added = podcast.inbox.add(podcast.INBOX_DIR, [{**e, "transcript": str(path.relative_to(research.ROOT))} for e in entries], f"{now:%Y-%m-%d}")
+    log.info("Podcast %s：逐字稿 %s，%d 段放進待檢視清單", ep.show, path, added)
+    signals.process(items, listings, names, skip_patterns=skip, push=False)
+
+
+def cmd_podcasts(args) -> None:
+    """Podcast：新集數下載、轉成逐字稿（faster-whisper）→ 值得看的段落放進 state/podcast_inbox/ 讓研究員檢視；
+    供應鏈訊號只排求證研究。不推播。轉文字很慢，由 podcast.yml 執行，不在 2 分鐘監看迴圈裡。"""
+    src = config.sources()
+    shows = [s for s in (src.get("podcasts") or []) if not args.show or args.show in s["name"]]
+    if not shows:
+        return
+    seen = podcast.load_seen()
+    todo = []
+    for sh in shows:
+        try:
+            eps = podcast.fetch_episodes(sh)
+        except Exception as e:  # noqa: BLE001 - 一個節目讀不到不影響其他
+            log.warning("Podcast %s 讀取失敗：%s", sh.get("name"), e)
+            continue
+        if args.list:
+            print(f"{sh['name']}：RSS 共 {len(eps)} 集，最新 5 集：")
+            for e in eps[:5]:
+                print(f"  {e.published[:16]}  {e.duration_s // 60:>4} 分  {e.size / 1e6:5.1f}MB  {e.title[:50]}")
+            continue
+        todo += eps[:1] if args.force else podcast.pick_new(sh["name"], eps, seen, first=args.first, max_age_days=int(src.get("podcast_max_age_days", 7)))
+    if args.list or not todo:
+        if not args.dry and not args.list:
+            podcast.save_seen(seen)
+        return
+    try:
+        import faster_whisper  # noqa: F401
+    except ImportError:
+        log.warning("Podcast：沒有安裝 faster-whisper，略過（podcast.yml 會安裝）")
+        return
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    cfg = signals.settings()
+    for ep in todo[:args.max_episodes]:
+        if ep.duration_s > int(src.get("podcast_max_minutes", 180)) * 60:
+            log.warning("Podcast %s｜%s 長 %d 分鐘，超過上限，略過", ep.show, ep.title, ep.duration_s // 60)
+        else:
+            try:
+                _podcast_episode(ep, src, args, names, listings, cfg)
+            except Exception as e:  # noqa: BLE001 - 失敗的集數不標記已處理，下次再試（連結壞掉、音檔太大則下面標記略過）
+                log.warning("Podcast %s｜%s 處理失敗：%s", ep.show, ep.title, e)
+                if isinstance(e, ValueError):
+                    seen.setdefault(ep.show, []).append(ep.key)
+                continue
+        seen.setdefault(ep.show, []).append(ep.key)
+    if not args.dry and not args.force:
+        podcast.save_seen(seen)
+        podcast.prune_transcripts()
 
 
 AUTO_SLOTS = ("14:05", "21:05")  # 每天從新聞自動偵測新題材的時間（台北）
@@ -2706,6 +2795,17 @@ def main(argv: list[str] | None = None) -> None:
     sg.add_argument("--probe", nargs="+", metavar="URL", help="測試：只看這些網址雲端機房讀不讀得到（不偵測、不推播）")
     sg.add_argument("--browser", action="store_true", help="搭配 --probe：再用無頭瀏覽器（Playwright）讀一次")
     sg.set_defaults(func=cmd_signals)
+    pcp = sub.add_parser("podcasts", help="Podcast：新集數 → 下載、轉成逐字稿 → 值得看的段落放進待檢視清單（不推播）")
+    pcp.add_argument("--list", action="store_true", help="只列出各節目 RSS 最新幾集（不下載）")
+    pcp.add_argument("--dry", action="store_true", help="下載並轉文字，但只印出結果，不存逐字稿、不放待檢視清單、不排研究")
+    pcp.add_argument("--show", help="只處理名稱含這段文字的節目")
+    pcp.add_argument("--max-episodes", type=int, default=2, help="這次最多轉幾集")
+    pcp.add_argument("--max-minutes", type=int, default=0, help="只轉前幾分鐘（測試用）")
+    pcp.add_argument("--first", type=int, default=1, help="第一次看到的節目，最新幾集要處理（其他舊集數略過）")
+    pcp.add_argument("--force", action="store_true", help="不看已處理記錄，直接處理每個節目最新一集（測試用，不更新記錄）")
+    pcp.add_argument("--model", help="語音辨識模型（預設用設定檔 podcast_model）")
+    pcp.add_argument("--threads", type=int, default=0, help="辨識用的 CPU 執行緒數（0＝全部）")
+    pcp.set_defaults(func=cmd_podcasts)
     th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）：不推播，供應鏈訊號排求證研究，值得看的貼文放進待檢視清單")
     th.add_argument("--dry", action="store_true", help="只印出讀到的貼文與偵測結果，不推播、不存記錄、不排研究")
     th.add_argument("--latest", type=int, default=0, help="測試：每個帳號直接看最新 N 則（不看已讀記錄）")

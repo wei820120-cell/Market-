@@ -1,0 +1,58 @@
+# Podcast 聽取：每 3 小時檢查節目 RSS，有新集數就下載、用 faster-whisper 轉成逐字稿（CPU，一集約幾十分鐘），
+# 值得看的段落放進 state/podcast_inbox/日期.json（不推播），由研究員每小時檢視、決定有沒有要研究的東西；
+# 供應鏈換料／轉單的說法只排求證研究。節目清單在 config/sources.yaml 的 podcasts。
+# 轉文字很慢，所以不放在每 2 分鐘的 watch.yml 裡；公開儲存庫的 GitHub Actions 不收費。
+name: podcast
+
+on:
+  schedule:
+    - cron: "11 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      args:
+        description: "podcasts 子命令的額外參數，例如：--show 股癌 --max-episodes 1（空白＝照設定檔跑）"
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: podcast
+  cancel-in-progress: false
+
+jobs:
+  podcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt faster-whisper opencc-python-reimplemented
+      - name: 語音辨識模型快取
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-models-v1
+      - name: 聽新集數
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python -m market_intel podcasts ${{ inputs.args }}
+      - name: 存檔逐字稿與記錄
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for d in research state; do if [ -d "$d" ]; then git add -A "$d"; fi; done
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -q -m "Podcast 逐字稿 $(TZ=Asia/Taipei date '+%F %H:%M')"
+          for i in 1 2 3 4; do
+            if git pull --rebase -q; then git push -q && exit 0; else
+              # 和監看迴圈同時改到訊號記錄：以遠端為準（逐字稿、待檢視清單、已處理記錄是各自獨立的檔，不會衝突）
+              git checkout --ours state/signals.json 2>/dev/null && git add state/signals.json && GIT_EDITOR=true git rebase --continue && git push -q && exit 0
+              git rebase --abort 2>/dev/null
+            fi
+            sleep 5
+          done
+          exit 1

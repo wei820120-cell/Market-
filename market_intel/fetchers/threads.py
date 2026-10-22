@@ -16,7 +16,7 @@ import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
-from .. import net
+from .. import inbox, net
 from ..utils import ROOT
 
 log = logging.getLogger(__name__)
@@ -184,34 +184,14 @@ def save_seen(seen: dict[str, list[str]], keep: int = 400) -> None:
 INBOX_DIR = ROOT / "state" / "threads_inbox"
 
 
-def _inbox_path(day: str):
-    return INBOX_DIR / f"{day}.json"
-
-
 def load_inbox(day: str) -> list[dict]:
-    path = _inbox_path(day)
-    if path.exists():
-        try:
-            return json.loads(path.read_text(encoding="utf-8")).get("items", [])
-        except (ValueError, OSError):
-            pass
-    return []
+    return inbox.load(INBOX_DIR, day)
 
 
 def add_to_inbox(entries: list[dict], day: str, keep_days: int = 3) -> int:
     """把值得看看的貼文放進「待檢視清單」（每天一個檔，state/threads_inbox/日期.json），回傳新增幾則。
     研究員（每小時的研究佇列例行任務）會來讀，決定有沒有要研究的東西；這裡不推播。"""
-    items = load_inbox(day)
-    have = {it["id"] for it in items}
-    new = [e for e in entries if e["id"] not in have]
-    if new:
-        items += new
-        INBOX_DIR.mkdir(parents=True, exist_ok=True)
-        _inbox_path(day).write_text(json.dumps({"day": day, "items": items}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    if INBOX_DIR.exists():
-        for f in sorted(INBOX_DIR.glob("*.json"))[:-keep_days]:
-            f.unlink()
-    return len(new)
+    return inbox.add(INBOX_DIR, entries, day, keep_days)
 
 
 def recent_posts(posts: list[ThreadsPost], hours: int = 24, now: datetime | None = None) -> list[ThreadsPost]:
