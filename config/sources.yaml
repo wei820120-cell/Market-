@@ -19,7 +19,7 @@ ptt_boards: []
 
 # Threads 個人帳號（填 @ 後面的帳號）：用無頭瀏覽器讀公開頁（串文＋回覆兩個分頁），每 5 分鐘掃一輪新貼文，
 # 也會讀到他們回覆的原貼文（例如有人貼傳聞、被追蹤的人回「台燿掉AWS，訂單去南亞」，兩則都會進早期訊號偵測）。最多 120 個。
-# 下面是使用者「追蹤中」的 82 個帳號裡，讀得到完整帳號名稱的 80 個（make_investment_ea…、wusunenzymestinkyt… 在畫面上被截斷，沒加）。
+# 下面是使用者「追蹤中」82 個帳號裡讀得到完整帳號名稱的 80 個（make_investment_ea…、wusunenzymestinkyt… 在畫面上被截斷，沒加），再加上使用者後來給的 miulaviewpoint。
 # 每個帳號第一次讀到只記錄、不推播；之後的新貼文才會做偵測。
 threads_accounts:
   - mct20190801
@@ -102,6 +102,7 @@ threads_accounts:
   - mengkung_h
   - terrygou1018
   - goohaiboxer
+  - miulaviewpoint
 
 # RSS／Atom 來源（公司新聞室、產業分析部落格、YouTube 頻道；雲端機房讀不到的網站（回 403）不要放 https://www.youtube.com/feeds/videos.xml?channel_id=… 等）
 signal_feeds:
