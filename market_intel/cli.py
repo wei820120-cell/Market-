@@ -1171,8 +1171,9 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     t2 = time.monotonic()
-    paras = podcast.paragraphs(segs)
-    covered = (segs[-1].end if segs else 0) / 60
+    fixes = src.get("podcast_fixes") or []
+    paras = [(t, podcast.apply_fixes(text, fixes)) for t, text in podcast.paragraphs(segs)]
+    covered = ((segs[-1].end if segs else 0) - args.from_minutes * 60) / 60
     print(f"{ep.show}｜{ep.title}：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{covered:.0f} 分鐘的內容，約 {covered * 60 / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段")
     now = now_tw()
     skip = config.sources().get("skip_patterns") or []

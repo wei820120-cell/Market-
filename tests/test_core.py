@@ -2570,3 +2570,12 @@ def test_podcast_resolve_feed_by_feed_id_or_search(monkeypatch):
     import pytest
     with pytest.raises(ValueError):
         pc.resolve_feed({"name": "沒有這個節目"})
+
+
+def test_podcast_apply_fixes_uses_context():
+    from market_intel.fetchers import podcast as pc
+    fixes = [{"from": "宅板", "to": "載板"}, {"from": "無城市|無程式", "to": "無塵室"},
+             {"from": "新興", "to": "欣興", "when": "載板|良率"}]
+    assert pc.apply_fixes("宅板良率不高，新興是 20 到 30，無城市還沒開出來", fixes) == "載板良率不高，欣興是 20 到 30，無塵室還沒開出來"
+    assert pc.apply_fixes("新興航運的貨櫃運價", fixes) == "新興航運的貨櫃運價"      # 沒有載板、良率的上下文就不改
+    assert pc.apply_fixes("沒有更正", []) == "沒有更正"

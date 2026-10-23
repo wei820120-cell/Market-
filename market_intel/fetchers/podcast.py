@@ -157,6 +157,16 @@ def transcribe(path: Path, model_name: str = "small", max_minutes: int = 0, prom
     return out
 
 
+def apply_fixes(text: str, fixes: list[dict]) -> str:
+    """語音轉文字的固定同音錯字更正（設定檔 podcast_fixes）。每條 {from, to, when}：when 是正規表示式，段落裡要有它才更正
+    （例如『新興』在談載板、良率的段落多半是『欣興』，但在談航運的段落就是新興航運）。"""
+    for f in fixes or []:
+        if f.get("when") and not re.search(f["when"], text):
+            continue
+        text = re.sub(f["from"], f["to"], text)
+    return text
+
+
 def paragraphs(segments: list[Segment], max_chars: int = 500) -> list[tuple[float, str]]:
     """把連續的短句併成段落（約 max_chars 字）：寫到 max_chars 之後，在句尾（。！？）斷開；
     語音轉文字常常整段沒有句號，所以超過 1.6 倍 max_chars 就算沒有句號也在句子邊界斷開。回傳（開始秒數, 文字）。"""

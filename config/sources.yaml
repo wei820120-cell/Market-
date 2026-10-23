@@ -114,8 +114,14 @@ podcasts:
     apple_id: 1500839292
   - name: M觀點
     search: M觀點            # 用節目名稱在 iTunes 搜尋（找不到時改填 apple_id 或 feed）
-podcast_model: small               # tiny／base／small／medium：越大越準也越慢（small 在 GitHub 的 4 核心 CPU 上約 3～6 倍速，待實測）
-podcast_prompt: 以下是繁體中文的台灣財經投資、科技商業節目（股癌、M觀點），會提到台積電、鴻海、廣達、緯創、台光電、台燿、南亞、聯茂、金像電、AWS、輝達、AI 伺服器、銅箔基板、CoWoS、HBM。
+podcast_model: medium              # tiny／base／small／medium：越大越準也越慢。實測（GitHub 免費機房、中文財經節目 8 分鐘）：small 約 5 倍速、medium 約 2.4 倍速但專有名詞（新興／TPCA／EMIB／Cleanroom／trendforce）明顯較準；一集 50 分鐘 medium 約 20 分鐘
+podcast_prompt: 以下是繁體中文的台灣財經投資、科技商業節目（股癌、M觀點），會提到台積電、鴻海、廣達、緯創、台光電、台燿、南亞、聯茂、金像電、欣興、景碩、南電、載板、ABF、無塵室、AWS、輝達、博通、AI 伺服器、銅箔基板、CoWoS、EMIB、HBM。
+# 語音轉文字的固定同音錯字（實測 medium 也會錯）：from 是正規表示式；when 有寫的話，段落裡要有那個詞才更正
+podcast_fixes:
+  - {from: 宅板, to: 載板}
+  - {from: 無城市|無程式|無塵式|無塵是, to: 無塵室}
+  - {from: 古來為聖夢宮, to: 股癌謝孟恭}
+  - {from: 新興, to: 欣興, when: 載板|ABF|良率|PCB|T-glass|銅箔基板|無塵室|擴廠}
 podcast_max_age_days: 7            # 超過幾天的集數不轉
 podcast_max_minutes: 180           # 超過幾分鐘的集數不轉
 podcast_max_mb: 300
