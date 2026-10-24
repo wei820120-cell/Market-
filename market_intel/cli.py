@@ -1129,9 +1129,9 @@ def cmd_threads(args) -> None:
     now = now_tw()
     for h, posts in got.items():
         first = h not in seen
-        fresh = posts[-args.latest:] if args.latest else threads.new_posts(h, posts, seen)
+        fresh = posts[-args.latest:] if args.latest else threads.new_posts(h, posts, seen, now=now)
         # 第一次讀到的帳號：不做訊號偵測，但最近 24 小時內值得看的貼文先放進待檢視清單
-        review = fresh if not first or args.latest else threads.recent_posts(posts, 24)
+        review = fresh if not first or args.latest else threads.recent_posts(posts, 24, now=now)
         if args.dry:
             print(f"@{h}：讀到 {len(posts)} 則，要偵測 {len(fresh)} 則，待檢視 {len(review)} 則")
         for p in review:
