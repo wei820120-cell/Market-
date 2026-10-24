@@ -1,0 +1,465 @@
+{
+ "topic": "供需事件：AI算力價格與供過於求風險（Ken Griffin：GPU像航空座位）",
+ "one_line": "Citadel 創辦人 Ken Griffin 在 10/20 的 Citadel 會議上說，AI『幾乎肯定』是泡沫但他不建議賣出 AI 股，並用航空座位類比 GPU：固定成本高、邊際成本低，一旦建置量超過需求，價格會自由落體（類比 2000 年電信光纖鋪太多）；他也提到記憶體廠毛利『極高』但投資人開始追問能撐多久。股癌 EP708（10/24）轉述了這些，並說自己追蹤的『算力價格』目前還在漲。公開數據支持『現在還沒轉弱』：H100 租金中位數約 4.20 美元／GPU 小時（10/7），Nebius 10/1 把 H100 從 3.85 調到 4.50、Runpod 從 3.29 調到 3.99；四大雲端 2026 年資本支出合計約 7,250～7,500 億美元（較 2025 年約 4,100 億成長約 77%），但其中有一部分是零組件漲價撐大的。所以這是一個『要盯哪些指標』的題材，不是已經發生的供過於求；最先受傷的會是算力租賃與資料中心，最後才是零組件廠。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "Ken Griffin",
+  "Citadel",
+  "AI泡沫",
+  "GPU租金",
+  "算力價格",
+  "供過於求",
+  "航空座位",
+  "光纖泡沫",
+  "資本支出",
+  "記憶體毛利",
+  "傑文斯悖論",
+  "GPU折舊年限"
+ ],
+ "catalysts": [
+  "美系雲端大廠 Q3 財報與 2027 年資本支出指引（10 月底～11 月初陸續公布，日期待確認）：有沒有下修或延後建置、零組件漲價占 capex 的比重",
+  "GPU 租賃價格：H100 中位數 4.20 美元／小時（10/7）會不會轉跌；Nebius、Runpod 之後有沒有再調價；B200（中位數 8.19 美元，來源互相矛盾）租金走向",
+  "輝達下一次財報（11 月，日期待確認）與 Blackwell 到貨進度；GPU 折舊年限是否有人下修",
+  "記憶體報價與廠商財報（DRAM／HBM 毛利是否持平）；台灣 10 月營收（11/10 前）：ODM 與記憶體廠",
+  "台股籌碼：融資餘額是否降下來（股癌的觀察點之一；本次沒有查到 10 月數字）"
+ ],
+ "risks": [
+  "這份是『論點研究』不是事件已發生：Griffin 講的是條件式（若建置量超過需求，價格才會崩），目前公開價格指標是上漲；把論點當成已發生的供過於求會誤判",
+  "股癌的轉述不等於 Griffin 的原話：搜尋只確認了 GPU／航空座位、泡沫、GPU 使用年限、記憶體毛利與模型定價這幾點；逐字稿中『DRAM MLCC 仍有供給瓶頸』我沒有在報導中找到 MLCC 的說法，不能當成 Griffin 說的",
+  "逐字稿是語音轉文字：『基底跟載板』的『基底』可能是『基板』或其他同音詞，無法確認，載板部分以既有的『載板供需』研究為準",
+  "資本支出數字互相矛盾：Alphabet 一說 1,800～1,900 億美元、另一份分析說 1,950～2,050 億；微軟約 1,750～1,900 億；亞馬遜約 2,000～2,200 億；彙總從 7,250 億到 7,850 億美元（含 Oracle、CoreWeave）都有。要看各公司原始財報",
+  "GPU 租金資料來自聚合網站與部落格，不是各業者官網報價；B200 的資料互相衝突（7 月報告 2.12～6.04 美元，10 月中位數 8.19 美元），取樣方式可能不同",
+  "Meta 10 月財報與股價反應、Muse 日活下降這些股癌提到的細節，我沒有查證到可靠來源（一則報導的 EPS 數字明顯不合理，不採用）",
+  "沒有查到：台股 10 月融資餘額與外資買賣超、個股最新股價；這份不是選股結論"
+ ],
+ "spec_tables": [
+  {
+   "title": "Ken Griffin 10/20 說法 vs 股癌轉述 vs 查證結果",
+   "columns": [
+    "論點",
+    "股癌轉述（未證實）",
+    "公開報導查證"
+   ],
+   "rows": [
+    [
+     "AI 是否泡沫",
+     "（主持人自己的看法）每次供應鏈狂潮最後容易掉回原點，要守住過去的戰果",
+     "Griffin 說『幾乎肯定』是泡沫，但不建議賣出 AI 股（Decrypt、iTiger）"
+    ],
+    [
+     "GPU ≈ 航空座位",
+     "固定成本高、邊際成本低、庫存會過期、同質化；供過於求價格自由落體",
+     "已證實：Griffin 以航空座位類比，並引用 2000 年電信光纖『鋪得比需求多、價格直直落』（Decrypt、Mitrade）"
+    ],
+    [
+     "GPU 使用年限",
+     "5～6 年前的 Hopper／Ampere 仍有好價格，能不能再撐 5～6 年是問號",
+     "已證實：5～6 年前的晶片仍賺『非凡』的租金，他懷疑再 5～6 年還成立"
+    ],
+    [
+     "記憶體毛利",
+     "DRAM、MLCC 仍有供給瓶頸，毛利很高，但市場在問還能不能更高",
+     "部分證實：只找到『記憶體廠毛利極高、投資人開始追問能撐多久』；MLCC 未見"
+    ],
+    [
+     "模型定價",
+     "（未轉述）",
+     "Griffin 說企業正在分辨哪些工作值得用貴的 OpenAI／Anthropic 模型、哪些用便宜的開源模型，對模型公司的支出是壓力"
+    ],
+    [
+     "AI 生產力",
+     "（未轉述）",
+     "2026 年 1 月達沃斯時他說 AI 提升生產力『尚未被證明』"
+    ]
+   ]
+  },
+  {
+   "title": "GPU 租賃價格（聚合網站中位數，10/7 前後）",
+   "columns": [
+    "型號",
+    "中位數（美元／GPU 小時）",
+    "備註"
+   ],
+   "rows": [
+    [
+     "L40S",
+     "1.62",
+     "16 家業者的中位數"
+    ],
+    [
+     "A100 80GB",
+     "2.75",
+     ""
+    ],
+    [
+     "AMD MI300X",
+     "3.45",
+     ""
+    ],
+    [
+     "H100 SXM",
+     "4.20（區間 3.20～12.29）",
+     "Nebius 10/1 由 3.85 調到 4.50（+17%）、Runpod 由 3.29 調到 3.99（+21%）"
+    ],
+    [
+     "H200",
+     "5.70",
+     ""
+    ],
+    [
+     "B200",
+     "8.19",
+     "7 月報告為 2.12～6.04，資料互相矛盾"
+    ],
+    [
+     "B300",
+     "9.50",
+     ""
+    ]
+   ]
+  },
+  {
+   "title": "2026 年雲端資本支出估計（來源互相矛盾，僅供量級參考）",
+   "columns": [
+    "來源／公司",
+    "數字",
+    "備註"
+   ],
+   "rows": [
+    [
+     "四大雲端合計（FT 彙整）",
+     "約 7,250 億美元，較 2025 年（約 4,100 億）成長 77%",
+     "Amazon、Microsoft、Alphabet、Meta"
+    ],
+    [
+     "Bloomberg（10/12）",
+     "約 7,500 億美元",
+     "媒體整理"
+    ],
+    [
+     "Moody's",
+     "7,850 億美元（含 Oracle、CoreWeave），2027 年逼近 1 兆美元",
+     "預測"
+    ],
+    [
+     "Meta",
+     "1,250～1,450 億美元（7 月上調，理由含零組件漲價）",
+     "公司說法"
+    ],
+    [
+     "Microsoft",
+     "2026 曆年約 1,900 億美元，其中約 250 億來自零組件漲價；另一分析為約 1,750 億",
+     "矛盾"
+    ],
+    [
+     "Alphabet",
+     "1,800～1,900 億美元；另一分析為 1,950～2,050 億",
+     "矛盾"
+    ],
+    [
+     "Amazon",
+     "約 2,000～2,200 億美元",
+     "矛盾"
+    ]
+   ]
+  },
+  {
+   "title": "要盯的指標與『轉弱』訊號（我的整理，不是 Griffin 說的）",
+   "columns": [
+    "指標",
+    "現況",
+    "轉弱的樣子"
+   ],
+   "rows": [
+    [
+     "GPU 租金（H100 中位數）",
+     "4.20 美元，業者還在調漲",
+     "連續幾週下滑、業者降價或促銷"
+    ],
+    [
+     "雲端 capex 指引",
+     "合計約 7,250～7,500 億美元",
+     "任何一家下修或延後 2027 年計畫；漲幅中零組件漲價占比變大"
+    ],
+    [
+     "GPU 折舊年限／二手價",
+     "5～6 年前的晶片仍有好租金",
+     "舊世代租金明顯崩跌、業者縮短折舊年限"
+    ],
+    [
+     "記憶體報價與毛利",
+     "毛利極高",
+     "報價持平但庫存升高、毛利率見頂"
+    ],
+    [
+     "模型公司的支出",
+     "（Griffin 提醒的壓力點）",
+     "大型 AI 實驗室縮減算力承諾"
+    ]
+   ]
+  }
+ ],
+ "evolution": [
+  {
+   "name": "H100／H200 世代",
+   "composition": "Hopper 架構 GPU，雲端與算力新創大量使用",
+   "spec": "H100 租金中位數 4.20 美元／小時；H200 5.70 美元",
+   "application": "5～6 年前的世代仍租得好價錢，是 Griffin 質疑『再撐 5～6 年』的對象"
+  },
+  {
+   "name": "B200／B300 世代（Blackwell）",
+   "composition": "新一代 GPU，貨量爬升中",
+   "spec": "B200 租金中位數 8.19 美元、B300 9.50 美元（資料互相矛盾）",
+   "application": "新世代到貨會拉低舊世代租金，是供給端最需要盯的變數"
+  },
+  {
+   "name": "算力供給鏈",
+   "composition": "GPU → 伺服器 ODM → 資料中心（AIDC）→ 租賃業者／雲端",
+   "spec": "2026 年雲端 capex 約 7,250～7,500 億美元",
+   "application": "價格訊號從最下游（租金）往上游（capex、零組件）傳導，時間差不確定"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的（現在是缺還是過剩）",
+   "points": [
+    "現在是『缺』：雲端大廠 2026 年 capex 合計約 7,250～7,500 億美元（較 2025 年成長約 77%），GPU 租金仍在漲（Nebius +17%、Runpod +21%），股癌也說他追蹤的算力價格還在高檔",
+    "但數字有水分：Meta 說上調 capex 的理由含『零組件漲價』，微軟的 capex 中約 250 億美元來自零組件漲價，代表一部分 capex 增加是『價格』而不是『數量』",
+    "Griffin 的情境是『如果』：建置量超過需求，邊際價格就會崩（2000 年電信：光纖鋪得比需求多、價格直直落）。反方論點（股癌也提到）是傑文斯悖論：算力變便宜後使用量大增，會撐住需求",
+    "股價通常走在營收前面至少半年：好消息已無法再推高股價時（高原化），後面只剩壞消息；這是股癌的整理，也是 Griffin 對高毛利族群『能不能更好、不能就只剩持平或下滑』的質疑"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷（若算力價格轉弱，傳導順序）",
+   "points": [
+    "最先受傷：算力租賃與資料中心（固定成本高、價格自由落體的就是它），例如台灣大、中華電的 AIDC 與算力服務——目前預售與進駐是正面，但這也是需要追蹤租金的地方",
+    "其次：GPU 買方的折舊與投資報酬模型（GPU 能用多久、舊世代租金多少），影響雲端大廠的後續 capex 意願",
+    "最後才到零組件：AI 伺服器 ODM（廣達、緯穎、緯創、鴻海、技嘉）看的是出貨量；記憶體（南亞科、華邦電、旺宏、力積電）毛利極高，Griffin 說投資人在追問能撐多久；載板、被動元件已經在缺貨漲價，股癌認為這類『純缺貨漲價』的故事會比『量增價值提升』的更危險",
+    "相對有利：美股軟體與資安股今年表現強於半導體（Tradersunion 報導 IGV 約 +17%、SOX 約 −19%，區間以原文為準；資安股年初至今漲幅更大），是股癌提到的『下一班車』；但我沒有查到最近一週的資料，需要有日期的來源再確認"
+   ]
+  },
+  {
+   "title": "這個題材怎麼用（觀察清單，不是結論）",
+   "points": [
+    "把它當『風險檢查表』：每週看 GPU 租金、雲端 capex 指引、記憶體毛利、模型公司支出，四項裡有兩項轉弱再提高警戒，單一項目轉弱不要過度解讀",
+    "持股集中在純缺貨漲價的標的者，股癌的提醒是：關鍵不是再賺多少，而是守住過去的獲利；停損與停利要做好",
+    "已證實的是 Griffin 10/20 的談話與目前的價格數據；未證實的是股癌轉述的細節（MLCC、Meta 財報反應）與台股融資數據"
+   ]
+  }
+ ],
+ "conclusion": [
+  "Ken Griffin 10/20 說 AI『幾乎肯定』是泡沫但不建議賣，並用航空座位類比 GPU：價格崩的條件是建置量超過需求；他也質疑 GPU 使用年限與記憶體高毛利能撐多久。",
+  "目前的公開數據還沒轉弱：H100 租金中位數約 4.20 美元且業者還在調漲，四大雲端 2026 年 capex 約 7,250～7,500 億美元；但其中一部分是零組件漲價，資本支出增加不全是數量。",
+  "傳導順序（我的推演）是算力租賃與資料中心先受傷，ODM 與零組件最後；要盯的是 GPU 租金、雲端 capex 指引、折舊年限與記憶體毛利。",
+  "股癌轉述中的 MLCC 說法、Meta 財報反應與『基底』用詞沒有查證到；沒有最新股價與台股融資數據，這份不是選股結論。"
+ ],
+ "sources": [
+  {
+   "title": "Decrypt：Ken Griffin Says AI Is 'Almost Certainly' in a Bubble—And Compares GPUs to Airline Seats",
+   "url": "https://decrypt.co/381578/ken-griffin-ai-bubble-gpus-airline-seats"
+  },
+  {
+   "title": "Mitrade（2026/10/21）：Ken Griffin Compares AI Chips to Airline Seats, Says Glut Could Send Pricing Into Freefall",
+   "url": "https://www.mitrade.com/insights/news/live-news/article-3-2179426-20261021"
+  },
+  {
+   "title": "BeInCrypto：Ken Griffin AI chip glut pricing",
+   "url": "https://beincrypto.com/ken-griffin-ai-chip-glut-pricing/"
+  },
+  {
+   "title": "iTiger：AI Stocks are Probably in a Bubble - but Might be Worth Holding Onto, Says Citadel's Ken Griffin",
+   "url": "https://www.itiger.com/news/2677621551"
+  },
+  {
+   "title": "IDN Financials：Citadel CEO Ken Griffin: AI has not been proven to boost productivity（2026/1 Davos）",
+   "url": "https://www.idnfinancials.com/news/60718/citadel-ceo-ken-griffin-ai-has-not-been-proven-to-boost-productivity"
+  },
+  {
+   "title": "Uvik：GPU price index（2026/10/7 中位數租金）",
+   "url": "https://uvik.net/blog/gpu-price-index/"
+  },
+  {
+   "title": "IntuitionLabs：H100 Rental Prices Compared（Runpod、Nebius 調價）",
+   "url": "https://intuitionlabs.ai/articles/h100-rental-prices-cloud-comparison"
+  },
+  {
+   "title": "IntuitionLabs：Data center GPU pricing 2026",
+   "url": "https://intuitionlabs.ai/articles/data-center-gpu-pricing-2026"
+  },
+  {
+   "title": "DatacenterDynamics：Moody's hyperscaler capex forecasts marked up by $85bn to close in on $1trn by 2027",
+   "url": "https://datacenterdynamics.com/en/news/moodys-hyperscaler-capex-forecasts-marked-up-by-85bn-to-close-in-on-1trn-by-2027/"
+  },
+  {
+   "title": "Yahoo Finance：'Magnificent 7' earnings rush reveals AI spending surge, hyperscaler capex set to reach $725 billion in 2026",
+   "url": "https://finance.yahoo.com/markets/article/magnificent-7-earnings-rush-reveals-ai-spending-surge-with-hyperscaler-capex-set-to-reach-725-billion-in-2026-224901707.html"
+  },
+  {
+   "title": "Tradersunion：Software stocks regain favor after strong earnings",
+   "url": "https://tradersunion.com/news/stocks/show/3381454-software-stocks-regain-favor/"
+  },
+  {
+   "title": "Yahoo Finance：CrowdStrike, Cisco, and Palo Alto hit records as cyber stocks outrun chips",
+   "url": "https://finance.yahoo.com/markets/article/cybersecurity-stocks-are-hitting-records-again-as-chips-play-catch-up-chart-of-the-day-130252672.html"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "算力租賃與資料中心（價格最先反映）",
+   "description": "GPU 租金仍在漲（H100 中位數 4.20 美元／小時，Nebius、Runpod 10 月調漲），預售與進駐都是正面；但這一層固定成本高、邊際成本低，若建置量超過需求，價格會最先自由落體（Griffin 的類比）。台灣的代表是電信業者的 AIDC 與算力服務。",
+   "global_players": [
+    "CoreWeave",
+    "Nebius",
+    "Runpod",
+    "Microsoft Azure"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3045",
+     "name": "台灣大",
+     "role": "AIDC 與算力即服務（龜山預售完售）；暴露在租金走向",
+     "impact": "中性"
+    },
+    {
+     "code": "2412",
+     "name": "中華電",
+     "role": "AIDC（崙坪、蘆竹最高 36MW）與企業 ICT",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "AI 伺服器與系統 ODM",
+   "description": "看的是雲端 capex 的出貨量；capex 約 7,250～7,500 億美元（+77%）有利，但其中一部分是零組件漲價，且 2027 年指引是關鍵。",
+   "global_players": [
+    "NVIDIA",
+    "Dell",
+    "Supermicro"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端大廠伺服器",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器代工",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器與 GPU 系統",
+     "impact": "中性"
+    },
+    {
+     "code": "2376",
+     "name": "技嘉",
+     "role": "AI 伺服器",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "記憶體（DRAM／HBM）",
+   "description": "Griffin 說記憶體廠毛利『極高』但投資人開始追問能撐多久；股癌轉述 DRAM 仍有供給瓶頸、毛利還在上升，市場的疑問是毛利能不能更高。細節見既有的『DRAM供需』研究。",
+   "global_players": [
+    "SK 海力士",
+    "三星電子",
+    "美光"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "DRAM 報價與毛利的直接受益者",
+     "impact": "中性"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "利基型 DRAM／快閃記憶體",
+     "impact": "中性"
+    },
+    {
+     "code": "2337",
+     "name": "旺宏",
+     "role": "快閃記憶體",
+     "impact": "中性"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "記憶體與晶圓代工",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "載板與 PCB 材料（缺貨漲價）",
+   "description": "股癌認為市場最缺的是『基底（可能是基板）』與載板，主流股要撐住估值，其他沒這麼缺的才有機會；若載板類撐不住，風險偏好會下降。細節見既有的『載板供需』研究。",
+   "global_players": [
+    "Ibiden"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "ABF 載板龍頭",
+     "impact": "中性"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "ABF 載板",
+     "impact": "中性"
+    },
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "載板",
+     "impact": "中性"
+    },
+    {
+     "code": "4958",
+     "name": "臻鼎-KY",
+     "role": "PCB 與載板",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "被動元件（MLCC，股癌轉述但未見於 Griffin 報導）",
+   "description": "逐字稿提到 MLCC 仍有供給瓶頸，但公開報導裡 Griffin 只提到記憶體；MLCC 的缺貨與漲價邏輯見既有的『MLCC供需』研究。",
+   "global_players": [
+    "村田",
+    "三星電機",
+    "太陽誘電"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2327",
+     "name": "國巨*",
+     "role": "MLCC 與被動元件龍頭",
+     "impact": "中性"
+    },
+    {
+     "code": "2492",
+     "name": "華新科",
+     "role": "MLCC、電阻、電感",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
