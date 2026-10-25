@@ -1257,8 +1257,12 @@ def _podcast_backfill(show: dict, src: dict, args) -> None:
     t_start = time.monotonic()
     eps = sorted(podcast.fetch_episodes(show), key=lambda e: e.published)
     shards = max(args.shards, 1)
-    mine = [e for i, e in enumerate(eps) if i % shards == args.shard]
+    min_ep = getattr(args, "min_ep", 0) or 0
+    pool = [e for e in eps if (podcast.episode_no(e.title) or 0) >= min_ep] if min_ep else eps
+    mine = [e for i, e in enumerate(pool) if i % shards == args.shard]
     todo = [e for e in mine if not podcast.digest_path(e).exists()]
+    if getattr(args, "newest_first", False):
+        todo.reverse()   # 從最新往回轉：和『由舊到新』的片在中間會合，不用等舊的片慢慢爬
     if args.plan:
         hours = sum(e.duration_s for e in eps) / 3600
         by_year: dict[str, list[int]] = {}
@@ -1290,6 +1294,11 @@ def _podcast_backfill(show: dict, src: dict, args) -> None:
     print(f"{show['name']}：第 {args.shard}/{shards} 片，{len(mine)} 集裡還有 {len(todo)} 集沒處理，模型 {model}，時間預算 {args.budget_min or '不限'} 分鐘")
     done_n = 0
     for ep in todo[:args.max_episodes] if args.max_episodes else todo:
+        if done_n and os.environ.get("GITHUB_ACTIONS"):
+            import subprocess
+            subprocess.run(["git", "pull", "--rebase", "-q"], cwd=str(research.ROOT), capture_output=True)   # 別片剛轉好的集數會同步進來，下一行就能略過
+        if podcast.digest_path(ep).exists():
+            continue
         left = args.budget_min - (time.monotonic() - t_start) / 60 if args.budget_min else 1e9
         need = ep.duration_s / 60 / 1.8 + 4   # 保守估：約 1.8 倍速加下載
         if left < need:
@@ -2946,6 +2955,8 @@ def main(argv: list[str] | None = None) -> None:
     pcp.add_argument("--shard", type=int, default=0, help="--backfill：這是第幾片（從 0 開始）")
     pcp.add_argument("--shards", type=int, default=1, help="--backfill：總共分幾片（依集數順序輪流分配）")
     pcp.add_argument("--budget-min", type=int, default=0, help="--backfill：最多跑幾分鐘，剩下的時間不夠轉下一集就收工（0＝不限）")
+    pcp.add_argument("--min-ep", type=int, default=0, help="--backfill：只處理第幾集（含）以後的集數，分片也只在這些集數裡分")
+    pcp.add_argument("--newest-first", action="store_true", help="--backfill：這片由新到舊轉（搭配 --min-ep，另開一批片加速）")
     pcp.set_defaults(func=cmd_podcasts)
     th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）：不推播，供應鏈訊號排求證研究，值得看的貼文放進待檢視清單")
     th.add_argument("--dry", action="store_true", help="只印出讀到的貼文與偵測結果，不推播、不存記錄、不排研究")
