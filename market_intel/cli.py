@@ -1364,7 +1364,7 @@ def cmd_podcasts(args) -> None:
     listings = _listings()
     names = signals.signal_names(listings, AMBIGUOUS_NAMES)
     cfg = signals.settings()
-    for ep in todo[:args.max_episodes]:
+    for ep in todo[:(args.max_episodes or 2)]:
         if ep.duration_s > int(src.get("podcast_max_minutes", 180)) * 60:
             log.warning("Podcast %s｜%s 長 %d 分鐘，超過上限，略過", ep.show, ep.title, ep.duration_s // 60)
         else:
@@ -2934,7 +2934,7 @@ def main(argv: list[str] | None = None) -> None:
     pcp.add_argument("--list", action="store_true", help="只列出各節目 RSS 最新幾集（不下載）")
     pcp.add_argument("--dry", action="store_true", help="下載並轉文字，但只印出結果，不存逐字稿、不放待檢視清單、不排研究")
     pcp.add_argument("--show", help="只處理名稱含這段文字的節目")
-    pcp.add_argument("--max-episodes", type=int, default=2, help="這次最多轉幾集")
+    pcp.add_argument("--max-episodes", type=int, default=None, help="這次最多轉幾集（一般模式預設 2；--backfill 預設不限，靠 --budget-min 收工）")
     pcp.add_argument("--max-minutes", type=int, default=0, help="只轉到第幾分鐘為止（測試用）")
     pcp.add_argument("--from-minutes", type=int, default=0, help="搭配 --max-minutes：從第幾分鐘開始轉（測試用）")
     pcp.add_argument("--first", type=int, default=1, help="第一次看到的節目，最新幾集要處理（其他舊集數略過）")
