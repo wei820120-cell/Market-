@@ -1046,7 +1046,11 @@ def _probe(urls: list[str], browser: bool = False) -> None:
             link = (m.group(1) or m.group(2)).replace("\\u002F", "/").replace("\\/", "/")
             if link not in links and "linktr.ee/s/" not in link and "static" not in link:
                 links.append(link)
-        if links:
+        if "feeds/videos.xml" in u or body.lstrip().startswith("<?xml"):   # RSS／Atom：印最新幾筆的標題與時間
+            titles = _re.findall(r"<title>([^<]+)</title>", body)[1:11]
+            dates = _re.findall(r"<published>([^<]+)</published>", body)[:10]
+            print("  最新項目：" + " | ".join(f"{d[:16]} {t[:40]}" for d, t in zip(dates, titles)))
+        elif links:
             print("  網頁裡的連結：" + " | ".join(links[:40]))
         if browser:
             try:
