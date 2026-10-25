@@ -103,6 +103,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # 歷史逐字稿接力（--backfill）要能再啟動自己
 
 concurrency:
   # 一般研究排隊執行；歷史 Podcast 轉文字（--backfill）每一片各自一組，可以同時跑
@@ -151,7 +152,9 @@ jobs:
             for q in ${{ inputs.explain }}; do python -m market_intel trade --explain "$q"; echo; done
           elif [ -n "$PROBE" ]; then
             case "$PROBE" in
-              cmd:*) python -m market_intel ${PROBE#cmd:} ;;   # 任意子命令（測試用），例如 cmd:podcasts --list
+              cmd:*)   # 任意子命令（測試用），例如 cmd:podcasts --list；輸出同時存起來，接力步驟要看
+                python -m market_intel ${PROBE#cmd:} 2>&1 | tee /tmp/probe.log
+                test "${PIPESTATUS[0]}" -eq 0 ;;
               *)
                 URLS=$(printf '%s' " $PROBE " | sed 's/ browser / /g')
                 case " $PROBE " in *" browser "*) B=--browser ;; *) B= ;; esac
@@ -215,3 +218,12 @@ jobs:
             sleep 5
           done
           exit 1
+      - name: 歷史逐字稿接力（這一片還有沒轉完的集數，就再啟動同一片）
+        if: ${{ always() && contains(inputs.probe, '--backfill') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROBE: ${{ inputs.probe }}
+        run: |
+          if grep -q "^接力：還有" /tmp/probe.log 2>/dev/null; then
+            gh workflow run research.yml --ref "$GITHUB_REF_NAME" -f probe="$PROBE"
+          fi

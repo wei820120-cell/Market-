@@ -1041,6 +1041,13 @@ def _probe(urls: list[str], browser: bool = False) -> None:
         print(f"  標題：{(title.group(1).strip() if title else '')[:80]}")
         print(f"  og:description：{(desc.group(1) if desc else '')[:200]}")
         print(f"  出現關鍵字：{hits}")
+        links = []
+        for m in _re.finditer(r'"url":\s*"(https?:[^"]+)"|href="(https?://[^"]+)"', body):
+            link = (m.group(1) or m.group(2)).replace("\\u002F", "/").replace("\\/", "/")
+            if link not in links and "linktr.ee/s/" not in link and "static" not in link:
+                links.append(link)
+        if links:
+            print("  網頁裡的連結：" + " | ".join(links[:40]))
         if browser:
             try:
                 d = threads.render(u)
@@ -1270,6 +1277,9 @@ def _podcast_backfill(show: dict, src: dict, args) -> None:
             break
         if ep.duration_s > int(src.get("podcast_max_minutes", 180)) * 60:
             log.warning("%s 太長，略過", ep.title)
+            dpath = podcast.digest_path(ep)
+            dpath.parent.mkdir(parents=True, exist_ok=True)
+            dpath.write_text(json.dumps({"show": ep.show, "ep": podcast.episode_no(ep.title), "title": ep.title, "skipped": "太長，沒有轉文字"}, ensure_ascii=False) + "\n", encoding="utf-8")
             continue
         try:
             import shutil
@@ -1297,7 +1307,10 @@ def _podcast_backfill(show: dict, src: dict, args) -> None:
             _git_publish(f"歷史逐字稿 {show['name']} {podcast.episode_name(ep)}（加密）與摘要", [str(apath.relative_to(research.ROOT)), str(dpath.relative_to(research.ROOT))])
         except Exception as e:  # noqa: BLE001 - 一集失敗不影響其他集數，下次再試
             log.warning("%s 處理失敗：%s", ep.title, e)
-    print(f"這次處理 {done_n} 集，耗時 {(time.monotonic() - t_start) / 60:.0f} 分鐘")
+    left_n = sum(1 for e in mine if not podcast.digest_path(e).exists())
+    print(f"這次處理 {done_n} 集，耗時 {(time.monotonic() - t_start) / 60:.0f} 分鐘；這一片還剩 {left_n} 集")
+    if done_n and left_n:
+        print(f"接力：還有 {left_n} 集（workflow 會再啟動同一片）")
 
 
 def cmd_podcasts(args) -> None:
