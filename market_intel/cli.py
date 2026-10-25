@@ -1202,6 +1202,7 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
         signals.process(items, listings, names, dry=True, skip_patterns=skip, push=False)
         return
     path = podcast.save_transcript(ep, paras)
+    _archive_episode(ep, paras, names, listings, cfg, skip, args.model or src.get("podcast_model", "small"))   # 新集數也進學習用的歷史記錄
     added = podcast.inbox.add(podcast.INBOX_DIR, [{**e, "transcript": str(path.relative_to(research.ROOT))} for e in entries], f"{now:%Y-%m-%d}")
     log.info("Podcast %s：逐字稿 %s，%d 段放進待檢視清單", ep.show, path, added)
     signals.process(items, listings, names, skip_patterns=skip, push=False)
@@ -1229,6 +1230,21 @@ def _git_publish(message: str, paths: list[str]) -> None:
             return
         time.sleep(random.uniform(3, 15))
     log.warning("歷史逐字稿 push 失敗（%s），留給最後的存檔步驟", message)
+
+
+def _archive_episode(ep, paras, names: dict, listings: dict, cfg: dict, skip: list, model: str) -> dict | None:
+    """學習用的歷史記錄：加密逐字稿（state/podcast_archive）＋摘要（research/podcasts）。沒有公鑰就不存（公開 repo 不放原文）。回傳摘要。"""
+    if not podcast.PUBKEY_PATH.exists():
+        return None
+    ads = [any(re.search(pt, text) for pt in skip) for _, text in paras]
+    tags = [signals.post_tags(text, names, listings, cfg)[0] if not ad else [] for (_, text), ad in zip(paras, ads)]
+    digest = podcast.build_digest(ep, paras, ads, tags, model)
+    apath, dpath = podcast.archive_path(ep), podcast.digest_path(ep)
+    apath.parent.mkdir(parents=True, exist_ok=True)
+    dpath.parent.mkdir(parents=True, exist_ok=True)
+    apath.write_bytes(podcast.encrypt_text(podcast.transcript_text(ep, paras)))
+    dpath.write_text(json.dumps(digest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return digest
 
 
 def _podcast_backfill(show: dict, src: dict, args) -> None:
@@ -1294,14 +1310,8 @@ def _podcast_backfill(show: dict, src: dict, args) -> None:
                 shutil.rmtree(tmp, ignore_errors=True)
             t2 = time.monotonic()
             paras = [(t, podcast.apply_fixes(text, fixes)) for t, text in podcast.paragraphs(segs)]
-            ads = [any(re.search(pt, text) for pt in skip) for _, text in paras]
-            tags = [signals.post_tags(text, names, listings, cfg)[0] if not ad else [] for (_, text), ad in zip(paras, ads)]
-            digest = podcast.build_digest(ep, paras, ads, tags, model)
+            digest = _archive_episode(ep, paras, names, listings, cfg, skip, model)
             apath, dpath = podcast.archive_path(ep), podcast.digest_path(ep)
-            apath.parent.mkdir(parents=True, exist_ok=True)
-            dpath.parent.mkdir(parents=True, exist_ok=True)
-            apath.write_bytes(podcast.encrypt_text(podcast.transcript_text(ep, paras)))
-            dpath.write_text(json.dumps(digest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
             print(f"{ep.title[:24]}｜{ep.published[:10]}｜{ep.duration_s // 60} 分：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{ep.duration_s / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段、市場話題 {digest['market_start'] or '?'}、問答 {digest['qa_start'] or '?'}")
             done_n += 1
             _git_publish(f"歷史逐字稿 {show['name']} {podcast.episode_name(ep)}（加密）與摘要", [str(apath.relative_to(research.ROOT)), str(dpath.relative_to(research.ROOT))])

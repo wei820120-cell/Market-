@@ -7,6 +7,7 @@ name: podcast
 on:
   schedule:
     - cron: "11 */3 * * *"
+    - cron: "20,50 6-10 * * 3,6"   # 股癌通常週三、週六台北下午發布：這段時間每 30 分鐘檢查，第一時間處理新集數
   workflow_dispatch:
     inputs:
       args:
