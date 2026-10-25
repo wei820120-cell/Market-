@@ -10,7 +10,7 @@
 ## 閱讀進度
 | 年份 | 已轉文字 | 已讀並做筆記 |
 |---|---|---|
-| 2020 | 見 `research/podcasts/股癌/` | EP1～23、25～30（EP15 後半、EP18 後半未讀；EP24 轉錄中） |
+| 2020 | 見 `research/podcasts/股癌/` | EP1～23、25～31、33～37（EP15 後半、EP18 後半未讀；EP24、32 轉錄中） |
 
 ## 怎麼繼續（給之後接手的研究員）
 - 轉文字：開發分支上的 `research.yml` 用 probe 啟動 `cmd:podcasts --backfill --show 股癌 --shard N --shards 8 --budget-min 330 --model medium`（N=0～7，每一片轉完會自己再啟動，直到那一片全部處理完）。進度看 `research/podcasts/股癌/` 的檔案數（總共 708 集，約 559 小時音檔）。
