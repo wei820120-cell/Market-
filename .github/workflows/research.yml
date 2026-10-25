@@ -105,13 +105,14 @@ permissions:
   contents: write
 
 concurrency:
-  group: research
+  # 一般研究排隊執行；歷史 Podcast 轉文字（--backfill）每一片各自一組，可以同時跑
+  group: ${{ contains(inputs.probe, '--backfill') && format('research-backfill-{0}', inputs.probe) || 'research' }}
   cancel-in-progress: false
 
 jobs:
   research:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: ${{ contains(inputs.probe, '--backfill') && 355 || 40 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -124,7 +125,7 @@ jobs:
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 安裝語音辨識（只在測試 Podcast 時）
         if: ${{ contains(inputs.probe, 'podcasts') }}
-        run: pip install faster-whisper opencc-python-reimplemented
+        run: pip install faster-whisper opencc-python-reimplemented cryptography
       - name: 安裝無頭瀏覽器（只在測試瀏覽器讀取時）
         if: ${{ contains(inputs.probe, 'browser') || inputs.signals }}
         run: pip install playwright && playwright install --with-deps chromium

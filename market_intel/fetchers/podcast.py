@@ -26,6 +26,15 @@ ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 SEEN_PATH = ROOT / "state" / "podcasts_seen.json"
 TRANSCRIPT_DIR = ROOT / "state" / "podcasts"
 INBOX_DIR = ROOT / "state" / "podcast_inbox"
+ARCHIVE_DIR = ROOT / "state" / "podcast_archive"      # 歷史集數的逐字稿（加密，公開 repo 不放原文）
+DIGEST_DIR = ROOT / "research" / "podcasts"           # 歷史集數的摘要（只有計數與時間點，沒有原文）
+PUBKEY_PATH = ROOT / "config" / "podcast_archive_pub.pem"
+
+# 方法論相關的詞：每集數一數出現次數，之後挑要細讀的集數用
+LOGIC_TERMS = ["停損", "停利", "部位", "資金控管", "槓桿", "融資", "籌碼", "估值", "本益比", "題材", "缺貨", "漲價", "庫存", "財報", "法說",
+               "Earnings", "指數", "回檔", "反彈", "複盤", "FOMO", "紀律", "風險", "資金效益", "Bottleneck", "Sell the news", "利多出盡",
+               "降息", "升息", "通膨", "流動性", "殖利率", "CapEx", "泡沫", "護城河", "高原", "趨勢", "均線", "加碼", "減碼", "放空",
+               "現金", "選擇權", "期貨", "ETF", "心態", "貪婪", "恐懼", "停損點", "基本面", "技術面", "產業", "供應鏈", "報價", "毛利"]
 
 
 @dataclass
@@ -201,6 +210,97 @@ def save_transcript(ep: Episode, paras: list[tuple[float, str]]) -> Path:
             f"長度：{ep.duration_s // 60} 分鐘", "（語音轉文字，可能有同音錯字，公司名與數字請對照原節目）", ""]
     path.write_text("\n".join(head + [f"[{mmss(t)}] {text}" for t, text in paras]) + "\n", encoding="utf-8")
     return path
+
+
+def episode_no(title: str) -> int | None:
+    """標題裡的集數：「EP708 | 🦷」→ 708。"""
+    m = re.search(r"EP\s*(\d+)", title or "", re.I)
+    return int(m.group(1)) if m else None
+
+
+def episode_name(ep: Episode) -> str:
+    """歷史檔案用的檔名：EP0708；沒有集數的用發布日期＋key。"""
+    n = episode_no(ep.title)
+    return f"EP{n:04d}" if n is not None else f"{ep.published[:10]}_{ep.key}"
+
+
+def digest_path(ep: Episode) -> Path:
+    return DIGEST_DIR / ep.show / f"{episode_name(ep)}.json"
+
+
+def archive_path(ep: Episode) -> Path:
+    return ARCHIVE_DIR / ep.show / f"{episode_name(ep)}.bin"
+
+
+def channel_info(show: dict) -> dict:
+    """節目層級的資訊（標題、連結、簡介裡的網址）：用來找主持人的其他管道。"""
+    root = ET.fromstring(net.get(resolve_feed(show), timeout=30).text)
+    ch = root.find("channel")
+    if ch is None:
+        return {}
+    desc = re.sub(r"<[^>]+>", " ", (ch.findtext("description") or "") + " " + (ch.findtext(f"{ITUNES}summary") or ""))
+    return {"title": (ch.findtext("title") or "").strip(), "link": (ch.findtext("link") or "").strip(),
+            "description": re.sub(r"\s+", " ", desc).strip()[:800],
+            "urls": sorted(set(re.findall(r"https?://[^\s<>\"')]+", ET.tostring(ch, encoding="unicode"))))[:30]}
+
+
+def encrypt_text(text: str, pubkey_pem: bytes | None = None) -> bytes:
+    """RSA-OAEP 包 AES-GCM 金鑰；公開 repo 裡只放這種加密檔，私鑰不在 repo。沒有公鑰就拒絕存檔。"""
+    import zlib
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+    pem = pubkey_pem if pubkey_pem is not None else PUBKEY_PATH.read_bytes()
+    pub = serialization.load_pem_public_key(pem)
+    key, nonce = AESGCM.generate_key(256), os.urandom(12)
+    body = AESGCM(key).encrypt(nonce, zlib.compress(text.encode("utf-8"), 9), b"GY1")
+    wrapped = pub.encrypt(key, padding.OAEP(mgf=padding.MGF1(hashes.SHA256()), algorithm=hashes.SHA256(), label=None))
+    return b"GY1" + len(wrapped).to_bytes(2, "big") + wrapped + nonce + body
+
+
+def decrypt_text(blob: bytes, privkey_pem: bytes) -> str:
+    import zlib
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+    if blob[:3] != b"GY1":
+        raise ValueError("不是逐字稿加密檔")
+    n = int.from_bytes(blob[3:5], "big")
+    wrapped, nonce, body = blob[5:5 + n], blob[5 + n:17 + n], blob[17 + n:]
+    priv = serialization.load_pem_private_key(privkey_pem, password=None)
+    key = priv.decrypt(wrapped, padding.OAEP(mgf=padding.MGF1(hashes.SHA256()), algorithm=hashes.SHA256(), label=None))
+    return zlib.decompress(AESGCM(key).decrypt(nonce, body, b"GY1")).decode("utf-8")
+
+
+def transcript_text(ep: Episode, paras: list[tuple[float, str]]) -> str:
+    head = [f"節目：{ep.show}", f"標題：{ep.title}", f"發布：{ep.published}", f"連結：{ep.link or ep.audio_url}",
+            f"長度：{ep.duration_s // 60} 分鐘", "（語音轉文字，可能有同音錯字，公司名與數字請對照原節目）", ""]
+    return "\n".join(head + [f"[{mmss(t)}] {text}" for t, text in paras]) + "\n"
+
+
+def build_digest(ep: Episode, paras: list[tuple[float, str]], ads: list[bool], tags: list[list[str]], model: str = "") -> dict:
+    """一集的摘要（只有計數與時間點，不含原文）：市場話題與問答從哪裡開始、提到的公司與主題、方法論詞的出現次數。"""
+    market_start = qa_start = None
+    for i, (t, text) in enumerate(paras):
+        if market_start is None and re.search(r"市場話題|進入市場|市場的部分|來聊市場", text):
+            market_start = t
+        elif market_start is not None and qa_start is None and re.search(r"QQ|Q&A|QA的部分|聽眾(的)?問答|進入Q", text):
+            qa_start = t
+    body = [text for (t, text), ad in zip(paras, ads) if not ad]
+    joined = "\n".join(body)
+    terms = {w: joined.count(w) for w in LOGIC_TERMS if joined.count(w)}
+    tag_counts: dict[str, int] = {}
+    for tl, ad in zip(tags, ads):
+        if not ad:
+            for tg in tl:
+                tag_counts[tg] = tag_counts.get(tg, 0) + 1
+    top = dict(sorted(tag_counts.items(), key=lambda kv: -kv[1])[:60])
+    return {"show": ep.show, "ep": episode_no(ep.title), "title": ep.title, "published": ep.published, "key": ep.key,
+            "duration_min": ep.duration_s // 60, "paras": len(paras), "ad_paras": sum(ads), "chars": len(joined),
+            "market_start": mmss(market_start) if market_start is not None else "", "qa_start": mmss(qa_start) if qa_start is not None else "",
+            "tags": top, "terms": terms, "model": model, "transcribed_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
 
 def prune_transcripts(keep_days: int = 14) -> int:

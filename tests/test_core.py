@@ -2579,3 +2579,80 @@ def test_podcast_apply_fixes_uses_context():
     assert pc.apply_fixes("宅板良率不高，新興是 20 到 30，無城市還沒開出來", fixes) == "載板良率不高，欣興是 20 到 30，無塵室還沒開出來"
     assert pc.apply_fixes("新興航運的貨櫃運價", fixes) == "新興航運的貨櫃運價"      # 沒有載板、良率的上下文就不改
     assert pc.apply_fixes("沒有更正", []) == "沒有更正"
+
+
+POD_BACKFILL_RSS = """<?xml version="1.0"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0"><channel><title>股癌</title><link>https://show</link><description>IG https://instagram.com/x</description>
+<item><title>EP3 | 最新</title><guid>g3</guid><pubDate>Sat, 24 Oct 2026 07:33:00 +0000</pubDate><enclosure url="https://cdn/3.mp3"/><itunes:duration>3000</itunes:duration></item>
+<item><title>EP2 | 中間</title><guid>g2</guid><pubDate>Wed, 21 Oct 2026 07:49:00 +0000</pubDate><enclosure url="https://cdn/2.mp3"/><itunes:duration>3000</itunes:duration></item>
+<item><title>EP1 | 第一集</title><guid>g1</guid><pubDate>Sat, 17 Oct 2026 06:49:00 +0000</pubDate><enclosure url="https://cdn/1.mp3"/><itunes:duration>3000</itunes:duration></item></channel></rss>"""
+
+
+def _pod_keypair():
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+    k = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    return (k.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption()),
+            k.public_key().public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo))
+
+
+def test_podcast_names_encryption_and_digest():
+    from market_intel.fetchers import podcast as pc
+    ep = pc.parse_feed(POD_BACKFILL_RSS, "股癌")[0]
+    assert pc.episode_no(ep.title) == 3 and pc.episode_no("番外篇") is None and pc.episode_name(ep) == "EP0003"
+    priv, pub = _pod_keypair()
+    text = "[00:00] 停損要先想好\n" * 50
+    blob = pc.encrypt_text(text, pub)
+    assert blob[:3] == b"GY1" and "停損".encode() not in blob and pc.decrypt_text(blob, priv) == text
+    paras = [(0.0, "歡迎收聽本集節目由某某品牌贊助"), (60.0, "先聊生活"), (600.0, "接下來我們來進入市場話題，台燿跟停損、部位控管。"),
+             (1900.0, "接下來我們來進入QQ的部分")]
+    d = pc.build_digest(ep, paras, [True, False, False, False], [[], [], ["台燿（6274）"], []], "small")
+    assert d["ep"] == 3 and d["ad_paras"] == 1 and d["market_start"] == "10:00" and d["qa_start"] == "31:40"
+    assert d["tags"] == {"台燿（6274）": 1} and d["terms"]["停損"] == 1 and d["terms"]["部位"] == 1 and "贊助" not in str(d)
+
+
+def test_podcast_backfill_plan_and_resume(tmp_path, monkeypatch, capsys):
+    import argparse
+    import json
+    import sys
+    import types
+    from market_intel import cli, config, research, signals
+    from market_intel.fetchers import podcast as pc
+    priv, pub = _pod_keypair()
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "pub.pem").write_bytes(pub)
+    monkeypatch.setitem(sys.modules, "faster_whisper", types.ModuleType("faster_whisper"))
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(pc, "PUBKEY_PATH", tmp_path / "config" / "pub.pem")
+    monkeypatch.setattr(pc, "ARCHIVE_DIR", tmp_path / "state" / "podcast_archive")
+    monkeypatch.setattr(pc, "DIGEST_DIR", tmp_path / "research" / "podcasts")
+    monkeypatch.setattr(config, "sources", lambda: {"podcasts": [{"name": "股癌", "feed": "https://f"}]})
+    monkeypatch.setattr(cli, "_listings", lambda: SIG_LISTINGS)
+    eps = pc.parse_feed(POD_BACKFILL_RSS, "股癌")
+    monkeypatch.setattr(pc, "fetch_episodes", lambda show: eps)
+    monkeypatch.setattr(pc, "channel_info", lambda show: {"title": "股癌", "link": "https://show", "description": "d", "urls": ["https://instagram.com/x"]})
+    downloads = []
+    monkeypatch.setattr(pc, "download", lambda url, dest, max_mb=300: downloads.append(url) or dest)
+    segs = [pc.Segment(0.0, 20.0, "接下來我們來進入市場話題。" + "今天聊台燿的停損。" * 40)]
+    monkeypatch.setattr(pc, "transcribe", lambda path, model, minutes, prompt, threads, start: segs)
+    base = dict(list=False, dry=False, show=None, max_episodes=0, max_minutes=0, from_minutes=0, first=1, force=False, model=None, threads=0,
+                plan=False, backfill=False, shard=0, shards=1, budget_min=0)
+    cli.cmd_podcasts(argparse.Namespace(**{**base, "plan": True}))
+    out = capsys.readouterr().out
+    assert "RSS 共 3 集" in out and "最舊 2026-10-17" in out and "instagram.com/x" in out and "還有 3 集" in out and not downloads
+    # 兩片：依「由舊到新」的順序輪流分配（第 0 片拿到最舊的 EP1 與最新的 EP3）
+    cli.cmd_podcasts(argparse.Namespace(**{**base, "backfill": True, "shard": 0, "shards": 2}))
+    assert downloads == ["https://cdn/1.mp3", "https://cdn/3.mp3"]
+    arch = sorted((tmp_path / "state" / "podcast_archive" / "股癌").glob("*.bin"))
+    assert [f.name for f in arch] == ["EP0001.bin", "EP0003.bin"]
+    assert "台燿" in pc.decrypt_text(arch[0].read_bytes(), priv) and b"\xe5\x8f\xb0\xe7\x87\xbf" not in arch[0].read_bytes()   # 加密：檔案裡看不到原文
+    dig = json.loads((tmp_path / "research" / "podcasts" / "股癌" / "EP0001.json").read_text(encoding="utf-8"))
+    assert dig["ep"] == 1 and dig["market_start"] == "00:00" and "text" not in dig
+    cli.cmd_podcasts(argparse.Namespace(**{**base, "backfill": True, "shard": 0, "shards": 2}))   # 重跑：已處理的略過
+    assert len(downloads) == 2
+    cli.cmd_podcasts(argparse.Namespace(**{**base, "backfill": True, "shard": 1, "shards": 2}))   # 另一片：只剩 EP2
+    assert downloads[2:] == ["https://cdn/2.mp3"]
+    # 沒有公鑰：不存逐字稿
+    monkeypatch.setattr(pc, "PUBKEY_PATH", tmp_path / "config" / "none.pem")
+    import pytest
+    with pytest.raises(SystemExit):
+        cli.cmd_podcasts(argparse.Namespace(**{**base, "backfill": True, "max_episodes": 1}))

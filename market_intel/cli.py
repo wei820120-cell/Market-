@@ -1200,12 +1200,116 @@ def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict
     signals.process(items, listings, names, skip_patterns=skip, push=False)
 
 
+def _git_publish(message: str, paths: list[str]) -> None:
+    """在 GitHub Actions 裡把剛產生的檔案立刻 commit＋push（多片同時跑時用 pull --rebase 重試），一集一集存，中途被中斷也不會白跑。"""
+    import random
+    import subprocess
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return
+    root = str(research.ROOT)
+
+    def run(*cmd: str) -> int:
+        return subprocess.run(["git", *cmd], cwd=root, capture_output=True, text=True).returncode
+
+    run("config", "user.name", "github-actions[bot]")
+    run("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
+    run("add", "-A", *paths)
+    if run("diff", "--cached", "--quiet") == 0:
+        return
+    run("commit", "-q", "-m", message)
+    for _ in range(10):
+        if run("pull", "--rebase", "-q") == 0 and run("push", "-q") == 0:
+            return
+        time.sleep(random.uniform(3, 15))
+    log.warning("歷史逐字稿 push 失敗（%s），留給最後的存檔步驟", message)
+
+
+def _podcast_backfill(show: dict, src: dict, args) -> None:
+    """歷史集數：由舊到新轉成『加密逐字稿＋摘要』。公開 repo 不放逐字稿原文：原文用 config/podcast_archive_pub.pem 加密，
+    私鑰只在研究員手上；摘要（research/podcasts/）只有計數、時間點與提到的公司。已有摘要的集數略過，可重複執行。"""
+    t_start = time.monotonic()
+    eps = sorted(podcast.fetch_episodes(show), key=lambda e: e.published)
+    shards = max(args.shards, 1)
+    mine = [e for i, e in enumerate(eps) if i % shards == args.shard]
+    todo = [e for e in mine if not podcast.digest_path(e).exists()]
+    if args.plan:
+        hours = sum(e.duration_s for e in eps) / 3600
+        by_year: dict[str, list[int]] = {}
+        for e in eps:
+            by_year.setdefault(e.published[:4], []).append(e.duration_s)
+        print(f"{show['name']}：RSS 共 {len(eps)} 集、約 {hours:.0f} 小時；最舊 {eps[0].published[:10]} {eps[0].title[:30]}，最新 {eps[-1].published[:10]} {eps[-1].title[:30]}")
+        for y, ds in sorted(by_year.items()):
+            print(f"  {y}：{len(ds)} 集、{sum(ds) / 3600:.0f} 小時、平均 {sum(ds) / len(ds) / 60:.0f} 分鐘")
+        done = sum(1 for e in eps if podcast.digest_path(e).exists())
+        print(f"已處理 {done} 集；第 {args.shard}/{shards} 片還有 {len(todo)} 集（約 {sum(e.duration_s for e in todo) / 3600:.0f} 小時音檔）")
+        try:
+            info = podcast.channel_info(show)
+            print(f"節目：{info.get('title')}｜{info.get('link')}\n簡介：{info.get('description')}\n簡介裡的網址：{info.get('urls')}")
+        except Exception as e:  # noqa: BLE001
+            print(f"節目資訊讀不到：{e}")
+        return
+    if not podcast.PUBKEY_PATH.exists():
+        raise SystemExit("缺少 config/podcast_archive_pub.pem：沒有公鑰不存逐字稿（公開 repo 不放原文）")
+    try:
+        import faster_whisper  # noqa: F401
+    except ImportError:
+        raise SystemExit("沒有安裝 faster-whisper")
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    cfg = signals.settings()
+    skip = config.sources().get("skip_patterns") or []
+    fixes = src.get("podcast_fixes") or []
+    model = args.model or src.get("podcast_model", "small")
+    print(f"{show['name']}：第 {args.shard}/{shards} 片，{len(mine)} 集裡還有 {len(todo)} 集沒處理，模型 {model}，時間預算 {args.budget_min or '不限'} 分鐘")
+    done_n = 0
+    for ep in todo[:args.max_episodes] if args.max_episodes else todo:
+        left = args.budget_min - (time.monotonic() - t_start) / 60 if args.budget_min else 1e9
+        need = ep.duration_s / 60 / 1.8 + 4   # 保守估：約 1.8 倍速加下載
+        if left < need:
+            print(f"剩 {left:.0f} 分鐘，{ep.title[:20]} 約需 {need:.0f} 分鐘，收工")
+            break
+        if ep.duration_s > int(src.get("podcast_max_minutes", 180)) * 60:
+            log.warning("%s 太長，略過", ep.title)
+            continue
+        try:
+            import shutil
+            import tempfile
+            tmp = Path(tempfile.mkdtemp(prefix="podcast_"))
+            try:
+                t0 = time.monotonic()
+                audio = podcast.download(ep.audio_url, tmp / "audio", max_mb=int(src.get("podcast_max_mb", 300)))
+                t1 = time.monotonic()
+                segs = podcast.transcribe(audio, model, 0, src.get("podcast_prompt", ""), args.threads, 0)
+            finally:
+                shutil.rmtree(tmp, ignore_errors=True)
+            t2 = time.monotonic()
+            paras = [(t, podcast.apply_fixes(text, fixes)) for t, text in podcast.paragraphs(segs)]
+            ads = [any(re.search(pt, text) for pt in skip) for _, text in paras]
+            tags = [signals.post_tags(text, names, listings, cfg)[0] if not ad else [] for (_, text), ad in zip(paras, ads)]
+            digest = podcast.build_digest(ep, paras, ads, tags, model)
+            apath, dpath = podcast.archive_path(ep), podcast.digest_path(ep)
+            apath.parent.mkdir(parents=True, exist_ok=True)
+            dpath.parent.mkdir(parents=True, exist_ok=True)
+            apath.write_bytes(podcast.encrypt_text(podcast.transcript_text(ep, paras)))
+            dpath.write_text(json.dumps(digest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            print(f"{ep.title[:24]}｜{ep.published[:10]}｜{ep.duration_s // 60} 分：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{ep.duration_s / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段、市場話題 {digest['market_start'] or '?'}、問答 {digest['qa_start'] or '?'}")
+            done_n += 1
+            _git_publish(f"歷史逐字稿 {show['name']} {podcast.episode_name(ep)}（加密）與摘要", [str(apath.relative_to(research.ROOT)), str(dpath.relative_to(research.ROOT))])
+        except Exception as e:  # noqa: BLE001 - 一集失敗不影響其他集數，下次再試
+            log.warning("%s 處理失敗：%s", ep.title, e)
+    print(f"這次處理 {done_n} 集，耗時 {(time.monotonic() - t_start) / 60:.0f} 分鐘")
+
+
 def cmd_podcasts(args) -> None:
     """Podcast：新集數下載、轉成逐字稿（faster-whisper）→ 值得看的段落放進 state/podcast_inbox/ 讓研究員檢視；
     供應鏈訊號只排求證研究。不推播。轉文字很慢，由 podcast.yml 執行，不在 2 分鐘監看迴圈裡。"""
     src = config.sources()
     shows = [s for s in (src.get("podcasts") or []) if not args.show or args.show in s["name"]]
     if not shows:
+        return
+    if getattr(args, "backfill", False) or getattr(args, "plan", False):
+        for sh in shows:
+            _podcast_backfill(sh, src, args)
         return
     seen = podcast.load_seen()
     todo = []
@@ -2810,6 +2914,11 @@ def main(argv: list[str] | None = None) -> None:
     pcp.add_argument("--force", action="store_true", help="不看已處理記錄，直接處理每個節目最新一集（測試用，不更新記錄）")
     pcp.add_argument("--model", help="語音辨識模型（預設用設定檔 podcast_model）")
     pcp.add_argument("--threads", type=int, default=0, help="辨識用的 CPU 執行緒數（0＝全部）")
+    pcp.add_argument("--plan", action="store_true", help="歷史集數：印出總集數、總時數、各年份與節目簡介裡的網址（不下載）")
+    pcp.add_argument("--backfill", action="store_true", help="歷史集數：由舊到新轉成加密逐字稿＋摘要（已有摘要的略過，可重複執行）")
+    pcp.add_argument("--shard", type=int, default=0, help="--backfill：這是第幾片（從 0 開始）")
+    pcp.add_argument("--shards", type=int, default=1, help="--backfill：總共分幾片（依集數順序輪流分配）")
+    pcp.add_argument("--budget-min", type=int, default=0, help="--backfill：最多跑幾分鐘，剩下的時間不夠轉下一集就收工（0＝不限）")
     pcp.set_defaults(func=cmd_podcasts)
     th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）：不推播，供應鏈訊號排求證研究，值得看的貼文放進待檢視清單")
     th.add_argument("--dry", action="store_true", help="只印出讀到的貼文與偵測結果，不推播、不存記錄、不排研究")
