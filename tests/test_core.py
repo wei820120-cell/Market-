@@ -2518,6 +2518,11 @@ def test_podcasts_cmd_end_to_end(tmp_path, monkeypatch):
     monkeypatch.setattr(pc, "SEEN_PATH", tmp_path / "state" / "podcasts_seen.json")
     monkeypatch.setattr(pc, "TRANSCRIPT_DIR", tmp_path / "state" / "podcasts")
     monkeypatch.setattr(pc, "INBOX_DIR", tmp_path / "state" / "podcast_inbox")
+    monkeypatch.setattr(pc, "ARCHIVE_DIR", tmp_path / "state" / "podcast_archive")     # 學習用的歷史記錄也不能寫進真的 repo
+    monkeypatch.setattr(pc, "DIGEST_DIR", tmp_path / "research" / "podcasts")
+    (tmp_path / "config").mkdir(exist_ok=True)
+    (tmp_path / "config" / "pub.pem").write_bytes(_pod_keypair()[1])
+    monkeypatch.setattr(pc, "PUBKEY_PATH", tmp_path / "config" / "pub.pem")
     monkeypatch.setattr(config, "sources", lambda: {"podcasts": [{"name": "股癌", "feed": "https://f"}], "podcast_max_age_days": 3650})
     monkeypatch.setattr(cli, "_listings", lambda: SIG_LISTINGS)
     monkeypatch.setattr(cli, "now_tw", lambda: research.now_tw().replace(year=2026, month=10, day=22, hour=12, minute=0))
@@ -2542,6 +2547,7 @@ def test_podcasts_cmd_end_to_end(tmp_path, monkeypatch):
     assert len(queued) == 1 and "Podcast 股癌" in json.loads(queued[0].read_text(encoding="utf-8"))["trigger"]   # 轉單說法排求證研究
     seen = json.loads((tmp_path / "state" / "podcasts_seen.json").read_text(encoding="utf-8"))["股癌"]
     assert len(seen) == 3
+    assert (tmp_path / "research" / "podcasts" / "股癌" / "EP0002.json").exists() and (tmp_path / "state" / "podcast_archive" / "股癌" / "EP0002.bin").exists()   # 新集數也進學習用記錄
     cli.cmd_podcasts(args)                                             # 沒有新集數：不再下載
     assert downloads == ["https://cdn/2.mp3"]
     # 測試用：--dry 只印出，不存任何東西
