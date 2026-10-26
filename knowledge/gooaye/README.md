@@ -10,10 +10,11 @@
 ## 閱讀進度
 | 年份 | 已轉文字 | 已讀並做筆記 |
 |---|---|---|
-| 2020 | 見 `research/podcasts/股癌/` | EP1～71、EP73～78、EP80～101（共 99 集；其餘轉錄後補讀；筆記在 `episodes/2020.md`） |
-| 2021 | 見 `research/podcasts/股癌/` | EP102～103、EP105～119、EP121～123、EP125～134、EP136～147、EP149～150、EP153～171、EP173、EP175、EP177～182、EP184、EP186～187、EP189～196、EP199、EP202～203（共 85 集；其餘轉錄後補讀；筆記在 `episodes/2021.md`） |
+| 2020 | 見 `research/podcasts/股癌/` | EP1～78、EP80～101（共 100 集；其餘轉錄後補讀；筆記在 `episodes/2020.md`） |
+| 2021 | 見 `research/podcasts/股癌/` | EP102～134、EP136～173、EP175～196、EP199、EP202～203（共 96 集；其餘轉錄後補讀；筆記在 `episodes/2021.md`） |
 | 2022 | 見 `research/podcasts/股癌/` | EP207、EP209～212、EP215、EP218～219、EP226、EP228、EP234、EP242、EP244、EP250、EP258、EP266、EP274（共 17 集；其餘轉錄後補讀；筆記在 `episodes/2022.md`） |
 | 2026 | 見 `research/podcasts/股癌/` | EP624、EP634、EP644、EP649、EP651～652、EP654、EP656～660、EP662～665、EP669、EP671、EP673～674、EP676～687、EP689～690、EP694～695、EP698～708（共 47 集；其餘轉錄後補讀；筆記在 `episodes/2026.md`） |
+| 2024 | 見 `research/podcasts/股癌/` | EP474、EP484、EP492、EP494、EP504、EP506、EP512、EP514（共 8 集；其餘轉錄後補讀；筆記在 `episodes/2024.md`） |
 
 ## 怎麼繼續（給之後接手的研究員）
 - 轉文字：開發分支上的 `research.yml` 用 probe 啟動 `cmd:podcasts --backfill --show 股癌 --shard N --shards 8 --budget-min 330 --model medium`（N=0～7，每一片轉完會自己再啟動，直到那一片全部處理完）。進度看 `research/podcasts/股癌/` 的檔案數（總共 708 集，約 559 小時音檔）。
