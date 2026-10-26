@@ -1,6 +1,6 @@
-# 盤後情報 2026-10-23
+# 盤後情報 2026-10-26
 
-_產生時間 2026-10-23 16:12 (台北)_
+_產生時間 2026-10-26 16:21 (台北)_
 
 ## 0. 今日強勢標的（資金流入＋題材＋漲價，附股票期貨／小型股票期貨）
 
@@ -9,63 +9,62 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 
 | 代號 | 名稱 | 漲跌% | 量比 | 法人(億) | 族群 | 漲價 | 股票期貨 | 分數 | 理由 | 新聞 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2465 | 麗臺 | 9.94 | 10.2 | 3.0 | 研究:供需事件：AI 搶產能 輝達旗艦顯、研究:供需事件：將持續供貨 |  | 無 | 12.6 | 量10.2倍、法人買3億、族群資金流入 |  |
-| 6697 | 東捷資訊 | 9.94 | 33.18 |  | 研究:驊宏資（6148）題材與產業 |  | 無 | 12.0 | 量33.2倍、族群資金流入 |  |
-| 4526 | 東台 | 7.88 | 9.16 | 4.1 |  |  | 無 | 10.8 | 量9.2倍、法人買4億 |  |
-| 6456 | GIS-KY | 3.66 | 3.3 | 7.9 | 研究:GIS-KY（6456）題材與產業 |  | 無 | 10.2 | 量3.3倍、法人買8億、族群資金流入 |  |
-| 6770 | 力積電 | 0.3 | 1.26 | 1.4 | 研究:供需事件：義隆PC動能3Q26卡關、研究:記憶體供需、研究:力積電（6770）題材與產業、研究:愛普*（6531）題材與產業、研究:晶豪科（3006）題材與產業、研究:世界（5347）題材與產業、研究:EMIB-T 基板良率瓶頸、晶圓代工 | ✅ | QZF | 9.8 | 法人買1億、題材、漲價 | 力積電毛利率衝48％　Q4營收估雙位數成長、明年成熟製程再漲價 - 鏡新聞 |
-| 2466 | 冠西電 | 5.03 | 7.56 | -1.3 |  |  | 無 | 9.7 | 量7.6倍 |  |
-| 6173 | 信昌電 | 3.16 | 4.23 |  | 研究:被動元件、研究:MLCC供需、研究:信昌電（6173）題材與產業、研究:國巨*（2327）題材與產業、研究:禾伸堂（3026）題材與產業、研究:華新科（2492）題材與產業 |  | PKF | 8.5 | 量4.2倍 |  |
-| 6690 | 安碁資訊 | 3.28 | 4.13 |  | 研究:供需事件：台海局勢升溫 |  | 無 | 8.3 | 量4.1倍 |  |
-| 7711 | 永擎 | 2.24 | 3.88 | 2.1 |  |  | 無 | 8.2 | 量3.9倍、法人買2億 |  |
-| 1528 | 恩德 | 1.97 | 4.07 | 0.4 |  |  | 無 | 8.2 | 量4.1倍 |  |
-| 4960 | 誠美材 | 2.11 | 2.75 | 0.5 | 研究:誠美材（4960）題材與產業 |  | 無 | 7.6 | 量2.8倍、族群資金流入 |  |
-| 1101 | 台泥 | 4.29 | 2.78 | 8.5 |  |  | DFF | 7.3 | 量2.8倍、法人買8億 |  |
-| 4989 | 榮科 | 3.05 | 3.44 | 1.7 |  |  | 無 | 7.2 | 量3.4倍、法人買2億 |  |
-| 2383 | 台光電 | 1.6 | 1.58 | 10.1 | 研究:PCB供需、研究:銅箔供需、研究:供需事件：股海篩選/AI材料供不應、研究:供需事件：AI基建年均投資估佔美G、研究:供需事件：明年EPS飆4.3元！「、研究:台光電（2383）題材與產業、研究:台燿（6274）題材與產業、研究:聯茂（6213）題材與產業、研究:CCL供需、研究:銅箔基板供需、研究:供需事件：全球庫存激增+科技股拋售、研究:供需事件：台燿若掉AWS訂單 流向、PCB銅箔基板、CCL高速板材 | 族群 | PJF／小型SFF | 7.2 | 量1.6倍、法人買10億、族群漲價 | 高階CCL漲價行情火熱！這「 指標股」 目標價直衝6150元 產能拚2至3年翻倍 |
-| 2892 | 第一金 | 2.54 | 0.9 | 3.8 | 研究:金融 |  | DPF | 6.6 | 法人買4億、題材 | 2892 第一金：代子公司第一金投信公告董事會決議與兆豐投信、
-合庫投信、華南 |
-| 6148 | 驊宏資 | 9.95 | 2.27 |  | 研究:驊宏資（6148）題材與產業 |  | 無 | 6.5 | 量2.3倍、族群資金流入 |  |
-| 4720 | 德淵 | 5.81 | 1.93 | 0.5 | 研究:德淵（4720）題材與產業 |  | 無 | 6.0 | 量1.9倍、族群資金流入 |  |
-| 2468 | 華經 | 10.0 | 1.75 | 1.1 | 研究:驊宏資（6148）題材與產業 |  | 無 | 5.7 | 量1.8倍、法人買1億、族群資金流入 |  |
-| 2886 | 兆豐金 | 2.99 | 0.87 | 3.1 | 研究:金融、金融 |  | CLF | 5.4 | 法人買3億、題材 | 今日最夯股／兆豐金獲利報喜 股價創新高 ／ 市場焦點 ／ 證券 - 經濟日報 |
-| 7769 | 鴻勁 | 2.83 | 1.21 | 13.9 | 研究:CPO設備、研究:供需事件：AI 晶片測試產能吃緊，、研究:京元電子（2449）題材與產業、研究:欣銓（3264）題材與產業、研究:矽格（6257）題材與產業 |  | 無 | 5.2 | 法人買14億 |  |
+| 3037 | 欣興 | 0.0 | 0.0 | 15.7 | 研究:PCB供需、研究:供需事件：卡位缺貨漲價飆股、研究:載板供需、研究:ABF供需、研究:封裝供需、研究:EMIB-T 基板良率瓶頸、研究:欣興（3037）題材與產業、研究:景碩（3189）題材與產業、研究:臻鼎-KY（4958）題材與產業、PCB銅箔基板 | 族群 | IRF | 9.1 | 法人買16億、題材、族群漲價 | 欣興擴產加速度 法人看好2028年續擁優勢 - 經濟日報 |
+| 2330 | 台積電 | 0.0 | 0.0 | -270.6 | 研究:供需事件：義隆PC動能3Q26卡關、研究:供需事件：關稅與晶片出口管制、研究:記憶體供需、研究:封裝供需、研究:台積電（2330）題材與產業、晶圓代工 | ✅ | CDF／小型QFF／夜盤 | 8.0 | 題材、漲價 | 台積電擴大資本支出，先進製程供應鏈誰先把漲價變營收？-柏宇 KD 獲利模式 -  |
+| 6669 | 緯穎 | 0.0 | 0.0 | 6.1 | 研究:鴻海（2317）題材與產業、研究:緯創（3231）題材與產業、研究:廣達（2382）題材與產業、研究:緯穎（6669）題材與產業、AI伺服器 |  | PVF／小型PWF | 6.2 | 法人買6億、題材 | 高盛喊買緯穎！目標價升至4000元 看好AI伺服器需求爆發 - 自由時報 |
+| 3406 | 玉晶光 | 0.0 | 0.0 | 6.2 | 研究:光學鏡頭、光學鏡頭 |  | LEF／小型QJF | 5.2 | 法人買6億、題材 | 玉晶光獲3M參與私募股款已到位持股4.68% 自結9月EPS達3.85元 |
+| 3189 | 景碩 | 0.0 | 0.0 | 11.0 | 研究:PCB供需、研究:供需事件：卡位缺貨漲價飆股、研究:載板供需、研究:ABF供需、研究:封裝供需、研究:景碩（3189）題材與產業、研究:臻鼎-KY（4958）題材與產業、PCB銅箔基板 | 族群 | IXF | 4.2 | 法人買11億、族群漲價 | 不只 ABF 載板、BT 載板也受惠於漲價效應 高盛調高四檔台股目標價 - 經濟 |
+| 2383 | 台光電 | 0.0 | 0.0 | 10.1 | 研究:PCB供需、研究:銅箔供需、研究:供需事件：股海篩選/AI材料供不應、研究:供需事件：AI基建年均投資估佔美G、研究:供需事件：明年EPS飆4.3元！「、研究:台光電（2383）題材與產業、研究:台燿（6274）題材與產業、研究:聯茂（6213）題材與產業、研究:CCL供需、研究:銅箔基板供需、研究:供需事件：全球庫存激增+科技股拋售、研究:供需事件：台燿若掉AWS訂單 流向、PCB銅箔基板、CCL高速板材 | 族群 | PJF／小型SFF | 4.0 | 法人買10億、族群漲價 | 不只 ABF 載板、BT 載板也受惠於漲價效應 高盛調高四檔台股目標價 - 經濟 |
+| 2368 | 金像電 | 0.0 | 0.0 | 9.7 | 研究:PCB供需、研究:供需事件：AI基建年均投資估佔美G、研究:緯創（3231）題材與產業、研究:臻鼎-KY（4958）題材與產業、PCB銅箔基板 | 族群 | RKF／小型VGF | 3.9 | 法人買10億、族群漲價 | 不只 ABF 載板、BT 載板也受惠於漲價效應 高盛調高四檔台股目標價 - 經濟 |
+| 1802 | 台玻 | 0.0 | 0.0 | 18.9 | 研究:玻纖布與石英布（Q布）、研究:PCB供需、研究:供需事件：卡位缺貨漲價飆股、研究:銅箔供需、研究:供需事件：股海篩選/AI材料供不應、研究:供需事件：中國製玻璃纖維矽質套管停、研究:載板供需、研究:ABF供需、研究:供需事件：明年EPS飆4.3元！「、研究:台光電（2383）題材與產業、研究:台燿（6274）題材與產業、研究:聯茂（6213）題材與產業、研究:台玻（1802）題材與產業、研究:富喬（1815）題材與產業、研究:德宏（5475）題材與產業、研究:CCL供需、研究:銅箔基板供需、研究:欣興（3037）題材與產業、研究:景碩（3189）題材與產業、研究:雙鍵（4764）題材與產業、玻纖布 |  | KUF | 3.8 | 法人買19億 |  |
+| 2337 | 旺宏 | 0.0 | 0.0 | -2.6 | 研究:記憶體供需、研究:華邦電（2344）題材與產業、研究:旺宏（2337）題材與產業、研究:晶豪科（3006）題材與產業、記憶體 | 族群 | DIF | 3.5 | 題材、族群漲價 | AI 需求、記憶體缺貨也沒用！300元目標價到不了 旺宏自高點回檔近5成...跌 |
+| 2603 | 長榮 | 0.0 | 0.0 | 5.7 | 研究:供需事件：荷姆茲海峽又出事！新加坡、研究:萬海（2615）題材與產業、研究:長榮（2603）題材與產業、研究:陽明（2609）題材與產業、航運 |  | CZF | 3.1 | 法人買6億、題材 | 長榮航營收創新高！總座孫嘉明卻自嘲「都在幫油公司打工」 揭AI空運狂潮 - 知新 |
+| 2351 | 順德 | 0.0 | 0.0 | -1.1 |  |  | 無 | 2.8 | 題材 | 鉅亨速報 - Factset 最新調查：順德(2351-TW)目標價調升至300 |
+| 2059 | 川湖 | 0.0 | 0.0 | 4.0 |  |  | FGF／小型SVF | 2.8 | 法人買4億、題材 | 鉅亨速報 - Factset 最新調查：川湖(2059-TW)EPS預估上修至3 |
+| 7769 | 鴻勁 | 0.0 | 0.0 | 13.9 | 研究:CPO設備、研究:供需事件：AI 晶片測試產能吃緊，、研究:京元電子（2449）題材與產業、研究:欣銓（3264）題材與產業、研究:矽格（6257）題材與產業 |  | 無 | 2.8 | 法人買14億 |  |
+| 2317 | 鴻海 | 0.0 | 0.0 | 3.6 | 研究:鴻海（2317）題材與產業、研究:技嘉（2376）題材與產業、研究:廣達（2382）題材與產業、AI伺服器 |  | DHF | 2.7 | 法人買4億、題材 | 蘋果iPhone Duo需求爆發！追加三成訂單  鴻海、台積電、新日興受惠 |
+| 2382 | 廣達 | 0.0 | 0.0 | 2.5 | 研究:鴻海（2317）題材與產業、研究:和碩（4938）題材與產業、研究:良維（6290）題材與產業、研究:供需事件：產能滿載狂擴廠！「這代工、研究:技嘉（2376）題材與產業、研究:緯創（3231）題材與產業、研究:廣達（2382）題材與產業、研究:緯穎（6669）題材與產業、AI伺服器 |  | DKF | 2.5 | 法人買2億、題材 | 金居百億擴產不只為了高階銅箔！一款與廣達、英業達開發的材料埋下伏筆- 產業 -  |
+| 2882 | 國泰金 | 0.0 | 0.0 | 2.5 | 金融 |  | CKF | 2.5 | 法人買2億、題材 | 鉅亨速報 - Factset 最新調查：國泰金(2882-TW)EPS預估上修至 |
+| 2356 | 英業達 | 0.0 | 0.0 | 2.0 | 研究:和碩（4938）題材與產業、AI伺服器 |  | LQF | 2.4 | 法人買2億、題材 | 金居百億擴產不只為了高階銅箔！一款與廣達、英業達開發的材料埋下伏筆- 產業 -  |
+| 4938 | 和碩 | 0.0 | 0.0 | 1.2 | 研究:鴻海（2317）題材與產業、研究:和碩（4938）題材與產業、研究:技嘉（2376）題材與產業、研究:緯創（3231）題材與產業、研究:廣達（2382）題材與產業 |  | JSF | 2.2 | 法人買1億、題材 | 前三季EPS攻7元以上！「這檔」周線大跌13%、投信狂砍1.9萬張 和碩AI伺服 |
+| 2618 | 長榮航 | 0.0 | 0.0 | 0.7 | 研究:供需事件：俄烏停火與能源價格、航空 |  | HSF | 2.1 | 題材 | 長榮航營收創新高！總座孫嘉明卻自嘲「都在幫油公司打工」 揭AI空運狂潮 - 知新 |
+| 8358 | 金居 | 0.0 | 0.0 |  | 研究:PCB供需、研究:供需事件：卡位缺貨漲價飆股、研究:銅箔供需、研究:敬鵬（2355）題材與產業、研究:供需事件：股海篩選/AI材料供不應、研究:載板供需、研究:CCL供需、研究:金居（8358）題材與產業、研究:銅箔基板供需、研究:榮科（4989）題材與產業、研究:雙鍵（4764）題材與產業 |  | PQF | 2.0 | 題材 | 金居百億擴產不只為了高階銅箔！一款與廣達、英業達開發的材料埋下伏筆- 產業 -  |
 
 
 ## 1. 台股族群資金流向（今日成交金額 vs 前 5 日平均）
 
 | 族群 | 檔數 | 成交金額(億) | 量比(對5日均) | 資金增減(億) | 加權漲跌% | 5日漲跌% | 領漲 | 判讀 |
 |---|---|---|---|---|---|---|---|---|
-| 研究:供需事件：股海篩選/AI材料供不應 | 8 | 1603.91 | 1.41 | 467.74 | -4.27 | -0.96 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| 研究:銅箔基板供需 | 6 | 1229.68 | 1.57 | 448.09 | -3.63 | -0.88 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| 研究:聯茂（6213）題材與產業 | 6 | 1188.75 | 1.6 | 447.76 | -3.43 | 0.21 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| 研究:台光電（2383）題材與產業 | 6 | 1188.75 | 1.6 | 447.76 | -3.43 | 0.21 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| 研究:台燿（6274）題材與產業 | 6 | 1188.75 | 1.6 | 447.76 | -3.43 | 0.21 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| CCL高速板材 | 4 | 848.47 | 2.06 | 435.64 | -3.8 | -3.6 | 台光電+1.6%、台燿-5.3%、聯茂-5.6% | 放量下跌⚠️ |
-| 研究:PCB供需 | 18 | 2322.3 | 1.23 | 429.37 | -4.06 | -2.76 | 台光電+1.6%、台玻-0.1%、欣興-1.4% | 持平 |
-| 研究:供需事件：明年EPS飆4.3元！「 | 5 | 1246.63 | 1.5 | 413.7 | -3.6 | -2.72 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| 研究:CCL供需 | 7 | 1526.8 | 1.37 | 410.1 | -4.11 | -1.37 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 放量下跌⚠️ |
-| 研究:供需事件：全球庫存激增+科技股拋售 | 3 | 771.37 | 1.96 | 378.0 | -3.45 | -5.45 | 台光電+1.6%、台燿-5.3%、聯茂-5.6% | 放量下跌⚠️ |
-| 研究:敬鵬（2355）題材與產業 | 4 | 625.65 | 1.88 | 293.51 | -5.87 | -6.44 | 敬鵬-2.5%、台燿-5.3%、聯茂-5.6% | 放量下跌⚠️ |
-| 研究:供需事件：台燿若掉AWS訂單 流向 | 3 | 812.59 | 1.53 | 282.82 | -3.82 | -2.67 | 台光電+1.6%、聯茂-5.6%、南亞-6.1% | 放量下跌⚠️ |
-| 研究:供需事件：卡位缺貨漲價飆股 | 24 | 2640.98 | 1.11 | 262.01 | -4.78 | -3.52 | 台玻-0.1%、雙鴻-1.1%、欣興-1.4% | 持平 |
-| 研究:ABF供需 | 8 | 1221.46 | 1.25 | 247.65 | -2.8 | 2.15 | 台玻-0.1%、欣興-1.4%、臻鼎-KY-1.9% | 持平 |
-| 研究:銅箔供需 | 5 | 934.89 | 1.29 | 208.37 | -3.02 | -0.51 | 台光電+1.6%、台玻-0.1%、台燿-5.3% | 持平 |
-| 研究:載板供需 | 11 | 1576.62 | 1.15 | 207.75 | -3.61 | -0.84 | 台玻-0.1%、欣興-1.4%、臻鼎-KY-1.9% | 持平 |
-| PCB銅箔基板 | 6 | 1087.63 | 1.18 | 162.7 | -2.75 | -4.03 | 台光電+1.6%、欣興-1.4%、景碩-2.4% | 持平 |
-| 研究:禾伸堂（3026）題材與產業 | 4 | 575.28 | 1.39 | 160.88 | -6.44 | -7.6 | 信昌電+3.2%、國巨*-6.5%、禾伸堂-7.2% | 放量下跌⚠️ |
-| 研究:信昌電（6173）題材與產業 | 4 | 575.28 | 1.39 | 160.88 | -6.44 | -7.6 | 信昌電+3.2%、國巨*-6.5%、禾伸堂-7.2% | 放量下跌⚠️ |
-| 研究:國巨*（2327）題材與產業 | 5 | 583.95 | 1.33 | 143.69 | -6.44 | -9.39 | 信昌電+3.2%、大毅-6.3%、國巨*-6.5% | 放量下跌⚠️ |
-| 研究:華新科（2492）題材與產業 | 5 | 583.95 | 1.33 | 143.69 | -6.44 | -9.39 | 信昌電+3.2%、大毅-6.3%、國巨*-6.5% | 放量下跌⚠️ |
-| 研究:MLCC供需 | 6 | 588.18 | 1.31 | 140.85 | -6.4 | -8.5 | 信昌電+3.2%、日電貿-4.6%、凱美-5.3% | 放量下跌⚠️ |
-| 研究:被動元件 | 8 | 594.91 | 1.3 | 137.39 | -6.44 | -9.3 | 信昌電+3.2%、佳邦-4.9%、凱美-5.3% | 放量下跌⚠️ |
-| 研究:景碩（3189）題材與產業 | 5 | 896.26 | 1.18 | 133.65 | -2.74 | 2.35 | 台玻-0.1%、欣興-1.4%、景碩-2.4% | 持平 |
-| 研究:臻鼎-KY（4958）題材與產業 | 6 | 883.53 | 1.17 | 131.17 | -2.88 | -1.08 | 欣興-1.4%、臻鼎-KY-1.9%、景碩-2.4% | 持平 |
-| 被動元件 | 3 | 508.23 | 1.28 | 109.66 | -7.71 | -9.18 | 國巨*-6.5%、禾伸堂-7.2%、華新科-9.2% | 持平 |
-| 研究:蜜望實（8043）題材與產業 | 4 | 511.49 | 1.26 | 105.77 | -7.68 | -8.4 | 蜜望實-2.9%、國巨*-6.5%、禾伸堂-7.2% | 持平 |
-| 研究:大毅（2478）題材與產業 | 4 | 431.15 | 1.31 | 102.17 | -7.75 | -12.29 | 凱美-5.3%、大毅-6.3%、國巨*-6.5% | 放量下跌⚠️ |
-| 研究:凱美（2375）題材與產業 | 5 | 437.13 | 1.3 | 101.1 | -7.75 | -11.99 | 凱美-5.3%、大毅-6.3%、國巨*-6.5% | 放量下跌⚠️ |
-| 研究:日電貿（3090）題材與產業 | 4 | 516.8 | 1.23 | 94.98 | -7.66 | -9.07 | 日電貿-4.6%、國巨*-6.5%、禾伸堂-7.2% | 持平 |
+| 研究:供需事件：《經濟》越南不銹鋼品反傾 | 1 | 0.0 |  | -0.0 |  | 0.18 | 唐榮+0.0% | — |
+| 研究:供需事件：越南不銹鋼品反傾銷案經部 | 1 | 0.0 |  | -0.0 |  | 0.18 | 唐榮+0.0% | — |
+| 研究:供需事件：中國尼龍薄膜 10/19 | 1 | 0.0 |  | -0.08 |  | -3.76 | 力麗+0.0% | — |
+| 研究:力鵬（1447）題材與產業 | 1 | 0.0 |  | -0.08 |  | -3.76 | 力麗+0.0% | — |
+| 研究:力麗（1444）題材與產業 | 1 | 0.0 |  | -0.08 |  | -3.76 | 力麗+0.0% | — |
+| 研究:供需事件：希捷(STX)今年已大漲 | 1 | 0.0 |  | -0.14 |  | -3.6 | 銘異+0.0% | — |
+| 研究:供需事件：第12宗！中國進口尼龍薄 | 2 | 0.0 |  | -0.15 |  | -3.74 | 力鵬+0.0%、力麗+0.0% | — |
+| 研究:供需事件：飆股幕後》三大領域需求爆 | 1 | 0.0 |  | -0.21 |  | -4.21 | 正淩+0.0% | — |
+| 研究:炎洲（4306）題材與產業 | 2 | 0.0 |  | -0.21 |  | -2.05 | 力麗+0.0%、炎洲+0.0% | — |
+| 研究:勤益控（1437）題材與產業 | 2 | 0.0 |  | -0.41 |  | -0.25 | 勤益控+0.0%、龍德造船+0.0% | — |
+| 研究:富邦媒（8454）題材與產業 | 1 | 0.0 |  | -0.79 |  | -1.57 | 富邦媒+0.0% | — |
+| 研究:亞力（1514）題材與產業 | 1 | 0.0 |  | -0.84 |  | -2.38 | 亞力+0.0% | — |
+| 研究:士電（1503）題材與產業 | 1 | 0.0 |  | -1.66 |  | -3.27 | 士電+0.0% | — |
+| 研究:供需事件：陸廠減產、CPL台灣進口 | 1 | 0.0 |  | -1.76 |  | -5.34 | 中石化+0.0% | — |
+| 研究:中興電（1513）題材與產業 | 1 | 0.0 |  | -2.33 |  | -3.03 | 中興電+0.0% | — |
+| 研究:供需事件：將持續供貨 | 1 | 0.0 |  | -2.73 |  | 11.86 | 麗臺+0.0% | — |
+| 研究:供需事件：AI 搶產能 輝達旗艦顯 | 1 | 0.0 |  | -2.73 |  | 11.86 | 麗臺+0.0% | — |
+| 研究:中華化（1727）題材與產業 | 1 | 0.0 |  | -3.09 |  | -5.48 | 中華化+0.0% | — |
+| 研究:供需事件：這產品地表上只有我能做 | 1 | 0.0 |  | -3.96 |  | -11.87 | 長科*+0.0% | — |
+| 研究:德淵（4720）題材與產業 | 1 | 0.0 |  | -4.3 |  | 22.57 | 德淵+0.0% | — |
+| 研究:供需事件：中東局勢與航運油價 | 2 | 0.0 |  | -4.63 |  | -3.12 | 漢翔+0.0%、雷虎+0.0% | — |
+| 研究:采鈺（6789）題材與產業 | 1 | 0.0 |  | -4.69 |  | 0.0 | 采鈺+0.0% | — |
+| 研究:漢達（6620）題材與產業 | 1 | 0.0 |  | -4.76 |  | -3.14 | 漢達+0.0% | — |
+| 軍工航太 | 3 | 0.0 |  | -5.74 |  | -2.47 | 漢翔+0.0%、雷虎+0.0%、長榮航太+0.0% | — |
+| 研究:佳必琪（6197）題材與產業 | 1 | 0.0 |  | -5.75 |  | -9.17 | 佳必琪+0.0% | — |
+| 研究:華城（1519）題材與產業 | 1 | 0.0 |  | -5.94 |  | -6.25 | 華城+0.0% | — |
+| 研究:大眾控（3701）題材與產業 | 1 | 0.0 |  | -6.34 |  | -17.55 | 大眾控+0.0% | — |
+| 研究:供需事件：上品產能滿載再擴產 法人 | 1 | 0.0 |  | -6.63 |  | 7.55 | 上品+0.0% | — |
+| 研究:東台（4526）題材與產業 | 1 | 0.0 |  | -7.08 |  | 20.38 | 東台+0.0% | — |
+| 研究:世紀*（5314）題材與產業 | 1 | 0.0 |  | -7.24 |  | -7.89 | 世紀*+0.0% | — |
 
 
 ## 2. 官方產業類股成交比重變化（資金在產業間的移動）
@@ -124,6 +123,12 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 | 研究:德宏（5475）題材與產業 | 1 | 16.93 | 1.99 | 0.22 | 19.14 |
 | 研究:ABF供需 | 6 | -15.93 | 33.21 | 1.02 | 18.3 |
 | 散熱 | 3 | 21.15 | -4.9 | 0.31 | 16.56 |
+| 研究:台灣大（3045）題材與產業 | 3 | 14.92 | 0.31 | 1.04 | 16.27 |
+| 研究:遠傳（4904）題材與產業 | 3 | 14.92 | 0.31 | 1.04 | 16.27 |
+| 研究:中華電（2412）題材與產業 | 3 | 14.92 | 0.31 | 1.04 | 16.27 |
+| 研究:長榮（2603）題材與產業 | 3 | 12.04 | -1.38 | 1.88 | 12.54 |
+| 研究:萬海（2615）題材與產業 | 3 | 12.04 | -1.38 | 1.88 | 12.54 |
+| 研究:陽明（2609）題材與產業 | 3 | 12.04 | -1.38 | 1.88 | 12.54 |
 | 航運 | 3 | 12.04 | -1.38 | 1.88 | 12.54 |
 | 研究:緯穎（6669）題材與產業 | 3 | 33.41 | -25.28 | 3.45 | 11.58 |
 | 研究:臻鼎-KY（4958）題材與產業 | 6 | -25.03 | 35.14 | -0.09 | 10.02 |
@@ -134,12 +139,6 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 | 研究:供需事件：產能滿載狂擴廠！「這代工 | 2 | 9.9 | -7.9 | 3.66 | 5.66 |
 | 研究:供需事件：荷姆茲海峽又出事！新加坡 | 5 | 13.64 | -10.02 | 1.61 | 5.22 |
 | 研究:燁輝（2023）題材與產業 | 2 | 4.97 | 0.13 | -0.08 | 5.02 |
-| 研究:供需事件：伊賽亞斯颶風衝擊美國能源 | 1 | 13.46 | -8.65 | -0.13 | 4.68 |
-| 研究:良維（6290）題材與產業 | 1 | 1.31 | 1.17 | 2.09 | 4.57 |
-| 研究:穩懋（3105）題材與產業 | 1 | 3.91 | 0.26 | -0.3 | 3.88 |
-| 研究:宏捷科（8086）題材與產業 | 1 | 3.91 | 0.26 | -0.3 | 3.88 |
-| 研究:供需事件：將持續供貨 | 1 | 3.02 | 0.0 | 0.05 | 3.07 |
-| 研究:供需事件：AI 搶產能 輝達旗艦顯 | 1 | 3.02 | 0.0 | 0.05 | 3.07 |
 
 
 ### 外資買超前 15 名（金額）
@@ -153,8 +152,8 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 | 3231 | 緯創 | 8.59 |
 | 2383 | 台光電 | 8.26 |
 | 6456 | GIS-KY | 7.85 |
-| 1101 | 台泥 | 7.14 |
 | 2412 | 中華電 | 7.14 |
+| 1101 | 台泥 | 7.14 |
 | 2603 | 長榮 | 7.08 |
 | 2891 | 中信金 | 6.37 |
 | 3045 | 台灣大 | 6.09 |
@@ -257,37 +256,37 @@ _分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材�
 
 | ETF | 類股 | 漲跌% | 5日% | 成交額(百萬美元) | 額比(對20日均) | 判讀 |
 |---|---|---|---|---|---|---|
-| GLD | 黃金 | -2.63 | -3.58 | 6276.8 | 2.15 | 放量下跌⚠️ |
-| XLP | 必需消費 | 3.31 | 3.82 | 2059.8 | 1.91 | 資金流入 |
-| SMH | 半導體 | -5.99 | -6.35 | 7915.9 | 1.76 | 放量下跌⚠️ |
-| XLRE | 房地產 | 1.09 | 1.26 | 457.7 | 1.46 | 資金流入 |
-| XLI | 工業 | -0.94 | -0.69 | 1793.1 | 1.43 | 放量下跌⚠️ |
-| XLE | 能源 | -0.87 | 1.52 | 2812.1 | 1.36 | 放量下跌⚠️ |
-| XLK | 科技 | -3.29 | -3.62 | 2206.3 | 1.35 | 放量下跌⚠️ |
-| TLT | 美國長債 | 1.87 | 2.21 | 5284.7 | 1.35 | 資金流入 |
-| XLV | 醫療 | 1.32 | 2.32 | 1832.8 | 1.26 | 持平 |
-| IGV | 軟體 | -0.09 | -0.8 | 973.9 | 1.22 | 持平 |
-| XLY | 非必需消費 | -0.45 | 1.41 | 924.6 | 1.18 | 持平 |
-| URA | 鈾 / 核能 | -4.11 | -5.62 | 159.5 | 1.09 | 持平 |
-| IWM | 小型股 | 0.07 | 0.58 | 7113.9 | 0.99 | 持平 |
-| ITA | 國防航太 | -0.64 | -1.18 | 173.7 | 0.99 | 持平 |
-| XLF | 金融 | 1.09 | 2.5 | 1845.0 | 0.94 | 持平 |
-| XLC | 通訊服務 | -1.42 | -4.46 | 656.2 | 0.91 | 持平 |
-| XLU | 公用事業 | 2.07 | 2.93 | 1284.3 | 0.87 | 持平 |
-| XLB | 原物料 | 0.72 | 2.23 | 497.2 | 0.86 | 持平 |
+| XLP | 必需消費 | -1.92 | 0.73 | 1752.4 | 1.54 | 放量下跌⚠️ |
+| XLE | 能源 | 2.6 | 1.6 | 2679.2 | 1.29 | 持平 |
+| XLRE | 房地產 | 0.12 | 0.97 | 407.4 | 1.25 | 持平 |
+| GLD | 黃金 | -0.65 | -4.03 | 3701.8 | 1.19 | 持平 |
+| ITA | 國防航太 | -1.1 | -3.27 | 172.3 | 0.97 | 持平 |
+| XLV | 醫療 | -1.11 | 1.45 | 1384.5 | 0.94 | 持平 |
+| XLI | 工業 | -1.27 | -1.87 | 1191.4 | 0.94 | 持平 |
+| XLY | 非必需消費 | -1.66 | 0.57 | 726.0 | 0.91 | 持平 |
+| IGV | 軟體 | 1.72 | 5.99 | 697.4 | 0.86 | 持平 |
+| SMH | 半導體 | 0.74 | -2.33 | 3933.6 | 0.83 | 持平 |
+| XLK | 科技 | 0.49 | -0.13 | 1362.1 | 0.81 | 持平 |
+| IWM | 小型股 | -0.33 | 1.96 | 5726.9 | 0.8 | 持平 |
+| XLF | 金融 | -1.32 | 0.68 | 1596.9 | 0.8 | 持平 |
+| XLC | 通訊服務 | -1.78 | -4.36 | 570.7 | 0.79 | 持平 |
+| XLB | 原物料 | -0.74 | 0.77 | 424.2 | 0.75 | 持平 |
+| TLT | 美國長債 | -0.49 | 1.61 | 2856.7 | 0.72 | 持平 |
+| URA | 鈾 / 核能 | 0.06 | -3.73 | 102.0 | 0.68 | 量縮 |
+| XLU | 公用事業 | -0.72 | 0.83 | 795.6 | 0.53 | 量縮下跌 |
 
 
 ### 美股族群（成交額 vs 前 5 日平均）
 
 | 族群 | 檔數 | 成交金額(億) | 量比(對5日均) | 資金增減(億) | 加權漲跌% | 5日漲跌% | 領漲 | 判讀 |
 |---|---|---|---|---|---|---|---|---|
-| Mega Cap Tech | 5 | 746.6 | 1.32 | 180.14 | -3.64 | -4.48 | AAPL+1.2%、MSFT-2.2%、GOOGL-3.1% | 放量下跌⚠️ |
-| Semiconductors | 6 | 892.91 | 1.17 | 126.64 | -5.82 | -5.97 | AVGO-4.3%、NVDA-4.4%、TSM-4.5% | 持平 |
-| EV/Auto | 2 | 195.95 | 1.25 | 39.44 | -3.08 | -2.01 | TSLA-3.1%、RIVN-3.2% | 持平 |
-| Power/Nuclear | 4 | 77.88 | 1.68 | 31.52 | -9.6 | -9.13 | OKLO-2.6%、CEG-5.7%、VST-9.8% | 放量下跌⚠️ |
-| AI Software | 4 | 129.91 | 1.08 | 9.61 | -1.64 | -2.35 | NOW+2.5%、SNOW-2.7%、PLTR-2.7% | 持平 |
-| Crypto | 2 | 41.04 | 0.92 | -3.52 | -4.87 | -5.82 | COIN-4.5%、MSTR-5.0% | 持平 |
-| Banks | 4 | 69.67 | 0.85 | -11.86 | -0.37 | 0.03 | BAC+0.6%、JPM+0.4%、GS-1.5% | 持平 |
+| Power/Nuclear | 4 | 49.8 | 1.0 | 0.09 | -1.22 | -7.93 | VST-0.5%、CEG-0.7%、GEV-1.5% | 持平 |
+| Crypto | 2 | 37.7 | 0.88 | -5.09 | -0.68 | 0.84 | MSTR+0.1%、COIN-2.7% | 持平 |
+| Banks | 4 | 58.98 | 0.76 | -18.17 | -1.66 | -1.23 | BAC-1.0%、JPM-1.5%、GS-1.8% | 持平 |
+| AI Software | 4 | 86.67 | 0.73 | -32.25 | 0.94 | 5.54 | SNOW+3.7%、NOW+1.2%、ORCL+0.5% | 持平 |
+| EV/Auto | 2 | 131.9 | 0.75 | -43.89 | -0.66 | 0.09 | TSLA-0.6%、RIVN-1.9% | 持平 |
+| Semiconductors | 6 | 553.13 | 0.75 | -182.34 | 1.08 | -0.72 | MU+2.5%、MRVL+2.3%、AMD+1.7% | 持平 |
+| Mega Cap Tech | 5 | 423.35 | 0.7 | -182.37 | -0.46 | -3.16 | MSFT+0.7%、AAPL-0.1%、AMZN-1.0% | 量縮下跌 |
 
 
 ## 7. 自選股波段目標價
@@ -297,16 +296,16 @@ _保守目標＝最近的上方目標，積極目標＝最遠的上方目標，�
 
 | 代號 | 現價 | 趨勢 | 保守目標 | 保守% | 積極目標 | 積極% | 停損 | 停損% | 風報比 | RSI | 量比 | 備註 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 2330 台積電 | 2385.0 | 盤整 | 2502.56 | 4.9 | 2843.38 | 19.2 | 2336.62 | -2.0 | 2.43 | 38.0 | 1.01 |  |
-| 2454 聯發科 | 4010.0 | 盤整 | 4606.15 | 14.9 | 7018.82 | 75.0 | 3941.18 | -1.7 | 8.66 | 34.0 | 0.8 |  |
-| 2382 廣達 | 322.0 | 盤整 | 347.01 | 7.8 | 396.31 | 23.1 | 309.49 | -3.9 | 2.0 | 45.0 | 0.79 |  |
-| 3017 奇鋐 | 3145.0 | 盤整 | 3700.0 | 17.6 | 4738.24 | 50.7 | 2858.69 | -9.1 | 1.94 | 43.0 | 0.82 |  |
-| 2383 台光電 | 5070.0 | 空頭 | 6014.29 | 18.6 | 8039.72 | 58.6 | 4900.28 | -3.3 | 5.56 | 44.0 | 1.85 | 空頭排列，目標價僅供反彈參考 |
-| 1519 華城 | 615.0 | 空頭 | 687.65 | 11.8 | 914.43 | 48.7 | 578.68 | -5.9 | 2.0 | 34.0 | 0.51 | 接近箱底；空頭排列，目標價僅供反彈參考 |
-| NVDA | 212.21 | 盤整 | 230.95 | 8.8 | 275.41 | 29.8 | 211.33 | -0.4 | 21.21 | 39.0 | 1.21 |  |
-| TSM | 412.35 | 盤整 | 451.36 | 9.5 | 549.19 | 33.2 | 392.85 | -4.7 | 2.0 | 38.0 | 1.51 |  |
-| AVGO | 323.24 | 空頭 | 357.89 | 10.7 | 432.73 | 33.9 | 305.91 | -5.4 | 2.0 | 35.0 | 1.3 | 接近箱底；空頭排列，目標價僅供反彈參考 |
-| PLTR | 196.19 | 多頭 | 212.94 | 8.5 | 270.61 | 37.9 | 183.85 | -6.3 | 1.36 | 54.0 | 1.03 |  |
+| 2330 台積電 | 2385.0 | 盤整 | 2494.16 | 4.6 | 2843.38 | 19.2 | 2336.62 | -2.0 | 2.26 | 38.0 | 0.0 |  |
+| 2454 聯發科 | 4010.0 | 盤整 | 4563.57 | 13.8 | 7018.82 | 75.0 | 3941.18 | -1.7 | 8.04 | 34.0 | 0.0 |  |
+| 2382 廣達 | 322.0 | 盤整 | 345.22 | 7.2 | 396.31 | 23.1 | 310.39 | -3.6 | 2.0 | 45.0 | 0.0 |  |
+| 3017 奇鋐 | 3145.0 | 盤整 | 3676.72 | 16.9 | 4738.24 | 50.7 | 2879.14 | -8.5 | 2.0 | 43.0 | 0.0 |  |
+| 2383 台光電 | 5070.0 | 空頭 | 5946.84 | 17.3 | 8039.72 | 58.6 | 4900.28 | -3.3 | 5.17 | 44.0 | 0.0 | 空頭排列，目標價僅供反彈參考 |
+| 1519 華城 | 615.0 | 空頭 | 682.46 | 11.0 | 914.43 | 48.7 | 581.27 | -5.5 | 2.0 | 34.0 | 0.0 | 接近箱底；空頭排列，目標價僅供反彈參考 |
+| NVDA | 210.96 | 盤整 | 229.15 | 8.6 | 273.29 | 29.5 | 201.87 | -4.3 | 2.0 | 38.0 | 0.76 |  |
+| TSM | 418.51 | 盤整 | 456.92 | 9.2 | 542.64 | 29.7 | 399.31 | -4.6 | 2.0 | 41.0 | 0.84 |  |
+| AVGO | 321.68 | 空頭 | 355.46 | 10.5 | 432.73 | 34.5 | 321.02 | -0.2 | 51.18 | 34.0 | 0.73 | 接近箱底；空頭排列，目標價僅供反彈參考 |
+| PLTR | 196.75 | 多頭 | 212.94 | 8.2 | 270.61 | 37.5 | 184.55 | -6.2 | 1.33 | 54.0 | 0.79 |  |
 
 
 ## 8. 新聞與公告訊號（漲價、缺貨、擴產、財測…）
@@ -320,63 +319,63 @@ _（無符合關鍵字的新聞）_
 
 | 分數 | 訊號 | 相關個股 | 標題 | 來源 | 時間 |
 |---|---|---|---|---|---|
-| +7 | 供不應求(缺貨)、營運上修(上修)、外資升評(目標價上修) | 3037、3189、4958、8046 | [「南電、景碩、臻鼎-KY、欣興」全員千金股？外資看準缺貨延燒到2028，最新目標價上修：這1檔漲幅還能漲一倍 - Yahoo新聞](https://news.google.com/rss/articles/CBMiuwFBVV95cUxQRV9pcTRjd0VNZXpHUlJRU0VCTHVlV3VJU1Zpc1M2bEtFejBmWjNXSmFWMDdhcllUelVEekhLdlJSLWl2S3JId0ZVejA2b0MzQVg0QjdlS1JFWGduV1VfRWN3YjJYa2NqOXhhLTE2YnUyS09SZ3daU2J1bXFhT1BTVnNxRmJWdVd1cXExZTVENGozVk80dEFOWFdXOVRsWGRpOUR3VTRhZXJydFVJNzBuNDRkV3QyMXYyWWNN?oc=5) | Google新聞[漲價 股] | 2026-10-23T04:56:47+00:00 |
-| -5 | 外資降評(下修至2.49元，預估目標價)、利空(下修) | 2884 | [鉅亨速報 - Factset 最新調查：玉山金(2884-TW)EPS預估下修至2.49元，預估目標價為40元](https://news.cnyes.com/news/id/6636531) | 鉅亨網 | 2026-10-23T12:10:34+08:00 |
-| -5 | 外資降評(下修至4.28元，預估目標價)、利空(下修) | 2891 | [鉅亨速報 - Factset 最新調查：中信金(2891-TW)EPS預估下修至4.28元，預估目標價為74元](https://news.cnyes.com/news/id/6636530) | 鉅亨網 | 2026-10-23T12:10:33+08:00 |
-| +5 | 漲價(調漲)、供不應求(產能吃緊) | 2330 | [先進封裝產能吃緊帶動最新報價調漲三成！AI半導體商機發酵，台積電受惠-財經焦點情報站 - CMoney投資網誌](https://news.google.com/rss/articles/CBMiggFBVV95cUxQa2EyVzU4cnFoZ2ZhVFVfc1ZuM0lZZnpLWW43MTNJNUhianpTUnlBUEZpdFpaa1N2N0VQd29rRGthUTZBRVdVRzVEWjZRbktTaEF1QXBkcDhjczJfbzN1eFF4WDJ3UFR1N0diZFNJTDNPUUhFR2VMWkJLWElyc2ZlSHJB?oc=5) | Google新聞[調漲 報價] | 2026-10-22T19:39:23+00:00 |
-| +5 | 接單擴產(量產)、外資升評(升評) | 2409、3481 | [不是群創、友達！玻璃基板震盪它獲官股升評買進：TGV試產線拚2028量產- 上市櫃 - 旺得富理財網](https://news.google.com/rss/articles/CBMiakFVX3lxTE5iRnltb2Y1MUpYUXVybzF1eUlfbUpfamxVbW5KTkp3ODJob1MwYVF2ZGxhd282MTNQOGVXYnAxS0ZLakFEWlhfY3BsVGM2dG1TM2NvOVlOa3Ria0pobU1YWmNyN3RhMEJFbHc?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-23T07:38:14+00:00 |
-| +5 | 漲價(調漲)、營運上修(上修) |  | [【8954.T FY2026 H2 法說會】日本OJR每單位分配金2504日圓上修落定出售利益與租金調漲助攻下期轉為減配 - BigGo 財經](https://news.google.com/rss/articles/CBMiZEFVX3lxTFBQdzV6cXZPbTN1TXRsaVN3OE9UZDl4a0hReWRnVGNEMy1Zd3FtVmZzUXlXWlRDbzc5QjdNeXFqbjRRVkdITWQxUFpFbjBTNzhJOEVZbjFGQVBzb3Q3Q0RnajlxN0E?oc=5) | Google新聞[法說會 上修] | 2026-10-22T10:04:00+00:00 |
-| +5 | 漲價(price hike)、營運上修(beats) |  | [P&G beats estimates as price hikes haven’t hurt demand yet - Yahoo Finance](https://news.google.com/rss/articles/CBMivAFBVV95cUxQN3B2Qzd3SmlaWVlLUlJRZW04YS1BdDcwRXF0RW1RS3BaXzVVMHZVRnpVZFBBak1aeXNTWFdsWXVTaHVOSnotM3g2eXY4TFg0bjFDNmR6S2ZMVEhTRm91elQ3dDdlNHRocmJBSmd2aERUZDBTNDdPWTJsV3FNVkRqaDdrTk9NLTRobFNXaDh6ZXVGV2IxYTJ1RzQ4SUNWUzBIT0VRckVpajUzUHFQblJZY0lmQ2xvb2dCNzI5ZQ?oc=5) | Google新聞[price hike stocks] | 2026-10-22T11:13:09+00:00 |
-| +4 | 接單擴產(大單)、營運上修(優於預期) |  | [美股重點新聞摘要2026年10月23日](https://news.cnyes.com/news/id/6635955) | 鉅亨網 | 2026-10-23T08:03:43+08:00 |
-| +3 | 外資升評(目標價調升) | 3376 | [鉅亨速報 - Factset 最新調查：新日興(3376-TW)目標價調升至280元，幅度約5.66%](https://news.cnyes.com/news/id/6636528) | 鉅亨網 | 2026-10-23T12:10:22+08:00 |
-| +3 | 漲價(漲價) | 6770 | [力積電毛利率衝48％　Q4營收估雙位數成長、明年成熟製程再漲價 - 鏡新聞](https://news.google.com/rss/articles/CBMiYkFVX3lxTE1tX1FheEFzRlpuMzNrZEFQU3NENDg4Q1dRQUVPdTNhSHMzcmlpRms1NHRqRDhPR2FrWUh2Y0k0VGV0WGN5b2VScDZzamlhUl9HZE9jdjdHSUhsTDVRUDNIOUNR0gFnQVVfeXFMUDVXUGdqeEV4dXI1MzZjcTJyckF1VU5faGRGNTlxTmN0T2wwNml3cGlsODRhNHJqVi1xMUhERVFnNjk0V3gwR2k4ckdfbm5Nb0VqYjhkd29URGdxOUVKMkxGUUdxWVBJdw?oc=5) | Google新聞[漲價信] | 2026-10-22T10:40:18+00:00 |
-| +3 | 漲價(漲價) |  | [〈財報〉少漲價也能交好成績！寶僑上季營收、獲利勝預期 盤前漲逾3% - 鉅亨網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE02SUlzbUl5eWpjS2d6a2R1SWpoQk85QzVLelNPcWpEVmQtVDVqOGRVLUxoQjFqUl92TE9iQkpDVFI1M1FaYmRiSFdoTQ?oc=5) | Google新聞[漲價 股] | 2026-10-22T13:00:06+00:00 |
-| +3 | 漲價(漲價) |  | [高階CCL漲價行情火熱！這「 指標股」 目標價直衝6150元 產能拚2至3年翻倍 - Yahoo股市](https://news.google.com/rss/articles/CBMimANBVV95cUxOTE5PS0FIYU9GT0RDb2RrNmRuQlJINUdZb3NlLWZUSjZXUGVRaDVSNnBzUThXMXhZaVRJX2gyUjZfemFBY3ZlRFQ0aUJVUTNpdDNjSmxSbS1OQmFTdVhYYTNpTG16ZTVsNmZFSjJNd3dLU29fUHkxSEE3YkVmeDRhaXE2ZXNmd3JzbWNhb3BORlU1X2JIQ1pFLXQ4LW5FMVl4WjZ5cndkOFlLcVo4QkVkWmMzM1hPTDduRFlHLVhueEdHdmRnYi1mSy10cTlnM2paR2xaRmtWSE5DUkktbE43MTlCWFZKRkFrUnBnb3BqWW5zSDRoUEY0Y3dobS1reW5GR2EwT1M4encya05ybjZFRnlfTXQ1TktGbldOVlo2WVEwV0NZN0R3ci1tZVIyQ2VMQmpyWDZVQWtzRkhnT3N6Y2FpdXg5OVM1OW9EV2NjVE4wX3lpVGtWZW5kNGFkbV9iWm9IQzlzSS1EMEMyazFPWjdPTi1OMkoxS0c2eGZJU0dMR0ZfdUhadU40WGRMQ0RvQklqZzltU3M?oc=5) | Google新聞[漲價 股] | 2026-10-22T10:30:00+00:00 |
-| +3 | 漲價(漲價) |  | [被動元件漲價未歇 法人看好國巨評價有機會緊追日、韓同業 - UDN](https://news.google.com/rss/articles/CBMiUEFVX3lxTE1MU3BKQTZQVlRiNmtZSzZaNm1uZU9jSXdtV2R5d05qSF9YMU9qWlphbUk2Q3h6TmdRdC1Obkh3eExfWFNENkRaSW00NlNnbHFL0gFWQVVfeXFMUGEwZDRLWnJITVFUX3Q3WktxZHBnNlgyRnhhLWhfeHM3MkE2blFwU1R4THVwNV9MemZXNDdlZDZPZ1h3QlhhRGVjNG14Y0FjT0c5bl9UeHc?oc=5) | Google新聞[漲價 股] | 2026-10-23T05:15:50+00:00 |
-| +3 | 漲價(調漲) |  | [服裝品牌日本售價平均漲幅4% 台灣暫無調漲計畫 - Yahoo股市](https://news.google.com/rss/articles/CBMizgJBVV95cUxOVE9PalJrUTF5SnBWX3piVEd0OE8teGFlMGNIaE02U0MyOTF0TnFQRS1oeE5TVXRjSTV0YUZ4a0RXaERtMWp4dlpRdW9lNXo3d3QxNGxpWEcwblRSY09ZdUFFektkSlhRNENpS1ZCTUFxb19QZzhHdmwzaHFMaGFaWnhPRk41UkozSkRfTDRxbjliTEVMdEd6c0lFVnh0ZzY2Tm9Ub2MwSTFFR1lRMXJMa1AyUG9yM1c4RWJGdndEdGF4YkVZMUQtbFlDNmM1SVN6QThLQV8yUl9CX0VSV2xOcWhobmlkeXNETzRvdGo0RmF3NnV1Mk5MQXVOU0l1ZUVmZ3pMZ1ZFalFfU3lJNXZxVzhjaThnbjhwbHVWVTM5OHFYdFVkS1NOYnVrYlhGNnN2VTdEVlhFdlNTQ1RJaGtaSTJnQ0Zvc0dTRzhBbTV3?oc=5) | Google新聞[漲價 股] | 2026-10-22T09:34:26+00:00 |
-| +3 | 漲價(漲價) |  | [AI伺服器供應鏈迎出貨爆發期，晶圓代工醞釀漲價與CPO矽光子成焦點-財經焦點情報站 - CMoney投資網誌](https://news.google.com/rss/articles/CBMiggFBVV95cUxNWW5tUE11TS1Od21jTEx1eE9lVTNiS1hwWGEwM0NuSlRoZjJIcm9PYnVKZzVZVXVzeXBrV3A5YkRnTk1adGFsODZ5S3JfSHRjdnBoN2FZX3R5SEZ2N0doeWx5bVpBVUk1UzRoX2RJd29oTjZHRjJRenYxS3JaVHBvdkx3?oc=5) | Google新聞[漲價 股] | 2026-10-23T06:39:23+00:00 |
-| +3 | 漲價(漲價) |  | [類比IC供需逐漸趨緊 德州儀器證實2027年醞釀漲價 ／ 優分析 - LINE TODAY](https://news.google.com/rss/articles/CBMiVkFVX3lxTE9aazFjZmhkRnJuT3Mzc1kxS2psU3JEUk8yMXlzZU1ZX2xWY05CNy0zY1I1eGhkNzJPUWlHOFc2S19UbTNQV0hRZHZxTXM0ODByelM4U3FB?oc=5) | Google新聞[漲價信] | 2026-10-22T09:52:40+00:00 |
-| +3 | 漲價(漲價) |  | [開心果今年漲價近五成 500克可買兩隻雞山姆30日限買一袋 - www.singtao.ca](https://news.google.com/rss/articles/CBMi0wFBVV95cUxOQ242Y1daNVRZSjdXNW16bXA1ZTNCY1RxbHBZN29DZWJjd1JwQjM1RW5RVFZUZVA4WEVtY1AwdVN0eDBxaUVfYTZ0TWEwSnJpWE9XZ0pBbE5RMVF1MU5HSXBRcFpsYThJM3JjMWM2OU10V0l2T3pRcjdoYWpFdVFHdlp4cTVsdzFHbTJnOElRclZJVFdlT0hCc2ZNQUtMamtOWXdEa1MwdEdrTkk1S2VreHgxcGtGWFZaTDdidVF3aU41SHp0UkR0VUxXWWVualZlY2Jr?oc=5) | Google新聞[漲價信] | 2026-10-22T11:10:07+00:00 |
-| +3 | 漲價(調漲) |  | [Q3獲利大增97.5%！「晶圓代工廠」報價調漲、明年EPS估12.91元 投顧仍喊中立 - Yahoo股市](https://news.google.com/rss/articles/CBMirgJBVV95cUxNbFhCaDdWZFlqMjF3blNUODVsZUpjcHphaHN1TkQxYUppTmRFaDhLQkxJZGVxVl9CeEJuT3dDZW52QUU3eXZVNE5QRW52Q0lPWF9tUnV4NnRtVFRIMmdJdEFocWVMZUozTS1LMVhHcktjWWNJM29JclRwTWlPYXoxUFhKdVJqcDVkWUw0dGpuMGJicmtNX05WLVhxOFQ2RmZJMGx0M1ZyaklfeHEwRDZScmpSaWEtc3JRNWdIZHprc3JYX3NkY1ZidWFPQVNSaVlPNVRaV1J5eVJzdE0tUXJWSUs1WjlTbHFCRHpwS19SMGlMYlNqejNUMGdkamlnOE90VE5sMkJhVEFidXl3UTBlcVNvM056TTg3QzZiUnRmeDdXdXFCV3ROTHlLZWdIdw?oc=5) | Google新聞[調漲 報價] | 2026-10-23T04:18:50+00:00 |
-| +3 | 外資升評(上看33.73元　目標價) |  | [奪CoWoS與LEAP肥單！「這封測大廠」明年EPS上看33.73元　目標價曝光 - 三立新聞](https://news.google.com/rss/articles/CBMiTEFVX3lxTE9WTDhHTmdha3dIN0FJR29GZkpQVGZGa2dYMjFxRGgzZncxNkhybjZTRUdxS1RkelplejBBbzBXZjhFdGxOOVZFOGMydknSAUxBVV95cUxPVkw4R05nYWt3SDdBSUdvRmZKUFRmRmtnWDIxcURoM2Z3MTZIcm42U0VHcUtUZHpaZXowQW8wV2Y4RXRsTjlWRThjMnZJ?oc=5) | Google新聞[調漲 報價] | 2026-10-22T17:00:00+00:00 |
-| +3 | 漲價(漲價) |  | [美國線11月照例推大漲價方案、但隨時機動調調整 SCFI近平盤 - ETtoday財經雲](https://news.google.com/rss/articles/CBMiUkFVX3lxTFB1UUthVkdicmlFZ2lDZDV6OHlCYURwWkpvNTNMeUl6WVZVRTVHVHl1eVNMNEFqN0REekhHRC0zQ1Z1ZVFWV1lCenhYSFlzSzdEMWc?oc=5) | Google新聞[調漲 報價] | 2026-10-23T07:16:00+00:00 |
-| +3 | 外資升評(目標價上看) |  | [不只聯手英特爾！「這大廠」暗藏大武器　目標價上看155元 - 三立新聞](https://news.google.com/rss/articles/CBMiSEFVX3lxTFBOTkVFODFIdk9yejcycGQ3c3NRNGdtQ01BbTgxZW13TnRiMGFiVTBDTWthRlBSM2JCeEFFbmRLN0l1MUdIdkxDNdIBTEFVX3lxTE42VEJta2hDZ1VXMFhUbmlkUXlVaFJ3TUcyb0RjWVo1VlNLV1Q0V1JVaU9YSGdIeG5MUWpmdnFQcFI3VWxIOXVEN21fX3g?oc=5) | Google新聞[光通訊 OR 光模組 OR 矽光子 漲價] | 2026-10-22T17:30:00+00:00 |
-| +3 | 營運上修(創新高)、股利庫藏股(配息創新高) |  | [「這檔」配息創新高！年化殖利率衝破5.4%　除息日、最後買進日出爐 - 三立新聞](https://news.google.com/rss/articles/CBMiTEFVX3lxTFBoUWU5aXNPc3AweHkxaHpLcllwNTFHd3FCeDNfYXN6dzFMYU5UQk5ZcnoyaExYZmtXWWNUblo2UlJBcmVkLUIzRDMxT2LSAUxBVV95cUxQaFFlOWlzT3NwMHh5MWh6S3JZcDUxR3dxQngzX2FzencxTGFOVEJOWXJ6MmhMWGZrV1ljVG5aNlJSQXJlZC1CM0QzMU9i?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-22T13:53:00+00:00 |
-| +3 | 外資升評(調升目標價) |  | [波克夏·哈薩威股價創歷史新高：3600億美元現金貢獻利息收入，獲瑞銀調升目標價至94.2萬美元 - TradingKey](https://news.google.com/rss/articles/CBMi8gFBVV95cUxPZnRyc0VWbkVHTmhWRHcyclMxUE5MN1lZakpia3BlTlQzbXlKM01GaWNKY0pQVUs3cTQ4SUdOTEVQbW5oSjA4OG4wenkzcHpDY0R4bk8wTGJDZDNLU1Zlc014RncxS1Z5VlNHM0N1TDh2cDFiYTgzOUFIT1lkcGlFVzNHYlJVTEt3dFhSSVUtOFFmZlBQeE0wVlA1YUwxdUdNeUo5N1MtTk9WOEc4dXRaZHVqSlhzSFRZV0tUUnN4Q01OZ2VqOWNfX3YybUxhNHFJU2ZIcHZhandlZVdWalFLSEVhZ2RfcUp5V0RMVV82SXRVUQ?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-22T16:44:52+00:00 |
-| +3 | 外資升評(目標價調升) |  | [鉅亨速報- Factset 最新調查：Spotify Technology S.A.SPOT-US的目標價調升至564.65元，幅度約3.09% - TradingView](https://news.google.com/rss/articles/CBMiZEFVX3lxTE9Odk1QRUhGTmNjTGhlOVJwcVVhUTVsVUZfeWo0cDF5REdEV0VVTWZ3WjRvZm9SRFo3NTd2M0FEWVFXY19mYnBFU2prSGgwclhoMnI3VldOMXBSNl83Q3U1STBSSnM?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-22T18:15:25+00:00 |
-| +3 | 外資升評(上調目標價) |  | [Meta大跌7%，高盛爲何上調目標價？2300億美元AI投資背後的增長與風險 - 富途牛牛](https://news.google.com/rss/articles/CBMinAFBVV95cUxNUkhyRDU3ZVlmT0JCNkI2X3hhRkRjdlBGb0pqQURma3hWb1FJVm9mUEYydDFRNERyN0Z6eG1VYWRSTUZxVVFKNzN1RlltT3p5QWhteDlWWWxZdm5mdHBicDhYWEMwaWkxVnRHUFNfX0N6TTVsTjl2cDdPSE5kV1Y0SVZHdzU3X0Y2N1U3WmdBVjN1UlZJbTFfWmpVR3M?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-23T07:41:32+00:00 |
-| +3 | 外資升評(上調目標價) |  | [高盛集團維持SpaceX(SPCX.US)買入評級，上調目標價至245美元 - 富途牛牛](https://news.google.com/rss/articles/CBMirwFBVV95cUxNNzJkTHZJWkhUb09tNnFQSktnLXNiUG1NMHg5R0dtX21lUm1iamstSkpWSkxCSHFQYnIxZHFmY1l5aUswSVRBSmVnT2kta21kVXNkTHgtN2t6YThBOTROYXYzY2dEd2N2UHBtTDdRNmR3aEdfVEhkV1ppMXpCdGtJSFhmWHBKOU52dzR3VGc4ckJReEdSX2xHdnhjZWZCdWczRVU3UmtwRTJ4VFhOQ1VJ?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-22T15:40:22+00:00 |
-| +3 | 外資升評(上調Meta目標價) |  | [KeyBanc上調Meta目標價至$905，看好AI發展動能 作者 Investing.com - Investing.com 香港 - 股市報價& 財經新聞](https://news.google.com/rss/articles/CBMidEFVX3lxTE5rZlZUcEkwa3h3enVJRmd4c0h4enM2Nm9aODROVDBEbHAzUlNVaHl3N2RZQl9QbkdJbHlhUndUUzh5RGFueFlJX084dUw4Q1M3S2tyekNyWm81VTI5TE5rR0hycFlMNWt1c3hFcGxkNVNsUHdi?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-22T15:30:17+00:00 |
-| +3 | 漲價(price hike) |  | [Community pharmacies warn of potential closures due to electricity price hikes - San Juan Daily Star](https://news.google.com/rss/articles/CBMitwFBVV95cUxPckEtVDBPRElXWEk0emRkeW0wLVZ3SzRHMU1Rc0JmOFlRN1VMOHp6MG9vVXp3WTZKZTlMSTNsQWpnNGQxajVkX2l1SkdBd2ZzeWJLVlNxLVNKanNCbDE1bkJ5STFVeF9uQnJXRm1YS1pBMVNSa0ZMeWZrZFNnd0l1RXhSN1NWVWI4S2JhSjVXWjlGWVltZEdLbktFY21VcHp1bzdqSk1FZzBLX1l3SjBUbGFDZHdRb2M?oc=5) | Google新聞[price increase letter] | 2026-10-23T05:20:05+00:00 |
-| +3 | 漲價(price hike) |  | [Hundreds of tenants face care alarm price hike - Yahoo News Canada](https://news.google.com/rss/articles/CBMifkFVX3lxTE96QkpSQUxQQm9sVDNKOEJiOC1lQ3FaME1IbXVEMEFzS2NFRG9HMmwxN3hqZXhsdFdpLU1lOXEtQ1FkblVzUEticEJtU1M5TU9NalZ6bkVPajJKVlNDSHhYNXZEeGVoWUJKaUxKQy1PTkVNZkFBUVI3YXlWSjdiQQ?oc=5) | Google新聞[price increase letter] | 2026-10-23T05:09:00+00:00 |
-| +3 | 漲價(price hike) |  | [PC prices already high, set to rise further… CPU price hikes increase consumer burden - 머니투데이](https://news.google.com/rss/articles/CBMia0FVX3lxTFBQdmV0RTlsLVh5YThJb2gxeXNuR1dfVlpHYm1rRWQtU0xucXNPelFhX0xTbFhDdVAtRVZKeFZ4c0pLc2FRQ2NlRGZJVm9XcDRDaWRkX3lHSk1qZUpENVlmb045cjNDZGpwZjVn?oc=5) | Google新聞[price increase notice semiconductor] | 2026-10-22T21:00:00+00:00 |
-| +3 | 漲價(price hike) |  | [The Biggest Price Hike in 49 Years Just Hit a Christmas Staple — and Families Could Feel It This Holiday Season - Yahoo Finance](https://news.google.com/rss/articles/CBMijgFBVV95cUxOd04tWDk0WkF4bllnelMxclJ4S3lVVHF1N1FaOHdJa3NHTlM0N1Vqb1hxZHFXMmdCTUttdEpZRW1BSnBGRWFUVVZvRjByT2NjS2JkMndWaU0tUVotM2t4NlNfZW80WW1BQjRaWDFMaXBUZGR3RFY4bHFlYTdmWGx2WTJ1NkJxeHJQQjVRLVFR?oc=5) | Google新聞[price hike stocks] | 2026-10-22T14:35:10+00:00 |
-| +3 | 漲價(price hike) |  | [Energy price hike weighs on Linde Bangladesh's Q3 profit - The Business Standard](https://news.google.com/rss/articles/CBMioAFBVV95cUxNa0JtYjVScFVSX29JTHZNRld3MGR4YlRpNVJTTW5Xd3NRcVlQNlhTcTNpVm5QbHlqWGhmMVdJLU9KS2JNZkx3Rmw3a08zSTktQ1ZoN3R4LUJoZTZ6UTN0bUM5dm1kUkZrY3JVYTFmVDNJN0R0WGtvWUFZZmZ2a1l3a2w3SHhjNWdRTzF1SkN2R0VwWXZmRnJVZnFGOWlXQUpt?oc=5) | Google新聞[price hike stocks] | 2026-10-23T03:36:23+00:00 |
-| +2 | 營運上修(年增) | 6278 | [6278 台表科：澄清媒體報導](https://mops.twse.com.tw/mops/web/t05sr01_1) | MOPS重大訊息(上市) | 1151022 112401 |
-| +2 | 營運上修(年增) | 1503 | [1503 士電：澄清115年10月22日經濟日報C5版之新聞內容](https://mops.twse.com.tw/mops/web/t05sr01_1) | MOPS重大訊息(上市) | 1151022 122629 |
-| +2 | 併購合作(收購)、股利庫藏股(庫藏股) | 6908 | [6908 宏碁遊戲-創：代子公司Winking Studios Limited公告庫藏股執行情形](https://mops.twse.com.tw/mops/web/t05sr01_1) | MOPS重大訊息(上市) | 1151022 233008 |
-| +2 | 接單擴產(量產) | 2330 | [Jay Goldberg：「英特爾+馬斯克」組合對台積電構成的威脅  可能大於Terafab單打獨鬥](https://news.cnyes.com/news/id/6636451) | 鉅亨網 | 2026-10-23T14:00:08+08:00 |
-| +2 | 營運上修(上修) | 1560 | [鉅亨速報 - Factset 最新調查：中砂(1560-TW)EPS預估上修至14.84元，預估目標價為900元](https://news.cnyes.com/news/id/6636529) | 鉅亨網 | 2026-10-23T12:10:31+08:00 |
-| +2 | 營運上修(上修) | 2618、2603 | [鉅亨速報 - Factset 最新調查：長榮航(2618-TW)EPS預估上修至4.19元，預估目標價為47.75元](https://news.cnyes.com/news/id/6636424) | 鉅亨網 | 2026-10-23T08:10:47+08:00 |
-| +2 | 營運上修(上修) | 2360 | [鉅亨速報 - Factset 最新調查：致茂(2360-TW)EPS預估上修至45.93元，預估目標價為2800元](https://news.cnyes.com/news/id/6636423) | 鉅亨網 | 2026-10-23T08:10:45+08:00 |
-| +2 | 接單擴產(擴產) | 2330、1504 | [台積電評估赴美德州擴產 同步尋求無稀土馬達降低中國供應風險](https://news.cnyes.com/news/id/6636199) | 鉅亨網 | 2026-10-22T22:00:15+08:00 |
-| +2 | 供不應求(缺貨) | 2357 | [華碩：記憶體缺貨恐持續2年 - 自由時報](https://news.google.com/rss/articles/CBMiWEFVX3lxTE11VDdXeDRWV21zWXlIUFprbzh2TUZVV0lLTnFqTjhLZUVEZU5ZcjJ1LXYwczllNWRSdW1EVWFXMFF6aUtaWFBmU09XTF9sUHl3WHZkSnlCbzA?oc=5) | Google新聞[漲價 股] | 2026-10-22T13:44:28+00:00 |
-| +2 | 營運上修(創新高) | 1815 | [玻纖布抗跌！富喬9月毛利率暴衝至近52% 股價漲停再創新高 - 經濟日報](https://news.google.com/rss/articles/CBMiW0FVX3lxTFBMelVrZGotazQ5WHNfbEVTdUU0QjZNaFlFTWpGMHQzbW1neVFxdEFnWnlCVDJrbVU0eFJNcUx4d0RQN0VXRFR1R0NQUFBGV0pQRDdtdmNlNFVsY3fSAWBBVV95cUxQLVpjR1NhRExTbmgtYmdNamRMYlowMEgzb2c0NThaandoWl9jY0JiTHhJUDhEU1Mzd21McXRJRjRBOTlwLXV4b0pQLVRNZFY3SDJZS2lOQ0Z2c2M0c3NXXzg?oc=5) | Google新聞[漲價 股] | 2026-10-22T09:00:00+00:00 |
-| +2 | 供不應求(缺貨) | 1303 | [薄玻纖布、CCL又缺貨 下月看漲15％ 南亞直言市場已「沒得挑」 - 財訊](https://news.google.com/rss/articles/CBMie0FVX3lxTE5PRDRiaGZ6Y3MtaTVkWHMwTGliUXhWZm9HX0NwalZJcklQMS1KdkdHeEhBNWZ4MnpQNE9MRkpYMjIxcWpCNjFud016UzBmM0RQN3c3RkI1MFJiRFdVWm1XZ29ndHRPZjc5TXFuc0lsX2pJeVp6bHpGYURiSQ?oc=5) | Google新聞[漲價信] | 2026-10-22T09:04:26+00:00 |
-| +2 | 供不應求(供不應求) | 2330 | [台積電產能供不應求　耗材6檔必收 - 鏡週刊Mirror Media](https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Rb1oyR2FHc3dheUpLaklNY3Y1Q0h5czRjQUpUYkdGVmxzQ0FkRmpPWWM3VEc4YWtFQlRhT3FVZll4MDBuYnRHZlVmU1RTZjJiUHJtUGkyaVl2NkpDQWM3ZnN30gFiQVVfeXFMTlFvWjJHYUdzd2F5SktqSU1jdjVDSHlzNGNBSlRiR0ZWbHNDQWRGak9ZYzdURzhha0VCVGFPcVVmWXgwMG5idEdmVWZTVFNmMmJQcm1QaTJpWXY2SkNBYzdmc3c?oc=5) | Google新聞[調漲 報價] | 2026-10-22T15:00:00+00:00 |
-| +2 | 營運上修(年增) | 1303 | [南亞自結9月每股賺4.42元　獲利年增9.1倍 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE1OcmxqdWRfRmIwOTZZMGdMSGt2YnFrVmZUMG40ajhocWdJV3V1b2k4eXhNYmJuelRiTnJoRWUtdGhNdERlMG1jMUZjaVFISVBUdDFDSGh5eUJOQdIBX0FVX3lxTE1WelV0Wi1TVG0wM2g5bTJoalp4MGJoYU94RW4xeTJQVnlXZFctVm5vRE9DckFlUG0tbUZ4cjNFazROR09TMjZzN2JwZW5DWmxybXRURWs4WEwyWjBKeDVj?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-22T08:45:52+00:00 |
-| +2 | 營運上修(年增) | 1303 | [南亞獲利／9月自結淨賺350億元 年增逾9倍 高階 CCL 驗證順利推進中 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE54MDFwVnA4T2JFNndCci1WQ1pGZ0dXU040T3RnMmZNSndxTEd0SkljbmtRNGVsV2FrOVh0S1F3cTZhUjVzY1hSSTJIUmJBNGdMOFMwazJlalR5UdIBX0FVX3lxTE0tY2pINFljeUprY3J0RFAzQm5SNFhSZ1BJbnIxbVRsWlEwcl81TzNtUl9uSlV0LWFZZjRMdk9pQVJ3bWh1WkRWZkxoVW5WQ3A2Rjk0QUV2T1VabUhRT1gw?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-22T08:31:22+00:00 |
-| +2 | 營運上修(年增) | 3264 | [欣銓獲利／第3季淨賺14.7億元創高、年增78% 前三季 EPS 達7.49元 - 經濟日報](https://news.google.com/rss/articles/CBMiW0FVX3lxTE1zUE5waHBhc3FGeDM4dDVIcDJlenFrMWNLQzVkOHRlUDl5cHktVGY0MTdGUlJhbVRvdmpCanMtblNWTTdkN05xWk1iQ1JWbC1xWWswQ2t3SjBBTEHSAWBBVV95cUxOLTRBLUdFVnFFNklkc1FPcXpYOFBScWZvbUhlT0FycmdKYS1abnRBWlVwMnhkZ2JvcUNPMDBuQzZHTjFXTmZpTi1HOGtPZms5eHF5N1VmTG96T254c1M1ZEs?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-22T10:32:41+00:00 |
-| +2 | 接單擴產(擴產) | 2330 | [AI 需求帶動先進製程擴產 台積電營運成長添動能 00891布局關鍵供應鏈 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE1RWjVhSTlyN2tDOXN3WFlrc0N5MDJ4Q1RPeklveWJqQjg5R3NTRnp0LVVEVXpyZmtrYW4zUE9KTm4xZl9zQThnbzBROXVES1Q0SUNsZmpwTWlVZ9IBX0FVX3lxTFBERndTY195OEkwUDA4VG1xTE1WUFdEdFBqZmJMYUlUbVlZQWpoc1JtRl84VlQyTFpvcVBiMEw3OXhiRF9aUzRnd292cV9IRUFlV0RUYm53NzIxd0lpTFYw?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-22T09:00:00+00:00 |
-| +2 | 接單擴產(量產) | 2330 | [《路克相談室》EP66文字精華：台積電法說會沒說的3奈米故事、三星HBM基底晶片轉單分析、台積電A14 1H28就量產？ - DIGITIMES](https://news.google.com/rss/articles/CBMilwFBVV95cUxNMFNXdkxYNjg0SkxOcTh4Y2NyWlQzcE1ESE1jZUtrVC1lNTBVWFJIVE5FRVNmU1J1VmlLaGhuMnVfelB6YUxqbFdKcTdGOE5SWDJwOW1iUGhoSlBuTDM3YVhwV08xODZvTHdNRTQ3aTNSd1RWUTRiWTA2YkhERWpTdVFzZFhVQkdlSkVaeDgzTUdfZHFCWHl3?oc=5) | Google新聞[漲價 site:digitimes.com.tw] | 2026-10-23T03:10:00+00:00 |
-| +2 | 營運上修(創新高) | 2886 | [今日最夯股／兆豐金獲利報喜 股價創新高 ／ 市場焦點 ／ 證券 - 經濟日報](https://news.google.com/rss/articles/CBMiggFBVV95cUxQNlpIWnVrRnpHNjNpYXBnZ05BelgxX1FveEt5TUtKMEJ1OElndzBZd1V1U2RSRkpibmpBSFZYUkZ5VDB5SGpEck0tbUZEVkxaTjg1cDZNaGlrX3BJWEtRYll0VFJZMW1ZY3RPMVVvSTdVb1FjaUliYTdVUXBzT0tNU0hR?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-22T10:59:31+00:00 |
-| +2 | 營運上修(年增) | 1303 | [南亞9月自結EPS 4.42元、年增逾9倍！重訊澄清M9驗證未過傳聞／ 產經 - 非凡新聞台](https://news.google.com/rss/articles/CBMicEFVX3lxTE1HOG5XNHFuMUZac3A0YjRLbnpXOTJ5QWcwdF9oUGFPcUZCVExCQTg5Yi1HeEc1b2UyTGxDbkRhQ3RFRk9EQm0zcnk3SWE5Z19PSUZBMFdIRTFoejh4U1BieWg2WE04RjZ5TzkxRC1ZQks?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-22T18:01:02+00:00 |
-| +2 | 接單擴產(大單) | 3037 | [輝達通包 ABF 載板產能！外資喊欣興光復廠獲大單目標價 1,775 元 ／ 科技新報 - LINE TODAY](https://news.google.com/rss/articles/CBMiVkFVX3lxTE1kRTl0LXphMTdINFNBVzlFZlRocXFDU2xCUEJzUlRyMnQ1TXlRSVl4YXpub2RCRDN3MmxQVEdBU3ZSYVdRdzA3aTVfNHhkSkFCWmY2N2lB?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-22T09:36:37+00:00 |
-| +2 | 接單擴產(擴廠) |  | [〈台經院看景氣〉央行鬆綁+AI發展 不動產景氣可望逐步改善](https://news.cnyes.com/news/id/6636575) | 鉅亨網 | 2026-10-23T15:59:33+08:00 |
-| +2 | 供不應求(滿載) |  | [〈熱門股〉東台PCB鑽孔機接單滿載直達2027年底 周漲2成創近4個月新高](https://news.cnyes.com/news/id/6636489) | 鉅亨網 | 2026-10-23T10:46:54+08:00 |
-| +2 | 營運上修(創新高) |  | [下周觀盤重點、個股機會、以及該留意提防的風險](https://news.cnyes.com/news/id/6635951) | 鉅亨網 | 2026-10-23T09:10:12+08:00 |
-| +2 | 接單擴產(擴產) |  | [國發基金海外融資翻倍至600億元 葉俊顯喊「台灣模式」助半導體出海](https://news.cnyes.com/news/id/6636005) | 鉅亨網 | 2026-10-22T20:33:51+08:00 |
-| +2 | 營運上修(年增) |  | [歐洲多國爆發民生抗議與治理挑戰 到底怎麼了？](https://news.cnyes.com/news/id/6636546) | 鉅亨網 | 2026-10-23T15:40:06+08:00 |
-| -2 | 利空(下修) |  | [特斯拉、Meta、IBM三場法說會 揭露科技巨頭AI三大焦點](https://news.cnyes.com/news/id/6636340) | 鉅亨網 | 2026-10-23T14:30:07+08:00 |
-| +2 | 營運上修(年增) |  | [Meta重挫逾6% 此前250億美元罰款背後 還有每年35億利息支出](https://news.cnyes.com/news/id/6636545) | 鉅亨網 | 2026-10-23T13:40:05+08:00 |
-| +2 | 營運上修(創新高) |  | [Meta財報亮眼卻遭股債雙殺！8250億美元承諾揭開AI投資真實代價](https://news.cnyes.com/news/id/6636513) | 鉅亨網 | 2026-10-23T12:50:03+08:00 |
+| +7 | 接單擴產(大單)、營運上修(上修)、外資升評(目標價上修) |  | [EPS估增2547%！「玻纖布大廠」M6至M8高階材料大單洽談中 目標價上修至350元 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE5Jb0oyLTIxT2EyZ1ZBUk81YmdzcVhNcUtwSm41azRPcnZQT1ROYmJYclVHN3RwVFFtRzBFaU5CUmFMZzNLTGtBbHZ2Yw?oc=5) | Google新聞[漲價 股] | 2026-10-26T05:55:00+00:00 |
+| +5 | 漲價(漲價)、營運上修(年增) |  | [受惠漲價瘋潮！「這記憶體大廠」9月營收年增188% 目標價喊155元 - 三立新聞](https://news.google.com/rss/articles/CBMiS0FVX3lxTFA1dTU3bGdEbUR5NHYzbWlrdVhSSmp0R2NJV0p1Mjh1dF9GNHJwdlMtOVFyNTdlQ3BPdXYzZXYyMXcwV3dqeEUwcXF6MA?oc=5) | Google新聞[漲價 股] | 2026-10-25T17:07:20+00:00 |
+| +4 | 接單擴產(量產)、營運上修(年增) | 3406 | [玉晶光獲3M參與私募股款已到位持股4.68% 自結9月EPS達3.85元](https://news.cnyes.com/news/id/6636653) | 鉅亨網 | 2026-10-23T18:45:28+08:00 |
+| +4 | 供不應求(滿載)、接單擴產(擴產) |  | [訂單滿載到2027年底！「這工具大廠」逆勢台股震盪爆量5萬張登量價王PCB鑽孔機、擴產動能看俏 - Yahoo股市](https://news.google.com/rss/articles/CBMijwRBVV95cUxOT1BCYTVwcG05RHRGbDJoeThjTFdCMElyUHIzWFZMMFUtbnZuSlc0QkVqTjVPU1ZqRTlhdmtTTFRrb1U0elVVLS15MWdTWFhBYmxJNHY3d25HbWdvcnpobXltVEZ6dzlHUXBoXzJBd2dtRVpQVlBaSnBVdWVWWDU2VGpaams0QkFHUjk0ZUpqRTk4NGYzd01nYlJBSHJmQmhONU4xX2stNWJXaTNvVURsZVZoTlgwUWRSVk5HbklOb1g4aEVRSWd6YWI4d2h4cVZGYjZlaUg4U3ZFZW9wdXhRVWx4S0J1ZVNla3F6UXNZUVdjaVh0dW9LU2RnczFxQ2UyNWw1WXVZQnhxanlqcW5hZTE0c2k3b3VZOUJXZUM4U3BTanU5QzVFWjBuVTV5MWhPRUVYN3J0MEpIRGFlNVZfcHFET3djWFExaC1WVk5LWk5SeTAxUmNNNlZmM0MxSk1sNEpvMzlhR3dfR0o1Tnh0dnFNMTllTUpuZ2ROLXVZa3JEczNRS3NBUEtiSm9nUU1BazljaWVlVjlrQktOOHJkQmtpVzhxSi1JRVZHV1JUMUxkaVZUQnl1WFkwdXBKU2JMMGw4Mm9ZeVRxTTRhVjZwSnhFX0o2NWJoNEdEUU5wUklzaVRPUmhFX0xIeGdIUlVPd1k2ZDNCRnJTb1NfTmFuUEFPelhwLW1jdW9hd243MA?oc=5) | Google新聞[漲價 股] | 2026-10-26T01:06:48+00:00 |
+| +4 | 供不應求(交期拉長)、營運上修(上修) |  | [電力設備交期拉長 通路商Rexel：客戶提前洽談供貨方案 二度上修全年財測 - 優分析UAnalyze](https://news.google.com/rss/articles/CBMiVkFVX3lxTE1Za0Z4WFhBWnY5YkFiRlZuSmd3ZTJmNGl3UmhUdm5EYzlxLW12R3V0R3JCTC04R19tZkR1ajNKQXhDUXZsTHk4UDRsTy1wem1QWm9tN29R?oc=5) | Google新聞[法說會 上修] | 2026-10-26T06:53:07+00:00 |
+| +3 | 外資升評(目標價調升) | 2351 | [鉅亨速報 - Factset 最新調查：順德(2351-TW)目標價調升至300元，幅度約3.45%](https://news.cnyes.com/news/id/6637550) | 鉅亨網 | 2026-10-26T08:10:19+08:00 |
+| +3 | 漲價(漲價) | 2330 | [台積電擴大資本支出，先進製程供應鏈誰先把漲價變營收？-柏宇 KD 獲利模式 - CMoney投資網誌](https://news.google.com/rss/articles/CBMigAFBVV95cUxQOUNLTEZ1Q1Rwek1xME1waE9CM1h2WWJ4UWVpc2ZkaElZR2JKdVZ1YXlHOFJyMmktaVJWa1VtMWk3d1lFZDRKVmMzaXNyNklkQmZPMHk3MGV3bDFtaWZab1dJb3RrOEpjenF4ZlJoNW5TSklfV1ZSTHNJZW5oLVRSRA?oc=5) | Google新聞[調漲 報價] | 2026-10-25T10:46:50+00:00 |
+| +3 | 外資升評(目標價升至) | 6669 | [高盛喊買緯穎！目標價升至4000元 看好AI伺服器需求爆發 - 自由時報](https://news.google.com/rss/articles/CBMiWEFVX3lxTFBXOWtZVzN0Qllad3dZQmFROXB5SUc1T0FkeTVnSFBsUEtkMnBYVW9IQWxvM0Vua3h6T2RlRXY3dWRpRXVzbG5vb0F3b1cxTUtuVnVsbm4xWGs?oc=5) | Google新聞[營收 創新高] | 2026-10-25T16:26:00+00:00 |
+| -3 | 外資降評(降評) |  | [穆迪未降評法國國債　為什麼歐元空頭部位仍升至逾6年高位？](https://news.cnyes.com/news/id/6636584) | 鉅亨網 | 2026-10-26T09:10:04+08:00 |
+| -3 | 外資降評(目標價下調) |  | [高盛大砍南韓KOSPI目標價25%！但仍看好逾60%上漲空間](https://news.cnyes.com/news/id/6637425) | 鉅亨網 | 2026-10-26T07:20:03+08:00 |
+| -3 | 外資降評(降評) |  | [標普為AI債務危機「火上澆油」？示警美國資料中心信用降評風險](https://news.cnyes.com/news/id/6637159) | 鉅亨網 | 2026-10-24T18:10:02+08:00 |
+| +3 | 漲價(漲價) |  | [MLCC、鉭質電容迎漲價潮！「被動元件通路廠」前三季EPS挑戰7元 全年拼賺1股本 - Yahoo股市](https://news.google.com/rss/articles/CBMisANBVV95cUxQZkthbEV5bFZtX2R1V1NtN3BQN3htMXRMLWgwYTFWSW95UUlpd25TTXB2bjU2dFY4bWkxYzJLUGl3ODlBSHRDcXhBVnlTRE9sX2RTSG02b2JyTlVJZVFfSkItQy15eUxNU3ZvRzNaS2tRaWdnR0FKZzk2ckdzN0FvaWt5X19CREN5R25YRWxMeVVmb3JRVHUzUHoxZ1JweDFsbW5JclZwRHJyZENiREFwM21fdE5wZGg3YzBPdjVpLTdPYlZqU2lXQkNUajVSdERwSmd5MF93d0liTU9aSy1QTFo4b3RQQjd4eHczUjROWWgwSlc2TVVwdWxQMmJyejl6SzN3OFB6VHgwcG1JM1JnTXFtMmkxOU9YSmxlMUdqVTZIUVJ0OUZwVXdNYmhOdkZuV2RPM3ExNHFRSEpQMnlmTV9sTGpJeFRpVnU3Qk5BblVoRnlsUFNTRkNtZGlPc0hEMzQ4QjRiTUwwejVkMlRzUDAwR1VTS3hiRnNiWldybHVfMm9VMkI1bkVtSWVKZm9xWkZEazh3Q0Z4UndtakxXQWxXeno5REZoaVd0WVQ4eDk?oc=5) | Google新聞[漲價 股] | 2026-10-26T04:36:15+00:00 |
+| +3 | 漲價(漲價) |  | [不只 ABF 載板、BT 載板也受惠於漲價效應 高盛調高四檔台股目標價 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE16MEVxMW05bElVWlFtd2oxWllMTGJYY2s5ZGNkOXFSbmVqLUQ1cVIzWEtPUWw3Z3ZaSW9lVlZSYlpqdkIwbmlWUGVMMFpQN0ZPRzM1RVdtR0hod9IBX0FVX3lxTFBRRlhZTk4zTm1uRkhwX28wazBvTjJ1X0JNeV9IZFg4WVp0dVdHUzgtWVBrQWkyeTB2NUI4dnN4TlUzaHJFam1CNW9UaHNSZW1XcU9wRWpiTm9JelBJV2hr?oc=5) | Google新聞[漲價 股] | 2026-10-25T09:00:00+00:00 |
+| +3 | 漲價(漲價) |  | [記憶體短缺推升次世代主機成本 玩家恐面臨漲價 - Yahoo股市](https://news.google.com/rss/articles/CBMi2AJBVV95cUxPN0FUbVlJZURDdFI3YUtIN3cxTkRmNUVHY3o3Zk4yOG0xUmRTdTRRTC1TbFhXU1hSZmNrNnhKRC1hanRlNUt1NEViaWI4MDczUkZFaXpjUGV2bDh3Sk9yOTFiMGNRZ0FPZXViQngzWGZTaklFRGtsakhTOVAwVFM3WTg1eHJLVnFEQnh4dGwzSm9walFoR3ZWbVV0MW1rR3FQWldrMDhJYnBhSDBuOE9KeEVkZVlhcUxtTnE5dUdUTXVTZFE3WVg3SE5jNFBaMU1WaE0zaEVVdVRmd3JzZ3VDMkh0UWhVLXZhQ21pUTJrRXFuMjU2WVdQOTFlYnpsZURYZTlGN19tb1Azd2lCQzhheEgzbW5PTzI4anZrOGpjSVlWSWRQUWctaDgycjJUR19abm9SekNNTjZqTXhYMG1RTmVYSUhwTTZuZmU0TDRkRU9ZN295bGZWbg?oc=5) | Google新聞[漲價 股] | 2026-10-26T03:05:04+00:00 |
+| +3 | 漲價(漲價) |  | [《新聞裡的產業課》年初新訂單漲價15%，第三季獲利為何仍下滑？從GrafTech案例看懂「漲價循環效果」 - 優分析UAnalyze](https://news.google.com/rss/articles/CBMiVkFVX3lxTFB1bUk3TlpFMTA1bTdEdWM3NEdLdjVuUG12dzY2TjJoUTJQbTYtdlhnV2c1YWxVNU9TSHhiMTU3TGVfWWVLYUFHTjFSay1hcEZ5dGs0azRn?oc=5) | Google新聞[調漲 報價] | 2026-10-25T22:18:21+00:00 |
+| +3 | 漲價(漲價) |  | [官網漲價別怕！iPad Air 11通路現省3千，選這款最划算(2026.10) ／ 手機王 - LINE TODAY](https://news.google.com/rss/articles/CBMiVkFVX3lxTE1KNGxpSmpTaWxFQ0hfcGk0RkJHNVhTdWROX0kwSGdKWEYwLXVKWjlMdHliNzRVRURtQ0YyVWVlS01CMUhZUDRGTHlZQW5KWVVDdm9oMzh3?oc=5) | Google新聞[調漲 報價] | 2026-10-25T21:44:28+00:00 |
+| +3 | 漲價(調漲) |  | [官網調漲別怕！vivo X300 Ultra上市半年逆勢砍1萬，買這容量最划算(2026.10) - SOGI手機王](https://news.google.com/rss/articles/CBMibkFVX3lxTE5nS2NDdDF2bHdzTERRaWlDZE1fRG9HUkZyU2w1ZXI1RTN2LW0zZ2FYaG85SGVDM0JyVVBLZGNpSVF6VjBLWTRvUV81eURSMEQ3eWpodFhoMmY4TnRmSWR6WGhBWmlVcS03VXBOamd3?oc=5) | Google新聞[調漲 報價] | 2026-10-25T22:35:56+00:00 |
+| +3 | 營運上修(創新高)、股利庫藏股(配息創新高) |  | [00940配息創新高 今年三度調升配息金額 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aV3dqRW9TdW9zZVA4X05GYngxMDA5a3FydDhmZkFVLThKZmlfYldmOVV1b0JYQlpwY3k2eEI2WW81dW9tdW94bGtMbGtPcWRWX2FvYkhnV0tmZ9IBX0FVX3lxTE95Nno2Mmc3cDB6Rl92TnZyTkg1SWZJbUdJQ1llNktRai1QWTlhRURVaUJmS2oyU2hZejZlaUM5TjduZmpmRFJuT3pXcWw4clU5T1ZFa1ZiWFIxU2dlcFhJ?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-25T09:00:00+00:00 |
+| +3 | 漲價(漲價) |  | [瑞士｜瑞士蓮董事長坦承漲價策略失算 股價今年已跌逾25％ - 工商時報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE8xR2wxNkIzak50b01Xb1NLTmZ1SFZJXzhzN2tNM1ZEX0x4d2ZHRm02c05JWFdiSERnN2oyUm1BSkNzeDNPOXdRTVltYXdCT09FdlUtYWc5Z25yajdFTnJj?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-25T18:00:00+00:00 |
+| +3 | 外資升評(目標價最高喊上) |  | [目標價最高喊上410元！「功率導線架大廠」AI新品專案衝破70款均熱片喜迎4大客戶、明年起貢獻營收 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE04c0FBbkJFdVVLYTd2RENsUnFGSG1RSFpvZ1dORnZvY01ydklCQjE2dDlXTk1USEUyZUZyUlJUWGdmQVZDRE93S1pJVQ?oc=5) | Google新聞[光通訊 OR 光模組 OR 矽光子 漲價] | 2026-10-26T03:30:00+00:00 |
+| +3 | 外資升評(目標價大調升) |  | [EPS衝刺24.6元！「這轉型光通廠」目標價大調升上420元 800G、1.6T將在2027年迎來爆發 - Yahoo股市](https://news.google.com/rss/articles/CBMivgJBVV95cUxQem1lUC1RdTVVMDNZdHdBNE1EUHZvaFRmSGtDUWh4dXk0d1NVaEIxdXpUU0Y5UXlJWXNRS2d5ZzFjd3Z3NElEMWRiR1RUenVUVWtJM1dGdkRYS1BZd3ZrTmp2OTdpblg4c3ZKWG9WUFBoQUY2Yml4MkpLdlVCYkpXRzRtU3VXS2lvTnI1cUtqWDBVLWZlOUxSTFZLRXFVNHdlMG5CRGJZc0JXai00Rlo2R1FsdGdvYThhS1VCQTUyd1BGbTNzRi1SVlp4QW5KWXJRY2ZidlpZQUR4eFYtcE1Sb3pJdXNzNTZTZ3VOVTJWQWhTbVA2QWhIRnFKek5YOGFEOVJjZTVnTnlMa0lab01lLU1UX3d1Q0NybThrS1RWRFljSWhpUy1rSER4WkdxaGJhYW44LWF3OThCWU4xSnc?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-25T14:30:00+00:00 |
+| +3 | 外資升評(目標價上看) |  | [EPS 50元預估大升到71元！杜金龍載板三雄「首選這檔」目標價上看1420元 喊3大優勢值得投資 - Yahoo股市](https://news.google.com/rss/articles/CBMijwNBVV95cUxPYnBvSnVubEhkeEJEWGd4VnlwZDFrM1ZFeVpyNVVjTFJxaGF5Sm5xSlRSVVpTWWcteGVJcUdyaXdlaUstOGNpcmxIQXhfRzR4QS0xZVJ1bFBhV09ueF9SQzNyY1ZTbWw1a2hfbk5OUGF5VXNPZWxPMUZlS0h3blltZEQ2Vjkzdkp1SjZIclY3M3FpV0dmcERXbVNUZkJiSkxBVVhfSkJMZjJWUEFaNUxfRExpc29CTjN5Uk5ZTkFhbE9xSHZJWGtxdGpIcHhoMkYzbFF1QkpWS2paY18xMkdCRER2eVNudDg5eTZtbzRQX1Jacnk5NkNVVWp2bW5HcHZHY0hyMUktNFNtQXM1bFVpME5XV3FPWXRYcTBtbDYyRnd0R3hwX1VCckpNWDVtOVVyeUhlZzJjb0paUFJseFl4MXBOLUdVV2ljcjY1RXZfYU4xejkwZ0lNd012SUt3WnB6ZWhKa21STjJQZFh0ci1TU2JXVU84LXhyNy04LWJRWjFsY1ZCV3M1aGd4dXVjdTA?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-25T10:15:00+00:00 |
+| +3 | 外資升評(目標價上看) |  | [2028年營運大爆發！法人欽點「這玻纖布大廠」目標價上看8字頭Low Dk2、Low CTE動能領毛利率走強 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE1iY2RUTVQtU0x1aEVLVGdfeG0tSVUyTHZJOWNWMVRMcGNRcVNma0w2d0VLZm5jcWsySWUxbDJHcjM5RE0tRjJ5Y2FZNA?oc=5) | Google新聞[升評 目標價 台廠] | 2026-10-25T14:00:00+00:00 |
+| -3 | 外資降評(下調KOSPI目標價) |  | [高盛下調KOSPI目標價，AI投資疑慮升溫但本益比已探底 - 鏈新聞 ABMedia](https://news.google.com/rss/articles/CBMiWEFVX3lxTE9QWXR4Z1UtbWtxVkRHd2Ezc21uYS1nTklYaFQ2T0lMWWRGb1JScTdnRVZtcllQODVCVXdZcFlDMEZLdGJpVEQwYkR5OGJlVkVMVUcxNFNwTUc?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-26T00:06:57+00:00 |
+| -3 | 外資降評(目標價下調) |  | [AI泡沫疑慮拖累韓股！高盛大砍KOSPI目標價下調25% 仍看好逾6成漲幅 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE9uNzlDVWV5dFhvS0lmN3hmTGRia3g2QWdvOWNYYkNGNVpxOVhzSkx3NEJKeEVQdF9qdUlWREl6NWp4Y1FHQ21SaEFOYw?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-26T04:40:00+00:00 |
+| -3 | 外資降評(下調至低配，目標價) |  | [摩根大通將比亞迪評級下調至低配，目標價調整至65元 - 富途牛牛](https://news.google.com/rss/articles/CBMiqgFBVV95cUxNRkhFUllQNEFZSkxyQjJiZms0UU1mcTZCYlNxWmVUTzUyUV8tQ2dtUTBoTWhycFdXODA5YVFQdHFDRktyN3JidkhOTkNrS3Q4OVowdTNzeVlYUkNwU29BS2lWYWgxTmFsTVlOVFNsazk2dXF2dVU4dFRTdlA4bXFhajBHVzlMS1VlN1FzbFdGVGpLSlI4aDAwX0tRMlFlVDVZQ1pQZzhxZGR4dw?oc=5) | Google新聞[高盛 OR 大摩 OR 摩根大通 OR 瑞銀 OR 花旗 OR 美林 OR 野村 目標價 調升 OR 調降] | 2026-10-26T04:31:57+00:00 |
+| +3 | 漲價(price hike) |  | [Michael Burry Cancels 40% Substack Price Hike Plan After Pushback — Denies ‘Money Grab’ Motive - Stocktwits](https://news.google.com/rss/articles/CBMi0wFBVV95cUxQVGQ4Nk9hU0N0M0k4SDJPbURhaHRIT19aeFdiMk5uZGw1WDFlUW1jdHBrSHJCWGhISU5HenFKMEp2dzFyNjVEbnBYcGRzbDNKaE9Pck9FYmxTU25QV1VTV1NnR2FNeUNWdUZieU5vYTdxQWFDTGF5Z2FNQTFmR3VTRld4SDN1Nm9TaXA1QThKdDJocnU3dkJ6bzM4MDZhMGdoUVZJckVidmN5Z3RSeVBULW5QYnByRWRVT1RVcTNvQnF0cVhXemQ2S3FINlRsZUFlRkJV?oc=5) | Google新聞[price hike stocks] | 2026-10-26T06:16:19+00:00 |
+| +3 | 漲價(price hike) |  | [Earnings Preview ／ With the stock down 30% already, SK Hynix faces a critical earnings report—can HBM4 volume ramp-up and DRAM price hikes reignite its upward momentum? - 富途牛牛](https://news.google.com/rss/articles/CBMioAFBVV95cUxQcTUwM2h1SG55TjhhUHF5SFJsTlpJY3UtYmM2dld1U3RRWUdqYmkyWlpGWnNaNmZYMTRLSTBYOF9LSUI5cnp0SjA0bXl4MUE4OVhib2I2NndvdVFqdnhqcF8yNmxzQ3RWeU5UTm9GRlJSNU5vR2EtblRIY2hjaWpUc282ekdYdUdXcm5iMUROaWxKRERQQ1l5STgtamFoOVZR?oc=5) | Google新聞[price hike stocks] | 2026-10-26T05:12:35+00:00 |
+| +2 | 營運上修(上修) | 2317、2330、3376 | [蘋果iPhone Duo需求爆發！追加三成訂單  鴻海、台積電、新日興受惠](https://news.cnyes.com/news/id/6637609) | 鉅亨網 | 2026-10-26T12:10:03+08:00 |
+| +2 | 營運上修(年增) | 1519、1514、1503、1513 | [AI基建商機、台電強韌電網計畫雙重助攻 重電四雄營運可期](https://news.cnyes.com/news/id/6637130) | 鉅亨網 | 2026-10-26T09:14:09+08:00 |
+| +2 | 營運上修(上修) | 2059 | [鉅亨速報 - Factset 最新調查：川湖(2059-TW)EPS預估上修至352.18元，預估目標價為15000元](https://news.cnyes.com/news/id/6637552) | 鉅亨網 | 2026-10-26T08:10:50+08:00 |
+| +2 | 營運上修(上修) | 2882 | [鉅亨速報 - Factset 最新調查：國泰金(2882-TW)EPS預估上修至9.02元，預估目標價為127.1元](https://news.cnyes.com/news/id/6637551) | 鉅亨網 | 2026-10-26T08:10:49+08:00 |
+| +2 | 接單擴產(擴產) | 2330 | [英特爾2045年3D晶片布局曝光！高層示警先進晶圓產能難增10倍](https://news.cnyes.com/news/id/6637349) | 鉅亨網 | 2026-10-25T16:10:03+08:00 |
+| +2 | 供不應求(缺貨) | 2337 | [AI 需求、記憶體缺貨也沒用！300元目標價到不了 旺宏自高點回檔近5成...跌完了嗎？ - 經濟日報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE1iTkZJNXctTlNReVdtZ1ROTFVxVEtuLUlfczBURUNiZzRTaFdQX045RG1DUWcyQ1BYZXdRdE90aEg2eGNrX3BTQzVoUEdpUXlvY2ZLcnNpZFgxSmZVWFlN0gFfQVVfeXFMTWJORkk1dy1OU1F5V21nVE5MVXFUS24tSV9zMFRFQ2JnNFNoV1BfTjlEbUNRZzJDUFhld1F0T3RoSDZ4Y2tfcFNDNWhQR2lReW9jZktyc2lkWDFKZlVYWU0?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-26T06:02:25+00:00 |
+| +2 | 接單擴產(擴產) | 3037 | [欣興擴產加速度 法人看好2028年續擁優勢 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE45OWh5b011M1BTcDZWM0xvZHpnQWtrRzA2RVVGMjd0aHhvb2hkQTAxT0FWREo1eVpEdXktNWVzQVJmTHF1WG5oZDBCMXVyQjd6dEMzOEdVTFZmQdIBX0FVX3lxTE40dnhmSE51NDRWZU9VSllkNUpoQjJaRjRtT3o5YmxiM21FS2lVTTRxLURIbFFpeWNsVnp2dndmRl9BUmFEWnVJME8tSHhUVE11RGxPU2NvRkxUMlBxUE5r?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-26T04:42:33+00:00 |
+| +2 | 營運上修(年增) | 6669 | [高盛：緯穎第4季營收將年增60%受惠於四大動能 目標價調高6%到4,000元 - 經濟日報](https://news.google.com/rss/articles/CBMigAFBVV95cUxQeGlUbm4zalNWU2hScXNaeWxxNWU5SXZyLVAxb09QYnFwN0l1enhLN1h1c2tEYk8tR3hwSXpMdUZ6V294OGpDVGxZU3VMdno0VXNEeVU5WnFWZ3NBZnNEeWFUU0VKcDdvczZvR05VcG5GQ3JSR0RvSmc3MmswcmVZetIBX0FVX3lxTFBRamNHdTlaTk5uZVkwUVNwSU9iOWp2U0ZjampsVnJySDlkTWRqcGcyOG5icFBPMTI3QWF0eWNnVXBmcE1yZ25tV3JCc2ZJRy10RFplbFdUcWsxN1BuN1BF?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-25T13:55:17+00:00 |
+| +2 | 營運上修(年增) | 1795 | [美時前三季營收年增逾七成 分析師估明年持續成長 - 經濟日報](https://news.google.com/rss/articles/CBMigAFBVV95cUxQWkdqUk1GdWlBd28xYlRFNjRhSEdWY1VaNzVkdEMxU0Z1ODk5Q093WU9qLWx2dGNVLUh0MXBzR0hfNGNLNlFYc1drb0VsTkoxTjdHckg2ZU1pQWZZRUlCWThHSGxNOFRaZ1RyS3hfekRwdExCbVV3TldJTW1VT3JVNtIBX0FVX3lxTE5sX3A3cllDcTdJRS14NGl2Wmo0LVphRkVfU0p6WmI3ZF9QakNHd1ZCX2kwc0tRMm83bE0xcDdTSUxRRlNXcDdPd2ktOGdQY3BJZzVmNklYbnIzRXRFVHFJ?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-26T04:31:28+00:00 |
+| +2 | 接單擴產(擴產) | 2356、2382、8358 | [金居百億擴產不只為了高階銅箔！一款與廣達、英業達開發的材料埋下伏筆- 產業 - 工商時報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE02STNuTk9YSEtjOXA0TE9BTkZQcXlaTThZcl9sSFFnQzVFXzAtV3lPejdvbmEyOVpSX1R5TE9CVHBCNlhFVGVmTVZHY2QxN1JSYWxiLVJGTUdsN29ibHlr?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-25T23:16:00+00:00 |
+| +2 | 接單擴產(擴產) | 3037 | [欣興、京元電、矽品被點名！輝達揭AI擴產藍圖四大供應鏈動起來- 產業 - 工商時報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE5WZ25fQWZZTDBxdS12aFdZMDBSUEM2QkVoU0RtWWlEYl9sb2FoUXJtN1BteUhrZ0N4NVAzenhGVjlOSUhURER5dTFMNGNpQW5WdW1JSmluRGF6eDVIUTl3?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-26T00:25:00+00:00 |
+| +2 | 營運上修(上修) | 2301 | [全年資本支出上修至180億元 光寶科 AI營收貢獻逾3成 - 自由時報](https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlVUp0UGI4M2NBNXVjMjNzNEwweXZTN2lUcFVhVU03Y25fOWJGMHhERVFDVFNHMzcwZWlpb3RydWZERWdna19FYlVVaEtuMEdERDhEclZWT0k?oc=5) | Google新聞[法說會 上修] | 2026-10-26T03:34:43+00:00 |
+| +2 | 營運上修(創新高) | 2603、2618 | [長榮航營收創新高！總座孫嘉明卻自嘲「都在幫油公司打工」 揭AI空運狂潮 - 知新聞](https://news.google.com/rss/articles/CBMib0FVX3lxTE40TTExUXhndC11M3kyc2czdGRUdGhZX0ZPSGgtRmtBOUJVYnAwc2tYTkxibUtvNEk1U3d5SzIyaDgyenZuTGhKaHhCQ3ozODQxQ0c3NE5mOGExby1MUUp4MDFkNFk3bHZIeVk4RWdRWQ?oc=5) | Google新聞[營收 創新高] | 2026-10-25T10:33:00+00:00 |
+| +2 | 營運上修(年增) | 4938 | [前三季EPS攻7元以上！「這檔」周線大跌13%、投信狂砍1.9萬張 和碩AI伺服器業績估年增10倍也遭脫手4193張 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE5sUzlGV1R6YnJLaVBpd05BYWMtZDZmNFBzUUVxWXZ3c1pxVndXT1RXUFptdXMzSlFwN0s2MG13VTJNd3VsWkNpaUZzQQ?oc=5) | Google新聞[外資 目標價 調升 台股] | 2026-10-25T13:10:00+00:00 |
+| +2 | 營運上修(創新高) |  | [〈工業生產指數〉連31紅！工業與製造業生產指數雙創新高 估10月續紅](https://news.cnyes.com/news/id/6636748) | 鉅亨網 | 2026-10-23T21:56:46+08:00 |
+| +2 | 營運上修(年增) |  | [紅到歐洲！中國這門「溫暖生意」大爆單](https://news.cnyes.com/news/id/6637163) | 鉅亨網 | 2026-10-26T05:50:02+08:00 |
+| +2 | 接單擴產(擴產) |  | [氦氣被列入關鍵材料！美晶片廠遭供應商限量  專家：AI擴產計畫卡在「隱形瓶頸」](https://news.cnyes.com/news/id/6637170) | 鉅亨網 | 2026-10-26T04:00:06+08:00 |
+| +2 | 供不應求(供不應求) |  | [亞馬遜砸2200億美元投資AI仍遠不夠！CEO：AI業務年化收入超250億美元、2027算力幾乎售罄](https://news.cnyes.com/news/id/6637347) | 鉅亨網 | 2026-10-25T19:10:02+08:00 |
+| -2 | 利空(衰退) |  | [AI崩盤終極推演：泡沫在2028年初破裂 美科技股斷崖式崩跌40%](https://news.cnyes.com/news/id/6637045) | 鉅亨網 | 2026-10-25T17:00:02+08:00 |
+| +2 | 接單擴產(大單) |  | [一場IPO喊卡牽動記憶體市場！美光Sandisk受惠、英特爾失潛在大單](https://news.cnyes.com/news/id/6637035) | 鉅亨網 | 2026-10-25T13:00:03+08:00 |
+| +2 | 營運上修(上修) |  | [目標價127.1元！「這檔金融」前9月賺逾千億、EPS達6.94元 獲法人上修EPS預估 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTFBrVkN2aEdjTElWc1M1aFR6V0pJLVpCNjZRMU9SekZvU0FXOWVNMU5MUEpQV281RjJ1N0ZSSjZGS093UTdJMzYtZmlKdw?oc=5) | Google新聞[漲價 股] | 2026-10-26T05:25:00+00:00 |
+| +2 | 營運上修(年增) |  | [投顧喊強力買進！「銅箔大廠」GP 999產品拚2027年放量出貨高階銅箔產能逐年增加、HVLP 5陸續送樣驗證 - FTNN 新聞網](https://news.google.com/rss/articles/CBMiS0FVX3lxTE9jcXlBMVMtVUJVZE9IX2VxWnN6WFdNYUNhcUItYWRienRuRzFmRXVaVWUwUnBDV2JSeE1CWENmczRiQzFLSDZmdEp0dw?oc=5) | Google新聞[喊漲 報價] | 2026-10-26T04:10:00+00:00 |
+| +2 | 營運上修(年增) |  | [股市財富效應發威？北市豪宅交易逆勢年增近2成 這兩區買氣翻倍 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTFBjUVAta21tU2NhR1JIT1JIV0dGTFAzNDQ1TEFrZ2poYUh1WDRQVzFJUjlja2lpRTBRMzJKbTlhUWc2TkhGdVgxLS1RbVpSSldkMmxUQ0M5YlFNQdIBX0FVX3lxTE5kSHBobDFQRXdzZGZVTXRCX0VzdThSSG1ReG9XX2RrRTJjcTR1VzVLbGU2bkRTWnpfN3QtY1B0Z1J3elhlTnllWmR0WUtPSmx3Qk01akhmZUZKdl82cXVB?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-25T10:41:33+00:00 |
+| +2 | 營運上修(創新高) |  | [台鐵114年便當營收創新高　排骨賣718萬個最夯 - 經濟日報](https://news.google.com/rss/articles/CBMiggFBVV95cUxQTW5vTUo3MWdmYW1IaEtua3FiMjhzSGFEZEhTQzVHWFlocE1HLU5mVnFSODExX1NNbkpKVFpFeGpSRnJIZ1NVWFlkaGxlcWd1T29pY0V2d3lJVjJOajE2dmtkVHBOaThEYTN6SVd2dllQV1FUS3pQQXI2Um1IaHRlOHVn0gFfQVVfeXFMTktBWlhQU3JuOTc3SU5DaDJ6TlJ2d25UZzZEVGlVQV95ZEZLWXpjSElZVzlpOXd2elVuc2JqSmlUeVVoaGZFcXhHZ3Q5eXJWSVJXN0V0YXdGZC1YSUUwY0k?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-26T02:36:47+00:00 |
+| +2 | 接單擴產(擴產) |  | [TPK 進擊攻玻璃基板 秀 TGV 相關技術 預計未來兩年投入60億元擴產 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTE95d2YxX0VHcjZyWm1JOWt4c2NVTUtwWXdPWGNkeVZkYnZPT1pYbWpuYzhSel9kNm5ZV282SkVKZllyYTZJS1Bpay1mRDZHcjg2d21OTExOcWVQUdIBX0FVX3lxTFAyRk01ZVBaQWhkOFc0RlA1NU9EMXRZdHE3TWM3QUtoVEJsTmFSUHJuWGxQTDA0Z3U5VGw2bTJiSlNaQ19qV1h1S0hSX3pDMDVmVk42NTVLYkJwZ2RGTk9V?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-26T01:24:33+00:00 |
+| +2 | 營運上修(創新高) |  | [仿冒品湧入歐盟查獲量創新高　中國為最大來源 - 經濟日報](https://news.google.com/rss/articles/CBMigAFBVV95cUxNNjJueWpTMDlmX0VlWDJhLWhiTHNzRV94OE5ONFg3aUtXVEpoWUhIUERWRGg5amxFTjFrREJOYVR2akN5d3VaWVRCMkY3aDBvY2RrR3ZoUEZZLTdJM3Y5ZWJlVDVIQzNIVXdVVXZicHZjVTd1MjY3OVpWNHRoejVPWNIBX0FVX3lxTFBvQVFaTmNzVHlaNXNXU2kwa3dVZk9rbVgwaTduNW5sUlJmNzd2eWswM3h4YndKT3VOYWE5aGRoNThPWTJCZTVhVld0ZnllOUVPVXRaVnhBS1FNLU5ReHZn?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-25T13:36:38+00:00 |
+| +2 | 營運上修(創新高) |  | [台股 ETF 受益人數周增70萬突破1900萬大關創新高 市值高息人氣旺 - 經濟日報](https://news.google.com/rss/articles/CBMiWkFVX3lxTFBscHBLVGlqcXliNDAxMDBSRXJHQi12cHdJNFZSeVpGdlN4U2pRWGhQcWxvWGozOWsxLVk2b1lQb3piOWswRXZkbWJoQ01VQzBad2tRVURmN2ViQdIBX0FVX3lxTFBVeTNlaVlDSWtiRHNNN0xuNHhpVndfbUdEdjVyX0hKSGI2NWtCYU1wemEzUGc0Z3ZVVUdtS21yWXZlMVBGU3p1dm80V2FoMEF5Y05JY3VKa2RrZkViWHpN?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-25T09:00:00+00:00 |
+| +2 | 營運上修(年增) |  | [AI 需求續旺！法人估10月外銷訂單年增63%、續飆高成長 ／ 產業熱點 ／ 產業 - 經濟日報](https://news.google.com/rss/articles/CBMigAFBVV95cUxNeFdGMDh5eHJvU3ZNNnBEUDVLaUtjQV9MNkhfY1ltcS1fM0pkcUNoR0pEMTlfaTNLNWtsc1h3cUtnbk1uR040VFZ5WjQySG1pV3c2aGR5SXUxbkxNRng3S2c4Skt1QS1FRnRqYllaVFkwWE1SbHc3M2lqSnYwbnJCbw?oc=5) | Google新聞[漲價 site:money.udn.com] | 2026-10-26T05:00:38+00:00 |
+| -2 | 利空(降價) |  | [iPhone Duo官網排隊等明年 陸通路卻見「降價求售」 - 工商時報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE04bi0yaVNDVElSZ21MUHcwOE5oSExvOVZfbGpvUFZGTjc4ZGpOTGROUXQxYkpWaXhZZmJEM09zX242ZVlsWFBvc3p0THFYeHhQTGk2Zi11Q3RiMXVNR00w?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-26T04:00:00+00:00 |
+| +2 | 接單擴產(擴產) |  | [騰輝-KY泰國廠開幕昆山投15億元擴產- 產業 - 工商時報](https://news.google.com/rss/articles/CBMiX0FVX3lxTE5UbjRyQTZvWWdEVjE3VHhxQnBBQl96V0xianZZTkxZWlJPYlhfNUlKTWhwUHdGZGN0SVMwdDFEWlBjSWJNZTFxdGNVc2RCd1F1ZTJjb2trVnR2Tm5mZXZZ?oc=5) | Google新聞[漲價 site:ctee.com.tw] | 2026-10-26T06:39:00+00:00 |
+| +2 | 營運上修(上修) |  | [AI半導體材料需求強，Element Solutions上修全年獲利財測 - 優分析UAnalyze](https://news.google.com/rss/articles/CBMiVkFVX3lxTE9VSlVxcG1qTG9rZ0NTYnBjR1AzZmZ6UHJ1bXlQQVNNNkM1NDlha0w3WW5ZdnBTZnhUa19ENUhGWTZ1dFUzYVlxdXI1NUlGeGlrNVdHZzV3?oc=5) | Google新聞[法說會 上修] | 2026-10-26T07:06:40+00:00 |
+| +2 | 營運上修(創新高) |  | [台鐵便當去年營收8.76億元創新高！排骨便當狂賣718萬個 北車銷量奪冠 - Yahoo新聞](https://news.google.com/rss/articles/CBMiowNBVV95cUxPZ2c0bE14RldQbGtSajUzY2RhSVh0ZVdrRUY4TTFGNWhpWEhqMDU0NHZoWUQyeDVkekR0T2NNZERGanY2RTVtQ3JUYUVDMXZzU3FMS0ljZEp5WGF6YlpIa3dHazE1dkFBOTZJMFdsNURjVm5iM0E2d0MwNlJkcm9Nbkk1T3hzWk9hbm9YUnhpWThmenMyQWpBemI1WVpzN1hiVnlVWVhVY2VZaHM2UUVUbnppdGtTeUFUSVVYd2xETUlYbnhxYVVaME94bkR1TDAxaEdfUU9qVnIxa0cwY1BPMTYxc1BWeklfcGpEWDRHTkh6d3hSajJEcUdjR19PTi1pYXl6cVptRkdMUUs5dDc4NGJETC04MjZnNDB6andhU01zUmVMZFNEeUwwYnAtV0RZcjRDSnlDVDFvSjU2YjdKLVo5WF9ObVVuSm4zcWZYUWJBQXF4bE4yN01lVC0tTm1lOFUzY2VsdUljV19vVUpzSUYwM2l0T3pMWl9pbGw3NWhiS3Vxem1LNUNQN0tDY05nVms2d1VhYUQwWXdCZ3RoTkZCaw?oc=5) | Google新聞[營收 創新高] | 2026-10-26T07:40:39+00:00 |
