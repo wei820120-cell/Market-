@@ -67,6 +67,19 @@
    "text": "久沒寫power 產業了，簡單分享一下AIDC 在Power端的瓶頸和各種新解方SST BESS SOFC等等的一些看法\n（最近發產業文體感交流的人越來越少了，希望有人願意留言交流一下QQ）\nAIDC電力目前所面臨到的問題，從供給需求維度來看，就是推升電量需求的AGI模型，故事從training 開始轉向 inference，電力負載曲線不同以往，單位耗電量拉高，GPU power consumption也把整座資料中心拉到GW級別耗電量，那電力不足真的是電力不足嗎?\n電力infra牽涉的問題更廣泛，各種電力基礎設備lead-time也都是兩年起跳，國家輸配電、需要時間去併入電網，更多問題牽涉著更高層級策略的調度。",
    "tags": [],
    "score": 2
+  },
+  {
+   "id": "ai.podcast.summarist/DfACM6mkss3",
+   "author": "ai.podcast.summarist",
+   "url": "https://www.threads.com/@ai.podcast.summarist/post/DfACM6mkss3",
+   "at": "2026-10-27T14:07:12.000Z",
+   "seen_at": "2026-10-27T22:10:58+08:00",
+   "reply_to": "",
+   "text": "兆華與阿格力-有求必應\n1分鐘\n🎙️ 兆華與阿格力-有求必應 · EP217｜跌完了嗎？AI是有錢人的戰局，明年資本支出壓力更大，對台廠是好事？外銷訂單年增率會放緩，如何評估回檔該不該加碼？為何阿格力現在想買費半？\nS&P500 資訊科技板塊獲利年增約六成，但扣掉半導體後只剩約 2.5%，兆華與阿格力說主要成長動能來自 AI\npod-summarist.rock070.dev/e/3le…",
+   "tags": [
+    "必應（6625）"
+   ],
+   "score": 4
   }
  ]
 }
