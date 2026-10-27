@@ -1,0 +1,154 @@
+{
+ "topic": "供需事件：聯電拿下三星訂單或認證（傳聞求證）",
+ "one_line": "未證實早期訊號：經濟日報標題稱『智原攜手三星、聯電，搶下美國 2 奈米雲端 AI 專案訂單』（Google 新聞摘要，原文本次沒找到）。自動解析把『客戶＝三星、受惠＝聯電』，但這個解析很可能不準：智原是 ASIC 設計服務商，三星是 2 奈米晶圓代工，聯電的角色（成熟製程、封裝配套？）標題沒說，也沒有查到任何獨立佐證。能確認的背景：智原 2025-10 法說稱採多元代工策略，與 Intel、三星、聯電、GlobalFoundries 合作（2nm–55nm），並拿下 4 奈米 AI ASIC 新案與北美客戶 2.5D／3D 先進封裝新案；三星德州泰勒廠 2 奈米量產時程有『延到 2027 年』與『已取得特斯拉 2 奈米大單』兩種互相矛盾的說法。結論：目前只是傳聞，客戶、專案規模、聯電的角色都未證實。",
+ "status": "傳聞",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "智原",
+  "聯電",
+  "三星",
+  "2奈米",
+  "ASIC",
+  "美國雲端AI專案",
+  "多元代工",
+  "傳聞求證"
+ ],
+ "catalysts": [
+  "經濟日報原文與智原／聯電的重大訊息或法說（是否有官方確認）",
+  "智原下一次法說與月營收（專案何時認列）",
+  "三星泰勒廠 2 奈米量產時程與客戶（特斯拉、其他 CSP）",
+  "聯電在該專案的實際角色（若有）"
+ ],
+ "risks": [
+  "原文沒找到，只有標題層級資訊；自動解析（客戶＝三星、受惠＝聯電）可能是錯的",
+  "聯電沒有 2 奈米製程（通識，本次未查證），其在 2 奈米專案的角色不明——這是本訊號最大的疑點",
+  "三星泰勒廠 2 奈米量產時程說法互相矛盾（延到 2027 年 vs 即將投產／取得特斯拉大單），專案是否能如期量產未知",
+  "搜尋到的智原新案（4 奈米 AI ASIC、2.5D／3D 先進封裝）是 2025-10 的舊資訊，不能當成這次標題的證據",
+  "若專案屬實，營收認列時點與規模（NRE vs 量產）未知"
+ ],
+ "spec_tables": [
+  {
+   "title": "表A：證據清單（已證實／未證實）",
+   "columns": [
+    "項目",
+    "內容",
+    "狀態",
+    "來源"
+   ],
+   "rows": [
+    [
+     "智原多元代工策略",
+     "與 Intel、三星、聯電、GlobalFoundries 合作，涵蓋 2nm–55nm",
+     "公司說法（2025-10 法說）",
+     "工商時報"
+    ],
+    [
+     "智原近期新案",
+     "4 奈米 AI ASIC 新案；北美客戶 2.5D／3D 先進封裝新案",
+     "公司說法（2025-10 法說，非這次標題）",
+     "工商時報"
+    ],
+    [
+     "『智原攜手三星、聯電搶下美國 2 奈米雲端 AI 專案』",
+     "經濟日報標題",
+     "未證實：原文與官方確認都沒找到",
+     "Google 新聞摘要"
+    ],
+    [
+     "聯電在該專案的角色",
+     "不明",
+     "未證實",
+     "—"
+    ],
+    [
+     "三星泰勒廠 2 奈米",
+     "量產可能延到 2027 年；另有說法已取得特斯拉 2 奈米大單",
+     "兩種說法互相矛盾",
+     "自由財經／工商時報（經搜尋摘要）"
+    ]
+   ],
+   "note": "標示『未證實』者請勿當成事實；請以智原、聯電重大訊息與法說為準。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "2 奈米客製化晶片（三星）",
+   "composition": "ASIC 設計服務（智原）＋三星 2nm 製造",
+   "spec": "2nm GAA；時程與良率有疑問",
+   "application": "美國雲端 AI 專案（客戶未揭露）"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "訊號為什麼要小心",
+   "points": [
+    "標題把智原、三星、聯電並列，但三者在供應鏈的位置不同（設計服務／2nm 製造／成熟製程）；聯電的角色沒有說明",
+    "三星 2 奈米的量產時程與客戶有矛盾說法，專案能否落地仍不確定"
+   ]
+  },
+  {
+   "title": "若屬實誰受惠、誰受傷",
+   "points": [
+    "受惠：智原（設計服務 NRE 與後續量產）、三星晶圓代工（訂單與稼動率）；聯電（角色待證實）",
+    "承壓：台積電在該客戶的份額（推論，台積電 2 奈米仍強勢）"
+   ]
+  }
+ ],
+ "layers": [
+  {
+   "layer": "ASIC 設計服務",
+   "description": "智原是多元代工的 ASIC 設計服務商，此訊號若屬實對智原是新專案；規模與認列時點未知。",
+   "global_players": [
+    "博通",
+    "Marvell",
+    "世芯",
+    "創意"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3035",
+     "name": "智原",
+     "role": "ASIC 設計服務，多元代工（Intel／三星／聯電／GF）；既有研究已涵蓋",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "晶圓代工（三星 2nm／聯電）",
+   "description": "三星 2 奈米是否接到專案、聯電的角色，皆未證實；聯電沒有 2 奈米製程（通識，未查證）。",
+   "global_players": [
+    "三星晶圓",
+    "台積電"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2303",
+     "name": "聯電",
+     "role": "成熟製程龍頭；在此專案的角色不明",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "conclusion": "這是未證實的標題訊號：原文沒找到、聯電角色不明、三星 2 奈米時程有矛盾說法，不能當成事實。下一步看經濟日報原文與智原／聯電的重大訊息；在確認前不要把『聯電受惠』當成結論。",
+ "sources": [
+  {
+   "title": "鉅亨網／Google 新聞（觸發）：智原攜手三星、聯電 搶下美國2奈米雲端AI專案訂單（經濟日報標題，原文本次未找到）",
+   "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBpZWhQeUtJV1BBdFl4dmZnWXRSLXdiYk9UMnJVakg0LTNESEVpdFg5ZmItWU41dUk3V0ZaUHZ2OGlZZ19XZGdDeE1HZ0FsSHZtdUI2NTRWRVZVd9IBX0FVX3lxTFBCbHFMLXdxMmw4TzA3bGg3QWNxd2xDVE5yNzFUU3lMYUdOTklBMngteE13MUFsUVJaV0tfcnRfOWtaVldBdlp0Y1VsaENQSEdNMVVlM3RSWThkZkw5dlhJ?oc=5"
+  },
+  {
+   "title": "工商時報：智原法說（2025-10-29）——多元代工策略與新案（搜尋命中，標題未取得）",
+   "url": "https://www.ctee.com.tw/news/20251029700237-439901"
+  },
+  {
+   "title": "自由時報：傳三星喊2奈米訂單翻倍 外媒點出追趕台積電一大破綻",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5336029"
+  },
+  {
+   "title": "科技新報：台積電全力衝刺，不留空間給對手（2026-04-17）",
+   "url": "https://finance.technews.tw/2026/04/17/tsmc-goes-all-out-leaving-no-food-for-its-competitors-to-eat/"
+  }
+ ],
+ "report": "# 供需事件：聯電拿下三星訂單或認證（傳聞求證）\n\n> 觸發：2026-10-27 早期訊號（未證實，來源：Google新聞[漲價 site:money.udn.com]｜https://news.google.com/rss/articles/CBMiWkFVX3lxTFBpZWhQeUtJV1BBdFl4dmZnWXRSLXdiYk9U…\n\n## 重點\n未證實早期訊號：經濟日報標題稱『智原攜手三星、聯電，搶下美國 2 奈米雲端 AI 專案訂單』（Google 新聞摘要，原文本次沒找到）。自動解析把『客戶＝三星、受惠＝聯電』，但這個解析很可能不準：智原是 ASIC 設計服務商，三星是 2 奈米晶圓代工，聯電的角色（成熟製程、封裝配套？）標題沒說，也沒有查到任何獨立佐證。能確認的背景：智原 2025-10 法說稱採多元代工策略，與 Intel、三星、聯電、GlobalFoundries 合作（2nm–55nm），並拿下 4 奈米 AI ASIC 新案與北美客戶 2.5D／3D 先進封裝新案；三星德州泰勒廠 2 奈米量產時程有『延到 2027 年』與『已取得特斯拉 2 奈米大單』兩種互相矛盾的說法。結論：目前只是傳聞，客戶、專案規模、聯電的角色都未證實。\n\n## 風險與未證實\n- 原文沒找到，只有標題層級資訊；自動解析（客戶＝三星、受惠＝聯電）可能是錯的\n- 聯電沒有 2 奈米製程（通識，本次未查證），其在 2 奈米專案的角色不明——這是本訊號最大的疑點\n- 三星泰勒廠 2 奈米量產時程說法互相矛盾（延到 2027 年 vs 即將投產／取得特斯拉大單），專案是否能如期量產未知\n- 搜尋到的智原新案（4 奈米 AI ASIC、2.5D／3D 先進封裝）是 2025-10 的舊資訊，不能當成這次標題的證據\n- 若專案屬實，營收認列時點與規模（NRE vs 量產）未知\n\n## 結論\n這是未證實的標題訊號：原文沒找到、聯電角色不明、三星 2 奈米時程有矛盾說法，不能當成事實。下一步看經濟日報原文與智原／聯電的重大訊息；在確認前不要把『聯電受惠』當成結論。\n\n## 資料來源\n- [鉅亨網／Google 新聞（觸發）：智原攜手三星、聯電 搶下美國2奈米雲端AI專案訂單（經濟日報標題，原文本次未找到）](https://news.google.com/rss/articles/CBMiWkFVX3lxTFBpZWhQeUtJV1BBdFl4dmZnWXRSLXdiYk9UMnJVakg0LTNESEVpdFg5ZmItWU41dUk3V0ZaUHZ2OGlZZ19XZGdDeE1HZ0FsSHZtdUI2NTRWRVZVd9IBX0FVX3lxTFBCbHFMLXdxMmw4TzA3bGg3QWNxd2xDVE5yNzFUU3lMYUdOTklBMngteE13MUFsUVJaV0tfcnRfOWtaVldBdlp0Y1VsaENQSEdNMVVlM3RSWThkZkw5dlhJ?oc=5)\n- [工商時報：智原法說（2025-10-29）——多元代工策略與新案（搜尋命中，標題未取得）](https://www.ctee.com.tw/news/20251029700237-439901)\n- [自由時報：傳三星喊2奈米訂單翻倍 外媒點出追趕台積電一大破綻](https://ec.ltn.com.tw/article/breakingnews/5336029)\n- [科技新報：台積電全力衝刺，不留空間給對手（2026-04-17）](https://finance.technews.tw/2026/04/17/tsmc-goes-all-out-leaving-no-food-for-its-competitors-to-eat/)",
+ "trigger": "2026-10-27 早期訊號（未證實，來源：Google新聞[漲價 site:money.udn.com]｜https://news.google.com/rss/articles/CBMiWkFVX3lxTFBpZWhQeUtJV1BBdFl4dmZnWXRSLXdiYk9UMnJVakg0LTNESEVpdFg5ZmItWU41dUk3V0ZaUHZ2OGlZZ19XZGdDeE1HZ0FsSHZtdUI2NTRWRVZVd9IBX0FVX3lxTFBCbHFMLXdxMmw4TzA3bGg3QWNxd2xDVE5yNzFUU3lMYUdOTklBMngteE13MUFsUVJaV0tfcnRfOWtaVldBdlp0Y1VsaENQSEdNMVVlM3RSWThkZkw5dlhJ?oc=5）\n原文：智原攜手三星、聯電　搶下美國2奈米雲端AI專案訂單 - 經濟日報\n智原攜手三星、聯電　搶下美國2奈米雲端AI專案訂單&nbsp;&nbsp;經濟日報\n解析：客戶 三星；受惠 聯電（2303）；受傷 —\n【求證要點】這是未證實的早期訊號，不要直接當事實：(1) 搜尋公開報導、法說會、重大訊息、月營收、外資報告、客戶官方發布，找佐證或反證；(2) 查客戶端的平台與世代（例如 AWS Trainium 3／4、M8／M9）與各家認證進度；(3) 研究檔 status 填 傳聞／混合／已證實，layers 與 concepts 列出『哪一邊有什麼證據、哪裡互相矛盾』；(4) 若與既有研究的結論衝突（例如南亞 M9 認證完成、台燿 M9 出貨進度），在 risks 與 conclusion 明講。"
+}
