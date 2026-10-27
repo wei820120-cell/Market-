@@ -1,0 +1,197 @@
+{
+ "topic": "供需事件：AI自研晶片夯2／缺貨漲價行情退燒！　經理人教3",
+ "one_line": "雲端大廠（CSP）自研 ASIC 在 2026 年出貨成長快過 GPU：TrendForce 估 CSP 自研 ASIC 伺服器成長 44.6%、GPU 伺服器 16.1%；法人估 ASIC 晶片出貨 +59%、GPU +51%，ASIC 機種約占 AI 伺服器 27%。台灣受惠焦點是世芯-KY、創意、聯發科（2026 年 ASIC 營收展望翻倍到約 20 億美元）；美方是博通（FY27 AI 晶片營收預估被上修到 1,150 億美元，報導）。觸發文章（鏡週刊，標題『缺貨漲價行情退燒、經理人教 3 指標挑出 ASIC 贏家』）本次沒找到原文，『3 指標』內容未取得，因此本研究不含那三個指標，只整理產業與台廠現況。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "ASIC",
+  "CSP自研晶片",
+  "TPU",
+  "Trainium",
+  "博通",
+  "世芯-KY",
+  "創意",
+  "聯發科",
+  "智原",
+  "客製化晶片",
+  "推論",
+  "去輝達化"
+ ],
+ "catalysts": [
+  "博通、Marvell 下一季財報與 AI 晶片營收展望（FY27 上修到 1,150 億美元為報導）",
+  "Google TPU、AWS Trainium 新世代的量產時程與外部客戶（聯發科 2027 年 TPU 相關營收被視為轉折）",
+  "世芯、創意、聯發科的 10 月營收與法說（客戶集中度、NRE 與量產營收比重）",
+  "台積電 CoWoS 與先進製程分配（ASIC 與 GPU 搶產能）"
+ ],
+ "risks": [
+  "觸發文章原文與『3 指標』沒找到，以下判斷不代表該文立場",
+  "客戶集中：世芯近兩年最大客戶為亞馬遜，營運與單一 CSP 的 ASIC 路線圖高度綁定",
+  "目標價與 EPS（世芯 2027 EPS 190.6 元／目標價 5,400；創意 2027 EPS 由 48 → 105.9 元／目標價 6,700）是 9 月法人預估的搜尋摘要，未回原文核對，不可當成事實",
+  "ASIC 專案前期以 NRE 認列、量產後營收才放大，認列時點不穩；CSP 資本支出若放緩，ASIC 排程會延後",
+  "『缺貨漲價行情退燒』的說法本次沒有獨立證據，無法判斷是否已反映在價格"
+ ],
+ "spec_tables": [
+  {
+   "title": "表A：ASIC vs GPU 2026 成長（報導與研調，非原廠數字）",
+   "columns": [
+    "項目",
+    "ASIC",
+    "GPU",
+    "來源／可信度"
+   ],
+   "rows": [
+    [
+     "伺服器成長率（2026）",
+     "CSP 自研 ASIC 伺服器 +44.6%",
+     "GPU 伺服器 +16.1%",
+     "TrendForce（搜尋摘要）"
+    ],
+    [
+     "晶片出貨成長率（2026）",
+     "+59%",
+     "+51%",
+     "法人，經濟日報報導"
+    ],
+    [
+     "AI 伺服器占比",
+     "ASIC 機種約 27%",
+     "其餘多為輝達 GPU 平台",
+     "報導；輝達仍為主導"
+    ],
+    [
+     "聯發科 ASIC 營收展望",
+     "2026 年上修到約 20 億美元（較前翻倍）",
+     "—",
+     "法說，經濟日報報導"
+    ],
+    [
+     "博通 FY27 AI 晶片營收",
+     "預估上修到 1,150 億美元",
+     "—",
+     "搜尋摘要，單一報導"
+    ]
+   ],
+   "note": "各來源口徑不同（伺服器 vs 晶片出貨），不可直接相減；請以研調與公司財報為準。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "通用 GPU 訓練與推論",
+   "composition": "輝達 GPU＋HBM＋CoWoS",
+   "spec": "CUDA 生態，市占仍最高",
+   "application": "訓練與大模型推論"
+  },
+  {
+   "name": "CSP 自研 ASIC（TPU／Trainium／MTIA 等）",
+   "composition": "客製 SoC＋HBM＋先進封裝，由博通、Marvell、台灣 IC 設計服務商協助",
+   "spec": "針對自家模型與推論成本優化",
+   "application": "推論與部分訓練，降低對輝達依賴"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "為什麼 CSP 要自研 ASIC",
+   "points": [
+    "降低對輝達 GPU 的依賴與採購成本，在推論端針對自家模型做能效與成本優化",
+    "報導稱雲端業者在推論端持續降低對輝達的依賴，台廠被視為隱形贏家（二手說法）",
+    "輝達 GPU 仍是 AI 伺服器主導架構，ASIC 是補充而非立即取代"
+   ]
+  },
+  {
+   "title": "台灣價值鏈位置",
+   "points": [
+    "IC 設計服務與 ASIC 後段：世芯-KY、創意、智原（既有研究）；手機龍頭轉型 ASIC 的聯發科",
+    "製造與封裝：台積電先進製程與 CoWoS（既有研究）；測試產能吃緊（矽格既有研究）",
+    "美方設計夥伴：博通（Google TPU 等）、Marvell 為前端核心"
+   ]
+  },
+  {
+   "title": "『缺貨漲價退燒』怎麼看",
+   "points": [
+    "本次沒找到原文，無法確認指的是 GPU、HBM 還是 ASIC 的缺貨",
+    "若 GPU 缺貨緩解，客戶可能把預算轉向性價比；但 ASIC 受 CoWoS 與先進製程產能分配牽動，不是單向受惠"
+   ]
+  }
+ ],
+ "layers": [
+  {
+   "layer": "ASIC IC 設計服務與矽智財",
+   "description": "協助 CSP 把自研晶片從設計做到量產；專案前期 NRE、後期量產營收放大；客戶集中度與認列時點是關鍵。",
+   "global_players": [
+    "博通",
+    "Marvell",
+    "Alchip（世芯）",
+    "GUC（創意）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3661",
+     "name": "世芯-KY",
+     "role": "ASIC 設計服務，最大客戶為亞馬遜（報導）",
+     "impact": "受惠"
+    },
+    {
+     "code": "3443",
+     "name": "創意",
+     "role": "ASIC 設計服務，台積電集團",
+     "impact": "受惠"
+    },
+    {
+     "code": "2454",
+     "name": "聯發科",
+     "role": "手機龍頭轉型 ASIC；2026 ASIC 營收展望約 20 億美元；2027 TPU 相關營收為轉折",
+     "impact": "受惠"
+    },
+    {
+     "code": "3035",
+     "name": "智原",
+     "role": "ASIC／矽智財，既有研究已涵蓋",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "晶圓製造與先進封裝",
+   "description": "ASIC 與 GPU 共用台積電先進製程與 CoWoS，產能分配決定誰能先出貨。",
+   "global_players": [
+    "台積電",
+    "三星晶圓",
+    "日月光（封測）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "先進製程與 CoWoS，既有研究已涵蓋",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "GPU 平台（對照組）",
+   "description": "輝達 GPU 仍為 AI 伺服器主導架構；ASIC 滲透率提高對 GPU 是分流而非立即取代。",
+   "global_players": [
+    "輝達",
+    "AMD"
+   ],
+   "tw_stocks": []
+  }
+ ],
+ "conclusion": "方向上，2026 年 ASIC 成長快過 GPU 已有多個獨立報導支持（TrendForce、法人），台廠中世芯、創意、聯發科是直接對應，智原、台積電已有既有研究。但本次沒找到觸發文章的『3 指標』與『缺貨漲價退燒』證據，且目標價與 EPS 為法人預估的搜尋摘要；下一步要看博通／Marvell 財報、10 月營收與 CSP 資本支出。",
+ "sources": [
+  {
+   "title": "經濟日報：雲端大廠自研晶片出貨爆發，ASIC 三雄再創新高，世芯、創意攻漲停",
+   "url": "https://money.udn.com/money/amp/story/5607/9494688"
+  },
+  {
+   "title": "經濟日報：今年 ASIC 晶片出貨量成長性將超越 GPU，三雄強勢大漲",
+   "url": "https://money.udn.com/money/amp/story/5607/9495732"
+  },
+  {
+   "title": "經濟日報：科技盛宴點火 ASIC 題材，聯發科成 520 最強指標，新唐等同步亮燈",
+   "url": "https://money.udn.com/money/amp/story/5607/9514026"
+  }
+ ],
+ "trigger": "2026-10-27 供需失衡（產能吃緊）：AI自研晶片夯2／缺貨漲價行情退燒！　經理人教3指標挑出ASIC贏家 - 鏡週刊Mirror Media\nAI自研晶片夯2／缺貨漲價行情退燒！　經理人教3指標挑出ASIC贏家&nbsp;&nbsp;鏡週刊Mirror Media\nhttps://news.google.com/rss/articles/CBMiX0FVX3lxTE9kVW5zcDZrMHJJbmdYOHpUdE4wZnlqUGJiSEgtdWVubWVzM0RSVS1RcHNkWWZXNFAwZ19lRTlZTGIzS1VGbkVqWWkyczlKd29KdlJpaXh2S1pQTWFrWTA40gFjQVVfeXFMT3lnY2xIT2VCeEViVy1IZDcwRTFTeWlkM0hxTGZjLXRKRVFiXzVCMW9vaU9UVkw2cEZJb2JONXV2TE96RVd4NGY4VkxieHU4VDV5ODVGcVlnMWRJVG01Umo1bzNn?oc=5",
+ "report": "# 供需事件：AI自研晶片夯2／缺貨漲價行情退燒！　經理人教3\n\n> 觸發：2026-10-27 供需失衡（產能吃緊）：AI自研晶片夯2／缺貨漲價行情退燒！　經理人教3指標挑出ASIC贏家 - 鏡週刊Mirror Media\nAI自研晶片夯2／缺貨漲價行情退燒！　經理人教3指標挑出ASIC贏家&nbsp;&nbsp;鏡週刊Mirror Media\nhttps://news.google.com…（鏡週刊原文本次沒取得，『3 指標』內容未知；以下為產業現況整理，標示『報導』者為單一來源。）\n\n## 重點\n雲端大廠（CSP）自研 ASIC 在 2026 年出貨成長快過 GPU：TrendForce 估 CSP 自研 ASIC 伺服器成長 44.6%、GPU 伺服器 16.1%；法人估 ASIC 晶片出貨 +59%、GPU +51%，ASIC 機種約占 AI 伺服器 27%。台灣受惠焦點是世芯-KY、創意、聯發科（2026 年 ASIC 營收展望翻倍到約 20 億美元）；美方是博通（FY27 AI 晶片營收預估被上修到 1,150 億美元，報導）。觸發文章（鏡週刊，標題『缺貨漲價行情退燒、經理人教 3 指標挑出 ASIC 贏家』）本次沒找到原文，『3 指標』內容未取得，因此本研究不含那三個指標，只整理產業與台廠現況。\n\n## 數字（報導與研調）\n- TrendForce：2026 年 CSP 自研 ASIC 伺服器成長 44.6%，GPU 伺服器 16.1%（搜尋摘要）。\n- 法人：ASIC 晶片出貨 +59%、GPU +51%，ASIC 機種約占 AI 伺服器 27%（[經濟日報](https://money.udn.com/money/amp/story/5607/9495732)）。\n- 聯發科：2026 年 ASIC 營收展望上修到約 20 億美元（[經濟日報](https://money.udn.com/money/amp/story/5607/9514026)）。\n- 世芯、創意在雲端大廠自研晶片出貨爆發題材下攻漲停（[經濟日報](https://money.udn.com/money/amp/story/5607/9494688)）。\n\n## 台灣價值鏈\n- IC 設計服務：世芯-KY（3661）、創意（3443）、智原（3035）；聯發科（2454）轉型 ASIC。\n- 製造封裝：台積電（2330）；測試產能吃緊的矽格已有既有研究。\n\n## 風險與未證實\n- 世芯客戶集中於亞馬遜；NRE 與量產營收認列不穩。\n- 法人目標價與 EPS 預估僅為搜尋摘要，未回原文核對。\n- 觸發文章的『3 指標』與『缺貨漲價退燒』沒有找到證據。\n\n## 資料來源\n- [經濟日報：雲端大廠自研晶片出貨爆發，ASIC 三雄再創新高，世芯、創意攻漲停](https://money.udn.com/money/amp/story/5607/9494688)\n- [經濟日報：今年 ASIC 晶片出貨量成長性將超越 GPU，三雄強勢大漲](https://money.udn.com/money/amp/story/5607/9495732)\n- [經濟日報：科技盛宴點火 ASIC 題材，聯發科成 520 最強指標，新唐等同步亮燈](https://money.udn.com/money/amp/story/5607/9514026)"
+}
