@@ -21,9 +21,9 @@ from datetime import datetime, time as dtime, timedelta
 
 import pandas as pd
 
-from . import ai, config, notify, overnight, prefetch, research, theme_card
+from . import ai, config, net, notify, overnight, prefetch, research, signals, theme_card
 from .analysis import news_signals, picks, sector_flow, target_price
-from .fetchers import macro, news, stock_futures, taifex, telegram_channel, tw_daily, tw_realtime, yahoo
+from .fetchers import macro, news, podcast, ptt, stock_futures, taifex, telegram_channel, threads, tw_daily, tw_realtime, yahoo
 from .report import md_table, news_table
 from .utils import CACHE_DIR, REPORT_DIR, ensure_dirs, now_tw
 
@@ -40,7 +40,7 @@ def _listings() -> dict[str, dict]:
 
 
 # 公司簡稱同時是常用詞，用名稱比對會誤判（仍可用代號比對，例如「全新(2455)」）
-AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界"}
+AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界", "數字", "互動", "大量", "新天地", "巨大", "大中"}
 
 
 def _name_to_code(listings: dict[str, dict]) -> dict[str, str]:
@@ -658,6 +658,12 @@ def push_news(listings: dict, min_score: float) -> None:
     hits = [it for it in scored if abs(it.score) >= min_score and it not in letters and it not in mops]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+    try:  # 媒體標題裡的供應鏈換料、轉單、淘汰（現有詞表抓不到）
+        signals.process([signals.Item(it.source, f"{it.title}\n{it.summary}", it.url, "媒體") for it in fresh
+                         if not it.source.startswith("MOPS")], listings, signals.signal_names(listings, AMBIGUOUS_NAMES),
+                        skip_patterns=config.sources().get("skip_patterns") or [])
+    except Exception as e:  # noqa: BLE001
+        log.warning("早期訊號偵測失敗：%s", e)
     try:
         supply_shocks(fresh, listings, futures)
     except Exception as e:  # noqa: BLE001
@@ -945,6 +951,7 @@ def cmd_channels(args) -> None:
     themes_tw = config.themes().get("tw") or {}
     state = telegram_channel.load_state()
     skip = config.sources().get("skip_patterns") or []
+    sig_names = signals.signal_names(listings, AMBIGUOUS_NAMES)
     for ch in channels:
         handle, name = ch["handle"], ch.get("name", ch["handle"])
         try:
@@ -974,10 +981,413 @@ def cmd_channels(args) -> None:
                         log.info("頻道 %s #%s 圖片內容是業配／廣告，略過", handle, p.post_id)
                         continue
             notify.send(channel_post_message(name, p, listings, futures, themes_tw, name_to_code), channel=push_to)
+            if ch.get("signal", True) and not args.latest:  # 供應鏈換料、轉單、淘汰這類早期訊號：立刻推＋排求證
+                try:
+                    signals.process([signals.Item(f"頻道 {name}", p.text, p.url, "頻道")], listings, sig_names, skip_patterns=skip)
+                except Exception as e:  # noqa: BLE001
+                    log.warning("頻道早期訊號偵測失敗：%s", e)
             if (not args.latest or args.research) and ch.get("research", True):
                 research.add_to_inbox(handle, p.post_id, p.text, p.url)  # 交給題材研究員判斷要不要研究
     if not args.latest:
         telegram_channel.save_state(state)
+
+
+def _ptt_items(boards: list, name_map: dict[str, str], dry: bool, latest: int, max_fetch: int = 12) -> list:
+    """PTT 看板新文章 → 標題像供應鏈換料／轉單的才抓內文 → 早期訊號偵測用的文字。"""
+    cfg = signals.settings()
+    seen = ptt.load_seen()
+    items = []
+    for b in boards:
+        board, pages = b["board"], int(b.get("pages", 2))
+        try:
+            posts = ptt.fetch_index(board, pages)
+        except Exception as e:  # noqa: BLE001
+            log.warning("PTT %s 網頁版抓取失敗（%s），改試 Atom 摘要", board, e)
+            try:
+                for it in ptt.fetch_atom(board)[-max(latest, 40):]:
+                    items.append(signals.Item(f"PTT {board}", f"{it.title}\n{it.summary}", it.url, "論壇"))
+            except Exception as e2:  # noqa: BLE001
+                log.warning("PTT %s Atom 也抓取失敗：%s", board, e2)
+            continue
+        fresh = posts[-latest:] if latest else ptt.new_posts(board, posts, seen)
+        ranked = sorted(((signals.title_candidate(p.title, name_map, cfg), p) for p in fresh), key=lambda x: -x[0])
+        for score, p in [x for x in ranked if x[0] >= 2][:max_fetch]:
+            try:
+                body = ptt.fetch_article(p.url)
+            except Exception as e:  # noqa: BLE001
+                log.warning("PTT 文章 %s 抓取失敗：%s", p.url, e)
+                body = ""
+            items.append(signals.Item(f"PTT {board}", f"{p.title}\n{body}", p.url, "論壇"))
+        log.info("PTT %s：讀到 %d 篇，新文章 %d 篇，標題像供應鏈訊號 %d 篇", board, len(posts), len(fresh), len(items))
+    if not dry and not latest:
+        ptt.save_seen(seen)
+    return items
+
+
+def _probe(urls: list[str], browser: bool = False) -> None:
+    """測試：雲端機房讀得到哪些網址（狀態碼、網頁標題、og:description、有沒有出現關鍵字）；browser＝再用無頭瀏覽器讀一次。"""
+    import re as _re
+    for u in urls:
+        try:
+            r = net.session().get(u, timeout=20, allow_redirects=True)
+        except Exception as e:  # noqa: BLE001 - 只要看連不連得上
+            print(f"{u} → 連線失敗：{e}")
+            continue
+        body = r.text
+        title = _re.search(r"<title[^>]*>(.*?)</title>", body, flags=_re.S)
+        desc = _re.search(r'<meta[^>]+property="og:description"[^>]+content="([^"]*)"', body)
+        hits = [k for k in ("南亞", "台燿", "AWS", "Trainium", "thread_items", "data-sjs", "bigmanj87", "\\u53f0\\u71ff") if k in body]
+        print(f"{u} → {r.status_code}（最後網址 {r.url}，{len(body)} 字）")
+        print(f"  標題：{(title.group(1).strip() if title else '')[:80]}")
+        print(f"  og:description：{(desc.group(1) if desc else '')[:200]}")
+        print(f"  出現關鍵字：{hits}")
+        links = []
+        for m in _re.finditer(r'"url":\s*"(https?:[^"]+)"|href="(https?://[^"]+)"', body):
+            link = (m.group(1) or m.group(2)).replace("\\u002F", "/").replace("\\/", "/")
+            if link not in links and "linktr.ee/s/" not in link and "static" not in link:
+                links.append(link)
+        if "feeds/videos.xml" in u or body.lstrip().startswith("<?xml"):   # RSS／Atom：印最新幾筆的標題與時間
+            titles = _re.findall(r"<title>([^<]+)</title>", body)[1:11]
+            dates = _re.findall(r"<published>([^<]+)</published>", body)[:10]
+            print("  最新項目：" + " | ".join(f"{d[:16]} {t[:40]}" for d, t in zip(dates, titles)))
+        elif links:
+            print("  網頁裡的連結：" + " | ".join(links[:40]))
+        if browser:
+            try:
+                d = threads.render(u)
+            except Exception as e:  # noqa: BLE001
+                print(f"  瀏覽器讀取失敗：{e}")
+                continue
+            print(f"  [瀏覽器] 標題：{d['title']}（{d['url']}），貼文連結 {len(d['posts'])} 個")
+            print("  [瀏覽器] 頁面文字：" + d["text"][:800].replace("\n", " / "))
+            for post in d["posts"][:6]:
+                print(f"  [貼文] {post['href']} {post['time']}：{post['text'][:300]!r}")
+
+
+def cmd_signals(args) -> None:
+    """早期訊號：論壇、RSS／Atom 來源、供應鏈關鍵字的 Google 新聞 → 偵測供應鏈換料、轉單、淘汰 → 推播＋排求證研究。"""
+    if args.probe:
+        _probe(args.probe, args.browser)
+        return
+    cfg = signals.settings()
+    if not cfg.get("enabled", True):
+        return
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    src = config.sources()
+    skip = src.get("skip_patterns") or []
+    if args.text:  # 偵錯：直接檢查一段文字
+        sigs = signals.process([signals.Item("手動文字", args.text, kind="使用者轉傳" if args.relay else "頻道")], listings, names,
+                               dry=True, skip_patterns=skip)
+        if not sigs:
+            print("沒有偵測到供應鏈訊號")
+        return
+    st = signals.load_state()
+    last = st.get("last_run")
+    if last and not (args.dry or args.latest):
+        try:
+            if now_tw() - datetime.fromisoformat(last) < timedelta(minutes=args.every):
+                return
+        except ValueError:
+            pass
+    items: list = []
+    items += _ptt_items(src.get("ptt_boards") or [], names, args.dry, args.latest)
+    for f in src.get("signal_feeds") or []:
+        for it in news.fetch_feed(f["url"], f.get("name", f["url"]))[:30]:
+            items.append(signals.Item(f.get("name", "來源"), f"{it.title}\n{it.summary}", it.url, "媒體"))
+    for q in src.get("signal_queries") or []:
+        for it in news.fetch_google_news(q, "zh-TW")[:15]:
+            items.append(signals.Item("Google新聞搜尋", f"{it.title}\n{it.summary}", it.url, "媒體"))
+    log.info("早期訊號：共 %d 段文字待檢查", len(items))
+    signals.process(items, listings, names, dry=args.dry, skip_patterns=skip)
+    if not args.dry:
+        st = signals.load_state()
+        st["last_run"] = now_tw().isoformat(timespec="seconds")
+        signals.save_state(st)
+
+
+def cmd_threads(args) -> None:
+    """追蹤指定的 Threads 帳號（sources.yaml 的 threads_accounts）。他們發的東西不推播：
+    供應鏈訊號只排入求證研究（研究好了才推），其他值得看的貼文放進 state/threads_inbox/，由研究員每小時檢視、決定要不要研究。"""
+    cfg = signals.settings()
+    if not cfg.get("enabled", True):
+        return
+    src = config.sources()
+    handles = [h.lstrip("@") for h in (args.accounts or src.get("threads_accounts") or [])][:120]
+    if not handles:
+        return
+    st = signals.load_state()
+    last = st.get("threads_last_run")
+    if last and not (args.dry or args.latest):
+        try:
+            if now_tw() - datetime.fromisoformat(last) < timedelta(minutes=args.every):
+                return
+        except ValueError:
+            pass
+    started = time.monotonic()
+    try:
+        got = threads.fetch_accounts(handles)
+    except ImportError:
+        log.warning("Threads：沒有安裝 playwright，略過（watch.yml 會安裝；本機要用請先 pip install playwright && playwright install chromium）")
+        return
+    seen = threads.load_seen()
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    items, entries = [], []
+    log.info("Threads：%d／%d 個帳號讀到貼文（%d 則），耗時 %.0f 秒", len(got), len(handles), sum(len(v) for v in got.values()), time.monotonic() - started)
+    if args.dry:
+        print(f"Threads：{len(got)}／{len(handles)} 個帳號讀到貼文（共 {sum(len(v) for v in got.values())} 則），耗時 {time.monotonic() - started:.0f} 秒")
+    now = now_tw()
+    for h, posts in got.items():
+        first = h not in seen
+        fresh = posts[-args.latest:] if args.latest else threads.new_posts(h, posts, seen, now=now)
+        # 第一次讀到的帳號：不做訊號偵測，但最近 24 小時內值得看的貼文先放進待檢視清單
+        review = fresh if not first or args.latest else threads.recent_posts(posts, 24, now=now)
+        if args.dry:
+            print(f"@{h}：讀到 {len(posts)} 則，要偵測 {len(fresh)} 則，待檢視 {len(review)} 則")
+        for p in review:
+            tags, score = signals.post_tags(p.text, names, listings, cfg)
+            if score >= 2:
+                entries.append({"id": f"{p.author}/{p.code}", "author": p.author, "url": p.url, "at": p.posted_at,
+                                "seen_at": now.isoformat(timespec="seconds"), "reply_to": p.reply_to, "text": p.text[:500],
+                                "tags": tags, "score": score})
+                if args.dry:
+                    print(f"  ＋待檢視（{score} 分）@{p.author}：{p.text[:50]!r} {tags}")
+        for p in fresh:
+            items.append(signals.Item(f"Threads @{p.author}", p.text, p.url, "論壇"))
+    if not args.dry and not args.latest:
+        threads.save_seen(seen)
+    if entries and not args.dry:
+        added = threads.add_to_inbox(entries, f"{now:%Y-%m-%d}")
+        log.info("Threads：%d 則放進待檢視清單", added)
+    # 個人帳號的貼文不推播原文：偵測到供應鏈訊號只排入求證研究，研究好了才推
+    signals.process(items, listings, names, dry=args.dry, skip_patterns=src.get("skip_patterns") or [], push=False)
+    if not args.dry:
+        st = signals.load_state()
+        st["threads_last_run"] = now_tw().isoformat(timespec="seconds")
+        signals.save_state(st)
+
+
+def _podcast_episode(ep, src: dict, args, names: dict, listings: dict, cfg: dict) -> None:
+    """一集：下載 → 轉文字 → 逐字稿存檔 → 值得看的段落放進待檢視清單；供應鏈訊號只排求證研究（不推播）。"""
+    import shutil
+    import tempfile
+    tmp = Path(tempfile.mkdtemp(prefix="podcast_"))
+    try:
+        t0 = time.monotonic()
+        audio = podcast.download(ep.audio_url, tmp / "audio", max_mb=int(src.get("podcast_max_mb", 300)))
+        t1 = time.monotonic()
+        segs = podcast.transcribe(audio, args.model or src.get("podcast_model", "small"), args.max_minutes,
+                                  src.get("podcast_prompt", ""), args.threads, args.from_minutes)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    t2 = time.monotonic()
+    fixes = src.get("podcast_fixes") or []
+    paras = [(t, podcast.apply_fixes(text, fixes)) for t, text in podcast.paragraphs(segs)]
+    covered = ((segs[-1].end if segs else 0) - args.from_minutes * 60) / 60
+    print(f"{ep.show}｜{ep.title}：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{covered:.0f} 分鐘的內容，約 {covered * 60 / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段")
+    now = now_tw()
+    skip = config.sources().get("skip_patterns") or []
+    entries = []
+    for t, text in paras:
+        if any(re.search(p, text) for p in skip):
+            continue  # 業配、優惠碼這類段落不看
+        tags, score = signals.post_tags(text, names, listings, cfg)
+        if score >= 3:
+            entries.append({"id": f"{ep.show}/{ep.key}/{int(t)}", "show": ep.show, "episode": ep.title, "url": ep.link, "at": ep.published,
+                            "seen_at": now.isoformat(timespec="seconds"), "t": podcast.mmss(t), "text": text[:600], "tags": tags, "score": score})
+    entries = sorted(entries, key=lambda e: -e["score"])[:25]
+    # 每段用不同的網址（#t=開始秒數）：偵測的「看過了」記錄是以網址為準，同一集的段落共用網址會只看到第一段
+    items = [signals.Item(f"Podcast {ep.show}", text, f"{ep.link or ep.audio_url}#t={int(t)}", "頻道") for t, text in paras]
+    if args.dry:
+        print("逐字稿開頭：" + "".join(t for _, t in paras)[:1600].replace("\n", " "))
+        for e in entries[:8]:
+            print(f"  ＋待檢視（{e['score']} 分，{e['t']}）{e['tags']}：{e['text'][:80]!r}")
+        signals.process(items, listings, names, dry=True, skip_patterns=skip, push=False)
+        return
+    path = podcast.save_transcript(ep, paras)
+    _archive_episode(ep, paras, names, listings, cfg, skip, args.model or src.get("podcast_model", "small"))   # 新集數也進學習用的歷史記錄
+    added = podcast.inbox.add(podcast.INBOX_DIR, [{**e, "transcript": str(path.relative_to(research.ROOT))} for e in entries], f"{now:%Y-%m-%d}")
+    log.info("Podcast %s：逐字稿 %s，%d 段放進待檢視清單", ep.show, path, added)
+    signals.process(items, listings, names, skip_patterns=skip, push=False)
+
+
+def _git_publish(message: str, paths: list[str]) -> None:
+    """在 GitHub Actions 裡把剛產生的檔案立刻 commit＋push（多片同時跑時用 pull --rebase 重試），一集一集存，中途被中斷也不會白跑。"""
+    import random
+    import subprocess
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return
+    root = str(research.ROOT)
+
+    def run(*cmd: str) -> int:
+        return subprocess.run(["git", *cmd], cwd=root, capture_output=True, text=True).returncode
+
+    run("config", "user.name", "github-actions[bot]")
+    run("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
+    run("add", "-A", *paths)
+    if run("diff", "--cached", "--quiet") == 0:
+        return
+    run("commit", "-q", "-m", message)
+    for _ in range(10):
+        if run("pull", "--rebase", "-q") == 0 and run("push", "-q") == 0:
+            return
+        time.sleep(random.uniform(3, 15))
+    log.warning("歷史逐字稿 push 失敗（%s），留給最後的存檔步驟", message)
+
+
+def _archive_episode(ep, paras, names: dict, listings: dict, cfg: dict, skip: list, model: str) -> dict | None:
+    """學習用的歷史記錄：加密逐字稿（state/podcast_archive）＋摘要（research/podcasts）。沒有公鑰就不存（公開 repo 不放原文）。回傳摘要。"""
+    if not podcast.PUBKEY_PATH.exists():
+        return None
+    ads = [any(re.search(pt, text) for pt in skip) for _, text in paras]
+    tags = [signals.post_tags(text, names, listings, cfg)[0] if not ad else [] for (_, text), ad in zip(paras, ads)]
+    digest = podcast.build_digest(ep, paras, ads, tags, model)
+    apath, dpath = podcast.archive_path(ep), podcast.digest_path(ep)
+    apath.parent.mkdir(parents=True, exist_ok=True)
+    dpath.parent.mkdir(parents=True, exist_ok=True)
+    apath.write_bytes(podcast.encrypt_text(podcast.transcript_text(ep, paras)))
+    dpath.write_text(json.dumps(digest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return digest
+
+
+def _podcast_backfill(show: dict, src: dict, args) -> None:
+    """歷史集數：由舊到新轉成『加密逐字稿＋摘要』。公開 repo 不放逐字稿原文：原文用 config/podcast_archive_pub.pem 加密，
+    私鑰只在研究員手上；摘要（research/podcasts/）只有計數、時間點與提到的公司。已有摘要的集數略過，可重複執行。"""
+    t_start = time.monotonic()
+    eps = sorted(podcast.fetch_episodes(show), key=lambda e: e.published)
+    shards = max(args.shards, 1)
+    min_ep = getattr(args, "min_ep", 0) or 0
+    pool = [e for e in eps if (podcast.episode_no(e.title) or 0) >= min_ep] if min_ep else eps
+    mine = [e for i, e in enumerate(pool) if i % shards == args.shard]
+    todo = [e for e in mine if not podcast.digest_path(e).exists()]
+    if getattr(args, "newest_first", False):
+        todo.reverse()   # 從最新往回轉：和『由舊到新』的片在中間會合，不用等舊的片慢慢爬
+    if args.plan:
+        hours = sum(e.duration_s for e in eps) / 3600
+        by_year: dict[str, list[int]] = {}
+        for e in eps:
+            by_year.setdefault(e.published[:4], []).append(e.duration_s)
+        print(f"{show['name']}：RSS 共 {len(eps)} 集、約 {hours:.0f} 小時；最舊 {eps[0].published[:10]} {eps[0].title[:30]}，最新 {eps[-1].published[:10]} {eps[-1].title[:30]}")
+        for y, ds in sorted(by_year.items()):
+            print(f"  {y}：{len(ds)} 集、{sum(ds) / 3600:.0f} 小時、平均 {sum(ds) / len(ds) / 60:.0f} 分鐘")
+        done = sum(1 for e in eps if podcast.digest_path(e).exists())
+        print(f"已處理 {done} 集；第 {args.shard}/{shards} 片還有 {len(todo)} 集（約 {sum(e.duration_s for e in todo) / 3600:.0f} 小時音檔）")
+        try:
+            info = podcast.channel_info(show)
+            print(f"節目：{info.get('title')}｜{info.get('link')}\n簡介：{info.get('description')}\n簡介裡的網址：{info.get('urls')}")
+        except Exception as e:  # noqa: BLE001
+            print(f"節目資訊讀不到：{e}")
+        return
+    if not podcast.PUBKEY_PATH.exists():
+        raise SystemExit("缺少 config/podcast_archive_pub.pem：沒有公鑰不存逐字稿（公開 repo 不放原文）")
+    try:
+        import faster_whisper  # noqa: F401
+    except ImportError:
+        raise SystemExit("沒有安裝 faster-whisper")
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    cfg = signals.settings()
+    skip = config.sources().get("skip_patterns") or []
+    fixes = src.get("podcast_fixes") or []
+    model = args.model or src.get("podcast_model", "small")
+    print(f"{show['name']}：第 {args.shard}/{shards} 片，{len(mine)} 集裡還有 {len(todo)} 集沒處理，模型 {model}，時間預算 {args.budget_min or '不限'} 分鐘")
+    done_n = 0
+    for ep in todo[:args.max_episodes] if args.max_episodes else todo:
+        if done_n and os.environ.get("GITHUB_ACTIONS"):
+            import subprocess
+            subprocess.run(["git", "pull", "--rebase", "-q"], cwd=str(research.ROOT), capture_output=True)   # 別片剛轉好的集數會同步進來，下一行就能略過
+        if podcast.digest_path(ep).exists():
+            continue
+        left = args.budget_min - (time.monotonic() - t_start) / 60 if args.budget_min else 1e9
+        need = ep.duration_s / 60 / 1.8 + 4   # 保守估：約 1.8 倍速加下載
+        if left < need:
+            print(f"剩 {left:.0f} 分鐘，{ep.title[:20]} 約需 {need:.0f} 分鐘，收工")
+            break
+        if ep.duration_s > int(src.get("podcast_max_minutes", 180)) * 60:
+            log.warning("%s 太長，略過", ep.title)
+            dpath = podcast.digest_path(ep)
+            dpath.parent.mkdir(parents=True, exist_ok=True)
+            dpath.write_text(json.dumps({"show": ep.show, "ep": podcast.episode_no(ep.title), "title": ep.title, "skipped": "太長，沒有轉文字"}, ensure_ascii=False) + "\n", encoding="utf-8")
+            continue
+        try:
+            import shutil
+            import tempfile
+            tmp = Path(tempfile.mkdtemp(prefix="podcast_"))
+            try:
+                t0 = time.monotonic()
+                audio = podcast.download(ep.audio_url, tmp / "audio", max_mb=int(src.get("podcast_max_mb", 300)))
+                t1 = time.monotonic()
+                segs = podcast.transcribe(audio, model, 0, src.get("podcast_prompt", ""), args.threads, 0)
+            finally:
+                shutil.rmtree(tmp, ignore_errors=True)
+            t2 = time.monotonic()
+            paras = [(t, podcast.apply_fixes(text, fixes)) for t, text in podcast.paragraphs(segs)]
+            digest = _archive_episode(ep, paras, names, listings, cfg, skip, model)
+            apath, dpath = podcast.archive_path(ep), podcast.digest_path(ep)
+            print(f"{ep.title[:24]}｜{ep.published[:10]}｜{ep.duration_s // 60} 分：下載 {t1 - t0:.0f} 秒、轉文字 {t2 - t1:.0f} 秒（{ep.duration_s / max(t2 - t1, 1):.1f} 倍速）、{len(paras)} 段、市場話題 {digest['market_start'] or '?'}、問答 {digest['qa_start'] or '?'}")
+            done_n += 1
+            _git_publish(f"歷史逐字稿 {show['name']} {podcast.episode_name(ep)}（加密）與摘要", [str(apath.relative_to(research.ROOT)), str(dpath.relative_to(research.ROOT))])
+        except Exception as e:  # noqa: BLE001 - 一集失敗不影響其他集數，下次再試
+            log.warning("%s 處理失敗：%s", ep.title, e)
+    left_n = sum(1 for e in mine if not podcast.digest_path(e).exists())
+    print(f"這次處理 {done_n} 集，耗時 {(time.monotonic() - t_start) / 60:.0f} 分鐘；這一片還剩 {left_n} 集")
+    if done_n and left_n:
+        print(f"接力：還有 {left_n} 集（workflow 會再啟動同一片）")
+
+
+def cmd_podcasts(args) -> None:
+    """Podcast：新集數下載、轉成逐字稿（faster-whisper）→ 值得看的段落放進 state/podcast_inbox/ 讓研究員檢視；
+    供應鏈訊號只排求證研究。不推播。轉文字很慢，由 podcast.yml 執行，不在 2 分鐘監看迴圈裡。"""
+    src = config.sources()
+    shows = [s for s in (src.get("podcasts") or []) if not args.show or args.show in s["name"]]
+    if not shows:
+        return
+    if getattr(args, "backfill", False) or getattr(args, "plan", False):
+        for sh in shows:
+            _podcast_backfill(sh, src, args)
+        return
+    seen = podcast.load_seen()
+    todo = []
+    for sh in shows:
+        try:
+            eps = podcast.fetch_episodes(sh)
+        except Exception as e:  # noqa: BLE001 - 一個節目讀不到不影響其他
+            log.warning("Podcast %s 讀取失敗：%s", sh.get("name"), e)
+            continue
+        if args.list:
+            print(f"{sh['name']}：RSS 共 {len(eps)} 集，最新 5 集：")
+            for e in eps[:5]:
+                print(f"  {e.published[:16]}  {e.duration_s // 60:>4} 分  {e.size / 1e6:5.1f}MB  {e.title[:50]}")
+            continue
+        todo += eps[:1] if args.force else podcast.pick_new(sh["name"], eps, seen, first=args.first, max_age_days=int(src.get("podcast_max_age_days", 7)))
+    if args.list or not todo:
+        if not args.dry and not args.list:
+            podcast.save_seen(seen)
+        return
+    try:
+        import faster_whisper  # noqa: F401
+    except ImportError:
+        log.warning("Podcast：沒有安裝 faster-whisper，略過（podcast.yml 會安裝）")
+        return
+    listings = _listings()
+    names = signals.signal_names(listings, AMBIGUOUS_NAMES)
+    cfg = signals.settings()
+    for ep in todo[:(args.max_episodes or 2)]:
+        if ep.duration_s > int(src.get("podcast_max_minutes", 180)) * 60:
+            log.warning("Podcast %s｜%s 長 %d 分鐘，超過上限，略過", ep.show, ep.title, ep.duration_s // 60)
+        else:
+            try:
+                _podcast_episode(ep, src, args, names, listings, cfg)
+            except Exception as e:  # noqa: BLE001 - 失敗的集數不標記已處理，下次再試（連結壞掉、音檔太大則下面標記略過）
+                log.warning("Podcast %s｜%s 處理失敗：%s", ep.show, ep.title, e)
+                if isinstance(e, ValueError):
+                    seen.setdefault(ep.show, []).append(ep.key)
+                continue
+        seen.setdefault(ep.show, []).append(ep.key)
+    if not args.dry and not args.force:
+        podcast.save_seen(seen)
+        podcast.prune_transcripts()
 
 
 AUTO_SLOTS = ("14:05", "21:05")  # 每天從新聞自動偵測新題材的時間（台北）
@@ -1153,9 +1563,17 @@ def cmd_research(args) -> None:
     if args.commands:
         token = notify.bot_token(push)
         offset = research.load_offset(token)
-        reqs, offset = research.pending_requests(notify.get_updates(push, offset), notify.owner_chat(push), offset)
+        reqs, offset = research.pending_requests(
+            notify.get_updates(push, offset), notify.owner_chat(push), offset,
+            free_text=lambda t: len(t or "") >= 8 and signals.looks_like_intel(t, signals.signal_names(listings(), AMBIGUOUS_NAMES)))
         research.save_offset(token, offset)
         for kind, text in reqs:
+            if kind == "intel":  # 使用者轉傳的情報：不需要 AI 金鑰，立刻偵測、推播、排求證
+                reply = signals.handle_relay(text, listings(), signals.signal_names(listings(), AMBIGUOUS_NAMES), channel=push,
+                                             skip_patterns=config.sources().get("skip_patterns") or [])
+                if reply:
+                    notify.send(reply, channel=push)
+                continue
             if kind == "card":
                 if not theme_card.send_query(text, listings(), context=f"📩 查詢：{text}", channel=push):
                     names = list(research.load_index()) + list((config.themes().get("tw") or {}))[:30]
@@ -2512,6 +2930,40 @@ def main(argv: list[str] | None = None) -> None:
     fl = sub.add_parser("inflow", help="盤後資金流入族群 → 研究機器人題材卡")
     fl.add_argument("--top", type=int, default=3)
     fl.set_defaults(func=cmd_inflow)
+    sg = sub.add_parser("signals", help="早期訊號：論壇／RSS／供應鏈關鍵字 → 偵測供應鏈換料、轉單、淘汰 → 推播＋排求證研究")
+    sg.add_argument("--dry", action="store_true", help="只印出偵測結果，不推播、不存記錄、不排研究")
+    sg.add_argument("--latest", type=int, default=0, help="測試：PTT 每個看板直接看最新 N 篇（不看已讀記錄）")
+    sg.add_argument("--every", type=int, default=10, help="距離上次掃描幾分鐘內就略過")
+    sg.add_argument("--text", help="偵錯：直接檢查一段文字（不連網、不推播）")
+    sg.add_argument("--relay", action="store_true", help="搭配 --text：當成使用者轉傳（放寬條件）")
+    sg.add_argument("--probe", nargs="+", metavar="URL", help="測試：只看這些網址雲端機房讀不讀得到（不偵測、不推播）")
+    sg.add_argument("--browser", action="store_true", help="搭配 --probe：再用無頭瀏覽器（Playwright）讀一次")
+    sg.set_defaults(func=cmd_signals)
+    pcp = sub.add_parser("podcasts", help="Podcast：新集數 → 下載、轉成逐字稿 → 值得看的段落放進待檢視清單（不推播）")
+    pcp.add_argument("--list", action="store_true", help="只列出各節目 RSS 最新幾集（不下載）")
+    pcp.add_argument("--dry", action="store_true", help="下載並轉文字，但只印出結果，不存逐字稿、不放待檢視清單、不排研究")
+    pcp.add_argument("--show", help="只處理名稱含這段文字的節目")
+    pcp.add_argument("--max-episodes", type=int, default=None, help="這次最多轉幾集（一般模式預設 2；--backfill 預設不限，靠 --budget-min 收工）")
+    pcp.add_argument("--max-minutes", type=int, default=0, help="只轉到第幾分鐘為止（測試用）")
+    pcp.add_argument("--from-minutes", type=int, default=0, help="搭配 --max-minutes：從第幾分鐘開始轉（測試用）")
+    pcp.add_argument("--first", type=int, default=1, help="第一次看到的節目，最新幾集要處理（其他舊集數略過）")
+    pcp.add_argument("--force", action="store_true", help="不看已處理記錄，直接處理每個節目最新一集（測試用，不更新記錄）")
+    pcp.add_argument("--model", help="語音辨識模型（預設用設定檔 podcast_model）")
+    pcp.add_argument("--threads", type=int, default=0, help="辨識用的 CPU 執行緒數（0＝全部）")
+    pcp.add_argument("--plan", action="store_true", help="歷史集數：印出總集數、總時數、各年份與節目簡介裡的網址（不下載）")
+    pcp.add_argument("--backfill", action="store_true", help="歷史集數：由舊到新轉成加密逐字稿＋摘要（已有摘要的略過，可重複執行）")
+    pcp.add_argument("--shard", type=int, default=0, help="--backfill：這是第幾片（從 0 開始）")
+    pcp.add_argument("--shards", type=int, default=1, help="--backfill：總共分幾片（依集數順序輪流分配）")
+    pcp.add_argument("--budget-min", type=int, default=0, help="--backfill：最多跑幾分鐘，剩下的時間不夠轉下一集就收工（0＝不限）")
+    pcp.add_argument("--min-ep", type=int, default=0, help="--backfill：只處理第幾集（含）以後的集數，分片也只在這些集數裡分")
+    pcp.add_argument("--newest-first", action="store_true", help="--backfill：這片由新到舊轉（搭配 --min-ep，另開一批片加速）")
+    pcp.set_defaults(func=cmd_podcasts)
+    th = sub.add_parser("threads", help="追蹤指定 Threads 帳號的新貼文（與他們回覆的原貼文）：不推播，供應鏈訊號排求證研究，值得看的貼文放進待檢視清單")
+    th.add_argument("--dry", action="store_true", help="只印出讀到的貼文與偵測結果，不推播、不存記錄、不排研究")
+    th.add_argument("--latest", type=int, default=0, help="測試：每個帳號直接看最新 N 則（不看已讀記錄）")
+    th.add_argument("--every", type=int, default=5, help="距離上次掃描幾分鐘內就略過")
+    th.add_argument("--accounts", nargs="+", metavar="HANDLE", help="覆蓋設定檔的帳號（測試用）")
+    th.set_defaults(func=cmd_threads)
     ch = sub.add_parser("channels", help="檢查公開 Telegram 頻道新貼文並推播")
     ch.add_argument("--latest", type=int, default=0, help="測試：直接推最新 N 則（不更新已讀記錄）")
     ch.add_argument("--research", action="store_true", help="搭配 --latest：這幾則也送進題材研究收件匣（補漏用）")

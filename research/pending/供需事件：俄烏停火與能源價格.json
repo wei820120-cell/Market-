@@ -1,0 +1,287 @@
+{
+ "topic": "供需事件：俄烏停火與能源價格",
+ "one_line": "10/11 川普宣布的俄烏「能源停火」沒有落實：10/15 起雙方仍互襲能源設施，10/20 奧斯陸會談中澤倫斯基稱烏方支持美方提案（俄停打烏克蘭能源、烏就不打俄能源設施），但普丁拒絕，維特科夫將赴俄會晤普丁；同時 10/13～14 起 SpaceX 對烏軍使用的 Starshield 終端限速引發爭議。油價在 10/24 仍高：布蘭特 111.70、WTI 103.27 美元（Yahoo 延遲報價，20 日漲幅 +7.1%／+11.8%），柴油期貨 4.79 美元/加侖。停火題材（航空、航運燃油成本受惠、軍工降溫）目前失效；油價主要受中東（荷莫茲海峽）與柴油供應牽動，俄烏談判重啟只是潛在變數，尚未證實。",
+ "status": "混合",
+ "horizon": "短期（事件驅動，數天到數週）",
+ "keywords": [
+  "能源停火",
+  "俄烏",
+  "柴油",
+  "煉油廠",
+  "俄羅斯制裁",
+  "OFAC",
+  "燃油成本",
+  "油價",
+  "奧斯陸會談",
+  "星盾",
+  "Starshield",
+  "Starlink 限速",
+  "荷莫茲海峽",
+  "維特科夫"
+ ],
+ "catalysts": [
+  "維特科夫赴俄與普丁會晤的結果（本研究沒查到會後報導）：若出現可驗證的能源設施互不攻擊，柴油與油價壓力才可能緩和",
+  "澤倫斯基提議的領袖峰會、三方會談是否成局；烏方要求談判必須有烏方代表",
+  "俄羅斯柴油出口：10/9 美國放寬制裁後首批約 30 萬噸，11 月再加約 50 萬噸，看實際交運量",
+  "烏克蘭是否持續攻擊俄國煉油廠；俄羅斯是否持續攻擊烏克蘭電力設施（10/15 報導烏方 60 萬人停電）",
+  "中東（荷莫茲海峽、伊朗）局勢：同樣主導油價與柴油供應，影響可能大於俄烏"
+ ],
+ "risks": [
+  "停火先例不佳：2025 年 3 月的 30 天能源停火、9/14 與 10/11 川普兩次宣稱雙方同意，雙方說法都不一致、也沒撐住",
+  "10/20 奧斯陸會談後，烏方稱普丁拒絕互不攻擊能源設施；俄方持續打擊烏方電力設施，停火題材短期不成立",
+  "Starlink／Starshield 限速爭議：烏方說速度門檻約每小時 160 公里、無人機任務受阻；馬斯克稱系統由美國政府擁有與控制、限制由美軍決定；《華爾街日報》引述消息人士說是馬斯克下令；川普說他和馬斯克都與此事無關——說法互相矛盾，尚無定論",
+  "油價高檔（布蘭特 100 美元以上）壓縮航空與運輸業毛利；價格主要驅動是中東與柴油供應，俄烏只是其中一環",
+  "本研究沒有取得 10/25～26 當天最新談判進展與油價收盤，下列價格是 10/24 的延遲報價"
+ ],
+ "spec_tables": [
+  {
+   "title": "事件時間線",
+   "columns": [
+    "日期",
+    "事件",
+    "狀態"
+   ],
+   "rows": [
+    [
+     "9/14",
+     "川普稱俄烏同意停攻能源設施",
+     "雙方未證實、未持續"
+    ],
+    [
+     "10/5前後",
+     "烏克蘭空襲俄國煉油廠，宣稱癱瘓51%煉油產能",
+     "烏方說法"
+    ],
+    [
+     "10/9",
+     "美國放寬俄羅斯柴油制裁至2027/4/7；俄方供柴油30萬噸、11月+50萬噸",
+     "官方許可已發布"
+    ],
+    [
+     "10/10",
+     "川普施壓烏克蘭停止打煉油廠",
+     "公開表態"
+    ],
+    [
+     "10/11",
+     "澤倫斯基：俄停攻能源設施、烏就不打煉油廠",
+     "有條件"
+    ],
+    [
+     "10/11 22:17",
+     "川普稱能源停火即刻生效、雙方已同意",
+     "單方說法、待證實"
+    ],
+    [
+     "10/12",
+     "布蘭特收盤約 106.65 美元（+1.84%）；停火消息一度壓低油價，中東衝突與柴油供應仍撐住 100 美元",
+     "報導"
+    ],
+    [
+     "10/13～14",
+     "烏克蘭總統顧問稱 SpaceX 對 Starshield 移動中終端限速（約 160 公里/小時門檻），部分無人機任務中斷",
+     "烏方說法；馬斯克稱由美軍決定"
+    ],
+    [
+     "10/15",
+     "俄烏無視「能源停火」續互襲，烏方 60 萬人停電（見另一則研究）",
+     "報導"
+    ],
+    [
+     "10/17",
+     "澤倫斯基稱歐盟國家對比測試顯示限速只在烏克蘭境內生效，白宮曾傳訊號會恢復服務",
+     "烏方說法"
+    ],
+    [
+     "10/20",
+     "奧斯陸會談：澤倫斯基、美國特使維特科夫（庫許納遠端）；烏方支持美方能源停火提案，普丁拒絕互不攻擊；維特科夫將赴俄",
+     "報導；會後結果未查到"
+    ],
+    [
+     "10/24",
+     "布蘭特 111.70、WTI 103.27、柴油期貨 4.79 美元/加侖（20 日：+7.1%／+11.8%／+2.2%）",
+     "Yahoo 延遲報價（系統快照）"
+    ]
+   ],
+   "note": "數字與日期整理自媒體報導，已附來源；金十快訊為使用者截圖，其餘為搜尋結果。"
+  }
+ ],
+ "evolution": [],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的（10/26 更新）",
+   "points": [
+    "戰事與煉油廠被攻擊讓俄羅斯煉油與出口能力下降（烏方稱癱瘓逾半，未獨立證實）",
+    "中東局勢與荷莫茲海峽航運受阻是更大的油價背景；柴油供應吃緊，美國零售柴油年漲逾 70%（10/11 報導）",
+    "美國 10/9 放寬俄柴油制裁、首批 30 萬噸供應，但初期量有限，分析師認為難以壓低油價"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷（10/26 更新）",
+   "points": [
+    "停火沒成真：航空、運輸的燃油成本壓力延續；軍工航太題材降溫的預期落空",
+    "煉油業看柴油價差，油價與柴油維持高檔時毛利較有支撐；價差收斂才是風險",
+    "替代供應：俄柴油若實際放量，中東與其他煉油廠的訂單可能被分流；目前量有限"
+   ]
+  },
+  {
+   "title": "怎麼判讀「Starlink 限速」這類消息",
+   "points": [
+    "這是軍用 Starshield 移動終端限速，不是一般用戶的 Starlink 服務；影響烏軍無人機任務",
+    "各方說法互相矛盾（馬斯克、白宮、烏方、《華爾街日報》），先當作未證實",
+    "對台灣供應鏈（如衛星射頻、GaAs 代工的穩懋、宏捷科）的實際影響沒有證據，僅列為政治與法規風險"
+   ]
+  }
+ ],
+ "conclusion": [
+  "這是事件驅動題材：能源停火未落實（10/20 普丁拒絕），油價在 10/24 仍高於 100 美元，停火利多（航空、航運燃油成本）目前不成立。",
+  "後續轉折點是維特科夫赴俄的結果與可驗證的能源設施互不攻擊；沒有證實前，不把談判傳聞當成油價下跌依據。",
+  "油價主要受中東與柴油供應牽動，俄烏只是其中一環；台股面看航空（2618、2610）、煉油（6505）對油價與價差的敏感度。",
+  "本研究沒有取得 10/25～26 當天最新談判進展與油價收盤，需開盤前再核對。"
+ ],
+ "sources": [
+  {
+   "title": "udn：柴油飆漲 川普向普丁開口要柴油輸出 分析師：有助價格抑制",
+   "url": "https://money.udn.com/money/story/122328/9806706"
+  },
+  {
+   "title": "鉅亨網／巴隆：川普放寬俄羅斯柴油制裁仍「難壓油價」",
+   "url": "https://news.cnyes.com/news/id/6627217"
+  },
+  {
+   "title": "中央社：川普要求烏克蘭換總統 施壓停止襲擊俄羅斯煉油廠",
+   "url": "https://www.cna.com.tw/news/aopl/202610110004.aspx"
+  },
+  {
+   "title": "Newtalk：川普為壓柴油價鬆綁對俄制裁！德國不跟進",
+   "url": "https://newtalk.tw/news/view/2026-10-11/1064837"
+  },
+  {
+   "title": "民視財經：普丁同意擴大供應柴油 川普宣布暫時鬆綁俄羅斯制裁",
+   "url": "https://finance.ftvnews.com.tw/news/detail/2026A10W0039"
+  },
+  {
+   "title": "世界日報：財政部鬆綁俄柴油貿易制裁 緩解供應緊張平抑油價",
+   "url": "https://worldjournal.com/wj/story/121468/9805818"
+  },
+  {
+   "title": "udn：烏克蘭空襲俄羅斯煉油廠 宣稱癱瘓51%煉油產能",
+   "url": "https://udn.com/news/story/6809/9796569"
+  },
+  {
+   "title": "鉅亨網：俄烏戰爭再升溫！澤倫斯基下令加強攻擊俄羅斯煉油廠",
+   "url": "https://news.cnyes.com/news/id/6621097"
+  },
+  {
+   "title": "鉅亨網：川普稱俄烏同意停攻能源設施 雙方尚未公開證實（9/14 先例）",
+   "url": "https://news.cnyes.com/news/id/6606323"
+  },
+  {
+   "title": "Ukraine Today：Trump Calls for Energy Ceasefire Between Ukraine and Russia",
+   "url": "https://ukrainetoday.org/breaking-news-trump-declared-an-energy-truce-between-ukraine-and-russia/"
+  },
+  {
+   "title": "The Star／Reuters：Oil falls on hopes Russia-Ukraine energy ceasefire will boost supplies（2026/10/12）",
+   "url": "https://www.thestar.com.my/business/business-news/2026/10/12/oil-falls-on-hopes-russia-ukraine-energy-ceasefire-will-boost-supplies"
+  },
+  {
+   "title": "Kuwait Times：Zelensky, US hail 'productive' Oslo talks as Trump feud simmers",
+   "url": "https://kuwaittimes.com/article/52037/world/zelensky-us-hail-productive-oslo-talks-as-trump-feud-simmers/"
+  },
+  {
+   "title": "Kuwait Times：Starlink restricted Ukraine's operations overnight, Zelensky adviser says",
+   "url": "https://kuwaittimes.com/article/51599/world/starlink-restricted-ukraines-operations-overnight-zelensky-adviser-says/"
+  },
+  {
+   "title": "SCMP：Musk ordered slowdown of Starlink service Ukraine military relies on, report says",
+   "url": "https://scmp.com/news/world/russia-central-asia/article/3371563/musk-ordered-slowdown-starlink-service-ukraine-military-relies-report-says"
+  },
+  {
+   "title": "科技新報：烏克蘭指控 SpaceX 無預警限制軍用星盾終端連線",
+   "url": "https://technews.tw/?p=1629725"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "燃油使用端：航空與航運",
+   "description": "燃油是主要成本之一。10/24 布蘭特 111.70、WTI 103.27 美元、柴油期貨 4.79 美元/加侖，油價與柴油高檔；能源停火未落實，燃油成本利多不成立，航運運價另受供需影響。",
+   "global_players": [
+    "達美航空（因油價大砍財測，僅見標題）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2618",
+     "name": "長榮航",
+     "role": "航空，燃油成本敏感",
+     "impact": "受傷"
+    },
+    {
+     "code": "2610",
+     "name": "華航",
+     "role": "航空，燃油成本敏感",
+     "impact": "受傷"
+    },
+    {
+     "code": "2603",
+     "name": "長榮",
+     "role": "貨櫃航運，燃油成本之外運價更重要",
+     "impact": "中性"
+    },
+    {
+     "code": "2609",
+     "name": "陽明",
+     "role": "貨櫃航運，燃油成本之外運價更重要",
+     "impact": "中性"
+    },
+    {
+     "code": "2615",
+     "name": "萬海",
+     "role": "貨櫃航運，燃油成本之外運價更重要",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "戰爭題材：軍工航太",
+   "description": "能源停火未落實、談判僅在奧斯陸會談後有進展傳聞（維特科夫將赴俄），戰事降溫預期落空；是否轉為談判成局尚未證實。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2634",
+     "name": "漢翔",
+     "role": "軍工航太",
+     "impact": "中性"
+    },
+    {
+     "code": "8033",
+     "name": "雷虎",
+     "role": "無人機／軍工概念",
+     "impact": "中性"
+    },
+    {
+     "code": "2645",
+     "name": "長榮航太",
+     "role": "航太維修",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "煉油與石化（台灣）",
+   "description": "柴油價差與油價高檔時煉油毛利較有支撐；若俄柴油實際放量或談判成局使價差收斂，毛利可能下降。本次未取得價差數據。",
+   "global_players": [
+    "俄羅斯煉油廠（遭攻擊）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6505",
+     "name": "台塑化",
+     "role": "煉油廠，柴油價差影響毛利",
+     "impact": "中性"
+    }
+   ]
+  }
+ ],
+ "trigger": "2026-10-26 重大事件：星盾限速風波再反轉！網傳烏軍破解終端，反遭限速？馬斯克突然開火！川普出手，澤連斯基鬆口，俄烏談判重啟？ 馬斯克 川普 澤連斯基｜新視野 第2589期 20261025 - 禁闻网\n星盾限速風波再反轉！網傳烏軍破解終端，反遭限速？馬斯克突然開火！川普出手，澤連斯基鬆口，俄烏談判重啟？ 馬斯克 川普 澤連斯基｜新視野 第2589期 20261025&nbsp;&nbsp;禁闻网\nhttps://news.google.com/rss/articles/CBMid0FVX3lxTFA3OUdhS2NyZkZPNHNEQVFDQjl5WXZvZVBCRmVsQWdaTTh0WExGSDQ3MzVHb0NtRkQ2amdjRldYYWhtUTNUT284NDRwS0U2SHhqdTFXZG9DRklTY1JUSUowdmxXRzA2anFCQ0NjcC1Bd2NEWDlzS0o00gF8QVVfeXFMT3FMdi1JNWpzOTVfYjJlVEhSSEJENHRkc1NmcjZJdlpPUW1VNHJNWnd1a0ViQld4TUVaZWRrajdpZHZ4Q0piQy1jLUZBOG1ZakZpOHRIR25FbjJVaGRSckhMLU1YVHF3VG5NTW9vTHgtTTNxZGJJdFBabUFZRg?oc=5\n國際行情快照（Yahoo，延遲報價）：\n能源｜布蘭特原油（BZ=F）111.70｜日 -1.3%｜5日 +1.7%｜20日 +7.1%｜10/24 04:59\n能源｜WTI 原油（CL=F）103.27｜日 +3.8%｜5日 +1.8%｜20日 +11.8%｜10/24 04:59\n能源｜柴油（取暖油期貨）（HO=F）4.79｜日 -2.9%｜5日 -2.3%｜20日 +2.2%｜10/24 04:59\n能源｜天然氣（NG=F）3.05｜日 +9.1%｜5日 -2.1%｜20日 -4.6%｜10/24 05:00\n貴金屬｜黃金（GC=F）4,007.90｜日 -1.3%｜5日 -4.1%｜20日 -7.2%｜10/24 04:59\n貴金屬｜白銀（SI=F）53.95｜日 -1.5%｜5日 -5.3%｜20日 -16.0%｜10/24 04:59\n工業金屬｜銅（HG=F）6.51｜日 +2.3%｜5日 -0.4%｜20日 -2.8%｜10/24 04:59\n工業金屬｜鋁（ALI=F）3,136.75｜日 -1.8%｜5日 +0.8%｜20日 -8.7%｜10/24 04:50\n匯率｜美元指數（DX-Y.NYB）101.81｜日 +0.2%｜5日 -0.0%｜20日 +0.8%｜10/24 04:59\n匯率｜美元兌新台幣（TWD=X）32.57｜日 -0.1%｜5日 +0.6%｜20日 +2.5%｜10/26 04:02\n匯率｜美元兌日圓（JPY=X）157.01｜日 +0.3%｜5日 -0.5%｜20日 -0.3%｜10/26 05:10\n匯率｜歐元兌美元（EURUSD=X）1.12｜日 +0.1%｜5日 +0.0%｜20日 -1.3%｜10/26 05:09\n匯率｜美元兌人民幣（CNY=X）6.67｜日 -0.1%｜5日 -0.3%｜20日 -0.6%｜10/26 04:02\n利率與風險｜美國10年期公債殖利率（^TNX）4.99｜日 +0.7%｜5日 -2.2%｜20日 -3.8%｜10/24 02:59\n利率與風險｜VIX 恐慌指數（^VIX）19.45｜日 +2.2%｜5日 -2.7%｜20日 +30.8%｜10/24 04:15\n美股｜標普500（^GSPC）7,623.68｜日 -0.5%｜5日 -0.5%｜20日 -1.6%｜10/24 04:38\n美股｜費城半導體（^SOX）10,779.46｜日 +0.4%｜5日 -3.2%｜20日 -14.9%｜10/24 05:15\n美股｜那斯達克（^IXIC）25,955.34｜日 -0.2%｜5日 -0.7%｜20日 -4.1%｜10/24 05:15\n美股｜那指期貨（NQ=F）29,117.75｜日 -0.1%｜5日 -0.9%｜20日 -5.7%｜10/24 04:59\n亞洲股市｜日經225（^N225）62,693.16｜日 -0.3%｜5日 -4.0%｜20日 -4.3%｜10/23 14:45\n亞洲股市｜韓國綜合（^KS11）5,550.30｜日 +0.3%｜5日 -2.1%｜20日 —｜10/23 19:05\n亞洲股市｜恆生指數（^HSI）23,093.37｜日 +0.7%｜5日 -4.0%｜20日 -7.0%｜10/23 16:08（2026-10-26 重新檢視：上次研究 10/11，已超過 14 天）",
+ "report": "# 供需事件：俄烏停火與能源價格（10/26 更新）\n\n> 這份是 10/11 研究的更新版：能源停火後續、奧斯陸會談、星盾限速爭議與 10/24 油價；10/25～26 當天最新談判進展與油價收盤沒有查到。\n\n## 先講結論\n- 10/11 川普宣布的「能源停火」沒有落實：10/15 起雙方仍互襲能源設施；10/20 奧斯陸會談中，澤倫斯基稱烏方支持美方提案，但普丁拒絕互不攻擊能源設施，美國特使維特科夫將赴俄會晤普丁。\n- 10/13～14 起，SpaceX 對烏軍使用的 Starshield 移動終端限速（烏方稱約每小時 160 公里門檻）引發爭議；馬斯克稱由美軍決定，《華爾街日報》引述消息人士說是馬斯克下令，川普稱他和馬斯克都與此事無關，各方說法矛盾。\n- 10/24 布蘭特 111.70、WTI 103.27 美元、柴油期貨 4.79 美元/加侖（Yahoo 延遲報價）；油價主要受中東（荷莫茲海峽）與柴油供應牽動，俄烏只是其中一環。\n\n## 對台股的意義\n- 停火利多（航空、航運燃油成本）目前不成立，航空（2618、2610）受高油價壓力；軍工航太題材降溫的預期落空。\n- 煉油（6505）看柴油價差；若俄柴油實際放量或談判成局使價差收斂，毛利才會受壓。\n\n## 接下來看什麼\n維特科夫赴俄會晤的結果、領袖峰會是否成局、俄柴油 11 月實際交運量、中東局勢與荷莫茲海峽航運。\n\n## 來源\n- [The Star／Reuters：Oil falls on hopes Russia-Ukraine energy ceasefire will boost supplies（2026/10/12）](https://www.thestar.com.my/business/business-news/2026/10/12/oil-falls-on-hopes-russia-ukraine-energy-ceasefire-will-boost-supplies)\n- [Kuwait Times：Zelensky, US hail 'productive' Oslo talks as Trump feud simmers](https://kuwaittimes.com/article/52037/world/zelensky-us-hail-productive-oslo-talks-as-trump-feud-simmers/)\n- [Kuwait Times：Starlink restricted Ukraine's operations overnight, Zelensky adviser says](https://kuwaittimes.com/article/51599/world/starlink-restricted-ukraines-operations-overnight-zelensky-adviser-says/)\n- [SCMP：Musk ordered slowdown of Starlink service Ukraine military relies on, report says](https://scmp.com/news/world/russia-central-asia/article/3371563/musk-ordered-slowdown-starlink-service-ukraine-military-relies-report-says)\n- [科技新報：烏克蘭指控 SpaceX 無預警限制軍用星盾終端連線](https://technews.tw/?p=1629725)"
+}
