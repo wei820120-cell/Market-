@@ -5,7 +5,7 @@ name: realtime
 
 on:
   schedule:
-    - cron: "35 0 * * 1-5"   # 台北時間 08:35 啟動（GitHub 排程可能延遲 5–15 分鐘，所以提早）
+    - cron: "35 0 * * 1-5"   # 台北時間 08:35 啟動；GitHub 排程常延遲數十分鐘、甚至整天漏掉，所以 watch.yml 會在 08:36 後檢查、沒起來就補啟動
   workflow_dispatch:
     inputs:
       test:
@@ -26,15 +26,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
+      - name: 排程補跑檢查（收盤後才排到的排程直接略過，不浪費時間）
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$((10#$(TZ=Asia/Taipei date +%H%M)))" -ge 1335 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "已過 13:35，這次排程略過"
+          fi
       - uses: actions/checkout@v4
+        if: ${{ steps.gate.outputs.skip != 'true' }}
       - uses: actions/setup-python@v5
+        if: ${{ steps.gate.outputs.skip != 'true' }}
         with:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: 安裝中文字型（題材卡圖片）
+        if: ${{ steps.gate.outputs.skip != 'true' }}
+      - name: 安裝中文字型（題材卡圖片；最多等 3 分鐘，失敗也不擋盤中監控）
+        if: ${{ steps.gate.outputs.skip != 'true' }}
+        timeout-minutes: 3
+        continue-on-error: true
         run: fc-list | grep -qi "Noto Sans CJK" || sudo apt-get install -y -q fonts-noto-cjk >/dev/null || (sudo apt-get update -q >/dev/null && sudo apt-get install -y -q fonts-noto-cjk >/dev/null)
       - name: 盤中監控（到 13:35 自動結束）
+        if: ${{ steps.gate.outputs.skip != 'true' }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -56,7 +70,7 @@ jobs:
             python -m market_intel realtime --until 13:35
           fi
       - name: 存檔題材卡與研究佇列記錄
-        if: ${{ !cancelled() && inputs.check != true }}
+        if: ${{ !cancelled() && inputs.check != true && steps.gate.outputs.skip != 'true' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -65,7 +79,9 @@ jobs:
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "盤中記錄 $(TZ=Asia/Taipei date '+%F %H:%M')"
           for i in 1 2 3; do
-            git pull --rebase -q && git push && exit 0
-            sleep 5
+            # 與 watch 同時改到 state 檔會衝突：以這次盤中記錄為準（-X theirs），不要讓整個執行變紅
+            git pull --rebase -X theirs -q && git push -q && exit 0
+            git rebase --abort 2>/dev/null; sleep 5
           done
-          exit 1
+          echo "存檔一直衝突，放棄這次記錄（不影響已推播的內容）"
+          exit 0

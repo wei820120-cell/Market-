@@ -6,6 +6,7 @@
 #   - 開發分支 research/pending 的研究（Claude 研究好的）→ 發布並推研究圖表
 #   - 你傳給研究機器人的指令：「研究 XXX」「題材 XXX」「族群 XXX」「目標價 XXX」
 #   - 資金流入題材的研究佇列、14:05／21:05 從新聞自動偵測新題材（需要 ANTHROPIC_API_KEY）
+#   - 保險：平日 08:36–13:20 若今天還沒有盤中監控（realtime）的執行，就補啟動（GitHub 排程常延遲數十分鐘、甚至整天漏掉）
 # GitHub 的排程常延遲 30 分鐘以上，所以改成一次跑約 5 小時 50 分、結束前自動接續下一輪。
 # 公開儲存庫的 GitHub Actions 不收費。
 name: watch
@@ -44,6 +45,7 @@ jobs:
         run: (pip install playwright && playwright install --with-deps chromium) || echo "playwright 安裝失敗，Threads 追蹤略過"
       - name: 監看（約 5 小時 45 分）
         env:
+          GH_TOKEN: ${{ github.token }}
           RESEARCH_BRANCH: claude/funny-goodall-fft1u6
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -70,8 +72,22 @@ jobs:
             done
             git reset -q --hard "origin/${GITHUB_REF_NAME}"   # 一直衝突就放棄這次記錄，避免卡住
           }
+          # 盤中監控（選股組推播）的保險：平日 08:36–13:20 若今天還沒有 realtime 的執行，就補啟動
+          ensure_realtime() {
+            [ "${GITHUB_REF_NAME}" = "${{ github.event.repository.default_branch }}" ] || return 0
+            local dow hm since n
+            dow=$(TZ=Asia/Taipei date +%u); hm=$((10#$(TZ=Asia/Taipei date +%H%M)))
+            [ "$dow" -le 5 ] && [ "$hm" -ge 836 ] && [ "$hm" -le 1320 ] || return 0
+            since=$(date -u -d "$(TZ=Asia/Taipei date +%F) 00:00 +0800" +%Y-%m-%dT%H:%M:%SZ)
+            n=$(gh run list --workflow realtime.yml --limit 20 --json createdAt -q "[.[] | select(.createdAt >= \"$since\")] | length" 2>/dev/null) || return 0
+            if [ "$n" = "0" ]; then
+              echo "今天還沒有 realtime 的執行，補啟動"
+              gh workflow run realtime.yml --ref "${GITHUB_REF_NAME}" || echo "補啟動失敗"
+            fi
+          }
           end=$(( $(date +%s) + ${{ inputs.minutes || '345' }} * 60 ))
           while [ "$(date +%s)" -lt "$end" ]; do
+            ensure_realtime
             git pull --rebase -q || { git rebase --abort 2>/dev/null; git reset -q --hard "origin/${GITHUB_REF_NAME}"; }
             timeout 600 python -m market_intel channels || echo "channels 失敗"
             timeout 300 python -m market_intel signals || echo "signals 失敗"
