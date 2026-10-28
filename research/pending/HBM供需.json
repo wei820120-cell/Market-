@@ -1,0 +1,334 @@
+{
+  "topic": "HBM供需",
+  "one_line": "路透10/28引述匿名知情人士：長鑫存儲（CXMT）2個月內小量生產HBM3E，良率僅約20%～30%（SK海力士約70%）、性能近HBM3，起因是美國2024/12 HBM出口管制讓中國AI晶片缺記憶體；全球HBM則偏緊——TrendForce系報導稱2027年HBM均價約+121%、12層HBM4近翻倍，SK海力士2027產能報導稱已售罄。臺灣受惠面在台積電（HBM4 base die、CoWoS）與先進封裝設備；長鑫消息未證實。",
+  "status": "混合",
+  "horizon": "中長期（6-24個月）",
+  "keywords": [
+    "HBM",
+    "HBM3E",
+    "HBM4",
+    "長鑫存儲",
+    "CXMT",
+    "SK海力士",
+    "三星",
+    "美光",
+    "CoWoS",
+    "出口管制",
+    "base die",
+    "先進封裝"
+  ],
+  "catalysts": [
+    "長鑫HBM3E小量生產（未來2個月，未證實）",
+    "2027年HBM長約價格談定（SK海力士、三星、美光）",
+    "輝達Vera Rubin HBM4放量",
+    "美國對HBM出口管制是否調整",
+    "台積電CoWoS擴產與HBM4 base die",
+    "SK海力士、三星、美光季報"
+  ],
+  "risks": [
+    "長鑫消息全來自匿名知情人士，公司未回應；良率與性能為評價而非官方規格",
+    "HBM4漲幅各來源說法不一（+117%、+121%），份額口徑不同",
+    "二手彙整來源未對照原報告",
+    "未查到SK海力士2026 Q3財報原文",
+    "HBM4時程因規格上修遞延，2026年HBM3E仍為主流",
+    "若AI資本支出放緩或HBM供給超預期，價格預期可能反轉",
+    "臺灣設備股未查到2026年10月最新營收與訂單"
+  ],
+  "spec_tables": [
+    {
+      "title": "表A：長鑫HBM3E消息（路透，匿名知情人士）",
+      "columns": [
+        "項目",
+        "長鑫（報導）",
+        "對照"
+      ],
+      "rows": [
+        [
+          "量產時程",
+          "未來2個月內小量生產",
+          "—"
+        ],
+        [
+          "良率",
+          "約20%～30%",
+          "SK海力士約70%"
+        ],
+        [
+          "性能",
+          "較接近HBM3",
+          "SK海力士HBM3E"
+        ],
+        [
+          "版本",
+          "標準版、為提升良率調整設計的版本",
+          "—"
+        ],
+        [
+          "客戶",
+          "多家中國AI晶片設計商（已送樣）",
+          "—"
+        ]
+      ],
+      "note": "長鑫未回應；以上全部是匿名消息。"
+    },
+    {
+      "title": "表B：全球HBM價格與份額（研調與二手彙整）",
+      "columns": [
+        "項目",
+        "說法",
+        "來源性質"
+      ],
+      "rows": [
+        [
+          "2027年HBM均價",
+          "+121%（TrendForce，轉述）；另一則寫HBM4漲117%",
+          "Seoul Economic Daily、Tech Insider"
+        ],
+        [
+          "12層HBM4單顆",
+          "約$600→約$1,300",
+          "Seoul Economic Daily"
+        ],
+        [
+          "SK海力士份額",
+          "Q2 2026營收約50%（Counterpoint）",
+          "二手彙整"
+        ],
+        [
+          "三星份額",
+          "目標2026年底約38%",
+          "二手彙整"
+        ],
+        [
+          "HBM占DRAM投片",
+          "22%（2026底）→30%（2027底）",
+          "二手彙整"
+        ],
+        [
+          "供需",
+          "SK海力士2027年產能報導稱售罄、供給約75%～80%需求",
+          "報導，未見原文"
+        ]
+      ],
+      "note": "口徑不一，需對照TrendForce原報告。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "HBM3",
+      "composition": "8層堆疊",
+      "spec": "長鑫報導性能接近此世代",
+      "application": "中國自給目標"
+    },
+    {
+      "name": "HBM3E",
+      "composition": "8～12層",
+      "spec": "2026年仍為主流",
+      "application": "輝達Blackwell、TPU等"
+    },
+    {
+      "name": "HBM4",
+      "composition": "12層以上，base die用先進邏輯製程（台積電）",
+      "spec": "2Q26開始量產，價格預期2027大漲",
+      "application": "輝達Vera Rubin、AMD"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "供需缺口怎麼來的",
+      "points": [
+        "AI加速器每顆HBM容量與層數增加",
+        "HBM占用的晶圓遠多於一般DRAM，排擠一般DRAM",
+        "先進封裝與良率是瓶頸，新廠2027中～2028才有量",
+        "中國端缺口是出口管制造成的政策性缺口"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受惠：SK海力士、三星、美光，台積電（base die、CoWoS），臺灣先進封裝設備",
+        "受傷：缺貨的AI系統與消費性電子（記憶體成本）、中國AI晶片業者",
+        "長鑫轉產HBM對一般DRAM供給的影響是推論，沒有證據"
+      ]
+    },
+    {
+      "title": "怎麼看『低良率也要量產』",
+      "points": [
+        "政策壓力下，良率不是唯一考量",
+        "低良率代表成本高、供給量小，短期不改變全球供需",
+        "對全球格局的意義是中國自給能力的進度，而非即時的供給增加"
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "layer": "HBM原廠（DRAM堆疊）",
+      "description": "SK海力士領先，三星追趕，美光第三；2027年長約價格預期大漲；長鑫（CXMT）良率20%～30%、性能近HBM3，屬未證實消息。",
+      "global_players": [
+        "SK海力士",
+        "三星",
+        "美光",
+        "長鑫存儲"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "base die與先進封裝（CoWoS）",
+      "description": "台積電與SK海力士合作以先進邏輯製程做HBM4 base die；CoWoS良率超過98%，緊俏延續到2027。",
+      "global_players": [
+        "台積電",
+        "SK海力士",
+        "日月光"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "HBM4 base die、CoWoS",
+          "impact": "受惠"
+        }
+      ]
+    },
+    {
+      "layer": "先進封裝與HBM設備",
+      "description": "競爭重心從容量轉向TSV、鍵合、翹曲控制、散熱與3D整合；報導點名臺灣設備供應鏈。",
+      "global_players": [
+        "Hanmi",
+        "BESI",
+        "Disco"
+      ],
+      "tw_stocks": [
+        {
+          "code": "3131",
+          "name": "弘塑",
+          "role": "濕製程設備，既有研究",
+          "impact": "受惠"
+        },
+        {
+          "code": "3583",
+          "name": "辛耘",
+          "role": "設備，既有研究",
+          "impact": "受惠"
+        },
+        {
+          "code": "6640",
+          "name": "均華",
+          "role": "封裝設備（報導點名）",
+          "impact": "受惠"
+        },
+        {
+          "code": "2467",
+          "name": "志聖",
+          "role": "設備（報導點名）",
+          "impact": "受惠"
+        },
+        {
+          "code": "6187",
+          "name": "萬潤",
+          "role": "設備（報導點名）",
+          "impact": "受惠"
+        }
+      ]
+    },
+    {
+      "layer": "一般型DRAM（被HBM排擠）",
+      "description": "HBM占用晶圓排擠一般型DRAM；既有研究另有〈DRAM供需〉〈記憶體供需〉。",
+      "global_players": [
+        "三星",
+        "SK海力士",
+        "美光",
+        "長鑫"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2408",
+          "name": "南亞科",
+          "role": "一般型DRAM，既有研究",
+          "impact": "受惠"
+        },
+        {
+          "code": "2344",
+          "name": "華邦電",
+          "role": "利基型DRAM，既有研究",
+          "impact": "受惠"
+        }
+      ]
+    },
+    {
+      "layer": "中國AI晶片端",
+      "description": "華為、寒武紀等因記憶體成本上升把AI晶片調價20%～50%（路透轉述），自有HBM仍在追趕。",
+      "global_players": [
+        "華為",
+        "寒武紀",
+        "沐曦",
+        "天數智芯"
+      ],
+      "tw_stocks": []
+    }
+  ],
+  "conclusion": [
+    "長鑫HBM3E低良率消息是匿名消息，核心含意是中國因出口管制缺HBM，自給進度落後，不是全球供給突然增加。",
+    "全球HBM偏緊，研調與報導預期2027年價格大漲、SK海力士產能已被預訂；細節數字口徑不一。",
+    "臺灣受惠主要在台積電與先進封裝設備；一般DRAM廠受惠是間接（被HBM排擠）。"
+  ],
+  "sources": [
+    {
+      "title": "經濟日報：路透，長鑫將生產 HBM3E！良率僅 20% 仍硬撐 凸顯中國 AI 記憶體短缺（10/28）",
+      "url": "https://money.udn.com/money/story/5599/9842127"
+    },
+    {
+      "title": "自由財經：晶片良率落後韓廠 50% 長鑫存儲硬著頭皮拚量產（10/28）",
+      "url": "https://ec.ltn.com.tw/article/breakingnews/5621879"
+    },
+    {
+      "title": "TVBS：中國 AI 記憶體荒！長鑫 HBM3E 良率僅 20％仍拚量產（10/28）",
+      "url": "https://news.tvbs.com.tw/world/4042567"
+    },
+    {
+      "title": "Yahoo 股市：傳長鑫 HBM3E 良率僅 2-3 成，仍計畫啟動量產（10/28）",
+      "url": "https://tw.stock.yahoo.com/news/%E5%82%B3%E9%95%B7%E9%91%ABhbm3e%E8%89%AF%E7%8E%87%E5%83%852-3%E6%88%90-%E4%BB%8D%E8%A8%88%E7%95%AB%E5%95%9F%E5%8B%95%E9%87%8F%E7%94%A2-072600363.html"
+    },
+    {
+      "title": "鉅亨網：觸發文〈長鑫存儲積極尋找記憶體國產替代方案…〉（本文未能讀取，引用摘要）",
+      "url": "https://news.cnyes.com/news/id/6639396"
+    },
+    {
+      "title": "TrendForce：HBM Market Bulletin（2026-08-17）",
+      "url": "https://www.trendforce.com/research/download/RP260817WP3"
+    },
+    {
+      "title": "TrendForce：HBM Industry Analysis 3Q26",
+      "url": "https://www.trendforce.com/research/download/RP260805KC3"
+    },
+    {
+      "title": "Seoul Economic Daily：HBM Prices to More Than Double Next Year as Shortage Persists（10/1）",
+      "url": "https://en.sedaily.com/finance/2026/10/01/hbm-prices-to-more-than-double-next-year-as-shortage"
+    },
+    {
+      "title": "ServNet：HBM Market Share Tracker 2026（二手彙整，需對照原報告）",
+      "url": "https://www.servnetuk.com/research/hbm-market-tracker-2026"
+    },
+    {
+      "title": "Tech Insider：HBM4 Crunch / Shortage（二手彙整，需對照原報告）",
+      "url": "https://tech-insider.org/hbm4-memory-shortage-dram-inventory-2026/"
+    },
+    {
+      "title": "AI Frontiers：High-Bandwidth Memory: The Critical Gaps in US Export Controls",
+      "url": "https://ai-frontiers.org/articles/high-bandwidth-memory-critical-gaps-us-export-controls"
+    },
+    {
+      "title": "科技新報：長鑫積極擴大 HBM 產線（2025/8）",
+      "url": "https://finance.technews.tw/2025/08/14/cxmt-actively-expands-hbm-production-line/"
+    },
+    {
+      "title": "理財周刊：HBM 先進封裝設備供應鏈（弘塑、辛耘、均華、志聖、萬潤）",
+      "url": "https://www.moneyweekly.com.tw/_Article?AID=244582"
+    },
+    {
+      "title": "經濟日報：供給端「短板」主節奏——CoWoS、T-Glass、HBM",
+      "url": "https://money.udn.com/money/story/5607/9276345"
+    }
+  ],
+  "trigger": "2026-10-28 供需失衡（政策管制）：長鑫存儲積極尋找記憶體國產替代方案！HBM3E良率僅20%至30%仍拚量產、落後SK海力士一個世代\n長鑫科技計畫未來兩個月內啟動HBM3E有限量產，並已向多家中國本土AI晶片設計商送交樣品。&#10;其HBM3E良率僅約20%至30%，低於SK海力士約70%；技術也仍落後，效能更接近HBM3。&#10;美國2024年12月收緊HBM出口管制，中國AI晶片業者急尋國產替代，華為等晶片價格已調漲20%至50%。\nhttps://news.cnyes.com/news/id/6639396",
+  "report": "# HBM供需\n\n> 觸發：10/28 供需失衡（政策管制）——路透引述知情人士：長鑫存儲（CXMT）將在未來兩個月內小量生產 HBM3E，良率僅約 20%～30%。**這則是匿名消息、公司未回應，屬未證實；全球 HBM 吃緊則有多個來源。**\n\n## 重點\n- **事件（路透，10/28，匿名知情人士）**：長鑫已把 HBM3E 樣品送給多家中國 AI 晶片設計商，預計**未來兩個月內有限量產**；**良率約 20%～30%，SK 海力士約 70%**；測試性能**較接近 SK 海力士的 HBM3，而非 HBM3E**；有「標準版」與「為提升良率而改設計」兩種。長鑫未回應。\n- **原因**：美國 BIS 2024/12/2 公告、2024/12/31 生效，管制比 HBM2E 更先進的記憶體對中出口；中國 AI 晶片業者缺高階記憶體，透過非官方管道採購的價格可能高出數倍；路透上月報導華為、寒武紀、沐曦、天數智芯因記憶體成本上升，把現有與下一代 AI 晶片**調價 20%～50%**（本次未取得獨立原始來源）。\n- **全球 HBM 供需（多為研調與二手彙整）**：\n  - TrendForce 2026/8 的週報：**2027 年供應談判自 2Q26 停滯，SK 海力士預期要求更高的 HBM4 價格，三星與美光要求更大漲幅**；另一份 TrendForce 3Q26：2026 價格處於「暫停」（ASP 小降），2027 大幅上漲。Seoul Economic Daily（10/1）轉述 TrendForce：**2027 HBM 平均單價 +121%，12 層 HBM4 單顆從約 $600 近翻倍到約 $1,300**；美光執行長稱 2027 價格遠高於 2026，**大部分 2027 位元供應已簽約**。\n  - 份額：SK 海力士領先（Counterpoint：Q2 2026 營收占比約 50%）；三星目標 2026 年底約 38%；HBM4（Vera Rubin）估計 SK 海力士 60%～70%、三星 25%～30%、美光其餘（二手彙整，口徑不同）。\n  - 供給：HBM 占三大 DRAM 廠晶圓投片約 22%（2026 底）→30%（2027 底）；新廠有意義的產出要到 2027 中至 2028；SK 海力士 HBM4 於 2Q26 開始量產、報導稱 2027 產能已售罄，並預期 2027 供給僅能滿足約 75%～80% 需求。\n  - 台積電：與 SK 海力士合作以先進邏輯製程做 HBM4 base die；CoWoS 良率超過 98%（2026/5），多家機構預期 CoWoS 緊俏延續到 2027；HBM4 時程因規格上修遞延、2026 年 HBM3E 仍是主流。\n\n## 供需缺口怎麼來的\n- **需求**：AI 加速器（Vera Rubin、Google TPU、AMD）每顆搭載的 HBM 容量與層數增加（12 層 HBM4 單價近翻倍）。\n- **供給**：HBM 單位位元占用晶圓是一般 DRAM 的數倍（排擠一般 DRAM，見既有研究〈DRAM供需〉）、良率與先進封裝（TSV、鍵合）是瓶頸，新廠 2027 中～2028 才有量。\n- **中國端**：出口管制切斷高階 HBM 來源，**中國的缺口是政策造成的，而非單純景氣**；長鑫良率 20%～30% 代表自給量遠低於需求。\n\n## 誰受惠、誰受傷\n- 受惠：SK 海力士、三星、美光（價格與份額）；台積電（HBM4 base die、CoWoS）；台灣先進封裝與 HBM 設備供應鏈（報導點名弘塑 3131、辛耘 3583、均華 6640、志聖 2467、萬潤 6187；弘塑、辛耘另有研究）；\n- 受傷：缺貨的 AI 系統與 PC／手機（記憶體成本）；中國 AI 晶片業者（成本高、良率低）；\n- 中性／待觀察：長鑫若把 DRAM 產能轉去 HBM，可能減少一般 DDR5／DDR4 供給（**推論，無證據**）；南亞科、華邦電等一般型 DRAM 廠（既有研究）。\n\n## 風險與待查\n- 長鑫數字全部來自匿名知情人士，且「接近 HBM3 而非 HBM3E」是性能評價，不是官方規格；\n- HBM4 漲幅各來源說法不一（+117%、+121%），份額口徑不同（出貨、營收、目標）；\n- 二手彙整（ServNet、Tech Insider）沒有直接對照 TrendForce 原報告；\n- 未查到 SK 海力士 2026 Q3 財報原文（搜尋只找到 Q2 與 2025 資料）；\n- 台灣設備股本次沒有查到 2026 年 10 月的最新月營收與訂單。\n\n## 資料來源\n- [經濟日報：路透，長鑫將生產 HBM3E！良率僅 20% 仍硬撐 凸顯中國 AI 記憶體短缺（10/28）](https://money.udn.com/money/story/5599/9842127)\n- [自由財經：晶片良率落後韓廠 50% 長鑫存儲硬著頭皮拚量產（10/28）](https://ec.ltn.com.tw/article/breakingnews/5621879)\n- [TVBS：中國 AI 記憶體荒！長鑫 HBM3E 良率僅 20％仍拚量產（10/28）](https://news.tvbs.com.tw/world/4042567)\n- [Yahoo 股市：傳長鑫 HBM3E 良率僅 2-3 成，仍計畫啟動量產（10/28）](https://tw.stock.yahoo.com/news/%E5%82%B3%E9%95%B7%E9%91%ABhbm3e%E8%89%AF%E7%8E%87%E5%83%852-3%E6%88%90-%E4%BB%8D%E8%A8%88%E7%95%AB%E5%95%9F%E5%8B%95%E9%87%8F%E7%94%A2-072600363.html)\n- [鉅亨網：觸發文〈長鑫存儲積極尋找記憶體國產替代方案…〉（本文未能讀取，引用摘要）](https://news.cnyes.com/news/id/6639396)\n- [TrendForce：HBM Market Bulletin（2026-08-17）](https://www.trendforce.com/research/download/RP260817WP3)\n- [TrendForce：HBM Industry Analysis 3Q26](https://www.trendforce.com/research/download/RP260805KC3)\n- [Seoul Economic Daily：HBM Prices to More Than Double Next Year as Shortage Persists（10/1）](https://en.sedaily.com/finance/2026/10/01/hbm-prices-to-more-than-double-next-year-as-shortage)\n- [ServNet：HBM Market Share Tracker 2026（二手彙整，需對照原報告）](https://www.servnetuk.com/research/hbm-market-tracker-2026)\n- [Tech Insider：HBM4 Crunch / Shortage（二手彙整，需對照原報告）](https://tech-insider.org/hbm4-memory-shortage-dram-inventory-2026/)\n- [AI Frontiers：High-Bandwidth Memory: The Critical Gaps in US Export Controls](https://ai-frontiers.org/articles/high-bandwidth-memory-critical-gaps-us-export-controls)\n- [科技新報：長鑫積極擴大 HBM 產線（2025/8）](https://finance.technews.tw/2025/08/14/cxmt-actively-expands-hbm-production-line/)\n- [理財周刊：HBM 先進封裝設備供應鏈（弘塑、辛耘、均華、志聖、萬潤）](https://www.moneyweekly.com.tw/_Article?AID=244582)\n- [經濟日報：供給端「短板」主節奏——CoWoS、T-Glass、HBM](https://money.udn.com/money/story/5607/9276345)\n"
+}
