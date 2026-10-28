@@ -59,6 +59,41 @@
    "text": "光通訊\n7分鐘\n多數產業已經提前反映了未來的擴產與漲價預期，這些仍是既有成長邏輯的延伸，還沒有出現足以重新定價市場的新催化劑。\n展望未來一至兩年，我猜測下一波值得關注的成長動能，可能會重新轉向光通訊與高速互連相關領域。\n（猜）",
    "tags": [],
    "score": 2
+  },
+  {
+   "id": "ai.podcast.summarist/DfCfYqgEiSs",
+   "author": "ai.podcast.summarist",
+   "url": "https://www.threads.com/@ai.podcast.summarist/post/DfCfYqgEiSs",
+   "at": "2026-10-28T13:00:47.000Z",
+   "seen_at": "2026-10-28T21:44:00+08:00",
+   "reply_to": "",
+   "text": "Anthropic 的 S1（美國 IPO 申請文件）數字亮眼，《股癌》主持人謝孟恭認為 Anthropic 有機會在 11 月中上市。毛利率從一年多前的十幾 % 拉高到 85%，等於花一塊錢算力可換回約兩塊營收，獲利結構明顯改善。",
+   "tags": [],
+   "score": 2
+  },
+  {
+   "id": "write_and_travel/DfBy4BfHwSp",
+   "author": "write_and_travel",
+   "url": "https://www.threads.com/@write_and_travel/post/DfBy4BfHwSp",
+   "at": "2026-10-28T06:31:43.000Z",
+   "seen_at": "2026-10-28T21:44:00+08:00",
+   "reply_to": "",
+   "text": "程式交易\n7小時\nDay2-斜槓一人交易室\n1.自建的看盤跟下單還有TG運作順利，並且完整實盤一筆交易，果然還是要實際驗證才會發現有些程式可以優化，目標下一單平倉要壓在2秒內。\n2.本次實盤滑價約24點，雖然有部分是因為我程式沒優化好，但也驗證我在跑策略回測時，有設計單邊滑價5/10/15能否都獲利的意義。\n3.做了一個回測跟實盤分析比較，考慮到滑價，整個策略池跑個半年收集數據，看看能否有歷史回測數據的8成成績就好。\n本日平倉一口+3152。\n還持有一口微台。\n等穩定運作就要離開微台啦！",
+   "tags": [],
+   "score": 2
+  },
+  {
+   "id": "xiagumin/DfCjpSpFK0T",
+   "author": "xiagumin",
+   "url": "https://www.threads.com/@xiagumin/post/DfCjpSpFK0T",
+   "at": "2026-10-28T13:37:52.000Z",
+   "seen_at": "2026-10-28T21:44:00+08:00",
+   "reply_to": "",
+   "text": "股票日常\n5分鐘\nVrt 兇巴巴的\nAI 伺服器越來越吃電、機櫃功率密度越來越高，電力管理與液冷的重要性只會越來越高\nAI 基建不只有 GPU，電力與散熱同樣是不能忽略的關鍵環節\n訂單還是滿滿的👍",
+   "tags": [
+    "液冷"
+   ],
+   "score": 3
   }
  ]
 }
