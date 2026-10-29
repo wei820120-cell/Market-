@@ -1,0 +1,314 @@
+{
+ "topic": "供需事件：鴻勁拿下台積電訂單或認證（傳聞求證）",
+ "one_line": "『鴻勁拿下台積電訂單或認證』查無公開佐證：這是一篇CPO測試產業分析（台積電COUPE量產→致茂、旺矽、鴻勁受惠）而非公告；已證實的是鴻勁Insertion 4 OE光電同測設備通過『美系大客戶』技術驗證、10月起出貨（量產時月20～30台，Handler 2027Q1量產、單價約高20%），客戶全未具名為台積電。本業極強：Q3營收161.94億（年增97.5%）、前三季EPS 93.47元超過2025全年，產能滿載、2026擴45%、2027再擴50%。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "鴻勁",
+  "7769",
+  "CPO",
+  "COUPE",
+  "光電同測",
+  "Insertion 4",
+  "Handler",
+  "SLT",
+  "ATC",
+  "台積電",
+  "致茂",
+  "旺矽",
+  "傳聞求證"
+ ],
+ "catalysts": [
+  "10月營收（約11/10前）",
+  "Q3完整財報（毛利率）",
+  "CPO光電同測設備10月出貨台數與客戶揭露",
+  "2026Q4量產前定案、2027Q1量產與交機高峰",
+  "台積電COUPE與日月光／力成CPO封裝量產進度",
+  "2027年產能再擴50%",
+  "SLT競爭對手分單傳聞是否落實"
+ ],
+ "risks": [
+  "『台積電訂單或認證』無公開佐證：訊號來源是產業分析文章，列名不等於拿單",
+  "CPO客戶僅稱『美系大客戶』，未具名",
+  "各報導對Insertion 1～4分工描述不完全一致",
+  "Q3毛利率未取得；Q2毛利率56.09%、營益率48.47%較Q1雙降（2025前三季毛利率58.4%）",
+  "Q3 EPS約37.33元為本研究由前三季EPS減上半年EPS推算，非公司公告",
+  "競爭對手在SLT設備瓜分訂單傳聞（單一來源，未證實）",
+  "富果法說備忘錄為AI整理摘要，數字需與原簡報核對",
+  "外資目標價（高盛12,500、大摩10,008、花旗11,000）為7月底資料，非最新"
+ ],
+ "spec_tables": [
+  {
+   "title": "表A：鴻勁2026營運數字",
+   "columns": [
+    "期間",
+    "營收",
+    "年增／季增",
+    "備註"
+   ],
+   "rows": [
+    [
+     "上半年",
+     "245.18億",
+     "年增91.6%",
+     "EPS 56.14；毛利率56.15%"
+    ],
+    [
+     "Q2",
+     "137.93億",
+     "季增28.61%",
+     "毛利率56.09%、營益率48.47%；EPS約30.44"
+    ],
+    [
+     "Q3",
+     "161.94億",
+     "季增17.4%、年增97.54%",
+     "EPS約37.33（推算）；毛利率未取得"
+    ],
+    [
+     "9月",
+     "57.29億",
+     "月增9.78%、年增100.22%",
+     "單月高點"
+    ],
+    [
+     "前三季",
+     "407.13億",
+     "年增93.94%",
+     "EPS 93.47，已超過2025全年"
+    ]
+   ],
+   "note": "Q3 EPS為前三季EPS減上半年EPS推算；Q1營收可由上半年減Q2推得約107.25億，亦為推算。"
+  },
+  {
+   "title": "表B：CPO Insertion 1～4與台廠位置",
+   "columns": [
+    "階段",
+    "內容",
+    "台廠",
+    "與鴻勁關係"
+   ],
+   "rows": [
+    [
+     "Insertion 1",
+     "晶圓級光電探測",
+     "旺矽、精測、穎崴",
+     "關聯間接"
+    ],
+    [
+     "Insertion 2",
+     "EIC／PIC鍵合後光電同測",
+     "旺矽",
+     "—"
+    ],
+    [
+     "Insertion 3",
+     "光引擎組裝測試",
+     "高明鐵、萬潤、旺矽、致茂",
+     "—"
+    ],
+    [
+     "Insertion 4",
+     "最終模組光電同測",
+     "致茂（4O）、鴻勁（Handler／溫控）、穎崴",
+     "鴻勁主力"
+    ]
+   ],
+   "note": "各報導分工略有出入，以多篇交叉後的主流說法為準。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "FT／SLT分選機（既有本業）",
+   "composition": "Handler＋高階溫控、Cold Plate",
+   "spec": "AI／HPC晶片測試，產能滿載",
+   "application": "GPU、ASIC、CPU測試"
+  },
+  {
+   "name": "ASIC switch IC FT ATC機台",
+   "composition": "自動溫控分選",
+   "spec": "CPO相關交換器晶片電測",
+   "application": "媒體稱已出貨數百台"
+  },
+  {
+   "name": "CPO光電同測設備（Insertion 4 OE）",
+   "composition": "Handler＋溫控＋光學對準＋量測儀器＋ATE整合",
+   "spec": "通過美系大客戶技術驗證，10月起出貨，量產時月20～30台",
+   "application": "CPO最終模組光電同測；Handler 2027Q1量產、單價約高20%"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "哪一邊有什麼證據、哪裡互相矛盾",
+   "points": [
+    "有證據：鴻勁CPO設備通過美系大客戶驗證、10月出貨；營運創高、產能滿載",
+    "無證據：台積電訂單或認證（找不到任何來源，也沒有反證）",
+    "矛盾點：Insertion分工各報導說法不一；『鴻勁負責Insertion 4』與『鴻勁與Insertion 1關聯間接』不衝突"
+   ]
+  },
+  {
+   "title": "怎麼看『台積電COUPE量產』與『鴻勁受惠』",
+   "points": [
+    "COUPE是封裝平台，測試設備買家多為OSAT與晶片客戶",
+    "鴻勁受惠路徑是：CPO測試流程變長→最終測試Handler／溫控需求增加",
+    "列名受惠不等於拿單，要看出貨台數與客戶揭露"
+   ]
+  },
+  {
+   "title": "與既有研究是否衝突",
+   "points": [
+    "與〈CPO設備〉結論一致：鴻勁為延伸型受惠，2027Q1交機高峰",
+    "南亞M9、台燿M9等既有結論與本題無關，無需修正"
+   ]
+  }
+ ],
+ "conclusion": [
+  "『鴻勁拿下台積電訂單或認證』查無公開佐證；訊號源是產業分析文章，不是公告，列為未證實。",
+  "已證實的是鴻勁CPO光電同測設備通過美系大客戶驗證、10月出貨；本業Q3營收161.94億（年增97.5%）、前三季EPS 93.47元，產能滿載。",
+  "與既有〈CPO設備〉結論一致，不需修正；後續看10月營收、Q3毛利率與CPO出貨台數。"
+ ],
+ "sources": [
+  {
+   "title": "營收速報：鴻勁(7769)9月營收57.29億元，年增率高達100.22％（鉅亨網）",
+   "url": "https://news.cnyes.com/news/id/6623960"
+  },
+  {
+   "title": "時報資訊：《半導體》鴻勁9月、Q3營收齊登峰 前3季已締年度新高（10/8）",
+   "url": "https://www.chinatimes.com/realtimenews/20261008002310-260410"
+  },
+  {
+   "title": "工商時報：《半導體》鴻勁Q3獲利續登峰 前3季EPS 93.47元締年度新猷（10/29）",
+   "url": "https://www.ctee.com.tw/news/20261029700578-430201"
+  },
+  {
+   "title": "MoneyDJ／Yahoo：鴻勁9月/Q3營收創新高；Q4好光景估延續",
+   "url": "https://tw.stock.yahoo.com/news/%E9%B4%BB%E5%8B%819%E6%9C%88-q3%E7%87%9F%E6%94%B6%E5%89%B5%E6%96%B0%E9%AB%98-q4%E5%A5%BD%E5%85%89%E6%99%AF%E4%BC%B0%E5%BB%B6%E7%BA%8C-015000251.html"
+  },
+  {
+   "title": "UAnalyze：鴻勁CPO光電同測設備10月起出貨 成明年新動能",
+   "url": "https://uanalyze.com.tw/articles/5986052643"
+  },
+  {
+   "title": "富果研究：鴻勁(7769) 2026-07-30 法說會備忘錄（AI 整理摘要，需與原始簡報核對）",
+   "url": "https://blog.fugle.tw/post/earnings-call-7769-2026-07-30"
+  },
+  {
+   "title": "工商時報：鴻勁Q2法說（7/31）",
+   "url": "https://www.ctee.com.tw/news/20260731700195-430501"
+  },
+  {
+   "title": "經濟日報：鴻勁接單旺 產能塞爆 CPO 相關設備第4季送樣客戶端驗證",
+   "url": "https://udn.com/news/story/7253/9568058"
+  },
+  {
+   "title": "三立新聞：熱門股／CPO紅火 台廠8強分析",
+   "url": "https://setn.com/news/1883916"
+  },
+  {
+   "title": "經濟日報：CPO 測試需求 大摩唱旺",
+   "url": "https://money.udn.com/money/amp/story/5607/9733022"
+  },
+  {
+   "title": "TechNews：Testing is the critical bottleneck in CPO mass production（5/6）",
+   "url": "https://technews.tw/2026/05/06/testing-is-the-critical-bottleneck-in-cpo-mass-production/"
+  },
+  {
+   "title": "經濟日報：旺矽 CPO 導入輝達相關報導",
+   "url": "https://udn.com/news/story/7254/9451318"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "客戶端與平台（需求來源）",
+   "description": "台積電COUPE平台（報導稱2026年量產）；日月光、力成CPO封裝；美系AI／網通大客戶。",
+   "global_players": [
+    "台積電",
+    "日月光",
+    "美系網通大客戶"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "COUPE平台，設備買家之一（是否直接採購鴻勁設備未證實）",
+     "impact": "中性"
+    },
+    {
+     "code": "3711",
+     "name": "日月光投控",
+     "role": "CPO封裝，預計年底量產",
+     "impact": "間接"
+    },
+    {
+     "code": "6239",
+     "name": "力成",
+     "role": "CPO交換器封裝",
+     "impact": "間接"
+    }
+   ]
+  },
+  {
+   "layer": "最終測試（Insertion 3～4）設備",
+   "description": "鴻勁Handler／溫控／光電同測；致茂4O光進光出測試。",
+   "global_players": [
+    "Advantest",
+    "Teradyne",
+    "致茂",
+    "鴻勁"
+   ],
+   "tw_stocks": [
+    {
+     "code": "7769",
+     "name": "鴻勁",
+     "role": "FT／SLT Handler、溫控、CPO光電同測（延伸型）",
+     "impact": "受惠（台積電訂單未證實）"
+    },
+    {
+     "code": "2360",
+     "name": "致茂",
+     "role": "Insertion 3～4光學測試",
+     "impact": "受惠"
+    },
+    {
+     "code": "6515",
+     "name": "穎崴",
+     "role": "Insertion 3～4測試座",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "晶圓級探測（Insertion 1～2）",
+   "description": "探針卡與光電探測；旺矽被指少數通過COUPE認證。",
+   "global_players": [
+    "FormFactor",
+    "旺矽",
+    "精測"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6223",
+     "name": "旺矽",
+     "role": "CPO探針卡，Insertion 2～3",
+     "impact": "受惠"
+    },
+    {
+     "code": "6510",
+     "name": "精測",
+     "role": "探針卡與測試板",
+     "impact": "間接"
+    }
+   ]
+  },
+  {
+   "layer": "競爭與替代",
+   "description": "SLT設備分單傳聞（單一來源）。",
+   "global_players": [
+    "Advantest",
+    "Cohu",
+    "Teradyne"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}
