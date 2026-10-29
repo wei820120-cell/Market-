@@ -17,7 +17,7 @@
    "r0": 0.38168652877280707,
    "realized": -179.56,
    "half_done": false,
-   "days": 7,
+   "days": 8,
    "exit_next": ""
   }
  ],
@@ -68,8 +68,8 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-28",
- "regime": "多頭",
+ "last_date": "2026-10-29",
+ "regime": "空頭／盤整",
  "blocked": [],
  "last_events": []
 }
