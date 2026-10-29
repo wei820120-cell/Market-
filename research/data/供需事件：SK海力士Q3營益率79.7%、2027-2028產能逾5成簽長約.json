@@ -1,0 +1,225 @@
+{
+ "topic": "供需事件：SK海力士Q3營益率79.7%、2027-2028產能逾5成簽長約",
+ "one_line": "SK海力士Q3營收104.62兆韓元（首度破百兆）、營業利益83.33兆、營益率79.7%（約80%，Q2為76.3%），高於市場共識約76.96兆；DRAM均價季增高20%區間、位元出貨約+10%、伺服器DDR5出貨+40%；公司稱2027～2028年產能逾50%已簽長約、DRAM與HBM實質賣光到2029年（14家LTA客戶）、短缺持續到2030年。Threads轉述數字略有誤差（均價非30%）。",
+ "status": "已證實",
+ "horizon": "中長期（6-24個月）",
+ "keywords": [
+  "SK海力士",
+  "DRAM",
+  "HBM",
+  "HBM4",
+  "長約",
+  "LTA",
+  "營業利益率",
+  "2029",
+  "2030",
+  "記憶體供不應求"
+ ],
+ "catalysts": [
+  "三星、美光財報與HBM4量產進度",
+  "2027年HBM與DRAM長約價格",
+  "SK海力士擴產與100兆韓元股東回饋",
+  "南亞科、華邦電、力積電10月營收",
+  "美國對HBM出口管制是否調整"
+ ],
+ "risks": [
+  "Threads轉述數字有誤差（營益率80% vs 79.7%、均價30% vs 高20%區間）",
+  "『賣光到2029』與『14家LTA客戶』為TrendForce轉述，未取得逐字稿原文",
+  "長約細節（價格、保證量、可否重議）未公開",
+  "營益率近80%接近景氣循環高點，HBM良率或價格若下滑獲利波動大",
+  "臺灣廠商本次未更新最新營收",
+  "二手彙整網站（BigGo、Stock Titan）需對照官方新聞稿"
+ ],
+ "spec_tables": [
+  {
+   "title": "表A：SK海力士3Q26重點數字",
+   "columns": [
+    "項目",
+    "數字",
+    "備註"
+   ],
+   "rows": [
+    [
+     "營收",
+     "104.62兆韓元",
+     "首度單季破百兆"
+    ],
+    [
+     "營業利益",
+     "83.33兆韓元",
+     "市場共識約76.96兆（韓媒10/19）"
+    ],
+    [
+     "營業利益率",
+     "79.7%",
+     "Q2為76.3%；多數媒體進位為80%"
+    ],
+    [
+     "DRAM均價（QoQ）",
+     "高20%區間",
+     "Threads寫30%，不精確"
+    ],
+    [
+     "位元出貨（QoQ）",
+     "約+10%",
+     "—"
+    ],
+    [
+     "伺服器DDR5出貨（vs Q2）",
+     "+40%以上",
+     "—"
+    ],
+    [
+     "長約（LTA）",
+     "2027～2028年產能逾50%",
+     "14家LTA客戶；DRAM與HBM賣光到2029（TrendForce轉述）"
+    ],
+    [
+     "股東回饋",
+     "約100兆韓元",
+     "公司宣布"
+    ]
+   ],
+   "note": "以SK hynix官方新聞稿、TrendForce、Investing.com整理。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "HBM3E",
+   "composition": "8～12層",
+   "spec": "2026年主流",
+   "application": "AI加速器"
+  },
+  {
+   "name": "HBM4",
+   "composition": "12層以上，base die用先進邏輯",
+   "spec": "2Q26量產",
+   "application": "輝達Vera Rubin"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "HBM4占用大量DRAM晶圓與先進封裝，排擠一般DRAM",
+    "客戶用長約鎖定2027～2028供給",
+    "新廠2027中～2028才有量，短缺預期到2030"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠：SK海力士、三星、美光，臺灣一般型與利基型DRAM廠（間接）",
+    "受傷：記憶體成本上升的PC、手機、伺服器客戶",
+    "長約對原廠是穩定性，但價格上限被鎖也是代價"
+   ]
+  },
+  {
+   "title": "怎麼看『營益率80%』",
+   "points": [
+    "已超過輝達的營益率水準（媒體說法），接近循環高點",
+    "市場是否把它視為新常態，取決於長約與HBM良率",
+    "轉述節目提醒：高利潤率下，良率或價格小幅下滑就會讓獲利大幅波動"
+   ]
+  }
+ ],
+ "conclusion": [
+  "SK海力士Q3營益率79.7%、營收破百兆是公司財報數字，Threads轉述的數字大致正確但有小誤差。",
+  "公司稱2027～2028產能逾50%簽長約、DRAM與HBM賣光到2029、短缺到2030，與先前HBM供需研究方向一致。",
+  "臺灣受惠為間接（一般型DRAM、台積電、封測與設備），長約細節與良率是風險。"
+ ],
+ "sources": [
+  {
+   "title": "SK hynix 官方：SK hynix Announces 3Q26 Financial Results",
+   "url": "https://news.skhynix.com/en/q3-2026-business-results/"
+  },
+  {
+   "title": "TrendForce：SK hynix 3Q26 OPM Hits Record 80%; Says DRAM, HBM Effectively Sold Out to 2029, 14 LTA Customers Signed（10/28）",
+   "url": "https://www.trendforce.com/news/2026/10/28/news-sk-hynix-3q26-opm-hits-record-80-says-dram-hbm-effectively-sold-out-to-2029-14-lta-customers-signed/"
+  },
+  {
+   "title": "Investing.com：SK hynix Q3 2026 slides: revenue tops 100T, 80% margin on AI boom",
+   "url": "https://www.investing.com/news/company-news/sk-hynix-q3-2026-slides-revenue-tops-100t-80-margin-on-ai-boom-93CH-4977357"
+  },
+  {
+   "title": "Investing.com：Earnings call transcript: SK hynix posts record Q3 2026 results",
+   "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-sk-hynix-posts-record-q3-2026-results-shares-jump-after-hours-93CH-4977343"
+  },
+  {
+   "title": "BigGo Finance：SK hynix Q3 2026 Earnings Call（營收 104.6 兆韓元、營益率 80%）",
+   "url": "https://finance.biggo.com/news/KR_000660.KS_2026-10-28"
+  },
+  {
+   "title": "Stock Titan：SK hynix Earnings: Memory Maker's Operating Margin Now Tops Nvidia's",
+   "url": "https://www.stocktitan.net/articles/sk-hynix-earnings-q3-2026-memory-operating-margin-tops-nvidia"
+  },
+  {
+   "title": "先前研究：HBM供需（本專案 research/data）",
+   "url": "https://github.com/wei820120-cell/Market-/tree/main/research"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "DRAM／HBM原廠",
+   "description": "SK海力士Q3營益率79.7%、長約逾5成（2027～2028）、賣光到2029；三星、美光追趕HBM4。",
+   "global_players": [
+    "SK海力士",
+    "三星",
+    "美光",
+    "長鑫存儲"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "臺灣一般型與利基型DRAM",
+   "description": "HBM排擠一般型DRAM、報價上漲；既有研究另有〈DRAM供需〉。",
+   "global_players": [
+    "南亞科",
+    "華邦電",
+    "力積電"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2408",
+     "name": "南亞科",
+     "role": "一般型DRAM，既有研究",
+     "impact": "間接受惠"
+    },
+    {
+     "code": "2344",
+     "name": "華邦電",
+     "role": "利基型DRAM，既有研究",
+     "impact": "間接受惠"
+    },
+    {
+     "code": "6770",
+     "name": "力積電",
+     "role": "代工與DRAM，既有研究",
+     "impact": "間接受惠"
+    }
+   ]
+  },
+  {
+   "layer": "先進封裝與設備",
+   "description": "HBM需求帶動TSV、鍵合與封測設備；既有研究〈HBM供需〉列出臺灣設備供應鏈。",
+   "global_players": [
+    "Hanmi",
+    "BESI"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "HBM4 base die、CoWoS，既有研究",
+     "impact": "受惠"
+    },
+    {
+     "code": "6239",
+     "name": "力成",
+     "role": "封測，既有研究",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ]
+}
