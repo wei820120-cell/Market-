@@ -15,6 +15,7 @@
 | 2022 | 見 `research/podcasts/股癌/` | EP206～310（共 105 集；其餘轉錄後補讀；筆記在 `episodes/2022.md`） |
 | 2026 | 見 `research/podcasts/股癌/` | EP624、EP634、EP644、EP649、EP651～652、EP654、EP656～660、EP662～665、EP669、EP671、EP673～674、EP676～687、EP689～690、EP694～695、EP698～708（共 47 集；其餘轉錄後補讀；筆記在 `episodes/2026.md`） |
 | 2024 | 見 `research/podcasts/股癌/` | EP474、EP484、EP492、EP494、EP504、EP506、EP512、EP514（共 8 集；其餘轉錄後補讀；筆記在 `episodes/2024.md`） |
+| 2023 | 見 `research/podcasts/股癌/` | EP311～414（共 104 集；其餘轉錄後補讀；筆記在 `episodes/2023.md`） |
 
 ## 怎麼繼續（給之後接手的研究員）
 - 轉文字：開發分支上的 `research.yml` 用 probe 啟動 `cmd:podcasts --backfill --show 股癌 --shard N --shards 8 --budget-min 330 --model medium`（N=0～7，每一片轉完會自己再啟動，直到那一片全部處理完）。進度看 `research/podcasts/股癌/` 的檔案數（總共 708 集，約 559 小時音檔）。
