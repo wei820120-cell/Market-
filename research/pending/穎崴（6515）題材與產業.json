@@ -1,0 +1,282 @@
+{
+  "topic": "穎崴（6515）題材與產業",
+  "one_line": "穎崴（6515）是高階測試座（Coaxial Socket）與MEMS探針卡、SLT測試廠：Q2營收35.23億（季增18.2%、年增131.4%，連續四季雙位數季增）、毛利率38.33%、EPS 18.7元；9月約12.5億（月減約26.7%、年增約87.7%）、前9月110.60億（年增96.67%）；Q3推算約45.6億，低於大和預估50.12億約9%。HyperSocket新架構單價高20%～30%；高盛提醒美系AI GPU客戶新平台可能延遲、MEMS探針卡稀釋毛利。",
+  "status": "混合",
+  "horizon": "中期（3-12個月）",
+  "keywords": [
+    "穎崴",
+    "6515",
+    "測試座",
+    "Coaxial Socket",
+    "HyperSocket",
+    "MEMS探針卡",
+    "SLT",
+    "彈簧探針",
+    "AI晶片測試",
+    "高雄仁武廠"
+  ],
+  "catalysts": [
+    "Q3財報與毛利率（約11月）",
+    "10月營收（約11/10前）",
+    "HyperSocket新客戶導入與單價",
+    "仁武新廠產能與探針產能（2026底900萬支、2027上半年1,400萬支）",
+    "SLT切入美系AI GPU客戶",
+    "美系AI GPU新平台時程"
+  ],
+  "risks": [
+    "美系AI GPU客戶新平台可能延遲（高盛）",
+    "MEMS探針卡比重上升稀釋毛利率",
+    "Q3營收約45.6億為推算，低於大和預估50.12億約9%",
+    "9月單月營收月減約26.7%，單月波動大",
+    "毛利率38.33%低於旺矽與鴻勁",
+    "Q2毛利率與EPS為nStock整理，需核對",
+    "同軸測試座2027擴產與客戶名稱本次未取得",
+    "目標價為7～9月資料"
+  ],
+  "spec_tables": [
+    {
+      "title": "表A：穎崴2026營運數字",
+      "columns": [
+        "期間",
+        "營收",
+        "毛利率／備註",
+        "EPS"
+      ],
+      "rows": [
+        [
+          "Q2",
+          "35.23億（季增18.21%、年增131.44%）",
+          "毛利率38.33%、營益率23.42%、淨利率19.08%",
+          "18.7（季減約4%、年增約225%）"
+        ],
+        [
+          "上半年",
+          "約65.03億（推算）",
+          "上半年營收較去年同期增逾七成",
+          "38.24"
+        ],
+        [
+          "Q3",
+          "約45.6億（推算）",
+          "大和預估50.12億（年增177.8%）",
+          "—"
+        ],
+        [
+          "9月",
+          "約12.5億（月減約26.69%、年增約87.72%）",
+          "單月波動大",
+          "—"
+        ],
+        [
+          "前9月",
+          "110.60億（年增96.67%）",
+          "—",
+          "—"
+        ]
+      ],
+      "note": "Q1、Q3由數字回推；Q3低於大和預估約9%。"
+    },
+    {
+      "title": "表B：產能與新品",
+      "columns": [
+        "項目",
+        "數字",
+        "來源"
+      ],
+      "rows": [
+        [
+          "彈簧探針產能",
+          "2026年底月產900萬支、2027上半年1,400萬支",
+          "高盛"
+        ],
+        [
+          "HyperSocket",
+          "超過50%新客戶計畫採用；單價較同軸測試座高20%～30%",
+          "TechNews報導"
+        ],
+        [
+          "SLT",
+          "切入重要國際客戶並逐步放量",
+          "法人"
+        ],
+        [
+          "仁武新廠",
+          "產能提升後加速訂單去化",
+          "時報"
+        ]
+      ],
+      "note": "客戶名稱未取得。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "Coaxial Socket（同軸測試座）",
+      "composition": "高頻、高速測試座",
+      "spec": "AI／HPC晶片",
+      "application": "成品測試"
+    },
+    {
+      "name": "HyperSocket",
+      "composition": "新架構測試座",
+      "spec": "單價較同軸高20%～30%",
+      "application": "超過50%新客戶計畫採用"
+    },
+    {
+      "name": "MEMS探針卡",
+      "composition": "MEMS探針",
+      "spec": "稀釋毛利率",
+      "application": "AI晶片晶圓測試"
+    },
+    {
+      "name": "SLT測試",
+      "composition": "系統級測試介面",
+      "spec": "切入美系AI GPU客戶",
+      "application": "逐步放量"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "供需缺口怎麼來的",
+      "points": [
+        "AI晶片腳數與功耗增加，高階測試座與探針需求快速成長",
+        "產能（探針月產900萬支、仁武新廠）是限制",
+        "客戶新平台時程決定拉貨節奏"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受惠：穎崴、旺矽、精測、鴻勁等測試鏈",
+        "承壓：毛利率被MEMS探針卡稀釋、美系客戶平台延遲",
+        "兩面：HyperSocket單價較高，但需客戶導入"
+      ]
+    },
+    {
+      "title": "怎麼看毛利率",
+      "points": [
+        "38%低於旺矽58%、鴻勁56%",
+        "MEMS探針卡占比上升稀釋毛利",
+        "HyperSocket若成功可改善組合"
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "layer": "高階測試座（成品測試介面）",
+      "description": "Coaxial Socket、HyperSocket；AI／HPC客戶拉貨強。",
+      "global_players": [
+        "Cohu",
+        "Smiths Interconnect",
+        "穎崴"
+      ],
+      "tw_stocks": [
+        {
+          "code": "6515",
+          "name": "穎崴",
+          "role": "高階測試座、MEMS探針卡、SLT",
+          "impact": "受惠"
+        }
+      ]
+    },
+    {
+      "layer": "探針卡與探針",
+      "description": "MEMS探針與彈簧探針；產能擴張。",
+      "global_players": [
+        "FormFactor",
+        "Technoprobe"
+      ],
+      "tw_stocks": [
+        {
+          "code": "6223",
+          "name": "旺矽",
+          "role": "探針卡，另有研究",
+          "impact": "受惠"
+        },
+        {
+          "code": "6510",
+          "name": "精測",
+          "role": "探針卡與測試板，另有研究",
+          "impact": "受惠"
+        },
+        {
+          "code": "6217",
+          "name": "中探針",
+          "role": "探針與連接器，既有研究",
+          "impact": "間接"
+        }
+      ]
+    },
+    {
+      "layer": "成品測試分選與SLT",
+      "description": "Handler與SLT系統。",
+      "global_players": [
+        "Advantest",
+        "Cohu"
+      ],
+      "tw_stocks": [
+        {
+          "code": "7769",
+          "name": "鴻勁",
+          "role": "Handler，另有研究",
+          "impact": "受惠"
+        },
+        {
+          "code": "2360",
+          "name": "致茂",
+          "role": "SLT系統，另有研究",
+          "impact": "受惠"
+        }
+      ]
+    },
+    {
+      "layer": "客戶端",
+      "description": "美系AI GPU客戶（新平台時程為風險）與OSAT。",
+      "global_players": [
+        "美系AI GPU客戶",
+        "OSAT"
+      ],
+      "tw_stocks": []
+    }
+  ],
+  "conclusion": [
+    "穎崴Q2營收35.23億（年增131.4%）、毛利率38.33%、EPS 18.7元，前9月年增96.67%；Q3推算約45.6億低於大和預估約9%。",
+    "HyperSocket單價高20%～30%、SLT切入美系客戶；風險是美系AI GPU新平台可能延遲與MEMS稀釋毛利。",
+    "後續看Q3財報毛利率、仁武新廠與新平台時程。"
+  ],
+  "sources": [
+    {
+      "title": "TechNews：穎崴6月營收年增287.9%，上半年營收較2025年同期增加逾七成（7/6）",
+      "url": "https://finance.technews.tw/2026/07/06/winways-june-revenue-increased-by-287-9-year-on-year/"
+    },
+    {
+      "title": "經濟日報：穎崴報導（Q2營收35.23億元、季增18.21%）",
+      "url": "https://money.udn.com/money/story/5607/9610175"
+    },
+    {
+      "title": "Win投資：穎崴營收快訊（9月12.5億元、前9月110.60億元）",
+      "url": "https://winvest.tw/News/Detail/95854"
+    },
+    {
+      "title": "TechNews：大和證券給予穎崴目標價10,000元（9/22）",
+      "url": "https://finance.technews.tw/2026/09/22/daiwa-securities-gives-yingwei-a-target-price-of-nt10000/"
+    },
+    {
+      "title": "TechNews：高盛下調穎崴目標價至13,000元（7/16）",
+      "url": "https://finance.technews.tw/2026/07/16/goldman-sachs-lowered-its-target-price-for-winway-to-13000-yuan/"
+    },
+    {
+      "title": "MoneyWeekly：穎崴報導（SLT 切入重要國際客戶）",
+      "url": "https://www.moneyweekly.com.tw/_Article?AID=212751"
+    },
+    {
+      "title": "CMoney：穎崴筆記（高盛：切入美系AI GPU客戶SLT市場）",
+      "url": "https://www.cmoney.tw/notes/note-detail.aspx?nid=1182948"
+    },
+    {
+      "title": "nStock：穎崴做什麼",
+      "url": "https://www.nstock.tw/%E7%A9%8E%E5%B4%B4%E5%81%9A%E4%BB%80%E9%BA%BC.html"
+    }
+  ],
+  "report": "# 穎崴（6515）題材與產業\n\n> 觸發：連動預研（出自〈致茂（2360）題材與產業〉：半導體測試設備（SLT、ATE 相關）——測試座）。\n\n## 重點\n- **公司**：穎崴科技，**高階測試座（Socket，含 Coaxial Socket 同軸測試座）為主**，並延伸 **MEMS 探針卡**與 **SLT 測試**；客戶為 AI／HPC 晶片廠與封測廠。\n- **營收（已證實，年增大幅）**：**Q2 營收 35.23 億元（季增 18.21%、年增 131.44%），已連續四季雙位數季增**；6 月 14.6 億元（年增 287.9%）；**9 月約 12.5 億元（月減約 26.69%、年增約 87.72%）；前 9 月累計 110.60 億元（年增 96.67%）**；上半年營收較去年同期增逾七成。公司稱受惠 AI 與 HPC 客戶強勁需求，**高階 Coaxial Socket 與 MEMS 探針卡持續拉貨**。\n- **Q3 營收（推算）**：Q1 約 29.80 億元（Q2 35.23 億元 ÷ 1.1821）→ 上半年約 65.03 億元 → **Q3 ≈ 110.60 − 65.03 = 約 45.6 億元（較 Q2 約增 29%）**。月別約 7 月 16.0 億、8 月 17.05 億、9 月 12.5 億（推算）。**大和預估 Q3 營收 50.12 億元、Q4 約 50.54 億元（季持平）**——**推算值約低於大和預估 9%**（**推算誤差與口徑差需核對，結論僅供方向**）。\n- **獲利**：**Q2 毛利率 38.33%、營益率 23.42%、淨利率 19.08%、EPS 18.7 元（季減約 4%、年增約 225%）；上半年 EPS 38.24 元**。（nStock 整理。）**毛利率明顯低於旺矽（約 58%）與鴻勁（約 56%）。**\n- **新品**：**HyperSocket 新架構**，據稱**超過 50% 新客戶計畫採用，平均單價較同軸測試座高 20%～30%**；**SLT 業務切入重要國際客戶並逐步放量**（法人）；高盛提到切入**美系 AI GPU 客戶的 SLT 市場**。\n- **產能**：**彈簧探針產能預計 2026 年底月產 900 萬支、2027 上半年 1,400 萬支**（高盛）；**高雄仁武新廠產能提升後加速訂單去化**；大和稱下一波新產能 2027 年上半年開出。\n- **外資觀點**：大和目標價 10,000 元（9/22）；高盛 7/16 下調至 13,000 元。\n- **風險訊號（高盛）**：**股價近一個月回檔約 24%，因美系 AI GPU 客戶新平台可能延遲的疑慮；6 月獲利低於預期，主因 MEMS 探針卡比重上升稀釋毛利。**\n\n## 怎麼看\n1. **需求強、供給是限制**：營收連續四季雙位數季增，產能擴張（仁武新廠、探針產能）決定出貨。\n2. **Q3 推算低於大和預估**：9 月單月營收月減約 27%，**單月波動大（與客戶拉貨節奏有關）**，Q3 若未達預期，Q4 與新平台時程是觀察點。\n3. **毛利率稀釋**：MEMS 探針卡占比上升使毛利率（38%）低於測試座純品項，**產品組合是關鍵**；HyperSocket 單價較高有機會改善。\n4. **客戶集中與平台時程**：高盛點出『美系 AI GPU 客戶新平台可能延遲』，**這是對營收時程的主要風險**。\n5. **與鴻勁、旺矽的位置**：穎崴是**成品測試的測試座（接觸介面）**，與鴻勁的 Handler 互補，與旺矽在探針卡上有部分重疊。\n\n### 資料來源\n- [TechNews：穎崴6月營收年增287.9%，上半年營收較2025年同期增加逾七成（7/6）](https://finance.technews.tw/2026/07/06/winways-june-revenue-increased-by-287-9-year-on-year/)\n- [經濟日報：穎崴報導（Q2營收35.23億元、季增18.21%）](https://money.udn.com/money/story/5607/9610175)\n- [Win投資：穎崴營收快訊（9月12.5億元、前9月110.60億元）](https://winvest.tw/News/Detail/95854)\n- [TechNews：大和證券給予穎崴目標價10,000元（9/22）](https://finance.technews.tw/2026/09/22/daiwa-securities-gives-yingwei-a-target-price-of-nt10000/)\n- [TechNews：高盛下調穎崴目標價至13,000元（7/16）](https://finance.technews.tw/2026/07/16/goldman-sachs-lowered-its-target-price-for-winway-to-13000-yuan/)\n- [MoneyWeekly：穎崴報導（SLT 切入重要國際客戶）](https://www.moneyweekly.com.tw/_Article?AID=212751)\n- [CMoney：穎崴筆記（高盛：切入美系AI GPU客戶SLT市場）](https://www.cmoney.tw/notes/note-detail.aspx?nid=1182948)\n- [nStock：穎崴做什麼](https://www.nstock.tw/%E7%A9%8E%E5%B4%B4%E5%81%9A%E4%BB%80%E9%BA%BC.html)\n",
+  "trigger": "2026-10-30 連動預研：致茂（2360）題材與產業 研究完成，相關個股先研究起來（半導體測試設備（SLT、ATE相關）：測試座）"
+}
