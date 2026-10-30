@@ -1,26 +1,8 @@
 {
  "start": "2026-10-12",
  "capital": 100000,
- "equity": 97993.0039557724,
- "positions": [
-  {
-   "code": "2002",
-   "name": "中鋼",
-   "setup": "突破",
-   "contract": "CBF",
-   "mult": 2000,
-   "qty": 2,
-   "qty0": 2,
-   "entry_date": "2026-10-15",
-   "entry": 19.5,
-   "stop": 19.118313471227193,
-   "r0": 0.38168652877280707,
-   "realized": -179.56,
-   "half_done": false,
-   "days": 8,
-   "exit_next": ""
-  }
- ],
+ "equity": 96108.69512171856,
+ "positions": [],
  "closed": [
   {
    "code": "1718",
@@ -65,11 +47,35 @@
    "pnl": -164,
    "r": -0.08,
    "reason": "保本出場"
+  },
+  {
+   "code": "2002",
+   "name": "中鋼",
+   "setup": "突破",
+   "contract": "CBF",
+   "mult": 2000,
+   "qty": 2,
+   "qty0": 2,
+   "entry_date": "2026-10-15",
+   "entry": 19.5,
+   "stop": 19.118313471227193,
+   "r0": 0.38168652877280707,
+   "realized": -179.56,
+   "half_done": false,
+   "days": 9,
+   "exit_next": "",
+   "exit_date": "2026-10-30",
+   "exit": 19.118313471227193,
+   "pnl": -1884,
+   "r": -1.23,
+   "reason": "停損"
   }
  ],
  "plan": [],
- "last_date": "2026-10-29",
+ "last_date": "2026-10-30",
  "regime": "空頭／盤整",
  "blocked": [],
- "last_events": []
+ "last_events": [
+  "🔴 模擬出場 2002 中鋼 @ 19.1（停損）｜損益 -1,884（-1.2R）"
+ ]
 }

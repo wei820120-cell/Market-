@@ -17,7 +17,7 @@
    "r0": 0.8822281020503482,
    "realized": -122.11399688720704,
    "half_done": true,
-   "days": 13,
+   "days": 14,
    "exit_next": ""
   },
   {
@@ -34,7 +34,7 @@
    "r0": 0.9459572100168714,
    "realized": -101.51,
    "half_done": true,
-   "days": 13,
+   "days": 14,
    "exit_next": ""
   },
   {
@@ -51,7 +51,7 @@
    "r0": 0.37942126100774587,
    "realized": -206.69199844360352,
    "half_done": false,
-   "days": 1,
+   "days": 2,
    "exit_next": ""
   }
  ],
@@ -168,10 +168,8 @@
   }
  ],
  "plan": [],
- "last_date": "2026-10-29",
+ "last_date": "2026-10-30",
  "regime": "空頭／盤整",
  "blocked": [],
- "last_events": [
-  "🟢 模擬進場 2633 台灣高鐵｜PGF 2 口 @ 26.1｜停損 25.8｜拉回"
- ]
+ "last_events": []
 }
