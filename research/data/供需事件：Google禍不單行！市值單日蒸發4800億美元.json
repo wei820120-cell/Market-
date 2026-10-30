@@ -1,0 +1,341 @@
+{
+ "topic": "供需事件：Google禍不單行！市值單日蒸發4800億美元",
+ "one_line": "Alphabet財報後單日跌逾12%、市值蒸發約4,800億～5,000億美元（美股史上第二大，僅次Nvidia 2025/1）：Q3自由現金流−90.7億美元、資本支出513.6億（高於營業現金流423億）、全年指引維持1,950億～2,050億、2027年將大幅增加；廣告與EPS不如預期，Google Cloud 307億（+103%）。這不是減產停產：主因是AI投資報酬率疑慮；芬蘭兩處規劃中資料中心因環評與疑似非法伐木被勒令停工並遭刑事調查。對台廠無查到訂單下修，壓力在估值與情緒。",
+ "status": "混合",
+ "horizon": "短期（1-3個月）",
+ "keywords": [
+  "Alphabet",
+  "Google",
+  "市值蒸發",
+  "自由現金流",
+  "資本支出",
+  "TPU",
+  "Google Cloud",
+  "芬蘭資料中心",
+  "環評",
+  "AI投資報酬率"
+ ],
+ "catalysts": [
+  "亞馬遜、英特爾財報後資本支出指引",
+  "Meta、微軟資本支出與自由現金流",
+  "台灣供應鏈Q3法說對Google／TPU訂單口徑",
+  "TPU 2027年放量時程",
+  "芬蘭12月刑事調查進展",
+  "Alphabet是否調整備貨節奏"
+ ],
+ "risks": [
+  "市值蒸發金額各報導4,800億～5,000億不一",
+  "自由現金流預期值報導『−27億』與『+27億』兩種說法",
+  "亞馬遜、英特爾盤後下跌原因未查證",
+  "2027年資本支出超過3,000億為媒體估計",
+  "未查到台廠訂單變動的報導，台灣影響為推論",
+  "若CSP放緩資本支出，台灣AI供應鏈才會下修",
+  "芬蘭事件投資金額與容量未取得，規模說法不一（330公頃 vs 1,300英畝）",
+  "觸發新聞將事件歸類為『減產停產』並不準確"
+ ],
+ "spec_tables": [
+  {
+   "title": "表A：Alphabet 2026 Q3關鍵數字",
+   "columns": [
+    "項目",
+    "數字",
+    "備註"
+   ],
+   "rows": [
+    [
+     "自由現金流",
+     "−90.7億美元",
+     "預期值報導不一（−27億或+27億）"
+    ],
+    [
+     "資本支出（單季）",
+     "513.6億美元",
+     "低於預估550.9億，高於營業現金流423億"
+    ],
+    [
+     "全年資本支出指引",
+     "1,950億～2,050億美元",
+     "維持不變"
+    ],
+    [
+     "2027年資本支出",
+     "大幅增加（媒體估計超過3,000億）",
+     "媒體估計"
+    ],
+    [
+     "廣告營收",
+     "約820億美元",
+     "預期834億"
+    ],
+    [
+     "調整後EPS",
+     "2.67美元",
+     "預期2.97美元"
+    ],
+    [
+     "Google Cloud營收",
+     "307億美元（+103%）",
+     "亮點"
+    ],
+    [
+     "FCF轉負原因",
+     "TPU系統銷售前期備貨＋52億歐盟罰款",
+     "扣罰款後仍約−39億"
+    ]
+   ],
+   "note": "各報導口徑略有差異。"
+  },
+  {
+   "title": "表B：芬蘭資料中心事件",
+   "columns": [
+    "項目",
+    "內容"
+   ],
+   "rows": [
+    [
+     "地點",
+     "Muhos、Kajaani（Tuike Finland）"
+    ],
+    [
+     "監管機關命令",
+     "LVV 10/7要求暫停準備工程（最遲10/23）"
+    ],
+    [
+     "已進行工程",
+     "砍伐樹木、剝除表土、施工道路與儲存區、溝渠與涵管"
+    ],
+    [
+     "刑事調查",
+     "警方調查疑似非法伐木、未完成環評"
+    ],
+    [
+     "Google回應",
+     "承認未達高標準、Muhos植林130公頃"
+    ],
+    [
+     "規模",
+     "Muhos約330公頃（衛報）vs 1,300英畝（另一說法）"
+    ]
+   ],
+   "note": "影響為規劃中工地延後，投資金額未取得。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "CSP資本支出",
+   "composition": "GPU＋自研ASIC（TPU）",
+   "spec": "Alphabet 2026指引1,950億～2,050億；2027年大幅增加",
+   "application": "AI基礎建設"
+  },
+  {
+   "name": "TPU系統銷售",
+   "composition": "自家TPU對外銷售",
+   "spec": "2027年放量（公司說法）",
+   "application": "Google Cloud成長動能；前期備貨拖累現金流"
+  },
+  {
+   "name": "資料中心用地與許可",
+   "composition": "電力、土地、環評",
+   "spec": "環評不完整可能延後新園區",
+   "application": "芬蘭事件"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "AI資本支出（513.6億）超過營業現金流（423億），市場開始要求投資報酬",
+    "資料中心新園區受電力、土地、環評限制，芬蘭事件顯示許可風險",
+    "TPU備貨使現金流先轉負、收入認列在後"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠：TPU供應鏈（公司稱2027放量）、Google Cloud（+103%）",
+    "受傷：估值依賴AI資本支出的供應鏈（情緒面）",
+    "若CSP放緩資本支出：載板、CCL、伺服器ODM先反映"
+   ]
+  },
+  {
+   "title": "怎麼看『減產停產』標籤",
+   "points": [
+    "並非減產：Alphabet沒有降低資本支出",
+    "芬蘭停工只涉規劃中兩處工地",
+    "主要衝擊來自財報與AI投資報酬率疑慮"
+   ]
+  }
+ ],
+ "conclusion": [
+  "Alphabet單日跌逾12%、市值蒸發約4,800億～5,000億美元，主因是Q3自由現金流−90.7億美元與資本支出513.6億（高於營業現金流423億），並非減產停產。",
+  "公司維持全年資本支出指引、預告2027年大幅增加、TPU明年放量；芬蘭兩處規劃中資料中心遭停工與刑事調查，屬供給端許可風險。",
+  "未查到台廠訂單下修的報導，台灣影響為情緒與估值面；若CSP放緩資本支出才會反映到供應鏈。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：Alphabet週四跌逾12%、市值蒸發約4,800億美元；芬蘭資料中心刑事調查（觸發新聞）",
+   "url": "https://news.cnyes.com/news/id/6641607"
+  },
+  {
+   "title": "鉅亨網：谷歌跌幅擴大至13%，市值蒸發近4900億美元",
+   "url": "https://news.cnyes.com/news/id/6641139"
+  },
+  {
+   "title": "天下雜誌：科技巨頭股價比慘！Google蒸發近5000億，英特爾、亞馬遜盤後崩跌",
+   "url": "https://www.cw.com.tw/article/5143490"
+  },
+  {
+   "title": "工商時報：Alphabet財報炸鍋！公司押注TPU明年爆發 資本支出恐再飆（10/29）",
+   "url": "https://www.ctee.com.tw/news/20261029700688-430704"
+  },
+  {
+   "title": "時報資訊：砸6兆元拚AI！Alphabet現金流轉負 股價暴跌13％",
+   "url": "https://www.chinatimes.com/realtimenews/20261029004914-260408"
+  },
+  {
+   "title": "時報資訊：《國際產業》Alphabet為AI燒錢太兇？沒這覺悟 就別上場",
+   "url": "https://www.chinatimes.com/realtimenews/20261029003340-260410"
+  },
+  {
+   "title": "經濟日報：財報不如預期加上自由現金流轉負 Alphabet股價重挫",
+   "url": "https://udn.com/news/story/6811/9844049"
+  },
+  {
+   "title": "經濟日報：AI太燒錢…字母現金流缺口擴大 市場對『變現』疑慮再起",
+   "url": "https://udn.com/news/story/6811/9845838"
+  },
+  {
+   "title": "今周刊：Alphabet、微軟財報『關鍵數字』曝光，它握有大筆現金才是王！盤後股價兩樣情",
+   "url": "https://www.businesstoday.com.tw/article/category/183025/post/202610290009/"
+  },
+  {
+   "title": "Yahoo：Google雲端暴增103% 燒錢擴大",
+   "url": "https://tw.news.yahoo.com/google%E9%9B%B2%E7%AB%AF%E6%9A%B4%E5%A2%9E103-%E7%87%92%E9%8C%A2%E6%93%B4%E5%A4%A7-033000619.html"
+  },
+  {
+   "title": "Al Jazeera：Finland orders halt to work on Google data sites over environment concerns（10/7）",
+   "url": "https://www.aljazeera.com/news/2026/10/7/finland-orders-halt-to-work-on-google-data-sites-over-environment-concerns"
+  },
+  {
+   "title": "DatacenterDynamics：Google ordered to suspend site work at two data centers in Finland following tree clearing controversy",
+   "url": "https://datacenterdynamics.com/en/news/google-ordered-to-suspend-site-work-at-two-data-centers-in-finland-following-tree-clearing-controversy"
+  },
+  {
+   "title": "Yle：芬蘭警方調查疑似非法伐木、Google 資料中心停工",
+   "url": "https://yle.fi/a/74-20250446"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "雲端服務商（CSP）資本支出",
+   "description": "Alphabet資本支出龐大、自由現金流轉負；亞馬遜、微軟、Meta對照。",
+   "global_players": [
+    "Alphabet",
+    "亞馬遜",
+    "微軟",
+    "Meta"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "TPU與自研ASIC供應鏈（台廠，既有研究提及）",
+   "description": "聯發科（TPU相關）、世芯；TrendForce稱聯發科TPU v9出貨可能延到2028Q1。",
+   "global_players": [
+    "Broadcom",
+    "聯發科",
+    "Google"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2454",
+     "name": "聯發科",
+     "role": "外界連結TPU相關ASIC，既有研究",
+     "impact": "待核對"
+    },
+    {
+     "code": "3661",
+     "name": "世芯-KY",
+     "role": "ASIC設計，既有研究",
+     "impact": "待核對"
+    }
+   ]
+  },
+  {
+   "layer": "載板與CCL",
+   "description": "高階載板、CCL與TPU升級相關（既有研究）。",
+   "global_players": [
+    "Ibiden",
+    "欣興",
+    "臻鼎"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "ABF載板，TPU載板（既有研究）",
+     "impact": "待核對"
+    },
+    {
+     "code": "4958",
+     "name": "臻鼎-KY",
+     "role": "爭取Google TPU載板認證（既有研究）",
+     "impact": "待核對"
+    },
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "CCL，既有研究",
+     "impact": "待核對"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "CCL，既有研究",
+     "impact": "待核對"
+    }
+   ]
+  },
+  {
+   "layer": "測試鏈",
+   "description": "TPU測試介面與系統級測試（精測、旺矽、穎崴、京元電等）。",
+   "global_players": [
+    "Advantest",
+    "FormFactor"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6510",
+     "name": "精測",
+     "role": "TPU工程驗證，暫定2027Q1出貨（公司說法）",
+     "impact": "待核對"
+    },
+    {
+     "code": "6223",
+     "name": "旺矽",
+     "role": "探針卡",
+     "impact": "待核對"
+    },
+    {
+     "code": "6515",
+     "name": "穎崴",
+     "role": "測試座",
+     "impact": "待核對"
+    },
+    {
+     "code": "2449",
+     "name": "京元電子",
+     "role": "AI晶片測試，既有研究",
+     "impact": "待核對"
+    }
+   ]
+  },
+  {
+   "layer": "資料中心用地與許可",
+   "description": "環評、電力、土地；芬蘭兩處規劃中工地被勒令停工並遭刑事調查。",
+   "global_players": [
+    "Google（Tuike Finland）"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}
