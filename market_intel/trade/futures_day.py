@@ -22,9 +22,11 @@ log = logging.getLogger(__name__)
 STATE_PATH = Path(__file__).resolve().parents[2] / "state" / "futures_day.json"
 DEFAULTS = {
     "enabled": True,
-    "contract_multiplier": 50,      # 小台每點 50 元（大台 200、微台 10）：只用在「當日虧損上限」的換算
+    "contract": "微台",              # 操作的契約名稱（只用在訊息文字）；報價一律用成交量最大的台指期近月（TXF）當訊號來源，微台與它同價同步
+    "contract_multiplier": 10,      # 每點多少元：微台 10、小台 50、大台 200（用在損益與「當日虧損上限」的換算）
     "capital": 1_000_000,           # 台指期的操作資金（原文：至少 100 萬）
-    "max_lots": 4,                  # 滿倉口數上限（單筆 1 口：原文新手從 1:4 開始，他自己 1:120）
+    "unit_lots": 1,                 # 每次進場／加碼幾口（微台每口只有大台的 1/20，想放大請調這裡）
+    "max_lots": 4,                  # 滿倉口數上限（原文：單筆 1 口，新手從 1:4 開始，他自己 1:120；微台一口很小，要放大比值就調高）
     "active_range_pct": 1.6,        # 日內高低差 ≥ 此 % 才算「真正行情」、才准加碼（原文 120 點）
     "early_trend_pct": 1.33,        # 09:30 前就達到 → 訊息標示「早盤動能強」（原文 9 點半超過 100 點）
     "bar_range_pct": 1.07,          # 斷頭日型：5 分 K 高低差 ≥ 此 %（原文 80 點）
@@ -115,7 +117,8 @@ def _board(st: dict, cfg: dict) -> str:
 
 def _risk_line(cfg: dict) -> str:
     cap = cfg["capital"] * cfg["daily_loss_pct"] / 100
-    return f"風控：當日虧損上限 {cap:,.0f} 元（資金 {cfg['capital']:,.0f} 的 {cfg['daily_loss_pct']}%），賠錢不加碼。"
+    return (f"風控：{cfg['contract']}每點 {cfg['contract_multiplier']:g} 元；當日虧損上限 {cap:,.0f} 元"
+            f"（資金 {cfg['capital']:,.0f} 的 {cfg['daily_loss_pct']}%），賠錢不加碼。")
 
 
 def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] | None = None,
@@ -175,9 +178,10 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
             done.append("final")
             _flat(st, price, "exit_final", "出場", now, out, f"⏰ 收盤前出場 {price:,.0f}：剩下的全部出場（抱到快收盤、獲利與持有時間成正比）。用市價（範圍市價）。")
             return out
-        if len(cfg["exit_times"]) > 1 and _after(now, cfg["exit_times"][0]) and "half" not in done and st["lots"] > 1:
+        unit = max(1, int(cfg["unit_lots"]))
+        if len(cfg["exit_times"]) > 1 and _after(now, cfg["exit_times"][0]) and "half" not in done and st["lots"] > unit:
             done.append("half")
-            n = st["lots"] // 2
+            n = max(unit, st["lots"] // 2 // unit * unit)       # 以「單位」為準出一半
             pts = (price - st["avg"]) * sign * n
             st["realized_pts"] += pts
             st["lots"] -= n
@@ -185,7 +189,7 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
                    f"⏰ 分批出場：出 {n} 口（約 {pts * cfg['contract_multiplier']:+,.0f} 元），剩 {st['lots']} 口。快收盤了，獲利與持有時間成正比，其餘等最後一次。用市價（範圍市價）。", out)
         # 加碼：剛收完一根 5 分 K 拉回、獲利中、那根 K 沒碰到成本、盤面合格、口數沒滿
         bs = bars(st["ticks"])
-        if len(bs) >= 2 and st["qualified"] and st["lots"] < cfg["max_lots"] and "half" not in done:
+        if len(bs) >= 2 and st["qualified"] and st["lots"] + unit <= cfg["max_lots"] and "half" not in done:
             b = bs[-2]                     # 最近一根已收完的 K
             pullback = (b["close"] < b["open"]) if st["dir"] == "long" else (b["close"] > b["open"])
             above_cost = (b["low"] > st["avg"]) if st["dir"] == "long" else (b["high"] < st["avg"])
@@ -193,11 +197,11 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
             if pullback and above_cost and profitable and b["key"] != st["last_add_bar"] and b["key"] > st["entry_bar"]:
                 st["last_add_bar"] = b["key"]
                 st["adds"] += 1
-                new_avg = (st["avg"] * st["lots"] + price) / (st["lots"] + 1)
-                st["lots"] += 1
+                new_avg = (st["avg"] * st["lots"] + price * unit) / (st["lots"] + unit)
+                st["lots"] += unit
                 st["avg"] = new_avg
                 _alert(st, f"add:{b['key']}", "加碼", now, price,
-                       f"➕ 加碼 1 口（{'多' if sign > 0 else '空'}）{price:,.0f}：{b['key'][-4:-2]}:{b['key'][-2:]} 的 5 分 K 拉回收{'黑' if sign > 0 else '紅'}、"
+                       f"➕ 加碼 {unit} 口{cfg['contract']}（{'多' if sign > 0 else '空'}）{price:,.0f}：{b['key'][-4:-2]}:{b['key'][-2:]} 的 5 分 K 拉回收{'黑' if sign > 0 else '紅'}、"
                        f"沒碰到成本、目前獲利。累計 {st['lots']} 口，平均成本 {new_avg:,.1f}（上限 {cfg['max_lots']} 口）。第一次要突破買、第二次要拉回買。", out)
         return out
 
@@ -212,16 +216,18 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
             want = "short"
         if want:
             st["dir"] = want
-            st["lots"], st["avg"], st["adds"] = 1, price, 0
+            unit = max(1, int(cfg["unit_lots"]))
+            st["lots"], st["avg"], st["adds"] = unit, price, 0
             st["entries"] += 1
             st["entry_bar"] = _bar_key(now)
             sgn = 1 if want == "long" else -1
             stop_px = price * (1 - sgn * cfg["stop_pct"] / 100)
+            risk = abs(price - stop_px) * unit * cfg["contract_multiplier"]
             tail = ("盤面已合格，後續拉回可依訊號加碼。" if st["qualified"] else
                     f"盤面還沒到真正行情（振幅未達 {cfg['active_range_pct']}%），先只試單、不要太積極，也不要加碼。")
             _alert(st, f"enter{st['entries']}", "進場", now, price,
-                   f"{'🔺 做多' if want == 'long' else '🔻 做空'}試單 1 口 {price:,.0f}：{'突破今日高點' if want == 'long' else '跌破今日低點'} {prev_high if want == 'long' else prev_low:,.0f}。"
-                   f"停損 {stop_px:,.1f}（平均成本外 {cfg['stop_pct']}%）。{tail}今天只做這個方向。", out)
+                   f"{'🔺 做多' if want == 'long' else '🔻 做空'}試單 {unit} 口{cfg['contract']} {price:,.0f}：{'突破今日高點' if want == 'long' else '跌破今日低點'} {prev_high if want == 'long' else prev_low:,.0f}。"
+                   f"停損 {stop_px:,.1f}（平均成本外 {cfg['stop_pct']}%，這一單停損約虧 {risk:,.0f} 元）。{tail}今天只做這個方向。", out)
     return out
 
 

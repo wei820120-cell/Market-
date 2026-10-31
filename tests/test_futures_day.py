@@ -99,7 +99,7 @@ def test_blowoff_day_exits_on_big_jump_only_after_three_day_streak():
 
 
 def test_daily_loss_cap_flattens_and_halts_the_day():
-    cfg = dict(CFG, capital=200_000, daily_loss_pct=0.5, stop_pct=5.0)     # 上限 1,000 元＝小台 20 點；停損拉遠，讓虧損上限先到
+    cfg = dict(CFG, capital=200_000, daily_loss_pct=0.5, stop_pct=5.0, contract_multiplier=50)     # 上限 1,000 元＝小台 20 點；停損拉遠，讓虧損上限先到
     t = path([("08:46", 20000), ("08:58", 19960), ("09:00", 20040), ("09:06", 20100), ("09:30", 20010), ("09:40", 20010)])
     sigs, st = fd.replay(t, cfg)
     assert sigs[-1]["kind"] == "停損" and "虧損已達上限" in sigs[-1]["text"] and st["halted"] and st["lots"] == 0
@@ -109,7 +109,7 @@ def test_daily_loss_cap_flattens_and_halts_the_day():
 def test_message_has_board_risk_and_no_order_disclaimer():
     sigs, st = fd.replay(TREND[:30], CFG)
     msg = fd.format_message(sigs, st, CFG)
-    assert "盤面：日內振幅" in msg and "當日虧損上限 30,000 元" in msg and "不是下單" in msg
+    assert "盤面：日內振幅" in msg and "當日虧損上限 30,000 元" in msg and "不是下單" in msg and "微台每點 10 元" in msg
     assert "計畫帳" in fd.summary(st, CFG)
 
 
@@ -157,3 +157,18 @@ def test_cli_check_ignores_stale_quotes_and_pushes_to_trade_channel(tmp_path, mo
     cli._futures_day_check(box, now)                       # 第二筆：突破今日高點 → 試單，推到出進場機器人
     assert sent and sent[0][0] == "trade" and "做多試單" in sent[0][1]
     assert fd.load_state("2026-10-30")["lots"] == 1
+
+
+def test_micro_contract_defaults_and_unit_lots_scale_entries_adds_and_half_exit():
+    assert CFG["contract"] == "微台" and CFG["contract_multiplier"] == 10 and CFG["unit_lots"] == 1
+    cfg = dict(CFG, unit_lots=3, max_lots=9)          # 每次 3 口微台、滿倉最多 9 口
+    sigs, st = fd.replay(TREND, cfg)
+    assert "試單 3 口微台" in sigs[0]["text"] and "這一單停損約虧" in sigs[0]["text"]
+    adds = [s for s in sigs if s["kind"] == "加碼"]
+    assert adds and "加碼 3 口微台" in adds[0]["text"]
+    half = [s for s in sigs if s["kind"] == "出場" and "分批" in s["text"]]
+    assert half and "出 3 口" in half[0]["text"] or "出 6 口" in half[0]["text"]       # 以單位（3 口）為準出一半
+    assert st["lots"] == 0 and st["realized_pts"] > 0
+    # 損益用每點 10 元換算：訊息裡的「約 N 元」＝點數 × 口數 × 10
+    ten = fd.summary(st, cfg)
+    assert f"{st['realized_pts'] * 10:+,.0f} 元" in ten
