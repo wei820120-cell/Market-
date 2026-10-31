@@ -2,8 +2,9 @@
 
 只在盤面合格時叫你動作；只發訊號、不下單。規則（原文點數是十幾年前的位階，這裡全部換成「占價格的 %」，預設值按當年加權約 7,500 點換算，等交易明細校準）：
 - 一天只做一個方向：價格突破「今日高點」→ 多方、跌破「今日低點」→ 空方；第一次突破先試單（1 口）。
-- 加碼：只有「盤面合格」（日內高低差已達 active_range_pct，真正行情）、而且已經獲利（價格在平均成本有利的一邊）、
-  剛收完一根 5 分 K 拉回（做多＝收黑 K）、那根 K 沒碰到平均成本（支撐在成本之上）、口數還沒到上限 → 加碼 1 口。賠錢時絕不加碼。
+- 加碼：只有「盤面合格」（日內高低差已達 active_range_pct，真正行情）、而且已經獲利（價格在平均成本有利的一邊）、口數還沒到上限，
+  兩種時機：①剛收完一根 5 分 K 拉回（做多＝收黑 K）而且那根 K 沒碰到平均成本（拉回加碼）；②價格又創日內新高／新低、比上一筆成交再多走 ext_add_pct
+  （順勢加碼：他 10/30 的明細就是順著跌勢約每 14～55 點加空 1 口）。賠錢時絕不加碼。
 - 停損：跌破（做空則突破）平均成本一點點（stop_pct）就全出；當日虧損達資金的 daily_loss_pct 也全出、當天不再做。
 - 出場：預設抱到快收盤才分批（exit_times：第一次出一半、第二次全出）；日線連漲／連跌 3 天以上的日子，
   5 分 K 振幅過大（bar_range_pct）或跳動過大（tick_jump_pct）就提早全出。出場一律用市價（範圍市價），不要掛限價。
@@ -27,8 +28,10 @@ DEFAULTS = {
     "capital": 1_000_000,           # 台指期的操作資金（原文：至少 100 萬）
     "unit_lots": 1,                 # 每次進場／加碼幾口（微台每口只有大台的 1/20，想放大請調這裡）
     "max_lots": 4,                  # 滿倉口數上限（原文：單筆 1 口，新手從 1:4 開始，他自己 1:120；微台一口很小，要放大比值就調高）
-    "active_range_pct": 1.6,        # 日內高低差 ≥ 此 % 才算「真正行情」、才准加碼（原文 120 點）
-    "early_trend_pct": 1.33,        # 09:30 前就達到 → 訊息標示「早盤動能強」（原文 9 點半超過 100 點）
+    "active_range_pct": 1.0,        # 日內高低差 ≥ 此 % 才算「真正行情」、才准加碼（原文 120 點；依他 10/30 成交明細校準：第一筆後約在振幅 1.0% 才開始連續加碼）
+    "early_trend_pct": 0.9,         # 09:30 前就達到 → 訊息標示「早盤動能強」（原文 9 點半超過 100 點）
+    "ext_add_pct": 0.04,            # 順勢加碼：價格再創日內新高／新低、且比上一筆成交又多走這麼多 %（他的實際成交：每約 14～55 點加 1 口，約 0.03～0.12%）
+    "ext_add_gap_sec": 15,          # 順勢加碼：兩次加碼至少隔幾秒（他最密的兩筆相隔 20 秒）
     "bar_range_pct": 1.07,          # 斷頭日型：5 分 K 高低差 ≥ 此 %（原文 80 點）
     "tick_jump_pct": 0.27,          # 斷頭日型：相鄰兩筆報價跳動 ≥ 此 %（原文 20 點）
     "stop_pct": 0.15,               # 跌破平均成本多少 % 全出（原文只說依均價設停損，沒給數字：待交易明細校準）
@@ -58,7 +61,7 @@ def _after(now: datetime, hm: str) -> bool:
 
 def new_day(day: str) -> dict:
     return {"date": day, "ticks": [], "open": None, "day_high": None, "day_low": None, "dir": None, "lots": 0, "avg": None,
-            "entries": 0, "adds": 0, "last_add_bar": None, "entry_bar": "", "halted": False, "realized_pts": 0.0, "exits_done": [],
+            "entries": 0, "adds": 0, "last_add_bar": None, "entry_bar": "", "last_fill": None, "last_fill_ts": None, "halted": False, "realized_pts": 0.0, "exits_done": [],
             "qualified": False, "alerts": [], "last_price": None}
 
 
@@ -126,6 +129,8 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
     """餵一筆報價，回傳這一筆觸發的訊號（0 到多則）。st 會被就地更新（可存檔、換執行也能接續）。"""
     out: list[dict] = []
     st.setdefault("entry_bar", "")
+    st.setdefault("last_fill", None)
+    st.setdefault("last_fill_ts", None)
     first = not st["ticks"]
     prev_high, prev_low = st["day_high"], st["day_low"]
     last = st["last_price"]
@@ -200,9 +205,24 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
                 new_avg = (st["avg"] * st["lots"] + price * unit) / (st["lots"] + unit)
                 st["lots"] += unit
                 st["avg"] = new_avg
+                st["last_fill"], st["last_fill_ts"] = price, now.isoformat(timespec="seconds")
                 _alert(st, f"add:{b['key']}", "加碼", now, price,
                        f"➕ 加碼 {unit} 口{cfg['contract']}（{'多' if sign > 0 else '空'}）{price:,.0f}：{b['key'][-4:-2]}:{b['key'][-2:]} 的 5 分 K 拉回收{'黑' if sign > 0 else '紅'}、"
                        f"沒碰到成本、目前獲利。累計 {st['lots']} 口，平均成本 {new_avg:,.1f}（上限 {cfg['max_lots']} 口）。第一次要突破買、第二次要拉回買。", out)
+                return out
+        # 順勢加碼：創日內新高／新低、比上一筆成交又多走 ext_add_pct、離上一筆至少 ext_add_gap_sec 秒
+        lf = st["last_fill"]
+        if (lf is not None and st["qualified"] and st["lots"] + unit <= cfg["max_lots"] and "half" not in done
+                and (price - st["avg"]) * sign > 0 and (price - lf) * sign >= lf * cfg["ext_add_pct"] / 100
+                and (price >= st["day_high"] if sign > 0 else price <= st["day_low"])
+                and (now - datetime.fromisoformat(st["last_fill_ts"])).total_seconds() >= cfg["ext_add_gap_sec"]):
+            new_avg = (st["avg"] * st["lots"] + price * unit) / (st["lots"] + unit)
+            st["lots"] += unit
+            st["avg"], st["adds"] = new_avg, st["adds"] + 1
+            st["last_fill"], st["last_fill_ts"] = price, now.isoformat(timespec="seconds")
+            _alert(st, f"ext:{st['entries']}:{st['lots']}", "加碼", now, price,
+                   f"➕ 順勢加碼 {unit} 口{cfg['contract']}（{'多' if sign > 0 else '空'}）{price:,.0f}：{'創日內新高' if sign > 0 else '創日內新低'}，比上一筆成交 {lf:,.0f} 又多走 {abs(price - lf):,.0f} 點、目前獲利。"
+                   f"累計 {st['lots']} 口，平均成本 {new_avg:,.1f}（上限 {cfg['max_lots']} 口）。", out)
         return out
 
     # ---- 空手：突破今日高低點 → 試單（一天一個方向）
@@ -220,6 +240,7 @@ def step(st: dict, now: datetime, price: float, cfg: dict, closes: list[float] |
             st["lots"], st["avg"], st["adds"] = unit, price, 0
             st["entries"] += 1
             st["entry_bar"] = _bar_key(now)
+            st["last_fill"], st["last_fill_ts"] = price, now.isoformat(timespec="seconds")
             sgn = 1 if want == "long" else -1
             stop_px = price * (1 - sgn * cfg["stop_pct"] / 100)
             risk = abs(price - stop_px) * unit * cfg["contract_multiplier"]
