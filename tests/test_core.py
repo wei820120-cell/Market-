@@ -2409,6 +2409,37 @@ def test_threads_cmd_does_not_push_but_queues_research_and_fills_inbox(tmp_path,
     assert not sent
 
 
+def test_threads_learn_accounts_always_land_in_inbox_with_full_text(tmp_path, monkeypatch):
+    import argparse
+    import json
+    from market_intel import cli, config, notify, research, signals
+    from market_intel.fetchers import threads
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "research" / "index.json")
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "state" / "research_queue")
+    monkeypatch.setattr(research, "RELATED_PATH", tmp_path / "state" / "research_related.json")
+    monkeypatch.setattr(signals, "STATE_PATH", tmp_path / "state" / "signals.json")
+    monkeypatch.setattr(threads, "STATE_PATH", tmp_path / "state" / "threads_seen.json")
+    monkeypatch.setattr(threads, "INBOX_DIR", tmp_path / "state" / "threads_inbox")
+    monkeypatch.setattr(config, "sources", lambda: {"threads_accounts": [], "threads_learn_accounts": ["PingYunHuang"]})
+    monkeypatch.setattr(cli, "_listings", lambda: SIG_LISTINGS)
+    monkeypatch.setattr(cli, "now_tw", lambda: research.now_tw().replace(year=2026, month=10, day=31, hour=15, minute=30))
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    long_text = "第一次突破買，第二次拉回買，賠錢的時候絕對不能加碼。" * 100
+    mine = threads.ThreadsPost("pingyunhuang", "AAA1", "https://t/1", long_text, "2026-10-31T06:00:00.000Z")
+    mine_short = threads.ThreadsPost("pingyunhuang", "AAA2", "https://t/2", "今天沒有行情，不進場。", "2026-10-31T06:10:00.000Z")
+    other = threads.ThreadsPost("someone_else", "BBB1", "https://t/3", "今天沒有行情，不進場。", "2026-10-31T06:20:00.000Z")
+    got = {}
+    monkeypatch.setattr(threads, "fetch_accounts", lambda handles: got.setdefault("handles", handles) and {"pingyunhuang": [mine, mine_short, other]})
+    cli.cmd_threads(argparse.Namespace(dry=False, latest=0, every=0, accounts=None))
+    assert got["handles"] == ["pingyunhuang"]                  # 學習帳號即使不在 threads_accounts 也會掃
+    inbox = json.loads((tmp_path / "state" / "threads_inbox" / "2026-10-31.json").read_text(encoding="utf-8"))["items"]
+    assert [i["id"] for i in inbox] == ["pingyunhuang/AAA1", "pingyunhuang/AAA2"]     # 別人的貼文（即使被他回覆）不收
+    assert inbox[0]["tags"][0] == "學習" and len(inbox[0]["text"]) == 2000 and inbox[0]["score"] >= 5
+    assert not sent and not list((tmp_path / "state" / "research_queue").glob("*.json"))
+
+
 def test_signals_process_push_false_queues_without_notifying(tmp_path, monkeypatch):
     from market_intel import notify, research, signals
     from market_intel.signals import Item

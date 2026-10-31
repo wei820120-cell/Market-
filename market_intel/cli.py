@@ -1113,7 +1113,11 @@ def cmd_threads(args) -> None:
     if not cfg.get("enabled", True):
         return
     src = config.sources()
-    handles = [h.lstrip("@") for h in (args.accounts or src.get("threads_accounts") or [])][:120]
+    handles = [h.lstrip("@") for h in (args.accounts or src.get("threads_accounts") or [])]
+    learn = {h.lstrip("@").lower() for h in (src.get("threads_learn_accounts") or [])}
+    if not args.accounts:
+        handles += sorted(learn - {h.lower() for h in handles})
+    handles = handles[:120]
     if not handles:
         return
     st = signals.load_state()
@@ -1147,10 +1151,13 @@ def cmd_threads(args) -> None:
             print(f"@{h}：讀到 {len(posts)} 則，要偵測 {len(fresh)} 則，待檢視 {len(review)} 則")
         for p in review:
             tags, score = signals.post_tags(p.text, names, listings, cfg)
+            mine = h.lower() in learn and p.author.lower() == h.lower()
+            if mine:   # 學習帳號自己的貼文：手法、心得不會提到公司，也一律進待檢視清單
+                tags, score = ["學習"] + tags, max(score, 5)
             if score >= 2:
                 entries.append({"id": f"{p.author}/{p.code}", "author": p.author, "url": p.url, "at": p.posted_at,
-                                "seen_at": now.isoformat(timespec="seconds"), "reply_to": p.reply_to, "text": p.text[:500],
-                                "tags": tags, "score": score})
+                                "seen_at": now.isoformat(timespec="seconds"), "reply_to": p.reply_to,
+                                "text": p.text[:2000 if mine else 500], "tags": tags, "score": score})
                 if args.dry:
                     print(f"  ＋待檢視（{score} 分）@{p.author}：{p.text[:50]!r} {tags}")
         for p in fresh:
