@@ -1,0 +1,211 @@
+{
+ "topic": "供需事件：旺矽拿下三星訂單或認證（傳聞求證）",
+ "one_line": "傳聞：三星為自建矽光子（PIC）晶圓測試，改用與台積電 COUPE 相同、已通過台積電 CPO 測試設備驗證的 FormFactor 與旺矽（6223）探針台，取代原先委外 imec，目標今年底完成、2027 年開矽光子代工。消息最早出自韓媒 TheElec（約 9/8），10/31 佇列看到的是舊聞重提；單一來源、三星與旺矽均未確認，也沒有訂單金額。探針台≠探針卡，對旺矽 2026 年營收貢獻應很小。",
+ "status": "傳聞",
+ "horizon": "中長期（2027 年矽光子代工；貢獻看三星客戶量產）",
+ "keywords": [
+  "旺矽",
+  "6223",
+  "三星",
+  "矽光子",
+  "PIC 晶圓測試",
+  "探針台",
+  "FormFactor",
+  "CPO",
+  "COUPE",
+  "TheElec",
+  "imec",
+  "傳聞求證"
+ ],
+ "catalysts": [
+  "旺矽／三星正式說法（法說、重大訊息、論壇）",
+  "旺矽 10 月營收（11/10 前）與 Q3 財報（約 11 月）",
+  "三星矽光子代工客戶與 PDK 發布（2027）",
+  "台積電 COUPE 量產節奏（決定探針台需求的主軸）"
+ ],
+ "risks": [
+  "單一來源（TheElec 引述一位三星業界主管），三星與旺矽均未確認",
+  "新聞發布已約 7 週，10/31 是舊聞重提，股價可能已反應",
+  "探針台與探針卡常被混寫；探針台對旺矽營收貢獻可能很小（開發／評估階段）",
+  "三星矽光子代工 2027 年才啟動，客戶、良率與採購量未知",
+  "『唯二通過台積電驗證』沒有獨立佐證",
+  "本次搜尋有結果誤稱旺矽 Q3 營收 95.35 億元（與既有研究 前 9 月 150.68 億元 的算法矛盾），不採用"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：被點名的兩家探針台供應商與傳聞內容",
+   "columns": [
+    "項目",
+    "說法",
+    "來源與狀態"
+   ],
+   "rows": [
+    [
+     "供應商",
+     "FormFactor（美）、旺矽 MPI（台）",
+     "TheElec／TrendForce：單一來源"
+    ],
+    [
+     "用途",
+     "三星內部測試矽光子 PIC 晶圓、量測光電特性",
+     "轉述；三星未公開確認"
+    ],
+    [
+     "時程",
+     "今年底完成內部評估、2027 年開矽光子代工",
+     "轉述"
+    ],
+    [
+     "先前做法",
+     "委外 imec 測試",
+     "轉述"
+    ],
+    [
+     "與台積電的關係",
+     "COUPE 平台同款設備",
+     "轉述；無台積電說法"
+    ],
+    [
+     "金額／數量",
+     "未提",
+     "無"
+    ]
+   ],
+   "note": "傳聞求證：以上全部來自同一原始報導，不可交叉當成多重證據。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "委外測試（imec）",
+   "composition": "三星先前矽光子 PIC 測試委外",
+   "spec": "外部產能與資料回饋慢",
+   "application": "研發初期"
+  },
+  {
+   "name": "自建測試環境",
+   "composition": "FormFactor／旺矽探針台＋光電量測",
+   "spec": "同台積電 COUPE 驗證設備",
+   "application": "2026 年底完成內部評估（報導）"
+  },
+  {
+   "name": "矽光子代工服務",
+   "composition": "製程＋元件庫＋PDK，客戶設計、三星製造",
+   "spec": "CPO 光引擎與邏輯晶片、HBM 整合",
+   "application": "2027 年開始（報導）"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "這則傳聞到底在說什麼",
+   "points": [
+    "三星『採用』兩家探針台來測自己的矽光子晶圓，是設備選用／驗證名單，不是訂單金額",
+    "探針台（整機量測設備）≠ 探針卡（晶圓測試耗材），媒體標題常混用",
+    "最早來源是韓媒 TheElec（9 月初），10/31 的新聞是舊聞重提"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠（方向）：旺矽、FormFactor（驗證名單加一個客戶）；間接：穎崴、精測、中探針（矽光子測試需求）",
+    "承壓：委外測試的 imec（三星轉內部）；其他沒進驗證名單的探針台廠",
+    "限制：三星 2027 年才開代工，貢獻看客戶量產，2026 年營收影響小"
+   ]
+  }
+ ],
+ "conclusion": [
+  "來源是 2026 年 9 月初 TheElec 的單一報導（引述三星主管），三星、旺矽、台積電均未確認，10/31 的新聞是舊聞重提。",
+  "內容是三星採用與台積電相同的 FormFactor、旺矽探針台來自建矽光子 PIC 晶圓測試，不是訂單，也沒有金額。",
+  "探針台≠探針卡；對旺矽 2026 年營收貢獻應該很小，主要是驗證名單與 2027 年之後的選擇權。",
+  "不要把舊聞當新催化追高；等旺矽或三星的正式說法、10 月營收與 Q3 財報。"
+ ],
+ "sources": [
+  {
+   "title": "TheElec：Samsung Adopts TSMC-Validated Photonics Test Platform（原始報導）",
+   "url": "https://www.thelec.net/news/articleView.html?idxno=13736"
+  },
+  {
+   "title": "TrendForce：Samsung Reportedly Eyes In-House Silicon Photonics PIC Testing by End-2026 with TSMC-Qualified Tools（2026/09/08）",
+   "url": "https://www.trendforce.com/news/2026/09/08/news-samsung-reportedly-targets-in-house-silicon-photonics-pic-testing-by-end-2026-using-tsmc-qualified-tools"
+  },
+  {
+   "title": "經濟日報：追隨台積、傳三星探針台採相同供應商 台廠旺矽入列（佇列觸發，轉述 TheElec）",
+   "url": "https://udn.com/news/story/6811/9740003"
+  },
+  {
+   "title": "自由財經：三星布局矽光子採用台積電驗證探針台 旺矽受惠",
+   "url": "https://ec.ltn.com.tw/article/breakingnews/5567134"
+  },
+  {
+   "title": "鉅亨網：佈局矽光代工！三星電子使用跟台積電同款測試設備做矽光PIC驗證",
+   "url": "https://news.cnyes.com/news/id/6600226"
+  },
+  {
+   "title": "Advanced Packaging News：Samsung advances silicon photonics",
+   "url": "https://advancedpackaging.news/article/125317/Samsung_advances_silicon_photonics"
+  },
+  {
+   "title": "聚財網：旺矽探針卡 獲三星採用（媒體標題把探針台寫成探針卡）",
+   "url": "https://news.wearn.com/c2101615.html"
+  }
+ ],
+ "layers": [
+  {
+   "layer": "矽光子 PIC 晶圓測試（探針台）",
+   "description": "三星要在內部測 PIC 晶圓（波長／頻率域光電特性）；兩家被點名的探針台供應商都已用在台積電 COUPE 平台。",
+   "global_players": [
+    "FormFactor",
+    "旺矽（MPI）",
+    "Tokyo Electron（晶圓探針台，一般 CP）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6223",
+     "name": "旺矽",
+     "role": "探針台／CPO 光電探針與設備、探針卡",
+     "impact": "受惠（傳聞）"
+    }
+   ]
+  },
+  {
+   "layer": "三星矽光子代工（客戶端）",
+   "description": "2027 年啟動矽光子代工服務；今年底前完成內部 PIC 測試；博通等為二手轉述的客戶評估對象。",
+   "global_players": [
+    "Samsung Foundry",
+    "TSMC（COUPE）",
+    "Broadcom",
+    "imec（先前被委外測試）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "晶圓與成品測試介面（探針卡、測試座）",
+   "description": "矽光子測試需求同時推動光電測試介面；與探針台屬不同產品，不能把探針台消息直接當成探針卡訂單。",
+   "global_players": [
+    "FormFactor",
+    "Technoprobe",
+    "精測",
+    "穎崴"
+   ],
+   "tw_stocks": [
+    {
+     "code": "6510",
+     "name": "精測",
+     "role": "探針卡與測試板",
+     "impact": "間接"
+    },
+    {
+     "code": "6515",
+     "name": "穎崴",
+     "role": "高階測試座",
+     "impact": "間接"
+    },
+    {
+     "code": "6217",
+     "name": "中探針",
+     "role": "探針與連接器",
+     "impact": "間接"
+    }
+   ]
+  }
+ ]
+}
