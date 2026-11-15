@@ -1,0 +1,199 @@
+{
+ "topic": "供需事件：台光電掉單或遭淘汰（傳聞求證）",
+ "one_line": "「台光電掉單或遭淘汰」沒有任何證據：佇列的「受傷：台光電」是自動解析誤判，來源 FTNN 標題是「馬斯克 AI 機櫃爆新商機！84 層 PCB 取代銅線 台光電、台燿等 3 檔搶攻 M10 大單」，台光電是受惠方。這個標題本身（84 層、M10 大單、馬斯克機櫃）也查不到出處，列為未證實。相關背景是舊的 Rubin 採用 M9 爭議（1 月 CES 後股價走跌、傳 M8／M8.5 混搭、第二供應商）；法人稱台光電是首家取得輝達 M9 認證並出貨、已談漲價，PTFE 傳聞言之過早；M10 約 2027 下半年。與既有研究不衝突（南亞 M9 認證、台燿 M9 出貨、台光電 Q3 EPS 40.47 元）。",
+ "status": "傳聞",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "台光電",
+  "M9",
+  "M10",
+  "Rubin",
+  "CCL",
+  "掉單",
+  "84層PCB",
+  "取代銅線",
+  "無線纜",
+  "背板",
+  "PTFE",
+  "第二供應商",
+  "傳聞求證"
+ ],
+ "catalysts": [
+  "台光電 10、11 月月營收與 Q4 展望；M9／M10 認證與出貨官方說法",
+  "輝達 11/17（美東）財報電話會議對 Rubin 材料與供應商的說法",
+  "臻鼎等 PCB 背板方案是否有正式客戶；xAI／特斯拉是否揭露資料中心 PCB 規格"
+ ],
+ "risks": [
+  "佇列方向解析錯誤（標題是搶攻、被標成受傷）",
+  "84 層 PCB 取代銅線、M10 大單、馬斯克機櫃都查不到出處",
+  "Rubin 採用 M9 的比重（M8／M8.5／M9 混搭）與第二供應商是舊傳聞，仍有爭議",
+  "法人說法（首家 M9 認證、漲價協議）不是公司公告",
+  "只讀搜尋摘要，沒有讀到 FTNN 原文、公告與法說簡報"
+ ],
+ "spec_tables": [
+  {
+   "title": "表 A：說法與證據對照（搜尋摘要）",
+   "columns": [
+    "說法",
+    "證據",
+    "性質"
+   ],
+   "rows": [
+    [
+     "台光電掉單或遭淘汰",
+     "沒有找到任何報導或公告",
+     "未證實（無證據）"
+    ],
+    [
+     "佇列解析「受傷：台光電」",
+     "來源標題是台光電等 3 檔搶攻 M10 大單",
+     "自動解析方向相反"
+    ],
+    [
+     "馬斯克 AI 機櫃 84 層 PCB 取代銅線",
+     "沒有找到出處；xAI Colossus 仍用光纖與銅線",
+     "未證實"
+    ],
+    [
+     "台光電首家取得輝達 M9 認證並出貨、已談漲價",
+     "法人說法（udn 轉述）",
+     "法人說法，非公司公告"
+    ],
+    [
+     "Rubin 混搭 M9／M8.5、有第二供應商",
+     "理財周刊轉述",
+     "舊傳聞"
+    ],
+    [
+     "M10 量產時程",
+     "約 2027 下半年（郭明錤，若測試順利）",
+     "分析師說法"
+    ]
+   ],
+   "note": "皆來自搜尋摘要，日期與口徑未逐一核對。"
+  }
+ ],
+ "evolution": [],
+ "concepts": [
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "缺口在高階材料與良率：M9／M10 需要高階樹脂、石英布與 HVLP 銅箔，成本高、良率有挑戰",
+    "訂單歸屬由輝達平台世代決定，不是單一新聞：Rubin 沿用現有材料或 M9、Rubin Ultra 全面 M9、M10 約 2027 下半年",
+    "供應緊使台光電能談漲價（法人說法）"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "台光電：M9 認證與出貨、漲價協議為法人說法；掉單沒有證據",
+    "台燿、聯茂、騰輝-KY：M10 與 PTFE 布局、9 月營收創高；馬斯克大單沒有證據",
+    "傳聞的第二供應商若屬實是份額競爭，沒有證據顯示已發生"
+   ]
+  },
+  {
+   "title": "傳聞與證據分開",
+   "points": [
+    "「掉單或遭淘汰」來自自動解析的方向錯誤，不是新聞內容",
+    "84 層、M10 大單、馬斯克機櫃查不到出處",
+    "Rubin 採用 M9 的爭議是 1 月起的舊傳聞"
+   ]
+  }
+ ],
+ "conclusion": [
+  "台光電「掉單或遭淘汰」沒有任何證據，佇列解析把「搶攻 M10 大單」誤判成受傷；標題本身的 84 層 PCB、馬斯克機櫃、M10 大單也查不到出處，列為傳聞",
+  "與既有研究不衝突：台光電 Q3 EPS 40.47 元、法人稱首家取得 M9 認證並談漲價；真正的風險是 M9 在 Rubin 的採用比重與第二供應商（舊傳聞）",
+  "追蹤月營收、輝達 11/17 財報與 M9／M10 官方說法"
+ ],
+ "sources": [
+  {
+   "title": "優分析：Rubin 是否採用 M9 的分析（廖婉婷，僅看到搜尋摘要）",
+   "url": "https://uanalyze.com.tw/articles/5511248798"
+  },
+  {
+   "title": "中時 Want Rich：2026-01-09 CES 後台光電股價與 Rubin M9 疑慮（僅看到搜尋摘要）",
+   "url": "https://wantrich.chinatimes.com/news/20260109900005-420101"
+  },
+  {
+   "title": "理財周刊：Rubin 混搭策略傳聞（僅看到搜尋摘要）",
+   "url": "https://www.moneyweekly.com.tw/_Article?AID=207537"
+  },
+  {
+   "title": "經濟日報／udn：PTFE 傳聞言之過早、台光電漲價協議（僅看到搜尋摘要，標題未核對）",
+   "url": "https://udn.com/news/story/7240/9576648"
+  },
+  {
+   "title": "經濟日報／udn：M9 成本與良率挑戰（僅看到搜尋摘要，標題未核對）",
+   "url": "https://money.udn.com/money/story/5739/9306872"
+  },
+  {
+   "title": "優分析：AI 算力撞上傳輸天花板！PCB、CCL 材料迎「混種革命」（僅看到標題）",
+   "url": "https://uanalyze.com.tw/articles/3383558111"
+  },
+  {
+   "title": "Zhen Ding joins NVIDIA MGX：cable-free PCB（廠商關聯部落格，非官方公告，僅看到搜尋摘要）",
+   "url": "https://dev.to/abc_8b09c7009ee0029b85665/zhen-ding-joins-nvidia-mgx-cable-free-pcb-technology-replaces-copper-cables-in-ai-server-factories-5aa6"
+  },
+  {
+   "title": "ServeTheHome：Inside 100,000 NVIDIA GPU xAI Colossus cluster（xAI 機房佈線，僅看到搜尋摘要）",
+   "url": "https://www.servethehome.com/inside-100000-nvidia-gpu-xai-colossus-cluster-supermicro-helped-build-for-elon-musk/xai-colossus-data-center-overhead-cabling/"
+  },
+  {
+   "title": "FTNN：馬斯克 AI 機櫃爆新商機！84 層 PCB 取代銅線 台光電、台燿等 3 檔搶攻 M10 大單（佇列來源，僅看到標題，未讀到原文）",
+   "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE90alRYY19mcEo5RnFiVElSRy1yUUQyQXU3c1U0T3BSZ3loNG5raU0zTTlMbmZweFZKSlhTdWY5Q2laRm5PZW16bTJlVQ?oc=5"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "輝達 Rubin 的 M8／M9／M10 材料採用（既有爭議）",
+   "description": "1 月 CES 後市場擔心 Rubin 不採 M9；傳 Rubin CPX 部分料號降到 M8、Switch 用 M9 而 UBB 用 M8.5、有第二供應商（皆為傳聞）；廖婉婷：中介板與 Switch Tray 可能沿用現有材料、Rubin Ultra 才全面 M9；法人：台光電首家取得 M9 認證並出貨、已談漲價；M10 約 2027 下半年。",
+   "global_players": [
+    "輝達",
+    "滬電（郭明錤報告提到的 PCB 開發方）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2383",
+     "name": "台光電",
+     "role": "高階 CCL 龍頭；M9 認證出貨與漲價協議為法人說法；掉單傳聞無證據",
+     "impact": "受惠（法人說法；掉單傳聞無證據）"
+    },
+    {
+     "code": "6274",
+     "name": "台燿",
+     "role": "M9／M10 與 PTFE 布局；馬斯克大單無證據",
+     "impact": "中性"
+    },
+    {
+     "code": "6213",
+     "name": "聯茂",
+     "role": "M10 與 PTFE、FCCL 技術準備；9 月營收創高",
+     "impact": "中性"
+    },
+    {
+     "code": "6672",
+     "name": "騰輝電子-KY",
+     "role": "9 月營收創高、年增逾 100%（搜尋摘要）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "PCB 背板取代銅線（無線纜設計，趨勢）",
+   "description": "Zhen Ding 與輝達 MGX 的無線纜 PCB 背板方案（廠商關聯部落格）、一般 AI 伺服器板 36～48 層、先進設計 56～68 層；84 層查不到出處；xAI Colossus 機房仍用光纖與銅線佈線。",
+   "global_players": [
+    "Zhen Ding（臻鼎）",
+    "輝達 MGX"
+   ],
+   "tw_stocks": [
+    {
+     "code": "4958",
+     "name": "臻鼎-KY",
+     "role": "PCB 大廠；與輝達 MGX 無線纜 PCB 方案相關（廠商關聯部落格，無官方公告）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
