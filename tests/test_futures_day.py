@@ -140,7 +140,7 @@ def test_txf_parse_picks_front_month_by_volume_and_skips_spreads():
     assert txf.parse([]) is None and txf.parse([{"SymbolID": "MXFK4-F", "CLastPrice": "1"}]) is None
 
 
-def test_cli_check_ignores_stale_quotes_and_pushes_to_trade_channel(tmp_path, monkeypatch):
+def test_cli_check_ignores_stale_quotes_and_pushes_to_futures_channel(tmp_path, monkeypatch):
     from market_intel import cli, notify
     from market_intel.fetchers import txf
     monkeypatch.setattr(fd, "STATE_PATH", tmp_path / "futures_day.json")
@@ -156,8 +156,8 @@ def test_cli_check_ignores_stale_quotes_and_pushes_to_trade_channel(tmp_path, mo
     cli._futures_day_check(box, now)                       # 第一筆：只記錄參考點（交易所今日高低），不進場
     assert len(st["ticks"]) == 1 and not sent
     monkeypatch.setattr(txf, "fetch", lambda: {"price": 20110, "high": 20110, "low": 19960, "ts": at("09:30"), "symbol": "X", "open": 20000, "volume": 1})
-    cli._futures_day_check(box, now)                       # 第二筆：突破今日高點 → 試單，推到出進場機器人
-    assert sent and sent[0][0] == "trade" and "做多試單" in sent[0][1]
+    cli._futures_day_check(box, now)                       # 第二筆：突破今日高點 → 試單，推到微台頻道（沒設定專屬機器人時 notify 會退回進出場機器人）
+    assert sent and sent[0][0] == "futures" and "做多試單" in sent[0][1]
     assert fd.load_state("2026-10-30")["lots"] == 1
 
 

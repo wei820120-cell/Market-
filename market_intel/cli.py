@@ -39,6 +39,9 @@ def _listings() -> dict[str, dict]:
     return listings
 
 
+FUTURES_CHANNEL = "futures"   # 微台（台指期）訊號、收盤彙總、績效推播的頻道；沒設定專屬機器人時 notify 會退回進出場機器人
+
+
 # 公司簡稱同時是常用詞，用名稱比對會誤判（仍可用代號比對，例如「全新(2455)」）
 AMBIGUOUS_NAMES = {"全新", "大同", "統一", "中華", "聯合", "新光", "大眾", "正新", "台灣", "國產", "如興", "精星", "世界", "數字", "互動", "大量", "新天地", "巨大", "大中"}
 
@@ -647,7 +650,7 @@ def cmd_realtime(args) -> None:
             if summary:
                 from .trade import futures_log
                 futures_log.safe(futures_log.refresh, fd["st"], fd["cfg"], "day")
-                notify.send(f"📈 台指期日內計畫帳收盤\n{summary}", channel="trade")
+                notify.send(f"📈 台指期日內計畫帳收盤\n{summary}", channel=FUTURES_CHANNEL)
         except Exception as e:  # noqa: BLE001
             log.warning("台指期日內收盤記錄失敗：%s", e)
 
@@ -670,7 +673,7 @@ def _futures_day_check(fd: dict, now: datetime) -> None:
         return          # 沒資料、或報價時間太舊（休市、資料沒更新）：不拿舊價發訊號
     sigs = futures_day.step(fd["st"], now, q["price"], fd["cfg"], fd["closes"], q["high"], q["low"])
     if sigs:
-        notify.send(futures_day.format_message(sigs, fd["st"], fd["cfg"]), channel="trade")
+        notify.send(futures_day.format_message(sigs, fd["st"], fd["cfg"]), channel=FUTURES_CHANNEL)
         futures_log.safe(futures_log.record, fd["st"], sigs, fd["cfg"], "day")
     futures_day.save_state(fd["st"])
 
@@ -705,7 +708,7 @@ def cmd_futures_night(args) -> None:
         if args.no_push:
             print(msg)
         else:
-            notify.send(msg, channel="trade")
+            notify.send(msg, channel=FUTURES_CHANNEL)
 
     interval = args.interval or 20
     deadline = time.monotonic() + args.minutes * 60 if args.minutes else None
@@ -861,24 +864,14 @@ def cmd_futures_log(args) -> None:
 
 
 def cmd_futures_report(args) -> None:
-    """微台計畫帳績效推播：累計損益、勝率、最近幾場、進行中的場次（交易機器人）。--dry 只印不推。"""
-    from .trade import futures_day, futures_log
-    now = now_tw()
-    live = []
-    for session in ("day", "night"):
-        try:
-            raw = futures_day._read_all(futures_day.STATE_PATH).get("today" if session == "day" else "night") or {}
-            if raw.get("entries"):
-                cfg = futures_day.settings(session)
-                live.append({"date": raw["date"], "session": session, "summary": futures_day.snapshot(futures_day.load_state(raw["date"], session=session), cfg)})
-        except Exception as e:  # noqa: BLE001
-            log.warning("讀取 %s 即時狀態失敗：%s", session, e)
-    text = futures_log.performance_text(futures_log.load(), now, live, last_n=args.last)
+    """微台計畫帳績效推播：累計損益、勝率、最近幾場、進行中的場次（微台機器人）。--dry 只印不推。"""
+    from .trade import futures_log
+    text = futures_log.performance_text(futures_log.load(), now_tw(), _futures_live(), last_n=args.last)
     print(text)
     if not args.dry:
-        token, chat = notify._telegram("trade")          # 沒設定金鑰時 notify.send 只會印出、不會報錯：這裡明講，免得以為推出去了
-        print(f"[推播] 交易頻道 Telegram：{'已設定，送出' if token and chat else '沒有金鑰或 Chat ID，只印在日誌、不會送出'}")
-        notify.send(text, channel="trade")
+        token, chat = notify._telegram(FUTURES_CHANNEL)          # 沒設定金鑰時 notify.send 只會印出、不會報錯：這裡明講，免得以為推出去了
+        print(f"[推播] 微台頻道 Telegram：{'已設定，送出' if token and chat else '沒有金鑰或 Chat ID，只印在日誌、不會送出'}")
+        notify.send(text, channel=FUTURES_CHANNEL)
 
 
 # ---------------------------------------------------------------- news / target
@@ -2961,6 +2954,7 @@ def cmd_trade(args) -> None:
 
     if args.commands:
         _trade_commands()
+        _futures_commands()
     if args.explain:
         listings = _listings()
         print(_trade_explain(args.explain, listings, stock_futures.load_stock_futures(), 100_000))
@@ -3073,6 +3067,46 @@ def _trade_explain(query: str, listings: dict, futures: dict, equity: float) -> 
     except Exception as e:  # noqa: BLE001
         log.warning("保證金比例抓取失敗：%s", e)
     return real.explain(code, name, hist, futures.get(code, {}), bool(bt.market_ok(index_df).iloc[-1]), equity, rate)
+
+
+def _futures_live() -> list[dict]:
+    """存檔裡進行中（或剛結束但還沒寫進紀錄）的日盤／夜盤場次的最新快照。讀不到就略過。"""
+    from .trade import futures_day
+    live = []
+    for session in ("day", "night"):
+        try:
+            raw = futures_day._read_all(futures_day.STATE_PATH).get("today" if session == "day" else "night") or {}
+            if raw.get("entries"):
+                live.append({"date": raw["date"], "session": session,
+                             "summary": futures_day.snapshot(futures_day.load_state(raw["date"], session=session), futures_day.settings(session))})
+        except Exception as e:  # noqa: BLE001
+            log.warning("讀取 %s 即時狀態失敗：%s", session, e)
+    return live
+
+
+def _futures_commands() -> None:
+    """微台機器人收到的文字（只接受自己的訊息）：績效、今天、明細、說明。沒有設定專屬的微台機器人金鑰就不處理。"""
+    from .trade import futures_log
+    token = os.environ.get("TELEGRAM_FUTURES_BOT_TOKEN")
+    if not token:
+        return
+    offset = research.load_offset(token)
+    updates = notify.get_updates(FUTURES_CHANNEL, offset)
+    owner = notify.owner_chat(FUTURES_CHANNEL)
+    texts = []
+    for u in updates:
+        offset = max(offset or 0, int(u.get("update_id", 0)) + 1)
+        m = u.get("message") or {}
+        if owner and str((m.get("chat") or {}).get("id")) != str(owner):
+            continue
+        if m.get("text"):
+            texts.append(m["text"])
+    research.save_offset(token, offset)
+    if not texts:
+        return
+    data, now, live = futures_log.load(), now_tw(), _futures_live()
+    for text in texts:
+        notify.send(futures_log.reply(text, data, now, live), channel=FUTURES_CHANNEL)
 
 
 def _trade_commands() -> None:
