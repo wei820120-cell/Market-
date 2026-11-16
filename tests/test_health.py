@@ -431,6 +431,33 @@ def test_clean_token_extracts_token_from_surrounding_text(monkeypatch):
     assert "格式正確" in hint and "原始長度 51" in hint and "多出 5 個字元" in hint
 
 
+def test_clean_token_drops_message_time_glued_to_token(monkeypatch):
+    from market_intel import notify
+    good = "9230140220:" + "AbC-_" * 7                                     # 35 個金鑰字元
+    for tail in ("15:55", "5:07", "15:55:01", "3:55 PM", "11:02pm"):       # Telegram 網頁版選取時連訊息時間一起複製
+        assert notify._clean_token(good + tail) == good, tail
+    assert notify._structure(good + "15:55") == "數字×10 冒號 英數×37 冒號 英數×2"      # 2026-11-16 實際看到的結構
+    assert notify._clean_token(good + "abc:55") == good + "abc:55"         # 後面不是時間：不亂切，原樣交回
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", good + "15:55")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    assert notify._telegram("futures") == (good, "111")
+    hint = notify.token_hint("futures")
+    assert "格式正確" in hint and "原始長度 51、清理後 46" in hint and "多出 5 個字元（已自動去掉）" in hint and "AbC" not in hint
+
+
+def test_structure_describes_token_shape_without_content(monkeypatch):
+    from market_intel import notify
+    tok = "9230140220:" + "AbC12" * 7
+    assert notify._structure(tok) == "數字×10 冒號 英數×35"
+    broken = tok[:30] + "\n" + tok[30:] + " Keep"
+    assert notify._structure(broken) == "數字×10 冒號 英數×19 〔U+000A 換行〕 英數×16 〔U+0020 空白〕 英數×4"
+    assert notify._structure("12AAH1x2") == "英數×8"                # 沒有冒號：數字、英文字母不分開報（不洩漏哪幾格是數字）
+    assert notify._structure("9230140220:AA：bb") == "數字×10 冒號 英數×2 〔U+FF1A 全形冒號〕 英數×2"
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", tok[:30] + "​" + tok[30:])      # 中間夾了零寬空白：擷取不到，結構指出位置
+    hint = notify.token_hint("futures")
+    assert "格式不對" in hint and "結構：數字×10 冒號 英數×19 〔U+200B 零寬空白〕 英數×16" in hint and "AbC12" not in hint
+
+
 def test_token_hint_reports_shape_without_leaking_secret(monkeypatch):
     from market_intel import notify
     monkeypatch.delenv("TELEGRAM_FUTURES_BOT_TOKEN", raising=False)
