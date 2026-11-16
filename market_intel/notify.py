@@ -47,11 +47,21 @@ def _clean(v: str | None) -> str | None:
 _TOKEN_SHAPE = re.compile(r"\d{6,12}:[A-Za-z0-9_-]{34,35}(?![A-Za-z0-9_-])")      # 金鑰冒號後面是 34～35 個英數字（新機器人 35 個）
 
 
+# 金鑰後面直接黏著訊息時間（例：…xyz15:55）：在 Telegram 網頁版用滑鼠選取金鑰時，會把訊息右下角的時間一起複製進來，中間沒有空白。
+# 2026-11-16 的實例：結構是「數字×10 冒號 英數×37 冒號 英數×2」＝ 35 個金鑰字元＋「15」＋「:55」。只處理 35 個字元的金鑰（新機器人都是）。
+_TOKEN_TIME_TAIL = re.compile(r"(\d{6,12}:[A-Za-z0-9_-]{35})\d{1,2}:\d{2}(?::\d{2})?(?:\s*[AaPp]\.?[Mm]\.?)?")
+
+
 def _clean_token(v: str | None) -> str | None:
-    """機器人金鑰：先做 _clean；格式還是不對時，試著從整串字裡把「數字:35 個英數字」擷取出來
-    （常見：貼的時候前後連著別的文字，例如整句 BotFather 回覆、網址）。擷取不到就原樣交回（讓 Telegram 回 404、由日誌檢查指出）。"""
+    """機器人金鑰：先做 _clean；格式還是不對時，試著把真正的金鑰擷取出來：
+    1. 金鑰後面黏著訊息時間（…15:55）→ 去掉時間；
+    2. 前後連著別的文字（整句 BotFather 回覆、網址）→ 取出「數字:34～35 個英數字」。
+    擷取不到就原樣交回（讓 Telegram 回 404、由日誌的金鑰檢查指出結構）。"""
     v = _clean(v)
     if v and not re.fullmatch(r"\d{6,12}:[A-Za-z0-9_-]{30,}", v):
+        m = _TOKEN_TIME_TAIL.fullmatch(v)
+        if m:
+            return m.group(1)
         m = _TOKEN_SHAPE.search(v)
         if m:
             return m.group(0)

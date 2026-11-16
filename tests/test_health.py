@@ -431,6 +431,20 @@ def test_clean_token_extracts_token_from_surrounding_text(monkeypatch):
     assert "格式正確" in hint and "原始長度 51" in hint and "多出 5 個字元" in hint
 
 
+def test_clean_token_drops_message_time_glued_to_token(monkeypatch):
+    from market_intel import notify
+    good = "9230140220:" + "AbC-_" * 7                                     # 35 個金鑰字元
+    for tail in ("15:55", "5:07", "15:55:01", "3:55 PM", "11:02pm"):       # Telegram 網頁版選取時連訊息時間一起複製
+        assert notify._clean_token(good + tail) == good, tail
+    assert notify._structure(good + "15:55") == "數字×10 冒號 英數×37 冒號 英數×2"      # 2026-11-16 實際看到的結構
+    assert notify._clean_token(good + "abc:55") == good + "abc:55"         # 後面不是時間：不亂切，原樣交回
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", good + "15:55")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    assert notify._telegram("futures") == (good, "111")
+    hint = notify.token_hint("futures")
+    assert "格式正確" in hint and "原始長度 51、清理後 46" in hint and "多出 5 個字元（已自動去掉）" in hint and "AbC" not in hint
+
+
 def test_structure_describes_token_shape_without_content(monkeypatch):
     from market_intel import notify
     tok = "9230140220:" + "AbC12" * 7
