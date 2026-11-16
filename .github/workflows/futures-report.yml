@@ -30,6 +30,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: 績效推播
         env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_TRADE_BOT_TOKEN: ${{ secrets.TELEGRAM_TRADE_BOT_TOKEN }}
           TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

@@ -876,6 +876,8 @@ def cmd_futures_report(args) -> None:
     text = futures_log.performance_text(futures_log.load(), now, live, last_n=args.last)
     print(text)
     if not args.dry:
+        token, chat = notify._telegram("trade")          # 沒設定金鑰時 notify.send 只會印出、不會報錯：這裡明講，免得以為推出去了
+        print(f"[推播] 交易頻道 Telegram：{'已設定，送出' if token and chat else '沒有金鑰或 Chat ID，只印在日誌、不會送出'}")
         notify.send(text, channel="trade")
 
 
