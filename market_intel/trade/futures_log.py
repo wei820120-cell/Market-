@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from . import futures_day
@@ -189,6 +189,7 @@ def render_md(data: dict) -> str:
     lines = ["# 微台計畫帳 — 觸發紀錄（模擬、不下單）", "",
              "> 日盤＋夜盤每次觸發（進場、加碼、出場、停損）與每場損益，累積存放。元 ＝ 點數 × 每點 10 元（微台）。",
              "> 「補錄」＝記錄功能上線前的場次（日盤 11/4～11/12、夜盤 11/12 前半場）：當時沒存訊號全文，只剩觸發順序與損益（損益是當時存檔的數字）；事件時間只在代號帶得出來時才寫。",
+             "> 另外 11/16 日盤也是補錄：當天的存檔步驟失敗（已修正），只剩收盤推播的彙總數字（進場、加碼次數與損益），沒有逐筆訊號與方向。",
              "> 夜盤的門檻是暫定值，尚未校準；以上只是模擬計畫帳，不是真實成交，也不是投資建議。", ""]
     if not st["n"]:
         return "\n".join(lines + ["（還沒有觸發紀錄）", ""])
@@ -230,3 +231,66 @@ def render_md(data: dict) -> str:
             lines.append(f"- {t}{px}｜{e['text']}")
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
+
+
+# ---------------------------------------------------------------- 績效摘要（推播用）
+
+def _is_done(s: dict, now: datetime) -> bool:
+    """這一場結束了嗎：存檔有收盤旗標、或已過收盤時間（日盤 13:35、夜盤隔天 05:00）。"""
+    if s.get("finished"):
+        return True
+    d = datetime.strptime(_day_label(s), "%Y-%m-%d").replace(tzinfo=now.tzinfo)
+    end = d.replace(hour=13, minute=35) if s["session"] != "night" else (d + timedelta(days=1)).replace(hour=5, minute=0)
+    return now >= end
+
+
+def _line(s: dict) -> str:
+    m = s["summary"]
+    d = {"long": "做多", "short": "做空"}.get(m.get("dir"), "—")
+    day = _day_label(s)[5:].replace("-", "/")
+    tail = "（補錄）" if s.get("source") == "補錄" else ""
+    return f"{day} {_name(s)} {d} {m['pts']:+,.0f} 點（{m['twd']:+,} 元）{tail}"
+
+
+def performance_text(data: dict, now: datetime, live: list[dict] | None = None, last_n: int = 8) -> str:
+    """微台計畫帳績效：累計（只算已結束、有進場的場次）、勝率與平均賺賠、最近幾場、進行中的場次。
+    live：存檔裡正在進行的場次的最新快照（[{date, session, summary}]），會取代紀錄裡同一場過期的數字。
+    只是模擬計畫帳，不是真實成交，也不是投資建議。"""
+    sess = [dict(s) for s in data["sessions"]]
+    for lv in live or []:
+        for s in sess:
+            if s["date"] == lv["date"] and s["session"] == lv["session"]:
+                s["summary"] = lv["summary"]
+                break
+        else:
+            if lv["summary"].get("entries"):
+                sess.append({**lv, "events": [], "source": "即時"})
+    sess.sort(key=_sort_key)
+    with_entry = [s for s in sess if (s.get("summary") or {}).get("entries")]
+    done = [s for s in with_entry if _is_done(s, now)]
+    running = [s for s in with_entry if not _is_done(s, now)]
+    st = stats({"sessions": done})
+    head = "📊 微台計畫帳績效（模擬、不下單）"
+    if not st["n"]:
+        return head + "\n還沒有已結束且有進場的場次。"
+    twd = [s["summary"]["twd"] for s in done]
+    wins = [x for x in twd if x > 0]
+    losses = [x for x in twd if x < 0]
+    flat = st["n"] - len(wins) - len(losses)
+    lines = [head,
+             f"累計 {st['n']} 場有進場：賺 {len(wins)}／賠 {len(losses)}" + (f"／平 {flat}" if flat else "") +
+             f"，合計 {st['pts']:+,.0f} 點（{st['twd']:+,} 元）",
+             f"累計損益曲線最大回落 {st['max_dd']:,} 元"]
+    if wins and losses:
+        lines.append(f"勝率 {len(wins) / (len(wins) + len(losses)) * 100:.0f}%（賺÷賺賠場數）｜平均賺 {sum(wins) / len(wins):+,.0f} 元、平均賠 {sum(losses) / len(losses):+,.0f} 元")
+    lines += ["", f"最近 {min(last_n, len(done))} 場："] + [_line(s) for s in reversed(done[-last_n:])]
+    if running:
+        lines += ["", "進行中："]
+        for s in running:
+            m = s["summary"]
+            lines.append(_line(s) + f"，未平 {m.get('lots_left', 0)} 口")
+    n_fill = sum(1 for s in done if s.get("source") == "補錄")
+    if n_fill:
+        lines += ["", f"註：{n_fill} 場標「補錄」（記錄功能上線前，或當天存檔失敗、只剩收盤彙總數字的場次）。"]
+    lines.append("只是模擬計畫帳，不是真實成交，也不是投資建議。")
+    return "\n".join(lines)

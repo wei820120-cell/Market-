@@ -651,6 +651,40 @@
     "qualified": true,
     "halted": false
    }
+  },
+  {
+   "date": "2026-11-16",
+   "session": "day",
+   "source": "補錄",
+   "finished": true,
+   "events": [
+    {
+     "ts": null,
+     "time": "",
+     "kind": "補錄",
+     "price": null,
+     "text": "收盤推播彙總：2 次進場、加碼 3 次、收盤空手，損益約 +5,957 點（+59,570 元），振幅 6.22%。當天存檔步驟失敗、狀態沒進 repo，逐筆訊號、時間、價格與方向沒有留存（已修正存檔步驟）。",
+     "lots_after": 0,
+     "pts_after": 5957.0
+    }
+   ],
+   "summary": {
+    "dir": null,
+    "entries": 2,
+    "adds": 3,
+    "lots_left": 0,
+    "realized_pts": 5957.0,
+    "open_pts": 0.0,
+    "pts": 5957.0,
+    "twd": 59570,
+    "open": null,
+    "high": null,
+    "low": null,
+    "close": null,
+    "range_pct": 6.22,
+    "qualified": null,
+    "halted": null
+   }
   }
  ]
 }

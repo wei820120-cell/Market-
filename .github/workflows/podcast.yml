@@ -52,7 +52,7 @@ jobs:
             if git pull --rebase -q; then git push -q && exit 0; else
               # 和監看迴圈同時改到訊號記錄：以遠端為準（逐字稿、待檢視清單、已處理記錄是各自獨立的檔，不會衝突）
               git checkout --ours state/signals.json 2>/dev/null && git add state/signals.json && GIT_EDITOR=true git rebase --continue && git push -q && exit 0
-              git rebase --abort 2>/dev/null
+              git rebase --abort 2>/dev/null || true
             fi
             sleep 5
           done
