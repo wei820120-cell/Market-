@@ -899,6 +899,7 @@ def cmd_futures_report(args) -> None:
     if not args.dry:
         token, chat = notify._telegram(FUTURES_CHANNEL)          # 沒設定金鑰時 notify.send 只會印出、不會報錯：這裡明講，免得以為推出去了
         print(f"[推播] 微台頻道 Telegram：{'已設定，送出' if token and chat else '沒有金鑰或 Chat ID，只印在日誌、不會送出'}")
+        print(f"[金鑰檢查] {notify.token_hint(FUTURES_CHANNEL)}")        # 只印長度、格式、機器人編號，不印金鑰本身
         notify.send(text, channel=FUTURES_CHANNEL)
 
 
@@ -3120,7 +3121,7 @@ def _futures_live() -> list[dict]:
 def _futures_commands() -> None:
     """微台機器人收到的文字（只接受自己的訊息）：績效、今天、明細、說明。沒有設定專屬的微台機器人金鑰就不處理。"""
     from .trade import futures_log
-    token = os.environ.get("TELEGRAM_FUTURES_BOT_TOKEN")
+    token = notify._clean_token(os.environ.get("TELEGRAM_FUTURES_BOT_TOKEN"))
     if not token:
         return
     offset = research.load_offset(token)
@@ -3135,6 +3136,8 @@ def _futures_commands() -> None:
         if m.get("text"):
             texts.append(m["text"])
     research.save_offset(token, offset)
+    if updates:       # 有收到才記一行，方便從日誌確認機器人有沒有讀到訊息（沒訊息的輪次不洗日誌）
+        log.info("微台機器人：讀到 %d 則更新，其中 %d 則是本人的文字", len(updates), len(texts))
     if not texts:
         return
     data, now, live = futures_log.load(), now_tw(), _futures_live()

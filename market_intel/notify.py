@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 
 import requests
 
@@ -32,15 +33,70 @@ log = logging.getLogger(__name__)
 FALLBACK_CHANNEL = {"research": "news", "futures": "trade"}  # 研究機器人沒設定時改用新聞機器人；微台機器人沒設定時改用進出場機器人
 
 
+def _clean(v: str | None) -> str | None:
+    """金鑰、Chat ID 常見的貼上錯誤：前後多了空白或換行、包著引號、多貼了網址裡的 bot 前綴。
+    先清掉再用；填錯時 Telegram 只會回 404 Not Found，很難從訊息看出原因。"""
+    if v is None:
+        return None
+    v = v.strip().strip("\"'“”‘’").strip()
+    if v[:3].lower() == "bot" and v[3:4].isdigit():
+        v = v[3:]
+    return v or None
+
+
+_TOKEN_SHAPE = re.compile(r"\d{6,12}:[A-Za-z0-9_-]{34,35}(?![A-Za-z0-9_-])")      # 金鑰冒號後面是 34～35 個英數字（新機器人 35 個）
+
+
+def _clean_token(v: str | None) -> str | None:
+    """機器人金鑰：先做 _clean；格式還是不對時，試著從整串字裡把「數字:35 個英數字」擷取出來
+    （常見：貼的時候前後連著別的文字，例如整句 BotFather 回覆、網址）。擷取不到就原樣交回（讓 Telegram 回 404、由日誌檢查指出）。"""
+    v = _clean(v)
+    if v and not re.fullmatch(r"\d{6,12}:[A-Za-z0-9_-]{30,}", v):
+        m = _TOKEN_SHAPE.search(v)
+        if m:
+            return m.group(0)
+    return v
+
+
 def _telegram(channel: str) -> tuple[str | None, str | None]:
-    token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    token, chat = _clean_token(os.environ.get("TELEGRAM_BOT_TOKEN")), _clean(os.environ.get("TELEGRAM_CHAT_ID"))
     for ch in (channel, FALLBACK_CHANNEL.get(channel)):
         if not ch or ch == "market":
             continue
         prefix = f"TELEGRAM_{ch.upper()}_"
-        if os.environ.get(prefix + "BOT_TOKEN"):
-            return os.environ[prefix + "BOT_TOKEN"], os.environ.get(prefix + "CHAT_ID") or chat
+        own = _clean_token(os.environ.get(prefix + "BOT_TOKEN"))
+        if own:
+            return own, _clean(os.environ.get(prefix + "CHAT_ID")) or chat
     return token, chat
+
+
+def token_hint(channel: str) -> str:
+    """金鑰有沒有填對的線索，給日誌看（不印金鑰本身）：有沒有設定、長度、格式、機器人編號（冒號前的數字）、前後有沒有空白。"""
+    name = f"TELEGRAM_{channel.upper()}_BOT_TOKEN"
+    raw = os.environ.get(name)
+    if raw is None or not raw.strip():
+        fb = FALLBACK_CHANNEL.get(channel)
+        return f"{name} 沒有設定或是空的" + (f"，改用 {fb} 機器人的金鑰" if fb else "")
+    clean = _clean_token(raw) or ""
+    ok = re.fullmatch(r"\d{6,12}:[A-Za-z0-9_-]{30,}", clean) is not None
+    bot_id = clean.split(":")[0] if ":" in clean else "（沒有冒號）"
+    extra = len(raw.strip()) - len(clean)
+    return (f"{name}：原始長度 {len(raw)}、清理後 {len(clean)}（正常 46）｜格式{'正確' if ok else '不對（應為「數字:35 個英數字」）'}"
+            f"｜機器人編號 {bot_id}｜前後空白 {'有（已自動去掉）' if raw != raw.strip() else '無'}"
+            + (f"｜多出 {extra} 個字元（已自動去掉）" if ok and extra > 0 else ""))
+
+
+def _fallbacks(channel: str) -> list[tuple[str, str]]:
+    """第一順位機器人推播被拒（金鑰無效，Telegram 回 401／404）時，依序改用的（金鑰, Chat ID）：退回用的機器人、盤勢機器人。"""
+    first = _telegram(channel)[0]
+    default_chat = _clean(os.environ.get("TELEGRAM_CHAT_ID"))
+    out: list[tuple[str | None, str | None]] = []
+    fb = FALLBACK_CHANNEL.get(channel)
+    if fb and fb != "market":
+        prefix = f"TELEGRAM_{fb.upper()}_"
+        out.append((_clean_token(os.environ.get(prefix + "BOT_TOKEN")), _clean(os.environ.get(prefix + "CHAT_ID")) or default_chat))
+    out.append((_clean_token(os.environ.get("TELEGRAM_BOT_TOKEN")), default_chat))
+    return [(t, c) for t, c in out if t and c and t != first]
 
 
 def get_updates(channel: str, offset: int | None) -> list[dict]:
@@ -55,9 +111,13 @@ def get_updates(channel: str, offset: int | None) -> list[dict]:
         r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates", params=params, timeout=15)
         data = r.json()
     except (requests.RequestException, ValueError) as e:
-        log.warning("讀取 Telegram 指令失敗：%s", e)
+        log.warning("讀取 Telegram 指令失敗（%s）：%s", channel, type(e).__name__)      # 不印例外內容：連線錯誤的訊息會帶出含金鑰的網址
         return []
-    return data.get("result", []) if data.get("ok") else []
+    if not data.get("ok"):
+        # 金鑰填錯或已失效（401）、機器人設了 webhook（409）等：以前靜默回空，看不出為什麼收不到指令
+        log.warning("讀取 Telegram 指令被拒（%s）：%s %s", channel, data.get("error_code"), data.get("description"))
+        return []
+    return data.get("result", [])
 
 
 def owner_chat(channel: str) -> str | None:
@@ -95,19 +155,30 @@ def _chunks(text: str, limit: int = 4000) -> list[str]:
     return out or [""]
 
 
+def _post_message(token: str, chat: str, part: str) -> requests.Response:
+    return requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                         json={"chat_id": chat, "text": part, "disable_web_page_preview": True}, timeout=10)
+
+
 def send(text: str, channel: str = "market") -> None:
     print(text, flush=True)
     token, chat = _telegram(channel)
     if token and chat:
+        alts = _fallbacks(channel)
         for part in _chunks(text):
             try:
-                r = requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
-                                  json={"chat_id": chat, "text": part, "disable_web_page_preview": True}, timeout=10)
+                r = _post_message(token, chat, part)
+                while not r.ok and r.status_code in (401, 404) and alts:
+                    # 金鑰無效（404＝金鑰格式不對或機器人不存在，401＝金鑰已被 revoke）：改用備援機器人送，訊號不要掉
+                    log.warning("Telegram（%s）金鑰無效（%s %s），這則改用備援機器人送出——請檢查 TELEGRAM_%s_BOT_TOKEN 這個 Secret",
+                                channel, r.status_code, r.text[:80], channel.upper())
+                    token, chat = alts.pop(0)
+                    r = _post_message(token, chat, part)
                 if not r.ok:
                     # 常見原因：Chat ID 填錯、還沒對機器人按 Start
                     log.warning("Telegram（%s）推播被拒：%s %s", channel, r.status_code, r.text[:200])
             except requests.RequestException as e:
-                log.warning("Telegram（%s）推播失敗：%s", channel, e)
+                log.warning("Telegram（%s）推播失敗：%s", channel, type(e).__name__)      # 不印例外內容：會帶出含金鑰的網址
     hook = _discord(channel)
     if hook:
         for part in _chunks(text, 1900):
