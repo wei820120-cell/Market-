@@ -83,7 +83,35 @@ def token_hint(channel: str) -> str:
     extra = len(raw.strip()) - len(clean)
     return (f"{name}：原始長度 {len(raw)}、清理後 {len(clean)}（正常 46）｜格式{'正確' if ok else '不對（應為「數字:35 個英數字」）'}"
             f"｜機器人編號 {bot_id}｜前後空白 {'有（已自動去掉）' if raw != raw.strip() else '無'}"
-            + (f"｜多出 {extra} 個字元（已自動去掉）" if ok and extra > 0 else ""))
+            + (f"｜多出 {extra} 個字元（已自動去掉）" if ok and extra > 0 else "")
+            + ("" if ok and not extra else f"｜結構：{_structure(raw)}"))
+
+
+_ODD_NAMES = {" ": "空白", "\n": "換行", "\r": "換行CR", "\t": "Tab", " ": "不換行空白", "　": "全形空白", "​": "零寬空白",
+              "‌": "零寬字元", "‍": "零寬字元", "﻿": "BOM", "：": "全形冒號", "/": "斜線", "@": "小老鼠", ".": "句點",
+              ",": "逗號", "=": "等號", "`": "反引號", "\"": "引號", "'": "引號", "*": "星號", "…": "刪節號"}
+
+
+def _structure(s: str) -> str:
+    """字串的結構，不含內容（給日誌判斷金鑰貼錯在哪）：連續的數字、連續的英數字（含 - _）只報幾個，冒號照寫，
+    其他字元（本來就不該出現在金鑰裡的）報 Unicode 編號與名稱。冒號之後的數字併進英數字一起算，不洩漏金鑰內容。"""
+    out: list[str] = []
+    lead = re.match(r"\d+(?=:)", s)          # 開頭緊接冒號的那串數字＝機器人編號（不是秘密），單獨報；其餘一律算英數字
+    if lead:
+        out.append(f"數字×{lead.end()}")
+        s = s[lead.end():]
+    run = 0
+    for ch in s:
+        if ch.isascii() and (ch.isalnum() or ch in "_-"):
+            run += 1
+            continue
+        if run:
+            out.append(f"英數×{run}")
+            run = 0
+        out.append("冒號" if ch == ":" else f"〔U+{ord(ch):04X}{' ' + _ODD_NAMES[ch] if ch in _ODD_NAMES else ''}〕")
+    if run:
+        out.append(f"英數×{run}")
+    return " ".join(out)
 
 
 def _fallbacks(channel: str) -> list[tuple[str, str]]:
