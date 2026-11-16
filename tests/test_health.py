@@ -371,3 +371,80 @@ def test_cmd_futures_settle_pushes_once_and_report_views(monkeypatch, capsys):
     assert "年度績效" in capsys.readouterr().out
     cli.cmd_futures_report(argparse.Namespace(dry=False, last=8, view="month"))
     assert len(sent) == 2 and sent[1][0] == "futures" and "每月結算" in sent[1][1]
+
+
+def test_get_updates_logs_why_telegram_refused_without_printing_token(monkeypatch, caplog):
+    import logging
+    import requests
+    from market_intel import notify
+
+    class Resp:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def json(self):
+            return self.payload
+
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", "123:SECRET")
+    monkeypatch.setattr(requests, "get", lambda *a, **k: Resp({"ok": False, "error_code": 401, "description": "Unauthorized"}))
+    with caplog.at_level(logging.WARNING):
+        assert notify.get_updates("futures", None) == []
+    assert "401 Unauthorized" in caplog.text and "SECRET" not in caplog.text              # 金鑰失效：日誌看得到原因
+    monkeypatch.setattr(requests, "get", lambda *a, **k: Resp({"ok": True, "result": [{"update_id": 1}]}))
+    assert notify.get_updates("futures", None) == [{"update_id": 1}]
+
+    def boom(*a, **k):
+        raise requests.ConnectionError("https://api.telegram.org/bot123:SECRET/getUpdates failed")
+
+    caplog.clear()
+    monkeypatch.setattr(requests, "get", boom)
+    with caplog.at_level(logging.WARNING):
+        assert notify.get_updates("futures", None) == []
+    assert "ConnectionError" in caplog.text and "SECRET" not in caplog.text               # 連線錯誤不把含金鑰的網址寫進日誌
+
+
+def test_clean_token_strips_paste_mistakes(monkeypatch):
+    from market_intel import notify
+    for raw in ("123:ABC", " 123:ABC\n", '"123:ABC"', "'123:ABC' ", "bot123:ABC", "“123:ABC”"):
+        assert notify._clean(raw) == "123:ABC", raw
+    assert notify._clean("   ") is None and notify._clean(None) is None and notify._clean("bottle:1") == "bottle:1"
+    for k in ("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "TELEGRAM_TRADE_BOT_TOKEN", "TELEGRAM_TRADE_CHAT_ID",
+              "TELEGRAM_FUTURES_BOT_TOKEN", "TELEGRAM_FUTURES_CHAT_ID"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "1:market\n")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", " 111 ")
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", " 3:futures ")
+    assert notify._telegram("futures") == ("3:futures", "111")                           # 前後空白、換行不會讓金鑰變成 404
+
+
+def test_send_falls_back_when_bot_token_rejected(monkeypatch, caplog):
+    import logging
+    from market_intel import notify
+
+    class Resp:
+        def __init__(self, code, text=""):
+            self.status_code, self.text, self.ok = code, text, code < 400
+
+    calls = []
+
+    def fake_post(url, json=None, timeout=None):
+        tok = url.split("/bot")[1].split("/")[0]
+        calls.append((tok, json["chat_id"]))
+        return Resp(404, '{"description":"Not Found"}') if tok == "3:bad" else Resp(200)
+
+    for k in ("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "TELEGRAM_TRADE_BOT_TOKEN", "TELEGRAM_TRADE_CHAT_ID",
+              "TELEGRAM_FUTURES_BOT_TOKEN", "TELEGRAM_FUTURES_CHAT_ID"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "1:market")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    monkeypatch.setenv("TELEGRAM_TRADE_BOT_TOKEN", "2:trade")
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", "3:bad")
+    monkeypatch.setattr(notify.requests, "post", fake_post)
+    with caplog.at_level(logging.WARNING):
+        notify.send("📈 訊號", channel="futures")
+    assert calls == [("3:bad", "111"), ("2:trade", "111")]                                # 微台機器人金鑰無效：改用進出場機器人，訊號不掉
+    assert "金鑰無效" in caplog.text and "TELEGRAM_FUTURES_BOT_TOKEN" in caplog.text and "3:bad" not in caplog.text
+    calls.clear()
+    monkeypatch.setattr(notify.requests, "post", lambda url, json=None, timeout=None: (calls.append(url) or Resp(400, "chat not found")))
+    notify.send("x", channel="futures")
+    assert len(calls) == 1                                                                 # 400（Chat ID 錯）不是金鑰問題：不換機器人重送
