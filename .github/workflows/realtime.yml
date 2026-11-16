@@ -85,7 +85,7 @@ jobs:
           for i in 1 2 3; do
             # 與 watch 同時改到 state 檔會衝突：以這次盤中記錄為準（-X theirs），不要讓整個執行變紅
             git pull --rebase -X theirs -q && git push -q && exit 0
-            git rebase --abort 2>/dev/null; sleep 5
+            git rebase --abort 2>/dev/null || true; sleep 5
           done
           echo "存檔一直衝突，放棄這次記錄（不影響已推播的內容）"
           exit 0

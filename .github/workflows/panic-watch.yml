@@ -35,6 +35,6 @@ jobs:
           git commit -q -m "恐慌日研究清單與市場流動性 $(TZ=Asia/Taipei date '+%F %H:%M')"
           for i in 1 2 3; do
             git pull --rebase -q && git push -q && exit 0
-            git rebase --abort 2>/dev/null; sleep 5
+            git rebase --abort 2>/dev/null || true; sleep 5
           done
           echo "存檔衝突，放棄這次記錄"
