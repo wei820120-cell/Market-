@@ -14,6 +14,7 @@ import json
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from . import futures_day
 
@@ -21,19 +22,22 @@ log = logging.getLogger(__name__)
 
 LOG_PATH = futures_day.STATE_PATH.parent / "futures_log.json"
 MD_PATH = futures_day.STATE_PATH.parent / "futures_log.md"
+YEARLY_PATH = futures_day.STATE_PATH.parent / "futures_yearly.md"
+FIRST_SETTLE_MONTH = "2026-11"      # 日盤 11/4 上線；更早只有一筆 10/30 的測試紀錄（0 點），不做月結算
+TZ = ZoneInfo("Asia/Taipei")
 
 
 # ---------------------------------------------------------------- 讀寫
 
-def _paths(path: Path | None) -> tuple[Path, Path]:
+def _paths(path: Path | None) -> tuple[Path, Path, Path]:
     """測試時給別的 state 檔路徑，紀錄就跟著放在同一個資料夾，不會寫到真的 state/。"""
     if path is None:
-        return LOG_PATH, MD_PATH
-    return path.parent / "futures_log.json", path.parent / "futures_log.md"
+        return LOG_PATH, MD_PATH, YEARLY_PATH
+    return path.parent / "futures_log.json", path.parent / "futures_log.md", path.parent / "futures_yearly.md"
 
 
 def load(path: Path | None = None) -> dict:
-    jp, _ = _paths(path)
+    jp = _paths(path)[0]
     try:
         d = json.loads(jp.read_text(encoding="utf-8"))
         if isinstance(d, dict) and isinstance(d.get("sessions"), list):
@@ -48,11 +52,12 @@ def _sort_key(s: dict) -> tuple:
 
 
 def save(data: dict, path: Path | None = None) -> None:
-    jp, mp = _paths(path)
+    jp, mp, yp = _paths(path)
     data["sessions"].sort(key=_sort_key)
     jp.parent.mkdir(parents=True, exist_ok=True)
     jp.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     mp.write_text(render_md(data), encoding="utf-8")
+    yp.write_text(render_yearly_md(data, datetime.now(TZ)), encoding="utf-8")
 
 
 def _session(data: dict, st: dict, session: str) -> dict:
@@ -190,7 +195,8 @@ def render_md(data: dict) -> str:
              "> 日盤＋夜盤每次觸發（進場、加碼、出場、停損）與每場損益，累積存放。元 ＝ 點數 × 每點 10 元（微台）。",
              "> 「補錄」＝記錄功能上線前的場次（日盤 11/4～11/12、夜盤 11/12 前半場）：當時沒存訊號全文，只剩觸發順序與損益（損益是當時存檔的數字）；事件時間只在代號帶得出來時才寫。",
              "> 另外 11/16 日盤也是補錄：當天的存檔步驟失敗（已修正），只剩收盤推播的彙總數字（進場、加碼次數與損益），沒有逐筆訊號與方向。",
-             "> 夜盤的門檻是暫定值，尚未校準；以上只是模擬計畫帳，不是真實成交，也不是投資建議。", ""]
+             "> 夜盤的門檻是暫定值，尚未校準；以上只是模擬計畫帳，不是真實成交，也不是投資建議。",
+             "> 每月結算與年度績效表：state/futures_yearly.md。", ""]
     if not st["n"]:
         return "\n".join(lines + ["（還沒有觸發紀錄）", ""])
     lines += [f"**累計**：{st['n']} 場有進場，賺 {st['win']}／賠 {st['lose']}，合計 {st['pts']:+,.0f} 點（{st['twd']:+,} 元）；"
@@ -296,12 +302,178 @@ def performance_text(data: dict, now: datetime, live: list[dict] | None = None, 
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------- 損益總結（每則推播附上）、每月結算、年度績效表
+# 場次歸月份＝場次代號的日期（夜盤算開盤那天，例：2026-11-30 夜盤跨到 12/1 凌晨，仍算 11 月）。只算有進場的場次。
+
+def _month(s: dict) -> str:
+    return _day_label(s)[:7]
+
+
+def _entered(sessions: list[dict]) -> list[dict]:
+    return [s for s in sessions if (s.get("summary") or {}).get("entries")]
+
+
+def _sum(sessions: list[dict]) -> tuple[float, int]:
+    rows = _entered(sessions)
+    return round(sum(s["summary"]["pts"] for s in rows), 1), sum(s["summary"]["twd"] for s in rows)
+
+
+def _money(pts: float, twd: int) -> str:
+    return f"{pts:+,.0f} 點（{twd:+,} 元）"
+
+
+def _tag(s: dict) -> str:
+    return f"{_day_label(s)[5:].replace('-', '/')} {_name(s)}"
+
+
+def pnl_line(st: dict, cfg: dict, session: str = "day", path: Path | None = None) -> str:
+    """每則推播附的損益總結：這一場（含未平倉浮動）、本月累計、今年累計。拿紀錄檔裡別場的數字，這一場用目前存檔的最新快照。
+    出錯回空字串（損益總結不能擋住進出場訊號）。"""
+    try:
+        snap = futures_day.snapshot(st, cfg)
+        sess = [s for s in load(path)["sessions"] if not (s["date"] == st["date"] and s["session"] == session)]
+        sess.append({"date": st["date"], "session": session, "summary": snap, "events": []})
+        month = st["date"].rstrip("N")[:7]
+        year = month[:4]
+        m_pts, m_twd = _sum([s for s in sess if _month(s) == month])
+        y_pts, y_twd = _sum([s for s in sess if _month(s)[:4] == year])
+        unreal = f"（含未平 {snap['lots_left']} 口浮動 {snap['open_pts']:+,.0f} 點）" if snap["lots_left"] else ""
+        return (f"💰 損益總結（模擬）：本場 {_money(snap['pts'], snap['twd'])}{unreal}\n"
+                f"本月累計 {_money(m_pts, m_twd)}｜今年累計 {_money(y_pts, y_twd)}")
+    except Exception as e:  # noqa: BLE001
+        log.warning("微台損益總結計算失敗：%s", e)
+        return ""
+
+
+def monthly(data: dict, now: datetime | None = None) -> list[dict]:
+    """每月結算：每個月一列（點數、元、賺賠場數、勝率、當月最大回落、最佳／最差一場）。給 now 就只算已結束的場次。"""
+    sess = sorted((s for s in data["sessions"] if now is None or _is_done(s, now)), key=_sort_key)
+    rows_all = _entered(sess)
+    out = []
+    for m in sorted({_month(s) for s in rows_all}):
+        rows = [s for s in rows_all if _month(s) == m]
+        st = stats({"sessions": rows})
+        best = max(rows, key=lambda s: s["summary"]["twd"])
+        worst = min(rows, key=lambda s: s["summary"]["twd"])
+        out.append({"month": m, "n": st["n"], "win": st["win"], "lose": st["lose"], "flat": st["n"] - st["win"] - st["lose"],
+                    "pts": st["pts"], "twd": st["twd"], "max_dd": st["max_dd"],
+                    "best": {"tag": _tag(best), "twd": best["summary"]["twd"]},
+                    "worst": {"tag": _tag(worst), "twd": worst["summary"]["twd"]}})
+    return out
+
+
+def _rate(win: int, lose: int) -> str:
+    return f"{win / (win + lose) * 100:.0f}%" if win + lose else "—"
+
+
+def yearly(data: dict, now: datetime | None = None) -> list[dict]:
+    """年度績效：每年一列（含各月、全年最大回落、最佳／最差月）。"""
+    sess = sorted((s for s in data["sessions"] if now is None or _is_done(s, now)), key=_sort_key)
+    out = []
+    for y in sorted({_month(s)[:4] for s in _entered(sess)}):
+        rows = [s for s in sess if _month(s)[:4] == y]
+        st = stats({"sessions": rows})
+        months = monthly({"sessions": rows})
+        best = max(months, key=lambda m: m["twd"])
+        worst = min(months, key=lambda m: m["twd"])
+        out.append({"year": y, "n": st["n"], "win": st["win"], "lose": st["lose"], "flat": st["n"] - st["win"] - st["lose"],
+                    "pts": st["pts"], "twd": st["twd"], "max_dd": st["max_dd"], "months": months,
+                    "best_month": {"month": best["month"], "twd": best["twd"]}, "worst_month": {"month": worst["month"], "twd": worst["twd"]}})
+    return out
+
+
+def render_yearly_md(data: dict, now: datetime) -> str:
+    """state/futures_yearly.md：每月結算表＋年度績效表（只算已結束、有進場的場次；進行中的場次收盤後才計入）。"""
+    lines = ["# 微台計畫帳 — 每月結算與年度績效表（模擬、不下單）", "",
+             "> 由 state/futures_log.json 自動排出，每次紀錄更新就重寫。只算已結束、有進場的場次；元 ＝ 點數 × 每點 10 元（微台）。",
+             "> 場次歸月份＝場次代號的日期（夜盤算開盤那天）。含「補錄」場次（記錄功能上線前或當天存檔失敗，只剩收盤彙總數字）。",
+             "> 只是模擬計畫帳，不是真實成交，也不是投資建議；門檻是暫定值，尚未校準。", ""]
+    years = yearly(data, now)
+    if not years:
+        return "\n".join(lines + ["（還沒有已結束且有進場的場次）", ""])
+    cur = f"{now:%Y-%m}"
+    lines += ["## 年度績效表", "", "| 年度 | 場次 | 賺／賠／平 | 勝率 | 點數 | 元 | 年內最大回落（元） | 最佳月 | 最差月 |", "|---|---:|---|---:|---:|---:|---:|---|---|"]
+    for y in years:
+        lines.append(f"| {y['year']} | {y['n']} | {y['win']}／{y['lose']}／{y['flat']} | {_rate(y['win'], y['lose'])} | {y['pts']:+,.0f} | {y['twd']:+,} | {y['max_dd']:,} | "
+                     f"{y['best_month']['month']}（{y['best_month']['twd']:+,}） | {y['worst_month']['month']}（{y['worst_month']['twd']:+,}） |")
+    for y in years:
+        lines += ["", f"## {y['year']} 年每月結算", "",
+                  "| 月份 | 場次 | 賺／賠／平 | 勝率 | 點數 | 元 | 累計元 | 當月最大回落（元） | 最佳一場 | 最差一場 | 備註 |",
+                  "|---|---:|---|---:|---:|---:|---:|---:|---|---|---|"]
+        cum = 0
+        for m in y["months"]:
+            cum += m["twd"]
+            note = "進行中（尚未結算）" if m["month"] >= cur else ("已結算" if m["month"] >= FIRST_SETTLE_MONTH else "")
+            lines.append(f"| {m['month']} | {m['n']} | {m['win']}／{m['lose']}／{m['flat']} | {_rate(m['win'], m['lose'])} | {m['pts']:+,.0f} | {m['twd']:+,} | {cum:+,} | "
+                         f"{m['max_dd']:,} | {m['best']['tag']}（{m['best']['twd']:+,}） | {m['worst']['tag']}（{m['worst']['twd']:+,}） | {note} |")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def settle_text(m: dict, year_rows: list[dict]) -> str:
+    """月結算推播：這個月的成績＋今年累計。"""
+    mon = int(m["month"][5:])
+    ytd = [r for r in year_rows if r["month"] <= m["month"] and r["month"][:4] == m["month"][:4]]
+    y_pts, y_twd = round(sum(r["pts"] for r in ytd), 1), sum(r["twd"] for r in ytd)
+    return "\n".join([
+        f"🗓 微台計畫帳 {m['month'][:4]} 年 {mon} 月結算（模擬、不下單）",
+        f"共 {m['n']} 場有進場：賺 {m['win']}／賠 {m['lose']}／平 {m['flat']}，勝率 {_rate(m['win'], m['lose'])}",
+        f"本月損益 {_money(m['pts'], m['twd'])}｜當月累計最大回落 {m['max_dd']:,} 元",
+        f"最佳一場 {m['best']['tag']} {m['best']['twd']:+,} 元｜最差一場 {m['worst']['tag']} {m['worst']['twd']:+,} 元",
+        f"今年累計（{ytd[0]['month'][5:].lstrip('0') or '1'}～{mon} 月）{_money(y_pts, y_twd)}",
+        "年度績效表：傳「年度」看，或 state/futures_yearly.md。",
+        "只是模擬計畫帳，不是真實成交，也不是投資建議。"])
+
+
+def settle(data: dict, now: datetime) -> list[str]:
+    """還沒結算的整月（FIRST_SETTLE_MONTH 起、早於本月、有已結束的進場場次）：回傳月結算文字，並記進 data["settled"]（呼叫端要 save）。"""
+    rows = monthly(data, now)
+    done = set(data.get("settled", []))
+    cur = f"{now:%Y-%m}"
+    running = {_month(s) for s in _entered(data["sessions"]) if not _is_done(s, now)}      # 還有場次沒結束（例：月底夜盤跨到下個月凌晨）的月份先不結
+    texts = []
+    for m in rows:
+        if FIRST_SETTLE_MONTH <= m["month"] < cur and m["month"] not in done and m["month"] not in running:
+            texts.append(settle_text(m, rows))
+            done.add(m["month"])
+    if texts:
+        data["settled"] = sorted(done)
+    return texts
+
+
+def monthly_text(data: dict, now: datetime) -> str:
+    rows = monthly(data, now)
+    if not rows:
+        return "還沒有已結束且有進場的場次，沒有月結算。"
+    cur = f"{now:%Y-%m}"
+    lines = ["🗓 微台計畫帳每月結算（模擬、不下單）"]
+    for m in reversed(rows[-6:]):
+        lines.append(f"{m['month']}{'（進行中）' if m['month'] >= cur else ''}：{m['n']} 場，賺 {m['win']}／賠 {m['lose']}／平 {m['flat']}，勝率 {_rate(m['win'], m['lose'])}，"
+                     f"{_money(m['pts'], m['twd'])}，最大回落 {m['max_dd']:,} 元")
+    lines.append("只是模擬計畫帳，不是真實成交，也不是投資建議。")
+    return "\n".join(lines)
+
+
+def yearly_text(data: dict, now: datetime) -> str:
+    years = yearly(data, now)
+    if not years:
+        return "還沒有已結束且有進場的場次，沒有年度績效。"
+    lines = ["📆 微台計畫帳年度績效（模擬、不下單）"]
+    for y in reversed(years):
+        lines += ["", f"{y['year']} 年：{y['n']} 場，賺 {y['win']}／賠 {y['lose']}／平 {y['flat']}，勝率 {_rate(y['win'], y['lose'])}，{_money(y['pts'], y['twd'])}",
+                  f"年內累計最大回落 {y['max_dd']:,} 元｜最佳月 {y['best_month']['month']} {y['best_month']['twd']:+,} 元｜最差月 {y['worst_month']['month']} {y['worst_month']['twd']:+,} 元",
+                  "月別：" + "；".join(f"{int(m['month'][5:])} 月 {m['twd']:+,}" for m in y["months"])]
+    lines += ["", "完整表格：state/futures_yearly.md。只是模擬計畫帳，不是真實成交，也不是投資建議。"]
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------- 微台機器人的指令回覆
 
 HELP = """微台機器人指令（直接傳文字）：
 績效（或：微台）：累計損益、勝率、平均賺賠、最近 8 場
 今天（或：進行中）：今天各場次的損益
 明細（或：紀錄）：最近一場的觸發紀錄（時間、價格、訊號）
+月結（或：月報）：每月結算（最近 6 個月）
+年度（或：年報）：年度績效表
 說明：這份說明
 日盤／夜盤的進出場訊號、收盤彙總也都從這個機器人推送。
 注意：進行中的場次要等收盤後才會存進紀錄，盤中看到的是上一場結束時的數字。
@@ -310,6 +482,8 @@ HELP = """微台機器人指令（直接傳文字）：
 _PERF = {"績效", "微台", "績效報告", "報告", "performance", "perf", "累計"}
 _TODAY = {"今天", "今日", "進行中", "狀態", "今天績效"}
 _DETAIL = {"明細", "紀錄", "記錄", "最近", "訊號"}
+_MONTH = {"月結", "月報", "月結算", "每月", "本月", "月績效"}
+_YEAR = {"年度", "年報", "年度績效", "今年", "年績效", "年表"}
 _HELP = {"說明", "help", "/help", "/start", "start", "?", "？", "指令", "怎麼用"}
 
 
@@ -320,6 +494,10 @@ def reply(text: str, data: dict, now: datetime, live: list[dict] | None = None) 
         return HELP
     if t in _PERF:
         return performance_text(data, now, live)
+    if t in _MONTH:
+        return monthly_text(data, now)
+    if t in _YEAR:
+        return yearly_text(data, now)
     if t in _TODAY:
         today = f"{now:%Y-%m-%d}"
         yday = f"{now - timedelta(days=1):%Y-%m-%d}"
@@ -345,4 +523,4 @@ def reply(text: str, data: dict, now: datetime, live: list[dict] | None = None) 
             px = f" {e['price']:,.0f}" if e.get("price") is not None else ""
             rows.append(f"- {when}{px}｜{e['text']}")
         return head + "\n" + "\n".join(rows)
-    return "看不懂這則。傳「績效」看累計、「今天」看今天、「明細」看最近一場、「說明」看全部指令。"
+    return "看不懂這則。傳「績效」看累計、「今天」看今天、「月結」看每月結算、「年度」看年度績效、「明細」看最近一場、「說明」看全部指令。"

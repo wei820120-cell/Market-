@@ -91,6 +91,14 @@ def tag_codes(item: NewsItem, name_to_code: dict[str, str], us_symbols: set[str]
     return item
 
 
+def is_market_wrap(item: NewsItem, spec: dict | None) -> bool:
+    """鉅亨網的美股／台股盤後、早盤綜述（標題講大盤、指數、費半、權值股的整體走勢，不帶個股利多利空字詞，打分數是 0 會被濾掉）。
+    spec＝config/news_keywords.yaml 的 market_wrap；標題要符合 title_patterns 之一，而且是鉅亨網的稿。"""
+    if not spec or item.source != "鉅亨網":
+        return False
+    return any(re.search(p, item.title) for p in spec.get("title_patterns") or [])
+
+
 def rank(items: list[NewsItem], keywords: dict, name_to_code: dict[str, str], us_symbols: set[str] | None = None,
          min_score: float | None = None, all_codes: set[str] | None = None) -> list[NewsItem]:
     for it in items:

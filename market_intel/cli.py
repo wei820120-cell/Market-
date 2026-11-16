@@ -647,10 +647,12 @@ def cmd_realtime(args) -> None:
         try:
             from .trade import futures_day
             summary = futures_day.finish_day(fd["st"], fd["cfg"])
+            from .trade import futures_log
             if summary:
-                from .trade import futures_log
                 futures_log.safe(futures_log.refresh, fd["st"], fd["cfg"], "day")
-                notify.send(f"📈 台指期日內計畫帳收盤\n{summary}", channel=FUTURES_CHANNEL)
+                pnl = futures_log.pnl_line(fd["st"], fd["cfg"], "day")
+                notify.send(f"📈 台指期日內計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else ""), channel=FUTURES_CHANNEL)
+            _futures_settle()          # 當天沒進場也檢查：月初第一個收盤就把上個月結算掉
         except Exception as e:  # noqa: BLE001
             log.warning("台指期日內收盤記錄失敗：%s", e)
 
@@ -673,7 +675,7 @@ def _futures_day_check(fd: dict, now: datetime) -> None:
         return          # 沒資料、或報價時間太舊（休市、資料沒更新）：不拿舊價發訊號
     sigs = futures_day.step(fd["st"], now, q["price"], fd["cfg"], fd["closes"], q["high"], q["low"])
     if sigs:
-        notify.send(futures_day.format_message(sigs, fd["st"], fd["cfg"]), channel=FUTURES_CHANNEL)
+        notify.send(futures_day.format_message(sigs, fd["st"], fd["cfg"], futures_log.pnl_line(fd["st"], fd["cfg"], "day")), channel=FUTURES_CHANNEL)
         futures_log.safe(futures_log.record, fd["st"], sigs, fd["cfg"], "day")
     futures_day.save_state(fd["st"])
 
@@ -738,7 +740,7 @@ def cmd_futures_night(args) -> None:
         if fresh:
             sigs = futures_day.step(st, now, q["price"], cfg, closes, q["high"], q["low"])
             if sigs:
-                send(futures_day.format_message(sigs, st, cfg))
+                send(futures_day.format_message(sigs, st, cfg, futures_log.pnl_line(st, cfg, "night")))
                 futures_log.safe(futures_log.record, st, sigs, cfg, "night")
             st["stale_alerted"] = False
             futures_day.save_state(st, session="night")
@@ -764,7 +766,10 @@ def cmd_futures_night(args) -> None:
         summary = futures_day.finish_night(st, cfg)
         futures_log.safe(futures_log.refresh, st, cfg, "night")
         if summary:
-            send(f"🌙 台指期夜盤計畫帳收盤\n{summary}")
+            pnl = futures_log.pnl_line(st, cfg, "night")
+            send(f"🌙 台指期夜盤計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else ""))
+        if not args.no_push:
+            _futures_settle()
     if rc:
         raise SystemExit(rc)
 
@@ -863,10 +868,33 @@ def cmd_futures_log(args) -> None:
     print(futures_log.render_md(futures_log.load()))
 
 
-def cmd_futures_report(args) -> None:
-    """微台計畫帳績效推播：累計損益、勝率、最近幾場、進行中的場次（微台機器人）。--dry 只印不推。"""
+def _futures_settle() -> None:
+    """每月結算：上個月（含）以前還沒結算的整月，推一則月結算並記進 state/futures_log.json 的 settled（只推一次）。
+    在日盤收盤、夜盤收盤時檢查；失敗只留警告，不影響收盤推播。"""
     from .trade import futures_log
-    text = futures_log.performance_text(futures_log.load(), now_tw(), _futures_live(), last_n=args.last)
+    try:
+        data = futures_log.load()
+        texts = futures_log.settle(data, now_tw())
+        if not texts:
+            return
+        futures_log.save(data)          # 先記下已結算，再推：寧可偶爾少一則，也不要每場重複推
+        for t in texts:
+            notify.send(t, channel=FUTURES_CHANNEL)
+    except Exception as e:  # noqa: BLE001
+        log.warning("微台月結算失敗：%s", e)
+
+
+def cmd_futures_report(args) -> None:
+    """微台計畫帳績效推播：累計損益、勝率、最近幾場、進行中的場次（微台機器人）。--dry 只印不推。
+    --view month／year：改推每月結算、年度績效表。"""
+    from .trade import futures_log
+    view = getattr(args, "view", "perf")
+    if view == "month":
+        text = futures_log.monthly_text(futures_log.load(), now_tw())
+    elif view == "year":
+        text = futures_log.yearly_text(futures_log.load(), now_tw())
+    else:
+        text = futures_log.performance_text(futures_log.load(), now_tw(), _futures_live(), last_n=args.last)
     print(text)
     if not args.dry:
         token, chat = notify._telegram(FUTURES_CHANNEL)          # 沒設定金鑰時 notify.send 只會印出、不會報錯：這裡明講，免得以為推出去了
@@ -900,6 +928,11 @@ def push_news(listings: dict, min_score: float) -> None:
     hits = [it for it in scored if abs(it.score) >= min_score and it not in letters and it not in mops]
     for it in hits[:5]:
         notify.send(f"📰 [{it.score:+g}] {'、'.join(it.tags)} {'、'.join(it.codes)}\n{it.title}\n{it.url}", channel="news")
+    # 盤勢快訊：鉅亨網〈美股盤後〉〈台股盤後〉這類大盤綜述標題沒有個股利多利空字詞、分數是 0，上面不會推，這裡依標題格式補推
+    wrap_spec = config.news_keywords().get("market_wrap") or {}
+    wraps = [it for it in fresh if news_signals.is_market_wrap(it, wrap_spec) and it not in letters and it not in hits[:5]]
+    for it in wraps[:int(wrap_spec.get("max_per_round", 3))]:
+        notify.send(f"📊 盤勢快訊\n{it.title}\n{it.url}", channel="news")
     try:  # 媒體標題裡的供應鏈換料、轉單、淘汰（現有詞表抓不到）
         signals.process([signals.Item(it.source, f"{it.title}\n{it.summary}", it.url, "媒體") for it in fresh
                          if not it.source.startswith("MOPS")], listings, signals.signal_names(listings, AMBIGUOUS_NAMES),
@@ -3359,6 +3392,7 @@ def main(argv: list[str] | None = None) -> None:
     fr_ = sub.add_parser("futures-report", help="微台計畫帳績效推播（累計損益、勝率、最近幾場；交易機器人）")
     fr_.add_argument("--dry", action="store_true", help="只印出、不推播")
     fr_.add_argument("--last", type=int, default=8, help="列出最近幾場（預設 8）")
+    fr_.add_argument("--view", choices=["perf", "month", "year"], default="perf", help="perf＝累計績效（預設）、month＝每月結算、year＝年度績效表")
     fr_.set_defaults(func=cmd_futures_report)
     hl_ = sub.add_parser("health", help="系統健康日報：排程有沒有跑、資料是否過期、夜盤有沒有中斷（推播一則）")
     hl_.add_argument("--dry", action="store_true", help="只印出、不推播")
