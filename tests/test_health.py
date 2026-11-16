@@ -417,6 +417,38 @@ def test_clean_token_strips_paste_mistakes(monkeypatch):
     assert notify._telegram("futures") == ("3:futures", "111")                           # 前後空白、換行不會讓金鑰變成 404
 
 
+def test_is_full_exit_only_when_flat_after_exit():
+    from market_intel.trade import futures_day
+    flat, holding = _live_state("2026-11-17"), _live_state("2026-11-17", lots=2, avg=44000.0, last=44100.0)
+    stop = [{"kind": "停損", "time": "10:22", "price": 44453.0, "text": "🛑 停損全出"}]
+    final = [{"kind": "出場", "time": "13:25", "price": 44500.0, "text": "⏰ 收盤前出場"}]
+    half = [{"kind": "出場", "time": "13:00", "price": 44500.0, "text": "⏰ 分批出場"}]
+    assert futures_day.is_full_exit(stop, flat) and futures_day.is_full_exit(final, flat)
+    assert not futures_day.is_full_exit(half, holding)                      # 出一半、還有 2 口：不算全數出場
+    for kind in ("進場", "加碼", "盤面"):
+        assert not futures_day.is_full_exit([{"kind": kind, "time": "09:00", "price": 1.0, "text": "x"}], flat)       # 不是出場訊號
+    assert not futures_day.is_full_exit([], flat)
+
+
+def test_signal_text_attaches_cumulative_only_on_full_exit(monkeypatch):
+    from market_intel import cli
+    from market_intel.trade import futures_day, futures_log
+    cfg = futures_day.settings()
+    monkeypatch.setattr(futures_log, "pnl_line", lambda st, cfg, session="day", path=None:
+                        "💰 損益總結（模擬）：本場 +1 點（+10 元）\n本月累計 +1 點（+10 元）｜今年累計 +1 點（+10 元）")
+    entry = [{"kind": "進場", "time": "09:00", "price": 44000.0, "text": "🔺 做多試單"}]
+    add = [{"kind": "加碼", "time": "09:05", "price": 44050.0, "text": "➕ 順勢加碼"}]
+    half = [{"kind": "出場", "time": "13:00", "price": 44100.0, "text": "⏰ 分批出場"}]
+    stop = [{"kind": "停損", "time": "10:22", "price": 43900.0, "text": "🛑 停損全出"}]
+    holding = _live_state("2026-11-17", lots=2, avg=44000.0, last=44050.0)
+    flat = _live_state("2026-11-17", realized=-10.0)
+    for sigs in (entry, add, half):
+        assert "損益總結" not in cli._futures_signal_text(sigs, holding, cfg, "day")        # 進場、加碼、分批出場：不附累計
+    text = cli._futures_signal_text(stop, flat, cfg, "night")
+    assert "損益總結" in text and "本月累計" in text and "今年累計" in text                # 全數出場：附一次
+    assert text.index("盤面：") < text.index("損益總結") < text.index("風控：")
+
+
 def test_clean_token_extracts_token_from_surrounding_text(monkeypatch):
     from market_intel import notify
     good = "9230140220:" + "AbC-_" * 7

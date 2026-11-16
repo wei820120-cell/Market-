@@ -650,11 +650,19 @@ def cmd_realtime(args) -> None:
             from .trade import futures_log
             if summary:
                 futures_log.safe(futures_log.refresh, fd["st"], fd["cfg"], "day")
-                pnl = futures_log.pnl_line(fd["st"], fd["cfg"], "day")
+                # 累計損益只在「全數出場」那則附一次；收盤時已經空手就不再重複，還有未平倉（沒有全出訊號）才附
+                pnl = futures_log.pnl_line(fd["st"], fd["cfg"], "day") if fd["st"]["lots"] else ""
                 notify.send(f"📈 台指期日內計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else ""), channel=FUTURES_CHANNEL)
             _futures_settle()          # 當天沒進場也檢查：月初第一個收盤就把上個月結算掉
         except Exception as e:  # noqa: BLE001
             log.warning("台指期日內收盤記錄失敗：%s", e)
+
+
+def _futures_signal_text(sigs: list[dict], st: dict, cfg: dict, session: str) -> str:
+    """微台訊號推播全文。累計損益（本場、本月、今年）只在全數出場時附；進場、加碼、分批出場、盤面通知都不附。"""
+    from .trade import futures_day, futures_log
+    pnl = futures_log.pnl_line(st, cfg, session) if futures_day.is_full_exit(sigs, st) else ""
+    return futures_day.format_message(sigs, st, cfg, pnl)
 
 
 def _futures_day_setup() -> dict | None:
@@ -675,7 +683,7 @@ def _futures_day_check(fd: dict, now: datetime) -> None:
         return          # 沒資料、或報價時間太舊（休市、資料沒更新）：不拿舊價發訊號
     sigs = futures_day.step(fd["st"], now, q["price"], fd["cfg"], fd["closes"], q["high"], q["low"])
     if sigs:
-        notify.send(futures_day.format_message(sigs, fd["st"], fd["cfg"], futures_log.pnl_line(fd["st"], fd["cfg"], "day")), channel=FUTURES_CHANNEL)
+        notify.send(_futures_signal_text(sigs, fd["st"], fd["cfg"], "day"), channel=FUTURES_CHANNEL)
         futures_log.safe(futures_log.record, fd["st"], sigs, fd["cfg"], "day")
     futures_day.save_state(fd["st"])
 
@@ -740,7 +748,7 @@ def cmd_futures_night(args) -> None:
         if fresh:
             sigs = futures_day.step(st, now, q["price"], cfg, closes, q["high"], q["low"])
             if sigs:
-                send(futures_day.format_message(sigs, st, cfg, futures_log.pnl_line(st, cfg, "night")))
+                send(_futures_signal_text(sigs, st, cfg, "night"))
                 futures_log.safe(futures_log.record, st, sigs, cfg, "night")
             st["stale_alerted"] = False
             futures_day.save_state(st, session="night")
@@ -766,7 +774,7 @@ def cmd_futures_night(args) -> None:
         summary = futures_day.finish_night(st, cfg)
         futures_log.safe(futures_log.refresh, st, cfg, "night")
         if summary:
-            pnl = futures_log.pnl_line(st, cfg, "night")
+            pnl = futures_log.pnl_line(st, cfg, "night") if st["lots"] else ""      # 已空手＝全數出場時附過了，不重複
             send(f"🌙 台指期夜盤計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else ""))
         if not args.no_push:
             _futures_settle()
