@@ -1,0 +1,246 @@
+{
+  "topic": "供需事件：貝森特要求輝達大改組！稱新執行長「應外聘」、10",
+  "one_line": "11/15 財政部長貝森特在福斯新聞表示輝達董事會應從外部找新執行長、對領導層做「徹底改組」，並要求董事會與外部律師在 10 天內（約 11/25）就出口管制合規文化回答問題，質疑輝達是否為推升營收而刻意進行違規晶片銷售；他稱財政部、戰爭部、貿易代表署、國務院數月前就贊成把 Megaspeed 列入實體清單，卡在商務部（Commerce has the pen），盧特尼克已同意 12/10 作證。黃仁勳 11/12 辭職、財務長 Kress 暫代，輝達 11/17 公布離職後首份財報。多家媒體一致報導貝森特說法；「刻意違規」是質疑不是調查結論，台廠影響是接班與政策造成的時程與決策不確定性（推論）。",
+  "status": "混合",
+  "horizon": "短期（3個月內）",
+  "layers": [
+    {
+      "layer": "美國政府施壓與出口管制執行（財政部 vs 商務部）",
+      "description": "貝森特 11/15 要求輝達董事會與外部律師 10 天內回答合規問題；稱多部會贊成把 Megaspeed 列入實體清單、卡在商務部；盧特尼克 12/10 作證；H200 許可條款執行是後續焦點。",
+      "global_players": [
+        "美國財政部",
+        "美國商務部",
+        "國會",
+        "Megaspeed（稱其控管合規）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "輝達治理與接班",
+      "description": "財務長 Kress 暫代；董事會報導已接觸 Arm 執行長 Rene Haas 等人選（轉述）；黃仁勳回鍋傳聞；輝達無董事長；11/17 首份離職後財報。",
+      "global_players": [
+        "輝達",
+        "Arm（Rene Haas，報導人選）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "臺灣 AI 伺服器與晶圓代工（時程與決策不確定性，推論）",
+      "description": "出貨主要看雲端業者資本支出與輝達平台；風險是接班與政策造成採購、規格決策與時程延後；沒有查到個別曝險數字。",
+      "global_players": [
+        "輝達",
+        "雲端業者"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2317",
+          "name": "鴻海",
+          "role": "AI 伺服器組裝（曝險未查）",
+          "impact": "中性"
+        },
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM（曝險未查）",
+          "impact": "中性"
+        },
+        {
+          "code": "3231",
+          "name": "緯創",
+          "role": "AI 伺服器組裝（曝險未查）",
+          "impact": "中性"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端伺服器 ODM（曝險未查）",
+          "impact": "中性"
+        },
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "晶圓代工（曝險未查）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "ASIC 與 AMD 陣營（情境，無證據）",
+      "description": "若輝達決策受擾，ASIC 與 AMD 可能接產能（既有研究）；臺灣 ASIC 設計服務為推論，沒有查到新訂單。",
+      "global_players": [
+        "AMD",
+        "雲端業者自研 ASIC"
+      ],
+      "tw_stocks": [
+        {
+          "code": "3443",
+          "name": "創意",
+          "role": "ASIC 設計服務（情境，無新訂單證據）",
+          "impact": "中性"
+        },
+        {
+          "code": "3661",
+          "name": "世芯-KY",
+          "role": "ASIC 設計服務（情境，無新訂單證據）",
+          "impact": "中性"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    "貝森特",
+    "輝達",
+    "改組",
+    "外聘執行長",
+    "10天",
+    "出口管制",
+    "合規",
+    "Megaspeed",
+    "實體清單",
+    "盧特尼克",
+    "商務部",
+    "Kress",
+    "黃仁勳",
+    "財報",
+    "12/10"
+  ],
+  "catalysts": [
+    "11/17（美東）輝達財報與電話會議：代理執行長談對中業務、合規與接班",
+    "約 11/25：董事會與外部律師對貝森特問題的答覆；獨立調查結果或新執行長宣布",
+    "12/10：盧特尼克聽證；國會對黃仁勳作證安排",
+    "Megaspeed 是否被列入實體清單；商務部對 H200 許可條款的執行"
+  ],
+  "risks": [
+    "董事會答覆、新執行長是否外聘、黃仁勳是否回鍋都未決，報導說法不同",
+    "貝森特說法是政治表態：刻意違規是質疑不是調查結論",
+    "財政部與商務部對管制責任的說法矛盾，政策走向未定",
+    "財報預估與候選人名單為轉述，未經一手證實",
+    "台廠曝險全是推論",
+    "只讀搜尋摘要，沒有讀到訪談逐字稿與輝達聲明"
+  ],
+  "spec_tables": [
+    {
+      "title": "表 A：貝森特 11/15 說法與時程（搜尋摘要）",
+      "columns": [
+        "項目",
+        "內容",
+        "來源與性質"
+      ],
+      "rows": [
+        [
+          "新執行長",
+          "應向公司外部尋找；領導層徹底改組",
+          "CNBC、Fortune、MLQ 等一致報導"
+        ],
+        [
+          "期限",
+          "董事會與外部律師 10 天內回答（約 11/25）",
+          "MLQ 推算日期"
+        ],
+        [
+          "質疑",
+          "是否為推升營收獲利而刻意違規銷售晶片",
+          "貝森特質疑，非調查結論"
+        ],
+        [
+          "Megaspeed",
+          "多部會數月前就贊成列入實體清單，卡在商務部",
+          "貝森特說法；Axios 11/11 報導他在戰情室追問盧特尼克"
+        ],
+        [
+          "盧特尼克",
+          "12/10 就輝達晶片出口案作證",
+          "MLQ／相關摘要"
+        ],
+        [
+          "輝達現況",
+          "Kress 暫代；11/17 公布離職後首份財報",
+          "多家報導"
+        ],
+        [
+          "候選人",
+          "Arm 執行長 Rene Haas 等",
+          "報導轉述，未經輝達證實"
+        ]
+      ],
+      "note": "皆來自搜尋摘要，細節各媒體略有出入。"
+    }
+  ],
+  "evolution": [],
+  "concepts": [
+    {
+      "title": "供需缺口怎麼來的（政策與治理面）",
+      "points": [
+        "壓力從「賣給誰」延伸到「誰在管」：輝達董事會合規文化與商務部執行力同時被質疑",
+        "政策不確定性（實體清單、H200 許可、聽證）取代單一事件",
+        "供應風險是接班與決策延遲，不是需求消失"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷情境：輝達（治理、聲譽、合規成本、財報不確定性）；涉案轉運商",
+        "臺灣 AI 伺服器鏈與晶圓代工：時程與決策不確定性（推論，曝險未查）",
+        "潛在受惠：ASIC 與 AMD 陣營（情境，無新訂單證據）"
+      ]
+    },
+    {
+      "title": "表態、質疑與結論分開",
+      "points": [
+        "貝森特的說法已被多家媒體一致報導",
+        "刻意違規是質疑，不是調查結論",
+        "候選人與財報預估是轉述，未經一手證實"
+      ]
+    }
+  ],
+  "conclusion": [
+    "貝森特 11/15 要求輝達董事會 10 天內交代出口管制合規、新執行長應外聘，並把執行不力指向商務部；說法已被多家媒體一致報導，但違規質疑不是調查結論",
+    "台廠影響是接班與政策造成的時程與決策不確定性（推論），沒有查到個別曝險；ASIC 與 AMD 受惠為情境",
+    "追蹤 11/17 財報、約 11/25 董事會答覆、12/10 聽證與 Megaspeed 是否被列入實體清單"
+  ],
+  "sources": [
+    {
+      "title": "CNBC：Bessent calls for 'dramatic shakeup' at Nvidia, urges outside CEO（2026-11-15，僅看到標題與搜尋摘要）",
+      "url": "https://www.cnbc.com/2026/11/15/bessent-nvidia-ceo-lutnick-megaspeed.html"
+    },
+    {
+      "title": "Fortune：Treasury Secretary Scott Bessent says if Nvidia was a bank, 'a lot of the executives would be removed'（2026-11-15，僅看到標題與搜尋摘要）",
+      "url": "https://fortune.com/2026/11/15/treasury-secretary-scott-bessent-nvidia-jensen-huang-nvidia-china-spy-scandal/"
+    },
+    {
+      "title": "MLQ：Bessent says Nvidia should hire an outside CEO and questions whether China sales 'goosed' its earnings（僅看到標題與搜尋摘要）",
+      "url": "https://mlq.ai/news/bessent-says-nvidia-should-hire-an-outside-ceo-and-questions-whether-china-sales-goosed-its-earnings/"
+    },
+    {
+      "title": "Unite.ai：Bessent Gives Nvidia 10 Days to Address Export-Control Questions（僅看到標題與搜尋摘要）",
+      "url": "https://www.unite.ai/bessent-gives-nvidia-10-days-to-address-export-control-questions/"
+    },
+    {
+      "title": "Axios：Lutnick stalled Trump's Nvidia–China chip curbs after Oval talks（2026-11-11，僅看到標題與搜尋摘要）",
+      "url": "https://axios.com/2026/11/11/trump-lutnick-nvidia-china-chip-export-controls"
+    },
+    {
+      "title": "Fortune：Nvidia board directors, Jensen Huang, captive board（2026-11-11，僅看到標題與搜尋摘要）",
+      "url": "https://fortune.com/2026/11/11/nvidia-board-directors-jensen-huang-captive-board/"
+    },
+    {
+      "title": "中時新聞網：貝森特追打輝達出口管制疑雲：10 天內給答案 新執行長得從外部找（僅看到標題）",
+      "url": "https://www.chinatimes.com/realtimenews/20261116000893-260408"
+    },
+    {
+      "title": "經濟日報／udn：美國財長貝森特：輝達必須從外部找新 CEO 要對領導層進行「徹底改組」（僅看到標題）",
+      "url": "https://money.udn.com/money/story/5599/9880650"
+    },
+    {
+      "title": "ETtoday：美財長貝森特：輝達須「從公司外部」尋找新執行長（僅看到標題）",
+      "url": "https://www.ettoday.net/news/20261116/3272755.htm"
+    },
+    {
+      "title": "鉅亨：貝森特要求輝達大改組！稱新執行長「應外聘」、10 天內交代晶片違規交易疑雲（佇列來源，未讀到原文）",
+      "url": "https://news.cnyes.com/news/id/6663104"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：貝森特要求輝達大改組、新執行長「應外聘」、10 天內交代出口管制疑雲\n\n> 資料說明：來自搜尋摘要（CNBC、Fortune、MLQ、Unite.ai、Axios、中時、經濟日報／udn、ETtoday 等），**沒有讀到佇列來源（鉅亨）原文與貝森特的 Fox News 訪談逐字稿**；各媒體對細節的描述略有出入。本檔接續 11/12～11/14 的黃仁勳辭職、Megaspeed、國會作證等研究，重點放在**美國政府（財政部）對輝達治理與出口管制合規的新施壓**。\n\n## 1. 事件（多家媒體一致）\n- **2026-11-15（週日），財政部長貝森特在福斯新聞節目表示**（CNBC、Fortune、MLQ、經濟日報、ETtoday 等一致報導）：\n  - 輝達董事會挑選新執行長時，應**向公司外部尋找**；呼籲對領導層做**「徹底改組」（dramatic shakeup）**。\n  - **要求輝達董事會與外部律師在 10 天內**（約到 11/25，MLQ 推算）就**出口管制的合規文化**回答問題，並質疑輝達**是否為了推升營收與獲利而刻意進行違規的晶片銷售**（\"goosed\" earnings）。\n  - 他說「如果輝達是銀行，很多高層會被撤換」（Fortune 標題）。\n- **府內責任歸屬**：貝森特稱財政部、戰爭部、貿易代表署、國務院**數個月前就贊成把 Megaspeed 列入實體清單**，卡在商務部（\"Commerce has the pen\"）；Axios（11/11）報導他在白宮戰情室追問盧特尼克為何不執行出口管制，盧特尼克說「我需要先問總統」。佇列摘要另稱貝森特認為現行規範已足夠、責任在商務部。**盧特尼克已同意 12/10 就輝達晶片出口案作證**（MLQ／相關摘要）。\n- **輝達現況**：黃仁勳 11/12 辭職（既有研究），**財務長 Colette Kress 暫代執行長**；報導稱董事會已開始接觸潛在人選，包括 Arm 執行長 Rene Haas（轉述，未經輝達證實）；黃仁勳考慮回鍋的傳聞持續（Fortune 標題）；輝達沒有董事長，使撤換與接班更複雜（Fortune 11/11）。**輝達 11/17（美東）公布黃仁勳離職後第一份財報**；某 Threads 帳號的 Podcast 摘要（未證實）稱市場預估 Q3 營收 1,087 億美元、EPS 2.47 美元。\n- **Megaspeed 的回應**：稱其控管符合美國出口規定（自己的說法，不是獨立查核）。\n\n## 2. 供需缺口怎麼來的（政策與治理面）\n- **限制從「賣給誰」延伸到「誰在管」**：貝森特把壓力直接放在輝達的董事會與合規文化，並把出口管制執行不力指向商務部；**政策不確定性（是否列入實體清單、H200 許可條款、國會 12/10 聽證）取代單一事件**。\n- **供應風險是「接班與執行」而非需求消失**：輝達由財務長暫代、董事會被要求 10 天內交代，**短期影響是決策與採購節奏（對台廠的訂單、預付款、規格決策）的不確定性**；既有研究（龍頭企業高層異動）已列出這條路徑。\n\n## 3. 誰受惠、誰受傷（情境與推論）\n- **受傷（情境）**：輝達（治理、聲譽、合規成本；Q3 財報與展望的不確定性）；Megaspeed 等涉案轉運商。\n- **台灣供應鏈（推論，曝險未查）**：AI 伺服器 ODM（鴻海、廣達、緯創、緯穎）與晶圓代工（台積電）的訂單主要看雲端業者資本支出與輝達出貨；**主要風險是接班與政策造成的時程與規格決策延遲**，不是需求消失。\n- **潛在受惠（情境，無證據）**：ASIC 與 AMD 陣營（既有研究「輝達傳減緩晶片訂單，AMD 與 ASIC 陣營可望接產能」）；台灣 ASIC 設計服務（創意、世芯-KY）是推論，**沒有查到新訂單**。\n\n## 4. 風險與矛盾\n- **輝達董事會 10 天交代的結果、新執行長是否外聘、黃仁勳是否回鍋**都是未決；報導間的說法不同（外部延攬 vs 回鍋）。\n- **貝森特的說法是政治表態**：「刻意違規」是質疑，不是調查結論；輝達與 Megaspeed 尚未被認定違規。\n- 貝森特（財政部）與商務部對管制責任的說法相互矛盾，政策走向未定。\n- 第二手細節（財報預估、候選人名單）來自摘要與轉述，未經一手證實。\n- 只讀搜尋摘要，沒有讀到訪談逐字稿與輝達聲明。\n\n## 5. 要追蹤的時間點\n- **11/17（美東）輝達財報與電話會議**：代理執行長如何談對中業務、合規與接班。\n- **約 11/25**：董事會與外部律師對貝森特問題的答覆；是否宣布獨立調查結果或新執行長。\n- **12/10**：盧特尼克聽證；國會對黃仁勳作證的安排（既有研究）。\n- Megaspeed 是否被列入實體清單；商務部對 H200 許可條款的執行。\n\n## 資料來源\n- [CNBC：Bessent calls for 'dramatic shakeup' at Nvidia, urges outside CEO（2026-11-15，僅看到標題與搜尋摘要）](https://www.cnbc.com/2026/11/15/bessent-nvidia-ceo-lutnick-megaspeed.html)\n- [Fortune：Treasury Secretary Scott Bessent says if Nvidia was a bank, 'a lot of the executives would be removed'（2026-11-15，僅看到標題與搜尋摘要）](https://fortune.com/2026/11/15/treasury-secretary-scott-bessent-nvidia-jensen-huang-nvidia-china-spy-scandal/)\n- [MLQ：Bessent says Nvidia should hire an outside CEO and questions whether China sales 'goosed' its earnings（僅看到標題與搜尋摘要）](https://mlq.ai/news/bessent-says-nvidia-should-hire-an-outside-ceo-and-questions-whether-china-sales-goosed-its-earnings/)\n- [Unite.ai：Bessent Gives Nvidia 10 Days to Address Export-Control Questions（僅看到標題與搜尋摘要）](https://www.unite.ai/bessent-gives-nvidia-10-days-to-address-export-control-questions/)\n- [Axios：Lutnick stalled Trump's Nvidia–China chip curbs after Oval talks（2026-11-11，僅看到標題與搜尋摘要）](https://axios.com/2026/11/11/trump-lutnick-nvidia-china-chip-export-controls)\n- [Fortune：Nvidia board directors, Jensen Huang, captive board（2026-11-11，僅看到標題與搜尋摘要）](https://fortune.com/2026/11/11/nvidia-board-directors-jensen-huang-captive-board/)\n- [中時新聞網：貝森特追打輝達出口管制疑雲：10 天內給答案 新執行長得從外部找（僅看到標題）](https://www.chinatimes.com/realtimenews/20261116000893-260408)\n- [經濟日報／udn：美國財長貝森特：輝達必須從外部找新 CEO 要對領導層進行「徹底改組」（僅看到標題）](https://money.udn.com/money/story/5599/9880650)\n- [ETtoday：美財長貝森特：輝達須「從公司外部」尋找新執行長（僅看到標題）](https://www.ettoday.net/news/20261116/3272755.htm)\n- [鉅亨：貝森特要求輝達大改組！稱新執行長「應外聘」、10 天內交代晶片違規交易疑雲（佇列來源，未讀到原文）](https://news.cnyes.com/news/id/6663104)\n",
+  "trigger": "2026-11-16 供需失衡（政策管制）：貝森特要求輝達大改組！稱新執行長「應外聘」、10天內交代晶片違規交易疑雲\n貝森特指輝達涉向中國銷售AI晶片，要求董事會10天內釐清是否明知違法警訊仍放任交易。&#10;他稱輝達需大幅改組，建議外部找新執行長，並質疑公司文化與合規監督。&#10;貝森特點名商務部長盧特尼克，稱晶片出口管制責任在商務部，現行規範已足夠。\nhttps://news.cnyes.com/news/id/6663104"
+}
