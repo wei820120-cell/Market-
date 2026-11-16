@@ -3121,7 +3121,7 @@ def _futures_live() -> list[dict]:
 def _futures_commands() -> None:
     """微台機器人收到的文字（只接受自己的訊息）：績效、今天、明細、說明。沒有設定專屬的微台機器人金鑰就不處理。"""
     from .trade import futures_log
-    token = notify._clean(os.environ.get("TELEGRAM_FUTURES_BOT_TOKEN"))
+    token = notify._clean_token(os.environ.get("TELEGRAM_FUTURES_BOT_TOKEN"))
     if not token:
         return
     offset = research.load_offset(token)

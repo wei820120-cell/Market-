@@ -44,13 +44,27 @@ def _clean(v: str | None) -> str | None:
     return v or None
 
 
+_TOKEN_SHAPE = re.compile(r"\d{6,12}:[A-Za-z0-9_-]{34,35}(?![A-Za-z0-9_-])")      # 金鑰冒號後面是 34～35 個英數字（新機器人 35 個）
+
+
+def _clean_token(v: str | None) -> str | None:
+    """機器人金鑰：先做 _clean；格式還是不對時，試著從整串字裡把「數字:35 個英數字」擷取出來
+    （常見：貼的時候前後連著別的文字，例如整句 BotFather 回覆、網址）。擷取不到就原樣交回（讓 Telegram 回 404、由日誌檢查指出）。"""
+    v = _clean(v)
+    if v and not re.fullmatch(r"\d{6,12}:[A-Za-z0-9_-]{30,}", v):
+        m = _TOKEN_SHAPE.search(v)
+        if m:
+            return m.group(0)
+    return v
+
+
 def _telegram(channel: str) -> tuple[str | None, str | None]:
-    token, chat = _clean(os.environ.get("TELEGRAM_BOT_TOKEN")), _clean(os.environ.get("TELEGRAM_CHAT_ID"))
+    token, chat = _clean_token(os.environ.get("TELEGRAM_BOT_TOKEN")), _clean(os.environ.get("TELEGRAM_CHAT_ID"))
     for ch in (channel, FALLBACK_CHANNEL.get(channel)):
         if not ch or ch == "market":
             continue
         prefix = f"TELEGRAM_{ch.upper()}_"
-        own = _clean(os.environ.get(prefix + "BOT_TOKEN"))
+        own = _clean_token(os.environ.get(prefix + "BOT_TOKEN"))
         if own:
             return own, _clean(os.environ.get(prefix + "CHAT_ID")) or chat
     return token, chat
@@ -63,11 +77,13 @@ def token_hint(channel: str) -> str:
     if raw is None or not raw.strip():
         fb = FALLBACK_CHANNEL.get(channel)
         return f"{name} 沒有設定或是空的" + (f"，改用 {fb} 機器人的金鑰" if fb else "")
-    clean = _clean(raw) or ""
+    clean = _clean_token(raw) or ""
     ok = re.fullmatch(r"\d{6,12}:[A-Za-z0-9_-]{30,}", clean) is not None
     bot_id = clean.split(":")[0] if ":" in clean else "（沒有冒號）"
-    return (f"{name}：原始長度 {len(raw)}、清理後 {len(clean)}（正常約 46）｜格式{'正確' if ok else '不對（應為「數字:英數字」）'}"
-            f"｜機器人編號 {bot_id}｜前後空白 {'有（已自動去掉）' if raw != raw.strip() else '無'}")
+    extra = len(raw.strip()) - len(clean)
+    return (f"{name}：原始長度 {len(raw)}、清理後 {len(clean)}（正常 46）｜格式{'正確' if ok else '不對（應為「數字:35 個英數字」）'}"
+            f"｜機器人編號 {bot_id}｜前後空白 {'有（已自動去掉）' if raw != raw.strip() else '無'}"
+            + (f"｜多出 {extra} 個字元（已自動去掉）" if ok and extra > 0 else ""))
 
 
 def _fallbacks(channel: str) -> list[tuple[str, str]]:
@@ -78,8 +94,8 @@ def _fallbacks(channel: str) -> list[tuple[str, str]]:
     fb = FALLBACK_CHANNEL.get(channel)
     if fb and fb != "market":
         prefix = f"TELEGRAM_{fb.upper()}_"
-        out.append((_clean(os.environ.get(prefix + "BOT_TOKEN")), _clean(os.environ.get(prefix + "CHAT_ID")) or default_chat))
-    out.append((_clean(os.environ.get("TELEGRAM_BOT_TOKEN")), default_chat))
+        out.append((_clean_token(os.environ.get(prefix + "BOT_TOKEN")), _clean(os.environ.get(prefix + "CHAT_ID")) or default_chat))
+    out.append((_clean_token(os.environ.get("TELEGRAM_BOT_TOKEN")), default_chat))
     return [(t, c) for t, c in out if t and c and t != first]
 
 

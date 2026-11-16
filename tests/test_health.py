@@ -417,6 +417,20 @@ def test_clean_token_strips_paste_mistakes(monkeypatch):
     assert notify._telegram("futures") == ("3:futures", "111")                           # 前後空白、換行不會讓金鑰變成 404
 
 
+def test_clean_token_extracts_token_from_surrounding_text(monkeypatch):
+    from market_intel import notify
+    good = "9230140220:" + "AbC-_" * 7
+    assert len(good) == 46
+    for raw in (good, f"  {good}  ", f"token: {good} 好了", f"`{good}`", f"https://api.telegram.org/bot{good}/getMe", f"{good}，好了啊！"):
+        assert notify._clean_token(raw) == good, raw
+    assert notify._clean_token("not a token") == "not a token" and notify._clean_token("  ") is None      # 擷取不到：原樣交回，由日誌檢查指出
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", f"{good}，好了啊！")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    assert notify._telegram("futures")[0] == good
+    hint = notify.token_hint("futures")
+    assert "格式正確" in hint and "原始長度 51" in hint and "多出 5 個字元" in hint
+
+
 def test_token_hint_reports_shape_without_leaking_secret(monkeypatch):
     from market_intel import notify
     monkeypatch.delenv("TELEGRAM_FUTURES_BOT_TOKEN", raising=False)
