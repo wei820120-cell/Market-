@@ -40,6 +40,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_TRADE_BOT_TOKEN: ${{ secrets.TELEGRAM_TRADE_BOT_TOKEN }}
           TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
+          TELEGRAM_FUTURES_BOT_TOKEN: ${{ secrets.TELEGRAM_FUTURES_BOT_TOKEN }}
+          TELEGRAM_FUTURES_CHAT_ID: ${{ secrets.TELEGRAM_FUTURES_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           if [ "${{ inputs.test }}" = "true" ]; then

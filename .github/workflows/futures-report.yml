@@ -1,12 +1,9 @@
-# 微台計畫帳績效推播（market_intel/trade/futures_log.py 的 performance_text）：累計損益、勝率、最近幾場、進行中的場次，推到交易機器人。
-# 手動執行（workflow_dispatch，只在預設分支）；開發分支改這個檔時也會執行一次（push 觸發），而且會真的推播。
-# 開發分支執行時，狀態檔（state/）改用 main 最新版，才看得到最新的場次與進行中的損益。
+# 微台計畫帳績效推播（market_intel/trade/futures_log.py 的 performance_text）：累計損益、勝率、最近幾場、進行中的場次，推到微台機器人（沒設定微台機器人時退回進出場機器人）。
+# 手動執行（workflow_dispatch，在 GitHub 的 Actions 頁面按 Run workflow）；不再因為改檔自動執行（避免意外推播）。
+# 狀態檔（state/）在非 main 分支執行時改用 main 最新版，才看得到最新的場次與進行中的損益。
 name: futures-report
 on:
   workflow_dispatch:
-  push:
-    branches: [claude/funny-goodall-fft1u6]
-    paths: [".github/workflows/futures-report.yml"]
 permissions:
   contents: read
 concurrency:
@@ -34,5 +31,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_TRADE_BOT_TOKEN: ${{ secrets.TELEGRAM_TRADE_BOT_TOKEN }}
           TELEGRAM_TRADE_CHAT_ID: ${{ secrets.TELEGRAM_TRADE_CHAT_ID }}
+          TELEGRAM_FUTURES_BOT_TOKEN: ${{ secrets.TELEGRAM_FUTURES_BOT_TOKEN }}
+          TELEGRAM_FUTURES_CHAT_ID: ${{ secrets.TELEGRAM_FUTURES_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python -m market_intel futures-report

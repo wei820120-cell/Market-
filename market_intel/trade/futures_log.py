@@ -294,3 +294,55 @@ def performance_text(data: dict, now: datetime, live: list[dict] | None = None, 
         lines += ["", f"註：{n_fill} 場標「補錄」（記錄功能上線前，或當天存檔失敗、只剩收盤彙總數字的場次）。"]
     lines.append("只是模擬計畫帳，不是真實成交，也不是投資建議。")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------- 微台機器人的指令回覆
+
+HELP = """微台機器人指令（直接傳文字）：
+績效（或：微台）：累計損益、勝率、平均賺賠、最近 8 場
+今天（或：進行中）：今天各場次的損益
+明細（或：紀錄）：最近一場的觸發紀錄（時間、價格、訊號）
+說明：這份說明
+日盤／夜盤的進出場訊號、收盤彙總也都從這個機器人推送。
+注意：進行中的場次要等收盤後才會存進紀錄，盤中看到的是上一場結束時的數字。
+只是模擬計畫帳，不是真實成交，也不是投資建議。"""
+
+_PERF = {"績效", "微台", "績效報告", "報告", "performance", "perf", "累計"}
+_TODAY = {"今天", "今日", "進行中", "狀態", "今天績效"}
+_DETAIL = {"明細", "紀錄", "記錄", "最近", "訊號"}
+_HELP = {"說明", "help", "/help", "/start", "start", "?", "？", "指令", "怎麼用"}
+
+
+def reply(text: str, data: dict, now: datetime, live: list[dict] | None = None) -> str:
+    """微台機器人收到一則文字的回覆（績效、今天、明細、說明）。看不懂回說明的提示，不會當成下單。"""
+    t = (text or "").strip().lower().replace("　", " ")
+    if t in _HELP:
+        return HELP
+    if t in _PERF:
+        return performance_text(data, now, live)
+    if t in _TODAY:
+        today = f"{now:%Y-%m-%d}"
+        yday = f"{now - timedelta(days=1):%Y-%m-%d}"
+        sess = [s for s in data["sessions"] if (s["session"] != "night" and s["date"] == today)
+                or (s["session"] == "night" and s["date"].rstrip("N") in (today, yday))]
+        for lv in live or []:
+            for s in sess:
+                if s["date"] == lv["date"] and s["session"] == lv["session"]:
+                    s["summary"] = lv["summary"]
+        sess = [s for s in sess if (s.get("summary") or {}).get("entries")]
+        if not sess:
+            return f"今天（{now:%m/%d}）到目前還沒有進場紀錄（進行中的場次要等收盤後才會存進紀錄）。"
+        return "📌 今天的場次\n" + "\n".join(_line(s) + ("" if _is_done(s, now) else "（進行中）") for s in sess)
+    if t in _DETAIL:
+        ev = [s for s in data["sessions"] if s.get("events")]
+        if not ev:
+            return "還沒有觸發紀錄。"
+        s = ev[-1]
+        head = f"🧾 {_day_label(s)[5:].replace('-', '/')} {_name(s)} 觸發紀錄"
+        rows = []
+        for e in s["events"][-12:]:
+            when = e.get("time") or "時間未留存"
+            px = f" {e['price']:,.0f}" if e.get("price") is not None else ""
+            rows.append(f"- {when}{px}｜{e['text']}")
+        return head + "\n" + "\n".join(rows)
+    return "看不懂這則。傳「績效」看累計、「今天」看今天、「明細」看最近一場、「說明」看全部指令。"

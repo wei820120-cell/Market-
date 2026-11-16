@@ -5,12 +5,15 @@
   news          ：新聞、漲價信、重大訊息
   picks         ：強勢標的（資金流入＋題材＋漲價，附股票期貨）
   research      ：題材研究員（AI 供應鏈研究）；也從這個機器人接收「研究 XXX」指令
+  trade         ：進出場機器人（實單記帳、盤前計劃、盤後結算）
+  futures       ：微台機器人（日盤／夜盤訊號、收盤彙總、績效；也接收「績效」「今天」「明細」指令）；沒設定時改用進出場機器人
 
 環境變數（不要寫進程式或上傳到 GitHub）：
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID                盤勢機器人
   TELEGRAM_NEWS_BOT_TOKEN, TELEGRAM_NEWS_CHAT_ID      新聞機器人（選用）
   TELEGRAM_PICKS_BOT_TOKEN, TELEGRAM_PICKS_CHAT_ID    選股機器人（選用）
   TELEGRAM_RESEARCH_BOT_TOKEN, TELEGRAM_RESEARCH_CHAT_ID  研究機器人（選用，沒設定時用新聞機器人）
+  TELEGRAM_FUTURES_BOT_TOKEN, TELEGRAM_FUTURES_CHAT_ID    微台機器人（選用，沒設定時用進出場機器人；CHAT_ID 沒填沿用 TELEGRAM_CHAT_ID）
   DISCORD_WEBHOOK_URL, DISCORD_NEWS_WEBHOOK_URL, DISCORD_PICKS_WEBHOOK_URL
 沒設定新聞／選股機器人時，改由盤勢機器人送出。
 CHAT_ID 沒填時沿用 TELEGRAM_CHAT_ID（同一個人跟不同機器人的私訊 Chat ID 相同）。
@@ -26,7 +29,7 @@ import requests
 log = logging.getLogger(__name__)
 
 
-FALLBACK_CHANNEL = {"research": "news"}  # 研究機器人沒設定時改用新聞機器人
+FALLBACK_CHANNEL = {"research": "news", "futures": "trade"}  # 研究機器人沒設定時改用新聞機器人；微台機器人沒設定時改用進出場機器人
 
 
 def _telegram(channel: str) -> tuple[str | None, str | None]:

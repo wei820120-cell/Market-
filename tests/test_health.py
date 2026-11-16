@@ -200,4 +200,62 @@ def test_cmd_futures_report_dry_and_send(monkeypatch, capsys):
     cli.cmd_futures_report(argparse.Namespace(dry=True, last=8))
     assert "微台計畫帳績效" in capsys.readouterr().out and sent == []
     cli.cmd_futures_report(argparse.Namespace(dry=False, last=8))
-    assert len(sent) == 1 and sent[0][0] == "trade" and "+12,730 元" in sent[0][1]
+    assert len(sent) == 1 and sent[0][0] == "futures" and "+12,730 元" in sent[0][1]
+
+
+# ---------------------------------------------------------------- 微台機器人：頻道退回規則與指令回覆
+
+def test_futures_channel_falls_back_to_trade_then_own_bot(monkeypatch):
+    from market_intel import notify
+    for k in ("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "TELEGRAM_TRADE_BOT_TOKEN", "TELEGRAM_TRADE_CHAT_ID",
+              "TELEGRAM_FUTURES_BOT_TOKEN", "TELEGRAM_FUTURES_CHAT_ID"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "market-token")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "111")
+    assert notify._telegram("futures") == ("market-token", "111")              # 什麼都沒設：盤勢機器人
+    monkeypatch.setenv("TELEGRAM_TRADE_BOT_TOKEN", "trade-token")
+    assert notify._telegram("futures") == ("trade-token", "111")               # 有進出場機器人：退回它（Chat ID 沿用）
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", "futures-token")
+    assert notify._telegram("futures") == ("futures-token", "111")             # 有微台機器人：用它，Chat ID 沒填沿用 TELEGRAM_CHAT_ID
+    monkeypatch.setenv("TELEGRAM_FUTURES_CHAT_ID", "222")
+    assert notify._telegram("futures") == ("futures-token", "222")
+    assert notify._telegram("trade") == ("trade-token", "111")                  # 進出場機器人不受影響
+
+
+def test_futures_reply_commands():
+    from market_intel.trade import futures_log as fl
+    ev = [{"ts": None, "time": "09:20", "kind": "進場", "price": 44000.0, "text": "🔻 做空試單", "lots_after": 1, "pts_after": 0.0},
+          {"ts": None, "time": "09:40", "kind": "加碼", "price": 43800.0, "text": "➕ 順勢加碼", "lots_after": 2, "pts_after": 200.0}]
+    data = {"sessions": [{**_sess("2026-11-13", "day", -2760), "events": []},
+                         {**_sess("2026-11-16", "day", 59570, direction="short"), "events": ev}]}
+    now = tw("2026-11-16 14:30")
+    assert "微台機器人指令" in fl.reply("說明", data, now) and fl.reply("/start", data, now) == fl.HELP
+    assert "微台計畫帳績效" in fl.reply("績效", data, now) and fl.reply(" 微台 ", data, now) == fl.reply("績效", data, now)
+    today = fl.reply("今天", data, now)
+    assert "今天的場次" in today and "11/16 日盤 做空 +5,957 點（+59,570 元）" in today and "11/13" not in today
+    detail = fl.reply("明細", data, now)
+    assert "11/16 日盤 觸發紀錄" in detail and "09:20 44,000｜🔻 做空試單" in detail and "09:40 43,800｜➕ 順勢加碼" in detail
+    assert "看不懂" in fl.reply("買一口台積電", data, now)                      # 不會把亂打的字當成下單
+    assert "還沒有進場紀錄" in fl.reply("今天", {"sessions": [_sess("2026-11-13", "day", 1)]}, now)
+    assert fl.reply("明細", {"sessions": []}, now) == "還沒有觸發紀錄。"
+
+
+def test_futures_commands_ignore_other_chats_and_reply_to_owner(monkeypatch):
+    from market_intel import cli, notify, research
+    from market_intel.trade import futures_log
+    sent, saved = [], {}
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", "tok")
+    monkeypatch.setattr(research, "load_offset", lambda token: 10)
+    monkeypatch.setattr(research, "save_offset", lambda token, off: saved.update({token: off}))
+    monkeypatch.setattr(notify, "owner_chat", lambda ch: "111")
+    monkeypatch.setattr(notify, "get_updates", lambda ch, off: [
+        {"update_id": 10, "message": {"chat": {"id": 999}, "text": "績效"}},           # 別人的訊息：不回
+        {"update_id": 11, "message": {"chat": {"id": 111}, "text": "說明"}}])
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    monkeypatch.setattr(futures_log, "load", lambda path=None: {"sessions": []})
+    monkeypatch.setattr(cli, "_futures_live", lambda: [])
+    cli._futures_commands()
+    assert saved == {"tok": 12} and len(sent) == 1 and sent[0][0] == "futures" and "微台機器人指令" in sent[0][1]
+    monkeypatch.delenv("TELEGRAM_FUTURES_BOT_TOKEN")
+    monkeypatch.setattr(notify, "get_updates", lambda ch, off: (_ for _ in ()).throw(AssertionError("沒有金鑰不該去讀訊息")))
+    cli._futures_commands()                                                         # 沒有專屬機器人金鑰：直接略過
