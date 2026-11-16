@@ -860,6 +860,25 @@ def cmd_futures_log(args) -> None:
     print(futures_log.render_md(futures_log.load()))
 
 
+def cmd_futures_report(args) -> None:
+    """微台計畫帳績效推播：累計損益、勝率、最近幾場、進行中的場次（交易機器人）。--dry 只印不推。"""
+    from .trade import futures_day, futures_log
+    now = now_tw()
+    live = []
+    for session in ("day", "night"):
+        try:
+            raw = futures_day._read_all(futures_day.STATE_PATH).get("today" if session == "day" else "night") or {}
+            if raw.get("entries"):
+                cfg = futures_day.settings(session)
+                live.append({"date": raw["date"], "session": session, "summary": futures_day.snapshot(futures_day.load_state(raw["date"], session=session), cfg)})
+        except Exception as e:  # noqa: BLE001
+            log.warning("讀取 %s 即時狀態失敗：%s", session, e)
+    text = futures_log.performance_text(futures_log.load(), now, live, last_n=args.last)
+    print(text)
+    if not args.dry:
+        notify.send(text, channel="trade")
+
+
 # ---------------------------------------------------------------- news / target
 
 def push_news(listings: dict, min_score: float) -> None:
@@ -3301,6 +3320,10 @@ def main(argv: list[str] | None = None) -> None:
     sb_.add_argument("--out", default="", help="輸出檔（預設 research/scoreboard.md）")
     sb_.add_argument("--control", type=int, default=150, help="等權重對照組的股票檔數（沒被研究點名的上市櫃隨機樣本，0＝不算）")
     sb_.set_defaults(func=cmd_research_scoreboard)
+    fr_ = sub.add_parser("futures-report", help="微台計畫帳績效推播（累計損益、勝率、最近幾場；交易機器人）")
+    fr_.add_argument("--dry", action="store_true", help="只印出、不推播")
+    fr_.add_argument("--last", type=int, default=8, help="列出最近幾場（預設 8）")
+    fr_.set_defaults(func=cmd_futures_report)
     hl_ = sub.add_parser("health", help="系統健康日報：排程有沒有跑、資料是否過期、夜盤有沒有中斷（推播一則）")
     hl_.add_argument("--dry", action="store_true", help="只印出、不推播")
     hl_.add_argument("--channel", default="market", help="推播頻道（預設 market）")

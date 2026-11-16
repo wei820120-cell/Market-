@@ -153,3 +153,51 @@ def test_cmd_health_dry_prints_and_does_not_send(tmp_path, monkeypatch, capsys):
     assert "全部正常" in capsys.readouterr().out and sent == []
     cli.cmd_health(argparse.Namespace(dry=False, channel="market"))
     assert len(sent) == 1 and sent[0][0] == "market" and "系統健康日報" in sent[0][1]
+
+
+# ---------------------------------------------------------------- 微台績效推播（futures_log.performance_text / cmd_futures_report）
+
+def _sess(date, session, twd, entries=1, source="即時", finished=True, direction="long", lots_left=0):
+    return {"date": date, "session": session, "source": source, "finished": finished, "events": [],
+            "summary": {"dir": direction, "entries": entries, "adds": 0, "lots_left": lots_left, "pts": twd / 10, "twd": twd}}
+
+
+def test_performance_text_counts_done_sessions_and_lists_recent():
+    from market_intel.trade import futures_log as fl
+    data = {"sessions": [_sess("2026-11-09", "day", 22540, source="補錄"), _sess("2026-11-10", "day", -1380, source="補錄"),
+                         _sess("2026-11-11", "day", 0), _sess("2026-11-12", "day", -750),
+                         _sess("2026-11-13", "night", -2250, finished=False)]}       # 夜盤沒標收盤，但 11/14 05:00 已過 → 算結束
+    text = fl.performance_text(data, tw("2026-11-16 14:30"), last_n=3)
+    assert "累計 5 場有進場：賺 1／賠 3／平 1" in text and "合計 +1,816 點（+18,160 元）" in text
+    assert "勝率 25%" in text and "平均賺 +22,540 元" in text and "平均賠 -1,460 元" in text
+    assert "最近 3 場：" in text and text.index("11/13 夜盤") < text.index("11/12 日盤") < text.index("11/11 日盤")
+    assert "11/10" not in text.split("最近 3 場：")[1].split("註：")[0]            # 只列最近 3 場
+    assert "註：2 場標「補錄」" in text and "不是真實成交" in text
+
+
+def test_performance_text_running_session_and_live_snapshot_replace():
+    from market_intel.trade import futures_log as fl
+    data = {"sessions": [_sess("2026-11-13", "day", -2760), _sess("2026-11-16", "day", 100, finished=False, lots_left=2)]}
+    live = [{"date": "2026-11-16", "session": "day", "summary": {"dir": "short", "entries": 2, "adds": 1, "lots_left": 3, "pts": 85.0, "twd": 850}}]
+    text = fl.performance_text(data, tw("2026-11-16 11:00"), live)                 # 11:00：日盤還沒結束
+    assert "累計 1 場有進場：賺 0／賠 1" in text and "進行中：" in text
+    assert "11/16 日盤 做空 +85 點（+850 元），未平 3 口" in text                    # 用最新快照，不是紀錄裡過期的 +100
+    assert "+100 點" not in text
+    after = fl.performance_text(data, tw("2026-11-16 14:00"), live)                # 13:35 後算結束 → 進入累計
+    assert "累計 2 場有進場" in after and "進行中" not in after
+    extra = fl.performance_text({"sessions": []}, tw("2026-11-16 14:00"), [{"date": "2026-11-16", "session": "night", "summary": {"dir": "long", "entries": 1, "adds": 0, "lots_left": 1, "pts": 10.0, "twd": 100}}])
+    assert "還沒有已結束且有進場的場次" in extra                                    # 紀錄裡沒有、存檔有進場的進行中場次：不算累計
+
+
+def test_cmd_futures_report_dry_and_send(monkeypatch, capsys):
+    import argparse
+    from market_intel import cli, notify
+    from market_intel.trade import futures_day, futures_log
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    monkeypatch.setattr(futures_log, "load", lambda path=None: {"sessions": [_sess("2026-11-12", "day", 12730)]})
+    monkeypatch.setattr(futures_day, "_read_all", lambda path: {})                   # 沒有進行中的場次
+    cli.cmd_futures_report(argparse.Namespace(dry=True, last=8))
+    assert "微台計畫帳績效" in capsys.readouterr().out and sent == []
+    cli.cmd_futures_report(argparse.Namespace(dry=False, last=8))
+    assert len(sent) == 1 and sent[0][0] == "trade" and "+12,730 元" in sent[0][1]
