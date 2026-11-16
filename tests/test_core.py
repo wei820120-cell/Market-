@@ -439,6 +439,22 @@ def test_mops_announcements_not_merged():
     assert len(news.dedupe(items)) == 2
 
 
+def test_market_wrap_headline_scores_zero_but_is_detected_as_wrap():
+    from market_intel import config
+    kw = config.news_keywords()
+    wrap = news.NewsItem("鉅亨網", "〈美股盤後〉黑色星期五！輝達單週慘崩13% 費半跌超3.4% 但三大指數仍創8月初來最佳一週",
+                         "https://news.cnyes.com/news/id/6661815")
+    assert news_signals.rank([wrap], kw, {}, {"NVDA"}) == []      # 沒有個股利多利空字詞：分數是 0，原本的分類推播會濾掉它
+    spec = kw["market_wrap"]
+    assert spec["max_per_round"] >= 1 and news_signals.is_market_wrap(wrap, spec)
+    for title in ("〈台股盤後〉外資賣超 加權指數跌逾2%", "〈美股早盤〉科技股走弱 費半下跌", "《美股盤前》期貨偏空 輝達財報前夕", "〈亞股盤後〉日韓股市齊跌"):
+        assert news_signals.is_market_wrap(news.NewsItem("鉅亨網", title), spec), title
+    assert not news_signals.is_market_wrap(news.NewsItem("鉅亨網", "〈盤中速報〉台積電漲逾2%"), spec)         # 盤中速報太頻繁，不算綜述
+    assert not news_signals.is_market_wrap(news.NewsItem("鉅亨網", "輝達財報登場 美股盤後看點"), spec)       # 要是〈美股盤後〉這種標題格式
+    assert not news_signals.is_market_wrap(news.NewsItem("Google新聞[漲價]", "〈美股盤後〉黑色星期五"), spec)  # 只收鉅亨網的稿
+    assert not news_signals.is_market_wrap(wrap, None) and not news_signals.is_market_wrap(wrap, {})        # 沒設定就不啟用
+
+
 TG_HTML = """
 <div class="tgme_widget_message_wrap js-widget_message_wrap"><div class="tgme_widget_message text_not_supported_wrap js-widget_message" data-post="Gooaye/1001">
 <div class="tgme_widget_message_text js-message_text" dir="auto">MS 今日的光通 memo<br/><br/>- 3.2T 會是對中政策施力點<br/>- 如果被擠壓到，中國可能控制 inp 基板出口反制，聯亞(3081)</div>

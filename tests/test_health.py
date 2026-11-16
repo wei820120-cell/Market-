@@ -259,3 +259,115 @@ def test_futures_commands_ignore_other_chats_and_reply_to_owner(monkeypatch):
     monkeypatch.delenv("TELEGRAM_FUTURES_BOT_TOKEN")
     monkeypatch.setattr(notify, "get_updates", lambda ch, off: (_ for _ in ()).throw(AssertionError("沒有金鑰不該去讀訊息")))
     cli._futures_commands()                                                         # 沒有專屬機器人金鑰：直接略過
+
+
+# ---------------------------------------------------------------- 微台損益總結、每月結算、年度績效表
+
+def _live_state(date, realized=0.0, entries=1, lots=0, avg=None, last=None, direction="long"):
+    from market_intel.trade import futures_day
+    st = futures_day.new_day(date)
+    st.update(entries=entries, realized_pts=realized, lots=lots, avg=avg, dir=direction, last_price=last)
+    return st
+
+
+def test_pnl_line_totals_replace_current_session_and_split_month_year(tmp_path):
+    from market_intel.trade import futures_day, futures_log as fl
+    cfg = futures_day.settings()
+    path = tmp_path / "futures_day.json"
+    data = {"sessions": [_sess("2025-12-30", "day", 1000), _sess("2026-10-30", "day", 0),
+                         _sess("2026-11-12", "day", -750), _sess("2026-11-13N", "night", -2250),
+                         _sess("2026-11-17", "day", 9999, finished=False)]}                       # 這一場紀錄裡過期的 9999：不能再算一次
+    fl.save(data, path)
+    line = fl.pnl_line(_live_state("2026-11-17", realized=50.0), cfg, "day", path=path)
+    assert "💰 損益總結（模擬）：本場 +50 點（+500 元）" in line and "9,999" not in line
+    assert "本月累計 -250 點（-2,500 元）" in line                 # 11 月：-750 -2250 +500
+    assert "今年累計 -250 點（-2,500 元）" in line                 # 2026 年：10/30 的 0 與去年 12 月的 +1000 不混進來
+    assert "含未平" not in line
+    openl = fl.pnl_line(_live_state("2026-11-17", lots=2, avg=44000.0, last=44100.0), cfg, "day", path=path)
+    assert "含未平 2 口浮動" in openl
+    night = fl.pnl_line(_live_state("2026-11-17N", realized=-10.0, direction="short"), cfg, "night", path=path)
+    assert "本場 -10 點（-100 元）" in night                       # 夜盤是另一場：日盤那筆（紀錄裡的 9999）照算，不被夜盤蓋掉
+    assert fl.pnl_line({"date": "bad"}, cfg, "day", path=path) == ""     # 算不出來：空字串，不擋訊號
+
+
+def test_format_message_puts_pnl_between_board_and_risk():
+    from market_intel.trade import futures_day
+    cfg = futures_day.settings()
+    sig = [{"time": "09:20", "text": "🔺 做多試單", "kind": "進場", "price": 44000.0}]
+    st = _live_state("2026-11-17")
+    plain = futures_day.format_message(sig, st, cfg)
+    withp = futures_day.format_message(sig, st, cfg, "💰 損益總結（模擬）：本場 +1 點（+10 元）")
+    assert "損益總結" not in plain
+    lines = withp.splitlines()
+    assert lines[-4].startswith("盤面：") and lines[-3].startswith("💰 損益總結") and lines[-2].startswith("風控：") and lines[-1] == "（待校準）"
+
+
+def _month_data():
+    return {"sessions": [_sess("2026-10-30", "day", 0), _sess("2026-11-09", "day", 22540, source="補錄"),
+                         _sess("2026-11-10", "day", -1380, source="補錄"), _sess("2026-11-12", "day", -750),
+                         _sess("2026-11-13N", "night", 0, entries=0),
+                         _sess("2026-12-01", "day", 1000)]}
+
+
+def test_monthly_and_yearly_rows_and_md():
+    from market_intel.trade import futures_log as fl
+    now = tw("2026-12-02 10:00")
+    rows = {m["month"]: m for m in fl.monthly(_month_data(), now)}
+    nov = rows["2026-11"]
+    assert (nov["n"], nov["win"], nov["lose"], nov["flat"], nov["twd"]) == (3, 1, 2, 0, 20410) and nov["pts"] == 2041.0
+    assert nov["max_dd"] == -2130 and nov["best"] == {"tag": "11/09 日盤", "twd": 22540} and nov["worst"] == {"tag": "11/10 日盤", "twd": -1380}
+    assert rows["2026-10"]["flat"] == 1 and rows["2026-12"]["twd"] == 1000          # 沒進場的 11/13 夜盤不算場次
+    y = fl.yearly(_month_data(), now)[0]
+    assert y["year"] == "2026" and y["n"] == 5 and y["twd"] == 21410 and [m["month"] for m in y["months"]] == ["2026-10", "2026-11", "2026-12"]
+    assert y["best_month"] == {"month": "2026-11", "twd": 20410} and y["worst_month"] == {"month": "2026-10", "twd": 0}
+    md = fl.render_yearly_md(_month_data(), now)
+    assert "## 年度績效表" in md and "| 2026 | 5 |" in md and "## 2026 年每月結算" in md
+    assert "| 2026-11 | 3 | 1／2／0 | 33% |" in md and "已結算" in md and "進行中（尚未結算）" in md          # 12 月還在進行
+    assert "還沒有已結束" in fl.render_yearly_md({"sessions": []}, now)
+    unfinished = fl.monthly({"sessions": [_sess("2026-12-01", "day", 500, finished=False)]}, tw("2026-12-01 11:00"))
+    assert unfinished == []                                                          # 進行中的場次收盤後才計入月結
+
+
+def test_settle_once_skips_early_and_current_months_and_waits_for_running_night():
+    from market_intel.trade import futures_log as fl
+    data = _month_data()
+    assert fl.settle(data, tw("2026-11-30 20:00")) == [] and "settled" not in data          # 還在 11 月：不結
+    texts = fl.settle(data, tw("2026-12-02 10:00"))
+    assert len(texts) == 1 and "2026 年 11 月結算" in texts[0] and "共 3 場有進場：賺 1／賠 2／平 0，勝率 33%" in texts[0]
+    assert "+2,041 點（+20,410 元）" in texts[0] and "最佳一場 11/09 日盤 +22,540 元" in texts[0] and "最差一場 11/10 日盤 -1,380 元" in texts[0]
+    assert "今年累計" in texts[0] and "不是投資建議" in texts[0]
+    assert data["settled"] == ["2026-11"] and fl.settle(data, tw("2026-12-02 10:00")) == []   # 10 月（測試紀錄）不結、11 月只結一次
+    late = {"sessions": [_sess("2026-11-09", "day", 100), _sess("2026-11-30N", "night", 50, finished=False)]}
+    assert fl.settle(late, tw("2026-12-01 04:00")) == []                              # 月底夜盤還沒收（12/1 05:00 才結束）：先不結
+    assert len(fl.settle(late, tw("2026-12-01 05:30"))) == 1
+
+
+def test_futures_replies_for_month_and_year():
+    from market_intel.trade import futures_log as fl
+    now = tw("2026-12-02 10:00")
+    month = fl.reply("月結", _month_data(), now)
+    assert "每月結算" in month and "2026-12（進行中）" in month and "2026-11：3 場" in month and "+20,410 元" in month
+    year = fl.reply("年度", _month_data(), now)
+    assert "2026 年：5 場" in year and "月別：10 月 +0；11 月 +20,410；12 月 +1,000" in year and "最佳月 2026-11" in year
+    assert fl.reply("年報", _month_data(), now) == year and fl.reply("月報", _month_data(), now) == month
+    assert "還沒有已結束" in fl.reply("年度", {"sessions": []}, now) and "月結" in fl.HELP and "年度" in fl.HELP
+
+
+def test_cmd_futures_settle_pushes_once_and_report_views(monkeypatch, capsys):
+    import argparse
+    from market_intel import cli, notify
+    from market_intel.trade import futures_day, futures_log
+    data, sent = _month_data(), []
+    monkeypatch.setattr(futures_log, "load", lambda path=None: data)
+    monkeypatch.setattr(futures_log, "save", lambda d, path=None: None)
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    monkeypatch.setattr(cli, "now_tw", lambda: tw("2026-12-02 14:00"))
+    cli._futures_settle()
+    assert len(sent) == 1 and sent[0][0] == "futures" and "11 月結算" in sent[0][1]
+    cli._futures_settle()
+    assert len(sent) == 1                                                            # 已記在 settled，不會重複推
+    monkeypatch.setattr(futures_day, "_read_all", lambda path: {})
+    cli.cmd_futures_report(argparse.Namespace(dry=True, last=8, view="year"))
+    assert "年度績效" in capsys.readouterr().out
+    cli.cmd_futures_report(argparse.Namespace(dry=False, last=8, view="month"))
+    assert len(sent) == 2 and sent[1][0] == "futures" and "每月結算" in sent[1][1]

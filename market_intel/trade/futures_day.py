@@ -298,10 +298,12 @@ def _flat(st: dict, price: float, key: str, kind: str, now: datetime, out: list,
     _alert(st, key, kind, now, price, text + f"（{lots} 口，約 {pts:+,.0f} 點）", out)
 
 
-def format_message(sigs: list[dict], st: dict, cfg: dict) -> str:
+def format_message(sigs: list[dict], st: dict, cfg: dict, pnl: str = "") -> str:
+    """pnl：損益總結（本場／本月／今年累計，futures_log.pnl_line 算的），有就放在盤面和風控之間。"""
     head = f"📈 台指期{cfg['label']}訊號 {sigs[0]['time']}"
     body = "\n".join(s["text"] for s in sigs)
-    return f"{head}\n{body}\n{_board(st, cfg)}\n{_risk_line(cfg)}\n（待校準）"
+    mid = f"{pnl}\n" if pnl else ""
+    return f"{head}\n{body}\n{_board(st, cfg)}\n{mid}{_risk_line(cfg)}\n（待校準）"
 
 
 def summary(st: dict, cfg: dict) -> str:
