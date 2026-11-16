@@ -417,6 +417,21 @@ def test_clean_token_strips_paste_mistakes(monkeypatch):
     assert notify._telegram("futures") == ("3:futures", "111")                           # 前後空白、換行不會讓金鑰變成 404
 
 
+def test_token_hint_reports_shape_without_leaking_secret(monkeypatch):
+    from market_intel import notify
+    monkeypatch.delenv("TELEGRAM_FUTURES_BOT_TOKEN", raising=False)
+    assert "沒有設定或是空的" in notify.token_hint("futures") and "trade" in notify.token_hint("futures")
+    good = "8702087270:" + "A" * 35
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", good)
+    hint = notify.token_hint("futures")
+    assert "格式正確" in hint and "機器人編號 8702087270" in hint and "原始長度 46" in hint and "前後空白 無" in hint
+    assert "AAAA" not in hint                                                               # 只印長度與機器人編號，不印金鑰內容
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", good + "\n")
+    assert "格式正確" in notify.token_hint("futures") and "前後空白 有" in notify.token_hint("futures")
+    monkeypatch.setenv("TELEGRAM_FUTURES_BOT_TOKEN", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    assert "格式不對" in notify.token_hint("futures") and "沒有冒號" in notify.token_hint("futures")
+
+
 def test_send_falls_back_when_bot_token_rejected(monkeypatch, caplog):
     import logging
     from market_intel import notify

@@ -899,6 +899,7 @@ def cmd_futures_report(args) -> None:
     if not args.dry:
         token, chat = notify._telegram(FUTURES_CHANNEL)          # 沒設定金鑰時 notify.send 只會印出、不會報錯：這裡明講，免得以為推出去了
         print(f"[推播] 微台頻道 Telegram：{'已設定，送出' if token and chat else '沒有金鑰或 Chat ID，只印在日誌、不會送出'}")
+        print(f"[金鑰檢查] {notify.token_hint(FUTURES_CHANNEL)}")        # 只印長度、格式、機器人編號，不印金鑰本身
         notify.send(text, channel=FUTURES_CHANNEL)
 
 

@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 
 import requests
 
@@ -53,6 +54,20 @@ def _telegram(channel: str) -> tuple[str | None, str | None]:
         if own:
             return own, _clean(os.environ.get(prefix + "CHAT_ID")) or chat
     return token, chat
+
+
+def token_hint(channel: str) -> str:
+    """金鑰有沒有填對的線索，給日誌看（不印金鑰本身）：有沒有設定、長度、格式、機器人編號（冒號前的數字）、前後有沒有空白。"""
+    name = f"TELEGRAM_{channel.upper()}_BOT_TOKEN"
+    raw = os.environ.get(name)
+    if raw is None or not raw.strip():
+        fb = FALLBACK_CHANNEL.get(channel)
+        return f"{name} 沒有設定或是空的" + (f"，改用 {fb} 機器人的金鑰" if fb else "")
+    clean = _clean(raw) or ""
+    ok = re.fullmatch(r"\d{6,12}:[A-Za-z0-9_-]{30,}", clean) is not None
+    bot_id = clean.split(":")[0] if ":" in clean else "（沒有冒號）"
+    return (f"{name}：原始長度 {len(raw)}、清理後 {len(clean)}（正常約 46）｜格式{'正確' if ok else '不對（應為「數字:英數字」）'}"
+            f"｜機器人編號 {bot_id}｜前後空白 {'有（已自動去掉）' if raw != raw.strip() else '無'}")
 
 
 def _fallbacks(channel: str) -> list[tuple[str, str]]:
