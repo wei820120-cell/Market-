@@ -298,6 +298,15 @@ def _flat(st: dict, price: float, key: str, kind: str, now: datetime, out: list,
     _alert(st, key, kind, now, price, text + f"（{lots} 口，約 {pts:+,.0f} 點）", out)
 
 
+EXIT_KINDS = ("停損", "出場")
+
+
+def is_full_exit(sigs: list[dict], st: dict) -> bool:
+    """這一批訊號裡有停損或出場，而且處理完已經空手＝全數出場。分批出場（出一半、還有部位）、進場、加碼、盤面通知都不算。
+    推播只在全數出場時附累計損益（本場、本月、今年）。"""
+    return st["lots"] == 0 and any(s["kind"] in EXIT_KINDS for s in sigs)
+
+
 def format_message(sigs: list[dict], st: dict, cfg: dict, pnl: str = "") -> str:
     """pnl：損益總結（本場／本月／今年累計，futures_log.pnl_line 算的），有就放在盤面和風控之間。"""
     head = f"📈 台指期{cfg['label']}訊號 {sigs[0]['time']}"
