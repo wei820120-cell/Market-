@@ -1,0 +1,287 @@
+{
+ "topic": "供需事件：美商務部、司法部為Megaspeed案發聯合聲明",
+ "one_line": "美東 11/16 商務部與司法部就 Megaspeed 案發聯合聲明（多家媒體證實，但沒讀到原文）：調查 2024 年起，2025/5 向輝達調取銷售紀錄、6 月輝達把 Megaspeed 列拒售名單，BIS 與新加坡執法人員實地查核並訪談前執行長黃樂後轉為刑事調查、由司法部主導；沒有宣布起訴，也沒有證實晶片流入中國，聲明沒回應 NYT「輝達法務長來電後商務部暫停調查」的說法，cnyes 稱全文未提黃仁勳。「六案已起訴 17 人」只見 cnyes 摘要，看似整體執法統計而非 Megaspeed 本案。對台灣是輝達財報前的政策不確定性與 ODM 終端客戶審查的間接風險（推論），沒有台廠被點名。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "Megaspeed",
+  "商務部",
+  "司法部",
+  "聯合聲明",
+  "BIS",
+  "輝達",
+  "拒售名單",
+  "黃樂",
+  "Alice Huang",
+  "出口管制",
+  "新加坡",
+  "晶片轉運",
+  "刑事調查",
+  "遠端存取管制"
+ ],
+ "catalysts": [
+  "輝達 11/17（美東）財報與電話會議：代理執行長對 Megaspeed、對中業務與合規的說法",
+  "司法部是否對 Megaspeed 或相關人士提起刑事訴訟（目前沒有）；商務部是否把 Megaspeed 列入實體清單",
+  "約 11/25：貝森特要求輝達董事會與外部律師答覆出口管制問題的期限；12/10 盧特尼克聽證",
+  "新加坡警方與馬來西亞當局的調查進展",
+  "美方 AI 技術遠端存取管制的條文與生效日（NPR 11/16，細節未讀）"
+ ],
+ "risks": [
+  "聯合聲明原文沒讀到：內容來自 cnyes 佇列摘要與 CNBC、SCMP、NewsNation 等搜尋摘要，細節以 BIS 與司法部公告為準",
+  "「六案已起訴 17 人、總值數十億美元」只見 cnyes 摘要，沒有第二來源；看似整體晶片轉運執法統計，不是 Megaspeed 本案，沒有報導說 Megaspeed 或前執行長已被起訴",
+  "NYT「輝達法務長 2025/8 來電後商務部暫停調查」與聲明的時間線並存矛盾，官方沒有澄清",
+  "聲明沒有證實晶片流入中國、也沒有講起訴時程；Megaspeed 否認轉運",
+  "多家媒體標題把案件與黃仁勳風波連結，但 cnyes 稱聲明全文未提黃仁勳；媒體的連結不等於官方說法，不要混為一談",
+  "台廠影響只是推論：沒有任何台廠被點名或公告曝險"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：Megaspeed 案時間線",
+   "columns": [
+    "時間",
+    "事件",
+    "來源與備註"
+   ],
+   "rows": [
+    [
+     "2024",
+     "商務部開始調查（官員在監控半導體轉運時發現可疑活動）",
+     "聯合聲明（搜尋摘要、cnyes 佇列摘要）"
+    ],
+    [
+     "2025/5",
+     "調查人員要求輝達提供直接或間接銷售給 Megaspeed 的紀錄",
+     "聯合聲明"
+    ],
+    [
+     "2025/6",
+     "輝達把 Megaspeed 列入拒售（no sell）名單",
+     "聯合聲明"
+    ],
+    [
+     "2025/8",
+     "NYT 報導：輝達法務長聯絡商務部調查人員，商務部隨後應司法部要求暫停調查",
+     "NYT（轉述）；聲明未回應"
+    ],
+    [
+     "2025 年",
+     "BIS 與新加坡執法人員實地最終用途檢查，訪談當時執行長黃樂；之後轉為刑事調查，司法部接手",
+     "聯合聲明（搜尋摘要）；具體月份未查到"
+    ],
+    [
+     "2026/11/12",
+     "Megaspeed 聲明配合 BIS 檢查、否認轉運",
+     "既有研究"
+    ],
+    [
+     "2026/11/16（美東）",
+     "商務部與司法部發布聯合聲明",
+     "CNBC、SCMP 等"
+    ]
+   ],
+   "note": "2025 年的實地檢查與訪談只見搜尋摘要；NYT 部分是轉述，日期以原文為準。"
+  },
+  {
+   "title": "表：聲明與之前報導的對照",
+   "columns": [
+    "問題",
+    "聯合聲明（搜尋摘要）",
+    "之前的報導",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "調查何時開始",
+     "2024 年",
+     "多從 2025 年報導談起",
+     "聲明給出更早起點"
+    ],
+    [
+     "商務部是否因輝達介入而暫停",
+     "沒有回應",
+     "NYT：2025/8 輝達法務長聯絡後暫停、移交司法部",
+     "兩種版本並存，未證實也未否認"
+    ],
+    [
+     "是否已起訴",
+     "沒有宣布對 Megaspeed 或前執行長提告",
+     "無",
+     "一致：尚無起訴"
+    ],
+    [
+     "晶片是否流入中國",
+     "沒有證實",
+     "Megaspeed 否認",
+     "未證實"
+    ],
+    [
+     "是否提到黃仁勳",
+     "cnyes：全文未提",
+     "多家媒體標題把案件與黃仁勳風波連結",
+     "媒體連結，不是聲明內容"
+    ]
+   ],
+   "note": "聲明內容皆來自搜尋摘要與 cnyes 佇列摘要，未讀原文。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "行政調查階段（BIS）",
+   "composition": "商務部 BIS 出口管制調查",
+   "spec": "2024 年起；2025/5 向輝達調取銷售紀錄、2025/6 輝達列拒售名單",
+   "application": "晶片轉運與最終用途查核"
+  },
+  {
+   "name": "刑事調查階段（司法部）",
+   "composition": "司法部主導的刑事調查",
+   "spec": "2025 年實地檢查與訪談後轉為刑事調查；尚無起訴",
+   "application": "Megaspeed 與相關人士"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "聯合聲明說了什麼（搜尋摘要）",
+   "points": [
+    "調查 2024 年起，2025/5 向輝達調取銷售紀錄，2025/6 輝達把 Megaspeed 列拒售名單",
+    "BIS 與新加坡執法人員實地查核並訪談前執行長黃樂，之後轉為刑事調查、由司法部主導",
+    "美方稱將持續監控敏感半導體轉運；整體執法有六案已起訴 17 人（只見 cnyes 摘要）"
+   ]
+  },
+  {
+   "title": "和之前報導有什麼不同",
+   "points": [
+    "官方首度公開時間線，確認調查已進入刑事階段（司法部主導），不是不了了之",
+    "聲明沒有回應 NYT 的說法，沒有宣布起訴對象或時程，也沒有證實晶片流入中國",
+    "cnyes 稱全文未提黃仁勳；多家媒體把案件與黃仁勳風波連結，但那是媒體的串連，不是聲明內容"
+   ]
+  },
+  {
+   "title": "對台灣的影響怎麼看（推論）",
+   "points": [
+    "沒有台廠被點名；影響是間接的：輝達財報前的政策與治理不確定性、AI 伺服器 ODM 的終端客戶審查與合規成本",
+    "美方同日收緊 AI 技術遠端存取管制（NPR 標題），若涉及雲端算力租賃，會影響離岸算力需求，細節未讀",
+    "台積電端看 AI 資本支出，管制多影響賣給誰而不是總需求"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀商務部 BIS 與司法部的聯合聲明原文，核對時間線與「六案 17 人」的口徑",
+    "看輝達 11/17 財報電話會議對 Megaspeed 與合規的說法",
+    "看司法部是否有起訴書或實體清單新增"
+   ]
+  }
+ ],
+ "conclusion": [
+  "商務部與司法部的聯合聲明公開了 Megaspeed 案時間線：2024 年起調查、2025/5 調取輝達銷售紀錄、6 月輝達列拒售名單，之後轉為刑事調查、由司法部主導；沒有宣布起訴，也沒有證實晶片流入中國。",
+  "聲明沒有回應 NYT 的暫停調查說法，cnyes 稱全文未提黃仁勳；「六案已起訴 17 人」只見 cnyes 摘要，看似整體執法統計，不是 Megaspeed 本案。",
+  "對台灣是輝達財報前的政策不確定性與 ODM 終端客戶審查的間接風險（推論），沒有台廠被點名；接下來看輝達財報說法、司法部是否起訴、實體清單與遠端存取管制細節。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：美商務部、司法部為Megaspeed案發聯合聲明 全文未提黃仁勳（2026-11-17，僅看到系統佇列摘要）",
+   "url": "https://news.cnyes.com/news/id/6665038"
+  },
+  {
+   "title": "CNBC：U.S. agencies say they initiated investigation into Nvidia partner Megaspeed in 2024（2026-11-17，僅看到標題與搜尋摘要）",
+   "url": "https://www.cnbc.com/2026/11/17/megaspeed-investigation-nvidia-jensen-huang.html"
+  },
+  {
+   "title": "SCMP：US details criminal probe into Nvidia customer Megaspeed over potential chip diversion（僅看到標題與搜尋摘要）",
+   "url": "https://www.scmp.com/tech/tech-war/article/3374742/us-details-criminal-probe-nvidia-customer-megaspeed-over-potential-chip-diversion"
+  },
+  {
+   "title": "NewsNation：Megaspeed investigation: DOJ took lead after Nvidia ‘no sell’ move in 2025, officials say（僅看到標題與搜尋摘要）",
+   "url": "https://www.newsnationnow.com/business/tech/megaspeed-nvidia-ceo-jensen-alice-huang/"
+  },
+  {
+   "title": "The Defiant：US Says Justice Leads Megaspeed AI-Chip Investigation（僅看到標題與搜尋摘要）",
+   "url": "https://thedefiant.io/frontier/ai/us-says-justice-leads-megaspeed-ai-chip-investigation"
+  },
+  {
+   "title": "TalkEsport：US Breaks Silence on Megaspeed: Probe Began in 2024, Nvidia Cut It Off in June 2025（僅看到標題與搜尋摘要）",
+   "url": "https://www.talkesport.com/business/megaspeed-commerce-doj-joint-statement-nvidia-no-sell-list/"
+  },
+  {
+   "title": "Coinpaper：US Confirms Criminal Investigation Into Megaspeed Over Nvidia AI Chips（僅看到標題與搜尋摘要）",
+   "url": "https://coinpaper.com/38935/us-confirms-criminal-investigation-into-megaspeed-over-nvidia-ai-chips"
+  },
+  {
+   "title": "NPR：U.S. tightens controls on remote access to AI technology amid Nvidia fallout（2026-11-16，僅看到標題）",
+   "url": "https://www.npr.org/2026/11/16/nx-s1-6042883/nvidia-jensen-huang-commerce-department"
+  },
+  {
+   "title": "IBTimes：US Suspended Chip-Smuggling Probe Into Firm Linked to Jensen Huang's Alleged Spy Affair After Nvidia Intervened（僅看到標題與搜尋摘要）",
+   "url": "https://www.ibtimes.co.uk/us-suspends-megaspeed-probe-nvidia-china-chip-shipments-1831274"
+  },
+  {
+   "title": "LetsDataScience：Megaspeed Pledges Cooperation With U.S. Probe Tied to Nvidia CEO Scandal（僅看到標題與搜尋摘要）",
+   "url": "https://letsdatascience.com/news/megaspeed-pledges-cooperation-with-us-probe-tied-to-nvidia-c-1df11899"
+  },
+  {
+   "title": "TNW：Commerce halted its Megaspeed probe after Nvidia stepped in, NYT reports（NYT 報導的轉述，僅看到標題與搜尋摘要）",
+   "url": "https://thenextweb.com/news/megaspeed-probe-commerce-nvidia-lawyer-justice-department-nyt"
+  },
+  {
+   "title": "Fortune：Megaspeed, Nvidia chips, China, Singapore, Malaysia（2026-11-11，僅看到標題與搜尋摘要）",
+   "url": "https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "美國出口管制執法（商務部 BIS 與司法部）",
+   "description": "聯合聲明公開調查時間線：2024 年商務部開始調查、2025/5 向輝達調取銷售紀錄、2025/6 輝達列拒售名單、2025 年 BIS 與新加坡執法人員實地查核並訪談前執行長黃樂，之後轉為刑事調查、司法部主導。尚無起訴宣布，也沒有證實晶片流入中國；Megaspeed 否認轉運。",
+   "global_players": [
+    "美國商務部 BIS",
+    "美國司法部",
+    "新加坡執法機關",
+    "輝達（NVIDIA）",
+    "Megaspeed"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "輝達 GPU 的先進製程與 CoWoS 代工；管制多影響「賣給誰」而非總需求（既有研究判斷）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "輝達供應鏈與終端客戶審查",
+   "description": "輝達把 Megaspeed 列入拒售名單，顯示終端客戶審查已從出貨前延伸到事後清查；對台灣 AI 伺服器 ODM 是終端客戶審查、交期與合規成本的間接風險（推論）。沒有台廠被點名，各家對東南亞算力租賃客戶的曝險未查。",
+   "global_players": [
+    "輝達",
+    "Supermicro",
+    "Dell"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；終端客戶審查加嚴的間接風險（曝險未查）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器與主機板代工；同上",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器 ODM；同上",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器與機櫃代工；同上",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
