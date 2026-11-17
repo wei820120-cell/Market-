@@ -1,0 +1,342 @@
+{
+  "topic": "供需事件：輝達財報前夕籠罩黃仁勳離任陰影 華爾街憂成長觸頂",
+  "one_line": "輝達 11/17（美東）盤後公布 FY2027 Q3 財報，台北時間 11/18 清晨；本檔是財報前的預期整理，沒有實績。公司指引營收 1,080 億美元 ±2%、毛利率約 74%（未計中國資料中心運算），共識約 1,088～1,093 億美元、調整後 EPS 約 2.47～2.49 美元；股價自 10 月高點重挫約 35%（單一來源），選擇權隱含波動 7.8% 與 ±10.6% 兩說並存。市場擔心的是成長觸頂：融資與需求結構、Rubin 時程傳聞（未證實）、BIS 遠端存取規則與 Megaspeed 案、CEO 接班；SemiAnalysis 下修與 Rubin 在 MLPerf Training v6.1 首戰只見社群貼文，沒找到原文。",
+  "status": "混合",
+  "horizon": "短期（3個月內）",
+  "layers": [
+    {
+      "layer": "輝達財報與 Blackwell 到 Rubin 的過渡（需求與時程指標）",
+      "description": "財報前預期：Q3 營收指引 1,080 億美元 ±2%、共識約 1,088～1,093 億美元；Rubin 本會計年度營收共識約 642 億美元、Blackwell 約 1,489 億美元（Visible Alpha，優分析轉述）。Rubin 預覽版在 MLPerf Inference v6.1（9/16）亮相，NVIDIA 稱最高 2.5～3.7 倍 GB300 NVL72，獨立重算約 1.6～2 倍；放量時程以財報電話會議為準。",
+      "global_players": [
+        "輝達（NVIDIA）",
+        "Nebius（MLPerf Inference v6.1 的 Rubin 預覽版提交）"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "輝達 GPU 的先進製程與 CoWoS 代工；財報對 Rubin 與資本支出的說法是方向指標",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "AI 伺服器 ODM 與機櫃",
+      "description": "Blackwell／GB300 機櫃出貨與 Rubin 機櫃導入節奏決定台系 ODM 的接單與認列時點；財報後看 Q4 指引、GB300 與 Rubin 的出貨說法。",
+      "global_players": [
+        "Supermicro",
+        "Dell",
+        "鴻海、廣達、緯創、緯穎（台系 ODM）"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2317",
+          "name": "鴻海",
+          "role": "AI 伺服器與機櫃代工；財報前預期，結果未出",
+          "impact": "中性"
+        },
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM；同上",
+          "impact": "中性"
+        },
+        {
+          "code": "3231",
+          "name": "緯創",
+          "role": "AI 伺服器與主機板代工；同上",
+          "impact": "中性"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端伺服器 ODM；同上",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "載板、散熱與 AI 零組件（對 Rubin 時程最敏感）",
+      "description": "載板（欣興、南電、景碩）與均熱片（健策）對 Rubin 世代時程與規格最敏感；11/16 載板股重挫與 Rubin 延後傳聞（未證實）有關（見既有研究）。財報若確認時程，認列時點較明確；若後延，屬時程問題而不是需求消失（推論）。",
+      "global_players": [
+        "Ibiden",
+        "Samsung Electro-Mechanics"
+      ],
+      "tw_stocks": [
+        {
+          "code": "3037",
+          "name": "欣興",
+          "role": "ABF 載板龍頭；對 Rubin 時程敏感",
+          "impact": "中性"
+        },
+        {
+          "code": "8046",
+          "name": "南電",
+          "role": "ABF 載板；同上",
+          "impact": "中性"
+        },
+        {
+          "code": "3189",
+          "name": "景碩",
+          "role": "ABF／BT 載板；同上",
+          "impact": "中性"
+        },
+        {
+          "code": "3653",
+          "name": "健策",
+          "role": "AI 晶片均熱片；Rubin 放量是營收動能",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "政策與治理（出口管制、遠端存取規則、接班）",
+      "description": "BIS 11/16 發布遠端存取許可規則、商務部與司法部發布 Megaspeed 聯合聲明、貝森特要求大改組並限期回答出口管制問題（約 11/25）；執行長接班尚無結論。",
+      "global_players": [
+        "美國商務部 BIS",
+        "美國司法部",
+        "美國財政部",
+        "輝達董事會"
+      ],
+      "tw_stocks": []
+    }
+  ],
+  "keywords": [
+    "輝達",
+    "財報",
+    "FY2027 Q3",
+    "黃仁勳離任",
+    "成長觸頂",
+    "Rubin",
+    "Blackwell",
+    "MLPerf",
+    "SemiAnalysis",
+    "選擇權隱含波動",
+    "營收指引",
+    "毛利率 74%",
+    "出口管制",
+    "遠端存取規則",
+    "Visible Alpha"
+  ],
+  "catalysts": [
+    "美東 11/17 盤後輝達 Q3 財報與電話會議：Q3 實績、毛利率、Q4 指引、Rubin 出貨時程與 FY2028 展望、對中國與東南亞出貨說法、接班與合規",
+    "台股 11/18 開盤反應：台積電、鴻海、廣達、緯創、緯穎、載板與散熱族群",
+    "約 11/25：貝森特給輝達董事會的期限；12/10：盧特尼克聽證",
+    "BIS 遠端存取規則的條文、生效日與許可細節",
+    "MLCommons 官方 Training v6.1 結果頁；SemiAnalysis 下修報告原文"
+  ],
+  "risks": [
+    "本檔全是財報前的預期與疑慮，實績以輝達新聞稿與電話會議為準",
+    "選擇權隱含波動兩種說法不一致（7.8% vs ±10.6%），沒有主流來源的最新數字",
+    "SemiAnalysis 下修與 Rubin 在 MLPerf Training v6.1 首戰只見社群貼文，沒找到原文；Inference v6.1 的 Rubin 是預覽版，NVIDIA 自稱與獨立重算差距大",
+    "股價 −35%、市值蒸發 2 兆美元只見單一來源，沒核對",
+    "不同前瞻文章對黃仁勳離任描述不一致；rallies.ai 的 KeyBanc 減產說法未註明日期",
+    "沒查到 Q4 指引共識；循環融資疑慮只見 Podcast 節目說法"
+  ],
+  "spec_tables": [
+    {
+      "title": "表：財報前預期（搜尋摘要，財報公布前）",
+      "columns": [
+        "項目",
+        "數字",
+        "備註"
+      ],
+      "rows": [
+        [
+          "Q3 營收指引",
+          "1,080 億美元 ±2%",
+          "未計入中國資料中心運算產品收入"
+        ],
+        [
+          "Q3 營收共識",
+          "約 1,088～1,093 億美元",
+          "Visible Alpha 1,093 億、LSEG 1,092 億、另一統計 1,088 億"
+        ],
+        [
+          "資料中心營收共識",
+          "約 1,018 億美元",
+          "優分析轉述"
+        ],
+        [
+          "毛利率指引",
+          "GAAP 與調整後約 74% ±0.5 個百分點",
+          "公司先前指引"
+        ],
+        [
+          "調整後 EPS",
+          "約 2.47～2.49 美元；Whisper 2.60 美元",
+          "各家統計略有不同"
+        ],
+        [
+          "上一季",
+          "營收約 962 億美元；資料中心約 890 億美元",
+          "單一來源"
+        ],
+        [
+          "Rubin／Blackwell 本會計年度共識",
+          "Rubin 約 642 億美元；Blackwell 約 1,489 億美元",
+          "Visible Alpha，優分析轉述"
+        ],
+        [
+          "選擇權隱含波動",
+          "約 7.8%（鉅亨）vs ±10.6%（單一網站，11/10）",
+          "不一致"
+        ],
+        [
+          "Q4 指引共識",
+          "沒查到",
+          "—"
+        ]
+      ],
+      "note": "全部是財報前預期，不是實績；以輝達新聞稿為準。"
+    },
+    {
+      "title": "表：Rubin 的 MLPerf 證據（已查到 vs 只見社群說法）",
+      "columns": [
+        "來源",
+        "內容",
+        "狀態"
+      ],
+      "rows": [
+        [
+          "Inference v6.1（9/16）",
+          "Vera Rubin NVL72 預覽版首度提交；NVIDIA 稱 DeepSeek-R1 最高 2.5 倍、Qwen3-VL 最高 3.7 倍 GB300 NVL72",
+          "NVIDIA 自稱，預覽版"
+        ],
+        [
+          "Inference v6.1 獨立重算",
+          "以 Nebius 公布的每 GPU 數字重算，差距約 1.6～2 倍",
+          "第三方推算"
+        ],
+        [
+          "Training v6.1（11/17）",
+          "Threads 稱 Rubin NVL72 首次參賽、7 項 6 項最快、最高 2 倍 GB300；DeepSeek-V3 671B 用 1,024 顆約 4.14 分鐘 vs GB300 約 8.03 分鐘",
+          "只見社群貼文，沒找到官方原文"
+        ]
+      ],
+      "note": "效能領先不等於出貨時程；NVIDIA 至今未公布 Rubin 定價與出貨時間（貼文說法）。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "Blackwell／GB200 NVL72",
+      "composition": "Blackwell GPU 加 Grace CPU 機櫃",
+      "spec": "Blackwell 本會計年度營收共識約 1,489 億美元（Visible Alpha）",
+      "application": "目前主力出貨"
+    },
+    {
+      "name": "GB300 NVL72（Blackwell Ultra）",
+      "composition": "Blackwell Ultra 機櫃",
+      "spec": "MLPerf Training v6.0（6 月）GB300 NVL72 最高比 GB200 NVL72 快 1.6 倍（搜尋摘要）",
+      "application": "雲端與算力業者"
+    },
+    {
+      "name": "Vera Rubin NVL72",
+      "composition": "Rubin GPU 加 Vera CPU 機櫃",
+      "spec": "Rubin 本會計年度營收共識約 642 億美元；MLPerf Inference v6.1 預覽版亮相（9/16）",
+      "application": "輝達新平台；放量時程待財報確認"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "成長觸頂的疑慮怎麼來的",
+      "points": [
+        "需求與融資：客戶集中在雲端業者，市場討論循環融資與客戶自研 ASIC（Podcast 說法，未核對）",
+        "供給：HBM4、先進封裝、電力；Vera Rubin 延後放量傳聞（未證實）",
+        "政策與治理：出口管制、BIS 遠端存取規則、Megaspeed 案、CEO 離任與接班",
+        "估值：股價已重挫，市場在看實績能否撐住長期成長斜率"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷（情境，不是預測）",
+      "points": [
+        "指引與時程符合預期：AI 伺服器 ODM、載板、散熱、台積電情緒修復",
+        "指引低於預期或 Rubin 後延：對時程最敏感的載板、機櫃、散熱壓力較大；屬時程問題而不是需求消失（推論）",
+        "ASIC 與 AMD 陣營相對受惠（既有研究的判斷）"
+      ]
+    },
+    {
+      "title": "財報當晚要看什麼",
+      "points": [
+        "Q3 實績相對指引與共識、毛利率是否守住約 74%",
+        "Q4 指引、Rubin 出貨時程與 FY2028 展望",
+        "對中國與東南亞出貨（H200、遠端存取規則）的說法",
+        "接班、合規與董事會對貝森特問題的回應"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "看輝達新聞稿與電話會議逐字稿，核對實績與指引",
+        "看 MLCommons 官方結果與 SemiAnalysis 原報告，確認社群貼文說法",
+        "看台股開盤反應與接下來的月營收"
+      ]
+    }
+  ],
+  "conclusion": [
+    "輝達財報在美東 11/17 盤後、台北 11/18 清晨公布；財報前的預期是 Q3 營收約 1,088～1,093 億美元（指引 1,080 億美元 ±2%）、毛利率約 74%，Q4 指引共識沒查到。",
+    "市場要看的不只是單季好壞，而是 Rubin 時程、FY2028 展望、對中國與東南亞出貨與接班合規的說法；SemiAnalysis 下修與 Rubin 在 Training v6.1 的成績只見社群貼文，沒找到原文。",
+    "對台灣是情緒與時程問題：載板、機櫃、散熱對 Rubin 時程最敏感；接下來以實績與電話會議為準，不要拿財報前的預期當結果。"
+  ],
+  "sources": [
+    {
+      "title": "鉅亨網：輝達財報前夕籠罩黃仁勳離任陰影 華爾街憂成長觸頂（2026-11-17，僅看到系統佇列摘要）",
+      "url": "https://news.cnyes.com/news/id/6664515"
+    },
+    {
+      "title": "優分析：輝達AI晶片財報前瞻 市場估第三季營收1093億美元、Rubin成長受關注（2026-11-13，僅搜尋摘要）",
+      "url": "https://uanalyze.com.tw/articles/2526959383"
+    },
+    {
+      "title": "S&P Global Market Intelligence：Nvidia earnings preview Q3 FY2027（2026-11-12，僅搜尋摘要）",
+      "url": "https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/11/nvidia-earnings-preview-q3-2027"
+    },
+    {
+      "title": "Gotrade：Nvidia Stock Earnings Preview: What to Watch on Nov. 17（僅搜尋摘要）",
+      "url": "https://www.heygotrade.com/en/news/nvidia-stock-earnings-preview-ceo-succession/"
+    },
+    {
+      "title": "OANDA：NVIDIA Q3 earnings preview: Record expectations, rising risk（僅搜尋摘要）",
+      "url": "https://www.oanda.com/uk-en/skills-and-insights/education/trading-asset-classes/shares/nvidia-q3-earnings-preview-nov-2026/"
+    },
+    {
+      "title": "TradingKey：Nvidia Q3 Earnings Preview: AI Chip Deliveries and CEO Transition in Focus, Wall Street's Highest Target at $515（僅搜尋摘要）",
+      "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262306518-nvidia-q3-earnings-ai-chip-delivery-ceo-transition-tradingkey"
+    },
+    {
+      "title": "VentureBeat：Nvidia's Jensen Huang resigns: what does it mean for the AI industry（僅標題與搜尋摘要）",
+      "url": "https://venturebeat.com/infrastructure/nvidias-jensen-huang-resigns-what-does-it-mean-for-the-ai-industry"
+    },
+    {
+      "title": "HPCwire：NVIDIA Vera Rubin NVL72 delivers leading performance in MLPerf Inference v6.1 debut（僅搜尋摘要）",
+      "url": "https://www.hpcwire.com/off-the-wire/nvidia-vera-rubin-nvl72-delivers-leading-performance-in-mlperf-inference-v6-1-debut/"
+    },
+    {
+      "title": "StorageReview：MLPerf Inference v6.1: Vera Rubin's first peer-reviewed numbers（僅搜尋摘要）",
+      "url": "https://www.storagereview.com/news/mlperf-inference-v6-1-5-7x-per-accelerator-gains-a-512-gpu-run-and-vera-rubins-first-peer-reviewed-numbers"
+    },
+    {
+      "title": "Nebius：MLPerf Inference v6.1 results（僅搜尋摘要）",
+      "url": "https://nebius.com/blog/posts/mlperf-inference-v6-1-results"
+    },
+    {
+      "title": "Threads @tochinyu：Vera Rubin 在 MLPerf Training v6.1 首戰的說法（2026-11-17，個人貼文，未證實）",
+      "url": "https://www.threads.com/@tochinyu/post/Df0zykqpaHw"
+    },
+    {
+      "title": "Threads @ai.podcast.summarist：兆華與股惑仔 EP1224 摘要（2026-11-17，節目摘要貼文，未證實）",
+      "url": "https://www.threads.com/@ai.podcast.summarist/post/Df14lyPku6o"
+    },
+    {
+      "title": "rallies.ai：Nvidia Cuts Rubin GPU Output Forecast to 1.5M Units with Rack Shipments Halved（未註明日期，僅搜尋摘要）",
+      "url": "https://rallies.ai/news/nvidia-cuts-rubin-gpu-output-forecast-to-15m-units-with-rack-shipments-halved"
+    },
+    {
+      "title": "SemiAnalysis：Accelerator Industry Model（模型介紹頁；沒有找到 11 月下修報告）",
+      "url": "https://www.semianalysis.com/accelerator-model"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：輝達財報前夕籠罩黃仁勳離任陰影——市場在等 Q3 實績、Q4 指引與 Rubin 時程（財報前，尚無實績）\n\n> 資料說明：寫於 **2026-11-17 台北時間夜間，輝達財報尚未公布**（美東 11/17 盤後，台北時間 11/18 清晨）。本檔整理的是財報**前**的預期與疑慮，不是結果；多數來源只看到標題與搜尋摘要，**沒有讀到輝達新聞稿與分析師報告原文**。\n\n## 1. 事件\n- 輝達將於美東 11/17 盤後公布 FY2027 Q3 財報。鉅亨（佇列摘要）稱預期 Q3 營收與淨利仍成長，但無法化解市場對長期前景與成長放緩的疑慮；股價自 10 月高點重挫 35%、市值蒸發約 2 兆美元（**單一來源，未核對**）。\n- **黃仁勳風波**：11/8 爆出婚外情、11/12 辭職、財務長 Kress 暫代（見既有研究）；馬斯克、川普聲援復職；財政部長貝森特要求輝達大改組並在約 10 天內回答出口管制合規問題。部分英文前瞻（如 OANDA）沒提離任，以公司公告為準。\n- **財報後波動預期兩種說法**：鉅亨稱選擇權隱含約 7.8%；另有低知名度網站稱 11/10 時隱含約 ±10.6%。兩者不一致，沒有查到主流來源的最新數字。\n\n## 2. 財報前預期（搜尋摘要；不是實績）\n- **公司指引**：Q3 營收 1,080 億美元 ±2%、毛利率約 74% ±0.5 個百分點，**未計入**中國資料中心運算產品收入。\n- **共識**：營收約 1,088～1,093 億美元（Visible Alpha 1,093 億、LSEG 1,092 億），略高於指引中值；資料中心營收共識約 1,018 億美元；調整後 EPS 約 2.47～2.49 美元，Whisper 數字 2.60 美元。\n- **產品**：Visible Alpha 共識（優分析轉述）Rubin 本會計年度約 642 億美元、Blackwell 由約 980 億美元增至約 1,489 億美元，分析師預期 Blackwell 下一會計年度回落。\n- **上一季**：營收約 962 億美元、資料中心約 890 億美元（單一來源）。輝達過去四季都高於營收指引中值（單一來源）。\n- **沒查到**：Q4 指引的市場共識。\n\n## 3. 市場在擔心什麼（成長觸頂疑慮）\n- **需求與融資面**：客戶多為雲端業者，另有關於「循環融資」（股權投資、保證算力回購、信用擔保）的討論，來自 Podcast 節目說法，**未核對**；客戶自研 ASIC 與 AMD 分走份額（既有研究）。\n- **供給面**：HBM4、先進封裝與電力；Vera Rubin 延後放量的傳聞（**未證實**，見既有研究）。\n- **政策與治理面**：BIS 11/16 發布遠端存取許可規則、商務部與司法部的 Megaspeed 聯合聲明、貝森特的期限（約 11/25）與接班人選；輝達對中國與東南亞出貨的說法是財報電話會議焦點。\n- **估值面**：股價已重挫，市場在看實績能否撐住；單季好壞與長期成長斜率是兩件事。\n\n## 4. 說法與證據等級\n| 說法 | 來源 | 證據等級 | 判讀 |\n|---|---|---|---|\n| 黃仁勳 11/12 辭職、Kress 暫代 | VentureBeat、既有研究 | 媒體報導 | 多方報導一致，細節以公司公告為準 |\n| 股價自高點 −35%、市值蒸發 2 兆美元 | 鉅亨佇列摘要 | 媒體報導（單一來源） | 沒核對 |\n| 訂單都還在、客戶是雲端業者不會因人事新聞改單 | 兆華與股惑仔 EP1224 來賓（Threads 摘要） | 社群傳聞 | 個人看法 |\n| 兩家外資把事件比作 2011 年賈伯斯離開蘋果；短期獲利預估幾乎沒動 | 同上 | 社群傳聞 | 沒找到原報告 |\n| SemiAnalysis 11 天內大幅下修 AI 出貨預估，下修後 2027 年仍比 2026 年增長約 6 成 | 同上（轉述） | 社群傳聞 | **沒找到 SemiAnalysis 原報告** |\n| Rubin 在 MLPerf Training v6.1 首戰，7 項測試 6 項最快、最高 2 倍 GB300 | Threads @tochinyu | 社群傳聞 | **沒找到 MLCommons 或 NVIDIA 原文**；已查到的是 9/16 的 Inference v6.1 預覽版：NVIDIA 稱最高 2.5～3.7 倍 GB300 NVL72，獨立重算約 1.6～2 倍 |\n| KeyBanc 把 Rubin 產量預估由 200 萬降到 150 萬顆、機櫃出貨降到 6,000 座（HBM4 延遲） | rallies.ai | 媒體報導（未註明日期） | 日期與出處待查，不採用 |\n\n## 5. 對台灣供應鏈（推論，財報結果未出）\n- **台股 11/18 開盤反應**取決於 Q4 指引、毛利率與 Rubin 出貨時程；財報前所有數字都是預期。\n- **敏感度**：載板（欣興、南電、景碩）與機櫃、散熱對 Rubin 時程最敏感（見既有研究）；AI 伺服器 ODM（鴻海、廣達、緯創、緯穎）看 GB300 與 Rubin 機櫃的出貨節奏；台積電看 CoWoS 與資本支出訊號。\n- **情境（不是預測）**：Q4 指引與 Rubin 時程符合預期 → 供應鏈情緒修復；指引低於預期或時程後延 → 對時程最敏感的環節壓力較大；ASIC 與 AMD 陣營相對受惠（既有研究的判斷）。\n\n## 6. 風險與矛盾\n- 以上全是**財報前**的預期；實績出來後以輝達新聞稿與電話會議為準。\n- 選擇權隱含波動兩種說法不一致（7.8% vs ±10.6%）。\n- SemiAnalysis 下修與 Rubin 在 Training v6.1 的成績**只見社群貼文**，沒有原文；Rubin 在 Inference v6.1 的成績是預覽版，NVIDIA 自稱與獨立重算差距大。\n- 不同前瞻文章對黃仁勳離任的描述不一致。\n- 沒查到 Q4 指引共識。\n\n## 7. 要追蹤的時間點\n- **美東 11/17 盤後**：Q3 實績、毛利率、Q4 指引、Rubin 出貨時程與 FY2028 展望、對中國與東南亞出貨說法、接班與合規。\n- 台股 11/18 開盤反應；台積電、鴻海、廣達、緯創、緯穎與載板、散熱族群的後續月營收。\n- 約 11/25 貝森特給輝達董事會的期限；12/10 盧特尼克聽證；BIS 遠端存取規則的許可細節。\n- MLCommons 官方的 Training v6.1 結果頁；SemiAnalysis 原報告。\n\n## 資料來源\n- [鉅亨網：輝達財報前夕籠罩黃仁勳離任陰影 華爾街憂成長觸頂（2026-11-17，僅看到系統佇列摘要）](https://news.cnyes.com/news/id/6664515)\n- [優分析：輝達AI晶片財報前瞻 市場估第三季營收1093億美元、Rubin成長受關注（2026-11-13，僅搜尋摘要）](https://uanalyze.com.tw/articles/2526959383)\n- [S&P Global Market Intelligence：Nvidia earnings preview Q3 FY2027（2026-11-12，僅搜尋摘要）](https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/11/nvidia-earnings-preview-q3-2027)\n- [Gotrade：Nvidia Stock Earnings Preview: What to Watch on Nov. 17（僅搜尋摘要）](https://www.heygotrade.com/en/news/nvidia-stock-earnings-preview-ceo-succession/)\n- [OANDA：NVIDIA Q3 earnings preview: Record expectations, rising risk（僅搜尋摘要）](https://www.oanda.com/uk-en/skills-and-insights/education/trading-asset-classes/shares/nvidia-q3-earnings-preview-nov-2026/)\n- [TradingKey：Nvidia Q3 Earnings Preview: AI Chip Deliveries and CEO Transition in Focus, Wall Street's Highest Target at $515（僅搜尋摘要）](https://www.tradingkey.com/analysis/stocks/us-stocks/262306518-nvidia-q3-earnings-ai-chip-delivery-ceo-transition-tradingkey)\n- [VentureBeat：Nvidia's Jensen Huang resigns: what does it mean for the AI industry（僅標題與搜尋摘要）](https://venturebeat.com/infrastructure/nvidias-jensen-huang-resigns-what-does-it-mean-for-the-ai-industry)\n- [HPCwire：NVIDIA Vera Rubin NVL72 delivers leading performance in MLPerf Inference v6.1 debut（僅搜尋摘要）](https://www.hpcwire.com/off-the-wire/nvidia-vera-rubin-nvl72-delivers-leading-performance-in-mlperf-inference-v6-1-debut/)\n- [StorageReview：MLPerf Inference v6.1: Vera Rubin's first peer-reviewed numbers（僅搜尋摘要）](https://www.storagereview.com/news/mlperf-inference-v6-1-5-7x-per-accelerator-gains-a-512-gpu-run-and-vera-rubins-first-peer-reviewed-numbers)\n- [Nebius：MLPerf Inference v6.1 results（僅搜尋摘要）](https://nebius.com/blog/posts/mlperf-inference-v6-1-results)\n- [Threads @tochinyu：Vera Rubin 在 MLPerf Training v6.1 首戰的說法（2026-11-17，個人貼文，未證實）](https://www.threads.com/@tochinyu/post/Df0zykqpaHw)\n- [Threads @ai.podcast.summarist：兆華與股惑仔 EP1224 摘要（2026-11-17，節目摘要貼文，未證實）](https://www.threads.com/@ai.podcast.summarist/post/Df14lyPku6o)\n- [rallies.ai：Nvidia Cuts Rubin GPU Output Forecast to 1.5M Units with Rack Shipments Halved（未註明日期，僅搜尋摘要）](https://rallies.ai/news/nvidia-cuts-rubin-gpu-output-forecast-to-15m-units-with-rack-shipments-halved)\n- [SemiAnalysis：Accelerator Industry Model（模型介紹頁；沒有找到 11 月下修報告）](https://www.semianalysis.com/accelerator-model)\n",
+  "trigger": "2026-11-17 供需失衡（政策管制）：輝達財報前夕籠罩黃仁勳離任陰影 華爾街憂成長觸頂\n輝達周二收盤後公布財報，預期第3季營收與淨利仍成長，但無法化解市場對長期前景與成長放緩疑慮。&#10;黃仁勳11月8日爆出婚外情後已離任，股價自10月高點重挫35%、市值蒸發2兆美元，財報後波動恐達7.8%。&#10;馬斯克、川普等聲援黃仁勳復職；但貝森特籲輝達大幅改組並說明是否遵守AI晶片出口管制。\nhttps://news.cnyes.com/news/id/6664515"
+}
