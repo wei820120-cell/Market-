@@ -1,0 +1,380 @@
+{
+ "topic": "供需事件：景碩拿下輝達訂單或認證（傳聞求證）",
+ "one_line": "這次不是偵測誤判：輝達美東 11/17 官方宣布擴大與六家夥伴的供應鏈承諾（Amkor、鴻海、景碩、三星電機、矽品、台積電），景碩將在桃園把專供輝達的先進 ABF 載板產能提高到目前的 3.5 倍以上，預計 2027 下半年投產、2028 Q3 新增產能到位（一則報導）；矽品獲數十億美元資金支持、專供輝達的先進封裝產能 2029 年中到位。合約金額、價格與條件沒有公開，3.5 倍的基準與是否專供輝達以新聞稿全文為準（只看到轉載摘要）。景碩 11/18 開盤漲停；資本支出（598 億 vs 196 億）與 Vera CPU 占比（逾 5 成 vs 80～100%）說法不一，Top1Markets「逾 10 億美元」只有單一來源。",
+ "status": "已證實",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "景碩",
+  "3189",
+  "輝達",
+  "供應鏈長約",
+  "ABF 載板",
+  "3.5 倍",
+  "桃園廠",
+  "2027 下半年",
+  "矽品",
+  "京元電",
+  "欣興",
+  "Vera Rubin",
+  "產能預訂",
+  "預付款",
+  "K6 廠",
+  "GlobeNewswire"
+ ],
+ "catalysts": [
+  "景碩重大訊息與法說：資本支出、客戶預付款、合約條款；Q3 財報 EPS",
+  "11 月營收（12/10 前）與 ABF 報價（TrendForce）",
+  "輝達新聞稿全文與 10-Q 的供應承諾金額",
+  "欣興、矽品、京元電、南電的後續說法與重大訊息",
+  "Vera Rubin 與 Rubin Ultra 的出貨節奏（緯來標題稱 Rubin Ultra 明年照常登場，未核對）"
+ ],
+ "risks": [
+  "新聞稿全文沒讀到；3.5 倍的基準與「專供輝達」口徑以原文為準",
+  "資本支出數字不一（新增 598 億元 vs 再增 196 億元），Vera CPU 占比說法不一（逾 5 成 vs 80～100%）",
+  "Top1Markets 的「輝達投資逾 10 億美元」只有單一來源，其他主要報導沒提景碩的金額",
+  "時程在 2027 下半年到 2028：近期營收貢獻有限，折舊與資本支出壓力大；漲停價（596 元）評價高",
+  "載板股 11/16 因 Rubin 延後傳聞（未證實）重挫，11/17 輝達稱已出貨並宣布擴大承諾，消息面反轉快",
+  "輝達自身供應承諾增加，財報稱正嚴格評估未來的投資、承諾與保證",
+  "11/17 上午的結論是「沒有證據」，官方宣布後已更新；官方宣布的內容以新聞稿為準"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：輝達 11/17 宣布的夥伴與內容（轉載摘要，沒讀到新聞稿全文）",
+   "columns": [
+    "夥伴",
+    "內容",
+    "備註"
+   ],
+   "rows": [
+    [
+     "景碩（Kinsus）",
+     "桃園廠區專供輝達的先進 ABF 載板產能增至目前的 3.5 倍以上；2027 下半年投產；新增產能 2028 Q3 到位",
+     "基準未公開；2028 Q3 只見一則報導"
+    ],
+    [
+     "矽品（SPIL）",
+     "多年期協議，輝達提供數十億美元資金支持；專供輝達的先進封裝產能 2029 年中到位",
+     "金額只說「數十億美元」"
+    ],
+    [
+     "三星電機",
+     "擴大載板供貨承諾；既有工廠增加產能與改善生產",
+     "10/21 已宣布參與載板擴產"
+    ],
+    [
+     "Amkor",
+     "7 月與 10 月協議合計近 30 億美元（含預付款）；亞利桑那與南韓",
+     "先前已宣布"
+    ],
+    [
+     "鴻海",
+     "董事長稱深化新一代 GPU 與網通平台合作；推介全球產線",
+     "沒有量化承諾"
+    ],
+    [
+     "台積電",
+     "Vera Rubin NVL72 與 Vera CPU 使用 5 奈米、3 奈米與 CoWoS",
+     "新聞稿稱已於 Q3 開始量產出貨"
+    ]
+   ],
+   "note": "皆為轉載摘要，以新聞稿全文為準；台灣媒體另稱點名欣興與京元電。"
+  },
+  {
+   "title": "表：10/21（GTC Berlin）已宣布的承諾（轉述）",
+   "columns": [
+    "項目",
+    "內容",
+    "備註"
+   ],
+   "rows": [
+    [
+     "載板總產能",
+     "三年內提高到 2.5 倍（Ibiden、三星電機、欣興合計）",
+     "不是欣興單獨的倍數"
+    ],
+    [
+     "欣興",
+     "產能預訂協議；2027 Q2 開始增加產能、2028 年中達完整規劃產能",
+     "摩根士丹利稱降低擴廠財務風險（見欣興研究）"
+    ],
+    [
+     "矽品 CPO 光學引擎",
+     "2027 年中增至目前 15 倍、2028 年底前再翻倍（約 30 倍）",
+     "基準未公布"
+    ],
+    [
+     "京元電",
+     "11 億美元預付款支持美國測試廠；2027/4 目標量產",
+     "京元電公告預付款上限 NT$45 億元（約 14 億美元），口徑未對齊"
+    ]
+   ],
+   "note": "皆為次級報導轉述。"
+  },
+  {
+   "title": "表：景碩營運與擴產數字（報導）",
+   "columns": [
+    "項目",
+    "數字",
+    "備註"
+   ],
+   "rows": [
+    [
+     "2026 上半年",
+     "營收 236.01 億元；EPS 3.74 元",
+     "既有研究"
+    ],
+    [
+     "Q3 毛利率",
+     "33.9%",
+     "報導：漲價約高個位數、ABF 占比 47%、稼動率 90%；Q3 EPS 沒查到"
+    ],
+    [
+     "資本支出",
+     "新增專案 598 億元；2026／2027 年約 200 億元、180～200 億元；另一則稱再增 196 億元（原 80 億元）",
+     "口徑不一，以重大訊息為準"
+    ],
+    [
+     "新產能",
+     "2027 Q2 起逐步開出；輝達專供產能 2027 下半年投產",
+     "兩個時點對象不同"
+    ],
+    [
+     "Vera CPU 占比",
+     "明年逾 5 成（報導）；2027 年 80～100%（法人推估）",
+     "皆非公司公告"
+    ]
+   ],
+   "note": "數字來自搜尋摘要，請以公開資訊觀測站為準。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "Grace／Vera CPU 載板",
+   "composition": "ABF 載板",
+   "spec": "景碩 Vera CPU 占比逾 5 成或 80～100%（兩說）",
+   "application": "輝達 CPU 平台"
+  },
+  {
+   "name": "專供輝達的 ABF 載板產線",
+   "composition": "桃園廠區新產線",
+   "spec": "產能增至目前 3.5 倍以上；2027 下半年投產；2028 Q3 到位（一則報導）",
+   "application": "輝達目前與下一世代加速運算平台"
+  },
+  {
+   "name": "Rubin 世代載板",
+   "composition": "尺寸與層數放大的 ABF 載板",
+   "spec": "Vera Rubin NVL72 已於 Q3 量產出貨（新聞稿說法）",
+   "application": "Vera Rubin、Rubin Ultra（時程以輝達說法為準）"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "這個訊號是什麼（官方宣布，不是誤判）",
+   "points": [
+    "輝達 11/17 官方宣布擴大與六家夥伴的承諾，景碩專供輝達的先進 ABF 載板產能增至 3.5 倍以上",
+    "11/17 上午「雙打入跌停」的景碩訊號是誤判；這次有官方宣布",
+    "合約金額、價格與條件沒有公開；3.5 倍的基準以新聞稿為準"
+   ]
+  },
+  {
+   "title": "供需缺口怎麼來的",
+   "points": [
+    "AI 加速器與 CPU 載板尺寸與層數放大，ABF 缺口擴大；上游 T-glass 玻纖布短缺",
+    "輝達提前綁定產能：10/21 三年內載板總產能 2.5 倍（Ibiden、三星電機、欣興），11/17 景碩 3.5 倍、三星電機擴大",
+    "市場說法稱 ABF 長約延到 2028 年、客戶預付款或分攤建廠成本（未經公司證實）"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠：景碩、欣興、矽品與日月光投控、京元電；上游玻纖布",
+    "受傷或不利（推論）：其他載板客戶產能被提前綁定、載板用戶成本上升；輝達自身供應承諾增加",
+    "替代供應：南電（未被點名）、Ibiden、三星電機"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀輝達新聞稿全文與景碩重大訊息，核對 3.5 倍、金額與時程",
+    "看景碩 Q3 財報 EPS、11 月營收與法說對資本支出的說明",
+    "看輝達 10-Q 的供應承諾與 ABF 報價（TrendForce）"
+   ]
+  }
+ ],
+ "conclusion": [
+  "輝達 11/17 官方宣布擴大與六家夥伴的供應鏈承諾，景碩將把專供輝達的先進 ABF 載板產能提高到目前的 3.5 倍以上，預計 2027 下半年投產；這次不是偵測誤判，但合約金額、價格與條件沒有公開，3.5 倍的基準以新聞稿為準。",
+  "景碩 11/18 開盤漲停；資本支出與 Vera CPU 占比說法不一，Top1Markets「逾 10 億美元」只有單一來源。時程在 2027 下半年到 2028，近期營收貢獻有限，折舊與資本支出壓力大。",
+  "接下來看輝達新聞稿全文、景碩重大訊息與法說、Q3 財報 EPS、11 月營收，以及輝達自身供應承諾的變化。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：輝達擴大與供應鏈夥伴合作 台積電、鴻海、景碩及矽品等4台廠入列（2026-11-18，僅看到系統佇列摘要與搜尋摘要）",
+   "url": "https://news.cnyes.com/news/id/6665855"
+  },
+  {
+   "title": "GlobeNewswire：NVIDIA Expands Commitments With Supply Chain Partners to Support AI Infrastructure Buildout（2026-11-17，僅看到多家轉載與搜尋摘要，沒讀到全文）",
+   "url": "https://www.globenewswire.com/news-release/2026/11/17/3405251/0/en/nvidia-expands-commitments-with-supply-chain-partners-to-support-ai-infrastructure-buildout.html"
+  },
+  {
+   "title": "StockTitan：NVIDIA deal targets over 3.5x Kinsus substrate capacity（僅標題與搜尋摘要）",
+   "url": "https://www.stocktitan.net/news/NVDA/nvidia-expands-commitments-with-supply-chain-partners-to-support-ai-s6tq7i78uj5s.html"
+  },
+  {
+   "title": "Stockhouse：NVIDIA expands multiyear supply deals to add chip packaging capacity（2026-11-17，僅標題與搜尋摘要）",
+   "url": "https://stockhouse.com/news/newswire/2026/11/17/nvidia-expands-multiyear-supply-deals-to-add-chip-packaging-capacity"
+  },
+  {
+   "title": "中央社：輝達宣示擴大供應鏈合作 台積電鴻海矽品京元電景碩欣興入列（2026-11-18，僅標題）",
+   "url": "https://www.cna.com.tw/news/afe/202611180027.aspx"
+  },
+  {
+   "title": "ETtoday：輝達擴大供應鏈長約點名6台廠！景碩開盤漲停 京元電漲逾5%（僅標題）",
+   "url": "https://finance.ettoday.net/news/3274072"
+  },
+  {
+   "title": "優分析：輝達擴大供應鏈長約 景碩增ABF產能、矽品獲數十億美元支持（僅標題）",
+   "url": "https://uanalyze.com.tw/articles/1056259951"
+  },
+  {
+   "title": "時報資訊：無勳之達》台積電高層親訪輝達 景碩、矽品簽長約擴產（2026-11-18，僅標題）",
+   "url": "https://www.chinatimes.com/realtimenews/20261118001350-260410"
+  },
+  {
+   "title": "TVBS：輝達再擴大供應鏈合作 台積電、鴻海、景碩、矽品等台廠全入列（僅標題）",
+   "url": "https://news.tvbs.com.tw/tech/4052146"
+  },
+  {
+   "title": "緯來新聞網：輝達Rubin Ultra明年照常登場 景碩、矽品簽新約（僅標題；Rubin Ultra 時程說法未核對）",
+   "url": "https://news.videoland.com.tw/article/f969a1cd-439b-4f5f-92fc-08994b4c7b87.html"
+  },
+  {
+   "title": "Xenospectrum：NVIDIA Expands AI Supply Chain With Six Partners Including Ibiden, Targeting 2.5x Substrate Capacity（10/21 GTC Berlin 相關，僅搜尋摘要）",
+   "url": "https://xenospectrum.com/en/nvidia-ai-supply-capacity-expansion/"
+  },
+  {
+   "title": "TechTimes：NVIDIA Commits $1.1 Billion to Chip Testing, Targets 15x Optics Capacity for Vera Rubin（2026-10-22，僅標題與搜尋摘要）",
+   "url": "https://www.techtimes.com/articles/329359/20261022/nvidia-commits-11-billion-chip-testing-targets-15x-optics-capacity-vera-rubin.htm"
+  },
+  {
+   "title": "數位時代：Nvidia GTC Berlin CPO、先進封裝與供應鏈（2026-10-21，僅標題與搜尋摘要）",
+   "url": "https://www.bnext.com.tw/article/92729/nvidia-gtc-berlin-cpo-advanced-packaging-supply-chain-20261021"
+  },
+  {
+   "title": "Top1Markets：景碩股價跳空漲停596元：輝達砸逾10億美元投資（單一來源說法，僅標題）",
+   "url": "https://www.top1markets.com/tw/news/kinsus-3189-nvidia-1-billion-investment-abf-substrate-limit-up-2026-fm26"
+  },
+  {
+   "title": "經濟日報／udn：財報及展望佳 法人調高景碩獲利預估值及目標價（僅搜尋摘要；Q3 毛利率 33.9%、ABF 占比 47%、稼動率 90%）",
+   "url": "https://money.udn.com/money/amp/story/5607/9856792"
+  },
+  {
+   "title": "經濟日報／udn：ABF 載板結構性供需失衡將擴大 法人調升三雄目標價（僅標題）",
+   "url": "https://udn.com/news/story/7251/9650547"
+  }
+ ],
+ "evidence": "官方公告",
+ "layers": [
+  {
+   "layer": "輝達供應鏈長約與產能承諾（11/17 官方宣布）",
+   "description": "輝達擴大與 Amkor、鴻海、景碩、三星電機、矽品、台積電的承諾，涵蓋載板、先進封裝、晶圓供應與委託製造；景碩專供輝達的先進 ABF 載板產能增至 3.5 倍以上（2027 下半年投產）、矽品獲數十億美元資金支持（2029 年中到位）；Vera Rubin NVL72 與 Vera CPU 已在 Q3 開始量產出貨。合約金額、價格與條件沒有公開。",
+   "global_players": [
+    "輝達（NVIDIA）",
+    "Amkor",
+    "三星電機（Samsung Electro-Mechanics）",
+    "Ibiden"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "專供輝達的先進 ABF 載板產能增至 3.5 倍以上（官方宣布，轉載摘要）；2027 下半年投產；金額未公開",
+     "impact": "受惠"
+    },
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "Vera Rubin 使用 5 奈米、3 奈米與 CoWoS；新聞稿稱已量產出貨",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "董事長稱深化新一代 GPU 與網通平台合作；沒有量化承諾",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "ABF 載板（供需缺口、報價與擴產競賽）",
+   "description": "ABF 供需缺口擴大（高盛預估 2027 年約 21～34%，見既有研究）、上游 T-glass 短缺；輝達 10/21 宣布載板總產能三年內提高到 2.5 倍（Ibiden、三星電機、欣興），11/17 再宣布景碩 3.5 倍與三星電機擴大；市場說法稱輝達、超微與雲端業者已把 ABF 長約延到 2028 年、客戶預付款或分攤建廠成本（媒體說法，未經公司證實）。景碩 Q3 毛利率 33.9%、ABF 占比 47%、稼動率 90%（報導）。",
+   "global_players": [
+    "Ibiden",
+    "三星電機",
+    "AT&S"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3189",
+     "name": "景碩",
+     "role": "ABF／BT 載板；Q3 毛利率 33.9%；擴產與 K6 廠資本支出口徑不一",
+     "impact": "受惠"
+    },
+    {
+     "code": "3037",
+     "name": "欣興",
+     "role": "ABF 載板龍頭；輝達 10/21 產能預訂協議（見欣興研究）",
+     "impact": "受惠"
+    },
+    {
+     "code": "8046",
+     "name": "南電",
+     "role": "ABF 載板；未被點名，缺口擴大的產業受惠但產能可能被輝達提前綁定（推論）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "先進封裝與測試（矽品、京元電）",
+   "description": "矽品獲輝達數十億美元資金支持，專供輝達的先進封裝產能 2029 年中到位；10/21 宣布矽品 CPO 光學引擎產能 2027 年中增至目前 15 倍、2028 年底前再翻倍（基準未公布）；京元電獲 11 億美元預付款支持美國測試廠（目標 2027/4 量產；京元電公告預付款上限 NT$45 億元，約 14 億美元，兩者口徑未對齊）。",
+   "global_players": [
+    "Amkor",
+    "輝達"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3711",
+     "name": "日月光投控",
+     "role": "旗下矽品獲輝達數十億美元資金支持；金額與條件未公開",
+     "impact": "受惠"
+    },
+    {
+     "code": "2449",
+     "name": "京元電子",
+     "role": "輝達預付款支持美國測試廠（10/21 宣布）；11/18 漲逾 5%（ETtoday 標題）",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "上游材料（T-glass 玻纖布）",
+   "description": "T-glass 玻纖布持續短缺，供應商推遲擴產 6～12 個月，是 ABF 缺口的瓶頸（既有研究）。台廠玻纖布細節見既有研究。",
+   "global_players": [
+    "日東紡"
+   ],
+   "tw_stocks": [
+    {
+     "code": "1802",
+     "name": "台玻",
+     "role": "玻纖布／紗（T-glass 見既有研究）",
+     "impact": "受惠"
+    },
+    {
+     "code": "1815",
+     "name": "富喬",
+     "role": "Low-Dk 玻纖布（見既有研究）",
+     "impact": "受惠"
+    }
+   ]
+  }
+ ]
+}
