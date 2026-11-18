@@ -1008,6 +1008,39 @@
     "halted": false
    },
    "finished": true
+  },
+  {
+   "date": "2026-11-18N",
+   "session": "night",
+   "source": "即時",
+   "events": [
+    {
+     "ts": "2026-11-18T15:20:42+08:00",
+     "time": "15:20",
+     "kind": "進場",
+     "price": 40419.0,
+     "text": "🔺 做多試單 1 口微台 40,419：突破本場高點 40,395。停損 40,358.4（平均成本外 0.15%，這一單停損約虧 606 元）。盤面還沒到真正行情（振幅未達 0.7%），先只試單、不要太積極，也不要加碼。本場只做這個方向。",
+     "lots_after": 1,
+     "pts_after": 0.0
+    }
+   ],
+   "summary": {
+    "dir": "long",
+    "entries": 1,
+    "adds": 0,
+    "lots_left": 1,
+    "realized_pts": 0.0,
+    "open_pts": 0.0,
+    "pts": 0.0,
+    "twd": 0,
+    "open": 40263.0,
+    "high": 40419.0,
+    "low": 40216.0,
+    "close": 40419.0,
+    "range_pct": 0.5,
+    "qualified": false,
+    "halted": false
+   }
   }
  ]
 }
