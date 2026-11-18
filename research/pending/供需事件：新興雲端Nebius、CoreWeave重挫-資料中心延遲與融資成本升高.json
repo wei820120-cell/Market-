@@ -1,0 +1,538 @@
+{
+  "topic": "供需事件：新興雲端Nebius、CoreWeave重挫-資料中心延遲與融資成本升高",
+  "one_line": "新興雲端（Neocloud）財報後重挫：Nebius（11/12）把原訂今年上線的第三方產能延到 2027 上半年（微軟維蘭站因電力延到 2027 Q2）、2026 營收落在財測低標、資本支出上調到約 270 億美元，股價約 −10～16%，11/13 再跌；CoreWeave（11/10）營收與積壓訂單（約 1,325 億美元）都強，但利息使淨損 7.09 億美元、部分債券殖利率逾 16%，股價約 −10%。需求與合約仍在，卡住的是電力、第三方機房與融資成本——是延遲，不是訂單消失。對台灣：廣達 11/11 法說稱沒看到客戶改單、AI 伺服器出貨高峰在 2027 Q1（早於這些事件）；緯創偏中小型 Neocloud 客戶，相對風險較高（客戶分工說法日期未核對，推論）。Threads 稱 NBIS 距高點 −65% 未核對，粗估約 −52～−55%（11/12 盤中）、−59～−62%（11/13 再跌約 15% 後）。全是二手摘要，公司公告全文沒讀到。",
+  "status": "混合",
+  "horizon": "中期（3-12個月）",
+  "layers": [
+    {
+      "layer": "需求與合約（前沿實驗室、企業 → Neocloud 積壓訂單）",
+      "description": "CoreWeave 積壓訂單約 1,325 億美元並上修 2026 營收指引；Nebius 營收與 EBITDA 高於預期，2027 資本支出指引 400～450 億美元、新增逾 1 GW。需求與合約都在；SemiAnalysis（二手）稱輝達對 Neocloud 客戶（尤其長尾小客戶）曝險最高（單一來源）。",
+      "global_players": [
+        "Nebius",
+        "CoreWeave",
+        "IREN",
+        "OpenAI",
+        "微軟",
+        "輝達"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "融資與資本成本（債券、私人信貸）——壓力所在",
+      "description": "CoreWeave Q3 淨損 7.09 億美元主因利息，部分債券殖利率逾 16%（CNBC，二手）；Sixth Street 執行長稱對營建貸款特別謹慎、貸方改用更保守的租金、稼動與時程假設（中文單一來源）；JPMorgan 估 2026 資料中心資金需求近 7,000 億美元、資金缺口約 1.4 兆美元（摘要）。",
+      "global_players": [
+        "私人信貸業者（如 Sixth Street）",
+        "銀行與債券市場",
+        "輝達（供應商兼投資人）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "電力與第三方機房——本次的瓶頸",
+      "description": "Nebius 原訂今年上線的第三方產能延到 2027 上半年，微軟維蘭站因電力延到 2027 Q2，自有園區準時或提前；微軟把 2026 日曆年資本支出下調到約 1,700 億美元（原因是第三方資料中心延遲，另一來源 1,900 億）；Propmodo 引 Bloomberg：專案如期交付的機率約 50%（三年前約 90%）。",
+      "global_players": [
+        "第三方資料中心開發商",
+        "電網與電力設備業者",
+        "微軟",
+        "Alphabet"
+      ],
+      "tw_stocks": [
+        {
+          "code": "1519",
+          "name": "華城",
+          "role": "變壓器等電力設備；資料中心卡在電力，但沒查到公司對 Neocloud 延遲的說法，影響方向未定（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "1513",
+          "name": "中興電",
+          "role": "電力設備；同上（推論）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "GPU 與機櫃交付（輝達、台灣 ODM）",
+      "description": "Sixth Street 執行長稱約 2,000 億美元晶片因資料中心未就緒滯留倉庫（中文單一來源，未核對）；CoreWeave 稱 Vera Rubin 伺服器下半年起交付、大規模放量貫穿 2027。廣達 11/11 法說：沒看到客戶改單、CSP 沒下修資本支出，AI 伺服器出貨高峰 2027 Q1、2027 AI 伺服器營收年增高雙位數，Q3 出貨因換代與客戶拉貨時程小幅下修。緯創偏中小型 Neocloud 客戶、緯穎偏大型 CSP（搜尋摘要，日期未核對）。",
+      "global_players": [
+        "輝達",
+        "Dell",
+        "Supermicro",
+        "廣達",
+        "緯創",
+        "緯穎",
+        "鴻海"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM；11/11 法說稱沒看到客戶改單、出貨高峰 2027 Q1（公司說法，二手；早於 11/13 與 11/17 事件）",
+          "impact": "中性"
+        },
+        {
+          "code": "3231",
+          "name": "緯創",
+          "role": "AI 伺服器 ODM，搜尋摘要稱偏中小型 Neocloud 客戶，Neocloud 融資與延遲的相對風險較高（推論，日期未核對）",
+          "impact": "受傷"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端伺服器 ODM，搜尋摘要稱偏大型 CSP（日期未核對）",
+          "impact": "中性"
+        },
+        {
+          "code": "2317",
+          "name": "鴻海",
+          "role": "輝達機櫃主要組裝廠之一；沒查到對 Neocloud 延遲的說法",
+          "impact": "中性"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    "Neocloud",
+    "新興雲端",
+    "Nebius",
+    "NBIS",
+    "CoreWeave",
+    "CRWV",
+    "IREN",
+    "資料中心延遲",
+    "第三方機房",
+    "電力",
+    "融資成本",
+    "債券殖利率",
+    "積壓訂單",
+    "Vera Rubin",
+    "資本支出"
+  ],
+  "catalysts": [
+    "11/19 ING 資料中心貸款截標（既有研究）：標價與是否折價",
+    "Nebius 2027 上半年第三方產能的上線進度與 2027 營收、稅前盈餘、產能指引",
+    "CoreWeave 融資成本（債券殖利率、新增貸款）與 Vera Rubin 機櫃交付進度",
+    "廣達、緯創、緯穎 11 月營收（12/10 前）與 2027 Q1 出貨說法",
+    "雲端業者下一輪財報的 2027 資本支出指引（約 2027 年 1 月底～2 月初，推論）",
+    "輝達對 Neocloud 的資本支持條款（Threads 說法，未證實）"
+  ],
+  "risks": [
+    "全是二手摘要：公司新聞稿、6-K 與 10-Q 全文沒讀到；各報導對 Nebius 的跌幅（10%、14%、16%、17%、22%）與 ARR 目標延後的說法不一致",
+    "約 2,000 億美元晶片滯留倉庫、舊晶片租金下滑與貸方改用保守假設，都只見智通財經（中文單一來源）",
+    "Threads 的 NBIS −65% 與輝達電話會議三個方向未核對；輝達電話會議逐字稿沒查到",
+    "廣達法說（11/11）早於 11/13 SemiAnalysis 更新與 11/17 輝達財報，不能當作之後客戶行為的證據",
+    "緯創標「受傷」是依客戶分工的搜尋摘要推論，日期未核對；華城、中興電沒有查到公司說法",
+    "兩家公司各只有一季的數字；「延遲不是需求消失」的判斷需要後續季度驗證"
+  ],
+  "spec_tables": [
+    {
+      "title": "表：Nebius 與 CoreWeave 2026 Q3 財報重點（二手報導整理）",
+      "columns": [
+        "項目",
+        "Nebius（11/12 公布）",
+        "CoreWeave（11/10 公布）",
+        "備註"
+      ],
+      "rows": [
+        [
+          "營收",
+          "9.808 億美元（預期約 9.07 億）",
+          "36.6 億美元（年增 168%；預期約 35.5 億）",
+          "兩家都高於預期"
+        ],
+        [
+          "全年營收指引",
+          "2026 落在 30～34 億美元財測低標",
+          "上修 2026 營收指引至約 133 億美元，年化營收指引也上修",
+          "Nebius 下修（低標），CoreWeave 上修"
+        ],
+        [
+          "積壓訂單／ARR",
+          "ARR 64 億美元（9/30）；原訂 12 月 70～90 億美元，改為 2027/2 才超過 70 億（各報導說法不一）；2027 起改以營收、稅前盈餘與產能為指引",
+          "積壓訂單約 1,325 億美元",
+          "口徑不同，不能直接比較"
+        ],
+        [
+          "資本支出",
+          "2026 約 270 億美元（原 200～250 億）；2027 指引 400～450 億美元，新增逾 1 GW",
+          "Q3 145 億美元（Q2 94 億）；2026 約 370～390 億美元（下限上調）",
+          "兩家都在加碼，不是縮手"
+        ],
+        [
+          "延遲與交付",
+          "原訂今年上線的第三方產能延到 2027 上半年（合約仍在）；微軟維蘭站（紐澤西）因電力延到 2027 Q2；自有園區準時或提前",
+          "Vera Rubin 伺服器下半年起交付、大規模放量貫穿 2027；52 個營運資料中心（2026 年新增 9 座）",
+          "Nebius 公司稱是時程問題、不是需求問題"
+        ],
+        [
+          "獲利與融資",
+          "調整後 EBITDA 4.658 億美元（預期約 3.52 億）",
+          "淨損 7.09 億美元，主因利息；部分債券殖利率逾 16%（CNBC，二手）",
+          "CoreWeave 壓力在資本成本"
+        ],
+        [
+          "股價反應",
+          "11/12 約 −10～16%（各報導不一；盤中約 133.67 美元）；11/13 再跌約 15～17%",
+          "11/12 約 −10%（約 54.57 美元）",
+          "IREN 同日約 −7%（Webull 標題）"
+        ]
+      ],
+      "note": "皆為搜尋摘要，兩家公司的新聞稿與 10-Q／6-K 全文沒讀到；跌幅在不同報導間差異很大（10%、14%、16%、17%、22%），以公司公告與行情資料為準。"
+    },
+    {
+      "title": "表：延遲、融資與需求的旁證（說法、來源與判讀）",
+      "columns": [
+        "說法",
+        "來源",
+        "證據等級",
+        "判讀"
+      ],
+      "rows": [
+        [
+          "第三方產能延到 2027 上半年；微軟維蘭站因電力延到 2027 Q2；自有園區準時或提前",
+          "Nebius 11/12 財報（二手；6-K 只在搜尋結果列出）",
+          "媒體報導（公司財報轉述）",
+          "延遲在第三方與電力；合約仍在，公司稱是時程問題，這是公司說法"
+        ],
+        [
+          "積壓訂單約 1,325 億美元、2026 營收指引上修；淨損 7.09 億美元（利息）；部分債券殖利率逾 16%",
+          "CoreWeave 11/10 財報（二手）；CNBC 轉述（殖利率）",
+          "媒體報導",
+          "需求與合約強，壓力在資本成本"
+        ],
+        [
+          "約 2,000 億美元晶片因資料中心未就緒滯留倉庫",
+          "Sixth Street 執行長 Waxman（智通財經 11/12，中文單一來源）",
+          "媒體報導（單一來源）",
+          "數字未核對；若屬實代表出貨領先部署，後續拉貨可能放慢（推論）"
+        ],
+        [
+          "延遲讓可計費時數變少、固定成本攤在更少時數；新一代上市後舊晶片租金下滑；貸方改用更保守的租金、稼動與時程假設",
+          "同上（單一來源）",
+          "媒體報導（單一來源）",
+          "解釋為什麼延遲會變成融資壓力；沒有第二個來源"
+        ],
+        [
+          "專案如期交付機率約 50%（三年前約 90%）",
+          "Alphabet 與 Blackstone Project Braid 主管（Propmodo 引 Bloomberg）",
+          "媒體報導（二手）",
+          "日期與口徑未核對；Goldman 5 月估未來兩年預定上線的產能最少約 50% 準時（摘要）"
+        ],
+        [
+          "微軟 2026 日曆年資本支出約 1,700 億美元（較先前下調，因第三方資料中心延遲）",
+          "搜尋摘要（另一來源約 1,900 億美元）",
+          "媒體報導",
+          "口徑不一，待核對"
+        ],
+        [
+          "沒看到客戶因 CSP 或 Neocloud 現金流、選後管制疑慮調整訂單；CSP 沒下修資本支出；AI 伺服器出貨高峰在 2027 Q1",
+          "廣達財務長 11/11 法說（二手）",
+          "公司說法",
+          "法說早於 11/13 SemiAnalysis 更新與 11/17 輝達財報，要看後續月營收"
+        ],
+        [
+          "NBIS 距今年高點下跌 65%",
+          "Threads @aoyamaa._（11/18）",
+          "社群傳聞",
+          "用公開價格粗估：11/12 盤中約 −52～−55%、11/13 再跌約 15% 後約 −59～−62%；方向一致、未核對（需 11/18 收盤價）"
+        ],
+        [
+          "輝達電話會議的三個方向：資源向有大型客戶合約、電力與融資能力的業者集中；產業進入淘汰賽；輝達以供貨與資本投入篩選生態系",
+          "Threads @aoyamaa._（個人詮釋）",
+          "社群傳聞",
+          "沒有查到電話會議逐字稿佐證；輝達是 CoreWeave 的主要供應商與重要投資人（單一來源）"
+        ]
+      ],
+      "note": "上列多數是單一來源或二手摘要；「延遲不是需求消失」的判斷，在 Nebius 與 CoreWeave 各只有一季的數字支持。"
+    },
+    {
+      "title": "表：擴產與稼動檢核（資本支出加碼，但交付時程後移）",
+      "columns": [
+        "公司",
+        "瓶頸環節",
+        "現況稼動",
+        "擴產與資本支出",
+        "投產或放量時點",
+        "主要限制",
+        "證據等級"
+      ],
+      "rows": [
+        [
+          "Nebius",
+          "第三方機房與電力",
+          "沒查到稼動；自有園區準時或提前（公司說法）",
+          "2026 約 270 億美元（原 200～250 億）；2027 指引 400～450 億美元、新增逾 1 GW",
+          "原訂今年上線的第三方產能延到 2027 上半年；微軟維蘭站延到 2027 Q2",
+          "電力、第三方開發商、融資成本",
+          "媒體報導（財報轉述）；6-K 未讀到"
+        ],
+        [
+          "CoreWeave",
+          "機房建置與融資",
+          "52 個營運資料中心（2026 年新增 9 座）",
+          "Q3 145 億美元（Q2 94 億）；2026 約 370～390 億美元",
+          "Vera Rubin 伺服器下半年起交付、大規模放量貫穿 2027",
+          "資本成本（部分債券殖利率逾 16%）、電力",
+          "媒體報導（財報轉述）"
+        ],
+        [
+          "微軟（第三方資料中心）",
+          "第三方產能",
+          "沒查到",
+          "2026 日曆年約 1,700 億美元（較先前下調；另一來源 1,900 億）",
+          "沒查到",
+          "第三方資料中心延遲",
+          "媒體報導（口徑不一）"
+        ],
+        [
+          "廣達",
+          "AI 伺服器組裝",
+          "沒查到",
+          "沒查到",
+          "AI 伺服器出貨高峰 2027 Q1；2027 AI 伺服器營收年增高雙位數",
+          "客戶拉貨時程與產品換代",
+          "公司說法（法說，二手）"
+        ],
+        [
+          "緯創",
+          "伺服器組裝（偏中小型 Neocloud 客戶）",
+          "沒查到",
+          "沒查到",
+          "沒查到",
+          "客戶融資與機房延遲（推論）",
+          "媒體報導（客戶分工說法，日期未核對）"
+        ],
+        [
+          "緯穎",
+          "雲端伺服器（偏大型 CSP）",
+          "沒查到",
+          "沒查到",
+          "沒查到",
+          "沒查到",
+          "媒體報導（同上，日期未核對）"
+        ]
+      ],
+      "note": "逐列檢查：這題不是「稼動滿載卻沒擴廠」，而是**資本支出一直加碼、交付時程卻後移**——擴產不等於供給，卡點在電力、第三方開發商與融資成本；產能是否被單一客戶專供（Nebius 的微軟專案、CoreWeave 的輝達與 OpenAI 客戶）影響的是還款能力，不是晶片供給。台灣組裝廠只查到廣達的公司說法。"
+    },
+    {
+      "title": "表：事件與時間（台北時間；美股公布日以美東為準）",
+      "columns": [
+        "日期",
+        "事件",
+        "備註"
+      ],
+      "rows": [
+        [
+          "11/8",
+          "ING 出售約 5 億美元資料中心貸款（BWIC）的報導；11/19 截標",
+          "既有研究《AI基建融資浮現裂痕》，當時把 11/10、11/12 neocloud 財報列為關鍵"
+        ],
+        [
+          "11/10",
+          "CoreWeave Q3 財報：營收超預期、積壓訂單約 1,325 億美元、淨損 7.09 億美元",
+          "二手摘要"
+        ],
+        [
+          "11/11",
+          "廣達法說：沒看到客戶改單；AI 伺服器出貨高峰 2027 Q1",
+          "二手摘要"
+        ],
+        [
+          "11/12",
+          "Nebius Q3 財報：第三方產能延到 2027 上半年；Nebius 約 −10～16%、CoreWeave 約 −10%、IREN 約 −7%",
+          "各報導跌幅不一"
+        ],
+        [
+          "11/12",
+          "智通財經引 Sixth Street 執行長：約 2,000 億美元晶片滯留倉庫",
+          "中文單一來源"
+        ],
+        [
+          "11/13",
+          "Nebius 再跌約 15～17%（ARR 目標延到 2027/2）；SemiAnalysis 更新 AI 加速器預測",
+          "見《供需事件：SemiAnalysis下修AI加速器出貨與資本支出預測》"
+        ],
+        [
+          "11/17 美東盤後",
+          "輝達 Q3 FY2027 財報（Q4 指引 1,300 億美元 ±3%）",
+          "見既有研究"
+        ],
+        [
+          "11/18",
+          "Threads 稱 NBIS 距今年高點 −65%；11/19 ING 貸款截標",
+          "−65% 未核對；標價與是否折價待看"
+        ]
+      ],
+      "note": "日期與跌幅取自搜尋摘要，未逐一核對；美股時間換算為台北時間。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "Hopper（H100／H200）",
+      "composition": "上一世代 GPU",
+      "spec": "新一代上市後租金下滑（Waxman 說法，中文單一來源）",
+      "application": "舊世代租賃算力，Neocloud 現金流承壓"
+    },
+    {
+      "name": "Blackwell（GB200／GB300）",
+      "composition": "Blackwell GPU＋Grace CPU 機櫃",
+      "spec": "2025～2026 主力出貨",
+      "application": "目前 Neocloud 的主力部署"
+    },
+    {
+      "name": "Vera Rubin（NVL72）",
+      "composition": "Rubin GPU＋Vera CPU",
+      "spec": "CoreWeave 稱伺服器下半年起交付、大規模放量貫穿 2027（二手）",
+      "application": "2027 年 Neocloud 擴建的主力；交付時程取決於機房通電"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "一行鏈：前沿實驗室與企業需求 → Neocloud 長約（積壓訂單）→ 融資（債券、私人信貸、GPU 擔保貸款）→ 電力與第三方機房（土地、併網、廠房）→ GPU 與機櫃交付（輝達、ODM）→ 可計費時數與營收 → 現金流與還款",
+        "瓶頸在中間偏上游：電力與第三方機房、資本成本，不是晶片",
+        "延遲的傳導：機房晚通電 → GPU 到貨卻無法上架計費（利息與固定成本照付）→ 現金流與還款壓力 → 股價與債券殖利率反映 → 貸方更保守 → 下一批專案融資更貴或更慢"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "舊晶片租金：新一代上市後舊世代租金下滑（單一來源），壓縮 Neocloud 現金流",
+        "電力設備與併網：變壓器、開關設備交期與電網併網決定通電速度；德州暫停並網（既有研究）是同一類限制",
+        "利率與信用利差：CoreWeave 部分債券殖利率逾 16%",
+        "客戶集中與長約：Nebius 的微軟專案延遲直接影響營收時點",
+        "政策：選後資料中心管制疑慮（廣達法說提到，CFO 稱未見客戶因此改單）",
+        "輝達的資本支持：輝達是 CoreWeave 的主要供應商與重要投資人（單一來源）；Threads 稱輝達篩選生態系（個人詮釋，未證實）"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "慣性①：延遲／缺貨 → 往上游找供給瓶頸；這次往上游找到的是電力與第三方機房，不是晶片（SemiAnalysis 也主張「一半被取消」是誇大，日期未註明）",
+        "慣性②：技術升級 → 往下游找承接者；新一代 GPU 使舊世代租金下滑，下游 Neocloud 承壓",
+        "供需缺口怎麼來的（反向）：這次沒有晶片缺口；是『機房通電時點』與『付息能力』的錯位——需求與合約在，部署與現金流跟不上",
+        "痛點：可計費時數與利息；最快的解法不是擴廠，而是更快通電",
+        "限制：電網併網與設備交期、第三方開發商進度、融資成本與貸方保守程度；建好才能計費",
+        "擴產不等於供給：Nebius 一邊上調資本支出、一邊把第三方產能延到 2027 上半年"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷：Nebius、CoreWeave（延遲與利息）；緯創（偏中小型 Neocloud 客戶，推論）",
+        "中性：廣達、緯穎、鴻海（輝達與 CSP 混合）；電力設備（間接）",
+        "可能受惠（Threads 說法，未證實）：有大型客戶合約、電力與融資能力的業者",
+        "沒有明確的供給面受惠者：資料中心層級的延遲，不是晶片短缺"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "讀 Nebius 6-K 與 CoreWeave 新聞稿／10-Q 全文，核對延遲、資本支出、ARR 與利息數字",
+        "看 11/19 ING 貸款標價；Nebius 2027 上半年第三方產能上線進度",
+        "看廣達、緯創、緯穎 11 月營收與 2027 Q1 展望，是否印證『出貨時點後移』或『沒有改單』",
+        "找輝達電話會議逐字稿，核對 Threads 轉述的三個方向",
+        "用 11/18 收盤價核對 NBIS 距高點的跌幅"
+      ]
+    }
+  ],
+  "conclusion": [
+    "Nebius 與 CoreWeave 財報後重挫，但數字顯示需求與合約都在：CoreWeave 積壓訂單約 1,325 億美元、Nebius 把 2027 資本支出拉到 400～450 億美元；卡住的是電力、第三方機房與融資成本（Nebius 第三方產能延到 2027 上半年；CoreWeave 利息吃掉獲利、部分債券殖利率逾 16%）。這是延遲，不是訂單消失，與研究庫相鄰題材同向，但每個題材只有零星數據。",
+    "對台灣：廣達 11/11 法說稱沒看到改單、出貨高峰在 2027 Q1，但那早於 11/13 與 11/17 的事件；緯創偏中小型 Neocloud 客戶，相對風險較高（推論，日期未核對）。約 2,000 億美元晶片滯留倉庫只見中文單一來源，若屬實代表出貨領先部署、後續拉貨可能放慢（推論）。",
+    "Threads 的 NBIS −65% 與輝達電話會議的三個方向沒有核對；粗估約 −52～−55%（11/12 盤中）、−59～−62%（11/13 後）。接下來以 Nebius、CoreWeave 公司公告、11/19 ING 貸款標價與台灣 ODM 的月營收為準。"
+  ],
+  "sources": [
+    {
+      "title": "The Next Web：Nebius shares fall 16% as data centre delays cut its 2026 outlook（僅搜尋摘要）",
+      "url": "https://thenextweb.com/news/nebius-q3-2026-shares-fall-data-centre-delays-outlook"
+    },
+    {
+      "title": "Newsquawk：Nebius Group (NBIS) Q3 2026: Adj. EBITDA 465.8mln (exp. 351.8mln), Revenue 980.8mln (exp. 907.2mln)（僅標題）",
+      "url": "https://www.newsquawk.com/headlines/nebius-group-nv-nbis-q3-2026-usd-adj-ebitda-4658mln-exp-3518mln-revenue-9808mln-exp-9072mln"
+    },
+    {
+      "title": "FourWeekMBA：Nebius Guides 2027 Capex at $40B-$45B, 3.4x Its Revenue（僅搜尋摘要）",
+      "url": "https://fourweekmba.com/ai-nebius-guides-2027-capex-at-40b-45b-3-4x-its-revenue/"
+    },
+    {
+      "title": "Constellation Research：Nebius ups capex for 2027 as revenue slips in Q4（僅搜尋摘要）",
+      "url": "https://www.constellationr.com/insights/news/nebius-ups-capex-2027-revenue-slips-in-q4"
+    },
+    {
+      "title": "Blockspace：Nebius stock drops 17% after $7B ARR target slips to February 2027（僅標題）",
+      "url": "https://blockspace.media/short/nebius-stock-drops-17-after-7b-arr-target-slips-to-february-2027/"
+    },
+    {
+      "title": "Blockspace：Nebius shares tumble 22% as capacity delays hit revenue outlook and capex rises to $27 billion（僅標題；跌幅與其他來源不一）",
+      "url": "https://blockspace.media/insight/nebius-cuts-2026-revenue-outlook/"
+    },
+    {
+      "title": "Webull：Nebius Tumbles 14% on Soft Guidance and Bigger Spending Plans; CoreWeave Sinks 10%, IREN Drops 7%（僅標題與搜尋摘要）",
+      "url": "https://www.webull.com/news/15911150097712128"
+    },
+    {
+      "title": "Motley Fool：Why Nebius Group stock plunged again today（2026-11-13，僅搜尋摘要）",
+      "url": "https://fool.com/investing/2026/11/13/why-nebius-group-stock-plunged-again-today"
+    },
+    {
+      "title": "SEC：Nebius Group N.V. Form 6-K（公司公告，附件 99.2；只在搜尋結果列出，沒讀到內容）",
+      "url": "https://www.sec.gov/Archives/edgar/data/0001513845/000110465926126008/tm2629571d1_ex99-2.htm"
+    },
+    {
+      "title": "LetsDataScience：CoreWeave Beats Q3 Revenue Estimates, Raises 2026 Guidance, Backlog Hits $132.5B（僅搜尋摘要）",
+      "url": "https://letsdatascience.com/news/coreweave-beats-q3-revenue-estimates-raises-2026-guidance-ba-f4170a31"
+    },
+    {
+      "title": "24/7 Wall St：CoreWeave Q3 2026: Revenue Up 168% as Guidance Rises to $13.3B（僅標題）",
+      "url": "https://247wallst.com/cards/coreweave-q3-2026-earnings-crwv-01m73msrkgrgan75a5t7tb9fmz"
+    },
+    {
+      "title": "The Tech Capital：CoreWeave revenue surges 168%, interest bill, $709M loss（僅標題與搜尋摘要）",
+      "url": "https://thetechcapital.com/coreweave-revenue-surges-168-interest-bill-709m-loss/"
+    },
+    {
+      "title": "優分析：CoreWeave上修財測、訂單突破1,300億美元 但龐大資本支出仍考驗資金能力（僅標題與搜尋摘要）",
+      "url": "https://uanalyze.com.tw/articles/3223458925"
+    },
+    {
+      "title": "智通財經（stockstar）：Sixth Street 執行長 Waxman 談資料中心延遲與融資（2026-11-12，中文單一來源，僅搜尋摘要）",
+      "url": "https://wap.stockstar.com/detail/IG2026111200006039"
+    },
+    {
+      "title": "理財週刊：Sixth Street 執行長 Alan Waxman 示警「約 2,000 億美元晶片因資料中心未就緒而滯留倉庫」（僅標題）",
+      "url": "https://www.moneyweekly.com.tw/_Article?AID=261721"
+    },
+    {
+      "title": "Propmodo（引 Bloomberg）：資料中心專案如期交付機率約 50%（僅搜尋摘要）",
+      "url": "https://propmodo.com/?p=181415"
+    },
+    {
+      "title": "優分析：〈廣達法說〉明年AI伺服器營收年增高雙位數 整體伺服器營收占比上看9成（2026-11-11 法說，僅搜尋摘要）",
+      "url": "https://uanalyze.com.tw/articles/2061659022"
+    },
+    {
+      "title": "優分析：〈緯創法說〉AI伺服器展望正向 預期全年營收成長高雙位數百分比（日期未核對，僅搜尋摘要）",
+      "url": "https://uanalyze.com.tw/articles/5710648963"
+    },
+    {
+      "title": "MarketBeat：Nebius Group is trading near all-time highs（52 週高點約 299.86 美元，截至 7/31，僅搜尋摘要）",
+      "url": "https://www.marketbeat.com/articles/nebius-group-is-trading-near-all-time-highs-heres-how-far-it-has-come/"
+    },
+    {
+      "title": "FXLeaders：Nebius hits record high of $278.85（2026-06-18，僅標題）",
+      "url": "https://www.fxleaders.com/news/2026/06/18/nebius-hits-record-high-of-278-85-as-ai-data-center-bets-power-a-212-surge/"
+    },
+    {
+      "title": "SemiAnalysis：Stop saying half of 2026 US datacenter capacity is canceled（日期未註明，僅搜尋摘要；背景：延遲不等於取消）",
+      "url": "https://newsletter.semianalysis.com/p/stop-saying-half-of-2026-us-datacenter"
+    },
+    {
+      "title": "Threads @aoyamaa._：Neocloud 淘汰賽與輝達電話會議的三個方向（2026-11-18 18:28，個人貼文，未證實）",
+      "url": "https://www.threads.com/@aoyamaa._/post/Df4SSaxoLqz"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：新興雲端（Neocloud）Nebius、CoreWeave 財報後重挫——卡住的是電力、第三方機房與融資成本，不是訂單消失\n\n> 資料說明：寫於 **2026-11-18 晚間（21:52 輪）**。起因是待檢視清單的 Threads 貼文（@aoyamaa._：NBIS 距今年高點 −65%、Neocloud 淘汰賽）；既有研究《AI基建融資浮現裂痕》把 11/10、11/12 的 neocloud 財報列為關鍵檢驗，這份補上。**所有數字都來自二手報導的搜尋摘要**，公司新聞稿與 6-K／10-Q 全文沒讀到。\n\n## 1. 事件\n- **Nebius（11/12 公布 Q3）**：營收 9.808 億美元、高於預期（約 9.07 億），但 2026 營收落在 30～34 億美元財測低標、2026 資本支出上調到約 270 億美元（原 200～250 億），2027 指引 400～450 億美元、新增逾 1 GW。**原訂今年上線的第三方產能延到 2027 上半年**（合約仍在），微軟維蘭站（紐澤西）因電力延到 2027 Q2；自有園區準時或提前。公司稱是時程問題、不是需求問題（公司說法）。股價 11/12 約跌 10～16%、11/13 再跌約 15～17%（各報導不一）。\n- **CoreWeave（11/10 公布 Q3）**：營收 36.6 億美元（年增 168%）高於預期、上修 2026 營收指引、積壓訂單約 1,325 億美元；但利息使 Q3 淨損 7.09 億美元，部分債券殖利率逾 16%（CNBC，二手）；Q3 資本支出 145 億美元、2026 約 370～390 億美元。股價 11/12 約跌 10%；IREN 約跌 7%。\n- **Threads @aoyamaa._（11/18）**：NBIS 距今年高點跌了 65%，並提出三個觀察（資源向有大型客戶合約、電力與融資能力的業者集中；產業進入淘汰賽；輝達以供貨與資本投入篩選生態系）——**個人詮釋，沒有查到輝達電話會議逐字稿佐證**。−65% 用公開價格粗估：11/12 盤中約 −52～−55%、11/13 再跌約 15% 後約 −59～−62%（以 6～7 月高點約 280～300 美元、11/12 盤中約 133.67 美元估算），方向一致、**未核對**。\n\n## 2. 數字（二手報導整理）\n| 項目 | Nebius（11/12） | CoreWeave（11/10） |\n|---|---|---|\n| 營收 | 9.808 億美元（預期約 9.07 億） | 36.6 億美元（年增 168%；預期約 35.5 億） |\n| 全年營收指引 | 2026 落在 30～34 億美元低標 | 上修 2026 至約 133 億美元 |\n| 積壓訂單／ARR | ARR 64 億美元（9/30）；70 億美元目標由 12 月延到 2027/2 | 積壓訂單約 1,325 億美元 |\n| 資本支出 | 2026 約 270 億美元；2027 指引 400～450 億美元 | Q3 145 億美元；2026 約 370～390 億美元 |\n| 延遲 | 第三方產能延到 2027 上半年；微軟維蘭站延到 2027 Q2 | Vera Rubin 伺服器下半年起交付、放量貫穿 2027 |\n| 獲利與融資 | 調整後 EBITDA 4.658 億美元（預期約 3.52 億） | 淨損 7.09 億美元（利息）；部分債券殖利率逾 16% |\n\n## 3. 為什麼說是「延遲與融資成本」，不是「需求消失」\n- **需求與合約都在**：CoreWeave 積壓訂單約 1,325 億美元並上修指引；Nebius 營收與 EBITDA 都高於預期，還把 2027 資本支出拉到 400～450 億美元。\n- **卡點在鏈的上游（資金與電力）**：延遲出在第三方開發商與電力併網；Sixth Street 執行長（智通財經，中文單一來源）稱延遲讓可計費時數變少、固定成本攤在更少時數，加上新一代上市後舊晶片租金下滑，使貸方改用更保守的租金、稼動與時程假設；他並說約 2,000 億美元晶片因資料中心未就緒滯留倉庫（**數字未核對**）。\n- **更廣的旁證**：Propmodo（引 Bloomberg）稱 Alphabet 與 Blackstone Project Braid 的主管估計專案如期交付的機率約 50%（三年前約 90%）；微軟把 2026 日曆年資本支出下調到約 1,700 億美元，原因是第三方資料中心延遲（另一來源 1,900 億美元，說法不一）。\n- **下游沒看到改單（有時間差）**：廣達財務長 11/11 稱沒看到客戶因 CSP 或 Neocloud 現金流、選後管制疑慮調整訂單，也沒看到 CSP 下修資本支出；AI 伺服器出貨高峰在 2027 Q1。**這場法說早於 11/13 與 11/17 的事件。**\n- **和研究庫相鄰題材一致**：11/6 德州暫停資料中心許可、11/15 美國 38 地通過資料中心禁令的研究，結論都是「並網與許可變慢、時程後移，不是需求消失」；11/8 ING 出售資料中心貸款的研究把 neocloud 財報列為關鍵——這次財報的結論與它們同向，但每個題材各只有零星數據。\n\n## 4. 產業鏈因果（垂直）\n前沿實驗室與企業需求 → Neocloud 長約（積壓訂單）→ 融資（債券、私人信貸、GPU 擔保貸款）→ 電力與第三方機房（土地、併網、廠房）→ GPU 與機櫃交付（輝達、ODM）→ 可計費時數與營收 → 現金流與還款\n\n- **瓶頸在中間偏上游**：電力與第三方機房、資本成本，不是晶片。\n- 延遲的傳導：機房晚通電 → GPU 到貨卻無法上架計費（可計費時數少、固定成本與利息照付）→ 現金流與還款壓力 → 股價與債券殖利率反映 → 貸方更保守 → 下一批專案融資更貴或更慢。\n\n## 5. 相關推進力（水平）\n- **舊晶片租金下滑**：新一代上市後，舊世代租金下滑（Waxman 說法，單一來源），壓縮 Neocloud 的現金流與還款能力。\n- **電力設備與併網**：變壓器、開關設備交期與電網併網決定能多快通電；德州暫停並網（既有研究）屬同一類限制。\n- **利率與信用利差**：CoreWeave 部分債券殖利率逾 16% 顯示融資成本高。\n- **客戶集中與長約**：Nebius 的微軟專案延遲直接影響營收時點。\n- **政策**：選後資料中心管制疑慮（廣達法說提到，CFO 稱未見客戶因此改單）。\n- **輝達的資本支持**：輝達是 CoreWeave 的主要供應商與重要投資人（單一來源）；Threads 稱輝達以供貨與資本投入篩選生態系（個人詮釋，未證實）。\n\n## 6. 慣性、痛點與限制（思辯）\n- **慣性①（延遲／缺貨 → 往上游找供給瓶頸）**：這次往上游找到的是電力與第三方機房，不是晶片；SemiAnalysis 也主張「一半被取消」的說法是誇大（日期未註明的舊文章）。\n- **慣性②（技術升級 → 往下游找承接者）**：新一代 GPU 上市使舊世代租金下滑，下游的 Neocloud 承壓。\n- **痛點**：可計費時數與利息——不是缺晶片。最快的解法不是擴廠，而是**更快通電**。\n- **限制**：電網併網與設備交期、第三方開發商進度、融資成本與貸方保守程度；建好才能計費。\n- **擴產不等於供給**：Nebius 一邊上調資本支出、一邊把第三方產能延到 2027 上半年。\n\n### 擴產與稼動檢核\n（見結構化表格「擴產與稼動檢核」。）這題不是「稼動滿載卻沒擴廠」，而是**資本支出持續加碼、交付時程後移**；台灣組裝廠只查到廣達的公司說法。\n\n## 7. 對台灣的意義（方向性推論，不是公司說法）\n- **廣達**：11/11 法說稱沒看到改單，AI 伺服器出貨高峰在 2027 Q1、2027 AI 伺服器營收年增高雙位數；Q3 出貨因換代與客戶拉貨時程小幅下修。要看後續月營收是否印證。\n- **緯創／緯穎**：搜尋摘要稱緯創偏中小型 Neocloud 客戶、緯穎偏大型 CSP（日期未核對）——若屬實，Neocloud 融資壓力對緯創的相對風險較高（推論）。\n- **鴻海**：輝達機櫃主要組裝廠之一，沒有查到對 Neocloud 延遲的說法。\n- **電力設備（華城、中興電）**：資料中心卡在電力，但沒有查到這兩家對 Neocloud 延遲的說法，影響方向未定。\n- **時間差**：若約 2,000 億美元晶片真的滯留倉庫（未核對），出貨已先於部署，後續拉貨可能先放慢——這是推論，目前沒有台灣公司的說法支持。\n\n## 8. 誰受惠、誰受傷\n- **受傷**：Neocloud 本身（Nebius、CoreWeave，延遲與利息）；緯創（偏中小型 Neocloud 客戶，推論）。\n- **中性**：廣達、緯穎、鴻海（輝達與 CSP 混合）；電力設備（間接）。\n- **可能受惠（Threads 說法，未證實）**：有大型客戶合約、電力與融資能力的業者。\n- **沒有明確的供給面受惠者**：這是資料中心層級的延遲，不是晶片短缺。\n\n## 9. 說法與證據等級\n見結構化表格「延遲、融資與需求的旁證」。\n\n## 10. 風險與矛盾\n- **全是二手摘要**：公司新聞稿、6-K 與 10-Q 全文沒讀到；各報導對 Nebius 的跌幅（10%、14%、16%、17%、22%）與 ARR 目標延後的說法不一致。\n- **單一來源**：約 2,000 億美元晶片滯留倉庫、舊晶片租金下滑與貸方改用保守假設，都只見智通財經（中文）。\n- **Threads 的 −65% 與電話會議三個方向未核對**；輝達電話會議逐字稿沒查到。\n- **廣達法說早於事件**：不能當作 11/13 之後客戶行為的證據。\n- **台灣標記是推論**：緯創「受傷」依客戶分工的搜尋摘要推論，日期未核對。\n\n## 11. 要追蹤的時間點\n- 11/19 ING 資料中心貸款截標：標價與是否折價。\n- Nebius 2027 上半年第三方產能上線進度、2027 營收／稅前盈餘／產能指引；CoreWeave 融資成本與 Vera Rubin 機櫃交付。\n- 廣達、緯創、緯穎 11 月營收（12/10 前）與 2027 Q1 出貨說法。\n- 雲端業者下一輪財報的 2027 資本支出指引（約 2027 年 1 月底～2 月初，推論）。\n- 輝達對 Neocloud 的資本支持條款。\n\n## 資料來源\n- [The Next Web：Nebius shares fall 16% as data centre delays cut its 2026 outlook（僅搜尋摘要）](https://thenextweb.com/news/nebius-q3-2026-shares-fall-data-centre-delays-outlook)\n- [Newsquawk：Nebius Group (NBIS) Q3 2026: Adj. EBITDA 465.8mln (exp. 351.8mln), Revenue 980.8mln (exp. 907.2mln)（僅標題）](https://www.newsquawk.com/headlines/nebius-group-nv-nbis-q3-2026-usd-adj-ebitda-4658mln-exp-3518mln-revenue-9808mln-exp-9072mln)\n- [FourWeekMBA：Nebius Guides 2027 Capex at $40B-$45B, 3.4x Its Revenue（僅搜尋摘要）](https://fourweekmba.com/ai-nebius-guides-2027-capex-at-40b-45b-3-4x-its-revenue/)\n- [Constellation Research：Nebius ups capex for 2027 as revenue slips in Q4（僅搜尋摘要）](https://www.constellationr.com/insights/news/nebius-ups-capex-2027-revenue-slips-in-q4)\n- [Blockspace：Nebius stock drops 17% after $7B ARR target slips to February 2027（僅標題）](https://blockspace.media/short/nebius-stock-drops-17-after-7b-arr-target-slips-to-february-2027/)\n- [Blockspace：Nebius shares tumble 22% as capacity delays hit revenue outlook and capex rises to $27 billion（僅標題；跌幅與其他來源不一）](https://blockspace.media/insight/nebius-cuts-2026-revenue-outlook/)\n- [Webull：Nebius Tumbles 14% on Soft Guidance and Bigger Spending Plans; CoreWeave Sinks 10%, IREN Drops 7%（僅標題與搜尋摘要）](https://www.webull.com/news/15911150097712128)\n- [Motley Fool：Why Nebius Group stock plunged again today（2026-11-13，僅搜尋摘要）](https://fool.com/investing/2026/11/13/why-nebius-group-stock-plunged-again-today)\n- [SEC：Nebius Group N.V. Form 6-K（公司公告，附件 99.2；只在搜尋結果列出，沒讀到內容）](https://www.sec.gov/Archives/edgar/data/0001513845/000110465926126008/tm2629571d1_ex99-2.htm)\n- [LetsDataScience：CoreWeave Beats Q3 Revenue Estimates, Raises 2026 Guidance, Backlog Hits $132.5B（僅搜尋摘要）](https://letsdatascience.com/news/coreweave-beats-q3-revenue-estimates-raises-2026-guidance-ba-f4170a31)\n- [24/7 Wall St：CoreWeave Q3 2026: Revenue Up 168% as Guidance Rises to $13.3B（僅標題）](https://247wallst.com/cards/coreweave-q3-2026-earnings-crwv-01m73msrkgrgan75a5t7tb9fmz)\n- [The Tech Capital：CoreWeave revenue surges 168%, interest bill, $709M loss（僅標題與搜尋摘要）](https://thetechcapital.com/coreweave-revenue-surges-168-interest-bill-709m-loss/)\n- [優分析：CoreWeave上修財測、訂單突破1,300億美元 但龐大資本支出仍考驗資金能力（僅標題與搜尋摘要）](https://uanalyze.com.tw/articles/3223458925)\n- [智通財經（stockstar）：Sixth Street 執行長 Waxman 談資料中心延遲與融資（2026-11-12，中文單一來源，僅搜尋摘要）](https://wap.stockstar.com/detail/IG2026111200006039)\n- [理財週刊：Sixth Street 執行長 Alan Waxman 示警「約 2,000 億美元晶片因資料中心未就緒而滯留倉庫」（僅標題）](https://www.moneyweekly.com.tw/_Article?AID=261721)\n- [Propmodo（引 Bloomberg）：資料中心專案如期交付機率約 50%（僅搜尋摘要）](https://propmodo.com/?p=181415)\n- [優分析：〈廣達法說〉明年AI伺服器營收年增高雙位數 整體伺服器營收占比上看9成（2026-11-11 法說，僅搜尋摘要）](https://uanalyze.com.tw/articles/2061659022)\n- [優分析：〈緯創法說〉AI伺服器展望正向 預期全年營收成長高雙位數百分比（日期未核對，僅搜尋摘要）](https://uanalyze.com.tw/articles/5710648963)\n- [MarketBeat：Nebius Group is trading near all-time highs（52 週高點約 299.86 美元，截至 7/31，僅搜尋摘要）](https://www.marketbeat.com/articles/nebius-group-is-trading-near-all-time-highs-heres-how-far-it-has-come/)\n- [FXLeaders：Nebius hits record high of $278.85（2026-06-18，僅標題）](https://www.fxleaders.com/news/2026/06/18/nebius-hits-record-high-of-278-85-as-ai-data-center-bets-power-a-212-surge/)\n- [SemiAnalysis：Stop saying half of 2026 US datacenter capacity is canceled（日期未註明，僅搜尋摘要；背景：延遲不等於取消）](https://newsletter.semianalysis.com/p/stop-saying-half-of-2026-us-datacenter)\n- [Threads @aoyamaa._：Neocloud 淘汰賽與輝達電話會議的三個方向（2026-11-18 18:28，個人貼文，未證實）](https://www.threads.com/@aoyamaa._/post/Df4SSaxoLqz)\n",
+  "trigger": "2026-11-18 待檢視清單（未證實）：Threads @aoyamaa._（score 3，2026-11-18 18:28）——NBIS 距今年高點 −65%，Neocloud 淘汰賽、輝達篩選生態系（個人詮釋，沒核對）｜https://www.threads.com/@aoyamaa._/post/Df4SSaxoLqz；既有研究《AI基建融資浮現裂痕！5億美元資料中心貸款遭打包》把 11/10、11/12 neocloud 財報列為關鍵檢驗"
+}
