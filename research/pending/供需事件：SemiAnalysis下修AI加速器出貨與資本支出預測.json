@@ -1,0 +1,642 @@
+{
+  "topic": "供需事件：SemiAnalysis下修AI加速器出貨與資本支出預測",
+  "one_line": "SemiAnalysis 11/13 的 AI 加速器模型更新被多家二手媒體報導：資本支出 2027 由 7,700 億降到 6,270 億美元（−19%）、2028 −28%、2029 −41%、2030 由 1.531 兆降到 9,230 億美元（−40%），2026 約 3,920 億美元不變；邏輯晶圓出貨面積 2026～2030 累計 −17%（輝達占減幅 66%）；理由是前沿實驗室營收減速、融資趨嚴與資料中心延遲。股癌 EP715 的「再下調 1.6 兆美元、約 30 幾%」與本檔用年度金額加總的結果相符（約 −1.60 兆、−31%，推論），EP1224 的「2027 仍比今年增約 6 成」也對得上；但原報告是機構訂閱專屬、沒有公開，數字來自二手摘要，且年增率有一致性疑點。「拉貨延後」是主持人的看法，目前沒有客戶砍單的證據，只有微軟因第三方資料中心延遲下調 2026 資本支出。對台灣最敏感的是專供輝達、2027 下半年～2029 才到位的擴產（景碩、矽品、欣興、京元電），時點正落在被砍最多的年度，合約條款未公開。",
+  "status": "混合",
+  "horizon": "長期（1年以上）",
+  "layers": [
+    {
+      "layer": "需求與資金（前沿實驗室、雲端業者、融資）——本次下修的源頭，也是瓶頸所在",
+      "description": "SemiAnalysis（二手報導）稱前沿實驗室淨新增 ARR 在 2026 Q3 減速、沒有雲端業者長約的專案融資趨嚴；獨立資料混合：OpenAI 成長放緩的報導與 FT 稱 Q3 直接營收成長逾 70% 並存。四大雲端業者 Q3 資本支出約 2,019 億美元（10-Q 合計，二手）；Alphabet、Amazon 稱 2027 增加，微軟因第三方資料中心延遲下調 2026 日曆年指引。瓶頸在資金與電力，不是半導體。",
+      "global_players": [
+        "OpenAI",
+        "Anthropic",
+        "Microsoft",
+        "Alphabet",
+        "Amazon",
+        "Meta",
+        "新興雲端業者（Neocloud）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "資料中心電力與廠房（延遲實際發生的地方）",
+      "description": "SemiAnalysis 把 2030 年 AI 加速器電力需求預測由 122.8 GW 降到 80.7 GW（−34%，一則報導）；美國資料中心延遲來自電力、設備與在地反對。SemiAnalysis 先前（日期未註明）主張「一半被取消」是誇大，延遲不等於取消。",
+      "global_players": [
+        "電網與變壓器大廠",
+        "資料中心開發商"
+      ],
+      "tw_stocks": [
+        {
+          "code": "1519",
+          "name": "華城",
+          "role": "美國電網與資料中心變壓器；預測下修與延後的間接影響，沒查到公司說法（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "1513",
+          "name": "中興電",
+          "role": "電力設備；同上，間接影響（推論）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "AI 加速器設計與品牌（輝達、AMD、ASIC）",
+      "description": "輝達受衝擊最大：出貨預測下修、下一世代 ASP 約 11 萬 → 7.8 萬美元（單一來源）、需接受較低毛利（二手報導）。輝達 Q3 FY2027 營收 1,158 億美元、Q4 指引 1,300 億美元 ±3%（既有研究）仍在成長。Broadcom 的 ASIC 累計營收預測只 −11%，主因記憶體降價。",
+      "global_players": [
+        "輝達",
+        "AMD",
+        "Broadcom（Google TPU 等）",
+        "Marvell",
+        "AWS Trainium"
+      ],
+      "tw_stocks": [
+        {
+          "code": "3443",
+          "name": "創意",
+          "role": "ASIC 設計服務；Broadcom ASIC 預測相對輕（弱推論），沒查到公司說法",
+          "impact": "中性"
+        },
+        {
+          "code": "3661",
+          "name": "世芯-KY",
+          "role": "ASIC 設計服務；同上",
+          "impact": "中性"
+        },
+        {
+          "code": "2454",
+          "name": "聯發科",
+          "role": "ASIC 設計服務；同上",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "晶圓代工與 HBM",
+      "description": "2026～2030 累計加速器邏輯晶圓出貨面積 −17%，輝達占減幅 66%；HBM 2028 年 9.0 → 6.4 EB（−30%）、2030 年 −12%（各只見一則報導）。台積電是多客戶，沒有查到它自己的說法；HBM 主要由 SK 海力士、三星、美光供應，台灣標的沒有逐家查。",
+      "global_players": [
+        "台積電",
+        "SK 海力士",
+        "三星",
+        "美光"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "AI 加速器晶圓與 CoWoS；多客戶分攤，2026 預測不變、2027 −19%，對成長斜率的影響未知（推論）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "先進封裝、測試、ABF 載板與上游玻纖布（輝達專供擴產集中在這一層）",
+      "description": "輝達 11/17 宣布擴大供應鏈承諾（既有景碩研究）：景碩專供輝達 ABF 載板產能增至 3.5 倍以上（2027 下半年投產、2028 Q3 到位）、矽品專供先進封裝 2029 年中到位、欣興產能預訂協議（2027 Q2 起增加、2028 年中完整）、京元電 11 億美元預付款。這些擴產的到位時點正好落在 SemiAnalysis 下修最多的 2028～2029；合約條款未公開。玻纖布訂單滿載到 2027、擴產推遲 6～12 個月。",
+      "global_players": [
+        "Ibiden",
+        "三星電機",
+        "Amkor",
+        "日東紡"
+      ],
+      "tw_stocks": [
+        {
+          "code": "3189",
+          "name": "景碩",
+          "role": "專供輝達的 ABF 載板產能增至 3.5 倍以上，新產能 2027 下半年～2028 Q3；沒查到預付款或保底條款（推論）",
+          "impact": "受傷"
+        },
+        {
+          "code": "3037",
+          "name": "欣興",
+          "role": "輝達產能預訂協議（2027 Q2 起增加、2028 年中完整）；保底量與期限未公開",
+          "impact": "中性"
+        },
+        {
+          "code": "3711",
+          "name": "日月光投控",
+          "role": "矽品專供輝達先進封裝產能 2029 年中到位、獲輝達數十億美元資金支持；條款未公開",
+          "impact": "中性"
+        },
+        {
+          "code": "2449",
+          "name": "京元電子",
+          "role": "輝達 11 億美元預付款支持美國測試廠，2027/4 目標量產；有預付款緩衝",
+          "impact": "中性"
+        },
+        {
+          "code": "1802",
+          "name": "台玻",
+          "role": "T-glass 玻纖布訂單滿載到 2027、擴產推遲（既有研究）；遠期需求下修可能使緊缺提早緩和（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "1815",
+          "name": "富喬",
+          "role": "玻纖布；同上（既有研究）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "伺服器機櫃 ODM 與電源、散熱、PCB 零組件",
+      "description": "輝達 GPU 機櫃與 ASIC 伺服器混合，各家比重不同，淨影響未知；2026 預測不變、2027 仍比 2026 增約 60%（新版），遠期斜率下修。沒有查到這些公司對此報告的說法。",
+      "global_players": [
+        "鴻海",
+        "廣達",
+        "緯創",
+        "緯穎",
+        "台達電",
+        "奇鋐"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2317",
+          "name": "鴻海",
+          "role": "輝達機櫃主要組裝廠之一；遠期出貨斜率受影響，淨影響未知（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM；輝達與 ASIC 混合（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "3231",
+          "name": "緯創",
+          "role": "AI 伺服器 ODM；同上（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端伺服器 ODM；同上（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "2308",
+          "name": "台達電",
+          "role": "機櫃電源；2030 年 AI 加速器電力需求預測 −34%（一則報導），間接影響（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "3017",
+          "name": "奇鋐",
+          "role": "散熱；同上（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "2383",
+          "name": "台光電",
+          "role": "CCL（高階 AI 板材）；遠期斜率下修的間接影響（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "2368",
+          "name": "金像電",
+          "role": "AI 伺服器 PCB；同上（推論）",
+          "impact": "中性"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    "SemiAnalysis",
+    "AI 加速器資本支出",
+    "Accelerator & HBM Model",
+    "輝達出貨",
+    "下修",
+    "拉貨延後",
+    "push out",
+    "股癌 EP715",
+    "兆華與股惑仔 EP1224",
+    "資料中心延遲",
+    "電力需求",
+    "HBM",
+    "ABF 載板",
+    "CoWoS",
+    "景碩",
+    "矽品",
+    "欣興",
+    "京元電"
+  ],
+  "catalysts": [
+    "雲端業者下一輪財報的 2027 資本支出指引（約 2027 年 1 月底～2 月初，推論）與微軟第三方資料中心延遲的後續",
+    "輝達 FY2028 展望；供應鏈承諾的合約條款（預付款、保底量、期限）",
+    "景碩、欣興、日月光投控、京元電的法說與重大訊息：資本支出、客戶預付款與投產時點",
+    "SemiAnalysis 公開文章或機構訂戶轉述：2029 年數字與輝達 66% 的兩種含義",
+    "TrendForce 等獨立統計對 2027 年 CoWoS、HBM、ABF 的預測"
+  ],
+  "risks": [
+    "沒有原報告：SemiAnalysis 模型是機構訂閱專屬，數字流傳自 X 摘要與財經網站轉述，SemiAnalysis 未公開證實",
+    "同一批搜尋摘要對 2028／2029 的對應不一致；年增率 2029 僅約 5%、2030 反彈約 16%，不像平順路徑，可能有轉述錯誤",
+    "累計約 −1.60 兆美元、−31% 是本檔用二手年度金額加總（假設 2026 不變），不是來源原話",
+    "輝達的「66%」同時是「占晶圓面積減幅」與「2030 對應營收下修」，可能被轉述混用；另一則給 2027 −22%、2028 −39%、2030 −66%",
+    "「拉貨延後」是節目主持人的看法；目前只有資料中心延遲的旁證，沒有客戶砍單的證據",
+    "HSBC 輝達目標價 365 → 170 美元只見單一網站標題，降幅異常大，未核對",
+    "微軟 2026 日曆年資本支出約 1,700 億美元（下調）的說法與另一來源約 1,900 億美元不一致；雲端業者資本支出的兩種口徑（2,270 億與 2,019 億美元）未對齊",
+    "景碩標「受傷」是依時點與沒查到保護條款的推論，不是公司說法；SemiAnalysis 預測的歷史準確度沒有成績單，預測也可能再上修"
+  ],
+  "spec_tables": [
+    {
+      "title": "表：SemiAnalysis 11/13 模型更新的數字（二手報導整理，模型本身沒公開）",
+      "columns": [
+        "項目",
+        "舊版",
+        "新版",
+        "變動",
+        "備註"
+      ],
+      "rows": [
+        [
+          "全球 AI 加速器資本支出 2026",
+          "約 3,920 億美元",
+          "約 3,920 億美元",
+          "幾乎不變",
+          "二手報導稱 2026 維持"
+        ],
+        [
+          "同 2027",
+          "7,700 億美元",
+          "6,270 億美元",
+          "−19%",
+          "新版比 2026 仍增約 60%（舊版約 96%），與 EP1224「2027 仍比今年增約 6 成」相符"
+        ],
+        [
+          "同 2028",
+          "1.054 兆美元",
+          "7,580 億美元",
+          "−28%",
+          "新版年增約 21%（舊版約 37%）"
+        ],
+        [
+          "同 2029",
+          "1.352 兆美元",
+          "7,960 億美元",
+          "−41%",
+          "新版年增僅約 5%（舊版約 28%）：明顯偏低，可能是轉述數字有誤（推論）"
+        ],
+        [
+          "同 2030",
+          "1.531 兆美元",
+          "9,230 億美元",
+          "−40%（−6,080 億美元）",
+          "新版年增約 16%，比 2029 反彈（同上，數字一致性存疑）"
+        ],
+        [
+          "2026～2030 累計（本檔加總，推論）",
+          "約 5.10 兆美元",
+          "約 3.50 兆美元",
+          "約 −1.60 兆美元、−31%",
+          "沒有任何來源直接給這個數字；與 EP715「下調 1.6 兆、約 30 幾%」相符，但那是節目說法，不能當成同一個數字"
+        ],
+        [
+          "2026～2030 加速器邏輯晶圓出貨面積（累計）",
+          "—",
+          "—",
+          "−17%",
+          "輝達占減幅 66%（二手報導）"
+        ],
+        [
+          "HBM 需求",
+          "2028：9.0 EB",
+          "2028：6.4 EB",
+          "2028 −30%；2030 −12%",
+          "只見一則報導；其他來源只說「下調」"
+        ],
+        [
+          "AI 加速器電力需求（2030）",
+          "122.8 GW",
+          "80.7 GW",
+          "−34%",
+          "只見一則報導"
+        ],
+        [
+          "輝達出貨預測",
+          "—",
+          "—",
+          "2030 對應營收 −66%（一則）",
+          "另一則寫 2027 −22%、2028 −39%、2030 −66%，說法不一；「66%」同時是輝達占晶圓面積減幅，兩者可能被轉述混用"
+        ],
+        [
+          "輝達 Feynman 世代平均售價",
+          "約 11 萬美元",
+          "約 7.8 萬美元",
+          "約 −29%",
+          "單一來源；理由是客戶可選競品、輝達需接受較低毛利"
+        ],
+        [
+          "Broadcom（ASIC）",
+          "—",
+          "—",
+          "2026～2030 累計 ASIC 營收 −11%",
+          "主因記憶體價格較低，不是出貨變少（二手報導）"
+        ]
+      ],
+      "note": "年增率與累計是本檔用二手報導的年度金額自己算的，不是原報告數字；2029 年增僅 5% 又在 2030 反彈到 16%，不像是平順的預測路徑，請以原模型為準。SemiAnalysis 沒有公開證實，數字流傳自 X 上的摘要與財經網站轉述。"
+    },
+    {
+      "title": "表：SemiAnalysis 的下修理由（二手報導）與獨立資料對照",
+      "columns": [
+        "SemiAnalysis 的說法（二手報導）",
+        "獨立資料（二手摘要）",
+        "判讀"
+      ],
+      "rows": [
+        [
+          "前沿實驗室的淨新增年化經常性收入（ARR）在 2026 Q3 減速，營收能支撐的算力增量下調",
+          "Semafor（8/19）稱 OpenAI 銷售成長放緩；WSJ 稱 OpenAI 2026 Q1 低於內部目標；FT 稱 OpenAI 告知投資人 Q3 直接營收成長逾 70%（口徑不明）；Bloomberg 稱 Anthropic 年化營收 7 月底約 650 億美元；Epoch 稱 2026 年內成長率可能放緩",
+          "混合；沒有查到 Q3 淨新增 ARR 的可靠數字"
+        ],
+        [
+          "沒有大型雲端業者長約的專案，債與股權投資人更謹慎，土地、電力與廠房建置變慢",
+          "微軟 2026 日曆年資本支出約 1,700 億美元，較先前指引下調，原因是第三方資料中心產能延遲（另一來源仍寫約 1,900 億美元）",
+          "方向一致（延遲）；金額說法不一，待核對"
+        ],
+        [
+          "選舉相關的延遲約 5.8 GW 美國資料中心產能（次要原因）",
+          "沒查到其他來源",
+          "單一來源，未核對"
+        ],
+        [
+          "（對照）2027 年雲端業者還會不會加碼",
+          "Alphabet 財務長稱 2027 資本支出將顯著增加；Amazon 執行長稱 2027 年「明顯更多」；Amazon 維持 2026 約 2,200 億美元；Meta 仍在編 2027 預算；2026 Q3 四大雲端業者資本支出約 2,019 億美元（10-Q 合計，二手）",
+          "公司指引到 2027 都往上；2028～2030 沒有任何公司指引可對照"
+        ]
+      ],
+      "note": "皆為搜尋摘要，兩邊都不是原文；兩種「雲端業者資本支出」口徑（約 2,270 億與 2,019 億美元）不同，沒有對齊。"
+    },
+    {
+      "title": "表：擴產與稼動檢核（專供輝達的擴產時點 vs. SemiAnalysis 下修最大的年度）",
+      "columns": [
+        "公司",
+        "瓶頸環節",
+        "現況稼動",
+        "擴產與資本支出",
+        "投產或放量時點",
+        "主要限制",
+        "證據等級"
+      ],
+      "rows": [
+        [
+          "景碩",
+          "ABF 載板",
+          "Q3 稼動約 90%（報導，既有研究）",
+          "專供輝達產能增至 3.5 倍以上；資本支出 598 億或 196 億元（口徑不一）",
+          "2027 下半年投產；2028 Q3 到位（一則報導）",
+          "時點落在 2028 年（−28%）前後；合約條款（預付款、保底量）未公開；專供產能不能轉給其他客戶（推論）",
+          "官方公告（轉載摘要）；資本支出為媒體報導"
+        ],
+        [
+          "欣興",
+          "ABF 載板",
+          "沒查到；Q3 毛利率 28.85%",
+          "輝達產能預訂協議；2026 資本預算約 340 億元",
+          "2027 Q2 起增加；2028 年中達完整規劃產能",
+          "預訂協議的保底量與期限未公開；上游玻纖布",
+          "官方公告（10/21，次級報導）；數字為媒體報導"
+        ],
+        [
+          "矽品（日月光投控）",
+          "先進封裝與 CPO",
+          "沒查到",
+          "輝達數十億美元資金支持；CPO 光學引擎 2027 年中增至 15 倍",
+          "專供輝達先進封裝產能 2029 年中到位",
+          "到位時點正是 2029 年（−41%，數字存疑）；金額與條款未公開",
+          "官方公告（轉載摘要）；CPO 為次級報導"
+        ],
+        [
+          "京元電",
+          "測試",
+          "沒查到",
+          "11 億美元預付款支持美國測試廠（公司公告預付款上限 NT$45 億元）",
+          "2027/4 目標量產",
+          "有預付款緩衝；美國建廠進度",
+          "媒體報導（次級）"
+        ],
+        [
+          "台玻、富喬",
+          "上游玻纖布",
+          "訂單滿載到 2027（既有研究）",
+          "供應商推遲擴產 6～12 個月",
+          "沒查到",
+          "擴產推遲；若遠期需求下修，緊缺可能提早緩和（推論）",
+          "既有研究（媒體報導）"
+        ],
+        [
+          "台積電",
+          "晶圓與 CoWoS",
+          "沒查到本次數字",
+          "沒查到本次數字",
+          "2026 年資本支出不變；SemiAnalysis 稱 2026～2030 加速器晶圓面積累計 −17%",
+          "多客戶分攤；輝達占面積減幅 66%",
+          "媒體報導（二手）"
+        ]
+      ],
+      "note": "逐列檢查：稼動滿載又沒擴產的（玻纖布）靠推遲擴產撐住緊缺；有擴產的都是專供輝達、2027 下半年～2029 才到位，剛好落在預測被砍最多的年度；公司有預付款或預訂協議的（欣興、矽品、京元電）風險部分由輝達承擔，景碩沒有查到保護條款。以上是用二手摘要排的時點對照，不是公司說法。"
+    },
+    {
+      "title": "表：事件與時間（台北時間）",
+      "columns": [
+        "日期",
+        "事件",
+        "備註"
+      ],
+      "rows": [
+        [
+          "約 11/2～11/6（推論）",
+          "SemiAnalysis 上一版（EP1224：11 天前）",
+          "EP1224 說這次比 11 天前大幅下修"
+        ],
+        [
+          "11/13",
+          "SemiAnalysis Accelerator & HBM Model 更新",
+          "二手報導；原模型機構訂閱專屬"
+        ],
+        [
+          "11/16",
+          "中英文財經網站出現報導；同日台股大跌、載板股跌停（本系統記錄與既有研究）",
+          "沒有證據說明賣壓是否來自這份報告"
+        ],
+        [
+          "11/17 美東盤後",
+          "輝達 Q3 FY2027 財報：營收 1,158 億美元、Q4 指引 1,300 億美元 ±3%（既有研究）",
+          "實績仍成長；與下修針對的 2028～2030 不衝突"
+        ],
+        [
+          "11/18",
+          "股癌 EP715、兆華與股惑仔 EP1224 的摘要貼文被收進待檢視清單",
+          "本檔求證的對象"
+        ],
+        [
+          "2027 年 1 月底～2 月初（推論）",
+          "雲端業者下一輪財報與 2027 資本支出指引",
+          "最直接的獨立檢驗"
+        ]
+      ],
+      "note": "美股時間換算為台北時間；標「推論」者沒有來源直接寫日期。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "Blackwell（GB200／GB300）",
+      "composition": "Blackwell GPU＋Grace CPU；HBM3E",
+      "spec": "2025～2026 主力；輝達 Q3 FY2027 資料中心營收 1,076 億美元（既有研究，搜尋摘要）",
+      "application": "2025～2026 AI 機櫃"
+    },
+    {
+      "name": "Rubin（Vera Rubin NVL72）",
+      "composition": "Rubin GPU＋Vera CPU；台積電 3 奈米與 CoWoS；HBM4",
+      "spec": "輝達稱 Q3 已開始量產出貨（轉載摘要）；延後放量只有傳聞（未證實）",
+      "application": "2026 下半年起"
+    },
+    {
+      "name": "Rubin Ultra／Kyber 機架",
+      "composition": "下一代 GPU 與新機架設計",
+      "spec": "緯來新聞網標題稱「明年照常登場」（未核對）；7 月曾傳 Kyber NVL144 機架可能延遲（未證實，見景碩研究）",
+      "application": "2027 年（原計畫）"
+    },
+    {
+      "name": "Feynman",
+      "composition": "輝達公開路線圖的再下一代，細節未公開",
+      "spec": "SemiAnalysis 模型把平均售價由約 11 萬美元調到約 7.8 萬美元（二手報導，單一來源）",
+      "application": "約 2028 年（公開路線圖）"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "適用程度：部分適用——這是需求面的預測下修，不是供給短缺；鏈照寫，但瓶頸在最上游的資金與電力，不在半導體",
+        "一行鏈：前沿實驗室營收（ARR）→ 融資與雲端業者長約 → 土地、電力、廠房 → 加速器下單（輝達、ASIC）→ 晶圓、HBM、先進封裝、載板、測試 → 機櫃 ODM → 電源、散熱、PCB 零組件",
+        "SemiAnalysis 的三個原因（營收減速、融資趨嚴、資料中心延遲）都在鏈的最上游；落到半導體供應鏈的方式是時間與斜率：2026 不變、2027 −19%、2028～2030 大幅下修，不是現有訂單被砍",
+        "輝達最新財報仍在成長（Q4 指引 1,300 億美元 ±3%），與「下修遠期」不衝突"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "電力：2030 年 AI 加速器耗電預測 122.8 → 80.7 GW（−34%，一則報導），電力與廠房是資料中心延遲的主因之一",
+        "記憶體：HBM 2028 −30%；Broadcom 的 ASIC 營收預測下修主因是記憶體降價，不是出貨少",
+        "競品：客戶可選 ASIC 或 AMD，SemiAnalysis 因此調降輝達下一世代 ASP（單一來源）",
+        "融資：循環融資疑慮（既有輝達財報前夕研究，只有節目說法）與「沒有長約的專案融資趨嚴」同屬資金面，但兩邊來源都是二手"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "慣性要反過來用：缺貨 → 往上游找瓶頸；預測下修 → 找「依舊版預測擴產的公司」，以及「上游緊缺會不會提前緩和」",
+        "供需缺口怎麼來的（反向）：這次沒有新的供給缺口，反而是對 2028 年後供給緊缺（ABF 載板高盛 2027 約 21～34%、2028 可能逾 51%，既有研究）是否還那麼大的質疑；若下修成真，載板與玻纖布緊缺可能提早緩和（推論）",
+        "痛點：AI 資料中心的資金與電力，不是晶圓或載板",
+        "限制：合約條款（預付款、保底量、違約責任）未公開，擴產風險由誰承擔不知道；專供輝達的產能轉給其他客戶很難（推論）；建廠週期使擴產一旦開工很難撤回",
+        "時點錯位：景碩專供產能 2027 下半年投產、2028 Q3 到位；欣興 2027 Q2 起增加、2028 年中完整；矽品 2029 年中——落在被砍最多的 2028～2029 年"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷（推論）：景碩——專供輝達、新產能在 2028 年前後、沒查到保護條款",
+        "中性：台積電（多客戶）；欣興、日月光投控、京元電（有預訂協議、資金支持或預付款，但條款未公開）；玻纖布；機櫃 ODM 與電源散熱 PCB；重電",
+        "相對輕（弱推論）：ASIC 設計服務（創意、世芯-KY、聯發科）——Broadcom ASIC 預測只 −11%，主因記憶體降價",
+        "沒有明確受惠者：需求端的預測下修，沒有轉單或替代供應的故事"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "找 SemiAnalysis 公開文章或機構訂戶轉述，核對 11/13 更新的原始數字（尤其 2029 年與輝達 66% 的兩種含義）",
+        "看雲端業者 2027 資本支出指引與 2028 年展望；微軟下調是時點調整還是縮減",
+        "看景碩、欣興、日月光投控、京元電的法說與重大訊息：預付款、保底量、資本支出時點",
+        "看 TrendForce 等獨立統計對 2027 年 CoWoS、HBM、ABF 的預測，與 SemiAnalysis 比對",
+        "之後用研究成績單看這份研究的「受傷／中性」標記後續表現"
+      ]
+    }
+  ],
+  "conclusion": [
+    "SemiAnalysis 11/13 模型更新下修 AI 加速器資本支出（2027 −19%、2028 −28%、2029 −41%、2030 −40%）的說法有多家二手媒體互相一致的年度數字，也能對上股癌 EP715（累計約 −1.6 兆、30 幾%，本檔加總為推論）與 EP1224（2027 仍增約 6 成）的說法，可信度高；但原模型是機構訂閱專屬、沒有公開，數字來自二手摘要，且有年增率與「66%」的一致性疑點。",
+    "下修的是遠期：2026 不變、2027 仍比今年增約 60%，被砍最多的是 2028～2030，這幾年沒有任何雲端業者的公司指引可對照；「拉貨延後」是主持人的詮釋，目前只有微軟因第三方資料中心延遲下調 2026 資本支出的旁證，沒有客戶砍單的證據。",
+    "對台灣最敏感的是專供輝達、2027 下半年～2029 才到位的擴產（景碩、矽品、欣興、京元電），時點正落在被砍最多的年度；欣興、矽品、京元電有預訂協議或預付款，景碩沒查到保護條款，條款都未公開，風險由誰承擔是關鍵未知數。",
+    "若下修成真，現有的 ABF 載板與玻纖布緊缺可能比預期提早緩和（推論）。接下來以雲端業者 2027 資本支出指引、輝達 FY2028 展望與台灣公司法說的擴產與預付款說法為準，不要把二手摘要的預測當成事實。"
+  ],
+  "sources": [
+    {
+      "title": "Phemex：SemiAnalysis slashes 2028 AI capex forecast by 28%, cuts 2030 estimate to $923B（二手報導，僅搜尋摘要）",
+      "url": "https://phemex.com/news/article/semianalysis-slashes-2028-ai-capex-forecast-by-28-cuts-2030-estimate-to-923b-103733"
+    },
+    {
+      "title": "OfficeChai：SemiAnalysis Reportedly Cuts 2028 AI Accelerator Spend Forecast By 28%（僅搜尋摘要）",
+      "url": "https://officechai.com/ai/semianalysis-reportedly-cuts-2028-ai-accelerator-spend-forecast-by-28/"
+    },
+    {
+      "title": "Xenospectrum：SemiAnalysis AI accelerator spending forecast（僅搜尋摘要）",
+      "url": "https://xenospectrum.com/en/semianalysis-ai-accelerator-spending-forecast/"
+    },
+    {
+      "title": "Magica：SemiAnalysis Cuts 2030 AI Accelerator Capex to $923B（僅搜尋摘要）",
+      "url": "https://magica.com/news/semianalysis-cuts-2030-ai-accelerator-capex-forecast"
+    },
+    {
+      "title": "Phemex：Nvidia price targets slashed to 170 as SemiAnalysis cuts AI compute capex forecast by 30%（僅標題與搜尋摘要；目標價數字未核對）",
+      "url": "https://phemex.com/news/article/nvidia-price-targets-slashed-to-170-as-semianalysis-cuts-ai-compute-capex-forecast-by-30-103762"
+    },
+    {
+      "title": "財經網站 cnfin.com：2026-11-16 報導（僅搜尋摘要，標題不明）",
+      "url": "https://www.cnfin.com/yw-lb/detail/20261116/4496331_1.html"
+    },
+    {
+      "title": "財經網站 cnfin.com：2026-11-16 股市報導（僅搜尋摘要，標題不明）",
+      "url": "https://www.cnfin.com/gs-lb/detail/20261116/4496330_1.html"
+    },
+    {
+      "title": "老虎證券新聞 itiger.com（僅搜尋摘要，標題不明）",
+      "url": "https://www.itiger.com/news/1126271736"
+    },
+    {
+      "title": "SemiAnalysis：Accelerator & HBM Model（機構訂閱專屬頁，沒有公開內容）",
+      "url": "https://www.semianalysis.com/accelerator-model"
+    },
+    {
+      "title": "HL（英國）：AI hyperscalers are expected to finish the year spending a whopping $828 billion on capex（僅搜尋摘要；口徑與 10-Q 合計不同）",
+      "url": "https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex"
+    },
+    {
+      "title": "Webull：2026 Q3 雲端業者資本支出整理（僅搜尋摘要；微軟 2026 日曆年約 1,700 億美元下調的說法，另一來源寫約 1,900 億，未核對）",
+      "url": "https://www.webull.com/news/15531008397992960"
+    },
+    {
+      "title": "Semafor：OpenAI sales growth slows, unnerving investors ahead of planned IPO（2026-08-19，僅標題與搜尋摘要）",
+      "url": "https://www.semafor.com/article/08/19/2026/openai-sales-growth-slows-unnerving-investors-ahead-of-planned-ipo"
+    },
+    {
+      "title": "SiliconANGLE：OpenAI falls further behind Anthropic with disappointing revenue growth and mounting losses（2026-08-18，僅搜尋摘要）",
+      "url": "https://siliconangle.com/2026/08/18/openai-falls-further-behind-anthropic-with-disappointing-revenue-growth-and-mounting-losses/"
+    },
+    {
+      "title": "Epoch AI：An update on AI's most important number（僅搜尋摘要）",
+      "url": "https://epoch.ai/gradient-updates/an-update-on-ais-most-important-number"
+    },
+    {
+      "title": "SemiAnalysis：Stop saying half of 2026 US datacenter capacity is canceled（日期未註明，僅搜尋摘要；背景：延遲不等於取消）",
+      "url": "https://newsletter.semianalysis.com/p/stop-saying-half-of-2026-us-datacenter"
+    },
+    {
+      "title": "GlobeNewswire：NVIDIA Expands Commitments With Supply Chain Partners to Support AI Infrastructure Buildout（2026-11-17，既有景碩研究引用，沒讀到全文）",
+      "url": "https://www.globenewswire.com/news-release/2026/11/17/3405251/0/en/nvidia-expands-commitments-with-supply-chain-partners-to-support-ai-infrastructure-buildout.html"
+    },
+    {
+      "title": "Threads @ai.podcast.summarist：Gooaye 股癌 EP715 摘要（2026-11-18 16:08，節目摘要貼文，未證實）",
+      "url": "https://www.threads.com/@ai.podcast.summarist/post/Df4CVXfEicR"
+    },
+    {
+      "title": "Threads @ai.podcast.summarist：EP715 摘要（2026-11-18 16:15，節目摘要貼文，未證實）",
+      "url": "https://www.threads.com/@ai.podcast.summarist/post/Df4CZXFkvOJ"
+    },
+    {
+      "title": "Threads @ai.podcast.summarist：兆華與股惑仔 EP1224 摘要（2026-11-17，節目摘要貼文，未證實）",
+      "url": "https://www.threads.com/@ai.podcast.summarist/post/Df14lyPku6o"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：SemiAnalysis 下修 AI 加速器出貨與資本支出預測——下修的是 2027～2030 的遠期預測，不是眼前的訂單（傳聞求證）\n\n> 資料說明：寫於 **2026-11-18 傍晚**。起因是待檢視清單的 Threads 摘要貼文（轉述股癌 EP715，另有 11/17 兆華與股惑仔 EP1224 的摘要）。SemiAnalysis 的 Accelerator & HBM Model 是**機構訂閱專屬**，沒有公開版本；本檔所有數字都來自**二手報導的搜尋摘要**（原文連結沒讀到全文），SemiAnalysis 沒有公開證實。\n\n## 1. 事件與求證結果\n- **SemiAnalysis 模型更新（二手報導）**：Accelerator & HBM Model 在 11/13 更新（報導署名分析師 Myron Xie、Ivan Chiam），11/16 起在中英文財經網站出現，內容是大幅下調 AI 加速器出貨、資本支出、HBM 需求與電力需求預測。\n- **節目說法（Threads 摘要，社群傳聞等級）**：EP715 說 SemiAnalysis 距上一版一兩週又下調 1.6 兆美元、約 30 幾%，主持人認為總額下修還好，但**拉貨延後（push out）的機率很高**；EP1224 說比 11 天前大幅下修，下修後 2027 年預估仍比今年增長約 6 成。\n- **求證結果**：二手報導的年度數字能和兩個節目的數字對上（見第 2 節），所以「SemiAnalysis 下修」這件事可信度高；但**「拉貨延後」是主持人的詮釋**，目前沒有找到客戶砍單或延後下單的證據，找到的只有微軟因第三方資料中心延遲下調 2026 資本支出。\n\n## 2. 數字（二手報導整理）\n| 項目 | 舊版 | 新版 | 變動 |\n|---|---|---|---|\n| 全球 AI 加速器資本支出 2026 | 約 3,920 億美元 | 約 3,920 億美元 | 幾乎不變 |\n| 同 2027 | 7,700 億美元 | 6,270 億美元 | −19%（仍比 2026 增約 60%） |\n| 同 2028 | 1.054 兆美元 | 7,580 億美元 | −28% |\n| 同 2029 | 1.352 兆美元 | 7,960 億美元 | −41% |\n| 同 2030 | 1.531 兆美元 | 9,230 億美元 | −40%（−6,080 億美元） |\n| 2026～2030 累計（本檔加總，**推論**） | 約 5.10 兆美元 | 約 3.50 兆美元 | 約 −1.60 兆美元、−31% |\n\n- 2026～2030 累計的加速器邏輯晶圓出貨面積下調 17%，**輝達占減幅的 66%**；HBM 2028 年需求 9.0 → 6.4 EB（−30%）、2030 年 −12%；2030 年 AI 加速器電力需求 122.8 → 80.7 GW（−34%）（各只見一則報導）。\n- 輝達：出貨預測下修、下一世代（Feynman）平均售價約 11 萬 → 7.8 萬美元（單一來源），輝達需要接受較低毛利才能維持競爭力；Broadcom 的 ASIC 營收預測累計只 −11%，主因是記憶體降價（二手報導）。\n- **和節目說法的對照**：把新舊版年度金額各自加總，差額約 1.60 兆美元、約 31%，與 EP715「下調 1.6 兆美元、約 30 幾%」相符；2027 新版 6,270 億 ÷ 2026 的 3,920 億約 +60%，與 EP1224 相符。**這個累計是本檔自己加的（假設 2026 維持 3,920 億美元），不是任何來源的原話。**\n- **數字一致性**：新版年增率 2028 約 +21%、2029 僅約 +5%、2030 約 +16%，2029 偏低且 2030 反彈，不像平順的預測路徑，可能是某一則報導的轉述有誤（推論）；輝達的「66%」同時出現在「占晶圓面積減幅」與「2030 對應營收下修」兩處，也可能被轉述混用。\n\n## 3. 為什麼下修：SemiAnalysis 的說法與獨立資料\n- **說法①　前沿實驗室營收減速**：2026 Q3 淨新增年化經常性收入（ARR）減速，營收能支撐的算力增量下調。**獨立資料混合**：Semafor 稱 OpenAI 銷售成長放緩、WSJ 稱 OpenAI 2026 Q1 低於內部目標，但 FT 稱 OpenAI 告知投資人 Q3 直接營收成長逾 70%（口徑不明）；Bloomberg 稱 Anthropic 年化營收 7 月底約 650 億美元；沒有查到 Q3 淨新增 ARR 的可靠數字。\n- **說法②　融資趨嚴**：沒有大型雲端業者長約的專案，債與股權投資人更謹慎，拖慢土地、電力與廠房。**方向有獨立旁證**：微軟 2026 日曆年資本支出約 1,700 億美元、較先前下調，原因是第三方資料中心產能延遲（另一來源寫約 1,900 億美元，說法不一）。\n- **說法③　選舉相關延遲**：約 5.8 GW 美國資料中心產能（SemiAnalysis 視為次要原因）。只見單一來源，沒核對。\n- **反方資料**：Alphabet 財務長稱 2027 資本支出將顯著增加；Amazon 執行長稱 2027 年「明顯更多」並維持 2026 約 2,200 億美元；Meta 還在編 2027 預算；2026 Q3 四大雲端業者資本支出約 2,019 億美元（10-Q 合計，二手）。**公司指引到 2027 都往上，被砍最多的 2028～2030 沒有任何公司指引可對照。**\n- **背景（日期未註明）**：SemiAnalysis 先前另有文章主張「2026 年一半美國資料中心產能被取消」的說法誇大，延遲不等於取消——這和「拉貨延後而非砍單」的方向一致，但那是舊文章，不能當成這次下修的證據。\n\n## 4. 產業鏈因果（垂直）\n> **適用程度：部分適用。** 這是需求面的預測下修，不是供給短缺；鏈仍照寫，但瓶頸在最上游的「資金與電力」，不在半導體。\n\n前沿實驗室營收（ARR）→ 融資與雲端業者長約 → 土地、電力、廠房 → 加速器下單（輝達、ASIC）→ 晶圓（台積電）、HBM、先進封裝、載板、測試 → 機櫃 ODM → 電源、散熱、PCB 零組件\n\n- SemiAnalysis 給的三個原因（營收減速、融資趨嚴、資料中心延遲）都在鏈的最上游；下修落到半導體供應鏈的方式是**時間與斜率**：2026 不變、2027 −19%、2028～2030 大幅下修，不是現有訂單被砍。\n- 輝達最新財報（Q3 營收 1,158 億美元、Q4 指引 1,300 億美元 ±3%，既有研究）仍在成長，與「下修遠期」不衝突。\n\n## 5. 相關推進力（水平）\n- **電力**：2030 年 AI 加速器耗電預測 122.8 → 80.7 GW（−34%，一則報導）；電力與廠房是資料中心延遲的主因之一。\n- **記憶體**：HBM 2028 −30%；Broadcom 的 ASIC 營收預測下修主因是記憶體降價，不是出貨少——記憶體價格同時影響 GPU 與 ASIC 的營收預測。\n- **競品**：SemiAnalysis 因客戶可選競品而調降輝達下一世代 ASP（單一來源）——ASIC 與 AMD 是同一載體上的替代推進力。\n- **融資**：循環融資疑慮（見輝達財報前夕的既有研究，只有節目說法）與「沒有長約的專案融資趨嚴」同屬資金面，彼此呼應，但兩邊來源都是二手。\n\n## 6. 慣性、痛點與限制（思辯）\n- **慣性要反過來用**：缺貨／交期遞延 → 往上游找供給瓶頸；這次是預測下修，要找的是「依舊版預測擴產的公司」，以及「上游緊缺會不會提前緩和」。\n- **供需缺口怎麼來的（反向）**：這次沒有新的供給缺口；反而是對 2028 年後供給緊缺（例如 ABF 載板高盛 2027 約 21～34%、2028 可能逾 51%，既有研究）是否還會那麼大的質疑。若下修成真，載板與玻纖布的緊缺可能提早緩和（推論）。\n- **痛點**：AI 資料中心的資金與電力，不是晶圓或載板。\n- **限制**：合約條款（預付款、保底量、違約責任）未公開，擴產風險由誰承擔不知道；專供輝達的產能轉給其他客戶的難度（推論）；建廠週期使一旦開工很難撤回。\n- **時點錯位**：景碩專供輝達新產能 2027 下半年投產、2028 Q3 到位；欣興 2027 Q2 起增加、2028 年中達完整規劃產能；矽品專供產能 2029 年中到位——剛好落在預測被砍最多的 2028～2029 年。\n\n### 擴產與稼動檢核\n（見結構化表格「擴產與稼動檢核」。）逐列結論：\n- **景碩**：稼動約 90%、專供輝達擴產在遠期、沒有查到保護條款——最直接暴露在「遠期下修」的環節（推論）。\n- **欣興、矽品、京元電**：有產能預訂協議、資金支持或預付款，風險部分由輝達承擔，但保底量與期限未公開。\n- **台玻、富喬（玻纖布）**：訂單滿載到 2027、供應商推遲擴產 6～12 個月——靠推遲擴產撐住緊缺；若遠期需求下修，這個緊缺可能比預期早緩和（推論）。\n- **台積電**：多客戶分攤；加速器晶圓面積累計 −17% 是對整個產業的預測，沒有查到台積電自己的說法。\n\n## 7. 誰受惠、誰受傷（方向性推論，不是公司說法）\n- **受傷**：景碩——專供輝達、新產能落在 2028 年前後，且沒查到保護條款。\n- **中性**：台積電（多客戶）；欣興、日月光投控（矽品）、京元電（有預訂協議或預付款）；玻纖布（緊缺提早緩和的風險）；機櫃 ODM 與電源散熱 PCB（輝達與 ASIC 混合，淨影響未知）；重電（資料中心延遲的間接影響）。\n- **相對輕（弱推論）**：ASIC 設計服務（創意、世芯-KY、聯發科）——Broadcom 的 ASIC 預測只 −11%，主因是記憶體降價。\n- **沒有明確受惠者**：這是需求端的預測下修，沒有轉單或替代供應的供給面故事。\n\n## 8. 說法與證據等級\n| 說法 | 來源 | 證據等級 | 判讀 |\n|---|---|---|---|\n| SemiAnalysis 11/13 更新下修 2027～2030 資本支出、晶圓面積 −17% | 多家二手網站與財經媒體（搜尋摘要） | 媒體報導 | 年度數字互相一致；**沒有原報告** |\n| 累計下調約 1.6 兆美元、30 幾% | 股癌 EP715（Threads 摘要） | 社群傳聞 | 與本檔加總相符（推論） |\n| 下修後 2027 仍比今年增約 6 成 | 兆華與股惑仔 EP1224（Threads 摘要） | 社群傳聞 | 與新版金額相符 |\n| 拉貨延後（push out）的機率很高 | 股癌主持人（Threads 摘要） | 社群傳聞 | 個人看法；目前只有資料中心延遲旁證，沒有客戶砍單證據 |\n| 輝達 2030 對應營收 −66% | 一則二手報導 | 媒體報導（單一來源） | 與「占晶圓面積減幅 66%」可能混用 |\n| HSBC 輝達目標價 365 → 170 美元 | Phemex 標題與搜尋摘要 | 媒體報導（單一來源） | 降幅異常大，未核對 |\n| 微軟 2026 日曆年資本支出約 1,700 億美元（下調） | 搜尋摘要（另一來源 1,900 億） | 媒體報導 | 口徑不一，待核對 |\n\n## 9. 風險與矛盾\n- **沒有原報告**：模型是機構訂閱專屬，數字流傳自 X 摘要與財經網站轉述，SemiAnalysis 未公開證實；同一批搜尋摘要對 2028／2029 年的對應不一致（有一則把 1.054 兆對到 2029），以金額與百分比互相核對後採用 2028。\n- **累計 1.6 兆是推論**：本檔加總得出，與節目說法吻合，但不是來源原話。\n- **「拉貨延後」是主持人的詮釋**：目前證據只有資料中心延遲；客戶砍單或延後下單沒有證據。\n- **預測不是事實**：SemiAnalysis 這個模型的歷史準確度沒有成績單；預測也可以再上修。\n- **本檔的方向性標記是推論**：景碩的「受傷」依據是時點與沒查到保護條款，不是公司說法。\n\n## 10. 要追蹤的時間點\n- 雲端業者下一輪財報的 2027 資本支出指引（約 2027 年 1 月底～2 月初，推論）與微軟延遲的後續。\n- 輝達 FY2028 展望與供應鏈承諾的合約條款（預付款、保底量）；景碩、欣興、矽品、京元電的法說與重大訊息。\n- SemiAnalysis 公開文章或機構訂戶的轉述，確認 2029 年數字與輝達 66% 的兩種含義。\n- TrendForce 等獨立統計對 2027 年 CoWoS、HBM、ABF 的預測，與本檔數字比對。\n\n## 資料來源\n- [Phemex：SemiAnalysis slashes 2028 AI capex forecast by 28%, cuts 2030 estimate to $923B（二手報導，僅搜尋摘要）](https://phemex.com/news/article/semianalysis-slashes-2028-ai-capex-forecast-by-28-cuts-2030-estimate-to-923b-103733)\n- [OfficeChai：SemiAnalysis Reportedly Cuts 2028 AI Accelerator Spend Forecast By 28%（僅搜尋摘要）](https://officechai.com/ai/semianalysis-reportedly-cuts-2028-ai-accelerator-spend-forecast-by-28/)\n- [Xenospectrum：SemiAnalysis AI accelerator spending forecast（僅搜尋摘要）](https://xenospectrum.com/en/semianalysis-ai-accelerator-spending-forecast/)\n- [Magica：SemiAnalysis Cuts 2030 AI Accelerator Capex to $923B（僅搜尋摘要）](https://magica.com/news/semianalysis-cuts-2030-ai-accelerator-capex-forecast)\n- [Phemex：Nvidia price targets slashed to 170 as SemiAnalysis cuts AI compute capex forecast by 30%（僅標題與搜尋摘要；目標價數字未核對）](https://phemex.com/news/article/nvidia-price-targets-slashed-to-170-as-semianalysis-cuts-ai-compute-capex-forecast-by-30-103762)\n- [財經網站 cnfin.com：2026-11-16 報導（僅搜尋摘要，標題不明）](https://www.cnfin.com/yw-lb/detail/20261116/4496331_1.html)\n- [財經網站 cnfin.com：2026-11-16 股市報導（僅搜尋摘要，標題不明）](https://www.cnfin.com/gs-lb/detail/20261116/4496330_1.html)\n- [老虎證券新聞 itiger.com（僅搜尋摘要，標題不明）](https://www.itiger.com/news/1126271736)\n- [SemiAnalysis：Accelerator & HBM Model（機構訂閱專屬頁，沒有公開內容）](https://www.semianalysis.com/accelerator-model)\n- [HL（英國）：AI hyperscalers are expected to finish the year spending a whopping $828 billion on capex（僅搜尋摘要；口徑與 10-Q 合計不同）](https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex)\n- [Webull：2026 Q3 雲端業者資本支出整理（僅搜尋摘要；微軟 2026 日曆年約 1,700 億美元下調的說法，另一來源寫約 1,900 億，未核對）](https://www.webull.com/news/15531008397992960)\n- [Semafor：OpenAI sales growth slows, unnerving investors ahead of planned IPO（2026-08-19，僅標題與搜尋摘要）](https://www.semafor.com/article/08/19/2026/openai-sales-growth-slows-unnerving-investors-ahead-of-planned-ipo)\n- [SiliconANGLE：OpenAI falls further behind Anthropic with disappointing revenue growth and mounting losses（2026-08-18，僅搜尋摘要）](https://siliconangle.com/2026/08/18/openai-falls-further-behind-anthropic-with-disappointing-revenue-growth-and-mounting-losses/)\n- [Epoch AI：An update on AI's most important number（僅搜尋摘要）](https://epoch.ai/gradient-updates/an-update-on-ais-most-important-number)\n- [SemiAnalysis：Stop saying half of 2026 US datacenter capacity is canceled（日期未註明，僅搜尋摘要；背景：延遲不等於取消）](https://newsletter.semianalysis.com/p/stop-saying-half-of-2026-us-datacenter)\n- [GlobeNewswire：NVIDIA Expands Commitments With Supply Chain Partners to Support AI Infrastructure Buildout（2026-11-17，既有景碩研究引用，沒讀到全文）](https://www.globenewswire.com/news-release/2026/11/17/3405251/0/en/nvidia-expands-commitments-with-supply-chain-partners-to-support-ai-infrastructure-buildout.html)\n- [Threads @ai.podcast.summarist：Gooaye 股癌 EP715 摘要（2026-11-18 16:08，節目摘要貼文，未證實）](https://www.threads.com/@ai.podcast.summarist/post/Df4CVXfEicR)\n- [Threads @ai.podcast.summarist：EP715 摘要（2026-11-18 16:15，節目摘要貼文，未證實）](https://www.threads.com/@ai.podcast.summarist/post/Df4CZXFkvOJ)\n- [Threads @ai.podcast.summarist：兆華與股惑仔 EP1224 摘要（2026-11-17，節目摘要貼文，未證實）](https://www.threads.com/@ai.podcast.summarist/post/Df14lyPku6o)\n",
+  "trigger": "2026-11-18 待檢視清單（未證實）：Threads @ai.podcast.summarist（score 2，2026-11-18 16:08、16:15）轉述股癌 EP715（時間點不明）——SemiAnalysis 距上一版一兩週又下調預測 1.6 兆美元、約 30 幾%，主持人認為拉貨延後（push out）機率很高｜https://www.threads.com/@ai.podcast.summarist/post/Df4CVXfEicR；另見 11/17 兆華與股惑仔 EP1224 摘要（SemiAnalysis 下修輝達出貨、下修後 2027 仍比今年增約 6 成）｜https://www.threads.com/@ai.podcast.summarist/post/Df14lyPku6o"
+}
