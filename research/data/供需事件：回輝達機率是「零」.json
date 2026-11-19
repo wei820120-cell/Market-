@@ -1,0 +1,326 @@
+{
+ "topic": "供需事件：回輝達機率是「零」",
+ "one_line": "黃仁勳 11/12 辭職後，回任的說法分歧：有金融時報報導的「戰情室」遊說、連署約 13.6 萬～17.9 萬人（各報導不一）、馬斯克與兩位大股東的壓力；反方有貝森特要求對外找新執行長、出口管制調查，以及單一來源的董事會「無意恢復」說法。佇列標題的「Semafor 記者稱機率為零」「近 18 萬人連署」「傳募資 500 億美元另創事業」都沒查到原始來源（搜尋中唯一的 500 億美元是每 GW 資料中心建置成本與輝達的 5,000 億美元融資計畫，可能被混用，推論）。這是治理與政策事件，不是供需缺口：輝達營運與供應鏈承諾照常（11/17 財報、六家夥伴承諾），目前沒有台灣訂單變動的證據，風險是時程與決策風格，只有節目的個人看法。本檔不給回任機率。",
+ "status": "傳聞",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "黃仁勳",
+  "回任",
+  "輝達執行長",
+  "輝達董事會",
+  "Stand with Jensen",
+  "連署",
+  "戰情室",
+  "Semafor",
+  "出口管制",
+  "Megaspeed",
+  "貝森特",
+  "Kress",
+  "500 億美元"
+ ],
+ "catalysts": [
+  "約 11/25 貝森特給輝達董事會的期限（既有研究）",
+  "12/10 盧特尼克（商務部長）聽證（既有研究）",
+  "輝達董事會的執行長搜尋公告",
+  "黃仁勳本人的公開表態或新事業的任何證據",
+  "BIS 規則細節與司法部對 Megaspeed 的後續"
+ ],
+ "risks": [
+  "「機率為零」「近 18 萬人連署」「500 億美元」三個數字都沒有原始來源，連署人數各報導 13.6 萬～17.9 萬不等",
+  "董事會「無意恢復」只有單一來源摘要（既有研究引 Gizmodo）；FT 與 Semafor 原文都沒讀到",
+  "鉅亨全文沒讀到，兩位記者的名字與意見只看到佇列摘要",
+  "本檔沒有給回任機率，也不應用它預測供應鏈訂單；台灣標的的「中性」是推論"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：「回任」相關說法與證據",
+   "columns": [
+    "說法",
+    "來源",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "黃仁勳 11/12 辭去總裁、執行長與董事，財務長 Kress 暫代、Harvey C. Jones 任首位董事長；董事會稱營運、客戶承諾與產品路線圖不中斷，並展開內外部人選的執行長搜尋",
+     "NVIDIA 新聞稿（11/12，搜尋結果摘要）",
+     "官方公告",
+     "已證實"
+    ],
+    [
+     "黃仁勳與友人討論回任；盟友組成「戰情室」遊說董事會並尋求白宮支持",
+     "金融時報報導（ZeroHedge、LetsDataScience 等二手轉述）",
+     "媒體報導（二手）",
+     "沒讀到 FT 原文"
+    ],
+    [
+     "「Stand with Jensen」連署約 13.6 萬～17.9 萬人（各報導數字不一）；馬斯克連署；連署沒有約束力，決定權在董事會",
+     "FourWeekMBA、Korben、HotHardware 等（搜尋摘要）",
+     "媒體報導（口徑不一）",
+     "「近 18 萬人」是最高的說法"
+    ],
+    [
+     "Altimeter 的 Gerstner 與 Atreides 的 Baker 聯名信，要董事會以緩慢、審慎、有條理的流程選新領導人，並包含考慮黃仁勳回任",
+     "LetsDataScience（搜尋摘要）",
+     "媒體報導（二手）",
+     "兩位大股東並沒有要求立刻復職"
+    ],
+    [
+     "財政部長貝森特稱輝達必須對外找新執行長；約 11/25 為給董事會回答出口管制問題的期限",
+     "SCMP（搜尋摘要）；既有研究",
+     "媒體報導",
+     "政策壓力，不是董事會決定"
+    ],
+    [
+     "董事會主席稱無意恢復黃仁勳的執行長職務",
+     "Gizmodo（既有研究引用的摘要；本輪沒找到原文）",
+     "媒體報導（單一來源）",
+     "與「回任」說法並存，無法裁決"
+    ],
+    [
+     "Semafor 記者 Goswami 稱回任機率為「零」；另一位 Bosa 稱若沒有違法仍不能排除回歸",
+     "鉅亨網佇列摘要（11/19）",
+     "媒體報導（轉述）",
+     "本輪搜尋沒找到 Semafor 原文，兩人的意見屬個人判斷"
+    ],
+    [
+     "黃仁勳與友人募資 500 億美元另創新事業",
+     "鉅亨網佇列摘要（用「傳」）",
+     "社群傳聞（未證實）",
+     "沒有找到來源；搜尋中出現的 500 億美元是每 GW 資料中心建置成本（黃仁勳說法約 500～600 億美元）與輝達的 5,000 億美元融資計畫，是否被混用不明（推論）"
+    ],
+    [
+     "市場原本對回任的機率抱持較高預期，如今下修（例：節目主持人由 65% 下修）",
+     "股癌 EP715（逐字稿）",
+     "社群傳聞",
+     "個人看法，沒有數字依據"
+    ]
+   ],
+   "note": "皆為搜尋摘要或二手轉述；「近 18 萬人連署」「500 億美元」「機率為零」三個數字都沒有原始來源，引用請標明未證實。"
+  },
+  {
+   "title": "表：事件與時間（台北時間）",
+   "columns": [
+    "日期",
+    "事件",
+    "備註"
+   ],
+   "rows": [
+    [
+     "11/8",
+     "婚外情報導（既有研究）",
+     "之後引發出口管制與合規質疑"
+    ],
+    [
+     "11/12",
+     "黃仁勳辭去總裁、執行長與董事；Kress 暫代",
+     "NVIDIA 新聞稿"
+    ],
+    [
+     "11/13～11/16",
+     "同意赴美國會作證；貝森特要求改組並稱新執行長應外聘；BIS 遠端存取規則；商務部與司法部的 Megaspeed 聯合聲明",
+     "見既有研究"
+    ],
+    [
+     "11/17（美東）",
+     "輝達 Q3 FY2027 財報；董事會設立監督國家安全政策與出口管制合規的委員會",
+     "營運在繼續：營收 1,158 億美元、Q4 指引 1,300 億美元 ±3%"
+    ],
+    [
+     "11/18～11/19",
+     "回任遊說、連署與「機率為零」的說法流傳",
+     "本檔求證的對象"
+    ],
+    [
+     "約 11/25",
+     "貝森特給輝達董事會的期限（既有研究）",
+     "—"
+    ],
+    [
+     "12/10",
+     "盧特尼克（商務部長）聽證（既有研究）",
+     "—"
+    ]
+   ],
+   "note": "日期取自既有研究與搜尋摘要；標「既有研究」者見《輝達財報前夕》《〈美股盤後〉》兩份。"
+  }
+ ],
+ "evolution": [],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "不適用：這是治理與政策事件，不是供需缺口，沒有『供給瓶頸在哪一段』可標",
+    "改列傳導路徑：回任或接班結果 → 輝達決策風格（融資客戶、供應鏈迭代速度）→ 客戶與供應鏈拉貨節奏 → 台灣供應鏈訂單時點；每一環都沒有數據，只有個人看法與推論"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "不適用（沒有相鄰零組件的推進力）；同一件事上會互相推動的是出口管制、Megaspeed 調查、國會聽證與貝森特的期限",
+    "市場情緒：11/16～11/17 台股與美股大跌時，這件事與 BIS 規則、AI 估值疑慮同時出現，彼此的因果沒有證據"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "不適用於供給面；『限制』仍可列：回任需要董事會同意；盟友自己承認與下屬的關係是可被解僱的事由；出口管制調查若涉違法則更難；時間點集中在約 11/25 與 12/10",
+    "一方言論檢核：『機率為零』『近 18 萬人』『500 億美元』都只是轉述，沒有來源；連署人數各報導不一"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "沒有明確受惠者；既有研究的推論是 AMD 與 ASIC 陣營相對受惠（若輝達節奏放慢）",
+    "台灣供應鏈：目前沒有訂單變動證據，標為中性；風險是時程與風格，只有節目的個人看法"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "看輝達董事會的執行長搜尋公告與 Kress 的說法；12/10 聽證與約 11/25 期限的結果",
+    "找 Semafor 與 FT 原文，核對『機率為零』『戰情室』『500 億美元』",
+    "看台灣 ODM 11 月營收與法說對 2027 Q1 出貨的說法，是否出現『拉貨延後』",
+    "看 SemiAnalysis 下修與 Neocloud 延遲兩份既有研究的後續"
+   ]
+  }
+ ],
+ "conclusion": [
+  "黃仁勳 11/12 已辭職；回任有遊說、連署與馬斯克、大股東的壓力，也有貝森特與出口管制調查的阻力；佇列標題的『機率為零』『近 18 萬人連署』『500 億美元創業』都沒有查到原始來源。",
+  "這是治理與政策事件，不是供需缺口：輝達營運與供應鏈承諾照常，目前沒有台灣訂單變動的證據；風險是時程與決策風格，只有節目的個人看法。",
+  "本檔不給回任機率。接下來看約 11/25 的期限、12/10 聽證、董事會的執行長搜尋公告，以及台灣 ODM 的月營收與 2027 Q1 說法。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：黃仁勳下一步籌500億美元再創業？科技記者斷言：回輝達機率是「零」（2026-11-19，僅看到系統佇列摘要，沒讀到全文）",
+   "url": "https://news.cnyes.com/news/id/6666781"
+  },
+  {
+   "title": "NVIDIA：NVIDIA Announces CEO Transition（2026-11-12，僅搜尋結果摘要）",
+   "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-CEO-Transition/"
+  },
+  {
+   "title": "GlobeNewswire：NVIDIA Announces CEO Transition（2026-11-12，僅搜尋結果摘要）",
+   "url": "https://globenewswire.com/news-release/2026/11/12/3401635/0/en/nvidia-announces-ceo-transition.html"
+  },
+  {
+   "title": "ZeroHedge：Huang reportedly weighs Nvidia comeback as Silicon Valley war room of allies assembles（轉述 FT，僅搜尋摘要）",
+   "url": "https://www.zerohedge.com/ai/jensen-white-huang-reportedly-weighs-nvidia-comeback-silicon-valley-war-room-allies-assembles"
+  },
+  {
+   "title": "LetsDataScience：Jensen Huang reportedly discusses Nvidia CEO comeback with allies（僅搜尋摘要）",
+   "url": "https://letsdatascience.com/news/jensen-huang-reportedly-discusses-nvidia-ceo-comeback-with-a-42762582"
+  },
+  {
+   "title": "LetsDataScience：Two major investors urge Nvidia board to consider Jensen Huang's return（僅搜尋摘要）",
+   "url": "https://letsdatascience.com/news/two-major-investors-urge-nvidia-board-to-consider-jensen-hua-a3d2550f"
+  },
+  {
+   "title": "FourWeekMBA：Huang Said to Weigh Nvidia Comeback as Petition Tops 155,000（僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-huang-said-to-weigh-nvidia-comeback-as-petition-tops-155000/"
+  },
+  {
+   "title": "Korben：What if Nvidia brought back Jensen Huang? 150,000 signers want it（僅搜尋摘要）",
+   "url": "https://korben.info/en/what-if-nvidia-brought-back-jensen-huang.html"
+  },
+  {
+   "title": "HotHardware：Call It A Comeback? Jensen Returning To NVIDIA Is Not Off The Board（僅搜尋摘要）",
+   "url": "https://hothardware.com/news/call-it-a-comeback-jensen-returning-nvidia-not-off-board"
+  },
+  {
+   "title": "SCMP：Could Jensen Huang make a comeback? Musk, other tech heavyweights pressure Nvidia board（僅搜尋摘要）",
+   "url": "https://www.scmp.com/tech/big-tech/article/3374494/could-jensen-huang-make-comeback-musk-other-tech-heavyweights-pressure-nvidia-board"
+  },
+  {
+   "title": "SCMP：Bessent says Nvidia must go outside company to find new CEO（僅搜尋摘要）",
+   "url": "https://www.scmp.com/news/world/united-states-canada/article/3374512/bessent-says-nvidia-must-go-outside-company-find-new-ceo"
+  },
+  {
+   "title": "DealStreetAsia：Nvidia inks MoUs with six Wall Street giants to raise $500b for AI buildout（2026-08，僅搜尋摘要；說明搜尋中唯一出現的「500 億美元」相關數字）",
+   "url": "https://www.dealstreetasia.com/stories/nvidia-ai-buildout-491849"
+  },
+  {
+   "title": "股癌 EP715 逐字稿（2026-11-18；段落 15:53 等；語音轉文字，只轉述不引原文，節目個人看法，未證實）",
+   "url": "https://player.soundon.fm/p/954689a5-3096-43a4-a80b-7810b219cef3/episodes/6e0d7037-eff5-4cc1-917e-dc43ef5dedbc"
+  },
+  {
+   "title": "M觀點 EP354（2026-11-16 發布；節目個人看法，未證實）",
+   "url": "https://player.soundon.fm/p/b8f5a471-f4f7-4763-9678-65887beda63a/episodes/2dbfc3b6-cce7-40f4-a605-ee2a7486f32d"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "治理與繼任（董事會、代理執行長、回任遊說）",
+   "description": "11/12 黃仁勳辭去總裁、執行長與董事，Kress 暫代、Harvey C. Jones 任首位董事長，董事會展開內外部人選搜尋。回任壓力：盟友「戰情室」、連署約 13.6 萬～17.9 萬人、馬斯克與 Altimeter、Atreides 的聯名信；反方：貝森特要求對外找人、單一來源的董事會「無意恢復」說法。",
+   "global_players": [
+    "輝達董事會",
+    "代理執行長 Kress",
+    "Altimeter",
+    "Atreides",
+    "馬斯克"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "政策與出口管制（爭議核心）",
+   "description": "BIS 11/16 遠端存取規則、商務部與司法部 Megaspeed 聯合聲明、貝森特約 11/25 的期限、12/10 盧特尼克聽證、輝達董事會 11/17 新設的出口管制合規委員會。佇列標題的兩位記者認為若涉及違法，回任更難（轉述）。",
+   "global_players": [
+    "美國財政部",
+    "商務部 BIS",
+    "司法部",
+    "美國國會"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "營運連續性（財報與供應鏈承諾）",
+   "description": "11/17 財報營收 1,158 億美元、Q4 指引 1,300 億美元 ±3%；輝達同日擴大與景碩、矽品、台積電、鴻海等夥伴的供應鏈承諾（既有研究）。目前沒有因治理事件而改單或延後的證據。",
+   "global_players": [
+    "輝達",
+    "Amkor",
+    "三星電機"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台灣供應鏈曝險（情緒與政策風險，非訂單變動）",
+   "description": "節目說法認為新任領導人較不激進、供應鏈拉貨急迫感可能下降（個人看法，沒有數據）；獨立旁證另見 SemiAnalysis 下修與 Neocloud 延遲兩份既有研究。",
+   "global_players": [
+    "輝達主要夥伴"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "輝達晶圓與 CoWoS 夥伴；治理事件的影響是情緒與政策風險，沒有公司說法（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "輝達機櫃主要組裝廠之一；同上",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；11/11 法說稱沒看到客戶改單（早於此事）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 ODM；同上（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器 ODM；同上（推論）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
