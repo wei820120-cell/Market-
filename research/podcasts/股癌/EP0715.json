@@ -5,9 +5,9 @@
  "published": "2026-11-18T07:04:56+00:00",
  "key": "8fdc79a6fdf3",
  "duration_min": 51,
- "paras": 25,
+ "paras": 26,
  "ad_paras": 1,
- "chars": 19302,
+ "chars": 19351,
  "market_start": "",
  "qa_start": "",
  "tags": {
@@ -30,8 +30,7 @@
   "籌碼": 9,
   "題材": 1,
   "漲價": 1,
-  "財報": 4,
-  "Earnings": 3,
+  "財報": 5,
   "回檔": 1,
   "反彈": 4,
   "FOMO": 3,
@@ -53,6 +52,6 @@
   "供應鏈": 7
  },
  "model": "medium",
- "transcribed_at": "2026-11-18T20:45:33+00:00",
+ "transcribed_at": "2026-11-19T11:51:14+00:00",
  "archive_key": "a245ba719986"
 }
