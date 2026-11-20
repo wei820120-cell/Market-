@@ -7,8 +7,8 @@
  "duration_min": 50,
  "paras": 25,
  "ad_paras": 1,
- "chars": 19248,
- "market_start": "30:30",
+ "chars": 19266,
+ "market_start": "30:36",
  "qa_start": "",
  "tags": {
   "蘋果": 4,
@@ -33,6 +33,6 @@
   "供應鏈": 14
  },
  "model": "medium",
- "transcribed_at": "2026-11-19T20:53:37+00:00",
+ "transcribed_at": "2026-11-20T11:39:37+00:00",
  "archive_key": "a245ba719986"
 }
