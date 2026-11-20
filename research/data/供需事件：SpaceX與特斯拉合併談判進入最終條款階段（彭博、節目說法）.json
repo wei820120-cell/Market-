@@ -1,0 +1,331 @@
+{
+ "topic": "供需事件：SpaceX與特斯拉合併談判進入最終條款階段（彭博、節目說法）",
+ "one_line": "待檢視清單的 Podcast（M觀點 EP354，11/16）主持人轉述彭博：SpaceX 與特斯拉合併談判進入最終條款階段、最快 12 月宣布、要過 FTC，並預測 SpaceX 為主體、特斯拉溢價約 15～20%。求證：馬斯克在 SpaceX Q3 法說（10/20）證實兩公司各設特別委員會研究合併，但稱沒有談妥條款、不要當成確定；彭博 11/12 的報導（匿名消息、最快 12 月、也討論 2027 初）只見多家二手轉述、原文沒讀到，兩公司沒有確認，也沒有換股比例與主併方；「SpaceX 為主體、溢價 15～20%」是主持人的預測；FTC 審查沒查到已開始（3/11 的 FTC 清關是特斯拉把 20 億美元 xAI 投資轉成 SpaceX 少量股權）。馬斯克回「False」的那則是 5/29 針對 IPO 估值的報導，不是對 11/12 報導的回應；WSJ 7/30 稱特斯拉考慮出售中國業務為合併鋪路，馬斯克稱 fake news。這是公司結構事件，不是供需缺口，產業鏈框架不適用；台灣的 SpaceX 題材股（乙盛-KY、萊德光電、啟碁、昇達科、萬泰科）沒有因合併而改變訂單的證據；節目用的代號 SPCX 本輪搜尋沒有查到。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "SpaceX",
+  "特斯拉",
+  "合併",
+  "彭博",
+  "特別委員會",
+  "馬斯克",
+  "中國業務",
+  "FTC",
+  "低軌衛星",
+  "M觀點"
+ ],
+ "catalysts": [
+  "12/3 特斯拉股東會；12 月是否有兩公司的正式公告（8-K、S-4 等）與特別委員會聲明",
+  "換股比例、誰併誰、特斯拉中國業務的處理",
+  "FTC、DOJ 與中國的審查表態；國安審查",
+  "馬斯克對彭博 11/12 報導的任何回應"
+ ],
+ "risks": [
+  "彭博原文本輪沒讀到；兩公司沒有確認；沒有換股比例與主併方",
+  "當事人說法混亂：7/31 否認 WSJ 的中國業務報導，10/20 又證實委員會；對 11/12 報導的回應沒查到",
+  "節目的「SpaceX 為主體、溢價 15～20%」是主持人預測，不是報導；代號 SPCX 沒查到",
+  "台灣題材股的連動是情緒面（推論），沒有訂單證據；「中性」是推論"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：說法與證據（節目 vs 報導）",
+   "columns": [
+    "說法",
+    "來源",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "SpaceX 與特斯拉已各設特別委員會（獨立董事）研究合併",
+     "馬斯克在 SpaceX Q3 法說（2026/10/20）證實；稱合併是「好主意」，但沒有談妥條款、不要當成確定（Reuters 分析與多家媒體轉述）",
+     "公司說法（二手轉述）",
+     "已證實：在研究；沒有證實：會合併"
+    ],
+    [
+     "談判進入最終條款階段、最快 12 月宣布（也討論 2027 初）",
+     "彭博 11/12（匿名消息人士；WinBuzzer、AI Weekly、FourWeekMBA 等二手轉述；原文沒讀到）",
+     "媒體報導（匿名消息）",
+     "未證實；兩公司沒有確認；沒有換股比例、誰併誰、是否全股票"
+    ],
+    [
+     "SpaceX 為主體、特斯拉溢價約 15～20%、特斯拉股東會同意",
+     "主持人（M觀點 EP354，1:08:10）自己的預測",
+     "節目個人推測",
+     "不是報導內容；沒有證據"
+    ],
+    [
+     "特斯拉要先處理中國業務",
+     "華爾街日報 2026/7/30：特斯拉考慮出售、分拆或關閉中國業務為合併鋪路；馬斯克稱 fake news、「從未討論過」（貼文後來刪除）；彭博 11/12 報導（二手）也把中國業務列為主要障礙",
+     "媒體報導 vs 當事人否認",
+     "兩者衝突，沒有定論"
+    ],
+    [
+     "馬斯克回「False」",
+     "2026/5/29 那則是回覆引用彭博消息的貼文，內容是 SpaceX 下調 IPO 估值目標，與合併無關；3/31 另有「These reports are false」，回應 Reuters 報導引發的猜測（主題沒確認）",
+     "媒體報導",
+     "不要當成他否認了 11/12 的報導；沒查到他對 11/12 報導的回應"
+    ],
+    [
+     "FTC 審查",
+     "合併本身沒查到正式審查；3/11 的 FTC 文件是特斯拉把對 xAI 的 20 億美元投資轉成 SpaceX 少量股權（已清關）",
+     "媒體報導",
+     "節目說「要過 FTC」是預期，不是已開始；分析預期中美都會審查（國安、中國業務）"
+    ],
+    [
+     "控制權與表決",
+     "馬斯克約 20% 特斯拉表決權、逾 80% SpaceX 表決權（紐約時報，另一來源 85%）",
+     "媒體報導（轉述）",
+     "SpaceX 同意大致在他手上；特斯拉需流通股過半（二手）"
+    ],
+    [
+     "代號 SPCX",
+     "節目用語",
+     "—",
+     "本輪搜尋沒有查到這個代號，不採用"
+    ]
+   ],
+   "note": "全是搜尋摘要與二手轉述；彭博原文本輪沒讀到。"
+  },
+  {
+   "title": "表：時間線",
+   "columns": [
+    "日期",
+    "事件",
+    "來源"
+   ],
+   "rows": [
+    [
+     "2026/3/11",
+     "FTC 清關：特斯拉把對 xAI 的 20 億美元投資轉成 SpaceX 少量股權",
+     "Analytics Insight"
+    ],
+    [
+     "2026/3/31",
+     "馬斯克：「These reports are false」（針對 Reuters 報導引發的猜測，主題沒確認）",
+     "媒體整理"
+    ],
+    [
+     "2026/5/29",
+     "馬斯克回「False」：針對彭博消息的 SpaceX IPO 估值報導，與合併無關",
+     "Teslarati"
+    ],
+    [
+     "2026/7/30～31",
+     "WSJ：特斯拉考慮出售中國業務為合併鋪路；馬斯克稱 fake news",
+     "Electrek、Malay Mail"
+    ],
+    [
+     "2026/10/20",
+     "SpaceX Q3 法說：兩公司各設特別委員會，馬斯克迴避",
+     "AI Weekly、Reuters 分析"
+    ],
+    [
+     "2026/11/12",
+     "彭博：最快 12 月宣布，也討論 2027 初；兩公司沒有確認",
+     "WinBuzzer 等二手轉述"
+    ],
+    [
+     "2026/12/3",
+     "特斯拉股東會（議程沒有合併案）",
+     "二手轉述"
+    ]
+   ],
+   "note": "日期取自搜尋摘要。"
+  },
+  {
+   "title": "表：擴產與稼動檢核（不適用）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "SpaceX／特斯拉合併",
+     "公司結構與條款（不是產能）",
+     "不適用",
+     "不適用",
+     "最快 12 月宣布，也可能 2027 初（二手報導）",
+     "中國業務處理、國安與中美審查、特斯拉股東投票、條款未定",
+     "媒體報導（匿名消息）"
+    ]
+   ],
+   "note": "不適用：這是公司結構事件，不是供需或產能事件。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "交叉持股階段",
+   "composition": "特斯拉把 20 億美元 xAI 投資轉成 SpaceX 少量股權",
+   "spec": "3/11 FTC 清關",
+   "application": "馬斯克體系資本整合"
+  },
+  {
+   "name": "特別委員會研究合併",
+   "composition": "兩公司各設獨立董事特別委員會，馬斯克迴避",
+   "spec": "10/20 馬斯克證實；沒有談妥條款",
+   "application": "評估階段"
+  },
+  {
+   "name": "談判與公告（報導）",
+   "composition": "結構、治理與換股條款",
+   "spec": "彭博 11/12：最快 12 月宣布、也討論 2027 初（二手轉述、匿名消息）",
+   "application": "尚未證實"
+  },
+  {
+   "name": "審查與投票",
+   "composition": "FTC、DOJ、中國監管與兩公司股東投票",
+   "spec": "尚未開始；時程沒有",
+   "application": "完成合併的條件"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "不適用：公司結構事件沒有上下游鏈",
+    "只整理與台灣題材股的連結：低軌衛星設備、機構件、射頻與雷射通訊元件、線材；特斯拉車用供應鏈"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "馬斯克體系的資本整合：xAI 與 SpaceX、特斯拉持股、Terafab 共用設施（既有研究）",
+    "同一題材的台灣股：乙盛-KY、萊德光電-KY、啟碁、昇達科、萬泰科"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "限制：特斯拉中國業務怎麼處理、國安與中美審查、特斯拉股東投票門檻、條款未定；時程可能延到 2027",
+    "痛點：匿名消息與當事人偶爾的否認，真假難分；節目的誰併誰與溢價是主持人預測",
+    "擴產與稼動檢核：不適用（公司結構事件）",
+    "敘事陷阱自查：彭博報導被二手站放大成最終條款階段；馬斯克回 False 的場合要看清楚；題材電壓高不等於訂單會變"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "不確定：合併是否成真、何時公告都沒有證實",
+    "台灣題材股中性：連動是情緒面（推論），沒有訂單變動的證據"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀彭博原文與兩公司的正式公告（8-K、S-4）、特別委員會聲明",
+    "看 12/3 特斯拉股東會與 12 月是否有宣布；換股比例與主併方",
+    "查馬斯克對 11/12 報導的回應與中美審查表態"
+   ]
+  }
+ ],
+ "conclusion": [
+  "已證實的只有：SpaceX 與特斯拉各設特別委員會研究合併（馬斯克 10/20 在法說證實），但稱沒有談妥條款、不要當成確定。",
+  "彭博 11/12 的「最快 12 月宣布、也討論 2027 初」只見二手轉述；沒有換股比例與主併方；節目的「SpaceX 為主體、溢價 15～20%」是主持人預測；馬斯克回「False」的是 5/29 的 IPO 估值報導，不是這次。",
+  "這是公司結構事件，不是供需缺口；台灣題材股沒有訂單變動證據。接下來看 12/3 特斯拉股東會、12 月是否有正式公告、特斯拉中國業務與中美審查。"
+ ],
+ "sources": [
+  {
+   "title": "M觀點 EP354（Podcast，2026-11-16；逐字稿是語音轉文字，時間點 1:05:39～1:08:10；節目說法與主持人預測，未證實）",
+   "url": "https://player.soundon.fm/p/b8f5a471-f4f7-4763-9678-65887beda63a/episodes/2dbfc3b6-cce7-40f4-a605-ee2a7486f32d"
+  },
+  {
+   "title": "WinBuzzer：SpaceX–Tesla Merger Could Be Announced in December（2026-11-13，二手轉述彭博；僅搜尋摘要）",
+   "url": "https://winbuzzer.com/2026/11/13/spacex-tesla-merger-could-be-announced-in-december-xcxwbn/"
+  },
+  {
+   "title": "AI Weekly：SpaceX-Tesla $3.5T Merger Talks Advance, Deal Announcement Possible as Early as December（二手轉述；僅搜尋摘要）",
+   "url": "https://aiweekly.co/alerts/spacex-tesla-35t-merger-talks-advance-deal-announcement-possible-as-early-as"
+  },
+  {
+   "title": "FourWeekMBA：SpaceX-Tesla Talks Advance: $3.47T Pair, 2.8x the xAI Record（二手整理；僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-spacex-tesla-talks-advance-3-47t-pair-2-8x-the-xai-record/"
+  },
+  {
+   "title": "Interesting Engineering：Tesla and SpaceX advance merger talks（僅搜尋摘要）",
+   "url": "https://interestingengineering.com/culture/tesla-and-spacex-advance-merger-talks"
+  },
+  {
+   "title": "AI Weekly：SpaceX, Tesla Boards Form Independent Panels to Weigh Merger（僅搜尋摘要）",
+   "url": "https://aiweekly.co/alerts/spacex-tesla-boards-form-independent-panels-to-weigh-merger"
+  },
+  {
+   "title": "Reuters 分析（devdiscourse 轉載）：How a merged SpaceX-Tesla might navigate its China problem（僅搜尋摘要）",
+   "url": "https://www.devdiscourse.com/article/international/3996199-analysis-how-a-merged-spacex-tesla-might-navigate-its-china-problem"
+  },
+  {
+   "title": "Electrek：Tesla weighs selling China business for SpaceX merger（2026-07-30，WSJ 報導的轉述；僅搜尋摘要）",
+   "url": "https://electrek.co/2026/07/30/tesla-weighs-selling-china-business-spacex-merger/"
+  },
+  {
+   "title": "Malay Mail：Musk dismisses Tesla China spin-off and SpaceX merger report as fake news（2026-07-31；僅搜尋摘要）",
+   "url": "https://www.malaymail.com/news/money/2026/07/31/musk-dismisses-tesla-china-spin-off-and-spacex-merger-report-as-fake-news/229773"
+  },
+  {
+   "title": "Teslarati：Elon Musk strikes down reports of SpaceX IPO rumors（對照馬斯克回「False」的場合；僅搜尋結果列出）",
+   "url": "https://www.teslarati.com/elon-musk-strikes-down-reports-spacex-ipo-rumors/"
+  },
+  {
+   "title": "Analytics Insight：Tesla Converts xAI Investment Into SpaceX Equity After FTC Clearance（僅搜尋摘要）",
+   "url": "https://www.analyticsinsight.net/news/tesla-converts-xai-investment-into-spacex-equity-after-ftc-clearance"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "馬斯克體系的資本整合（SpaceX、特斯拉、xAI）——不是供需鏈，瓶頸是條款、中國業務與審查",
+   "description": "兩公司各設特別委員會（10/20 馬斯克證實）；彭博 11/12（二手轉述）稱最快 12 月宣布、也討論 2027 初；沒有換股比例與主併方；特斯拉中國業務的處理與中美審查是主要障礙；馬斯克約 20% 特斯拉表決權、逾 80% SpaceX 表決權。",
+   "global_players": [
+    "SpaceX",
+    "特斯拉",
+    "xAI"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台灣的 SpaceX 題材股（只列既有研究的連結，沒有訂單證據）",
+   "description": "低軌衛星設備、被動與射頻元件、機構件、線材與雷射通訊元件；市場常把 SpaceX 消息當題材，但合併本身不改變這些公司的訂單（推論）。",
+   "global_players": [
+    "SpaceX 供應鏈"
+   ],
+   "tw_stocks": [
+    {
+     "code": "5243",
+     "name": "乙盛-KY",
+     "role": "媒體稱是 SpaceX 低軌衛星關鍵機構件主要供應商（「逾 60%」是模具與訂單描述）；見《乙盛-KY（5243）題材與產業》",
+     "impact": "中性"
+    },
+    {
+     "code": "7717",
+     "name": "萊德光電-KY",
+     "role": "股價與 SpaceX／星間雷射通訊消息連動；公司只說打入美系衛星大廠供應鏈、未點名 SpaceX（既有研究）",
+     "impact": "中性"
+    },
+    {
+     "code": "6285",
+     "name": "啟碁",
+     "role": "低軌衛星用戶端設備（既有研究）；本次沒查數字",
+     "impact": "中性"
+    },
+    {
+     "code": "3491",
+     "name": "昇達科",
+     "role": "低軌衛星射頻被動元件（既有研究）；本次沒查數字",
+     "impact": "中性"
+    },
+    {
+     "code": "6190",
+     "name": "萬泰科",
+     "role": "線材；董事長稱 Starlink 地面端電源線今年拉貨翻倍（既有研究，公司說法）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
