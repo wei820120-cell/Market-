@@ -1358,6 +1358,39 @@
     "halted": false
    },
    "finished": true
+  },
+  {
+   "date": "2026-11-20N",
+   "session": "night",
+   "source": "即時",
+   "events": [
+    {
+     "ts": "2026-11-20T15:05:47+08:00",
+     "time": "15:05",
+     "kind": "盤面",
+     "price": 35722.0,
+     "text": "🟢 盤面合格，開盤動能強：夜盤振幅 0.71% ≥ 0.7%（真正行情），之後依訊號進場／加碼。",
+     "lots_after": 0,
+     "pts_after": 0.0
+    }
+   ],
+   "summary": {
+    "dir": null,
+    "entries": 0,
+    "adds": 0,
+    "lots_left": 0,
+    "realized_pts": 0.0,
+    "open_pts": 0.0,
+    "pts": 0.0,
+    "twd": 0,
+    "open": 35875.0,
+    "high": 35967.0,
+    "low": 35712.0,
+    "close": 35722.0,
+    "range_pct": 0.71,
+    "qualified": true,
+    "halted": false
+   }
   }
  ]
 }
