@@ -1,0 +1,235 @@
+{
+  "topic": "供需事件：超微也有「中國問題」？遭Hunterbrook放",
+  "one_line": "Hunterbrook 11/19 發布《AMD Has Its Own China Problem》並揭露放空部位：指 2025/3 被列入實體清單的中國伺服器廠 IEIT（浪潮）仍取得新版 AMD 韌體（5 次，出現在 AMD 公開發布後 25～61 天），中國與香港開票客戶占 AMD 營收 22.4%、輝達為 9.1%。報告自己的但書是不知道 IEIT 如何取得、沒有說 AMD 違法；AMD 稱指控曲解事實並遵守出口管制，蘇姿丰稱中國是重要市場且會遵守；股價收盤約 −7.72%（盤中最低約 −9%～−11%，口徑不一）。報告發布與股價下跌有多家媒體報導，但報告與聲明原文沒讀到，指控來自持有放空部位的機構、未經查證，22.4% 是開票地口徑。這是政策與市場事件，不是供需缺口；沒有 AMD 出貨或訂單被取消的資料；可能削弱「輝達替代品」的敘事（推論）。",
+  "status": "混合",
+  "horizon": "短期（3個月內）",
+  "layers": [
+    {
+      "layer": "AMD 韌體與晶片（取得鏈的上游）——指控的起點",
+      "description": "報告稱 IEIT 在被列入實體清單後仍取得新版 AMD 韌體，晶片得以在伺服器運作；報告自己的但書是不知道取得路徑與是否有許可。AMD 稱遵守出口管制並否認曲解。",
+      "global_players": [
+        "AMD",
+        "Hunterbrook"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "AMD 晶圓夥伴；沒有證據顯示受影響（推論）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "伺服器廠與中介（IEIT、其他中國與東南亞伺服器廠）——瓶頸在許可與審查",
+      "description": "IEIT（浪潮）2025/3 被商務部列入實體清單；報告列出 5 次含較新 AMD 韌體的更新。更嚴的審查可能影響韌體流通與伺服器廠的更新取得（推論）。",
+      "global_players": [
+        "IEIT（浪潮）",
+        "其他中國伺服器廠"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "資料中心與最終用戶、台灣 ODM（AMD 伺服器業務）",
+      "description": "AMD 的 Instinct 與 EPYC 伺服器由多家 ODM 組裝，各家 AMD 業務比重沒查到；沒有資料顯示訂單受影響。",
+      "global_players": [
+        "廣達",
+        "緯穎",
+        "雲端業者"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM；AMD 業務比重沒查（推論）",
+          "impact": "中性"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端伺服器 ODM；AMD 業務比重沒查（推論）",
+          "impact": "中性"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    "超微",
+    "AMD",
+    "Hunterbrook",
+    "放空報告",
+    "浪潮",
+    "IEIT",
+    "實體清單",
+    "韌體",
+    "中國",
+    "出口管制",
+    "蘇姿丰",
+    "輝達替代品"
+  ],
+  "catalysts": [
+    "AMD 的後續聲明與商務部是否查證韌體取得路徑",
+    "其他媒體或機構對報告的核對；Hunterbrook 的後續報告",
+    "輝達與 AMD 中國曝險相關調查的進展（加州傳票、SEC）；BIS 規則許可細節",
+    "AMD 與台灣 ODM 對中國與東南亞出貨的說法"
+  ],
+  "risks": [
+    "全是二手轉述，報告與 AMD 聲明原文沒讀到；放空者有利益衝突，指控未經查證，報告自己也沒有說 AMD 違法",
+    "股價數字口徑不一（盤中 −8.54%、收盤 −7.72%、低點 −9%～−11%）",
+    "22.4% 與 9.1% 是開票地口徑，不等於最終用途；兩家的比較未經獨立查證",
+    "「削弱輝達替代品敘事」是推論；台灣標的的「中性」沒有公司說法"
+  ],
+  "spec_tables": [
+    {
+      "title": "表：Hunterbrook 的指控、AMD 的回應與市場反應",
+      "columns": [
+        "項目",
+        "內容",
+        "來源與證據等級"
+      ],
+      "rows": [
+        [
+          "報告",
+          "標題「AMD Has Its Own China Problem」（11/19）；Hunterbrook 關聯基金揭露持有放空部位",
+          "CNBC、Seeking Alpha 等（媒體報導）"
+        ],
+        [
+          "核心指控",
+          "已被商務部列入實體清單（2025/3）的中國伺服器廠 IEIT（浪潮）仍取得新版 AMD 韌體；報告列出 5 次 IEIT 伺服器更新含較新的 AMD 韌體，出現在 AMD 公開發布後 25～61 天",
+          "Hunterbrook 報告（二手轉述）；屬放空者的指控"
+        ],
+        [
+          "營收曝險",
+          "中國與香港開票客戶占 AMD 營收 22.4%，輝達為 9.1%（約 2.5 倍）",
+          "Yahoo 財經轉述報告；開票地不等於最終用途（推論）"
+        ],
+        [
+          "報告自己的但書",
+          "Hunterbrook 稱不知道 IEIT 如何取得 AMD 程式碼，也不知道 AMD 或他人是否有供應許可，並沒有說 AMD 違法",
+          "媒體轉述報告"
+        ],
+        [
+          "AMD 回應",
+          "稱指控曲解 AMD 的商業做法與關係，並稱遵守適用的美國出口管制法規；蘇姿丰稱中國是重要市場且會遵守出口管制",
+          "AMD 聲明（媒體轉述）；佇列摘要"
+        ],
+        [
+          "股價",
+          "收盤 −7.72% 至 489.19 美元（一則）；盤中 −8.54% 至 484.84 美元（佇列摘要）；低點約 −9%～−11%（各報導）",
+          "各報導口徑不一（盤中與收盤）"
+        ]
+      ],
+      "note": "全是二手轉述；Hunterbrook 報告全文與 AMD 聲明原文沒讀到；放空者有利益衝突，指控未經查證。"
+    },
+    {
+      "title": "表：與輝達的對照（背景）",
+      "columns": [
+        "項目",
+        "輝達",
+        "AMD"
+      ],
+      "rows": [
+        [
+          "中國與香港開票占營收",
+          "9.1%（Hunterbrook 數字）",
+          "22.4%（Hunterbrook 數字）"
+        ],
+        [
+          "近期的放空與調查",
+          "Culper Research 放空報告（2026/5，稱中國仍占逾 2 成運算營收，並點名東南亞中介）；加州傳票、SEC 調查、Megaspeed 刑事調查（見另一份研究）",
+          "Hunterbrook 放空報告（11/19）；沒有查到政府調查"
+        ],
+        [
+          "公司說法",
+          "財報 Q4 指引不含中國資料中心運算收入；董事會設出口管制合規委員會（既有研究）",
+          "遵守出口管制、中國是重要市場（AMD、蘇姿丰）"
+        ]
+      ],
+      "note": "兩家的「開票地」口徑相同才能比較；Hunterbrook 的比較未經獨立查證。"
+    }
+  ],
+  "evolution": [],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "適用程度：部分適用——沒有供給瓶頸，只有『韌體取得鏈』：AMD（韌體與晶片）→ 伺服器廠（含 IEIT）→ 資料中心與雲端 → 最終用戶",
+        "瓶頸在許可與審查：實體清單廠商是否能取得更新、誰負責管控"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "輝達同週遭加州傳票與 SEC 調查、2026/5 Culper 放空報告點名中國曝險——市場對 AI 晶片中國曝險的疑慮同時推進",
+        "BIS 11/16 遠端存取規則與 Megaspeed 案（既有研究）是同一類監管框架"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "慣性：放空報告 → 股價先跌 → 等查證；痛點是韌體流通難以控管",
+        "供需缺口怎麼來的：沒有缺口；是合規風險與市場預期的改變",
+        "限制：證據只有放空者的資料與推論；22.4% 是開票地口徑",
+        "一方言論檢核：指控來自持有放空部位者，AMD 的否認也是當事人說法，兩邊都沒有獨立查證"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷：AMD（股價與合規聲譽風險）；若審查擴大，IEIT",
+        "相對受惠（弱推論）：沒有中國曝險的 ASIC 陣營；但輝達同週也遭調查，不能簡單轉到輝達",
+        "台灣供應鏈：中性（曝險未查）"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "讀 Hunterbrook 報告全文與 AMD 聲明原文；看是否有第三方核對韌體版本與時間",
+        "看商務部是否查證；看 AMD 後續對中國與東南亞出貨的說法",
+        "看台灣 ODM 的法說與月營收對 AMD 伺服器業務的說法"
+      ]
+    }
+  ],
+  "conclusion": [
+    "Hunterbrook 11/19 的放空報告稱 IEIT（浪潮）在被列入實體清單後仍取得新版 AMD 韌體；報告自己沒有說 AMD 違法，AMD 否認並稱遵守出口管制；股價收盤約 −7.72%（盤中最低約 −9%～−11%）。報告發布與股價下跌有多家媒體報導，但指控來自持有放空部位者、未經查證，報告與聲明原文沒讀到。",
+    "這是政策與市場事件，不是供需缺口：沒有 AMD 出貨或訂單被取消的資料；22.4% 與 9.1% 是開票地口徑；可能削弱「輝達替代品」的敘事（推論）。",
+    "接下來看商務部是否查證、AMD 的後續說明、輝達與 AMD 中國曝險相關調查，以及台灣 ODM 對 AMD 伺服器業務的說法。"
+  ],
+  "sources": [
+    {
+      "title": "CNBC：AMD stock dives on short-seller report of alleged China exposure（2026-11-19，僅標題與搜尋摘要）",
+      "url": "https://www.cnbc.com/2026/11/19/amd-falls-on-short-seller-report-of-alleged-china-exposure.html"
+    },
+    {
+      "title": "TradingView／Seeking Alpha：AMD falls amid short report from Hunterbrook (update)（僅搜尋摘要）",
+      "url": "https://www.tradingview.com/news/seekingalpha:71333d577094b:0-amd-falls-amid-short-report-from-hunterbrook-update/"
+    },
+    {
+      "title": "Yahoo 財經：Shots Fired: Hunterbrook Shorts AMD Over China. Its China and Hong Kong Billing Share Is Nearly 2.5x Nvidia's（僅搜尋摘要）",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/shots-fired-hunterbrook-shorts-amd-223749072.html"
+    },
+    {
+      "title": "BigGo Finance：Hunterbrook Shorts AMD, Alleges Blacklisted IEIT Kept Getting New Firmware; Shares Sink 9%（僅搜尋摘要）",
+      "url": "https://finance.biggo.com/news/88c1bf42-fd44-48ff-89f1-58f7f20bffb1"
+    },
+    {
+      "title": "AOL：AMD stock plunges after short-seller says the chip maker has its own China problems（僅搜尋摘要）",
+      "url": "https://www.aol.com/articles/amd-stock-plunges-short-seller-175252000.html"
+    },
+    {
+      "title": "Nacionale：Why is AMD stock down? A Hunterbrook short report on China（僅搜尋摘要）",
+      "url": "https://www.nacionale.com/en/articles/why-is-amd-stock-down-today-hunterbrook-short-ieit-china-firmware-report"
+    },
+    {
+      "title": "鉅亨網：超微也有「中國問題」？遭 Hunterbrook 放空報告狙擊 股價跌逾 8%（2026-11-20，僅看到系統佇列摘要）",
+      "url": "https://news.cnyes.com/news/id/6667979"
+    },
+    {
+      "title": "Bollwerk：Reading the Culper Research Short Report on NVIDIA（2026-05 的輝達放空報告，僅搜尋摘要；背景）",
+      "url": "https://bollwerk.ai/blog/nvda-culper-short-report/"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：超微也有「中國問題」？Hunterbrook 放空報告指浪潮（IEIT）仍取得新版 AMD 韌體\n\n> 資料說明：寫於 **2026-11-20 上午**。報告發布與股價下跌**已有多家媒體報導**；報告全文、AMD 聲明原文都沒讀到，指控來自**持有放空部位的機構**，未經查證。這是**政策與市場事件，不是供需缺口**。\n\n## 1. 事件\n- **報告**：Hunterbrook（新聞與基金合一的機構）11/19 發布《AMD Has Its Own China Problem》，並揭露關聯基金持有放空部位。\n- **核心指控**：2025/3 被商務部列入實體清單的中國伺服器廠 **IEIT（浪潮）** 仍取得新版 AMD 韌體、讓晶片能在伺服器上運作；報告列出 5 次 IEIT 伺服器更新含較新的 AMD 韌體，出現在 AMD 公開發布後 25～61 天。\n- **營收曝險**：中國與香港開票客戶占 AMD 營收 22.4%、輝達為 9.1%（約 2.5 倍）——開票地不等於最終用途（推論）。\n- **報告自己的但書**：不知道 IEIT 如何取得 AMD 程式碼，也不知道 AMD 或他人是否有供應許可，**沒有說 AMD 違法**。\n- **AMD 回應**：指控曲解 AMD 的商業做法與關係，AMD 遵守適用的美國出口管制法規；蘇姿丰稱中國是重要市場且會遵守出口管制。\n- **股價**：11/19 收盤約 −7.72%（489.19 美元，一則）；盤中最低約 −9%～−11%（口徑不一）。\n\n## 2. 數字與對照\n| 項目 | 內容 | 來源與證據等級 |\n|---|---|---|\n| 報告 | 標題「AMD Has Its Own China Problem」（11/19）；Hunterbrook 關聯基金揭露持有放空部位 | CNBC、Seeking Alpha 等（媒體報導） |\n| 核心指控 | 已被商務部列入實體清單（2025/3）的中國伺服器廠 IEIT（浪潮）仍取得新版 AMD 韌體；報告列出 5 次 IEIT 伺服器更新含較新的 AMD 韌體，出現在 AMD 公開發布後 25～61 天 | Hunterbrook 報告（二手轉述）；屬放空者的指控 |\n| 營收曝險 | 中國與香港開票客戶占 AMD 營收 22.4%，輝達為 9.1%（約 2.5 倍） | Yahoo 財經轉述報告；開票地不等於最終用途（推論） |\n| 報告自己的但書 | Hunterbrook 稱不知道 IEIT 如何取得 AMD 程式碼，也不知道 AMD 或他人是否有供應許可，並沒有說 AMD 違法 | 媒體轉述報告 |\n| AMD 回應 | 稱指控曲解 AMD 的商業做法與關係，並稱遵守適用的美國出口管制法規；蘇姿丰稱中國是重要市場且會遵守出口管制 | AMD 聲明（媒體轉述）；佇列摘要 |\n| 股價 | 收盤 −7.72% 至 489.19 美元（一則）；盤中 −8.54% 至 484.84 美元（佇列摘要）；低點約 −9%～−11%（各報導） | 各報導口徑不一（盤中與收盤） |\n\n| 項目 | 輝達 | AMD |\n|---|---|---|\n| 中國與香港開票占營收 | 9.1%（Hunterbrook 數字） | 22.4%（Hunterbrook 數字） |\n| 近期的放空與調查 | Culper Research 放空報告（2026/5，稱中國仍占逾 2 成運算營收，並點名東南亞中介）；加州傳票、SEC 調查、Megaspeed 刑事調查（見另一份研究） | Hunterbrook 放空報告（11/19）；沒有查到政府調查 |\n| 公司說法 | 財報 Q4 指引不含中國資料中心運算收入；董事會設出口管制合規委員會（既有研究） | 遵守出口管制、中國是重要市場（AMD、蘇姿丰） |\n\n## 3. 這份報告的證據強度\n- **能確定的**：報告發布、基金放空、AMD 否認、股價下跌。\n- **未經查證的**：IEIT 取得韌體的路徑與是否違規（報告自己也沒下結論）；22.4% 與 9.1% 的口徑（開票地）與可比性。\n- **放空者的利益**：發布者持有放空部位，指控的選擇與措辭可能偏向有利於其部位；AMD 的否認也是當事人說法。\n- **與輝達的關聯**：同一週輝達遭加州傳票與 SEC 調查（另一份研究）；2026/5 Culper 對輝達的放空報告也點名中國曝險與東南亞中介——市場對「AI 晶片中國曝險」的疑慮在擴大，但各案證據強度不同。\n\n## 4. 對供需與台灣的意義（推論）\n- **沒有供給或需求數據**：目前沒有 AMD 出貨或訂單被取消的資料；指控針對的是韌體取得，不是晶片出貨量。\n- **替代敘事的削弱**：先前（11/10）「輝達減緩訂單、AMD 與 ASIC 陣營接產能」的敘事（既有研究）假設 AMD 較少合規爭議；這份報告若引發審查，會削弱「輝達的替代品」這個論點（推論）。\n- **台灣曝險**：台積電是 AMD 晶圓夥伴；廣達、緯穎等 ODM 有 AMD 伺服器業務的比重沒查；沒有資料顯示對訂單的影響。\n\n## 5. 產業鏈框架（只用在「韌體與晶片流向」）\n> **適用程度：部分適用。** 沒有供給瓶頸可標；改看「軟體／韌體取得鏈」。\n\nAMD（韌體與晶片）→ 伺服器廠（含 IEIT）→ 資料中心與雲端 → 最終用戶\n\n- **瓶頸在許可與審查**：實體清單廠商是否能取得更新、誰負責管控（AMD、經銷商或第三方）。\n- **慣性、痛點與限制**：慣性是「放空報告 → 股價先跌 → 等查證」；痛點是韌體流通難以控管；限制是證據只有放空者的資料與推論。\n- **供需缺口怎麼來的**：沒有缺口；是合規風險與市場預期的改變。\n- **擴產與稼動檢核：不適用**。\n\n## 6. 誰受惠、誰受傷（方向性推論）\n- **受傷**：AMD（股價與合規聲譽風險）；若審查擴大，中國伺服器廠 IEIT。\n- **相對受惠（弱推論）**：沒有中國曝險的 ASIC 陣營；但輝達同週也遭調查，並不能簡單轉到輝達。\n- **台灣供應鏈**：中性（曝險未查）。\n\n## 7. 風險與矛盾\n- **全是二手轉述**，報告與 AMD 聲明原文沒讀到。\n- **放空者利益衝突**；報告自己沒有指控違法。\n- **股價數字口徑不一**（盤中 −8.54%、收盤 −7.72%、低點 −9%～−11%）。\n- **22.4% 與 9.1% 是開票地口徑**，不是最終用途或出貨地。\n\n## 8. 要追蹤的時間點\n- AMD 的後續聲明與商務部是否查證；是否有其他媒體或機構核對韌體取得路徑。\n- 輝達與 AMD 的中國曝險相關調查進展（見另一份研究）；BIS 規則許可細節。\n- AMD 與台灣 ODM 的法說對中國與東南亞出貨的說法。\n\n## 資料來源\n- [CNBC：AMD stock dives on short-seller report of alleged China exposure（2026-11-19，僅標題與搜尋摘要）](https://www.cnbc.com/2026/11/19/amd-falls-on-short-seller-report-of-alleged-china-exposure.html)\n- [TradingView／Seeking Alpha：AMD falls amid short report from Hunterbrook (update)（僅搜尋摘要）](https://www.tradingview.com/news/seekingalpha:71333d577094b:0-amd-falls-amid-short-report-from-hunterbrook-update/)\n- [Yahoo 財經：Shots Fired: Hunterbrook Shorts AMD Over China. Its China and Hong Kong Billing Share Is Nearly 2.5x Nvidia's（僅搜尋摘要）](https://finance.yahoo.com/markets/stocks/articles/shots-fired-hunterbrook-shorts-amd-223749072.html)\n- [BigGo Finance：Hunterbrook Shorts AMD, Alleges Blacklisted IEIT Kept Getting New Firmware; Shares Sink 9%（僅搜尋摘要）](https://finance.biggo.com/news/88c1bf42-fd44-48ff-89f1-58f7f20bffb1)\n- [AOL：AMD stock plunges after short-seller says the chip maker has its own China problems（僅搜尋摘要）](https://www.aol.com/articles/amd-stock-plunges-short-seller-175252000.html)\n- [Nacionale：Why is AMD stock down? A Hunterbrook short report on China（僅搜尋摘要）](https://www.nacionale.com/en/articles/why-is-amd-stock-down-today-hunterbrook-short-ieit-china-firmware-report)\n- [鉅亨網：超微也有「中國問題」？遭 Hunterbrook 放空報告狙擊 股價跌逾 8%（2026-11-20，僅看到系統佇列摘要）](https://news.cnyes.com/news/id/6667979)\n- [Bollwerk：Reading the Culper Research Short Report on NVIDIA（2026-05 的輝達放空報告，僅搜尋摘要；背景）](https://bollwerk.ai/blog/nvda-culper-short-report/)\n",
+  "trigger": "2026-11-20 供需失衡（政策管制）：超微也有「中國問題」？遭Hunterbrook放空報告狙擊 股價跌逾8%\nHunterbrook指超微涉中國客戶與供應鏈，並已建立放空部位。&#10;報告稱浪潮資訊仍取得新版AMD韌體，讓晶片可在伺服器運作。&#10;AMD盤中跌8.54%至484.84美元，蘇姿丰稱中國為重要市場且將遵守出口管制。\nhttps://news.cnyes.com/news/id/6667979"
+}
