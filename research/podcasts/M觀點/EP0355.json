@@ -7,7 +7,7 @@
  "duration_min": 79,
  "paras": 33,
  "ad_paras": 2,
- "chars": 24613,
+ "chars": 24619,
  "market_start": "",
  "qa_start": "",
  "tags": {
@@ -38,6 +38,6 @@
   "供應鏈": 13
  },
  "model": "medium",
- "transcribed_at": "2026-11-21T03:06:39+00:00",
+ "transcribed_at": "2026-11-21T15:21:21+00:00",
  "archive_key": "a245ba719986"
 }
