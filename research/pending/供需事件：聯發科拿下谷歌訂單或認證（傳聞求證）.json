@@ -1,0 +1,527 @@
+{
+  "topic": "供需事件：聯發科拿下谷歌訂單或認證（傳聞求證）",
+  "one_line": "佇列標題（Investing.com 港站，11/21 偵測）對得上：11/20（美股週五）前後多家外電（Investing.com、Seeking Alpha、24/7 Wall St、StockAnalysis、MLQ.ai）轉述郭明錤（天風國際）的供應鏈調查——Google 把博通設計的 TPU 8i 2027 年計畫出貨削減約 100 萬顆（約 −20%，另有報導換算約 500 萬→400 萬顆），集中在較貴的 8i Max（Whalefish），並計畫增加聯發科設計的 TPU 8t；博通當天跌約 11～12%（市值蒸發約 1,910 億美元）、Marvell 跌約 10%、聯發科在台北跌約 10%（台股 11/19、11/20 本身崩跌，不能全歸因）。這是分析師的供應鏈估算，原文貼文沒讀到，Google、博通、聯發科都沒確認；各來源對「誰設計 8t／8i」互相矛盾（郭與外電：博通 8i、聯發科 8t；4 月媒體：聯發科 8i、博通 8t）。大方向有旁證：博通 6/3 財報會議自己說 Google 在找其他供應商、外資估博通在 Google TPU 的占比 2026 年約 95%→2028 年 65%、郭 11/16 估聯發科占比 2027 年 45～50%→2029 年 55～60%；但占比下降不等於金額下降（TPU 總量成長）。聯發科已證實的只有 10/30 法說的首款 ASIC 9 月小量出貨、Q4 約 25 億美元、2027 年挑戰約 160 億美元；design win 不是出貨。偵測器標題的「拿下」比來源更強。",
+  "status": "混合",
+  "horizon": "中期（3-12個月）",
+  "layers": [
+    {
+      "layer": "Google TPU 平台與設計夥伴（博通、聯發科、Marvell）——瓶頸在誰設計哪一款、各占多少",
+      "description": "4 月發表 8t（訓練）與 8i（推論），11 月起 2026 年首次有四款 TPU（8t、8tx、8i、8i Max）；博通自 2015 年起做 TPU，2025 年底聯發科加入；11/20 前後的轉述稱 Google 2027 年削減博通 8i 約 100 萬顆、增加聯發科 8t（單一分析師估算）；Marvell 做周邊晶片（8 月認股權協議）。設計夥伴分工各來源矛盾，Google 沒證實。",
+      "global_players": [
+        "Google（TPU）",
+        "博通",
+        "Marvell",
+        "OpenAI",
+        "Anthropic"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2454",
+          "name": "聯發科",
+          "role": "TPU 設計夥伴（8t 或 8i 說法不一）；v9 Triggerfish 獨家（郭、Digitimes，單一來源）；10/30 法說首款 ASIC 9 月小量出貨；design win 不是出貨",
+          "impact": "受惠"
+        }
+      ]
+    },
+    {
+      "layer": "晶圓與先進封裝（台積電 N3、CoWoS）——真正的產能瓶頸",
+      "description": "設計夥伴換手不新增產能；既有研究引大摩：2026 年 CoWoS 月產能約 12.5 萬片、新增產能幾乎被輝達與博通預訂（單一券商）；TPU 在 CoWoS 的占比本輪沒查到。",
+      "global_players": [
+        "台積電",
+        "日月光／矽品"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "TPU 晶圓與 CoWoS；需求看 TPU 總量不看設計份額（推論）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "HBM 記憶體",
+      "description": "TrendForce 11/10 標題稱 8i Max 的 HBM 頻寬加倍；HBM 供給是否限制 TPU 出貨本輪沒查到。",
+      "global_players": [
+        "SK 海力士",
+        "三星",
+        "美光"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "測試與載板（TPU 的下游台廠）",
+      "description": "既有研究：精測 TPU 工程驗證、暫定 2027 Q1 出貨（公司說法），下一代 SLTB／BIB 仍待客戶定案；Google TPU 測試鏈另有旺矽、穎崴、雍智；載板有欣興、臻鼎-KY 等。需求看 TPU 總量與客戶定案，不看設計份額（推論）。",
+      "global_players": [
+        "測試介面與載板供應商"
+      ],
+      "tw_stocks": [
+        {
+          "code": "6510",
+          "name": "精測",
+          "role": "TPU 測試介面（SLTB／BIB）；公司說法，下一代待定案",
+          "impact": "中性"
+        },
+        {
+          "code": "6515",
+          "name": "穎崴",
+          "role": "測試座；Google TPU 測試鏈被點名（既有研究）",
+          "impact": "中性"
+        },
+        {
+          "code": "3037",
+          "name": "欣興",
+          "role": "ABF 載板，TPU 載板（既有研究）",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "雲端客戶與需求（Google Cloud、Anthropic、OpenAI）",
+      "description": "郭 11/16：OpenAI 與 Anthropic 新訂單讓 TPU 出貨能見度到 2029 年，2027／2028／2029 年出貨約 800～900 萬、1,400～1,500 萬、1,600～1,800 萬顆（分析師估計；沒有 OpenAI 採用 TPU 的公告）。既有研究：Alphabet Q3 自由現金流 −90.7 億美元、2027 年資本支出將大幅增加。",
+      "global_players": [
+        "Google Cloud",
+        "Anthropic",
+        "OpenAI"
+      ],
+      "tw_stocks": []
+    }
+  ],
+  "keywords": [
+    "聯發科",
+    "2454",
+    "Google TPU",
+    "博通",
+    "Broadcom",
+    "郭明錤",
+    "TPU 8t",
+    "TPU 8i",
+    "8i Max",
+    "Triggerfish",
+    "Marvell",
+    "AI ASIC",
+    "設計服務"
+  ],
+  "catalysts": [
+    "郭明錤原文貼文與第二個獨立來源（TrendForce、Digitimes）的佐證或反證",
+    "12/9 博通第四財季財報與電話會議：對 Google 2027 年計畫的說法",
+    "聯發科 11 月營收（約 12/10 前）、Q4 法說與 2027 年 ASIC 展望（約明年 1～2 月）；11/23（週一）開盤反應",
+    "Google 或聯發科的正式回應；TPU 8t／8i 分工的證實",
+    "台積電 CoWoS 月產能與 TPU 占比、HBM 供給；Alphabet 資本支出指引"
+  ],
+  "risks": [
+    "單一分析師估算被多家轉述，原文沒讀到；約 100 萬顆、約 −20%、500 萬→400 萬顆是報導換算",
+    "設計夥伴分工互相矛盾（郭與外電：博通 8i、聯發科 8t；4 月媒體：聯發科 8i、博通 8t），「削減博通 8i」可能名稱對錯",
+    "11/16 郭才說 Anthropic 向博通 v8i 需求約 1,400 萬顆（2028～29 年）、整體能見度到 2029 年；兩份說法的年份與客戶不同，但沒有說明如何對上",
+    "股價反應無法歸因：聯發科跌約 10% 的日期與收盤價沒對到台灣媒體，台股 11/19（加權 −4.40%）、11/20（台指期日盤 −7.6%）本身崩跌",
+    "design win 不是出貨：聯發科 2027 年約 160 億美元是展望；TrendForce 稱 v9 可能延到 2028 Q1；9/29 有樣品延期傳聞",
+    "占比下降不等於金額下降：博通占比降但 TPU 總量成長",
+    "全是搜尋摘要與標題，沒有 Google、博通、聯發科的官方回應"
+  ],
+  "spec_tables": [
+    {
+      "title": "表：說法、來源與證據等級",
+      "columns": [
+        "說法",
+        "來源",
+        "證據等級",
+        "判讀"
+      ],
+      "rows": [
+        [
+          "Google 把博通設計的 TPU 8i 系列 2027 年計畫出貨削減約 100 萬顆（約 −20%，另有報導換算約 500 萬→400 萬顆），削減集中在較貴的 8i Max（Whalefish）；並計畫增加聯發科設計的 TPU 8t 2027 年出貨（幅度未定）",
+          "Investing.com、Finwire、Seeking Alpha、24/7 Wall St、StockAnalysis、MLQ.ai、BigGo（皆轉述郭明錤供應鏈調查；原文貼文沒讀到）",
+          "分析師估計（多家二手轉述）",
+          "同一個來源被多家轉述，不是多個獨立證據；數字是報導換算；Google、博通、聯發科都沒確認"
+        ],
+        [
+          "報導當天博通收跌約 11～12%（市值蒸發約 1,910 億美元）、Marvell 跌約 10%、聯發科在台北跌約 10%",
+          "Investing.com、24/7 Wall St（搜尋摘要）",
+          "市場數據（二手）",
+          "聯發科的跌幅日期與收盤價沒對到台灣媒體；台股 11/19（加權 −4.40%）與 11/20（台指期日盤 −7.6%）本身就是崩跌日，不能把跌幅全歸因給這則報告"
+        ],
+        [
+          "Google 正在找博通以外的供應商",
+          "博通 6/3 財報會議（多家台灣媒體轉述；工商時報、世界日報）",
+          "公司說法（博通）",
+          "博通執行長稱完全可以預見 Google 會有多元供應來源、不代表雙方關係動搖；沒有說砍單"
+        ],
+        [
+          "博通在 Google TPU 的營收占比：2026 年約 95% → 2027 年 80% → 2028 年 65%",
+          "亞系外資、Wedbush（Barchart 引述；搜尋摘要）",
+          "分析師預估",
+          "占比下降不等於金額下降——TPU 總量在成長（見下一列）；是推論"
+        ],
+        [
+          "郭明錤 11/16：Google TPU 出貨能見度延伸到 2029 年（OpenAI、Anthropic 新訂單）；2027／2028／2029 年出貨約 800～900 萬、1,400～1,500 萬、1,600～1,800 萬顆；聯發科占 Google TPU 比重由 2027 年 45～50% 升到 2029 年 55～60%；OpenAI 向聯發科 v8t 約 1,200 萬顆（買斷）、Anthropic 向博通 v8i 約 1,400 萬顆（租賃加買斷）",
+          "Inside、AI Post Hub、時報資訊（搜尋摘要）",
+          "分析師估計",
+          "沒有 Google、OpenAI、Anthropic 的公告證實 OpenAI 採用 TPU（搜尋摘要稱有評論指出作者沒找到證實）；2028～29 年的 Anthropic 博通 v8i 需求與 2027 年的 Google 自家計畫是不同年份與客戶，不必矛盾，但沒有說明如何對得起來"
+        ],
+        [
+          "聯發科 TPU 出貨：2026 年約 40 萬顆、2027 年約 200 萬顆",
+          "美系外資供應鏈調查（6 月前後；聯合報系搜尋摘要）",
+          "分析師預估",
+          "本檔算術：郭的 2027 年總量 800～900 萬顆 × 聯發科 45～50% ≈ 360～450 萬顆，約為 200 萬顆的 1.8～2.3 倍——兩個估計的時點與口徑不同，差距要看原文"
+        ],
+        [
+          "誰設計哪一款：郭與多家外電＝博通 8i、聯發科 8t；4 月 Wccftech、技術新報、工商時報＝聯發科 8i（推論）、博通 8t（訓練）",
+          "各報導（搜尋摘要）",
+          "互相矛盾",
+          "Google 4 月只回應不便討論供應鏈夥伴；若 4 月的對應才正確，「削減博通 8i」就和設計夥伴對不上"
+        ],
+        [
+          "聯發科首款資料中心 AI ASIC 9 月小量出貨、Q4 ASIC 營收約 25 億美元、2027 年首款 AI 加速器挑戰約 160 億美元、已有第二家 AI ASIC 客戶（2028 年貢獻）",
+          "聯發科 10/30 法說（既有研究《聯發科Q3法說…》）",
+          "公司說法（展望）",
+          "客戶名稱沒公布；是展望不是已認列營收；design win 不是出貨"
+        ]
+      ],
+      "note": "全是搜尋摘要與標題；網頁全文本輪讀不到。郭明錤的原始貼文、博通與聯發科的正式回應都沒取得。"
+    },
+    {
+      "title": "表：時間線",
+      "columns": [
+        "日期",
+        "事件",
+        "來源"
+      ],
+      "rows": [
+        [
+          "2025/03",
+          "The Information 報導 Google 與聯發科合作下一代 TPU、2026 年在台積電生產",
+          "搜尋摘要（科技新報、WCCFTech 等）"
+        ],
+        [
+          "2025/12（推算）",
+          "聯發科加入博通成為第八代 TPU 專案的設計夥伴，結束博通自 2015 年起的獨家（搜尋摘要稱「去年 12 月」）",
+          "搜尋摘要"
+        ],
+        [
+          "2026/04",
+          "Google Cloud Next 發表 TPU 8t（訓練）與 8i（推論）；官方回應不便討論供應鏈夥伴；媒體稱聯發科做 8i、博通做 8t",
+          "工商時報、科技新報、Wccftech、Tom's Hardware"
+        ],
+        [
+          "2026/06/03",
+          "博通財報會議：Google 正在找其他供應商；隔日股價 −12.59%",
+          "多家台灣媒體（搜尋摘要）"
+        ],
+        [
+          "2026/06/12",
+          "Digitimes：博通承認不會拿下 Google 全部 TPU 訂單；聯發科 TPU v9 獨家、量產 2028（單一報導）",
+          "搜尋摘要"
+        ],
+        [
+          "2026/08/18～20",
+          "Google 與 Marvell 擴大合作（認股權最高約 122 億美元）；聯發科當日跌約 4%；摩根大通、大摩稱不是取代博通核心 TPU 的證據",
+          "聯合報系、科技新報（搜尋摘要）"
+        ],
+        [
+          "2026/09/29",
+          "聯發科爆跌逾 7%：TPU 訂單恐遭分食、樣品延期傳聞",
+          "時報資訊（搜尋摘要）"
+        ],
+        [
+          "2026/10/30",
+          "聯發科法說：首款 ASIC 9 月小量出貨、Q4 ASIC 25 億美元、2027 年挑戰約 160 億美元",
+          "既有研究"
+        ],
+        [
+          "2026/11/09～10",
+          "Google 2026 年首次有四款 TPU（8t、8tx、8i、8i Max），8i Max 的 HBM 頻寬加倍",
+          "TrendForce、The Next Platform（標題）"
+        ],
+        [
+          "2026/11/16",
+          "郭明錤：TPU 出貨能見度到 2029 年，聯發科占比逐年升",
+          "Inside 等（搜尋摘要）"
+        ],
+        [
+          "2026/11/20（美股週五）",
+          "多家外電轉述郭明錤供應鏈調查：Google 削減博通 2027 年 TPU 8i 計畫約 100 萬顆；博通跌約 11～12%、Marvell 跌約 10%",
+          "Investing.com、24/7 Wall St 等"
+        ],
+        [
+          "2026/11/21 18:31",
+          "佇列偵測到 Investing.com 港站標題（Google 新聞搜尋）",
+          "佇列"
+        ],
+        [
+          "2026/12/09",
+          "博通第四財季財報（外電稱屆時管理層首度有機會回應）",
+          "Investing.com（搜尋摘要）"
+        ]
+      ],
+      "note": "日期取自網址、標題與搜尋摘要；「2025/12」是由「去年 12 月」推算。"
+    },
+    {
+      "title": "表：擴產與稼動檢核",
+      "columns": [
+        "公司",
+        "瓶頸環節",
+        "現況稼動",
+        "擴產與資本支出",
+        "投產或放量時點",
+        "主要限制",
+        "證據等級"
+      ],
+      "rows": [
+        [
+          "聯發科（2454）",
+          "設計服務與 ASIC 量產（無自有晶圓廠）",
+          "不適用（依賴台積電）",
+          "法說：首款 ASIC 9 月小量出貨、Q4 約 25 億美元、2027 年挑戰約 160 億美元（展望）",
+          "8t 2027 年；v9 Triggerfish 約 2027 下半年投產、2028 放量（郭）；TrendForce 稱可能延到 2028 Q1（既有研究）",
+          "design win 不等於出貨；設計夥伴分工說法矛盾；9/29 有樣品延期傳聞",
+          "公司說法＋分析師估計"
+        ],
+        [
+          "台積電（2330）",
+          "先進製程與 CoWoS 封裝",
+          "沒有 TPU 專屬稼動數字",
+          "大摩估 2026 年 CoWoS 月產能約 12.5 萬片、新增產能幾乎被輝達與博通預訂（既有研究《輝達傳減緩晶片訂單…》，單一券商）",
+          "沒查到 TPU 8t／8i 的投片與 CoWoS 額度時點",
+          "設計夥伴換手不改變總需求；聯發科的 TPU 分到多少 CoWoS 額度沒查到",
+          "分析師估計（單一券商）"
+        ],
+        [
+          "HBM（SK 海力士、三星、美光；非台廠）",
+          "TPU 8i Max 的 HBM 頻寬加倍",
+          "沒查到",
+          "沒查到",
+          "8i Max 2027 年出貨（標題）",
+          "HBM 供給是否限制 TPU 出貨本輪沒查到",
+          "只有標題（TrendForce）"
+        ],
+        [
+          "精測（6510）",
+          "TPU 測試介面（SLTB／BIB）",
+          "產能 8 月已倍增、2027 Q1 擬 3 倍（既有研究）",
+          "TPU 工程驗證、暫定 2027 Q1 出貨（公司說法）",
+          "2027 Q1",
+          "下一代 SLTB／BIB 仍待客戶定案；Google TPU 測試鏈另有旺矽、穎崴、雍智",
+          "公司說法（法說）"
+        ],
+        [
+          "博通（非台廠）",
+          "TPU 設計與網路 IP",
+          "不適用",
+          "沒查到",
+          "12/9 財報可能回應 Google 2027 計畫",
+          "8i 毛利較高（郭）；占比下降但總量成長",
+          "分析師估計"
+        ]
+      ],
+      "note": "逐列檢查：設計夥伴換手不產生新產能，瓶頸仍在 CoWoS 與 HBM；稼動數字沒有獨立資料；產能被單一客戶專供的情形（TPU 對台積電 CoWoS 的占比）本輪沒查到。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "TPU v7／v7e（2025～2027）",
+      "composition": "博通為主；聯發科參與 v7e（市場傳聞）",
+      "spec": "市場估 v7e 2026～2027 年出貨可挹注聯發科獲利逾兩個股本（2025 年底報導，傳聞）",
+      "application": "雲端訓練與推論"
+    },
+    {
+      "name": "TPU 8t／8i（2026/04 發表，2027 量產）",
+      "composition": "8t 訓練、8i 推論；博通與聯發科雙夥伴，誰做哪一款各來源矛盾",
+      "spec": "8t 單一叢集可擴展至 9,600 顆；8i 推理效能最高提升 10 倍（Google 官方說法，搜尋摘要）",
+      "application": "訓練與低延遲推論"
+    },
+    {
+      "name": "TPU 8tx／8i Max（2027）",
+      "composition": "2026 年 Google 首次有四款 TPU；8i Max 的 HBM 頻寬加倍",
+      "spec": "TrendForce 11/10 標題；8i Max 傳為較貴的規格（郭，Whalefish）",
+      "application": "更大模型推論"
+    },
+    {
+      "name": "TPU v9 Triggerfish（約 2027 下半年投產、2028 放量）",
+      "composition": "聯發科獨家（郭、Digitimes，單一來源）",
+      "spec": "單價較舊版約 +30%（郭）；TrendForce 稱可能延到 2028 Q1",
+      "application": "下一代 ASIC"
+    },
+    {
+      "name": "TPU v10 Quillfish（約 2029 量產）",
+      "composition": "郭稱聯發科比重逐年升；DCD 標題傳聞 Google 與 AMD 合作 v10",
+      "spec": "傳聞",
+      "application": "長期"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "一行鏈：Google TPU 規格（8t／8i／8i Max）→ 設計夥伴（博通、聯發科；Marvell 周邊）→ 台積電 N3 與 CoWoS → HBM → 測試（精測、旺矽、穎崴）與 ABF 載板 → 機櫃與資料中心 → Google Cloud 與 Anthropic、OpenAI",
+        "瓶頸不在設計夥伴換手，而在 CoWoS、HBM 與客戶資本支出；設計份額搬家，總晶圓需求不一定改變（推論）",
+        "這則報導只動「設計夥伴」這一層的份額與毛利（郭稱 8i 毛利高於 8t）"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "Google 同時用多個夥伴：博通、聯發科、Marvell（周邊，認股權）、傳聞 AMD（v10）",
+        "需求端：郭稱 OpenAI 與 Anthropic 新訂單把 TPU 出貨能見度推到 2029 年（沒有 OpenAI 採用 TPU 的公告）",
+        "8i Max 的 HBM 頻寬加倍，HBM 與先進封裝要同步到位"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "供需缺口怎麼來的：不是缺貨，是設計夥伴份額重分配——Google 要第二供應商壓成本，聯發科報價較低且與台積電關係近（2025 年報導）；博通 SerDes 與網路 IP 的優勢使它不會被完全取代",
+        "慣性：份額下降不等於金額下降（博通占比 95%→65%，但 TPU 總量由 800～900 萬顆成長到 1,600～1,800 萬顆）；博通 6/3 自己說過 Google 在找其他供應商，這次是同一趨勢的新版本",
+        "痛點：設計夥伴分工沒有 Google 證實，各來源互相矛盾",
+        "限制：設計到量產約數年；v9 2028 放量（TrendForce 稱可能延到 2028 Q1）；CoWoS 與 HBM 產能；客戶資本支出",
+        "擴產與稼動檢核：見表——設計夥伴換手不新增產能，稼動數字沒有獨立資料；TPU 對 CoWoS 的占比沒查到",
+        "敘事陷阱自查：design win 不是出貨、NRE 不是營收；客戶資本支出調整一個字就能改寫需求；單一分析師被多家轉述不等於多個獨立證據；比例下降當成金額下降"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受惠（若屬實）：聯發科（設計服務與 ASIC 營收；毛利結構沒查到）",
+        "受傷（若屬實）：博通、Marvell（非台廠）",
+        "中性（推論）：台積電、精測、旺矽、穎崴、欣興、臻鼎-KY——需求看 TPU 總量與客戶定案；沒有台廠被點名受傷"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "找郭明錤原文貼文與第二個獨立來源（TrendForce、Digitimes）",
+        "看 12/9 博通財報電話會議對 Google 2027 年的說法",
+        "看聯發科 11 月營收（約 12/10 前）、Q4 法說與 2027 年 ASIC 展望；11/23 開盤的反應",
+        "看 Google 或聯發科是否回應 8t／8i 分工；台積電 CoWoS 月產能與 TPU 占比"
+      ]
+    }
+  ],
+  "conclusion": [
+    "「Google 削減博通設計的 TPU 訂單、增加聯發科」確有來源：11/20 前後多家外電轉述郭明錤的供應鏈調查（2027 年博通 8i 計畫約 −100 萬顆、約 −20%、集中 8i Max），博通當天跌約 11～12%；但這是單一分析師的估算，原文沒讀到，Google、博通、聯發科都沒確認，各來源對誰設計 8t／8i 互相矛盾。",
+    "大方向有旁證：博通 6/3 自己說 Google 在找其他供應商、外資估博通占比 2026 年約 95%→2028 年 65%、郭 11/16 估聯發科占比 2027 年 45～50%→2029 年 55～60%；但占比下降不等於金額下降。聯發科已證實的只有 10/30 法說的首款 ASIC 9 月小量出貨與 2027 年挑戰約 160 億美元，design win 不是出貨。對台灣：聯發科方向性受惠，台積電、測試與載板看 TPU 總量（推論）。",
+    "接下來看郭原文與獨立佐證、12/9 博通財報、聯發科 11 月營收與 2027 年展望、CoWoS 與 HBM 產能。"
+  ],
+  "sources": [
+    {
+      "title": "Investing.com：Google reportedly cuts Broadcom-designed TPU plans, eyes more MediaTek chips（僅搜尋摘要，原文沒讀到；轉述郭明錤供應鏈調查）",
+      "url": "https://www.investing.com/news/stock-market-news/google-reportedly-cuts-broadcomdesigned-tpu-plans-eyes-more-mediatek-chips-5042253"
+    },
+    {
+      "title": "Finwire：Google reportedly cuts Broadcom-designed TPU plans, eyes more MediaTek chips（同一則的轉載；僅標題）",
+      "url": "https://finwire.io/news/stock-markets-news/google-reportedly-cuts-broadcom-designed-tpu-plans-eyes-more-mediatek-chips"
+    },
+    {
+      "title": "Seeking Alpha：Google shifts 2027 AI chip orders from Broadcom to MediaTek, Ming-Chi Kuo says（僅標題）",
+      "url": "https://seekingalpha.com/news/4675203-google-shifts-2027-ai-chip-orders-from-broadcom-to-mediatek-ming-chi-kuo-says"
+    },
+    {
+      "title": "24/7 Wall St（2026-11-20）：Broadcom Stock Plunges 12% and Loses $191 Billion After a Report That Google Cut Its Plans for Broadcom AI Chips（僅標題）",
+      "url": "https://247wallst.com/investing/2026/11/20/broadcom-stock-plunges-12-and-loses-191-billion-after-a-report-that-google-cut-its-plans-for-broadcom-ai-chips/"
+    },
+    {
+      "title": "24/7 Wall St（2026-11-20）：Broadcom Plunges 11% as Google Reportedly Shifts TPU Orders to MediaTek, Overshadowing Goldman's $460 Target; Marvell Sinks 10%（僅標題）",
+      "url": "https://247wallst.com/investing/2026/11/20/broadcom-plunges-11-as-google-reportedly-shifts-tpu-orders-to-mediatek-overshadowing-goldmans-460-target-marvell-sinks-10/"
+    },
+    {
+      "title": "StockAnalysis：Broadcom falls 11% after an analyst says Google cut 2027 orders for its TPU 8i chips by 20%（僅標題）",
+      "url": "https://stockanalysis.com/news/broadcom-falls-google-tpu-cut-mediatek/"
+    },
+    {
+      "title": "MLQ.ai：Broadcom falls 11% after analyst Ming-Chi Kuo says Google cut 2027 orders for its TPU chips（僅標題）",
+      "url": "https://mlq.ai/news/broadcom-falls-11-after-analyst-ming-chi-kuo-says-google-cut-2027-orders-for-its-tpu-chips/"
+    },
+    {
+      "title": "BigGo Finance：Google Said to Trim Broadcom TPU Orders for 2027, Shift Share Toward MediaTek（僅標題）",
+      "url": "https://finance.biggo.com/news/dd24faec-557c-44e9-bf10-6089d4d44839"
+    },
+    {
+      "title": "Inside：郭明錤看好 Google TPU 出貨能見度延伸至 2029 年，輝達換帥不確定性成助力，聯發科最受惠（11/16 前後；僅搜尋摘要）",
+      "url": "https://www.inside.com.tw/article/42927-kuo-google-tpu-visibility-2029-nvidia-ceo-succession-mediatek"
+    },
+    {
+      "title": "AI Post Hub：郭明錤：Google TPU 出貨能見度延伸到 2029 年？（僅搜尋摘要）",
+      "url": "https://www.aiposthub.com/kuo-google-tpu-openai-anthropic-orders-2029/"
+    },
+    {
+      "title": "時報資訊（wantrich）：郭明錤 TPU 相關報導（網址日期 2026-11-17；標題不明，僅搜尋結果列出）",
+      "url": "https://wantrich.chinatimes.com/news/20261117900182-420101"
+    },
+    {
+      "title": "聯合新聞網：聯發科再下一城 郭明錤：獨家拿下 Google TPU 新訂單（僅搜尋摘要；日期沒標，內容為 v9 Triggerfish）",
+      "url": "https://udn.com/news/story/7240/9581248"
+    },
+    {
+      "title": "聯合新聞網：Google TPU 追單聯發科 有望挹注明後年獲利逾二個股本（約 2025 年底；僅搜尋摘要）",
+      "url": "https://udn.com/news/story/7240/9202909"
+    },
+    {
+      "title": "ETtoday：聯發科發了！搶到 Google「TPU 大單」 博通重挫 12%（2026-06；僅搜尋摘要）",
+      "url": "https://finance.ettoday.net/news/3177980"
+    },
+    {
+      "title": "世界日報：聯發科搶單 博通痛失獨供谷歌 TPU（2026-06；僅搜尋摘要）",
+      "url": "https://www.worldjournal.com/wj/story/121209/9546955"
+    },
+    {
+      "title": "工商時報：（網址日期 2026-06-05；標題不明）博通財報會議稱 Google 找其他供應商，僅搜尋摘要",
+      "url": "https://www.ctee.com.tw/news/20260605700704-430201"
+    },
+    {
+      "title": "Digitimes：（網址日期 2026-06-12；標題不明）博通承認不會拿下 Google 全部 TPU 訂單、聯發科 TPU v9，僅搜尋摘要",
+      "url": "https://www.digitimes.com/news/a20260612PD200.html"
+    },
+    {
+      "title": "Barchart：Broadcom's largest AI customer is fleeing to MediaTek; AVGO stock is still a buy（僅搜尋摘要；Wedbush 估博通占比 95%→65%）",
+      "url": "https://www.barchart.com/story/news/3147872/broadcoms-largest-ai-customer-is-fleeing-to-mediatek-avgo-stock-is-still-a-buy"
+    },
+    {
+      "title": "時報資訊（wantrich）：（網址日期 2026-09-29；標題不明）聯發科爆跌逾 7%：TPU 訂單恐遭分食、樣品延期傳聞，僅搜尋摘要",
+      "url": "https://wantrich.chinatimes.com/news/20260929900188-420101"
+    },
+    {
+      "title": "聯合新聞網：Google 擴大合作邁威爾 以最高 122 億美元認股權綁定雙方利益（2026-08；僅搜尋摘要）",
+      "url": "https://money.udn.com/money/amp/story/5599/9704635"
+    },
+    {
+      "title": "科技新報：外資認為 Google 擴大結盟 Marvell 衝擊聯發科股價的臆測是過度反應（2026-08-20；僅標題）",
+      "url": "https://finance.technews.tw/2026/08/20/foreign-investors-believe-that-the-speculation-that-googles-expanded-alliance-with-marvell-will-impact-mediateks-stock-price-is-an-overreaction/"
+    },
+    {
+      "title": "科技新報：Google 本週將推兩款 TPUv8，聯發科攻推論、博通主打訓練（2026-04-21；僅搜尋摘要）",
+      "url": "https://technews.tw/2026/04/21/google-tpu-v8/"
+    },
+    {
+      "title": "Wccftech：Google Splits TPUv8 Strategy Into Two Chips, Handing Broadcom Training and MediaTek Inference Duties（僅搜尋摘要）",
+      "url": "https://wccftech.com/google-splits-tpuv8-strategy-two-chips-broadcom-training-mediatek-inference-duties/"
+    },
+    {
+      "title": "工商時報：（網址日期 2026-04-23；標題不明）聯發科拿下 Google 新一代推論晶片大單，官方稱不便討論供應鏈夥伴，僅搜尋摘要",
+      "url": "https://www.ctee.com.tw/news/20260423700156-430704"
+    },
+    {
+      "title": "Tom's Hardware：Google splits its TPU into two chips for the first time with training and inference variants（僅搜尋摘要）",
+      "url": "https://www.tomshardware.com/tech-industry/semiconductors/google-splits-its-tpu-into-two-chips-for-the-first-time-with-training-and-inference-variants"
+    },
+    {
+      "title": "TrendForce（2026-11-10）：Google marks first-ever 4-TPU year with 8TX and 8i Max, as 8i Max doubles HBM bandwidth（僅標題）",
+      "url": "https://www.trendforce.com/news/2026/11/10/news-google-marks-first-ever-4-tpu-year-with-8tx-and-8i-max-as-8i-max-doubles-hbm-bandwidth/"
+    },
+    {
+      "title": "The Next Platform（2026-11-09）：Google Rejiggers TPU Accelerators For Broader AI Inference Work（僅標題）",
+      "url": "https://www.nextplatform.com/compute/2026/11/09/google-rejiggers-tpu-accelerators-for-broader-ai-inference-work/5308534"
+    },
+    {
+      "title": "DatacenterDynamics：Google rumored to have partnered with AMD on TPU v10 as shipments of current generations revised down（傳聞；僅標題）",
+      "url": "https://www.datacenterdynamics.com/en/news/google-rumored-to-have-partnered-with-amd-on-tpu-v10-as-shipments-of-current-generations-revised-down-report/"
+    },
+    {
+      "title": "鉅亨網：〈聯發科法說〉首顆 AI ASIC 放量 Q4 貢獻上修至 25 億美元 明年衝 160 億高標、市占拚 2 成（既有研究《聯發科Q3法說…》的來源）",
+      "url": "https://news.cnyes.com/news/id/6642405"
+    },
+    {
+      "title": "經濟日報：聯發科 AI ASIC 9 月出貨 明年營收挑戰 160 億美元（既有研究的來源）",
+      "url": "https://udn.com/news/story/7240/9847629"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：聯發科拿下谷歌訂單或認證（傳聞求證）——郭明錤稱 Google 砍博通 2027 年 TPU 8i 計畫約 100 萬顆、增加聯發科 8t；單一分析師估算，各方都沒確認\n\n> 資料說明：寫於 **2026-11-21 晚上（21:52 場）**。佇列是 Investing.com 港站的標題「谷歌據報削減博通設計的 TPU 訂單，轉向增加聯發科晶片採購」（Google 新聞搜尋，11/21 18:31 偵測）。**找到了出處**：這是 11/20（美股週五）前後多家外電轉述**郭明錤（天風國際）的供應鏈調查**——不是 Google、博通或聯發科的公告。**郭的原始貼文、各篇全文本輪都讀不到**（網頁讀取被擋），以下全部來自搜尋摘要與標題；網路搜尋索引約落後一天，台灣媒體對這則的報導沒搜到。偵測器標題的「拿下」比來源更強：來源只說「增加聯發科 8t 的 2027 年出貨（幅度未定）」。\n\n## 1. 求證結果\n| 說法 | 來源 | 證據等級 | 判讀 |\n|---|---|---|---|\n| Google 把博通設計的 TPU 8i 系列 2027 年計畫出貨削減約 100 萬顆（約 −20%，另有報導換算約 500 萬→400 萬顆），削減集中在較貴的 8i Max（Whalefish）；並計畫增加聯發科設計的 TPU 8t 2027 年出貨（幅度未定） | Investing.com、Finwire、Seeking Alpha、24/7 Wall St、StockAnalysis、MLQ.ai、BigGo（皆轉述郭明錤供應鏈調查；原文貼文沒讀到） | 分析師估計（多家二手轉述） | 同一個來源被多家轉述，不是多個獨立證據；數字是報導換算；Google、博通、聯發科都沒確認 |\n| 報導當天博通收跌約 11～12%（市值蒸發約 1,910 億美元）、Marvell 跌約 10%、聯發科在台北跌約 10% | Investing.com、24/7 Wall St（搜尋摘要） | 市場數據（二手） | 聯發科的跌幅日期與收盤價沒對到台灣媒體；台股 11/19（加權 −4.40%）與 11/20（台指期日盤 −7.6%）本身就是崩跌日，不能把跌幅全歸因給這則報告 |\n| Google 正在找博通以外的供應商 | 博通 6/3 財報會議（多家台灣媒體轉述；工商時報、世界日報） | 公司說法（博通） | 博通執行長稱完全可以預見 Google 會有多元供應來源、不代表雙方關係動搖；沒有說砍單 |\n| 博通在 Google TPU 的營收占比：2026 年約 95% → 2027 年 80% → 2028 年 65% | 亞系外資、Wedbush（Barchart 引述；搜尋摘要） | 分析師預估 | 占比下降不等於金額下降——TPU 總量在成長（見下一列）；是推論 |\n| 郭明錤 11/16：Google TPU 出貨能見度延伸到 2029 年（OpenAI、Anthropic 新訂單）；2027／2028／2029 年出貨約 800～900 萬、1,400～1,500 萬、1,600～1,800 萬顆；聯發科占 Google TPU 比重由 2027 年 45～50% 升到 2029 年 55～60%；OpenAI 向聯發科 v8t 約 1,200 萬顆（買斷）、Anthropic 向博通 v8i 約 1,400 萬顆（租賃加買斷） | Inside、AI Post Hub、時報資訊（搜尋摘要） | 分析師估計 | 沒有 Google、OpenAI、Anthropic 的公告證實 OpenAI 採用 TPU（搜尋摘要稱有評論指出作者沒找到證實）；2028～29 年的 Anthropic 博通 v8i 需求與 2027 年的 Google 自家計畫是不同年份與客戶，不必矛盾，但沒有說明如何對得起來 |\n| 聯發科 TPU 出貨：2026 年約 40 萬顆、2027 年約 200 萬顆 | 美系外資供應鏈調查（6 月前後；聯合報系搜尋摘要） | 分析師預估 | 本檔算術：郭的 2027 年總量 800～900 萬顆 × 聯發科 45～50% ≈ 360～450 萬顆，約為 200 萬顆的 1.8～2.3 倍——兩個估計的時點與口徑不同，差距要看原文 |\n| 誰設計哪一款：郭與多家外電＝博通 8i、聯發科 8t；4 月 Wccftech、技術新報、工商時報＝聯發科 8i（推論）、博通 8t（訓練） | 各報導（搜尋摘要） | 互相矛盾 | Google 4 月只回應不便討論供應鏈夥伴；若 4 月的對應才正確，「削減博通 8i」就和設計夥伴對不上 |\n| 聯發科首款資料中心 AI ASIC 9 月小量出貨、Q4 ASIC 營收約 25 億美元、2027 年首款 AI 加速器挑戰約 160 億美元、已有第二家 AI ASIC 客戶（2028 年貢獻） | 聯發科 10/30 法說（既有研究《聯發科Q3法說…》） | 公司說法（展望） | 客戶名稱沒公布；是展望不是已認列營收；design win 不是出貨 |\n\n## 2. 時間線\n| 日期 | 事件 | 來源 |\n|---|---|---|\n| 2025/03 | The Information 報導 Google 與聯發科合作下一代 TPU、2026 年在台積電生產 | 搜尋摘要（科技新報、WCCFTech 等） |\n| 2025/12（推算） | 聯發科加入博通成為第八代 TPU 專案的設計夥伴，結束博通自 2015 年起的獨家（搜尋摘要稱「去年 12 月」） | 搜尋摘要 |\n| 2026/04 | Google Cloud Next 發表 TPU 8t（訓練）與 8i（推論）；官方回應不便討論供應鏈夥伴；媒體稱聯發科做 8i、博通做 8t | 工商時報、科技新報、Wccftech、Tom's Hardware |\n| 2026/06/03 | 博通財報會議：Google 正在找其他供應商；隔日股價 −12.59% | 多家台灣媒體（搜尋摘要） |\n| 2026/06/12 | Digitimes：博通承認不會拿下 Google 全部 TPU 訂單；聯發科 TPU v9 獨家、量產 2028（單一報導） | 搜尋摘要 |\n| 2026/08/18～20 | Google 與 Marvell 擴大合作（認股權最高約 122 億美元）；聯發科當日跌約 4%；摩根大通、大摩稱不是取代博通核心 TPU 的證據 | 聯合報系、科技新報（搜尋摘要） |\n| 2026/09/29 | 聯發科爆跌逾 7%：TPU 訂單恐遭分食、樣品延期傳聞 | 時報資訊（搜尋摘要） |\n| 2026/10/30 | 聯發科法說：首款 ASIC 9 月小量出貨、Q4 ASIC 25 億美元、2027 年挑戰約 160 億美元 | 既有研究 |\n| 2026/11/09～10 | Google 2026 年首次有四款 TPU（8t、8tx、8i、8i Max），8i Max 的 HBM 頻寬加倍 | TrendForce、The Next Platform（標題） |\n| 2026/11/16 | 郭明錤：TPU 出貨能見度到 2029 年，聯發科占比逐年升 | Inside 等（搜尋摘要） |\n| 2026/11/20（美股週五） | 多家外電轉述郭明錤供應鏈調查：Google 削減博通 2027 年 TPU 8i 計畫約 100 萬顆；博通跌約 11～12%、Marvell 跌約 10% | Investing.com、24/7 Wall St 等 |\n| 2026/11/21 18:31 | 佇列偵測到 Investing.com 港站標題（Google 新聞搜尋） | 佇列 |\n| 2026/12/09 | 博通第四財季財報（外電稱屆時管理層首度有機會回應） | Investing.com（搜尋摘要） |\n\n## 3. 產業鏈因果（垂直）\n**一行鏈**：Google TPU 規格（8t／8i／8i Max）→ 設計夥伴（博通、聯發科；Marvell 做周邊晶片）→ 台積電 N3 晶圓與 CoWoS 封裝 → HBM → 測試（精測、旺矽、穎崴）與 ABF 載板（欣興等）→ 機櫃與資料中心 → Google Cloud 與外部客戶（Anthropic、OpenAI）。\n\n- **瓶頸在哪一段**：不在設計夥伴換手，而在 CoWoS 與 HBM 的供給（既有研究：大摩估 2026 年 CoWoS 月產能約 12.5 萬片、新增產能幾乎被輝達與博通預訂）和客戶端的資本支出（既有研究：Alphabet Q3 自由現金流 −90.7 億美元、2027 年資本支出將大幅增加）。設計份額從一家搬到另一家，**總晶圓需求不一定改變**（推論）。\n- **這則報導動的是哪一層**：只動「設計夥伴」這一層的份額——誰拿 NRE 與 ASIC 營收、誰的毛利被影響；郭自己說 8i 系列毛利率高於 8t，對博通的獲利成長有利。\n\n## 4. 相關推進力（水平）\n- **Google 同時用多個夥伴**：博通（8i 與訓練；說法不一）、聯發科（8t、v9）、Marvell（周邊晶片，8 月的認股權協議）、傳聞 AMD（v10，DCD 標題）。多重來源是 Google 壓低成本與議價的既定做法（2025 年的報導說聯發科與台積電關係密切、對 Google 的每顆收費較低）。\n- **需求端推進力**：郭 11/16 稱 OpenAI 與 Anthropic 的新訂單讓 TPU 出貨能見度到 2029 年（沒有 Google、OpenAI 公告證實 OpenAI 採用 TPU）；輝達領導層不確定被郭視為助力（Inside 標題）。\n- **同一載體上的限制**：8i Max 的 HBM 頻寬加倍（TrendForce 標題）意味 HBM 與先進封裝要同步到位。\n\n## 5. 慣性、痛點與限制（思辯）\n- **供需缺口怎麼來的**：這不是缺貨，是**設計夥伴份額重分配**：Google 要第二供應商壓成本，聯發科報價較低且與台積電關係近（2025 年報導）；博通在 SerDes 與網路 IP 的優勢使它不會被完全取代（郭稱博通重心轉向非 TPU 的 XPU 與 AI 網路產品）。\n- **慣性**：①份額下降不等於金額下降——博通占比 95% → 65%（外資估），但 TPU 總量 2027～2029 年由 800～900 萬顆成長到 1,600～1,800 萬顆（郭）；②博通 6/3 財報會議自己說過 Google 在找其他供應商，這次是同一趨勢的新版本，不是第一次出現的訊號。\n- **痛點**：設計夥伴分工沒有 Google 證實，且各來源互相矛盾（郭與外電：博通 8i、聯發科 8t；4 月媒體：聯發科 8i、博通 8t）。\n- **限制**：設計到量產約數年（8t／8i 4 月發表、2027 年量產；v9 約 2027 下半年投產、2028 放量，TrendForce 稱可能延到 2028 Q1）、CoWoS 與 HBM 產能、客戶資本支出。\n- **擴產與稼動檢核**：見第 7 節的表。設計夥伴換手不新增產能；稼動數字沒有獨立資料。\n- **敘事陷阱自查**：⑧ design win 不是出貨、NRE 不是營收（聯發科 2027 年約 160 億美元是展望）；⑦ 客戶資本支出調整一個字就能改寫需求（Alphabet 11 月單日跌逾 12% 的既有研究）；⑤「這次不一樣」要有證據——單一分析師的估算被多家轉述不等於多個獨立證據；比例下降當成金額下降是常見錯誤。\n\n## 6. 誰受惠、誰受傷（方向性推論）\n- **受惠（若屬實）**：聯發科（設計服務與 ASIC 營收；但毛利結構沒查到，郭稱 8t 毛利低於 8i）。\n- **受傷（若屬實）**：博通、Marvell（非台廠；Marvell 同跌 10% 的原因沒查到）。\n- **中性（推論）**：台積電（晶圓與 CoWoS 看 TPU 總量）、精測、旺矽、穎崴（測試內容看總量與客戶定案）、欣興與臻鼎-KY（載板，看總量）。**沒有台廠被點名受傷**。\n\n## 7. 擴產與稼動檢核\n| 公司 | 瓶頸環節 | 現況稼動 | 擴產與資本支出 | 投產或放量時點 | 主要限制 | 證據等級 |\n|---|---|---|---|---|---|---|\n| 聯發科（2454） | 設計服務與 ASIC 量產（無自有晶圓廠） | 不適用（依賴台積電） | 法說：首款 ASIC 9 月小量出貨、Q4 約 25 億美元、2027 年挑戰約 160 億美元（展望） | 8t 2027 年；v9 Triggerfish 約 2027 下半年投產、2028 放量（郭）；TrendForce 稱可能延到 2028 Q1（既有研究） | design win 不等於出貨；設計夥伴分工說法矛盾；9/29 有樣品延期傳聞 | 公司說法＋分析師估計 |\n| 台積電（2330） | 先進製程與 CoWoS 封裝 | 沒有 TPU 專屬稼動數字 | 大摩估 2026 年 CoWoS 月產能約 12.5 萬片、新增產能幾乎被輝達與博通預訂（既有研究《輝達傳減緩晶片訂單…》，單一券商） | 沒查到 TPU 8t／8i 的投片與 CoWoS 額度時點 | 設計夥伴換手不改變總需求；聯發科的 TPU 分到多少 CoWoS 額度沒查到 | 分析師估計（單一券商） |\n| HBM（SK 海力士、三星、美光；非台廠） | TPU 8i Max 的 HBM 頻寬加倍 | 沒查到 | 沒查到 | 8i Max 2027 年出貨（標題） | HBM 供給是否限制 TPU 出貨本輪沒查到 | 只有標題（TrendForce） |\n| 精測（6510） | TPU 測試介面（SLTB／BIB） | 產能 8 月已倍增、2027 Q1 擬 3 倍（既有研究） | TPU 工程驗證、暫定 2027 Q1 出貨（公司說法） | 2027 Q1 | 下一代 SLTB／BIB 仍待客戶定案；Google TPU 測試鏈另有旺矽、穎崴、雍智 | 公司說法（法說） |\n| 博通（非台廠） | TPU 設計與網路 IP | 不適用 | 沒查到 | 12/9 財報可能回應 Google 2027 計畫 | 8i 毛利較高（郭）；占比下降但總量成長 | 分析師估計 |\n\n## 8. 風險與矛盾\n- **單一分析師、多家轉述**：郭的原文沒讀到；約 100 萬顆、約 −20%、500 萬→400 萬顆是報導換算。\n- **設計夥伴分工互相矛盾**（見表）；「削減博通 8i」可能名稱對錯。\n- **和 11/16 郭自己的說法沒有說明如何對上**：11/16 才說 Anthropic 向博通 v8i 需求約 1,400 萬顆（2028～29 年）、整體能見度到 2029 年。\n- **股價反應無法歸因**：聯發科跌約 10% 的日期與收盤價沒對到台灣媒體，台股 11/19、11/20 本身崩跌。\n- **既有的反向訊號**：9/29 聯發科爆跌是因為樣品延期與訂單被分食傳聞；TrendForce 稱 v9 可能延到 2028 Q1；Google 8 月與 Marvell 的合作、傳聞與 AMD 合作 v10。\n- **全是搜尋摘要**：沒有 Google、博通、聯發科的官方回應。\n\n## 9. 要追蹤的時間點\n- 郭明錤原文貼文；TrendForce 或 Digitimes 是否有獨立佐證；Google 或聯發科的回應。\n- **12/9 博通第四財季財報**：管理層對 Google 2027 年計畫的說法。\n- 聯發科 11 月營收（約 12/10 前）、Q4 法說與 2027 年 ASIC 展望（約明年 1～2 月）；11/23（週一）開盤的反應。\n- 台積電 CoWoS 月產能與 TPU 占比；HBM 供給；Alphabet 資本支出。\n\n## 資料來源\n- [Investing.com：Google reportedly cuts Broadcom-designed TPU plans, eyes more MediaTek chips（僅搜尋摘要，原文沒讀到；轉述郭明錤供應鏈調查）](https://www.investing.com/news/stock-market-news/google-reportedly-cuts-broadcomdesigned-tpu-plans-eyes-more-mediatek-chips-5042253)\n- [Finwire：Google reportedly cuts Broadcom-designed TPU plans, eyes more MediaTek chips（同一則的轉載；僅標題）](https://finwire.io/news/stock-markets-news/google-reportedly-cuts-broadcom-designed-tpu-plans-eyes-more-mediatek-chips)\n- [Seeking Alpha：Google shifts 2027 AI chip orders from Broadcom to MediaTek, Ming-Chi Kuo says（僅標題）](https://seekingalpha.com/news/4675203-google-shifts-2027-ai-chip-orders-from-broadcom-to-mediatek-ming-chi-kuo-says)\n- [24/7 Wall St（2026-11-20）：Broadcom Stock Plunges 12% and Loses $191 Billion After a Report That Google Cut Its Plans for Broadcom AI Chips（僅標題）](https://247wallst.com/investing/2026/11/20/broadcom-stock-plunges-12-and-loses-191-billion-after-a-report-that-google-cut-its-plans-for-broadcom-ai-chips/)\n- [24/7 Wall St（2026-11-20）：Broadcom Plunges 11% as Google Reportedly Shifts TPU Orders to MediaTek, Overshadowing Goldman's $460 Target; Marvell Sinks 10%（僅標題）](https://247wallst.com/investing/2026/11/20/broadcom-plunges-11-as-google-reportedly-shifts-tpu-orders-to-mediatek-overshadowing-goldmans-460-target-marvell-sinks-10/)\n- [StockAnalysis：Broadcom falls 11% after an analyst says Google cut 2027 orders for its TPU 8i chips by 20%（僅標題）](https://stockanalysis.com/news/broadcom-falls-google-tpu-cut-mediatek/)\n- [MLQ.ai：Broadcom falls 11% after analyst Ming-Chi Kuo says Google cut 2027 orders for its TPU chips（僅標題）](https://mlq.ai/news/broadcom-falls-11-after-analyst-ming-chi-kuo-says-google-cut-2027-orders-for-its-tpu-chips/)\n- [BigGo Finance：Google Said to Trim Broadcom TPU Orders for 2027, Shift Share Toward MediaTek（僅標題）](https://finance.biggo.com/news/dd24faec-557c-44e9-bf10-6089d4d44839)\n- [Inside：郭明錤看好 Google TPU 出貨能見度延伸至 2029 年，輝達換帥不確定性成助力，聯發科最受惠（11/16 前後；僅搜尋摘要）](https://www.inside.com.tw/article/42927-kuo-google-tpu-visibility-2029-nvidia-ceo-succession-mediatek)\n- [AI Post Hub：郭明錤：Google TPU 出貨能見度延伸到 2029 年？（僅搜尋摘要）](https://www.aiposthub.com/kuo-google-tpu-openai-anthropic-orders-2029/)\n- [時報資訊（wantrich）：郭明錤 TPU 相關報導（網址日期 2026-11-17；標題不明，僅搜尋結果列出）](https://wantrich.chinatimes.com/news/20261117900182-420101)\n- [聯合新聞網：聯發科再下一城 郭明錤：獨家拿下 Google TPU 新訂單（僅搜尋摘要；日期沒標，內容為 v9 Triggerfish）](https://udn.com/news/story/7240/9581248)\n- [聯合新聞網：Google TPU 追單聯發科 有望挹注明後年獲利逾二個股本（約 2025 年底；僅搜尋摘要）](https://udn.com/news/story/7240/9202909)\n- [ETtoday：聯發科發了！搶到 Google「TPU 大單」 博通重挫 12%（2026-06；僅搜尋摘要）](https://finance.ettoday.net/news/3177980)\n- [世界日報：聯發科搶單 博通痛失獨供谷歌 TPU（2026-06；僅搜尋摘要）](https://www.worldjournal.com/wj/story/121209/9546955)\n- [工商時報：（網址日期 2026-06-05；標題不明）博通財報會議稱 Google 找其他供應商，僅搜尋摘要](https://www.ctee.com.tw/news/20260605700704-430201)\n- [Digitimes：（網址日期 2026-06-12；標題不明）博通承認不會拿下 Google 全部 TPU 訂單、聯發科 TPU v9，僅搜尋摘要](https://www.digitimes.com/news/a20260612PD200.html)\n- [Barchart：Broadcom's largest AI customer is fleeing to MediaTek; AVGO stock is still a buy（僅搜尋摘要；Wedbush 估博通占比 95%→65%）](https://www.barchart.com/story/news/3147872/broadcoms-largest-ai-customer-is-fleeing-to-mediatek-avgo-stock-is-still-a-buy)\n- [時報資訊（wantrich）：（網址日期 2026-09-29；標題不明）聯發科爆跌逾 7%：TPU 訂單恐遭分食、樣品延期傳聞，僅搜尋摘要](https://wantrich.chinatimes.com/news/20260929900188-420101)\n- [聯合新聞網：Google 擴大合作邁威爾 以最高 122 億美元認股權綁定雙方利益（2026-08；僅搜尋摘要）](https://money.udn.com/money/amp/story/5599/9704635)\n- [科技新報：外資認為 Google 擴大結盟 Marvell 衝擊聯發科股價的臆測是過度反應（2026-08-20；僅標題）](https://finance.technews.tw/2026/08/20/foreign-investors-believe-that-the-speculation-that-googles-expanded-alliance-with-marvell-will-impact-mediateks-stock-price-is-an-overreaction/)\n- [科技新報：Google 本週將推兩款 TPUv8，聯發科攻推論、博通主打訓練（2026-04-21；僅搜尋摘要）](https://technews.tw/2026/04/21/google-tpu-v8/)\n- [Wccftech：Google Splits TPUv8 Strategy Into Two Chips, Handing Broadcom Training and MediaTek Inference Duties（僅搜尋摘要）](https://wccftech.com/google-splits-tpuv8-strategy-two-chips-broadcom-training-mediatek-inference-duties/)\n- [工商時報：（網址日期 2026-04-23；標題不明）聯發科拿下 Google 新一代推論晶片大單，官方稱不便討論供應鏈夥伴，僅搜尋摘要](https://www.ctee.com.tw/news/20260423700156-430704)\n- [Tom's Hardware：Google splits its TPU into two chips for the first time with training and inference variants（僅搜尋摘要）](https://www.tomshardware.com/tech-industry/semiconductors/google-splits-its-tpu-into-two-chips-for-the-first-time-with-training-and-inference-variants)\n- [TrendForce（2026-11-10）：Google marks first-ever 4-TPU year with 8TX and 8i Max, as 8i Max doubles HBM bandwidth（僅標題）](https://www.trendforce.com/news/2026/11/10/news-google-marks-first-ever-4-tpu-year-with-8tx-and-8i-max-as-8i-max-doubles-hbm-bandwidth/)\n- [The Next Platform（2026-11-09）：Google Rejiggers TPU Accelerators For Broader AI Inference Work（僅標題）](https://www.nextplatform.com/compute/2026/11/09/google-rejiggers-tpu-accelerators-for-broader-ai-inference-work/5308534)\n- [DatacenterDynamics：Google rumored to have partnered with AMD on TPU v10 as shipments of current generations revised down（傳聞；僅標題）](https://www.datacenterdynamics.com/en/news/google-rumored-to-have-partnered-with-amd-on-tpu-v10-as-shipments-of-current-generations-revised-down-report/)\n- [鉅亨網：〈聯發科法說〉首顆 AI ASIC 放量 Q4 貢獻上修至 25 億美元 明年衝 160 億高標、市占拚 2 成（既有研究《聯發科Q3法說…》的來源）](https://news.cnyes.com/news/id/6642405)\n- [經濟日報：聯發科 AI ASIC 9 月出貨 明年營收挑戰 160 億美元（既有研究的來源）](https://udn.com/news/story/7240/9847629)\n",
+  "trigger": "2026-11-21 早期訊號（未證實，來源：Google新聞搜尋｜https://news.google.com/rss/articles/CBMicEFVX3lxTE1ncnkzX0hBV3RrWWtjY2NJZE5ESS1nblpKTEVweC1MNFZnUlNTc2d3OVVRM2RjN1c3eGxwaVZneUJYY0duWF9VTEZWUDljR2wzT2dGVE9YM2wzdWpWdHlxZF9EZ2xHLVlDYmpIX096bmo?oc=5）\n原文：谷歌據報削減博通設計的TPU訂單，轉向增加聯發科晶片採購 作者 Investing.com - Investing.com 香港 - 股市報價& 財經新聞\n谷歌據報削減博通設計的TPU訂單，轉向增加聯發科晶片採購 作者 Investing.com&nbsp;&nbsp;Investing.com 香港 - 股市報價& 財經新聞\n解析：客戶 谷歌、博通；受惠 聯發科（2454）；受傷 —\n【求證要點】這是未證實的早期訊號，不要直接當事實：(1) 搜尋公開報導、法說會、重大訊息、月營收、外資報告、客戶官方發布，找佐證或反證；(2) 查客戶端的平台與世代（例如 AWS Trainium 3／4、M8／M9）與各家認證進度；(3) 研究檔 status 填 傳聞／混合／已證實，layers 與 concepts 列出『哪一邊有什麼證據、哪裡互相矛盾』；(4) 若與既有研究的結論衝突（例如南亞 M9 認證完成、台燿 M9 出貨進度），在 risks 與 conclusion 明講。"
+}
