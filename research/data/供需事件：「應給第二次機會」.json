@@ -1,0 +1,359 @@
+{
+ "topic": "供需事件：「應給第二次機會」",
+ "one_line": "佇列的鉅亨網報導（11/21 05:12）稱川普公開呼籲輝達讓黃仁勳重返公司、稱他是全球最傑出的頭腦之一、應獲第二次機會；輝達董事長瓊斯稱董事會一致接受辭呈、無意復任；貝森特稱美國 AI 須維持領先並防範超級智慧的軍事與網攻風險。求證：「第二次機會」的措辭與「11/20」的場合本輪搜尋沒對上；川普 11/16 對記者說「不介意」黃回任、他學到教訓（多家，搜尋摘要）；11/17 財報電話會議上 Jones 稱董事會一致接受辭呈、不打算讓他復任（SCMP、NST、Gagadget 等多家轉述；逐字稿沒讀到），讓既有研究的「單一來源」說法可升級；黃本人 11/17 的「願意回任」聲明只有低品質單一來源；貝森特的 AI 言論能對上 11/10～12 的演說，不是新說法；貝森特給董事會的 10 天期限約 11/25。這是治理與政治事件，不是供需缺口；沒有台廠被點名；不給回任機率。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "輝達",
+  "黃仁勳",
+  "川普",
+  "第二次機會",
+  "Harvey Jones",
+  "董事會",
+  "無意復任",
+  "貝森特",
+  "出口管制",
+  "Kress",
+  "接班人",
+  "財報電話會議"
+ ],
+ "catalysts": [
+  "輝達董事會的執行長遴選公告；Jones 或董事會的後續表態",
+  "川普與白宮的後續談話（是否再次公開要求輝達讓黃回任）",
+  "約 11/25 貝森特給董事會的期限；12/10 盧特尼克聽證（既有研究）",
+  "輝達 8-K 與 11/17 財報電話會議逐字稿（確認 Jones 的原話與生效日）"
+ ],
+ "risks": [
+  "措辭與日期沒核對：「第二次機會」「全球最傑出的頭腦之一」「11/20」只來自佇列",
+  "Jones 的說法只有搜尋摘要；逐字稿與 8-K 沒讀到",
+  "黃的 11/17 聲明只有低品質單一來源（HollywoodLife）",
+  "董事會立場可能隨出口管制調查結果或政治壓力改變；本檔不給回任機率",
+  "對台灣的影響只有推論；沒有台廠被點名"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：說法與證據（佇列摘要 vs 能核對的背景）",
+   "columns": [
+    "說法",
+    "來源",
+    "查到的資料",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "川普公開呼籲輝達讓黃仁勳重返公司，稱他是全球最傑出的頭腦之一、應獲第二次機會",
+     "鉅亨網 11/21 05:12（佇列摘要）",
+     "川普 11/16（週一）對記者說「不介意」黃仁勳回任、他「學到了很大的教訓」（Gizmodo、TNW、IBTimes UK、The Nightly、Daily Sabah 等，搜尋摘要）；川普也提到庫克可能接任、提到有人發起讓黃回任的連署（搜尋摘要稱逾 15.8 萬人簽名）；Windows Report 標題稱川普在辭職前兩天曾勸黃「戰到底」（只有標題）；「第二次機會」「全球最傑出的頭腦之一」的措辭與「11/20」的場合本輪搜尋沒對上（索引可能落後，也可能是重述）",
+     "媒體報導（11/21 版本單一來源；11/16 版本多家）",
+     "川普支持回任的立場有多家來源對得上；佇列的措辭與日期沒核對到"
+    ],
+    [
+     "輝達董事長瓊斯稱董事會一致接受辭呈、無意復任",
+     "鉅亨網（佇列摘要）",
+     "11/17 財報電話會議上，董事長 Harvey Jones 稱董事會一致接受辭呈、不打算讓他復任（SCMP、NST、Gagadget 等，搜尋摘要；電話會議逐字稿沒讀到）；Jones 稱黃是因個人行為不符公司標準而離開；FT、CNBC 與 BBC 較早以知情人士報導董事會不考慮讓他回來（搜尋摘要）；搜尋摘要稱 8-K 載明辭職生效日 11/11、公告日 11/12",
+     "媒體報導（多家轉述；僅搜尋摘要）",
+     "比既有研究《回輝達機率是「零」》當時的「單一來源」更強——現在是董事長在財報會上的公開說法；輝達 8-K 與逐字稿原文本輪沒讀到"
+    ],
+    [
+     "黃仁勳自己表態願意回任",
+     "HollywoodLife（搜尋摘要）",
+     "搜尋摘要稱黃在 11/17 於 X 發聲、說若董事會認為符合股東、員工、公司與美國的利益，他願意回任；Jones 的回應在同一場財報電話會議（搜尋摘要）；聲明原文與措辭本輪沒取得",
+     "社群傳聞／單一來源（低品質）",
+     "不採信其措辭；可確定的是董事會公開表示不復任"
+    ],
+    [
+     "貝森特稱美國 AI 須維持領先，並防範超級智慧的軍事與網攻風險",
+     "鉅亨網（佇列摘要）",
+     "能對上貝森特 11/10～12 的演說與訪談：若中國的 AI 能力超越美國，美國現有軍事與防衛基礎設施形同過時；預告美中「超級智慧」對話（APEC 深圳 11/18～19）；演說稿沒談輝達爭議（搜尋摘要）",
+     "媒體報導（搜尋摘要）",
+     "不是新說法；與黃回任沒有直接連結"
+    ],
+    [
+     "貝森特要求董事會與外部律師 10 天內（約 11/25）回答出口管制合規文化的問題",
+     "既有研究《貝森特要求輝達大改組》；FourWeekMBA 標題「9 days to Bessent clock」",
+     "既有研究：11/15 貝森特在福斯新聞稱輝達董事會應外聘新執行長、做徹底改組；期限約 11/25，盧特尼克已同意 12/10 作證",
+     "媒體報導（多家一致）",
+     "期限仍在；川普的「不介意回任」與貝森特的「應外聘」並存，白宮內部立場不一致（推論）"
+    ]
+   ],
+   "note": "全是搜尋摘要；輝達 8-K、財報電話會議逐字稿與川普談話原文本輪都沒讀到。本檔不給回任機率。"
+  },
+  {
+   "title": "表：時間線",
+   "columns": [
+    "日期",
+    "事件",
+    "來源"
+   ],
+   "rows": [
+    [
+     "2026/11/10（推算）",
+     "Windows Report 標題：川普在辭職前兩天曾勸黃仁勳「戰到底」",
+     "只有標題；日期由「辭職前兩天」推算"
+    ],
+    [
+     "2026/11/12",
+     "輝達公告黃仁勳辭去總裁、執行長與董事；Kress 代理、Jones 任首位董事長；展開接班搜尋（有摘要稱 8-K 載明生效日 11/11）",
+     "輝達新聞稿（搜尋摘要）"
+    ],
+    [
+     "2026/11/13～15",
+     "員工內部信與連署（逾 15.8 萬簽名，各報導不一）",
+     "既有研究、搜尋摘要"
+    ],
+    [
+     "2026/11/15",
+     "貝森特：董事會應外聘新執行長、10 天內回答合規文化問題",
+     "既有研究"
+    ],
+    [
+     "2026/11/16",
+     "川普稱「不介意」黃仁勳回任、他學到教訓",
+     "多家（搜尋摘要）"
+    ],
+    [
+     "2026/11/17",
+     "財報電話會議：Jones 稱董事會一致接受辭呈、無意復任；黃的聲明（單一來源）",
+     "多家（搜尋摘要）"
+    ],
+    [
+     "2026/11/21 05:12",
+     "鉅亨網：川普公開喊話「應給第二次機會」",
+     "佇列（措辭與日期沒核對）"
+    ],
+    [
+     "約 2026/11/25",
+     "貝森特給董事會的 10 天期限",
+     "既有研究"
+    ],
+    [
+     "2026/12/10",
+     "商務部長盧特尼克作證",
+     "既有研究"
+    ]
+   ],
+   "note": "日期取自搜尋摘要與既有研究。"
+  },
+  {
+   "title": "表：擴產與稼動檢核（不適用）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "輝達領導層回任之爭",
+     "治理與政策（不是產能）",
+     "不適用",
+     "不適用",
+     "沒有時點；接班搜尋與貝森特期限（約 11/25）",
+     "措辭與日期多為搜尋摘要；輝達 8-K、逐字稿沒讀到",
+     "媒體報導（多家轉述）"
+    ]
+   ],
+   "note": "不適用：這是治理與政治事件，不是產能事件。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "辭職與代理（2026/11/12）",
+   "composition": "黃辭去總裁、執行長與董事；Kress 代理；Jones 任首位董事長",
+   "spec": "輝達新聞稿（搜尋摘要）",
+   "application": "領導層交接"
+  },
+  {
+   "name": "回任攻防（2026/11/13～16）",
+   "composition": "連署與內部信、貝森特要求外聘、川普「不介意」",
+   "spec": "逾 15.8 萬簽名（各報導不一）",
+   "application": "政治與員工壓力"
+  },
+  {
+   "name": "董事會公開表態（2026/11/17）",
+   "composition": "財報電話會議上 Jones 稱一致接受辭呈、無意復任",
+   "spec": "多家轉述；逐字稿沒讀到",
+   "application": "治理"
+  },
+  {
+   "name": "待觀察：接班人選與出口管制調查結果",
+   "composition": "遴選公告、貝森特期限、盧特尼克聽證",
+   "spec": "未確定",
+   "application": "領導層與政策"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "不適用：治理與政治事件沒有上下游鏈",
+    "決策鏈：輝達董事會（決定執行長）← 白宮與財政部的壓力 ← 出口管制與司法調查（Megaspeed、SEC、加州檢察長）；瓶頸在董事會的立場與調查結果"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "同一政策載體上的事件：貝森特期限（約 11/25）、12/10 盧特尼克聽證、Megaspeed 案、加州檢察長傳票、SEC 民事調查（既有研究）",
+    "白宮內部分歧：川普（不介意回任）vs 貝森特（外聘、合規質疑）"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口怎麼來的：沒有供需缺口；是領導層與政策不確定性造成的風險溢價",
+    "慣性：董事會在財報會公開表態後反覆的成本高；政治壓力與連署仍在",
+    "痛點：川普的說法沒有改變董事會的公開立場；回任可能因調查結果而更難",
+    "限制：沒有 8-K、逐字稿與川普談話原文；多為搜尋摘要",
+    "擴產與稼動檢核：不適用（治理與政治事件）",
+    "敘事陷阱自查：川普支持等於董事會會改、「無意復任」當永久結論、佇列引句當逐字原話、貝森特 AI 言論當新動作"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受傷（情境）：輝達（領導層不確定與監管壓力）",
+    "受惠：沒有明確受惠者",
+    "中性：台積電、鴻海、廣達、緯創（沒有台廠被點名）"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀輝達 8-K 與 11/17 財報電話會議逐字稿，確認 Jones 的原話、一致通過與生效日",
+    "查川普談話的白宮逐字稿或影片，確認「第二次機會」的措辭與日期",
+    "追蹤董事會遴選公告與約 11/25 的期限結果"
+   ]
+  }
+ ],
+ "conclusion": [
+  "川普 11/16 稱「不介意」黃仁勳回任有多家來源；佇列的「第二次機會」「全球最傑出的頭腦之一」措辭與「11/20」場合本輪沒核對到。",
+  "更重要的是 11/17 財報電話會議上 Jones 的公開說法（董事會一致接受辭呈、無意復任，多家轉述、逐字稿沒讀到）——既有研究的「單一來源」說法可升級；黃本人的聲明只有低品質單一來源。",
+  "這是治理與政治事件，不是供需缺口；沒有台廠被點名；不給回任機率。接下來看遴選公告、約 11/25 貝森特期限與 12/10 盧特尼克聽證。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：川普公開喊話輝達讓黃仁勳回鍋：「應給第二次機會」（佇列摘要，2026-11-21 05:12；全文沒讀到）",
+   "url": "https://news.cnyes.com/news/id/6669654"
+  },
+  {
+   "title": "Gizmodo：Trump says he would not mind Jensen Huang returning because he learned a big lesson（標題取自網址；僅搜尋摘要）",
+   "url": "https://gizmodo.com/trump-says-he-would-not-mind-jensen-huang-returning-because-he-learned-a-big-lesson-2000840489"
+  },
+  {
+   "title": "The Next Web：Trump backs Jensen Huang's return as Nvidia board reportedly says no（僅搜尋摘要）",
+   "url": "https://thenextweb.com/news/trump-backs-jensen-huangs-return-as-nvidia-board-reportedly-says-no"
+  },
+  {
+   "title": "IBTimes UK：Trump's 'Would Not Mind' Remark on Jensen Huang Return Contrasts With NVIDIA Board's Reported Position（僅搜尋摘要）",
+   "url": "https://www.ibtimes.co.uk/trump-jensen-huang-nvidia-ceo-comeback-1832892"
+  },
+  {
+   "title": "The Nightly：Trump 'wouldn't mind' ousted Nvidia CEO getting job back（僅搜尋摘要）",
+   "url": "https://thenightly.com.au/business/trump-wouldnt-mind-ousted-nvidia-ceo-getting-job-back-c-23170902"
+  },
+  {
+   "title": "Daily Sabah：Trump says he 'certainly' wouldn't mind return of Nvidia's Huang（僅搜尋摘要）",
+   "url": "https://www.dailysabah.com/business/tech/trump-says-he-certainly-wouldnt-mind-return-of-nvidias-huang/amp"
+  },
+  {
+   "title": "FourWeekMBA：Trump Open to Huang's Nvidia Return, 9 Days to Bessent Clock（只看到標題與搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-trump-open-to-huangs-nvidia-return-9-days-to-bessent-clock/"
+  },
+  {
+   "title": "Windows Report：Trump Reportedly Urged Jensen Huang to Fight for His NVIDIA CEO Job Just Two Days Before Resignation（只看到標題）",
+   "url": "https://windowsreport.com/?p=1515691"
+  },
+  {
+   "title": "SCMP：Nvidia board says it has no plans to reinstate Jensen Huang as CEO（僅搜尋摘要）",
+   "url": "https://www.scmp.com/tech/article/3374812/nvidia-board-says-it-has-no-plans-reinstate-jensen-huang-ceo"
+  },
+  {
+   "title": "New Straits Times：Nvidia board rules out reinstating Jensen Huang as CEO（僅搜尋摘要）",
+   "url": "https://www.nst.com.my/amp/business/corporate/2026/11/1580209/nvidia-board-rules-out-reinstating-jensen-huang-ceo"
+  },
+  {
+   "title": "Gagadget：Nvidia's board says Jensen Huang isn't coming back（僅搜尋摘要）",
+   "url": "https://gagadget.com/en/734737-nvidias-board-says-jensen-huang-isnt-coming-back/"
+  },
+  {
+   "title": "ZeroHedge：Huang Out To Dry: Nvidia Board Not Considering Bringing Jensen Back（二手轉述；僅搜尋摘要）",
+   "url": "https://www.zerohedge.com/ai/huang-out-dry-nvidia-board-not-considering-bringing-jensen-back"
+  },
+  {
+   "title": "NVIDIA Announces CEO Transition（輝達新聞稿；僅搜尋摘要，本輪沒讀全文）",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition"
+  },
+  {
+   "title": "HollywoodLife：Jensen Huang's New Statement After Nvidia Scandal: What Did He Say?（低品質單一來源；僅搜尋摘要，沒有取得聲明原文）",
+   "url": "https://hollywoodlife.com/feature/jensen-huang-statement-nvidia-5584374/"
+  },
+  {
+   "title": "The Daily Signal：Treasury Secretary Shares 'Best Protection' Against AI（2026-11-12；僅搜尋摘要）",
+   "url": "https://www.dailysignal.com/2026/11/12/treasury-secretary-shares-best-protection-against-ai/"
+  },
+  {
+   "title": "Crypto Briefing：Bessent: US-China AI superintelligence dialogue（標題取自網址；僅搜尋摘要）",
+   "url": "https://cryptobriefing.com/bessent-us-china-ai-superintelligence-dialogue/"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "輝達董事會與治理（決定執行長）——瓶頸在董事會的公開立場",
+   "description": "11/12 黃辭職、Kress 代理、Jones 任首位董事長並展開接班搜尋；11/17 財報會上 Jones 稱董事會一致接受辭呈、無意復任（多家轉述，逐字稿沒讀到）；員工與連署的回任壓力（既有研究）。",
+   "global_players": [
+    "輝達董事會（Harvey Jones）",
+    "代理執行長 Kress"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "白宮與政策（川普、貝森特、商務部）",
+   "description": "川普 11/16 稱不介意黃回任；貝森特 11/15 要求外聘新執行長與 10 天內回答合規問題（約 11/25）；12/10 盧特尼克作證（既有研究）。",
+   "global_players": [
+    "川普政府",
+    "財政部（貝森特）",
+    "商務部（盧特尼克）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台灣供應鏈（AI 伺服器 ODM、晶圓代工）——沒有台廠被點名",
+   "description": "輝達營運與供應鏈承諾照常（11/17 財報與夥伴承諾，既有研究）；對台灣是領導層與政策的時程與決策不確定性（推論），沒有訂單變動的證據。",
+   "global_players": [
+    "AI 伺服器 ODM",
+    "晶圓代工"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "晶圓代工；沒有直接曝險數字（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器 ODM；沒有訂單變動的證據（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；同上（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 ODM；同上（推論）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
