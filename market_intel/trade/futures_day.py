@@ -39,6 +39,9 @@ DEFAULTS = {
     "stop_noise_mult": 0.0,         # 實驗功能、預設關閉（0）：停損距離不窄於「近期報價平均跳動點數」的幾倍。開了會讓計畫帳從那天起換成另一套規則，
                                     # 累計損益、勝率就不能和之前直接相加比較；要等累積幾天報價存檔（state/futures_ticks）離線重播比較後再決定要不要開
     "stop_noise_window": 60,        # 算報價雜訊用最近幾筆報價（約 20～40 分鐘）；不到 10 個間隔時不調整
+    # 急拉急殺快訊（不是進出場訊號、不影響計畫帳，也不在 RULE_KEYS 裡）：最近 shock_window_min 分鐘內，現價相對最低（高）價變動 ≥ shock_pct % 就推一則。
+    # 只看價格、不看新聞，所以新聞規則漏掉的大事也會響（2026-11-23 21:55 輝達復職：台指期夜盤 5 分鐘 +3,238 點，新聞規則沒命中）。shock_pct＝0 關閉。
+    "shock_pct": 2.0, "shock_window_min": 5, "shock_min_gap_sec": 180, "shock_cooldown_min": 20, "shock_max": 6,
     "daily_loss_pct": 3.0,          # 當日虧損上限（占資金 %）：原文 3～5%
     "entry_start": "09:00",         # 開盤前 15 分鐘先建立今日高低點
     "entry_until": "12:30",         # 這之後的突破不進場（原文沒說，保守設定）
@@ -117,7 +120,8 @@ def new_day(day: str) -> dict:
             "seq": 0,                   # 這一場第幾則訊號（訊息標題帶「第 N 則」，漏收一則就看得出號碼跳號）
             "stop_dist": None,          # 進場當下因報價雜訊而加寬的停損距離（點）；None＝照 stop_pct
             "outbox": [], "failed": 0, "resent": 0, "dropped": 0,      # 推播失敗的訊號排隊補發（見 outbox_push）；失敗／補發成功／放棄的則數
-            "stale_alerted": False}
+            "stale_alerted": False,
+            "shock": None, "shock_n": 0}   # 急拉急殺快訊：最近一則（時間、價格、方向）與這一場已推幾則（見 shock_alert）
 
 
 def _bar_key(ts: datetime) -> str:
@@ -440,6 +444,67 @@ def stale_notice(st: dict, now: datetime, label: str, minutes: int = 20) -> str 
             if st.get("lots") else "")
     return (f"⚠️ {label}報價超過 {minutes} 分鐘沒有更新（最後一筆 {last:%H:%M}，{ticks[-1][1]:,.0f}）。{hold}"
             "可能是資料源異常或暫停交易；系統會持續嘗試，恢復後自動接續。")
+
+
+def shock_alert(st: dict, cfg: dict) -> str | None:
+    """急拉急殺快訊：最新一筆報價相對「最近 shock_window_min 分鐘內最低（高）價」變動 ≥ shock_pct % → 回快訊文字，否則 None。
+    不是進出場訊號、不改計畫帳（只動 st["shock"]、st["shock_n"]）；只看價格、不看新聞，所以新聞規則漏掉的大事件也會響
+    （2026-11-23 21:55 輝達復職：台指期夜盤 21:55:27 報 36,352、22:00:18 報 39,590，5 分鐘 +3,238 點；新聞到 22:10 才進來、規則又沒命中）。
+    不洗版：兩則之間至少隔 shock_min_gap_sec 秒；同方向 shock_cooldown_min 分鐘內不重複，除非又延伸 ≥ shock_pct %；一場最多 shock_max 則。
+    要在 step() 之後呼叫（最新一筆已在 st["ticks"] 裡）。"""
+    pct = float(cfg.get("shock_pct") or 0)
+    ticks = st.get("ticks") or []
+    if pct <= 0 or len(ticks) < 2:
+        return None
+    now = datetime.fromisoformat(ticks[-1][0])
+    price = float(ticks[-1][1])
+    win = timedelta(minutes=float(cfg.get("shock_window_min") or 5))
+    lo = hi = None                   # （時間, 價格）：視窗內最低、最高
+    n = 0
+    for ts, p in reversed(ticks):
+        t = datetime.fromisoformat(ts)
+        if now - t > win:
+            break
+        n += 1
+        if lo is None or p < lo[1]:
+            lo = (t, p)
+        if hi is None or p > hi[1]:
+            hi = (t, p)
+    if n < 2 or lo is None or hi is None:         # 視窗內不到兩筆（報價中斷後第一筆）：沒有可比的基準，不響
+        return None
+    up, dn = (price - lo[1]) / lo[1] * 100, (hi[1] - price) / hi[1] * 100
+    if up >= pct and up >= dn:
+        way, ref = "up", lo
+    elif dn >= pct:
+        way, ref = "dn", hi
+    else:
+        return None
+    if st.get("shock_n", 0) >= int(cfg.get("shock_max") or 6):
+        return None
+    last = st.get("shock")
+    if last:
+        gap = (now - datetime.fromisoformat(last["ts"])).total_seconds()
+        if gap < float(cfg.get("shock_min_gap_sec") or 180):
+            return None
+        extended = abs(price - last["px"]) / last["px"] * 100 >= pct and ((price > last["px"]) == (way == "up"))
+        if last["dir"] == way and gap < float(cfg.get("shock_cooldown_min") or 20) * 60 and not extended:
+            return None
+    st["shock"] = {"ts": ticks[-1][0], "px": price, "dir": way}
+    st["shock_n"] = st.get("shock_n", 0) + 1
+    label = "夜盤" if cfg.get("session") == "night" else "日盤"
+    pts = price - ref[1]
+    mins = (now - ref[0]).total_seconds() / 60
+    if st.get("lots") and st.get("avg"):
+        sign = 1 if st.get("dir") == "long" else -1
+        pnl = (price - st["avg"]) * sign
+        against = pts * sign < 0
+        pos = (f"計畫帳：持有{'多單' if sign > 0 else '空單'} {st['lots']} 口、平均成本 {st['avg']:,.1f}，目前{'浮盈' if pnl >= 0 else '浮虧'} {abs(pnl):,.0f} 點。"
+               + ("價格正往持倉的反方向跑，停損在快市場會滑價，成交價可能比停損價差很多。" if against else ""))
+    else:
+        pos = "計畫帳：空手。"
+    return (f"⚡ 台指期{label}{'急拉' if way == 'up' else '急殺'}｜{mins:.1f} 分鐘內 {pts:+,.0f} 點（{pts / ref[1] * 100:+.1f}%）："
+            f"{ref[1]:,.0f}（{ref[0]:%H:%M:%S}）→ {price:,.0f}（{now:%H:%M:%S}）\n{pos}\n"
+            "這不是進出場訊號、不影響計畫帳，只提醒盤面正在劇烈波動；新聞還沒跟上時也會響，先看新聞與國際盤。")
 
 
 def summary(st: dict, cfg: dict) -> str:

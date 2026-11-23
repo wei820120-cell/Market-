@@ -725,6 +725,9 @@ def _futures_day_check(fd: dict, now: datetime) -> None:
         text = _futures_signal_text(sigs, st, fd["cfg"], "day")
         futures_log.safe(futures_log.record, st, sigs, fd["cfg"], "day")      # 先記計畫帳（它才是事實），再推播；推播失敗只會排隊補發
         futures_day.outbox_push(st, text, sigs[0]["ts"], _futures_send)
+    shock = futures_day.shock_alert(st, fd["cfg"])        # 急拉急殺快訊：只看價格、不看新聞（不是進出場訊號，不進計畫帳）
+    if shock:
+        futures_day.outbox_push(st, shock, now.isoformat(timespec="seconds"), _futures_send)
     futures_day.save_state(st)
 
 
@@ -797,6 +800,9 @@ def cmd_futures_night(args) -> None:
                 text = _futures_signal_text(sigs, st, cfg, "night")
                 futures_log.safe(futures_log.record, st, sigs, cfg, "night")      # 先記計畫帳，再推播
                 futures_day.outbox_push(st, text, sigs[0]["ts"], send)
+            shock = futures_day.shock_alert(st, cfg)        # 急拉急殺快訊：只看價格、不看新聞（不是進出場訊號，不進計畫帳）
+            if shock:
+                futures_day.outbox_push(st, shock, now.isoformat(timespec="seconds"), send)
             st["stale_alerted"] = False
             futures_day.save_state(st, session="night")
         elif not args.force and now < end and (note := futures_day.stale_notice(st, now, "夜盤")):
@@ -1050,7 +1056,10 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
     today = f"{now_tw():%Y-%m-%d}"
     st = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     count = st.get(today, 0)
-    lines, queued = [], []
+    cap = int(conf.get("max_per_day", 4))
+    over_key = f"{today}|over"
+    over_n = int(st.get(over_key, 0))
+    lines, queued, over_lines = [], [], []
     for it in items:
         text = f"{it.title} {it.summary}"
         if any(w in it.title for w in exclude) or it.score < 0 and "減產" not in text:
@@ -1058,14 +1067,22 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
         if any(w in it.title for w in conf.get("skip_title_words") or []):
             continue  # 已被駁斥、澄清的傳聞不是供需事件
         cause = shock_cause(text, conf.get("causes") or {})
-        if not cause or count >= int(conf.get("max_per_day", 4)):
+        if not cause:
             continue
         topic = shock_topic(it, listings)
         need = set(conf.get("need_relevance") or [])
         if (("all" in need or cause in need) and not it.codes and topic.startswith("供需事件：")
                 and not re.search(conf.get("relevance_words") or "(?!)", text, flags=re.I)):
             continue  # 對不到台股標的、產品題材或關鍵原料的新聞（國際政治、民生、地震…）不研究、不推
-        if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}", cause=cause):
+        trigger = f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}"
+        if count >= cap:
+            # 今日研究額度用完：不排研究，但不能靜悄悄丟掉（11/16、17、18、20、21、23 都在傍晚前用完額度，之後的事件整天沒人知道）。
+            # 仍是新事件（沒研究過、不在佇列）就通知一則，每天最多 max_overflow_per_day 則，讓使用者可以回「研究 XXX」。
+            if over_n < int(conf.get("max_overflow_per_day", 5)) and research.queue_research(topic, trigger, cause=cause, dry_run=True):
+                over_n += 1
+                over_lines.append(f"・【{cause}】{it.title[:80]}\n  → 題材：{topic}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
+            continue
+        if not research.queue_research(topic, trigger, cause=cause):
             continue
         count += 1
         queued.append(topic)
@@ -1075,7 +1092,10 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
                      + f"\n  → 研究題材：{topic}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
     if lines:
         notify.send("🧭 供需失衡訊號（已排入研究，研究完成會推研究圖表）\n\n" + "\n\n".join(lines), channel="research")
-        st = {today: count}
+    if over_lines:
+        notify.send(f"🧭 供需失衡訊號（今天 {cap} 個研究額度已滿，只通知、沒有排入研究；想研究請回「研究 題材名稱」）\n\n" + "\n\n".join(over_lines), channel="research")
+    if lines or over_lines:
+        st = {today: count, over_key: over_n}
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
     return queued
@@ -1101,13 +1121,18 @@ def major_events(items: list, listings: dict, macro_rows: list | None = None) ->
     macro_rows = macro.fresh() if macro_rows is None else macro_rows
     sent = []
     for name, spec in events.items():
-        if f"{name}|{today}" in st:
+        key = f"{name}|{today}"
+        used = int(st.get(key) or 0)
+        if used >= int(spec.get("max_per_day", 1)):       # 預設同一事件一天一次；會一再反轉的事件（龍頭復職）可在 yaml 設 max_per_day
             continue
         pats = [re.compile(p, flags=re.I) for p in spec.get("patterns", [])]
-        hits = [it for it in items if any(p.search(f"{it.title} {it.summary}") for p in pats)]
+        excl = re.compile("|".join(spec["exclude"]), flags=re.I) if spec.get("exclude") else None     # 標題含這些字（呼籲、傳聞、機率…）＝還沒發生，不算
+        title_only = bool(spec.get("title_only"))        # 只看標題：摘要裡提到別的事不會誤觸發
+        hits = [it for it in items if any(p.search(it.title if title_only else f"{it.title} {it.summary}") for p in pats)
+                and not (excl and excl.search(it.title))]
         if not hits:
             continue
-        st[f"{name}|{today}"] = 1
+        st[key] = used + 1
         sent.append(name)
         lines = [f"🌐 重大事件｜{name}"]
         for it in hits[:3]:

@@ -614,3 +614,109 @@ def test_night_close_resends_pending_signals_and_appends_the_delivery_note(monke
     assert sent[0].startswith("🔁 補發") and "舊訊號" in sent[0]
     assert "夜盤計畫帳收盤" in sent[1] and "已補發 1 則" in sent[1]
     assert fd.load_state(sid, session="night")["finished"] is True
+
+
+# ---------------------------------------------------------------- 2026-11-23 急拉急殺快訊（只看價格、不看新聞）
+# 事件：21:55 輝達董事會恢復黃仁勳，台指期夜盤 21:55:27 報 36,352、22:00:18 報 39,590（5 分鐘 +3,238 點）；新聞 22:10 才進來、規則又沒命中（只認離職字眼），
+# 系統完全沒響。快訊只看價格，不靠新聞文字，不是進出場訊號、不進計畫帳。
+
+def _feed(st, cfg, prices, start=None, step=20):
+    """依序餵價格（每 step 秒一筆）、每筆後呼叫 shock_alert；回傳 [(第幾筆, 文字)]。"""
+    from datetime import timedelta
+    t0 = start or datetime(2026, 11, 23, 21, 50, 0, tzinfo=TW_TZ)
+    out = []
+    for i, p in enumerate(prices):
+        st["ticks"].append([(t0 + timedelta(seconds=i * step)).isoformat(timespec="seconds"), p])
+        st["last_price"] = p
+        text = fd.shock_alert(st, cfg)
+        if text:
+            out.append((i, text))
+    return out
+
+
+NIGHT_CFG = dict(fd.DEFAULTS, **fd.NIGHT)
+
+
+def test_shock_alert_fires_within_a_minute_of_a_fast_move_and_names_the_numbers():
+    st = fd.new_day("2026-11-23N")
+    flat = [36300.0] * 15                                   # 5 分鐘平盤
+    out = _feed(st, NIGHT_CFG, flat + [36700.0, 37100.0, 37500.0])
+    assert len(out) == 1 and out[0][0] == 16                # 第二筆跳升（+2.2%）就響，不用等 5 分鐘走完
+    text = out[0][1]
+    assert text.startswith("⚡ 台指期夜盤急拉") and "+800 點" in text and "+2.2%" in text and "36,300" in text and "37,100" in text
+    assert "計畫帳：空手" in text and "不是進出場訊號" in text
+    assert st["shock_n"] == 1 and st["shock"]["dir"] == "up"
+
+
+def test_shock_alert_ignores_a_slow_drift_even_when_it_adds_up_to_a_lot():
+    st = fd.new_day("2026-11-23N")
+    drift = [36000.0 * (1 + 0.001 * i / 3) for i in range(180)]       # 每 20 秒 +0.033%，1 小時共 +6%，但任何 5 分鐘只有 +0.5%
+    assert _feed(st, NIGHT_CFG, drift) == [] and st["shock_n"] == 0
+
+
+def test_shock_alert_waits_between_messages_and_repeats_only_on_extension_or_reversal():
+    st = fd.new_day("2026-11-23N")
+    seq = [36300.0] * 15 + [37100.0]                        # 第一則：+2.2%
+    seq += [37400.0] * 8                                    # 160 秒內還在漲，但距上一則不到 180 秒 → 不響
+    seq += [37500.0] * 3                                    # 超過 180 秒：只比上一則價格多 +1.1%、同方向、冷卻中 → 不響
+    seq += [38100.0] * 2                                    # 比上一則價格（37,100）多 +2.7% → 延伸，響第二則
+    out = _feed(st, NIGHT_CFG, seq)
+    assert [i for i, _ in out] == [15, len(seq) - 2]
+    assert out[1][1].startswith("⚡ 台指期夜盤急拉")
+    seq2 = [38100.0] * 10 + [37200.0, 37000.0]              # 之後急殺 −2.4%：反方向，隔夠久就響
+    out2 = _feed(st, NIGHT_CFG, seq2, start=datetime(2026, 11, 23, 22, 10, 0, tzinfo=TW_TZ))
+    assert len(out2) == 1 and out2[0][1].startswith("⚡ 台指期夜盤急殺") and "-" in out2[0][1]
+    assert st["shock_n"] == 3
+
+
+def test_shock_alert_stops_after_the_per_session_cap():
+    st = fd.new_day("2026-11-23N")
+    cfg = dict(NIGHT_CFG, shock_max=1)
+    out = _feed(st, cfg, [36300.0] * 15 + [37100.0] + [38100.0] * 40)       # 第二則本來該響（延伸），但這一場只准 1 則
+    assert len(out) == 1
+
+
+def test_shock_alert_is_silent_when_disabled_without_a_baseline_or_right_after_a_quote_gap():
+    st = fd.new_day("2026-11-23N")
+    assert _feed(st, dict(NIGHT_CFG, shock_pct=0), [36300.0] * 15 + [37500.0]) == []         # 關閉
+    st = fd.new_day("2026-11-23N")
+    assert _feed(st, NIGHT_CFG, [36300.0]) == []                                              # 只有一筆：沒有基準
+    st = fd.new_day("2026-11-23N")
+    st["ticks"].append(["2026-11-23T21:00:00+08:00", 36300.0])
+    st["ticks"].append(["2026-11-23T21:40:00+08:00", 37500.0])                               # 報價中斷 40 分鐘後的第一筆：視窗裡只有它，不拿 40 分鐘前的價格比
+    assert fd.shock_alert(st, NIGHT_CFG) is None
+
+
+def test_shock_alert_tells_the_open_position_and_warns_when_price_runs_against_it():
+    st = fd.new_day("2026-11-23N")
+    st.update(lots=2, dir="short", avg=36500.0)
+    text = _feed(st, NIGHT_CFG, [36300.0] * 15 + [37100.0])[0][1]
+    assert "持有空單 2 口、平均成本 36,500.0" in text and "浮虧 600 點" in text and "反方向" in text
+    st = fd.new_day("2026-11-23N")
+    st.update(lots=1, dir="long", avg=36500.0)
+    text = _feed(st, NIGHT_CFG, [36300.0] * 15 + [37100.0])[0][1]
+    assert "持有多單 1 口" in text and "浮盈 600 點" in text and "反方向" not in text
+
+
+def test_shock_alert_is_not_a_plan_rule_so_the_ledger_and_signals_are_unchanged():
+    assert not any("shock" in k for k in fd.RULE_KEYS)                  # 不進計畫帳的規則快照，也就不會讓報表出現「規則變更」警告
+    base = [(at(f"{9 + i // 60}:{i % 60:02d}"), 20000.0 + i) for i in range(0, 30)]
+    st1, st2 = fd.new_day("2026-10-30"), fd.new_day("2026-10-30")
+    on, off = dict(CFG, shock_pct=2.0), dict(CFG, shock_pct=0)
+    a = [fd.step(st1, t, p, on) for t, p in base]
+    b = [fd.step(st2, t, p, off) for t, p in base]
+    assert a == b and st1["alerts"] == st2["alerts"]                    # step() 完全不看快訊設定
+
+
+def test_night_cli_pushes_the_shock_alert_without_touching_the_plan_and_queues_it_if_the_push_fails(monkeypatch, tmp_path):
+    from datetime import timedelta
+    now = datetime(2026, 11, 23, 22, 0, 30, tzinfo=TW_TZ)
+    flat = [[(now - timedelta(seconds=5 + 20 * (15 - i))).isoformat(timespec="seconds"), 42000.0] for i in range(15)]
+    # _night_cli 的假報價固定是 43,588（對 42,000 是 +3.8%）
+    st, sent = _night_cli(monkeypatch, tmp_path, now, now - timedelta(seconds=5), ticks=flat, send_results=[False])
+    assert sent and sent[0].startswith("⚡ 台指期夜盤急拉") and "+1,588 點" in sent[0]
+    assert st["shock_n"] == 1 and len(st["outbox"]) == 1 and st["failed"] == 1       # 推播失敗：排進補發佇列（和計畫帳訊號同一套）
+    assert st["seq"] == len(st["alerts"])                                             # 快訊不佔計畫帳訊號的流水號
+    now2 = now + timedelta(seconds=20)
+    st, sent = _night_cli(monkeypatch, tmp_path, now2, now2 - timedelta(seconds=5))
+    assert sent and sent[0].startswith("🔁 補發") and "急拉" in sent[0] and st["outbox"] == []

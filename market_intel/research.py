@@ -649,8 +649,9 @@ def save_offset(token: str | None, offset: int | None) -> None:
 # ---------- 研究佇列（資金流入的題材） ----------
 
 def queue_research(topic: str, trigger: str, *, depth: int = 0, origin: str = "", priority: int = 1,
-                   cause: str | None = None, dedupe: bool = True) -> bool:
+                   cause: str | None = None, dedupe: bool = True, dry_run: bool = False) -> bool:
     """把題材排入研究佇列；14 天內研究過或已在佇列就略過。回傳是否新排入。
+    dry_run：只做同樣的重複檢查、不寫佇列檔，回傳「現在排的話會不會排進去」（今日研究額度已滿時，用來判斷這則還要不要通知）。
 
     連動預研（prefetch）排進來的會多帶：depth（從 A 往外第幾層）、origin（是為了哪個 A 排的，同一個 A 的一起研究）、
     priority（預設 1；已經動起來的相關個股 2、一般預研 0）。
@@ -671,6 +672,8 @@ def queue_research(topic: str, trigger: str, *, depth: int = 0, origin: str = ""
             if dup["kind"] == "queue":
                 _add_related_to_queue(dup["name"], trigger)
             return False
+    if dry_run:
+        return True
     QUEUE_DIR.mkdir(parents=True, exist_ok=True)
     item = {"topic": topic, "trigger": trigger, "time": f"{now_tw():%Y-%m-%d %H:%M}"}
     if depth:
