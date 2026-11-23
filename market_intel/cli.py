@@ -645,22 +645,7 @@ def cmd_realtime(args) -> None:
         time.sleep(interval)
     if fd:
         try:
-            from .trade import futures_day
-            futures_day.outbox_flush(fd["st"], _futures_send)          # 收盤前最後一次補發之前推播失敗的訊號
-            summary = futures_day.finish_day(fd["st"], fd["cfg"])
-            from .trade import futures_log
-            note = futures_day.delivery_note(fd["st"])
-            stamp = now_tw().isoformat(timespec="seconds")
-            if summary:
-                futures_log.safe(futures_log.refresh, fd["st"], fd["cfg"], "day")
-                # 累計損益只在「全數出場」那則附一次；收盤時已經空手就不再重複，還有未平倉（沒有全出訊號）才附
-                pnl = futures_log.pnl_line(fd["st"], fd["cfg"], "day") if fd["st"]["lots"] else ""
-                futures_day.outbox_push(fd["st"], f"📈 台指期日內計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else "") + (f"\n{note}" if note else ""),
-                                        stamp, _futures_send)
-            elif note:          # 沒跑到收盤附近、沒有彙總，但有訊號曾推播失敗：至少講一聲
-                futures_day.outbox_push(fd["st"], f"📈 台指期日內訊號推播狀況\n{note}", stamp, _futures_send)
-            futures_day.save_state(fd["st"])                           # 收盤彙總若也沒送出，排隊狀態留在存檔裡
-            _futures_settle()          # 當天沒進場也檢查：月初第一個收盤就把上個月結算掉
+            _futures_day_close(fd)
         except Exception as e:  # noqa: BLE001
             log.warning("台指期日內收盤記錄失敗：%s", e)
 
@@ -680,6 +665,25 @@ def _futures_day_setup() -> dict | None:
         return None
     day = f"{now_tw():%Y-%m-%d}"
     return {"cfg": cfg, "st": futures_day.load_state(day), "closes": futures_day.load_closes(day)}
+
+
+def _futures_day_close(fd: dict) -> None:
+    """日盤收盤：最後一次補發之前推播失敗的訊號、記日收盤、推計畫帳彙總（附推播狀況）、月初結算。"""
+    from .trade import futures_day, futures_log
+    st, cfg = fd["st"], fd["cfg"]
+    futures_day.outbox_flush(st, _futures_send)          # 收盤前最後一次補發之前推播失敗的訊號
+    summary = futures_day.finish_day(st, cfg)
+    note = futures_day.delivery_note(st)
+    stamp = now_tw().isoformat(timespec="seconds")
+    if summary:
+        futures_log.safe(futures_log.refresh, st, cfg, "day")
+        # 累計損益只在「全數出場」那則附一次；收盤時已經空手就不再重複，還有未平倉（沒有全出訊號）才附
+        pnl = futures_log.pnl_line(st, cfg, "day") if st["lots"] else ""
+        futures_day.outbox_push(st, f"📈 台指期日內計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else "") + (f"\n{note}" if note else ""), stamp, _futures_send)
+    elif note:          # 沒跑到收盤附近、沒有彙總，但有訊號曾推播失敗：至少講一聲
+        futures_day.outbox_push(st, f"📈 台指期日內訊號推播狀況\n{note}", stamp, _futures_send)
+    futures_day.save_state(st)                           # 收盤彙總若也沒送出，排隊狀態留在存檔裡
+    _futures_settle()          # 當天沒進場也檢查：月初第一個收盤就把上個月結算掉
 
 
 def _futures_send(text: str) -> bool:

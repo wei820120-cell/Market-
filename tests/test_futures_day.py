@@ -556,3 +556,56 @@ def test_a_crashing_push_is_treated_as_a_failed_send_and_never_skips_the_ledger(
     ledger = json.loads((tmp_path / "futures_log.json").read_text(encoding="utf-8"))
     assert any(e["kind"] == "進場" for s in ledger["sessions"] for e in s["events"])    # 計畫帳照樣記下來
     assert fd.load_state("2026-10-30")["outbox"], "排隊中的訊號有存檔"
+
+
+def test_day_close_resends_pending_signals_then_sends_the_summary_with_the_delivery_note(monkeypatch, tmp_path):
+    from market_intel import cli
+    sent, results = _fake_cli(monkeypatch, tmp_path)
+    monkeypatch.setattr(cli, "_futures_settle", lambda: None)
+    _, st = fd.replay(TREND, CFG)                          # 一整天：有進場、收盤前全數出場
+    st["outbox"] = [{"text": "📈 台指期日內訊號 13:25（第 9 則）\n⏰ 收盤前出場", "ts": at("13:25").isoformat(), "tries": 1}]
+    st["failed"] = 1
+    cli._futures_day_close({"cfg": CFG, "st": st, "closes": []})
+    assert sent[0].startswith("🔁 補發") and "收盤前出場" in sent[0]                  # 先補發排隊中的
+    assert "計畫帳收盤" in sent[1] and "這一場有 1 則訊號曾推播失敗：已補發 1 則" in sent[1] and st["outbox"] == []
+    assert fd.load_closes("2026-10-31") == [TREND[-1][1]]                              # 日收盤照記
+
+
+def test_day_close_says_so_when_the_summary_itself_cannot_be_delivered(monkeypatch, tmp_path):
+    from market_intel import cli
+    sent, results = _fake_cli(monkeypatch, tmp_path)
+    monkeypatch.setattr(cli, "_futures_settle", lambda: None)
+    _, st = fd.replay(TREND, CFG)
+    results.extend([False] * 10)                           # 收盤彙總也送不出去
+    cli._futures_day_close({"cfg": CFG, "st": st, "closes": []})
+    assert len(st["outbox"]) == 1 and "計畫帳收盤" in st["outbox"][0]["text"] and fd.load_state("2026-10-30")["outbox"]      # 留在存檔，不是默默消失
+
+
+def test_night_close_resends_pending_signals_and_appends_the_delivery_note(monkeypatch, tmp_path):
+    now = datetime(2026, 11, 13, 5, 3, 0, tzinfo=TW_TZ)        # 夜盤 05:00 收盤後
+    sid, start, end = fd.night_session(datetime(2026, 11, 12, 20, 0, tzinfo=TW_TZ))
+    ticks = [["2026-11-12T23:59:55+08:00", 43891.0], ["2026-11-13T04:59:50+08:00", 43900.0]]
+    st0 = fd.new_day(sid)
+    st0.update(ticks=ticks, last_price=43900.0, entries=1, realized_pts=-30.0, failed=1,
+               outbox=[{"text": "🌙 舊訊號", "ts": "2026-11-13T04:40:00+08:00", "tries": 1}])
+    st, sent = None, None
+    import argparse
+    from market_intel import cli, notify
+    from market_intel.trade import futures_log
+    monkeypatch.setattr(fd, "STATE_PATH", tmp_path / "futures_day.json")
+    monkeypatch.setattr(futures_log, "LOG_PATH", tmp_path / "futures_log.json")
+    monkeypatch.setattr(futures_log, "MD_PATH", tmp_path / "futures_log.md")
+    times = iter([datetime(2026, 11, 13, 5, 0, 30, tzinfo=TW_TZ)])           # 啟動時還沒過收盤（05:02），進了迴圈才過
+    monkeypatch.setattr(cli, "now_tw", lambda: next(times, now))
+    monkeypatch.setattr(cli, "_futures_settle", lambda: None)
+    monkeypatch.setattr(cli.txf, "fetch", lambda night=False: None)
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text) or True)
+    fd.save_state(st0, session="night")
+    try:
+        cli.cmd_futures_night(argparse.Namespace(status=False, force=False, no_push=False, once=False, minutes=0, interval=1))
+    except SystemExit as e:
+        assert e.code == 10                                    # 這一場已結束
+    assert sent[0].startswith("🔁 補發") and "舊訊號" in sent[0]
+    assert "夜盤計畫帳收盤" in sent[1] and "已補發 1 則" in sent[1]
+    assert fd.load_state(sid, session="night")["finished"] is True
