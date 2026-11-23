@@ -5,8 +5,8 @@
 - 加碼：只有「盤面合格」（日內高低差已達 active_range_pct，真正行情）、而且已經獲利（價格在平均成本有利的一邊）、口數還沒到上限，
   兩種時機：①剛收完一根 5 分 K 拉回（做多＝收黑 K）而且那根 K 沒碰到平均成本（拉回加碼）；②價格又創日內新高／新低、比上一筆成交再多走 ext_add_pct
   （順勢加碼：使用者給的成交明細就是順著跌勢約每 14～55 點加空 1 口）。賠錢時絕不加碼。
-- 停損：跌破（做空則突破）平均成本一點點（stop_pct）就全出；但停損距離不窄於「近期報價平均跳動點數」的 stop_noise_mult 倍（停損窄過報價雜訊，
-  進場後下一筆就被洗出去：2026-11-23 11:25 做多試單 36,849、同一分鐘停損 36,788）；當日虧損達資金的 daily_loss_pct 也全出、當天不再做。
+- 停損：跌破（做空則突破）平均成本一點點（stop_pct）就全出；（實驗、預設關閉）stop_noise_mult＞0 時停損距離不窄於「近期報價平均跳動點數」的倍數
+  （2026-11-23 11:25 做多試單 36,849、同一分鐘停損 36,788：停損 55 點比報價雜訊還窄）；當日虧損達資金的 daily_loss_pct 也全出、當天不再做。
 - 出場：預設抱到快收盤才分批（exit_times：第一次出一半、第二次全出）；日線連漲／連跌 3 天以上的日子，
   5 分 K 振幅過大（bar_range_pct）或跳動過大（tick_jump_pct）就提早全出。出場一律用市價（範圍市價），不要掛限價。
 資料是每約 20 秒一筆的報價（期交所 MIS），5 分 K 由這些報價自己組。"""
@@ -36,7 +36,8 @@ DEFAULTS = {
     "bar_range_pct": 1.07,          # 斷頭日型：5 分 K 高低差 ≥ 此 %（原文 80 點）
     "tick_jump_pct": 0.27,          # 斷頭日型：相鄰兩筆報價跳動 ≥ 此 %（原文 20 點）
     "stop_pct": 0.15,               # 跌破平均成本多少 % 全出（原文只說依均價設停損，沒給數字：待交易明細校準）
-    "stop_noise_mult": 3.0,         # 停損距離不窄於「近期報價平均跳動點數」的幾倍（0＝關掉，只用 stop_pct）；原文：停損要留給行情足夠的回檔空間
+    "stop_noise_mult": 0.0,         # 實驗功能、預設關閉（0）：停損距離不窄於「近期報價平均跳動點數」的幾倍。開了會讓計畫帳從那天起換成另一套規則，
+                                    # 累計損益、勝率就不能和之前直接相加比較；要等累積幾天報價存檔（state/futures_ticks）離線重播比較後再決定要不要開
     "stop_noise_window": 60,        # 算報價雜訊用最近幾筆報價（約 20～40 分鐘）；不到 10 個間隔時不調整
     "daily_loss_pct": 3.0,          # 當日虧損上限（占資金 %）：原文 3～5%
     "entry_start": "09:00",         # 開盤前 15 分鐘先建立今日高低點
@@ -63,6 +64,16 @@ NIGHT = {
 }
 NIGHT_START, NIGHT_END = "15:00", "05:00"
 STATE_KEY = {"day": "today", "night": "night"}
+
+# 會改變訊號或損益的參數：每一場計畫帳記錄當時用的值（futures_log），中途改了報表要標出來，免得累計損益默默跨越兩套規則
+RULE_KEYS = ("stop_pct", "stop_noise_mult", "stop_noise_window", "active_range_pct", "early_trend_pct", "ext_add_pct", "ext_add_gap_sec",
+             "bar_range_pct", "tick_jump_pct", "daily_loss_pct", "entry_start", "entry_until", "exit_times", "max_entries",
+             "min_open_range_pct", "unit_lots", "max_lots", "contract_multiplier", "capital")
+
+
+def rules_snapshot(cfg: dict) -> dict:
+    """這一場用的規則參數（可存成 JSON）。"""
+    return {k: cfg.get(k) for k in RULE_KEYS}
 
 
 def _merge(base: dict, over: dict) -> dict:

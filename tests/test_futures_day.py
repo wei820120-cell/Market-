@@ -469,18 +469,23 @@ def _noisy_entry(cfg):
     return st, [s for s in sigs if s["kind"] == "進場"]
 
 
-def test_stop_is_never_narrower_than_the_quote_noise():
-    st, entry = _noisy_entry(CFG)
+def test_noise_floor_is_off_by_default_so_the_plan_ledger_stays_on_one_rule_set():
+    # 停損加寬會讓計畫帳從那天起換成另一套規則（累計損益、勝率不能和之前直接比），所以是實驗功能、預設關閉；config 也要是 0
+    assert fd.DEFAULTS["stop_noise_mult"] == 0 and fd.settings()["stop_noise_mult"] == 0 and fd.settings("night")["stop_noise_mult"] == 0
+    st, entry = _noisy_entry(CFG)                          # 預設：噪音大的盤也照舊用平均成本外 0.15%
+    assert st["stop_dist"] is None and "比 0.15% 寬" not in entry[0]["text"] and "，0.15%" in entry[0]["text"]
+    assert fd.step(st, at("09:06"), 20020, CFG)[0]["kind"] == "停損"                          # 舊行為
+
+
+def test_stop_is_never_narrower_than_the_quote_noise_when_the_experiment_is_on():
+    on = dict(CFG, stop_noise_mult=3.0)
+    st, entry = _noisy_entry(on)
     assert entry and "比 0.15% 寬" in entry[0]["text"] and 200 < st["stop_dist"] < 260       # 約 3 × 78 點，而不是 0.15%＝30 點
-    assert fd.step(st, at("09:06"), 20020, CFG) == []                                         # 回檔 80 點＝一筆報價的雜訊：不被洗出去
-    off = dict(CFG, stop_noise_mult=0.0)                                                      # 關掉：舊行為，窄停損一筆就被洗出去
-    st0, entry0 = _noisy_entry(off)
-    assert st0["stop_dist"] is None and "比 0.15% 寬" not in entry0[0]["text"]
-    assert fd.step(st0, at("09:06"), 20020, off)[0]["kind"] == "停損"
+    assert fd.step(st, at("09:06"), 20020, on) == []                                          # 回檔 80 點＝一筆報價的雜訊：不被洗出去
 
 
-def test_calm_market_keeps_the_plain_percentage_stop():
-    sigs, st = fd.replay(TREND, CFG)                      # 趨勢日（報價平滑）：雜訊下限不介入，停損仍是平均成本外 0.15%
+def test_experiment_on_still_keeps_the_plain_percentage_stop_in_a_calm_market():
+    sigs, st = fd.replay(TREND, dict(CFG, stop_noise_mult=3.0))      # 趨勢日（報價平滑）：雜訊下限不介入，停損仍是平均成本外 0.15%
     assert st["stop_dist"] is None and "，0.15%" in sigs[0]["text"] and "快市場會滑價" in sigs[0]["text"]
 
 
