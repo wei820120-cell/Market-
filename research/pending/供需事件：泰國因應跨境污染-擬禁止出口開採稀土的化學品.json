@@ -1,0 +1,597 @@
+{
+  "topic": "供需事件：泰國因應跨境污染　擬禁止出口開採稀土的化學品",
+  "one_line": "11/21（週六）泰國副總理 Yodchanan Wongsawat 宣布要封堵稀土開採用化學品流向緬甸與「其他相關國家」的出口（路透 11/22；The Diplomat 與搜尋摘要引述的另一篇報導稱出口與過境都在內；Bloomberg 只看到標題），起因是泰北 Kok、Sai、Ruak 河（湄公河支流）砷與重金屬偏高、美塞一帶 14 村自來水暫停，另擬把 Kok 河泰國段劃為污染管制區。這是「宣布計畫」，尚未生效：沒看到生效日、法源與品項清單（有報導稱國安會擬清單、請國防部宣告為管制邊境貨品、商務部收緊過境規則，各篇對部會分工說法不一）；泰、中、緬三方會談 11/24～26 舉行，結果還沒出來。對稀土供給的影響取決於「經泰國的化學品占多少」：查得到的唯一數字是 2023 年中國出口到緬甸的硫酸銨約 150 萬噸、草酸約 17.4 萬噸（Global Witness，NGO 轉述海關），多數化學品直接來自中國，沒有任何來源給出泰國過境占比，所以實際效果未知、可能偏小（推論）；且泰方研究稱 Kok 河以稀土為主、賽河以金礦為主，封堵稀土化學品不處理金礦。緬甸占中國稀土進口約 5～6.7 成（S&P 2025 年 52.8%、2024 年 59.5%；CSIS 約 57%；海關轉述約三分之二，口徑不同），離子吸附型重稀土礦實質只在中國與緬甸；供給主因仍是中國配額與 2025-04 起的出口許可制（暫停期延到 2027-01-10）、緬甸戰事與礦區易主、境外分離產能極小（Lynas 2026 Q1 鏑與鋱合計約 8 噸）；境外氧化鏑約為中國境內價的 4.6～5.1 倍（Fastmarkets 8/27）。台股沒有稀土開採或分離業者，只有回收與材料題材股（聯友金屬-創、閎暉、佳龍、光洋科、金益鼎），沒有營收連結。全部來自搜尋摘要；稀土價格與股價的反應查無可靠資料。",
+  "status": "混合",
+  "horizon": "短期（3個月內）",
+  "layers": [
+    {
+      "layer": "浸出化學品（硫酸銨、草酸等）供應與跨境流通——瓶頸在經泰國的占比與邊境管制能否落實",
+      "description": "離子吸附型礦用硫酸銨浸出、草酸沉澱（Global Witness 摘要）；多數化學品直接來自中國（2023 年中國出口到緬甸：硫酸銨約 150 萬噸、草酸約 17.4 萬噸）。泰國 11/21 宣布擬封堵出口與過境（計畫階段，沒有生效日、法源、清單；各報對國安會、國防部、商務部分工說法不一）。沒有任何來源給出經泰國的化學品占比。",
+      "global_players": [
+        "泰國國安會、國防部、商務部（政策方）",
+        "中國化學品出口商（本次未點名）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "緬甸離子吸附型稀土礦（克欽邦、撣邦）——重稀土原料來源，也是污染源頭",
+      "description": "緬甸占中國稀土進口約 5～6.7 成（口徑不同：S&P 2025 年 52.8%、2024 年 59.5%；CSIS 約 57%；海關轉述約三分之二）；離子吸附型礦實質只有中國與緬甸（>99%，Payne Institute 說明文，約 15 個月前）。克欽邦為核心礦帶（2024 年底 KIA 奪下主要礦鎮）；撣邦礦區近年擴張，路透稱中國支持的民兵保護新礦區。Kok、Sai、Ruak 河的砷與重金屬被連到撣邦的稀土與金礦開採。",
+      "global_players": [
+        "克欽獨立軍（KIA）",
+        "果敢族軍（TNLA）",
+        "聯合佤邦軍（UWSA）",
+        "中資礦場營運方（本次未點名）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "中國分離冶煉與出口許可——政策閥門，也是供給主因",
+      "description": "2025-04 起七種中重稀土（含鏑、鋱）出口許可制仍在；暫停期（原 11/10）延到 2027-01-10；境外氧化鏑 Rotterdam $1,250～1,675／公斤對中國 FOB $270～330（Fastmarkets 8/27），約 4.6～5.1 倍；2026 年至今沒有氧化鏑與氧化鋱出口到日本（中國海關）；開採配額多年零增長（單一來源）。",
+      "global_players": [
+        "中國商務部、海關總署",
+        "中國稀土分離與磁鐵廠（本次未點名）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "釹鐵硼磁鐵與下游（電動車、人形機器人、風電、國防、AI 資料中心散熱）——需求端",
+      "description": "鏑、鋱用來提升磁鐵的耐高溫性（搜尋摘要）；日本是中國以外最大的釹鐵硼磁鐵製造國（既有研究）；McKinsey 估 2035 年境外對鏑與鋱的供給仍不到需求的五分之一（搜尋摘要，單一來源）。臺灣沒有直接開採或分離稀土的公司；本次沒有讀到臺廠對重稀土磁鐵的採購或庫存資料。",
+      "global_players": [
+        "日本磁鐵製造商（未點名）",
+        "美日歐車廠與航太、國防業者（未點名）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "非中國供應與回收——替代來源（題材性）",
+      "description": "Lynas（澳洲礦、馬來西亞分離）：2026 Q1 鏑與鋱合計約 8 噸，設計最高 1,500 噸重稀土（單一來源；另一說 5,000 噸）；MP Materials：重稀土試產完成、目標 2026 年中開始（是否已開始未證實）；Iluka Eneabba：2027 年目標。台股只有回收與材料題材股，營收連結未確認（見第 9 節）。",
+      "global_players": [
+        "Lynas（澳洲）",
+        "MP Materials（美國）",
+        "Iluka（澳洲）"
+      ],
+      "tw_stocks": [
+        {
+          "code": "7610",
+          "name": "聯友金屬-創",
+          "role": "硬質合金廢料回收還原鎢、鈷（既有研究引述 2025-10 報導）；稀土只是題材，營收貢獻未確認",
+          "impact": "中性"
+        },
+        {
+          "code": "3311",
+          "name": "閎暉",
+          "role": "持有日本 FDK 45% 股權；FDK 在中國有稀土冶煉加工公司（既有研究引述報導）；題材性",
+          "impact": "中性"
+        },
+        {
+          "code": "9955",
+          "name": "佳龍",
+          "role": "貴稀金屬回收（既有研究引述報導）；題材性",
+          "impact": "中性"
+        },
+        {
+          "code": "1785",
+          "name": "光洋科",
+          "role": "靶材與貴金屬回收，近年題材偏釕與硬碟（既有研究引述報導）；題材性",
+          "impact": "中性"
+        },
+        {
+          "code": "8390",
+          "name": "金益鼎",
+          "role": "貴金屬回收；2026-07 報導稱將深化稀土與永磁回收技術（搜尋摘要，單一來源）；題材性",
+          "impact": "中性"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    "泰國",
+    "稀土",
+    "化學品出口",
+    "出口禁令",
+    "跨境污染",
+    "緬甸",
+    "撣邦",
+    "克欽邦",
+    "重稀土",
+    "鏑",
+    "鋱",
+    "硫酸銨",
+    "草酸",
+    "砷",
+    "Kok 河",
+    "國安會",
+    "三方會談",
+    "2027-01-10"
+  ],
+  "catalysts": [
+    "11/24～26 泰、中、緬三方會談的結果與中方回應",
+    "泰國國安會與國防部「管制邊境貨品」公告、化學品清單、生效日、是否含過境；商務部過境規則",
+    "中國海關每月自緬甸（與泰國）進口稀土的重稀土分項；撣邦礦場擴張的衛星影像報告",
+    "11/27 鎵鍺銻對美出口禁令暫停到期、2027-01-10 稀土出口管制暫停到期（既有研究）",
+    "氧化鏑與氧化鋱境內外價差；Lynas 與 MP 季報的重稀土產量"
+  ],
+  "risks": [
+    "全是搜尋摘要與標題；經濟日報與 Bloomberg 全文沒讀到，各篇對部會分工與措施細節說法不一",
+    "「宣布計畫」不等於「已生效」：沒有生效日、法源、清單；是否含過境各篇說法不一",
+    "泰國路徑占比沒有數字：多數化學品直接來自中國（Global Witness 2023 年總量），泰國封堵對克欽邦影響有限、對撣邦才可能有影響（推論）",
+    "緬甸占中國稀土進口約 5～6.7 成，口徑不同；2026 年最新月度資料沒查到",
+    "污染來源不是單一：賽河以金礦為主、Kok 河以稀土為主（泰方研究，搜尋摘要），封堵稀土化學品不處理金礦",
+    "與既有研究的境外鏑價倍數矛盾（15～20 倍對 4.6～5.1 倍），時間與口徑不同、未核對",
+    "價格與股價反應沒有可靠資料；只有一篇電子報稱 MP 跌 7.4%、歸因流動性，不採信",
+    "台股沒有直接曝險：概念股多為回收與材料題材，營收連結未確認；天弘化（7742）只查到興櫃登錄、不列入"
+  ],
+  "spec_tables": [
+    {
+      "title": "表：說法、來源與證據等級",
+      "columns": [
+        "說法",
+        "來源",
+        "證據等級",
+        "判讀"
+      ],
+      "rows": [
+        [
+          "「泰國擬禁止出口開採稀土的化學品」（經濟日報佇列標題，11/23 18:40）",
+          "路透 11/22（US News、The Star、Mining.com 轉載）、The Diplomat、The Star 11/21、Business Mirror（搜尋摘要）；Bloomberg 只看到標題（Digg 轉貼）",
+          "媒體報導（多篇一致）",
+          "事件是真的，但在「宣布計畫」階段、尚未生效：副總理 Yodchanan Wongsawat 11/21（週六）宣布要封堵稀土開採用化學品流向緬甸與「其他相關國家」的出口；The Diplomat 與搜尋摘要引述的另一篇報導（來源未指明）稱出口與過境都在內。沒看到生效日、法源、品項清單與罰則"
+        ],
+        [
+          "執行機制：走國安會（NSC）管道；有報導稱國安會擬出礦石處理化學品清單、請國防部宣告為「管制邊境貨品」，商務部收緊第三國貨物過境規則；自然資源與環境部長稱在檢討規定、避免衝擊其他產業",
+          "搜尋摘要引述的單篇報導，未指明是哪一篇（同次搜尋列出 The Star 11/21、Chiang Rai Times、Business Mirror）",
+          "媒體報導（細節單篇）",
+          "各搜尋摘要對部會分工說法不一（國安會、國防部、商務部；工業部有一份摘要提到、另一份查無）；清單沒公布；硫酸銨、草酸這類通用工業品範圍難劃（推論）"
+        ],
+        [
+          "泰、中、緬三方會談 11/24～26 舉行；泰方帶「砷指紋」證據，稱稀土是 Kok 河砷的主要貢獻、金礦是 Sai 河",
+          "Nation Thailand、路透（搜尋摘要）",
+          "媒體報導",
+          "本檔寫於會談前，結果沒有；中方對封堵化學品的回應沒查到"
+        ],
+        [
+          "污染：Kok、Sai、Ruak 河（湄公河支流）砷與重金屬偏高；美塞（Mae Sai）一帶 14 村自來水本月暫停；水廠砷約標準 30 倍、未處理的賽河水約飲用水標準 25 倍；泰國擬把 Kok 河泰國段劃為「污染管制區」",
+          "Al Jazeera 11/18、The Diplomat、路透（搜尋摘要）",
+          "媒體報導",
+          "污染事實多篇一致。來源不是單一：泰國大學研究者（搜尋摘要稱 Naresuan 大學）以化學指紋與衛星模型追溯，賽河含砷沉積物多來自緬甸金礦，Kok 河以稀土為主（Nation 摘要）——封堵稀土化學品只對 Kok 河來源對症，不處理金礦"
+        ],
+        [
+          "化學品多數來自中國：2023 年中國出口到緬甸的硫酸銨約 150 萬噸、草酸約 17.4 萬噸",
+          "Global Witness（搜尋摘要）",
+          "數據報告（NGO 轉述海關數字）",
+          "這是中國到緬甸的總量，不是泰國過境量；沒有任何來源給出經泰國的化學品占比，所以泰國封堵的實際效果未知、可能偏小（推論）；搜尋也找不到「化學品經美塞、大其力運入」的證據"
+        ],
+        [
+          "緬甸是中國稀土進口最大來源，約 5～6.7 成",
+          "S&P Global、CSIS、Stimson、Pulitzer Center（引海關）等（搜尋摘要）",
+          "數據報告（口徑不同）",
+          "見表三。口徑不同（總稀土對重稀土、噸數對金額、年度）；搜尋摘要稱 IEA 2026 報告因缺乏可靠儲量資料，沒把緬甸放進主圖（未指明篇章）"
+        ],
+        [
+          "重稀土（鏑、鋱）原料：離子吸附型礦實質只有中國與緬甸（>99%）；克欽邦是核心礦帶（2024 年底 KIA 奪下主要礦鎮、之後同意放行庫存）；撣邦礦區近年擴張，路透稱中國支持的民兵保護新礦區；Stimson 稱撣邦礦場首次出現在果敢族軍（TNLA）控制區",
+          "Payne Institute 說明文（約 15 個月前）、The Star 2025-03、路透（ThePrint）、Stimson 2026（搜尋摘要）",
+          "媒體報導、智庫",
+          "泰北污染對應的是撣邦礦區，克欽邦的化學品走中國邊境（推論）；泰國封堵對克欽邦影響有限"
+        ],
+        [
+          "中國管制背景：暫停期延到 2027-01-10；2025-04 的七種中重稀土許可制仍在；Rotterdam 氧化鏑 $1,250～1,675／公斤對中國 FOB $270～330（Fastmarkets 8/27）；氧化鋱 $4,200～5,000 對 $1,180～1,270；2026 年至今沒有氧化鏑與氧化鋱出口到日本（中國海關）",
+          "S&P Global 11/09、Fastmarkets（搜尋摘要）",
+          "數據報告",
+          "已在研究庫；本事件相對這些變數是小增量。與既有研究「境外鏑價約為境內 15～20 倍」矛盾（本輪來源約 4.6～5.1 倍），時間與口徑不同、未核對"
+        ],
+        [
+          "價格與股價反應",
+          "一篇電子報（搜尋摘要）",
+          "社群傳聞",
+          "該篇稱 MP Materials 當天跌 7.4%、稀土 ETF 年內 −42.6%，並歸因流動性而非緬甸新聞；沒有第二來源、不採信；稀土價格的反應查無可靠資料"
+        ]
+      ],
+      "note": "全是搜尋摘要與標題，網頁全文本輪讀不到；經濟日報與 Bloomberg 全文沒讀到；各報對部會分工與措施細節說法不一。「官方公告」等級一個都沒有：政府說法都是媒體轉述，沒看到公報、清單或條文。"
+    },
+    {
+      "title": "表：事件時間線",
+      "columns": [
+        "日期",
+        "事件",
+        "來源"
+      ],
+      "rows": [
+        [
+          "2025-06、2025-10",
+          "報導緬甸稀土開採被指造成泰國河流污染，並擴及更多泰國河流與下游社區",
+          "Mongabay（搜尋結果標題）"
+        ],
+        [
+          "2025-07",
+          "泰國內閣決議兩項措施，其中外交部與污染來源國（主要緬甸）談判、要求停止造成污染的採礦",
+          "Nation Thailand、Eco-Business（搜尋摘要）"
+        ],
+        [
+          "2026-04-29",
+          "AP 稿：稀土開採毒害湄公河支流，威脅「世界廚房」",
+          "WTOP 轉載（標題）"
+        ],
+        [
+          "2026-06",
+          "泰北居民遊行：「這是緊急狀況」",
+          "Mongabay（標題）"
+        ],
+        [
+          "2026-10",
+          "報導緬甸污染礦場經泰國公司把礦產賣到中國",
+          "Mongabay（標題）"
+        ],
+        [
+          "2026-11 上旬",
+          "美塞一帶 14 村自來水暫停；水廠檢出砷約標準 30 倍",
+          "Al Jazeera 11/18（搜尋摘要）"
+        ],
+        [
+          "11/17（二）",
+          "泰國國安會秘書長稱將組團隊查鄰國採礦污染來源",
+          "Nation Thailand（搜尋摘要）"
+        ],
+        [
+          "11/18（三）",
+          "學者（Mae Fah Luang 大學）呼籲管制緬甸礦產貿易，含採礦化學品與機具出口、查驗物質與最終買家",
+          "Nation Thailand（搜尋摘要）"
+        ],
+        [
+          "11/21（六）",
+          "副總理宣布要封堵稀土開採化學品出口；擬把 Kok 河泰國段劃為污染管制區",
+          "路透、The Diplomat（搜尋摘要）"
+        ],
+        [
+          "11/22（日）～11/23（一）",
+          "路透、Bloomberg、The Diplomat 等報導；經濟日報 11/23 18:40（佇列）",
+          "同上"
+        ],
+        [
+          "11/24（二）～11/26（四）",
+          "泰、中、緬三方會談；泰方帶砷指紋證據",
+          "Nation Thailand、路透（搜尋摘要）"
+        ],
+        [
+          "11/27（五）",
+          "鎵鍺銻對美出口禁令的暫停到期（中國另一條關鍵礦物的時鐘）",
+          "既有研究《川習會未解晶片僵局》"
+        ],
+        [
+          "2027-01-10",
+          "中國稀土出口管制暫停到期（原 2026-11-10）",
+          "既有研究；S&P Global（搜尋摘要）"
+        ]
+      ],
+      "note": "日期取自網址與搜尋摘要；三方會談地點、各部會公告的日期沒查到。"
+    },
+    {
+      "title": "表三：緬甸占中國稀土進口的各家說法（口徑不同，不能混用）",
+      "columns": [
+        "來源",
+        "數字",
+        "口徑",
+        "備註"
+      ],
+      "rows": [
+        [
+          "S&P Global",
+          "2025 年 52.8%、2024 年 59.5%（降 6.7 個百分點）",
+          "占中國稀土進口總量",
+          "搜尋摘要稱這是最具體的近期數字；摘要未指明是哪一篇"
+        ],
+        [
+          "CSIS（Baskaran）",
+          "去年約 57%",
+          "占中國稀土進口總量",
+          "搜尋摘要"
+        ],
+        [
+          "Stimson（引 Institute for Strategy and Policy）",
+          "近年 >60%",
+          "未說明",
+          "搜尋摘要"
+        ],
+        [
+          "Pulitzer Center（引海關）",
+          "2017～2024 年約三分之二",
+          "稀土進口",
+          "搜尋摘要"
+        ],
+        [
+          "搜尋摘要（引中國海關，未指明篇章）",
+          "2025 年前四個月近一半的重稀土原料來自緬甸",
+          "重稀土原料",
+          "口徑是重稀土、不是整體稀土"
+        ],
+        [
+          "SMM（引海關）",
+          "2026 年 1～5 月自東南亞進口的中重稀土礦明顯減少",
+          "中重稀土礦",
+          "只有趨勢、沒有數字；與泰國措施無關（11/21 之前）"
+        ]
+      ],
+      "note": "差異可能來自噸數對金額、哪些年份與品項；2026 年最新月度「緬甸占比」沒查到。"
+    },
+    {
+      "title": "表：擴產與稼動檢核",
+      "columns": [
+        "公司",
+        "瓶頸環節",
+        "現況稼動",
+        "擴產與資本支出",
+        "投產或放量時點",
+        "主要限制",
+        "證據等級"
+      ],
+      "rows": [
+        [
+          "緬甸克欽邦礦帶（KIA 控制）",
+          "離子吸附型礦的浸出與沉澱（需要化學品）",
+          "沒有可靠數據",
+          "沒有投資公告；2024 年底 KIA 奪下主要礦鎮後對中進口曾下滑，KIA 之後表示放行既有庫存出口（搜尋摘要）",
+          "沒有時點",
+          "化學品主要自中國經克欽邊界入境（推論；Global Witness 只給中國到緬甸的總量），泰國管制對克欽影響有限；緬甸軍方 2026-05 試圖北進奪回礦帶（搜尋摘要）",
+          "媒體報導、NGO 報告（搜尋摘要）"
+        ],
+        [
+          "緬甸撣邦新礦區（含果敢族軍 TNLA 控制區）",
+          "同上",
+          "沒有數據",
+          "搜尋摘要稱撣邦礦區五年平均擴張 48%、克欽 15%（出處未核對）；Stimson 稱礦場首次出現在 TNLA 控制區，路透稱中國支持的民兵保護新礦區",
+          "沒有時點",
+          "最貼近泰北污染源；若有化學品經泰國過境才受影響，占比沒有數字（推論）；礦區由武裝組織控制，管制很難落實",
+          "智庫與媒體；擴張幅度單一來源、未核對"
+        ],
+        [
+          "中國中重稀土開採配額（國內供給）",
+          "礦端配額",
+          "不適用",
+          "配額多年「零增長」（2026-07 臺灣媒體摘要，單一來源）",
+          "不適用",
+          "供給彈性低；2025-04 起七種中重稀土許可制，暫停期延到 2027-01-10",
+          "媒體報導（單一來源）"
+        ],
+        [
+          "Lynas（澳洲礦、馬來西亞分離）",
+          "重稀土分離（鏑、鋱、釤）",
+          "2026 Q1 鏑與鋱合計約 8 噸（搜尋摘要）",
+          "馬來西亞廠新增設備，設計最高 1,500 噸重稀土（單一來源；另一說 5,000 噸）",
+          "2025-05 首批商業氧化鏑；2026-03 氧化釤",
+          "礦石重稀土含量低，分析師質疑能放多大；設計值（重稀土）與 Q1 實際（只有鏑與鋱）口徑不同，不能直接相除",
+          "公司說法與媒體報導（搜尋摘要）"
+        ],
+        [
+          "MP Materials（美國）",
+          "重稀土分離",
+          "試產完成（搜尋摘要）",
+          "規劃年產 200 噸重稀土（鏑與鋱約 3：1）；支持 10X 磁鐵廠",
+          "目標 2026 年中開始（另一說 2026 年底前產出鋱與鏑；是否已開始未證實）",
+          "礦床中重稀土占比低於 1.8%",
+          "公司說法（搜尋摘要）"
+        ],
+        [
+          "Iluka Eneabba（澳洲）",
+          "稀土精煉",
+          "建設中",
+          "規劃年產 5,500 噸輕稀土、725 噸重稀土",
+          "目標 2027 年",
+          "尚未投產",
+          "公司說法（搜尋摘要）"
+        ],
+        [
+          "泰國（化學品出口與過境管制）",
+          "浸出化學品的流通路徑",
+          "不適用",
+          "不適用",
+          "沒有生效日（計畫階段）；三方會談 11/24～26 後才有進一步消息",
+          "品項清單、是否含過境、生效日、法源未公布；化學品多為通用工業品，部長稱要避免衝擊其他產業",
+          "媒體報導"
+        ]
+      ],
+      "note": "逐列檢查：稼動滿載卻沒擴廠——緬甸礦區沒有稼動資料；擴產但上游材料沒擴——Lynas、MP 的礦石重稀土含量低就是上游限制；產能被單一客戶專供——沒查證；設計產能不等於可出貨——Lynas 設計值與實際口徑差距大。McKinsey 估 2035 年境外對鏑與鋱的供給仍不到需求的五分之一（搜尋摘要，單一來源）。非中國公司的數字是公司說法與搜尋摘要，不是獨立數據。"
+    }
+  ],
+  "evolution": [],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "一行鏈：泰國封堵浸出化學品（硫酸銨、草酸等）的出口與過境 →（若有量經泰國）緬甸撣邦礦區的浸出藥劑供應受限 → 離子吸附型重稀土的混合稀土產出下降 → 中國分離廠的重稀土原料（鏑、鋱）減少 → 釹鐵硼磁鐵的耐高溫添加劑吃緊 → 電動車、人形機器人、風電、國防的馬達",
+        "瓶頸不在礦本身，而在「經泰國的化學品占多少」與「邊境管不管得住」，兩者都沒有數字；這條鏈每一環都是推論，沒有任何來源說明礦區產量因此下降",
+        "污染是另一條因果鏈：浸出與採礦（含金礦）→ 河水砷與重金屬 → 泰北供水與農漁業 → 政治壓力 → 管制化學品；泰國管的是輸入端，Kok 河以稀土為主、賽河以金礦為主（泰方研究）",
+        "離子吸附型礦實質只在中國與緬甸（>99%），重稀土原料沒有第三個大來源；Lynas、MP、Iluka 都在爬坡或建設"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "泰國政治與外交：泰北居民遊行、參議員與人民黨要求與中國談判、國安會組團隊、11/24～26 三方會談、Kok 河泰國段擬劃污染管制區",
+        "中國管制與美中：2025-04 七種中重稀土許可制仍在、暫停期延到 2027-01-10、鎵鍺銻暫停 11/27 到期；境外鏑與鋱價約為中國境內的 4～5 倍",
+        "礦區控制權與戰事：KIA、TNLA、UWSA 與中國支持的民兵；緬甸軍方 2026-05 試圖北進奪回克欽邦礦帶；撣邦新礦區擴張",
+        "需求：AI 資料中心散熱、人形機器人、電動車、風電與國防"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "供需缺口怎麼來的：重稀土缺口主因是中國配額多年零增長與 2025-04 起出口許可制、緬甸戰事與礦區易主讓進口波動、中國以外分離產能極小（Lynas 2026 Q1 鏑與鋱合計約 8 噸）；泰國封堵只是在原料端多加一個化學品供應風險，不是主因",
+        "慣性：缺貨往上游找瓶頸，瓶頸是緬甸礦區的浸出化學品與運輸；替代路徑是中國經雲南邊界直接供應（推論），封堵泰國這條不一定截得斷供給",
+        "痛點：硫酸銨、草酸是通用工業品，過境清單難劃，部長稱要避免衝擊其他產業；礦區在武裝組織控制下，邊境走私難查；泰國對中國與緬甸的槓桿有限",
+        "限制：還在計畫階段，沒有生效日、法源與清單；即使生效，到礦區產量變化還有庫存、替代路徑與時間差，海關統計也落後；沒有價格或進口量的反應資料",
+        "擴產與稼動檢核：見表；設計產能不等於可出貨（Lynas），MP 礦床重稀土占比低於 1.8%，Iluka 2027 年才投產；緬甸礦區沒有稼動資料",
+        "敘事陷阱自查：把宣布計畫當成已禁止；把泰國封堵等同切斷緬甸稀土供給；把污染事件當成稀土供需主因；混用不同口徑的緬甸占比；用單一電子報股價反應下結論；把台股回收題材股當成緬甸供給的受惠者；「這次不一樣」沒有證據；把設計產能當成可出貨"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷（條件式）：緬甸撣邦礦場營運方（若有化學品經泰國過境）；依賴中國重稀土原料的磁鐵與下游廠；泰國的合法化學品貿易",
+        "受惠（條件式）：非中國重稀土供應（Lynas、MP、Iluka，稀缺溢價，但本事件增量小）；泰北居民與湄公河下游社區（若管制有效）；台股回收與材料題材（題材性、無營收連結）",
+        "中性：台股稀土概念股的營收；中國經邊界直接供應化學品的路徑"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "看 11/24～26 三方會談結果與中方回應；泰國國安會與國防部公告的清單、生效日、是否含過境；商務部過境規則",
+        "看中國海關每月自緬甸與泰國進口稀土的重稀土分項、泰國與中國對緬甸的硫酸銨與草酸出口統計（泰國路徑占比）",
+        "看氧化鏑與氧化鋱境內外價差是否擴大；Lynas 與 MP 季報；撣邦礦場擴張的衛星影像報告",
+        "看台股回收題材股月營收與法說有沒有稀土相關營收（目前只有題材）"
+      ]
+    }
+  ],
+  "conclusion": [
+    "事件是真的但在計畫階段：11/21 副總理宣布要封堵稀土開採用化學品流向緬甸與其他相關國家的出口（報導稱含過境），沒有生效日、法源與清單；泰、中、緬三方會談 11/24～26 之後才有進一步消息。",
+    "對稀土供給的影響取決於經泰國的化學品占多少，這個數字查不到；多數化學品直接來自中國、克欽邦走中國邊境，泰國封堵可能偏象徵（推論）；重稀土供給的主因仍是中國配額與出口許可制、緬甸戰事與礦區易主、境外分離產能極小。",
+    "台股沒有稀土開採或分離業者，只有回收與材料題材股、沒有營收連結；接下來看三方會談、泰國公告、中國海關緬甸進口、氧化鏑與氧化鋱價差，以及 11/27 與 2027-01-10 兩個中國管制到期點。"
+  ],
+  "sources": [
+    {
+      "title": "經濟日報：泰國因應跨境污染 擬禁止出口開採稀土的化學品（佇列標題，2026-11-23 18:40；全文沒讀到）",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9nNzcza3BSNjlhYy1WSjZhQnhxZFE5VG1RX3NDNlJ1d0hVdTRPTFozRnNMZ01oUldlbG1Wd2d5djZwSXNlaHJUQlo2R0p1b0l2a2VGeEJnMDBKUdIBX0FVX3lxTE1nSG1XVkxCM2dFdjdlcmNYQnA1TkN2LUUzemZOSms5T243QkdLcDZCc1Jrd3JtbFdCOTBiQTg3MVFrWlZrN3UxRmxrWHNxTGxUdjA2MU51bGpvb1Z1Z3Jv?oc=5"
+    },
+    {
+      "title": "US News：Thailand Plans to Block Exports of Chemicals Used in Myanmar Rare Earth Mining（路透稿，2026-11-22；僅搜尋摘要）",
+      "url": "https://www.usnews.com/news/world/articles/2026-11-22/thailand-plans-to-block-exports-of-chemicals-used-in-myanmar-rare-earth-mining"
+    },
+    {
+      "title": "The Star：Thailand plans to block exports of chemicals used in Myanmar rare earth mining（路透稿轉載，2026-11-22；僅搜尋摘要）",
+      "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/11/22/thailand-plans-to-block-exports-of-chemicals-used-in-myanmar-rare-earth-mining"
+    },
+    {
+      "title": "Mining.com：Thailand plans to block exports of chemicals used in Myanmar rare earth mining（轉載；僅搜尋摘要）",
+      "url": "https://www.mining.com/web/thailand-plans-to-block-exports-of-chemicals-used-in-myanmar-rare-earth-mining/"
+    },
+    {
+      "title": "Digg：Thailand plans to stop exporting chemicals used in Myanmar's rare-earth mining（轉貼 Bloomberg 貼文，只看到標題）",
+      "url": "https://digg.com/world-business/t5kh04sa"
+    },
+    {
+      "title": "The Diplomat：Thailand to Ban Export of Mining Chemicals Believed Responsible For Crossborder River Contamination（2026-11；僅搜尋摘要）",
+      "url": "https://thediplomat.com/2026/11/thailand-to-ban-export-of-mining-chemicals-believed-responsible-for-crossborder-river-contamination"
+    },
+    {
+      "title": "The Star：Thailand targets toxic river pollution with rare-earth chemical restrictions and new safety measures（2026-11-21；僅搜尋摘要）",
+      "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/11/21/thailand-targets-toxic-river-pollution-with-rare-earth-chemical-restrictions-and-new-safety-measures"
+    },
+    {
+      "title": "Chiang Rai Times：Chiang Rai River Crisis Prompts Push to Ban Chemical Exports（僅搜尋摘要）",
+      "url": "https://www.chiangraitimes.com/chiang-rai/chiang-rai-chemical-exports/"
+    },
+    {
+      "title": "Business Mirror：Thailand plans to ban exports of chemicals（2026-11-22；僅搜尋摘要）",
+      "url": "https://businessmirror.com.ph/2026/11/22/thailand-plans-to-ban-exports-of-chemicals/"
+    },
+    {
+      "title": "Nation Thailand：Thailand to establish team to address pollution from Myanmar mines（2026-11-17；僅搜尋摘要）",
+      "url": "https://www.nationthailand.com/news/40073593"
+    },
+    {
+      "title": "Nation Thailand：Thailand urged to curb Myanmar mineral trade over river pollution（2026-11-18；僅搜尋摘要）",
+      "url": "https://www.nationthailand.com/news/40073651"
+    },
+    {
+      "title": "Nation Thailand：Thailand to present arsenic fingerprints at talks with Myanmar and China to curb mine pollution in Chiang Rai's rivers（僅搜尋摘要）",
+      "url": "https://www.nationthailand.com/news/general/40073812"
+    },
+    {
+      "title": "Nation Thailand：Cabinet advances 2 measures to tackle cross-border pollution in North（2025；僅搜尋結果標題）",
+      "url": "https://www.nationthailand.com/news/asean/40052610"
+    },
+    {
+      "title": "Al Jazeera：Myanmar-linked arsenic pollution prompts clean water scramble in Thailand（2026-11-18；僅搜尋摘要）",
+      "url": "https://www.aljazeera.com/news/2026/11/18/arsenic-pollution-linked-to-myanmar-mining-prompts-water-alert-in-thailand"
+    },
+    {
+      "title": "Bangkok Post：River-arsenic control plan advances, public confidence low（僅搜尋摘要）",
+      "url": "https://www.bangkokpost.com/thailand/general/3359296/riverarsenic-control-plan-advances-public-confidence-low"
+    },
+    {
+      "title": "Eco-Business：Arsenic keeps flowing into Thai rivers as China stays silent on mines（僅搜尋摘要）",
+      "url": "https://www.eco-business.com/news/arsenic-keeps-flowing-into-thai-rivers-as-china-stays-silent-on-mines/"
+    },
+    {
+      "title": "Mongabay：Rare earth rush in Myanmar blamed for toxic river spillover into Thailand（2025-06；標題由網址還原，僅搜尋結果列出）",
+      "url": "https://news.mongabay.com/2025/06/rare-earth-rush-in-myanmar-blamed-for-toxic-river-spillover-into-thailand/"
+    },
+    {
+      "title": "Mongabay：More Thai rivers and downstream communities at risk from Myanmar's rare earth mines（2025-10；標題由網址還原，僅搜尋結果列出）",
+      "url": "https://news.mongabay.com/2025/10/more-thai-rivers-and-downstream-communities-at-risk-from-myanmars-rare-earth-mines/"
+    },
+    {
+      "title": "WTOP：Rare earth mining is poisoning Mekong River tributaries, threatening the world's kitchen（AP 稿，2026-04；僅搜尋結果標題）",
+      "url": "https://wtop.com/world/2026/04/rare-earth-mining-is-poisoning-mekong-river-tributaries-threatening-the-worlds-kitchen/"
+    },
+    {
+      "title": "Mongabay：Northern Thai residents march for action on polluted rivers, this is an emergency（2026-06；標題由網址還原，僅搜尋結果列出）",
+      "url": "https://news.mongabay.com/2026/06/northern-thai-residents-march-for-action-on-polluted-rivers-this-is-an-emergency/"
+    },
+    {
+      "title": "Mongabay：Myanmar's polluting mines selling to China through Thai companies（2026-10；標題由網址還原，僅搜尋結果列出）",
+      "url": "https://news.mongabay.com/2026/10/myanmars-polluting-mines-selling-to-china-through-thai-companies/"
+    },
+    {
+      "title": "Global Witness：Fuelling the future, poisoning the present: Myanmar's rare earth boom（僅搜尋摘要）",
+      "url": "https://www.globalwitness.org/en/campaigns/natural-resource-governance/fuelling-the-future-poisoning-the-present-myanmars-rare-earth-boom/"
+    },
+    {
+      "title": "Stimson：Rare Earth Mining in Myanmar Expands to TNLA-Held Territory（2026；僅搜尋摘要）",
+      "url": "https://stimson.org/2026/rare-earth-mining-in-myanmar-expands-to-tnla-held-territory/"
+    },
+    {
+      "title": "ThePrint：Exclusive: China-backed militia secures control of new rare earth mines in Myanmar（路透獨家轉載；標題由網址還原，僅搜尋結果列出）",
+      "url": "https://theprint.in/world/exclusive-china-backed-militia-secures-control-of-new-rare-earth-mines-in-myanmar/2654904"
+    },
+    {
+      "title": "The Star：Myanmar rebel group allows export of rare earth inventories to China, sources say（2025-03-27；僅搜尋結果標題）",
+      "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2025/03/27/myanmar-rebel-group-allows-export-of-rare-earth-inventories-to-china-sources-say"
+    },
+    {
+      "title": "S&P Global：Myanmar's rare earths could serve as strategic hedge for India, experts（僅看到網址標題；搜尋摘要稱 52.8%／59.5% 出自 S&P，未指明篇章）",
+      "url": "https://www.spglobal.com/energy/en/news-research/latest-news/metals/062926-myanmars-rare-earths-could-serve-as-strategic-hedge-for-india-experts"
+    },
+    {
+      "title": "SMM：China's Rare Earth ore Imports Show Mixed Trends in H1 2026（僅搜尋摘要）",
+      "url": "https://news.metal.com/newscontent/103965527"
+    },
+    {
+      "title": "S&P Global：China extends rare earth export suspension to January 2027（2026-11-09；僅搜尋摘要）",
+      "url": "https://www.spglobal.com/energy/en/news-research/latest-news/metals/110926-china-extends-rare-earth-export-suspension-to-january-2027"
+    },
+    {
+      "title": "Fastmarkets：China's looming November export controls test rare earth refining, recycling ambitions（僅搜尋摘要；8/27 價格出處之一，未指明篇章）",
+      "url": "https://www.fastmarkets.com/insights/chinas-looming-november-export-controls-test-rare-earth-refining-recycling-ambitions/"
+    },
+    {
+      "title": "Mining.com：West scrambles to fill heavy rare earth gap as China rivalry deepens（僅搜尋摘要）",
+      "url": "https://www.mining.com/web/west-scrambles-to-fill-heavy-rare-earth-gap-as-china-rivalry-deepens"
+    },
+    {
+      "title": "SMM：MP Materials to Start Heavy Rare Earth Output by Mid-2026, Back 10X Magnet Facility（僅搜尋摘要）",
+      "url": "https://news.metal.com/newscontent/103646805-MP-Materials-to-Start-Heavy-Rare-Earth-Output-by-Mid-2026-Back-10X-Magnet-Facility"
+    },
+    {
+      "title": "Malay Mail：Lynas achieves rare earth milestone in Malaysia with first commercial dysprosium production（2025-05-23；標題由網址還原，僅搜尋結果列出）",
+      "url": "https://www.malaymail.com/news/money/2025/05/23/lynas-achieves-rare-earth-milestone-in-malaysia-with-first-commercial-dysprosium-production-challenging-chinas-dominance/177893"
+    },
+    {
+      "title": "Payne Institute：Explainer on the MP Materials–Department of Defense partnership（離子吸附型礦僅中國與緬甸 >99%，約 15 個月前；僅搜尋摘要）",
+      "url": "https://payneinstitute.mines.edu/explainer-on-the-mp-materials-department-of-defense-partnership/"
+    },
+    {
+      "title": "Yahoo 奇摩：稀土告別弱平衡!精礦飆漲 130%,AI 與軍工帶動「城市採礦」台廠供應鏈崛起（2026-07-29；僅搜尋摘要）",
+      "url": "https://n.yam.com/Article/20260729674480"
+    },
+    {
+      "title": "經濟日報：稀土國家隊 神助攻台鏈（僅搜尋摘要）",
+      "url": "https://money.udn.com/money/amp/story/5607/9566015"
+    },
+    {
+      "title": "聯合新聞網：緬甸稀土開採污染涉中資 泰議員籲政府與大陸協商（僅搜尋摘要）",
+      "url": "https://udn.com/news/story/6809/9884644"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 泰國擬封堵稀土開採化學品出口：計畫已宣布、尚未生效；效果取決於經泰國的化學品有多少，這個數字沒有人給\n\n> 資料說明：寫於 **2026-11-23 晚間（21:52 場）**。起因是佇列的經濟日報標題（11/23 18:40，政策管制）「泰國因應跨境污染 擬禁止出口開採稀土的化學品」，全文沒讀到。本檔用搜尋摘要比對到路透（11/22，多家轉載）、Bloomberg（只看到標題）、The Diplomat、The Star、Chiang Rai Times 與 Nation Thailand 系列報導。全部是搜尋摘要與標題（網頁全文本輪讀不到）；各篇對部會分工與措施細節說法不一，逐項標出。這是**政策事件，不是已發生的供給缺口**：產業鏈框架只部分適用，影響取決於一個沒有數字的比例（經泰國的化學品占多少）。\n\n## 1. 求證結果\n| 說法 | 來源 | 證據等級 | 判讀 |\n|---|---|---|---|\n| 「泰國擬禁止出口開採稀土的化學品」（經濟日報佇列標題，11/23 18:40） | 路透 11/22（US News、The Star、Mining.com 轉載）、The Diplomat、The Star 11/21、Business Mirror（搜尋摘要）；Bloomberg 只看到標題（Digg 轉貼） | 媒體報導（多篇一致） | 事件是真的，但在「宣布計畫」階段、尚未生效：副總理 Yodchanan Wongsawat 11/21（週六）宣布要封堵稀土開採用化學品流向緬甸與「其他相關國家」的出口；The Diplomat 與搜尋摘要引述的另一篇報導（來源未指明）稱出口與過境都在內。沒看到生效日、法源、品項清單與罰則 |\n| 執行機制：走國安會（NSC）管道；有報導稱國安會擬出礦石處理化學品清單、請國防部宣告為「管制邊境貨品」，商務部收緊第三國貨物過境規則；自然資源與環境部長稱在檢討規定、避免衝擊其他產業 | 搜尋摘要引述的單篇報導，未指明是哪一篇（同次搜尋列出 The Star 11/21、Chiang Rai Times、Business Mirror） | 媒體報導（細節單篇） | 各搜尋摘要對部會分工說法不一（國安會、國防部、商務部；工業部有一份摘要提到、另一份查無）；清單沒公布；硫酸銨、草酸這類通用工業品範圍難劃（推論） |\n| 泰、中、緬三方會談 11/24～26 舉行；泰方帶「砷指紋」證據，稱稀土是 Kok 河砷的主要貢獻、金礦是 Sai 河 | Nation Thailand、路透（搜尋摘要） | 媒體報導 | 本檔寫於會談前，結果沒有；中方對封堵化學品的回應沒查到 |\n| 污染：Kok、Sai、Ruak 河（湄公河支流）砷與重金屬偏高；美塞（Mae Sai）一帶 14 村自來水本月暫停；水廠砷約標準 30 倍、未處理的賽河水約飲用水標準 25 倍；泰國擬把 Kok 河泰國段劃為「污染管制區」 | Al Jazeera 11/18、The Diplomat、路透（搜尋摘要） | 媒體報導 | 污染事實多篇一致。來源不是單一：泰國大學研究者（搜尋摘要稱 Naresuan 大學）以化學指紋與衛星模型追溯，賽河含砷沉積物多來自緬甸金礦，Kok 河以稀土為主（Nation 摘要）——封堵稀土化學品只對 Kok 河來源對症，不處理金礦 |\n| 化學品多數來自中國：2023 年中國出口到緬甸的硫酸銨約 150 萬噸、草酸約 17.4 萬噸 | Global Witness（搜尋摘要） | 數據報告（NGO 轉述海關數字） | 這是中國到緬甸的總量，不是泰國過境量；沒有任何來源給出經泰國的化學品占比，所以泰國封堵的實際效果未知、可能偏小（推論）；搜尋也找不到「化學品經美塞、大其力運入」的證據 |\n| 緬甸是中國稀土進口最大來源，約 5～6.7 成 | S&P Global、CSIS、Stimson、Pulitzer Center（引海關）等（搜尋摘要） | 數據報告（口徑不同） | 見表三。口徑不同（總稀土對重稀土、噸數對金額、年度）；搜尋摘要稱 IEA 2026 報告因缺乏可靠儲量資料，沒把緬甸放進主圖（未指明篇章） |\n| 重稀土（鏑、鋱）原料：離子吸附型礦實質只有中國與緬甸（>99%）；克欽邦是核心礦帶（2024 年底 KIA 奪下主要礦鎮、之後同意放行庫存）；撣邦礦區近年擴張，路透稱中國支持的民兵保護新礦區；Stimson 稱撣邦礦場首次出現在果敢族軍（TNLA）控制區 | Payne Institute 說明文（約 15 個月前）、The Star 2025-03、路透（ThePrint）、Stimson 2026（搜尋摘要） | 媒體報導、智庫 | 泰北污染對應的是撣邦礦區，克欽邦的化學品走中國邊境（推論）；泰國封堵對克欽邦影響有限 |\n| 中國管制背景：暫停期延到 2027-01-10；2025-04 的七種中重稀土許可制仍在；Rotterdam 氧化鏑 $1,250～1,675／公斤對中國 FOB $270～330（Fastmarkets 8/27）；氧化鋱 $4,200～5,000 對 $1,180～1,270；2026 年至今沒有氧化鏑與氧化鋱出口到日本（中國海關） | S&P Global 11/09、Fastmarkets（搜尋摘要） | 數據報告 | 已在研究庫；本事件相對這些變數是小增量。與既有研究「境外鏑價約為境內 15～20 倍」矛盾（本輪來源約 4.6～5.1 倍），時間與口徑不同、未核對 |\n| 價格與股價反應 | 一篇電子報（搜尋摘要） | 社群傳聞 | 該篇稱 MP Materials 當天跌 7.4%、稀土 ETF 年內 −42.6%，並歸因流動性而非緬甸新聞；沒有第二來源、不採信；稀土價格的反應查無可靠資料 |\n\n## 2. 時間線\n| 日期 | 事件 | 來源 |\n|---|---|---|\n| 2025-06、2025-10 | 報導緬甸稀土開採被指造成泰國河流污染，並擴及更多泰國河流與下游社區 | Mongabay（搜尋結果標題） |\n| 2025-07 | 泰國內閣決議兩項措施，其中外交部與污染來源國（主要緬甸）談判、要求停止造成污染的採礦 | Nation Thailand、Eco-Business（搜尋摘要） |\n| 2026-04-29 | AP 稿：稀土開採毒害湄公河支流，威脅「世界廚房」 | WTOP 轉載（標題） |\n| 2026-06 | 泰北居民遊行：「這是緊急狀況」 | Mongabay（標題） |\n| 2026-10 | 報導緬甸污染礦場經泰國公司把礦產賣到中國 | Mongabay（標題） |\n| 2026-11 上旬 | 美塞一帶 14 村自來水暫停；水廠檢出砷約標準 30 倍 | Al Jazeera 11/18（搜尋摘要） |\n| 11/17（二） | 泰國國安會秘書長稱將組團隊查鄰國採礦污染來源 | Nation Thailand（搜尋摘要） |\n| 11/18（三） | 學者（Mae Fah Luang 大學）呼籲管制緬甸礦產貿易，含採礦化學品與機具出口、查驗物質與最終買家 | Nation Thailand（搜尋摘要） |\n| 11/21（六） | 副總理宣布要封堵稀土開採化學品出口；擬把 Kok 河泰國段劃為污染管制區 | 路透、The Diplomat（搜尋摘要） |\n| 11/22（日）～11/23（一） | 路透、Bloomberg、The Diplomat 等報導；經濟日報 11/23 18:40（佇列） | 同上 |\n| 11/24（二）～11/26（四） | 泰、中、緬三方會談；泰方帶砷指紋證據 | Nation Thailand、路透（搜尋摘要） |\n| 11/27（五） | 鎵鍺銻對美出口禁令的暫停到期（中國另一條關鍵礦物的時鐘） | 既有研究《川習會未解晶片僵局》 |\n| 2027-01-10 | 中國稀土出口管制暫停到期（原 2026-11-10） | 既有研究；S&P Global（搜尋摘要） |\n\n## 3. 數字口徑：緬甸占中國稀土進口\n| 來源 | 數字 | 口徑 | 備註 |\n|---|---|---|---|\n| S&P Global | 2025 年 52.8%、2024 年 59.5%（降 6.7 個百分點） | 占中國稀土進口總量 | 搜尋摘要稱這是最具體的近期數字；摘要未指明是哪一篇 |\n| CSIS（Baskaran） | 去年約 57% | 占中國稀土進口總量 | 搜尋摘要 |\n| Stimson（引 Institute for Strategy and Policy） | 近年 >60% | 未說明 | 搜尋摘要 |\n| Pulitzer Center（引海關） | 2017～2024 年約三分之二 | 稀土進口 | 搜尋摘要 |\n| 搜尋摘要（引中國海關，未指明篇章） | 2025 年前四個月近一半的重稀土原料來自緬甸 | 重稀土原料 | 口徑是重稀土、不是整體稀土 |\n| SMM（引海關） | 2026 年 1～5 月自東南亞進口的中重稀土礦明顯減少 | 中重稀土礦 | 只有趨勢、沒有數字；與泰國措施無關（11/21 之前） |\n\n## 4. 產業鏈因果（垂直）\n**一行鏈**：泰國封堵浸出化學品（硫酸銨、草酸等）的出口與過境 →（若有量經泰國）緬甸撣邦礦區的浸出藥劑供應受限 → 離子吸附型重稀土的混合稀土產出下降 → 中國分離廠的重稀土原料（鏑、鋱）減少 → 釹鐵硼磁鐵的耐高溫添加劑吃緊 → 電動車、人形機器人、風電、國防的馬達。**瓶頸不在礦本身**，而在「經泰國的化學品占多少」與「邊境管不管得住」，兩者目前都沒有數字；這條鏈每一環都是推論，沒有任何來源說明礦區產量因此下降。\n- **離子吸附型礦的做法**（Global Witness 摘要）：把硫酸銨經管線注入山體，稀土隨溶液流到山下的收集池，再用草酸處理沉澱；化學品的主要來源是中國。\n- **污染是另一條因果鏈**：浸出與採礦（含金礦）→ 河水砷與重金屬 → 泰北供水與農漁業 → 政治壓力 → 管制化學品。泰國管的是這條鏈的輸入端；泰方研究稱 Kok 河以稀土為主、賽河以金礦為主，所以只封稀土化學品不處理金礦。\n- **離子吸附型礦實質只在中國與緬甸**（>99%，Payne Institute 說明文，約 15 個月前），重稀土原料沒有第三個大來源；Lynas、MP、Iluka 都還在爬坡或建設。\n\n## 5. 相關推進力（水平）\n- **泰國政治與外交**：泰北居民遊行、參議員與人民黨要求與中國談判、國安會組團隊、11/24～26 三方會談；Kok 河泰國段擬劃為污染管制區；Bangkok Post 另提到 18 個月的攔沙壩試辦（搜尋摘要）。\n- **中國管制與美中**：2025-04 七種中重稀土許可制仍在、暫停期延到 2027-01-10、鎵鍺銻暫停 11/27 到期（既有研究）；境外鏑與鋱價約為中國境內的 4～5 倍。\n- **礦區控制權與戰事**：KIA、TNLA、UWSA 等武裝組織與中國支持的民兵；緬甸軍方 2026-05 試圖北進奪回克欽邦礦帶（搜尋摘要）；撣邦新礦區擴張。\n- **需求**：AI 資料中心散熱、人形機器人、電動車、風電與國防（搜尋摘要）。\n\n## 6. 慣性、痛點與限制（思辯）\n- **供需缺口怎麼來的**：重稀土（鏑、鋱）的缺口主因是——①中國配額多年零增長、2025-04 起出口許可制；②緬甸礦區戰事與易主讓進口波動；③中國以外的分離產能極小（Lynas 2026 Q1 鏑與鋱合計約 8 噸）。泰國這條只是在原料端多加一個「化學品供應」的風險，不是缺口的主因。\n- **慣性（缺貨往上游找瓶頸）**：往上游找，瓶頸是緬甸礦區的浸出化學品與運輸；替代路徑是中國經雲南邊界直接供應（推論），所以封堵泰國這一條不一定截得斷供給。\n- **痛點**：①硫酸銨、草酸是通用工業品（肥料、紡織等也用），過境清單難劃；自然資源與環境部長稱要避免衝擊其他產業；②礦區在武裝組織控制下，邊境走私難查；③泰國對中國與緬甸的槓桿有限（搜尋摘要稱泰國政府自己說對跨境礦場影響有限）。\n- **限制**：還在計畫階段，沒有生效日、法源與清單；即使生效，到礦區產量變化還有庫存、替代路徑與時間差，海關統計又落後（推論）；沒有任何價格或進口量的反應資料。\n- **擴產與稼動檢核**：見第 8 節。非中國重稀土分離的設計產能不等於可出貨（Lynas 設計值與實際口徑差距大）；MP 礦床重稀土占比低於 1.8%；Iluka 2027 年才投產。\n- **敘事陷阱自查**：①把「宣布計畫」當成「已禁止」（尚未生效、範圍未公布）；②把泰國封堵等同切斷緬甸稀土供給（化學品主要自中國來、克欽邦走中國邊境）；③把污染事件當成稀土供需的主因（供給主因是中國配額與出口許可制）；④混用不同口徑的「緬甸占中國進口 X%」；⑤用單一電子報的股價反應下結論；⑥把台股稀土概念股當成緬甸供給的受惠者（沒有營收連結）；⑦「這次不一樣」沒有證據；⑧把設計產能當成可出貨。\n\n## 7. 誰受惠、誰受傷（條件式推論）\n- **受傷**：緬甸撣邦的礦場營運方（若有化學品經泰國過境，成本與缺貨風險上升）；依賴中國重稀土原料的磁鐵與下游廠；泰國的合法化學品貿易（部長稱在檢討以免衝擊其他產業）。\n- **受惠**：非中國的重稀土供應（Lynas、MP、Iluka，稀缺溢價，但本事件的增量小、相對中國許可制與 2027-01-10 到期是次要變數）；泰北居民與下游湄公河社區（若管制有效，污染減少）；台股回收與材料題材（題材性，沒有營收連結）。\n- **中性**：台股稀土概念股的營收；中國經邊界直接供應化學品的路徑。\n\n## 8. 擴產與稼動檢核\n| 公司 | 瓶頸環節 | 現況稼動 | 擴產與資本支出 | 投產或放量時點 | 主要限制 | 證據等級 |\n|---|---|---|---|---|---|---|\n| 緬甸克欽邦礦帶（KIA 控制） | 離子吸附型礦的浸出與沉澱（需要化學品） | 沒有可靠數據 | 沒有投資公告；2024 年底 KIA 奪下主要礦鎮後對中進口曾下滑，KIA 之後表示放行既有庫存出口（搜尋摘要） | 沒有時點 | 化學品主要自中國經克欽邊界入境（推論；Global Witness 只給中國到緬甸的總量），泰國管制對克欽影響有限；緬甸軍方 2026-05 試圖北進奪回礦帶（搜尋摘要） | 媒體報導、NGO 報告（搜尋摘要） |\n| 緬甸撣邦新礦區（含果敢族軍 TNLA 控制區） | 同上 | 沒有數據 | 搜尋摘要稱撣邦礦區五年平均擴張 48%、克欽 15%（出處未核對）；Stimson 稱礦場首次出現在 TNLA 控制區，路透稱中國支持的民兵保護新礦區 | 沒有時點 | 最貼近泰北污染源；若有化學品經泰國過境才受影響，占比沒有數字（推論）；礦區由武裝組織控制，管制很難落實 | 智庫與媒體；擴張幅度單一來源、未核對 |\n| 中國中重稀土開採配額（國內供給） | 礦端配額 | 不適用 | 配額多年「零增長」（2026-07 臺灣媒體摘要，單一來源） | 不適用 | 供給彈性低；2025-04 起七種中重稀土許可制，暫停期延到 2027-01-10 | 媒體報導（單一來源） |\n| Lynas（澳洲礦、馬來西亞分離） | 重稀土分離（鏑、鋱、釤） | 2026 Q1 鏑與鋱合計約 8 噸（搜尋摘要） | 馬來西亞廠新增設備，設計最高 1,500 噸重稀土（單一來源；另一說 5,000 噸） | 2025-05 首批商業氧化鏑；2026-03 氧化釤 | 礦石重稀土含量低，分析師質疑能放多大；設計值（重稀土）與 Q1 實際（只有鏑與鋱）口徑不同，不能直接相除 | 公司說法與媒體報導（搜尋摘要） |\n| MP Materials（美國） | 重稀土分離 | 試產完成（搜尋摘要） | 規劃年產 200 噸重稀土（鏑與鋱約 3：1）；支持 10X 磁鐵廠 | 目標 2026 年中開始（另一說 2026 年底前產出鋱與鏑；是否已開始未證實） | 礦床中重稀土占比低於 1.8% | 公司說法（搜尋摘要） |\n| Iluka Eneabba（澳洲） | 稀土精煉 | 建設中 | 規劃年產 5,500 噸輕稀土、725 噸重稀土 | 目標 2027 年 | 尚未投產 | 公司說法（搜尋摘要） |\n| 泰國（化學品出口與過境管制） | 浸出化學品的流通路徑 | 不適用 | 不適用 | 沒有生效日（計畫階段）；三方會談 11/24～26 後才有進一步消息 | 品項清單、是否含過境、生效日、法源未公布；化學品多為通用工業品，部長稱要避免衝擊其他產業 | 媒體報導 |\n\n## 9. 台股：沒有直接曝險，只有題材\n- 搜尋摘要稱臺灣沒有直接開採或分離稀土的公司，稀土概念股多落在回收與應用端，另有部分與稀土無直接關聯的金屬股被歸入題材（單一整理，未核對）。\n- 既有研究《美中稀土停火協議展延兩個月》已列：聯友金屬-創（7610）、閎暉（3311）、佳龍（9955）、光洋科（1785）、金益鼎（8390），多為回收、靶材與貴金屬業務，題材熱度隨管制鬆緊起伏；本檔沿用並標中性，營收貢獻要看財報，本次沒有確認最新營收。\n- 天弘化（7742，康普子公司）曾被報導為「稀土國家隊」潛在成員，草酸是分離稀土的關鍵材料之一，但報導稱已不從事稀土提煉、主力轉向鈷產品；搜尋只查到 2024-07 登錄興櫃，沒查到上櫃資料，**不列入個股**。\n- 工研院與金屬中心推動「稀土國家隊」、與日本愛知製鋼簽備忘錄（輕稀土磁石射出成形）（搜尋摘要）：是技術與回收題材，不是緬甸供給。\n- 下游馬達與機器人供應鏈可能間接受重稀土價格影響，本次沒有讀到臺廠對重稀土磁鐵的採購與庫存資料，不列入個股。\n\n## 10. 和既有研究對照（舉一反三）\n- **《美中稀土停火協議展延兩個月》**：同一條鏈的政策端（中國許可制與 2027-01-10 到期）；本檔補上緬甸原料端的泰國封堵。**矛盾**：既有研究記「境外鏑價約為境內 15～20 倍」，本輪 Fastmarkets 8/27 摘要約 4.6～5.1 倍，時間與口徑不同、未核對。\n- **《川習會未解晶片僵局》**：北京反制牌（稀土許可制、鎵鍺銻 11/27 到期）；泰國這件不是中國的牌，而是泰國為污染採取的措施，但會碰到中國的稀土原料鏈。\n\n## 11. 風險與矛盾\n- **全是搜尋摘要與標題**：經濟日報與 Bloomberg 全文沒讀到；各篇對部會分工與措施細節說法不一（國安會、國防部、商務部、工業部）。\n- **「宣布計畫」不等於「已生效」**：沒有生效日、法源、清單；是否含過境，各篇說法不一（Eco-Business 摘要稱不清楚是否影響過境轉口貨物）。\n- **泰國路徑占比沒有數字**：多數化學品直接來自中國（Global Witness 2023 年總量），泰國封堵對克欽邦影響有限、對撣邦才可能有影響（推論）。\n- **口徑不同**：緬甸占中國稀土進口約 5～6.7 成；2026 年最新月度資料沒查到。\n- **污染來源不是單一**：賽河以金礦為主、Kok 河以稀土為主（泰方研究，搜尋摘要）。\n- **與既有研究的鏑價倍數矛盾**（15～20 倍對 4.6～5.1 倍）未核對。\n- **價格與股價反應沒有可靠資料**：只有一篇電子報稱 MP 跌 7.4%、歸因流動性，不採信。\n- **台股沒有直接曝險**：概念股多為回收與材料題材，營收連結未確認。\n\n## 12. 要追蹤的時間點\n- 11/24～26 泰、中、緬三方會談的結果與中方回應；泰國國安會與國防部「管制邊境貨品」公告、化學品清單、生效日、是否含過境；商務部過境規則。\n- 中國海關每月自緬甸（與泰國）進口稀土的重稀土分項；撣邦礦場數量與擴張（Global Witness、Stimson 的衛星影像報告）。\n- 泰國與中國對緬甸的硫酸銨、草酸出口統計：看泰國路徑占比。\n- 氧化鏑與氧化鋱的境內外價差是否擴大（Fastmarkets、SMM）；Lynas 與 MP 季報的重稀土產量。\n- 11/27 鎵鍺銻暫停到期、2027-01-10 稀土暫停到期；聯友金屬-創、閎暉、佳龍、光洋科、金益鼎月營收與法說是否出現稀土相關營收。\n\n## 資料來源\n- [經濟日報：泰國因應跨境污染 擬禁止出口開採稀土的化學品（佇列標題，2026-11-23 18:40；全文沒讀到）](https://news.google.com/rss/articles/CBMiWkFVX3lxTE9nNzcza3BSNjlhYy1WSjZhQnhxZFE5VG1RX3NDNlJ1d0hVdTRPTFozRnNMZ01oUldlbG1Wd2d5djZwSXNlaHJUQlo2R0p1b0l2a2VGeEJnMDBKUdIBX0FVX3lxTE1nSG1XVkxCM2dFdjdlcmNYQnA1TkN2LUUzemZOSms5T243QkdLcDZCc1Jrd3JtbFdCOTBiQTg3MVFrWlZrN3UxRmxrWHNxTGxUdjA2MU51bGpvb1Z1Z3Jv?oc=5)\n- [US News：Thailand Plans to Block Exports of Chemicals Used in Myanmar Rare Earth Mining（路透稿，2026-11-22；僅搜尋摘要）](https://www.usnews.com/news/world/articles/2026-11-22/thailand-plans-to-block-exports-of-chemicals-used-in-myanmar-rare-earth-mining)\n- [The Star：Thailand plans to block exports of chemicals used in Myanmar rare earth mining（路透稿轉載，2026-11-22；僅搜尋摘要）](https://www.thestar.com.my/aseanplus/aseanplus-news/2026/11/22/thailand-plans-to-block-exports-of-chemicals-used-in-myanmar-rare-earth-mining)\n- [Mining.com：Thailand plans to block exports of chemicals used in Myanmar rare earth mining（轉載；僅搜尋摘要）](https://www.mining.com/web/thailand-plans-to-block-exports-of-chemicals-used-in-myanmar-rare-earth-mining/)\n- [Digg：Thailand plans to stop exporting chemicals used in Myanmar's rare-earth mining（轉貼 Bloomberg 貼文，只看到標題）](https://digg.com/world-business/t5kh04sa)\n- [The Diplomat：Thailand to Ban Export of Mining Chemicals Believed Responsible For Crossborder River Contamination（2026-11；僅搜尋摘要）](https://thediplomat.com/2026/11/thailand-to-ban-export-of-mining-chemicals-believed-responsible-for-crossborder-river-contamination)\n- [The Star：Thailand targets toxic river pollution with rare-earth chemical restrictions and new safety measures（2026-11-21；僅搜尋摘要）](https://www.thestar.com.my/aseanplus/aseanplus-news/2026/11/21/thailand-targets-toxic-river-pollution-with-rare-earth-chemical-restrictions-and-new-safety-measures)\n- [Chiang Rai Times：Chiang Rai River Crisis Prompts Push to Ban Chemical Exports（僅搜尋摘要）](https://www.chiangraitimes.com/chiang-rai/chiang-rai-chemical-exports/)\n- [Business Mirror：Thailand plans to ban exports of chemicals（2026-11-22；僅搜尋摘要）](https://businessmirror.com.ph/2026/11/22/thailand-plans-to-ban-exports-of-chemicals/)\n- [Nation Thailand：Thailand to establish team to address pollution from Myanmar mines（2026-11-17；僅搜尋摘要）](https://www.nationthailand.com/news/40073593)\n- [Nation Thailand：Thailand urged to curb Myanmar mineral trade over river pollution（2026-11-18；僅搜尋摘要）](https://www.nationthailand.com/news/40073651)\n- [Nation Thailand：Thailand to present arsenic fingerprints at talks with Myanmar and China to curb mine pollution in Chiang Rai's rivers（僅搜尋摘要）](https://www.nationthailand.com/news/general/40073812)\n- [Nation Thailand：Cabinet advances 2 measures to tackle cross-border pollution in North（2025；僅搜尋結果標題）](https://www.nationthailand.com/news/asean/40052610)\n- [Al Jazeera：Myanmar-linked arsenic pollution prompts clean water scramble in Thailand（2026-11-18；僅搜尋摘要）](https://www.aljazeera.com/news/2026/11/18/arsenic-pollution-linked-to-myanmar-mining-prompts-water-alert-in-thailand)\n- [Bangkok Post：River-arsenic control plan advances, public confidence low（僅搜尋摘要）](https://www.bangkokpost.com/thailand/general/3359296/riverarsenic-control-plan-advances-public-confidence-low)\n- [Eco-Business：Arsenic keeps flowing into Thai rivers as China stays silent on mines（僅搜尋摘要）](https://www.eco-business.com/news/arsenic-keeps-flowing-into-thai-rivers-as-china-stays-silent-on-mines/)\n- [Mongabay：Rare earth rush in Myanmar blamed for toxic river spillover into Thailand（2025-06；標題由網址還原，僅搜尋結果列出）](https://news.mongabay.com/2025/06/rare-earth-rush-in-myanmar-blamed-for-toxic-river-spillover-into-thailand/)\n- [Mongabay：More Thai rivers and downstream communities at risk from Myanmar's rare earth mines（2025-10；標題由網址還原，僅搜尋結果列出）](https://news.mongabay.com/2025/10/more-thai-rivers-and-downstream-communities-at-risk-from-myanmars-rare-earth-mines/)\n- [WTOP：Rare earth mining is poisoning Mekong River tributaries, threatening the world's kitchen（AP 稿，2026-04；僅搜尋結果標題）](https://wtop.com/world/2026/04/rare-earth-mining-is-poisoning-mekong-river-tributaries-threatening-the-worlds-kitchen/)\n- [Mongabay：Northern Thai residents march for action on polluted rivers, this is an emergency（2026-06；標題由網址還原，僅搜尋結果列出）](https://news.mongabay.com/2026/06/northern-thai-residents-march-for-action-on-polluted-rivers-this-is-an-emergency/)\n- [Mongabay：Myanmar's polluting mines selling to China through Thai companies（2026-10；標題由網址還原，僅搜尋結果列出）](https://news.mongabay.com/2026/10/myanmars-polluting-mines-selling-to-china-through-thai-companies/)\n- [Global Witness：Fuelling the future, poisoning the present: Myanmar's rare earth boom（僅搜尋摘要）](https://www.globalwitness.org/en/campaigns/natural-resource-governance/fuelling-the-future-poisoning-the-present-myanmars-rare-earth-boom/)\n- [Stimson：Rare Earth Mining in Myanmar Expands to TNLA-Held Territory（2026；僅搜尋摘要）](https://stimson.org/2026/rare-earth-mining-in-myanmar-expands-to-tnla-held-territory/)\n- [ThePrint：Exclusive: China-backed militia secures control of new rare earth mines in Myanmar（路透獨家轉載；標題由網址還原，僅搜尋結果列出）](https://theprint.in/world/exclusive-china-backed-militia-secures-control-of-new-rare-earth-mines-in-myanmar/2654904)\n- [The Star：Myanmar rebel group allows export of rare earth inventories to China, sources say（2025-03-27；僅搜尋結果標題）](https://www.thestar.com.my/aseanplus/aseanplus-news/2025/03/27/myanmar-rebel-group-allows-export-of-rare-earth-inventories-to-china-sources-say)\n- [S&P Global：Myanmar's rare earths could serve as strategic hedge for India, experts（僅看到網址標題；搜尋摘要稱 52.8%／59.5% 出自 S&P，未指明篇章）](https://www.spglobal.com/energy/en/news-research/latest-news/metals/062926-myanmars-rare-earths-could-serve-as-strategic-hedge-for-india-experts)\n- [SMM：China's Rare Earth ore Imports Show Mixed Trends in H1 2026（僅搜尋摘要）](https://news.metal.com/newscontent/103965527)\n- [S&P Global：China extends rare earth export suspension to January 2027（2026-11-09；僅搜尋摘要）](https://www.spglobal.com/energy/en/news-research/latest-news/metals/110926-china-extends-rare-earth-export-suspension-to-january-2027)\n- [Fastmarkets：China's looming November export controls test rare earth refining, recycling ambitions（僅搜尋摘要；8/27 價格出處之一，未指明篇章）](https://www.fastmarkets.com/insights/chinas-looming-november-export-controls-test-rare-earth-refining-recycling-ambitions/)\n- [Mining.com：West scrambles to fill heavy rare earth gap as China rivalry deepens（僅搜尋摘要）](https://www.mining.com/web/west-scrambles-to-fill-heavy-rare-earth-gap-as-china-rivalry-deepens)\n- [SMM：MP Materials to Start Heavy Rare Earth Output by Mid-2026, Back 10X Magnet Facility（僅搜尋摘要）](https://news.metal.com/newscontent/103646805-MP-Materials-to-Start-Heavy-Rare-Earth-Output-by-Mid-2026-Back-10X-Magnet-Facility)\n- [Malay Mail：Lynas achieves rare earth milestone in Malaysia with first commercial dysprosium production（2025-05-23；標題由網址還原，僅搜尋結果列出）](https://www.malaymail.com/news/money/2025/05/23/lynas-achieves-rare-earth-milestone-in-malaysia-with-first-commercial-dysprosium-production-challenging-chinas-dominance/177893)\n- [Payne Institute：Explainer on the MP Materials–Department of Defense partnership（離子吸附型礦僅中國與緬甸 >99%，約 15 個月前；僅搜尋摘要）](https://payneinstitute.mines.edu/explainer-on-the-mp-materials-department-of-defense-partnership/)\n- [Yahoo 奇摩：稀土告別弱平衡!精礦飆漲 130%,AI 與軍工帶動「城市採礦」台廠供應鏈崛起（2026-07-29；僅搜尋摘要）](https://n.yam.com/Article/20260729674480)\n- [經濟日報：稀土國家隊 神助攻台鏈（僅搜尋摘要）](https://money.udn.com/money/amp/story/5607/9566015)\n- [聯合新聞網：緬甸稀土開採污染涉中資 泰議員籲政府與大陸協商（僅搜尋摘要）](https://udn.com/news/story/6809/9884644)\n",
+  "trigger": "2026-11-23 供需失衡（政策管制）：泰國因應跨境污染　擬禁止出口開採稀土的化學品 - 經濟日報\n泰國因應跨境污染　擬禁止出口開採稀土的化學品&nbsp;&nbsp;經濟日報\nhttps://news.google.com/rss/articles/CBMiWkFVX3lxTE9nNzcza3BSNjlhYy1WSjZhQnhxZFE5VG1RX3NDNlJ1d0hVdTRPTFozRnNMZ01oUldlbG1Wd2d5djZwSXNlaHJUQlo2R0p1b0l2a2VGeEJnMDBKUdIBX0FVX3lxTE1nSG1XVkxCM2dFdjdlcmNYQnA1TkN2LUUzemZOSms5T243QkdLcDZCc1Jrd3JtbFdCOTBiQTg3MVFrWlZrN3UxRmxrWHNxTGxUdjA2MU51bGpvb1Z1Z3Jv?oc=5"
+}
