@@ -2782,3 +2782,72 @@ def test_major_events_catches_leader_executive_exit_headlines(tmp_path, monkeypa
     assert cli.major_events(ev, {}, macro_rows=[]) == []        # 同一事件一天只推一次
     other = [NewsItem(source="Google", title="蘋果執行長庫克宣布請辭", summary="", url="http://x/3")]
     assert cli.major_events(other, {}, macro_rows=[]) == []      # 同一類別當天已推過
+
+
+def test_major_events_catches_leader_reinstatement_but_not_calls_or_rumors(tmp_path, monkeypatch):
+    """2026-11-23 21:56 黃仁勳復職：標題「黃仁勳回來了輝達宣布即刻復職…」舊規則只認離職字眼、沒命中；而且「龍頭高層異動」當天凌晨已推過、
+    同一事件一天只推一次，就算命中也會被擋。復職要獨立計額度、只看標題、要有「公司已宣布」的字眼；川普與貝森特的喊話、機率、可能性、傳聞這類
+    還沒發生的標題不算（也不能先用掉額度）。"""
+    from datetime import datetime
+    from market_intel import cli, notify, research
+    from market_intel.fetchers.news import NewsItem
+    from market_intel.utils import TW_TZ
+    now = datetime(2026, 11, 23, 22, 10, tzinfo=TW_TZ)
+    monkeypatch.setattr(cli, "now_tw", lambda: now)
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    monkeypatch.setattr(cli, "MAJOR_PATH", tmp_path / "major.json")
+    (tmp_path / "major.json").write_text('{"龍頭高層異動與治理風險|2026-11-23": 1}', encoding="utf-8")      # 11/23 凌晨已推過離職那條
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    not_yet = [NewsItem(source="Google", title=t, summary="輝達董事會宣布黃仁勳復職" if i == 0 else "", url=f"http://x/{i}") for i, t in enumerate([
+        "輝達股價盤前大漲",                                                                  # 只有摘要提到復職：只看標題，不算
+        "川普又發文挺黃仁勳呼籲董事會讓他回鍋對輝達和美國都是最好的",
+        "川普再次力挺黃仁勳籲輝達董事會重新聘回任執行長",
+        "川普深夜發文救黃仁勳點名輝達董事會回聘黃對美國最好",                                # 沒有「公司已宣布」的字眼
+        "貝森特黃仁勳能否重返輝達視責任歸屬再點名台灣晶片集中風險",
+        "川普貝森特都說話再添黃仁勳重返輝達可能性美股期貨電子盤反彈國際",
+        "黃仁勳溫情喊話願重掌兵符遭拒輝達首場無創辦人法說會淪接班角力戰",
+        "輝達董事會宣布無意讓黃仁勳復職",
+        "Polymarket看壞黃仁勳年底前回歸機率",
+        "Trump urges Nvidia board to rehire Huang"])]
+    assert cli.major_events(not_yet, {}, macro_rows=[]) == [] and sent == []                 # 離職那條今天已推過；復職這條一則都不該被這些用掉
+    real = [NewsItem(source="Google", title="黃仁勳回來了輝達宣布即刻復職股價狂飆逾30%", summary="", url="http://x/real")]
+    assert cli.major_events(real, {}, macro_rows=[]) == ["龍頭高層復職與治理反轉"]
+    assert sent[0][0] == "news" and "黃仁勳回來了" in sent[0][1] and "供需事件：龍頭企業高層復職對AI供應鏈的影響" in sent[0][1]
+    assert list((tmp_path / "queue").glob("*.json"))
+    more = [NewsItem(source="Google", title="輝達董事會恢復黃仁勳CEO職務", summary="", url="http://x/2"),
+            NewsItem(source="Google", title="Nvidia reinstates Jensen Huang as CEO", summary="", url="http://x/3")]
+    assert cli.major_events(more[:1], {}, macro_rows=[]) == ["龍頭高層復職與治理反轉"]      # 一天最多 3 則：第 2 則還能推
+    assert cli.major_events(more[1:], {}, macro_rows=[]) == ["龍頭高層復職與治理反轉"]      # 第 3 則
+    assert cli.major_events([NewsItem(source="Google", title="輝達宣布黃仁勳官復原職", summary="")], {}, macro_rows=[]) == []     # 超過額度
+
+
+def test_supply_shocks_still_tell_you_when_the_daily_research_budget_is_full(tmp_path, monkeypatch):
+    """11/16、17、18、20、21、23 的研究額度都在傍晚前用完，之後的新事件整天沒人知道（連通知都沒有）。額度滿了：不排研究，但仍通知（每天有上限）；
+    研究過或已在佇列的重複題材不通知。"""
+    from datetime import datetime
+    from market_intel import cli, notify, research
+    from market_intel.fetchers.news import NewsItem
+    from market_intel.utils import TW_TZ
+    monkeypatch.setattr(cli, "now_tw", lambda: datetime(2026, 11, 23, 21, 0, tzinfo=TW_TZ))
+    monkeypatch.setattr(research, "ROOT", tmp_path)
+    monkeypatch.setattr(research, "QUEUE_DIR", tmp_path / "queue")
+    monkeypatch.setattr(research, "INDEX_PATH", tmp_path / "index.json")
+    (tmp_path / "state").mkdir()
+    (tmp_path / "state" / "supply_shock.json").write_text('{"2026-11-23": 4}', encoding="utf-8")           # 18:40 就用完了
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append((channel, text)))
+    items = [NewsItem(source="鉅亨網", title="日本 MLCC 大廠工廠火災 停工兩週", summary="", codes=["2327"])]
+    listings = {"2327": {"name": "國巨"}}
+    assert cli.supply_shocks(items, listings, {}) == []                                   # 額度滿：不排研究
+    assert not (tmp_path / "queue").exists() or not list((tmp_path / "queue").glob("*.json"))
+    assert sent and sent[0][0] == "research" and "額度已滿" in sent[0][1] and "MLCC供需" in sent[0][1] and "火災" in sent[0][1]
+    import json
+    st = json.loads((tmp_path / "state" / "supply_shock.json").read_text(encoding="utf-8"))
+    assert st["2026-11-23"] == 4 and st["2026-11-23|over"] == 1
+    # 同一題材已在佇列／研究過：額度滿了也不再通知
+    research.queue_research("MLCC供需", "x")
+    sent.clear()
+    assert cli.supply_shocks([NewsItem(source="鉅亨網", title="國巨 MLCC 產線火災 停工", summary="", codes=["2327"])], listings, {}) == [] and sent == []

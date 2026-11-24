@@ -6,7 +6,7 @@ import json
 from market_intel.trade import futures_day as fd
 from market_intel.trade import futures_log as fl
 
-from test_futures_day import CFG, TREND, at   # noqa: E402  同資料夾的測試共用模擬報價
+from test_futures_day import CFG, NIGHT_CFG, TREND, at   # noqa: E402  同資料夾的測試共用模擬報價
 
 
 def _run(session="night"):
@@ -104,3 +104,80 @@ def test_load_tolerates_missing_or_broken_file(tmp_path):
     (tmp_path / "futures_log.json").write_text("{壞掉", encoding="utf-8")
     assert fl.load(p) == {"sessions": []}
     assert json.loads(json.dumps(fl.load(p))) == {"sessions": []}
+
+
+# ---------------------------------------------------------------- 規則參數隨場次記錄；中途改規則，報表要標出來（累計損益不能默默跨越兩套規則）
+
+def _record_day(p, day, cfg, finished=True):
+    st, batches, _ = _run()
+    st["date"] = day
+    for b in batches:
+        fl.record(st, b, cfg, "day", p)
+    fl.refresh(st, cfg, "day", finished, p)
+    return st
+
+
+def test_sessions_record_the_rule_parameters_they_ran_with(tmp_path):
+    p = tmp_path / "futures_day.json"
+    _record_day(p, "2026-10-30", dict(CFG))
+    r = fl.load(p)["sessions"][0]["rules"]
+    assert r["stop_pct"] == 0.15 and r["stop_noise_mult"] == 0 and r["exit_times"] == ["13:10", "13:25"] and r["max_entries"] == 2
+
+
+def test_report_is_untouched_when_the_rules_never_change(tmp_path):
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    p = tmp_path / "futures_day.json"
+    _record_day(p, "2026-10-30", dict(CFG))
+    _record_day(p, "2026-11-02", dict(CFG))
+    data = fl.load(p)
+    assert fl.rule_changes(data) == [] and len(fl.segments(data)) == 1
+    md = (tmp_path / "futures_log.md").read_text(encoding="utf-8")
+    assert "規則參數" not in md and "各段小計" not in md
+    assert "規則參數" not in fl.performance_text(data, datetime(2026, 11, 3, tzinfo=ZoneInfo("Asia/Taipei")))
+    legacy = {"sessions": [{"date": "2026-11-04", "session": "day", "source": "補錄", "events": [], "summary": {"entries": 1, "pts": -10, "twd": -100}},
+                           {"date": "2026-11-05", "session": "day", "events": [], "summary": {"entries": 1, "pts": 5, "twd": 50}, "rules": {"stop_pct": 0.15}}]}
+    assert fl.rule_changes(legacy) == []          # 舊場次沒記規則、之後只有一種記錄的規則：不憑空判定「改過」
+
+
+def test_report_flags_a_mid_stream_rule_change_and_splits_the_subtotals(tmp_path):
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    p = tmp_path / "futures_day.json"
+    _record_day(p, "2026-10-30", dict(CFG))
+    _record_day(p, "2026-11-02", dict(CFG, stop_noise_mult=3.0))
+    data = fl.load(p)
+    ch = fl.rule_changes(data)
+    assert len(ch) == 1 and ch[0]["date"] == "2026-11-02" and ch[0]["changes"] == [("stop_noise_mult", 0.0, 3.0)]
+    segs = fl.segments(data)
+    assert [g["from"] for g in segs] == ["2026-10-30", "2026-11-02"] and sum(g["n"] for g in segs) == fl.stats(data)["n"] == 2
+    md = (tmp_path / "futures_log.md").read_text(encoding="utf-8")
+    assert "規則參數在中途改過" in md and "2026-11-02 日盤起：stop_noise_mult 0.0→3.0" in md
+    assert "第 1 段（2026-10-30 起）" in md and "第 2 段（2026-11-02 起）" in md
+    txt = fl.performance_text(data, datetime(2026, 11, 3, tzinfo=ZoneInfo("Asia/Taipei")))
+    assert "規則參數在 11/02 日盤起改過（stop_noise_mult 0.0→3.0）" in txt
+
+
+def _record_night(p, day_id, cfg):
+    st, batches, _ = _run()
+    st["date"] = day_id
+    for b in batches:
+        fl.record(st, b, cfg, "night", p)
+    fl.refresh(st, cfg, "night", True, p)
+
+
+def test_day_and_night_have_different_rules_by_design_and_are_never_flagged_against_each_other(tmp_path):
+    p = tmp_path / "futures_day.json"
+    for day in ("2026-10-30", "2026-11-02", "2026-11-03"):
+        _record_day(p, day, dict(CFG))                                   # 日盤規則
+        _record_night(p, day + "N", dict(NIGHT_CFG))                     # 夜盤本來就用不同的時段與門檻
+    data = fl.load(p)
+    assert data["sessions"][0]["rules"] != data["sessions"][1]["rules"]    # 日盤與夜盤的規則參數確實不同
+    assert fl.rule_changes(data) == [] and len(fl.segments(data)) == 1
+    assert "規則參數" not in (tmp_path / "futures_log.md").read_text(encoding="utf-8")
+    _record_day(p, "2026-11-04", dict(CFG, stop_pct=0.3))                # 只有日盤改了規則
+    _record_night(p, "2026-11-04N", dict(NIGHT_CFG))
+    ch = fl.rule_changes(fl.load(p))
+    assert [(c["date"], c["session"]) for c in ch] == [("2026-11-04", "日盤")] and ch[0]["changes"] == [("stop_pct", 0.15, 0.3)]
+    segs = fl.segments(fl.load(p))
+    assert [g["from"] for g in segs] == ["2026-10-30", "2026-11-04"] and [g["n"] for g in segs] == [6, 2]      # 切點日當天的日盤與夜盤都歸新的一段

@@ -24,6 +24,7 @@ import json
 import logging
 import os
 import re
+import time
 
 import requests
 
@@ -198,32 +199,87 @@ def _post_message(token: str, chat: str, part: str) -> requests.Response:
                          json={"chat_id": chat, "text": part, "disable_web_page_preview": True}, timeout=10)
 
 
-def send(text: str, channel: str = "market") -> None:
+_sleep = time.sleep           # 測試時換掉，不要真的等
+RETRY_DELAYS = (2.0, 6.0)     # 暫時性錯誤（逾時、連線失敗、429、5xx）最多再試 2 次，每次之前等幾秒
+MAX_RETRY_AFTER = 20.0        # Telegram 429 指定要等的秒數超過這個就不在這裡卡住：回報失敗、交給呼叫端稍後重送
+
+
+def _retry_after(r: requests.Response) -> float | None:
+    """Telegram 429 會在 JSON 的 parameters.retry_after 指定要等幾秒。"""
+    try:
+        v = (r.json().get("parameters") or {}).get("retry_after")
+        return float(v) if v is not None else None
+    except (ValueError, TypeError, AttributeError):
+        return None
+
+
+def _post_retry(token: str, chat: str, part: str, channel: str) -> requests.Response | None:
+    """送一則訊息。暫時性錯誤（逾時、連線失敗、429、5xx）依 RETRY_DELAYS 重試，不再「一次失敗就丟掉」
+    （2026-11-23 日盤微台的停損訊息就是這樣不見的：帳已經動了、使用者沒收到）。
+    回傳最後一次的 Response；每次都連線失敗回 None。429 指定的等待超過 MAX_RETRY_AFTER 就不等、直接回傳。"""
+    r = None
+    for i in range(len(RETRY_DELAYS) + 1):
+        wait = RETRY_DELAYS[i] if i < len(RETRY_DELAYS) else None       # None＝這是最後一次嘗試
+        try:
+            r = _post_message(token, chat, part)
+        except requests.RequestException as e:
+            r = None
+            log.warning("Telegram（%s）推播失敗：%s（第 %d 次%s）", channel, type(e).__name__, i + 1,
+                        "，稍後重試" if wait is not None else "，放棄")      # 不印例外內容：會帶出含金鑰的網址
+        else:
+            if r.ok or not (r.status_code == 429 or r.status_code >= 500):
+                return r
+            ra = _retry_after(r) if r.status_code == 429 else None
+            if ra is not None and ra > MAX_RETRY_AFTER:
+                log.warning("Telegram（%s）要求等 %.0f 秒（429），超過 %.0f 秒不在這裡等", channel, ra, MAX_RETRY_AFTER)
+                return r
+            if ra is not None and wait is not None:
+                wait = ra + 1
+            log.warning("Telegram（%s）暫時失敗（%s，第 %d 次%s）", channel, r.status_code, i + 1,
+                        "，稍後重試" if wait is not None else "，放棄")
+        if wait is None:
+            break
+        _sleep(wait)
+    return r
+
+
+def send(text: str, channel: str = "market") -> bool:
+    """推播；一定會印在終端機。回傳 True＝送到了（或根本沒設定要送去哪）、False＝有設定的管道送失敗（已重試過）。
+
+    有設定 Telegram 就只看 Telegram 的結果；沒設定 Telegram 才看 Discord（免得 Discord 失敗讓呼叫端重送、Telegram 收到兩次）。
+    一則訊息切成多段時只要有一段失敗就回 False；重送會讓前面成功的段落重複，所以要靠重送保證送達的訊息請不要超過 4000 字。"""
     print(text, flush=True)
+    ok: bool | None = None                      # None＝沒有任何管道可送
     token, chat = _telegram(channel)
     if token and chat:
+        ok = True
         alts = _fallbacks(channel)
         for part in _chunks(text):
-            try:
-                r = _post_message(token, chat, part)
-                while not r.ok and r.status_code in (401, 404) and alts:
-                    # 金鑰無效（404＝金鑰格式不對或機器人不存在，401＝金鑰已被 revoke）：改用備援機器人送，訊號不要掉
-                    log.warning("Telegram（%s）金鑰無效（%s %s），這則改用備援機器人送出——請檢查 TELEGRAM_%s_BOT_TOKEN 這個 Secret",
-                                channel, r.status_code, r.text[:80], channel.upper())
-                    token, chat = alts.pop(0)
-                    r = _post_message(token, chat, part)
-                if not r.ok:
-                    # 常見原因：Chat ID 填錯、還沒對機器人按 Start
-                    log.warning("Telegram（%s）推播被拒：%s %s", channel, r.status_code, r.text[:200])
-            except requests.RequestException as e:
-                log.warning("Telegram（%s）推播失敗：%s", channel, type(e).__name__)      # 不印例外內容：會帶出含金鑰的網址
+            r = _post_retry(token, chat, part, channel)
+            while r is not None and not r.ok and r.status_code in (401, 404) and alts:
+                # 金鑰無效（404＝金鑰格式不對或機器人不存在，401＝金鑰已被 revoke）：改用備援機器人送，訊號不要掉
+                log.warning("Telegram（%s）金鑰無效（%s %s），這則改用備援機器人送出——請檢查 TELEGRAM_%s_BOT_TOKEN 這個 Secret",
+                            channel, r.status_code, r.text[:80], channel.upper())
+                token, chat = alts.pop(0)
+                r = _post_retry(token, chat, part, channel)
+            if r is None:
+                ok = False                      # 連線一直失敗（警告已記）
+            elif not r.ok:
+                # 常見原因：Chat ID 填錯、還沒對機器人按 Start
+                log.warning("Telegram（%s）推播被拒：%s %s", channel, r.status_code, r.text[:200])
+                ok = False
     hook = _discord(channel)
     if hook:
+        discord_ok = True
         for part in _chunks(text, 1900):
             try:
                 requests.post(hook, json={"content": part}, timeout=10)
             except requests.RequestException as e:
                 log.warning("Discord 推播失敗：%s", e)
+                discord_ok = False
+        if ok is None:
+            ok = discord_ok
+    return ok is not False
 
 
 def _photo_ok(path) -> bool:
