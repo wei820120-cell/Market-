@@ -645,15 +645,7 @@ def cmd_realtime(args) -> None:
         time.sleep(interval)
     if fd:
         try:
-            from .trade import futures_day
-            summary = futures_day.finish_day(fd["st"], fd["cfg"])
-            from .trade import futures_log
-            if summary:
-                futures_log.safe(futures_log.refresh, fd["st"], fd["cfg"], "day")
-                # 累計損益只在「全數出場」那則附一次；收盤時已經空手就不再重複，還有未平倉（沒有全出訊號）才附
-                pnl = futures_log.pnl_line(fd["st"], fd["cfg"], "day") if fd["st"]["lots"] else ""
-                notify.send(f"📈 台指期日內計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else ""), channel=FUTURES_CHANNEL)
-            _futures_settle()          # 當天沒進場也檢查：月初第一個收盤就把上個月結算掉
+            _futures_day_close(fd)
         except Exception as e:  # noqa: BLE001
             log.warning("台指期日內收盤記錄失敗：%s", e)
 
@@ -675,17 +667,68 @@ def _futures_day_setup() -> dict | None:
     return {"cfg": cfg, "st": futures_day.load_state(day), "closes": futures_day.load_closes(day)}
 
 
-def _futures_day_check(fd: dict, now: datetime) -> None:
+def _futures_day_close(fd: dict) -> None:
+    """日盤收盤：最後一次補發之前推播失敗的訊號、記日收盤、推計畫帳彙總（附推播狀況）、月初結算。"""
     from .trade import futures_day, futures_log
-    q = txf.fetch()
+    st, cfg = fd["st"], fd["cfg"]
+    futures_day.outbox_flush(st, _futures_send)          # 收盤前最後一次補發之前推播失敗的訊號
+    summary = futures_day.finish_day(st, cfg)
+    note = futures_day.delivery_note(st)
+    stamp = now_tw().isoformat(timespec="seconds")
+    if summary:
+        futures_log.safe(futures_log.refresh, st, cfg, "day")
+        # 累計損益只在「全數出場」那則附一次；收盤時已經空手就不再重複，還有未平倉（沒有全出訊號）才附
+        pnl = futures_log.pnl_line(st, cfg, "day") if st["lots"] else ""
+        futures_day.outbox_push(st, f"📈 台指期日內計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else "") + (f"\n{note}" if note else ""), stamp, _futures_send)
+    elif note:          # 沒跑到收盤附近、沒有彙總，但有訊號曾推播失敗：至少講一聲
+        futures_day.outbox_push(st, f"📈 台指期日內訊號推播狀況\n{note}", stamp, _futures_send)
+    futures_day.save_state(st)                           # 收盤彙總若也沒送出，排隊狀態留在存檔裡
+    _futures_settle()          # 當天沒進場也檢查：月初第一個收盤就把上個月結算掉
+
+
+def _futures_send(text: str) -> bool:
+    """微台頻道推播，回傳有沒有送到（notify.send 已重試過；舊版或測試替身沒回傳值就當作送到）。
+    推播丟出任何例外都當作失敗（排隊補發），不能讓例外跳過後面的計畫帳紀錄與存檔。"""
+    try:
+        return notify.send(text, channel=FUTURES_CHANNEL) is not False
+    except Exception as e:  # noqa: BLE001
+        log.warning("微台推播丟出例外（當作送失敗、排隊補發）：%s", type(e).__name__)
+        return False
+
+
+def _futures_day_check(fd: dict, now: datetime) -> None:
+    """日盤：抓一筆報價、餵給訊號規則。訊號推播失敗會排進 st["outbox"] 補發（報價中斷時也照樣補發）；日盤報價中斷超過 20 分鐘提醒一次。"""
+    from .trade import futures_day, futures_log
+    st = fd["st"]
+    n_before = (len(st.get("outbox") or []), st.get("resent", 0))
+    futures_day.outbox_flush(st, _futures_send)          # 之前推播失敗的訊號先補發（順序不變）
+    try:
+        q = txf.fetch()
+    except Exception as e:  # noqa: BLE001
+        log.warning("日盤報價抓取失敗：%s", e)
+        q = None
     ts = q and q["ts"]
     if not q or not ts or ts.date() != now.date() or (now - ts).total_seconds() > 180:
-        return          # 沒資料、或報價時間太舊（休市、資料沒更新）：不拿舊價發訊號
-    sigs = futures_day.step(fd["st"], now, q["price"], fd["cfg"], fd["closes"], q["high"], q["low"])
+        # 沒資料、或報價時間太舊（休市、資料沒更新）：不拿舊價發訊號；中斷超過 20 分鐘要講一聲，持倉沒人看管更要講
+        note = futures_day.stale_notice(st, now, "日盤")
+        if note:
+            futures_day.outbox_push(st, note, now.isoformat(timespec="seconds"), _futures_send)
+        if note or n_before != (len(st.get("outbox") or []), st.get("resent", 0)):
+            futures_day.save_state(st)
+        return
+    if st.get("stale_alerted"):
+        st["stale_alerted"] = False
+        last = st["ticks"][-1][0][11:16] if st["ticks"] else ""
+        futures_day.outbox_push(st, f"✅ 日盤報價恢復（中斷前最後一筆在 {last}），訊號判斷已接續。", now.isoformat(timespec="seconds"), _futures_send)
+    sigs = futures_day.step(st, now, q["price"], fd["cfg"], fd["closes"], q["high"], q["low"])
     if sigs:
-        notify.send(_futures_signal_text(sigs, fd["st"], fd["cfg"], "day"), channel=FUTURES_CHANNEL)
-        futures_log.safe(futures_log.record, fd["st"], sigs, fd["cfg"], "day")
-    futures_day.save_state(fd["st"])
+        text = _futures_signal_text(sigs, st, fd["cfg"], "day")
+        futures_log.safe(futures_log.record, st, sigs, fd["cfg"], "day")      # 先記計畫帳（它才是事實），再推播；推播失敗只會排隊補發
+        futures_day.outbox_push(st, text, sigs[0]["ts"], _futures_send)
+    shock = futures_day.shock_alert(st, fd["cfg"])        # 急拉急殺快訊：只看價格、不看新聞（不是進出場訊號，不進計畫帳）
+    if shock:
+        futures_day.outbox_push(st, shock, now.isoformat(timespec="seconds"), _futures_send)
+    futures_day.save_state(st)
 
 
 def cmd_futures_night(args) -> None:
@@ -714,17 +757,20 @@ def cmd_futures_night(args) -> None:
         print(f"{sid} 這一場已結束或沒有夜盤，不啟動。")
         raise SystemExit(10)
 
-    def send(msg: str) -> None:
+    def send(msg: str) -> bool:
         if args.no_push:
             print(msg)
-        else:
-            notify.send(msg, channel=FUTURES_CHANNEL)
+            return True
+        return _futures_send(msg)
 
     interval = args.interval or 20
     deadline = time.monotonic() + args.minutes * 60 if args.minutes else None
     rc = 0
     while True:
         now = now_tw()
+        if st.get("outbox"):
+            futures_day.outbox_flush(st, send)          # 之前推播失敗的夜盤訊號先補發（順序不變）；報價中斷時也照樣補發
+            futures_day.save_state(st, session="night")
         if not args.force and now >= over:
             rc = 10
             break
@@ -746,19 +792,23 @@ def cmd_futures_night(args) -> None:
             print(f"{now:%H:%M:%S} 夜盤報價 {q and q['symbol']} {q and q['price']}（本場高 {q and q['high']}、低 {q and q['low']}、報價時間 {ts and f'{ts:%m/%d %H:%M:%S}'}）"
                   f"{'有效' if fresh else '過期或無資料，略過'}")
         if fresh:
+            if st.get("stale_alerted"):
+                last_hm = st["ticks"][-1][0][11:16] if st["ticks"] else ""
+                futures_day.outbox_push(st, f"✅ 夜盤報價恢復（中斷前最後一筆在 {last_hm}），訊號判斷已接續。", now.isoformat(timespec="seconds"), send)
             sigs = futures_day.step(st, now, q["price"], cfg, closes, q["high"], q["low"])
             if sigs:
-                send(_futures_signal_text(sigs, st, cfg, "night"))
-                futures_log.safe(futures_log.record, st, sigs, cfg, "night")
+                text = _futures_signal_text(sigs, st, cfg, "night")
+                futures_log.safe(futures_log.record, st, sigs, cfg, "night")      # 先記計畫帳，再推播
+                futures_day.outbox_push(st, text, sigs[0]["ts"], send)
+            shock = futures_day.shock_alert(st, cfg)        # 急拉急殺快訊：只看價格、不看新聞（不是進出場訊號，不進計畫帳）
+            if shock:
+                futures_day.outbox_push(st, shock, now.isoformat(timespec="seconds"), send)
             st["stale_alerted"] = False
             futures_day.save_state(st, session="night")
-        elif (st["ticks"] and not st.get("stale_alerted") and not args.force and now < end
-              and now - datetime.fromisoformat(st["ticks"][-1][0]) >= timedelta(minutes=20)):
-            # 夜盤進行中卻超過 20 分鐘沒有有效報價：不要靜悄悄（2026-11-13 午夜報價被擋了一個多小時沒人知道），發一次提醒
-            st["stale_alerted"] = True
+        elif not args.force and now < end and (note := futures_day.stale_notice(st, now, "夜盤")):
+            # 夜盤進行中卻超過 20 分鐘沒有有效報價：不要靜悄悄（2026-11-13 午夜報價被擋了一個多小時沒人知道），發一次提醒；有持倉要講停損沒人看
+            futures_day.outbox_push(st, note, now.isoformat(timespec="seconds"), send)
             futures_day.save_state(st, session="night")
-            send(f"⚠️ 夜盤報價超過 20 分鐘沒有更新（最後一筆 {st['ticks'][-1][0][11:16]}，{st['ticks'][-1][1]:,.0f}）。"
-                 "可能是資料源異常或暫停交易；系統會持續嘗試，恢復後自動接續。")
         elif not st["ticks"] and not args.force and now >= start + timedelta(minutes=45):
             print("夜盤開盤 45 分鐘仍沒有報價：今晚沒有夜盤（休市日）。")
             st["finished"] = True
@@ -771,11 +821,17 @@ def cmd_futures_night(args) -> None:
             break
         time.sleep(interval)
     if rc == 10 and not st.get("finished"):
+        futures_day.outbox_flush(st, send)          # 收盤前最後一次補發之前推播失敗的訊號
         summary = futures_day.finish_night(st, cfg)
         futures_log.safe(futures_log.refresh, st, cfg, "night")
+        note = futures_day.delivery_note(st)
+        stamp = now_tw().isoformat(timespec="seconds")
         if summary:
             pnl = futures_log.pnl_line(st, cfg, "night") if st["lots"] else ""      # 已空手＝全數出場時附過了，不重複
-            send(f"🌙 台指期夜盤計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else ""))
+            futures_day.outbox_push(st, f"🌙 台指期夜盤計畫帳收盤\n{summary}" + (f"\n{pnl}" if pnl else "") + (f"\n{note}" if note else ""), stamp, send)
+        elif note:
+            futures_day.outbox_push(st, f"🌙 台指期夜盤訊號推播狀況\n{note}", stamp, send)
+        futures_day.save_state(st, session="night")
         if not args.no_push:
             _futures_settle()
     if rc:
@@ -1000,7 +1056,10 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
     today = f"{now_tw():%Y-%m-%d}"
     st = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     count = st.get(today, 0)
-    lines, queued = [], []
+    cap = int(conf.get("max_per_day", 4))
+    over_key = f"{today}|over"
+    over_n = int(st.get(over_key, 0))
+    lines, queued, over_lines = [], [], []
     for it in items:
         text = f"{it.title} {it.summary}"
         if any(w in it.title for w in exclude) or it.score < 0 and "減產" not in text:
@@ -1008,14 +1067,22 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
         if any(w in it.title for w in conf.get("skip_title_words") or []):
             continue  # 已被駁斥、澄清的傳聞不是供需事件
         cause = shock_cause(text, conf.get("causes") or {})
-        if not cause or count >= int(conf.get("max_per_day", 4)):
+        if not cause:
             continue
         topic = shock_topic(it, listings)
         need = set(conf.get("need_relevance") or [])
         if (("all" in need or cause in need) and not it.codes and topic.startswith("供需事件：")
                 and not re.search(conf.get("relevance_words") or "(?!)", text, flags=re.I)):
             continue  # 對不到台股標的、產品題材或關鍵原料的新聞（國際政治、民生、地震…）不研究、不推
-        if not research.queue_research(topic, f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}", cause=cause):
+        trigger = f"{today} 供需失衡（{cause}）：{it.title}\n{it.summary[:300]}\n{it.url}"
+        if count >= cap:
+            # 今日研究額度用完：不排研究，但不能靜悄悄丟掉（11/16、17、18、20、21、23 都在傍晚前用完額度，之後的事件整天沒人知道）。
+            # 仍是新事件（沒研究過、不在佇列）就通知一則，每天最多 max_overflow_per_day 則，讓使用者可以回「研究 XXX」。
+            if over_n < int(conf.get("max_overflow_per_day", 5)) and research.queue_research(topic, trigger, cause=cause, dry_run=True):
+                over_n += 1
+                over_lines.append(f"・【{cause}】{it.title[:80]}\n  → 題材：{topic}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
+            continue
+        if not research.queue_research(topic, trigger, cause=cause):
             continue
         count += 1
         queued.append(topic)
@@ -1025,7 +1092,10 @@ def supply_shocks(items: list, listings: dict, futures: dict) -> list[str]:
                      + f"\n  → 研究題材：{topic}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
     if lines:
         notify.send("🧭 供需失衡訊號（已排入研究，研究完成會推研究圖表）\n\n" + "\n\n".join(lines), channel="research")
-        st = {today: count}
+    if over_lines:
+        notify.send(f"🧭 供需失衡訊號（今天 {cap} 個研究額度已滿，只通知、沒有排入研究；想研究請回「研究 題材名稱」）\n\n" + "\n\n".join(over_lines), channel="research")
+    if lines or over_lines:
+        st = {today: count, over_key: over_n}
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
     return queued
@@ -1051,13 +1121,18 @@ def major_events(items: list, listings: dict, macro_rows: list | None = None) ->
     macro_rows = macro.fresh() if macro_rows is None else macro_rows
     sent = []
     for name, spec in events.items():
-        if f"{name}|{today}" in st:
+        key = f"{name}|{today}"
+        used = int(st.get(key) or 0)
+        if used >= int(spec.get("max_per_day", 1)):       # 預設同一事件一天一次；會一再反轉的事件（龍頭復職）可在 yaml 設 max_per_day
             continue
         pats = [re.compile(p, flags=re.I) for p in spec.get("patterns", [])]
-        hits = [it for it in items if any(p.search(f"{it.title} {it.summary}") for p in pats)]
+        excl = re.compile("|".join(spec["exclude"]), flags=re.I) if spec.get("exclude") else None     # 標題含這些字（呼籲、傳聞、機率…）＝還沒發生，不算
+        title_only = bool(spec.get("title_only"))        # 只看標題：摘要裡提到別的事不會誤觸發
+        hits = [it for it in items if any(p.search(it.title if title_only else f"{it.title} {it.summary}") for p in pats)
+                and not (excl and excl.search(it.title))]
         if not hits:
             continue
-        st[f"{name}|{today}"] = 1
+        st[key] = used + 1
         sent.append(name)
         lines = [f"🌐 重大事件｜{name}"]
         for it in hits[:3]:

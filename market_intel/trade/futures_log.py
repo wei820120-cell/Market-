@@ -77,6 +77,7 @@ def record(st: dict, sigs: list[dict], cfg: dict, session: str = "day", path: Pa
         return
     data = load(path)
     s = _session(data, st, session)
+    s.setdefault("rules", futures_day.rules_snapshot(cfg))          # 這一場用的規則參數：中途改過，報表會標出來
     seen = {(e.get("ts"), e["kind"], e.get("price")) for e in s["events"]}
     snap = futures_day.snapshot(st, cfg)
     for g in sigs:
@@ -97,6 +98,7 @@ def refresh(st: dict, cfg: dict, session: str = "day", finished: bool = True, pa
         if s["date"] == st["date"] and s["session"] == session:
             s["summary"] = futures_day.snapshot(st, cfg)
             s["finished"] = finished
+            s.setdefault("rules", futures_day.rules_snapshot(cfg))
             save(data, path)
             return
 
@@ -188,6 +190,54 @@ def stats(data: dict) -> dict:
             "pts": round(sum(s["summary"]["pts"] for s in rows), 1), "twd": cum, "max_dd": dd}
 
 
+def rule_changes(data: dict) -> list[dict]:
+    """規則參數（停損、合格線、加碼、口數…）在同一種場次（日盤、夜盤各比各的：夜盤本來就用不同的時段與門檻）之間改過幾次：
+    每次改動回（從哪一場起、哪些參數 舊→新）。只比對有記錄 rules 的場次（2026-11-23 起才記；更早的場次沒記，當時用的規則見 git 紀錄與 knowledge/methods）。"""
+    out, prev = [], {}
+    for s in data["sessions"]:
+        r = s.get("rules")
+        if not r:
+            continue
+        kind = s["session"]
+        if kind in prev and r != prev[kind]:
+            out.append({"date": _day_label(s), "session": _name(s),
+                        "changes": [(k, prev[kind].get(k), r.get(k)) for k in sorted(set(prev[kind]) | set(r)) if prev[kind].get(k) != r.get(k)]})
+        prev[kind] = r
+    return out
+
+
+def _changes_text(changes: list[tuple]) -> str:
+    return "、".join(f"{k} {old}→{new}" for k, old, new in changes)
+
+
+def segments(data: dict) -> list[dict]:
+    """依規則改動的日期把有進場的場次切成幾段（日盤、夜盤一起算，同一天改的算同一個切點；沒記規則的舊場次歸第一段），各段小計。
+    沒改過規則只有一段。"""
+    cuts = sorted({c["date"] for c in rule_changes(data)})
+    groups: dict[int, list[dict]] = {}
+    for s in data["sessions"]:
+        if (s.get("summary") or {}).get("entries"):
+            groups.setdefault(sum(1 for d in cuts if d <= _day_label(s)), []).append(s)
+    out = []
+    for k in sorted(groups):
+        rows = groups[k]
+        out.append({"from": cuts[k - 1] if k else _day_label(rows[0]), "rows": rows, **stats({"sessions": rows})})
+    return out
+
+
+def _rules_lines(data: dict) -> list[str]:
+    """報表裡的規則改動提醒（沒改過規則回空：報表和以前逐字相同）。"""
+    ch = rule_changes(data)
+    if not ch:
+        return []
+    out = ["> ⚠️ **規則參數在中途改過**：下面的累計損益、勝率跨越不同規則，不能直接相加比較；請看各段小計。（沒記規則的舊場次歸第一段）"]
+    out += [f"> - {c['date']} {c['session']}起：{_changes_text(c['changes'])}" for c in ch]
+    out += ["", "**各段小計**："]
+    for i, g in enumerate(segments(data), 1):
+        out.append(f"- 第 {i} 段（{g['from']} 起）：{g['n']} 場有進場，賺 {g['win']}／賠 {g['lose']}，合計 {g['pts']:+,.0f} 點（{g['twd']:+,} 元）")
+    return out + [""]
+
+
 def render_md(data: dict) -> str:
     sess = data["sessions"]
     st = stats(data)
@@ -200,8 +250,9 @@ def render_md(data: dict) -> str:
     if not st["n"]:
         return "\n".join(lines + ["（還沒有觸發紀錄）", ""])
     lines += [f"**累計**：{st['n']} 場有進場，賺 {st['win']}／賠 {st['lose']}，合計 {st['pts']:+,.0f} 點（{st['twd']:+,} 元）；"
-              f"累計損益曲線最大回落 {st['max_dd']:,} 元。", "",
-              "## 總表", "", "| 日期 | 場次 | 方向 | 進場 | 加碼 | 點數 | 元 | 累計元 | 備註 |", "|---|---|---|---|---|---:|---:|---:|---|"]
+              f"累計損益曲線最大回落 {st['max_dd']:,} 元。", ""]
+    lines += _rules_lines(data)
+    lines += ["## 總表", "", "| 日期 | 場次 | 方向 | 進場 | 加碼 | 點數 | 元 | 累計元 | 備註 |", "|---|---|---|---|---|---:|---:|---:|---|"]
     cum = 0
     for s in sess:
         m = s.get("summary") or {}
@@ -287,6 +338,10 @@ def performance_text(data: dict, now: datetime, live: list[dict] | None = None, 
              f"累計 {st['n']} 場有進場：賺 {len(wins)}／賠 {len(losses)}" + (f"／平 {flat}" if flat else "") +
              f"，合計 {st['pts']:+,.0f} 點（{st['twd']:+,} 元）",
              f"累計損益曲線最大回落 {st['max_dd']:,} 元"]
+    changes = rule_changes({"sessions": sess})
+    if changes:
+        c = changes[-1]
+        lines.append(f"⚠️ 規則參數在 {c['date'][5:].replace('-', '/')} {c['session']}起改過（{_changes_text(c['changes'])}），上面的累計跨越不同規則。")
     if wins and losses:
         lines.append(f"勝率 {len(wins) / (len(wins) + len(losses)) * 100:.0f}%（賺÷賺賠場數）｜平均賺 {sum(wins) / len(wins):+,.0f} 元、平均賠 {sum(losses) / len(losses):+,.0f} 元")
     lines += ["", f"最近 {min(last_n, len(done))} 場："] + [_line(s) for s in reversed(done[-last_n:])]

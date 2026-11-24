@@ -325,7 +325,7 @@ def test_night_quote_ts_adds_a_day_after_midnight_only():
     assert fd.night_quote_ts(None, start) is None
 
 
-def _night_cli(monkeypatch, tmp_path, now, quote_ts, ticks=None):
+def _night_cli(monkeypatch, tmp_path, now, quote_ts, ticks=None, send_results=None):
     """跑一次 cmd_futures_night（--once）：報價與時間都是假的，狀態與紀錄都寫在 tmp。"""
     import argparse
     from market_intel import cli, notify
@@ -336,8 +336,12 @@ def _night_cli(monkeypatch, tmp_path, now, quote_ts, ticks=None):
     monkeypatch.setattr(cli, "now_tw", lambda: now)
     monkeypatch.setattr(cli.txf, "fetch", lambda night=False: {"symbol": "TXFK6-M", "price": 43588.0, "high": 44034.0, "low": 42371.0,
                                                            "open": 43180.0, "volume": 74520.0, "ts": quote_ts})
-    sent = []
-    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text))
+    sent, results = [], list(send_results or [])
+
+    def fake_send(text, channel="market"):
+        sent.append(text)
+        return results.pop(0) if results else True          # send_results：依序決定每則推播成功（True）或失敗（False）
+    monkeypatch.setattr(notify, "send", fake_send)
     sid, _, _ = fd.night_session(now)
     if ticks:
         st = fd.new_day(sid)
@@ -362,3 +366,357 @@ def test_night_cli_warns_once_when_quotes_stall_for_20_minutes(monkeypatch, tmp_
     assert any("超過 20 分鐘沒有更新" in t and "23:59" in t for t in sent) and st["stale_alerted"] is True
     st, sent = _night_cli(monkeypatch, tmp_path, now, stale_quote)       # 再跑一次：已提醒過，不重複
     assert not any("超過 20 分鐘" in t for t in sent)
+
+
+# ---------------------------------------------------------------- 2026-11-23 修正：推播保證、流水號、停損文字與寬度、日盤報價中斷提醒、報價存檔
+# 事件：日盤 2 口多單的停損出場，計畫帳已記、聊天室卻沒有那則訊息（notify.send 失敗只記警告、不重送，帳照存）；
+# 另外 11:25 做多試單 36,849、同一分鐘停損 36,788（停損 55 點，比報價雜訊還窄）。
+
+def _fake_cli(monkeypatch, tmp_path):
+    """cli 測試共用：狀態與紀錄寫在 tmp，推播換成假的。回傳 (sent, results)；results 依序決定每則推播成功（True）或失敗（False），沒給就成功。"""
+    from market_intel import notify
+    from market_intel.trade import futures_log
+    monkeypatch.setattr(fd, "STATE_PATH", tmp_path / "futures_day.json")
+    monkeypatch.setattr(futures_log, "LOG_PATH", tmp_path / "futures_log.json")
+    monkeypatch.setattr(futures_log, "MD_PATH", tmp_path / "futures_log.md")
+    sent, results = [], []
+
+    def send(text, channel="market"):
+        sent.append(text)
+        return results.pop(0) if results else True
+    monkeypatch.setattr(notify, "send", send)
+    return sent, results
+
+
+def _quote(monkeypatch, price, hm, high=None, low=19960):
+    from market_intel.fetchers import txf
+    monkeypatch.setattr(txf, "fetch", lambda: {"price": price, "high": high or price, "low": low, "ts": at(hm), "symbol": "X", "open": 20000, "volume": 1})
+
+
+def test_failed_push_is_queued_then_resent_first_with_a_resend_tag(monkeypatch, tmp_path):
+    from market_intel import cli
+    sent, results = _fake_cli(monkeypatch, tmp_path)
+    st = fd.new_day("2026-10-30")
+    box = {"cfg": CFG, "st": st, "closes": []}
+    _quote(monkeypatch, 20100, "09:29"); cli._futures_day_check(box, at("09:29"))      # 第一筆：只記參考點
+    results.append(False)                                                               # 下一則推播失敗
+    _quote(monkeypatch, 20110, "09:30"); cli._futures_day_check(box, at("09:30"))      # 突破 → 試單：計畫帳動了，但推播失敗
+    assert st["lots"] == 1 and len(st["outbox"]) == 1 and st["failed"] == 1 and "做多試單" in sent[-1]
+    assert fd.load_state("2026-10-30")["outbox"], "排隊中的訊號要跟著存檔（換執行也不能丟）"
+    _quote(monkeypatch, 20112, "09:31"); cli._futures_day_check(box, at("09:31"))      # 下一輪：先補發，標原本的時間
+    head = sent[-1].split("\n")[0]
+    assert head.startswith("🔁 補發") and "09:30" in head and "做多試單" in sent[-1]
+    assert st["outbox"] == [] and st["resent"] == 1
+
+
+def test_resend_keeps_order_and_new_signals_never_jump_the_queue():
+    st = fd.new_day("2026-10-30")
+    log, ok = [], {"v": False}
+
+    def send(text):
+        log.append(text)
+        return ok["v"]
+    assert fd.outbox_push(st, "A", "2026-10-30T09:30:00+08:00", send) is False
+    assert fd.outbox_push(st, "B", "2026-10-30T09:31:00+08:00", send) is False       # A 還沒送出：B 排在後面，不插隊
+    ok["v"] = True
+    assert fd.outbox_push(st, "C", "2026-10-30T09:32:00+08:00", send) is True
+    assert [t.split("\n")[-1] for t in log[-3:]] == ["A", "B", "C"] and log[-3].startswith("🔁 補發") and log[-1] == "C"
+    assert st["outbox"] == [] and st["failed"] == 2 and st["resent"] == 2 and fd.delivery_note(st).count("已補發 2 則") == 1
+
+
+def test_a_message_that_never_goes_out_is_dropped_loudly_not_blocking_the_queue(monkeypatch):
+    monkeypatch.setattr(fd, "OUTBOX_MAX_TRIES", 2)
+    st = fd.new_day("2026-10-30")
+    assert fd.outbox_push(st, "A", "2026-10-30T09:30:00+08:00", lambda t: False) is False
+    fd.outbox_flush(st, lambda t: False)
+    fd.outbox_flush(st, lambda t: False)
+    assert st["outbox"] == [] and st["dropped"] == 1                                  # 放棄（log.error），不讓一則永遠失敗的擋住後面所有訊號
+    assert "放棄" in fd.delivery_note(st) and fd.delivery_note(fd.new_day("2026-10-31")) == ""
+    assert fd.outbox_push(fd.new_day("2026-10-30"), "A", "2026-10-30T09:30:00+08:00", lambda t: None) is True      # 舊的替身沒回傳值：當作送到了
+
+
+def test_signals_carry_a_running_number_so_a_missing_one_is_visible():
+    sigs, st = fd.replay(TREND, CFG)
+    assert [s["seq"] for s in sigs] == list(range(1, len(sigs) + 1))
+    assert "（第 1 則）" in fd.format_message(sigs[:1], st, CFG)
+    assert "（第 1～2 則）" in fd.format_message(sigs[:2], st, CFG)
+
+
+def test_stop_message_names_the_direction_without_a_leftover_parenthesis():
+    long_loss = path([("08:46", 20000), ("08:58", 19960), ("09:00", 20040), ("09:06", 20070), ("09:12", 20000), ("09:30", 19900), ("10:00", 19900)])
+    stop = [s for s in fd.replay(long_loss, CFG)[0] if s["kind"] == "停損"][0]["text"]
+    assert "跌破平均成本" in stop and "（突破）" not in stop and "多滑" not in stop
+    short_loss = path([("08:46", 20000), ("08:58", 20040), ("09:00", 19960), ("09:06", 19930), ("09:12", 20000), ("09:30", 20100), ("10:00", 20100)])
+    stop = [s for s in fd.replay(short_loss, CFG)[0] if s["kind"] == "停損"][0]["text"]
+    assert "突破平均成本" in stop and "跌破（" not in stop
+
+
+def test_a_stop_that_the_price_gapped_through_reports_the_slippage():
+    cfg = dict(CFG, stop_noise_mult=0.0)
+    _, st = fd.replay(path([("08:46", 20000), ("08:58", 19960), ("09:00", 20040), ("09:06", 20070)]), cfg)
+    assert st["lots"] == 1
+    sigs = fd.step(st, at("09:07"), 19900, cfg)          # 停損約 20,009.9，下一筆報價直接跳到 19,900
+    assert sigs[0]["kind"] == "停損" and "比停損價多滑 110 點" in sigs[0]["text"] and "每 20～60 秒一筆" in sigs[0]["text"]
+
+
+def _noisy_entry(cfg):
+    """08:55～09:05 每 20 秒一筆、價格在 20,000 與 20,080 之間來回跳（平均每筆跳約 78 點），再來一筆 20,100 突破 → 試單。"""
+    from datetime import timedelta
+    st, t0, sigs = fd.new_day("2026-10-30"), at("08:55"), []
+    for i in range(30):
+        sigs += fd.step(st, t0 + timedelta(seconds=20 * i), 20000 if i % 2 == 0 else 20080, cfg)
+    sigs += fd.step(st, t0 + timedelta(seconds=20 * 30), 20100, cfg)
+    return st, [s for s in sigs if s["kind"] == "進場"]
+
+
+def test_noise_floor_is_off_by_default_so_the_plan_ledger_stays_on_one_rule_set():
+    # 停損加寬會讓計畫帳從那天起換成另一套規則（累計損益、勝率不能和之前直接比），所以是實驗功能、預設關閉；config 也要是 0
+    assert fd.DEFAULTS["stop_noise_mult"] == 0 and fd.settings()["stop_noise_mult"] == 0 and fd.settings("night")["stop_noise_mult"] == 0
+    st, entry = _noisy_entry(CFG)                          # 預設：噪音大的盤也照舊用平均成本外 0.15%
+    assert st["stop_dist"] is None and "比 0.15% 寬" not in entry[0]["text"] and "，0.15%" in entry[0]["text"]
+    assert fd.step(st, at("09:06"), 20020, CFG)[0]["kind"] == "停損"                          # 舊行為
+
+
+def test_stop_is_never_narrower_than_the_quote_noise_when_the_experiment_is_on():
+    on = dict(CFG, stop_noise_mult=3.0)
+    st, entry = _noisy_entry(on)
+    assert entry and "比 0.15% 寬" in entry[0]["text"] and 200 < st["stop_dist"] < 260       # 約 3 × 78 點，而不是 0.15%＝30 點
+    assert fd.step(st, at("09:06"), 20020, on) == []                                          # 回檔 80 點＝一筆報價的雜訊：不被洗出去
+
+
+def test_experiment_on_still_keeps_the_plain_percentage_stop_in_a_calm_market():
+    sigs, st = fd.replay(TREND, dict(CFG, stop_noise_mult=3.0))      # 趨勢日（報價平滑）：雜訊下限不介入，停損仍是平均成本外 0.15%
+    assert st["stop_dist"] is None and "，0.15%" in sigs[0]["text"] and "快市場會滑價" in sigs[0]["text"]
+
+
+def test_day_check_warns_once_when_quotes_stall_with_a_position_and_announces_recovery(monkeypatch, tmp_path):
+    from market_intel import cli
+    sent, _ = _fake_cli(monkeypatch, tmp_path)
+    _, st = fd.replay(path([("08:46", 20000), ("08:58", 19960), ("09:00", 20040), ("09:06", 20070)]), dict(CFG, stop_noise_mult=0.0))
+    assert st["lots"] == 1
+    box = {"cfg": CFG, "st": st, "closes": []}
+    _quote(monkeypatch, 20070, "09:06")                                                   # 報價一直停在 09:06
+    cli._futures_day_check(box, at("09:20"))                                              # 14 分鐘：還不提醒
+    assert not sent
+    cli._futures_day_check(box, at("09:27"))                                              # 21 分鐘：提醒一次；有持倉要講停損沒人在看
+    assert len(sent) == 1 and "日盤報價超過 20 分鐘沒有更新" in sent[0] and "持有 1 口" in sent[0] and "沒有人在判斷" in sent[0]
+    cli._futures_day_check(box, at("09:40"))                                              # 同一段中斷不重複提醒
+    assert len(sent) == 1
+    _quote(monkeypatch, 20075, "09:44"); cli._futures_day_check(box, at("09:45"))
+    assert len(sent) == 2 and sent[1].startswith("✅ 日盤報價恢復") and st["stale_alerted"] is False
+
+
+def test_day_check_survives_a_quote_fetch_error_and_still_resends(monkeypatch, tmp_path):
+    from market_intel import cli
+    from market_intel.fetchers import txf
+    sent, results = _fake_cli(monkeypatch, tmp_path)
+    st = fd.new_day("2026-10-30")
+    st["outbox"] = [{"text": "📈 台指期日內訊號 09:30（第 1 則）\n🔺 做多試單", "ts": at("09:30").isoformat(), "tries": 1}]
+    st["failed"] = 1
+
+    def boom():
+        raise OSError("MIS 連線失敗")
+    monkeypatch.setattr(txf, "fetch", boom)
+    cli._futures_day_check({"cfg": CFG, "st": st, "closes": []}, at("09:31"))      # 抓報價出錯：不拋例外，之前失敗的訊號照樣補發
+    assert sent and sent[0].startswith("🔁 補發") and st["outbox"] == []
+
+
+def test_night_cli_queues_a_failed_push_and_resends_it_on_the_next_run(monkeypatch, tmp_path):
+    now = datetime(2026, 11, 13, 1, 30, 0, tzinfo=TW_TZ)
+    old = [["2026-11-12T23:59:55+08:00", 43891.0]]
+    stale_quote = datetime(2026, 11, 12, 0, 5, 0, tzinfo=TW_TZ)
+    st, sent = _night_cli(monkeypatch, tmp_path, now, stale_quote, ticks=old, send_results=[False])      # 夜盤中斷提醒推播失敗
+    assert len(st["outbox"]) == 1 and st["failed"] == 1 and "超過 20 分鐘沒有更新" in st["outbox"][0]["text"]
+    st, sent = _night_cli(monkeypatch, tmp_path, now, stale_quote)                                        # 下一次執行（換執行也接續）：先補發
+    assert len(sent) == 1 and sent[0].startswith("🔁 補發") and "超過 20 分鐘沒有更新" in sent[0] and st["outbox"] == [] and st["resent"] == 1
+
+
+def test_finish_day_archives_the_ticks_with_exchange_high_low_and_replays_the_same(tmp_path):
+    import json
+    p = tmp_path / "futures_day.json"
+    st = fd.new_day("2026-10-30")
+    for ts, price in TREND:
+        fd.step(st, ts, price, CFG, None, price + 5, price - 5)
+    fd.finish_day(st, CFG, p)
+    a = json.loads((tmp_path / "futures_ticks" / "2026-10-30.json").read_text(encoding="utf-8"))
+    assert a["date"] == "2026-10-30" and len(a["ticks"]) == len(TREND) == len(a["exch"]) and a["exch"][0] == [TREND[0][1] + 5, TREND[0][1] - 5]
+    sigs, st2 = fd.replay([(datetime.fromisoformat(i), x) for i, x in a["ticks"]], CFG, None, a["exch"])      # 用存下來的資料重播，結果要一樣
+    assert (st2["entries"], st2["adds"], st2["realized_pts"]) == (st["entries"], st["adds"], st["realized_pts"])
+
+
+def test_a_crashing_push_is_treated_as_a_failed_send_and_never_skips_the_ledger(monkeypatch, tmp_path):
+    import json
+    from market_intel import cli, notify
+    from market_intel.trade import futures_log
+    _fake_cli(monkeypatch, tmp_path)
+
+    def crash(text, channel="market"):
+        raise RuntimeError("推播層壞掉")
+    monkeypatch.setattr(notify, "send", crash)
+    st = fd.new_day("2026-10-30")
+    box = {"cfg": CFG, "st": st, "closes": []}
+    _quote(monkeypatch, 20100, "09:29"); cli._futures_day_check(box, at("09:29"))
+    _quote(monkeypatch, 20110, "09:30"); cli._futures_day_check(box, at("09:30"))      # 突破 → 試單：推播丟例外
+    assert st["lots"] == 1 and len(st["outbox"]) == 1 and st["failed"] == 1             # 排隊補發，沒有往外丟
+    ledger = json.loads((tmp_path / "futures_log.json").read_text(encoding="utf-8"))
+    assert any(e["kind"] == "進場" for s in ledger["sessions"] for e in s["events"])    # 計畫帳照樣記下來
+    assert fd.load_state("2026-10-30")["outbox"], "排隊中的訊號有存檔"
+
+
+def test_day_close_resends_pending_signals_then_sends_the_summary_with_the_delivery_note(monkeypatch, tmp_path):
+    from market_intel import cli
+    sent, results = _fake_cli(monkeypatch, tmp_path)
+    monkeypatch.setattr(cli, "_futures_settle", lambda: None)
+    _, st = fd.replay(TREND, CFG)                          # 一整天：有進場、收盤前全數出場
+    st["outbox"] = [{"text": "📈 台指期日內訊號 13:25（第 9 則）\n⏰ 收盤前出場", "ts": at("13:25").isoformat(), "tries": 1}]
+    st["failed"] = 1
+    cli._futures_day_close({"cfg": CFG, "st": st, "closes": []})
+    assert sent[0].startswith("🔁 補發") and "收盤前出場" in sent[0]                  # 先補發排隊中的
+    assert "計畫帳收盤" in sent[1] and "這一場有 1 則訊號曾推播失敗：已補發 1 則" in sent[1] and st["outbox"] == []
+    assert fd.load_closes("2026-10-31") == [TREND[-1][1]]                              # 日收盤照記
+
+
+def test_day_close_says_so_when_the_summary_itself_cannot_be_delivered(monkeypatch, tmp_path):
+    from market_intel import cli
+    sent, results = _fake_cli(monkeypatch, tmp_path)
+    monkeypatch.setattr(cli, "_futures_settle", lambda: None)
+    _, st = fd.replay(TREND, CFG)
+    results.extend([False] * 10)                           # 收盤彙總也送不出去
+    cli._futures_day_close({"cfg": CFG, "st": st, "closes": []})
+    assert len(st["outbox"]) == 1 and "計畫帳收盤" in st["outbox"][0]["text"] and fd.load_state("2026-10-30")["outbox"]      # 留在存檔，不是默默消失
+
+
+def test_night_close_resends_pending_signals_and_appends_the_delivery_note(monkeypatch, tmp_path):
+    now = datetime(2026, 11, 13, 5, 3, 0, tzinfo=TW_TZ)        # 夜盤 05:00 收盤後
+    sid, start, end = fd.night_session(datetime(2026, 11, 12, 20, 0, tzinfo=TW_TZ))
+    ticks = [["2026-11-12T23:59:55+08:00", 43891.0], ["2026-11-13T04:59:50+08:00", 43900.0]]
+    st0 = fd.new_day(sid)
+    st0.update(ticks=ticks, last_price=43900.0, entries=1, realized_pts=-30.0, failed=1,
+               outbox=[{"text": "🌙 舊訊號", "ts": "2026-11-13T04:40:00+08:00", "tries": 1}])
+    st, sent = None, None
+    import argparse
+    from market_intel import cli, notify
+    from market_intel.trade import futures_log
+    monkeypatch.setattr(fd, "STATE_PATH", tmp_path / "futures_day.json")
+    monkeypatch.setattr(futures_log, "LOG_PATH", tmp_path / "futures_log.json")
+    monkeypatch.setattr(futures_log, "MD_PATH", tmp_path / "futures_log.md")
+    times = iter([datetime(2026, 11, 13, 5, 0, 30, tzinfo=TW_TZ)])           # 啟動時還沒過收盤（05:02），進了迴圈才過
+    monkeypatch.setattr(cli, "now_tw", lambda: next(times, now))
+    monkeypatch.setattr(cli, "_futures_settle", lambda: None)
+    monkeypatch.setattr(cli.txf, "fetch", lambda night=False: None)
+    sent = []
+    monkeypatch.setattr(notify, "send", lambda text, channel="market": sent.append(text) or True)
+    fd.save_state(st0, session="night")
+    try:
+        cli.cmd_futures_night(argparse.Namespace(status=False, force=False, no_push=False, once=False, minutes=0, interval=1))
+    except SystemExit as e:
+        assert e.code == 10                                    # 這一場已結束
+    assert sent[0].startswith("🔁 補發") and "舊訊號" in sent[0]
+    assert "夜盤計畫帳收盤" in sent[1] and "已補發 1 則" in sent[1]
+    assert fd.load_state(sid, session="night")["finished"] is True
+
+
+# ---------------------------------------------------------------- 2026-11-23 急拉急殺快訊（只看價格、不看新聞）
+# 事件：21:55 輝達董事會恢復黃仁勳，台指期夜盤 21:55:27 報 36,352、22:00:18 報 39,590（5 分鐘 +3,238 點）；新聞 22:10 才進來、規則又沒命中（只認離職字眼），
+# 系統完全沒響。快訊只看價格，不靠新聞文字，不是進出場訊號、不進計畫帳。
+
+def _feed(st, cfg, prices, start=None, step=20):
+    """依序餵價格（每 step 秒一筆）、每筆後呼叫 shock_alert；回傳 [(第幾筆, 文字)]。"""
+    from datetime import timedelta
+    t0 = start or datetime(2026, 11, 23, 21, 50, 0, tzinfo=TW_TZ)
+    out = []
+    for i, p in enumerate(prices):
+        st["ticks"].append([(t0 + timedelta(seconds=i * step)).isoformat(timespec="seconds"), p])
+        st["last_price"] = p
+        text = fd.shock_alert(st, cfg)
+        if text:
+            out.append((i, text))
+    return out
+
+
+NIGHT_CFG = dict(fd.DEFAULTS, **fd.NIGHT)
+
+
+def test_shock_alert_fires_within_a_minute_of_a_fast_move_and_names_the_numbers():
+    st = fd.new_day("2026-11-23N")
+    flat = [36300.0] * 15                                   # 5 分鐘平盤
+    out = _feed(st, NIGHT_CFG, flat + [36700.0, 37100.0, 37500.0])
+    assert len(out) == 1 and out[0][0] == 16                # 第二筆跳升（+2.2%）就響，不用等 5 分鐘走完
+    text = out[0][1]
+    assert text.startswith("⚡ 台指期夜盤急拉") and "+800 點" in text and "+2.2%" in text and "36,300" in text and "37,100" in text
+    assert "計畫帳：空手" in text and "不是進出場訊號" in text
+    assert st["shock_n"] == 1 and st["shock"]["dir"] == "up"
+
+
+def test_shock_alert_ignores_a_slow_drift_even_when_it_adds_up_to_a_lot():
+    st = fd.new_day("2026-11-23N")
+    drift = [36000.0 * (1 + 0.001 * i / 3) for i in range(180)]       # 每 20 秒 +0.033%，1 小時共 +6%，但任何 5 分鐘只有 +0.5%
+    assert _feed(st, NIGHT_CFG, drift) == [] and st["shock_n"] == 0
+
+
+def test_shock_alert_waits_between_messages_and_repeats_only_on_extension_or_reversal():
+    st = fd.new_day("2026-11-23N")
+    seq = [36300.0] * 15 + [37100.0]                        # 第一則：+2.2%
+    seq += [37400.0] * 8                                    # 160 秒內還在漲，但距上一則不到 180 秒 → 不響
+    seq += [37500.0] * 3                                    # 超過 180 秒：只比上一則價格多 +1.1%、同方向、冷卻中 → 不響
+    seq += [38100.0] * 2                                    # 比上一則價格（37,100）多 +2.7% → 延伸，響第二則
+    out = _feed(st, NIGHT_CFG, seq)
+    assert [i for i, _ in out] == [15, len(seq) - 2]
+    assert out[1][1].startswith("⚡ 台指期夜盤急拉")
+    seq2 = [38100.0] * 10 + [37200.0, 37000.0]              # 之後急殺 −2.4%：反方向，隔夠久就響
+    out2 = _feed(st, NIGHT_CFG, seq2, start=datetime(2026, 11, 23, 22, 10, 0, tzinfo=TW_TZ))
+    assert len(out2) == 1 and out2[0][1].startswith("⚡ 台指期夜盤急殺") and "-" in out2[0][1]
+    assert st["shock_n"] == 3
+
+
+def test_shock_alert_stops_after_the_per_session_cap():
+    st = fd.new_day("2026-11-23N")
+    cfg = dict(NIGHT_CFG, shock_max=1)
+    out = _feed(st, cfg, [36300.0] * 15 + [37100.0] + [38100.0] * 40)       # 第二則本來該響（延伸），但這一場只准 1 則
+    assert len(out) == 1
+
+
+def test_shock_alert_is_silent_when_disabled_without_a_baseline_or_right_after_a_quote_gap():
+    st = fd.new_day("2026-11-23N")
+    assert _feed(st, dict(NIGHT_CFG, shock_pct=0), [36300.0] * 15 + [37500.0]) == []         # 關閉
+    st = fd.new_day("2026-11-23N")
+    assert _feed(st, NIGHT_CFG, [36300.0]) == []                                              # 只有一筆：沒有基準
+    st = fd.new_day("2026-11-23N")
+    st["ticks"].append(["2026-11-23T21:00:00+08:00", 36300.0])
+    st["ticks"].append(["2026-11-23T21:40:00+08:00", 37500.0])                               # 報價中斷 40 分鐘後的第一筆：視窗裡只有它，不拿 40 分鐘前的價格比
+    assert fd.shock_alert(st, NIGHT_CFG) is None
+
+
+def test_shock_alert_tells_the_open_position_and_warns_when_price_runs_against_it():
+    st = fd.new_day("2026-11-23N")
+    st.update(lots=2, dir="short", avg=36500.0)
+    text = _feed(st, NIGHT_CFG, [36300.0] * 15 + [37100.0])[0][1]
+    assert "持有空單 2 口、平均成本 36,500.0" in text and "浮虧 600 點" in text and "反方向" in text
+    st = fd.new_day("2026-11-23N")
+    st.update(lots=1, dir="long", avg=36500.0)
+    text = _feed(st, NIGHT_CFG, [36300.0] * 15 + [37100.0])[0][1]
+    assert "持有多單 1 口" in text and "浮盈 600 點" in text and "反方向" not in text
+
+
+def test_shock_alert_is_not_a_plan_rule_so_the_ledger_and_signals_are_unchanged():
+    assert not any("shock" in k for k in fd.RULE_KEYS)                  # 不進計畫帳的規則快照，也就不會讓報表出現「規則變更」警告
+    base = [(at(f"{9 + i // 60}:{i % 60:02d}"), 20000.0 + i) for i in range(0, 30)]
+    st1, st2 = fd.new_day("2026-10-30"), fd.new_day("2026-10-30")
+    on, off = dict(CFG, shock_pct=2.0), dict(CFG, shock_pct=0)
+    a = [fd.step(st1, t, p, on) for t, p in base]
+    b = [fd.step(st2, t, p, off) for t, p in base]
+    assert a == b and st1["alerts"] == st2["alerts"]                    # step() 完全不看快訊設定
+
+
+def test_night_cli_pushes_the_shock_alert_without_touching_the_plan_and_queues_it_if_the_push_fails(monkeypatch, tmp_path):
+    from datetime import timedelta
+    now = datetime(2026, 11, 23, 22, 0, 30, tzinfo=TW_TZ)
+    flat = [[(now - timedelta(seconds=5 + 20 * (15 - i))).isoformat(timespec="seconds"), 42000.0] for i in range(15)]
+    # _night_cli 的假報價固定是 43,588（對 42,000 是 +3.8%）
+    st, sent = _night_cli(monkeypatch, tmp_path, now, now - timedelta(seconds=5), ticks=flat, send_results=[False])
+    assert sent and sent[0].startswith("⚡ 台指期夜盤急拉") and "+1,588 點" in sent[0]
+    assert st["shock_n"] == 1 and len(st["outbox"]) == 1 and st["failed"] == 1       # 推播失敗：排進補發佇列（和計畫帳訊號同一套）
+    assert st["seq"] == len(st["alerts"])                                             # 快訊不佔計畫帳訊號的流水號
+    now2 = now + timedelta(seconds=20)
+    st, sent = _night_cli(monkeypatch, tmp_path, now2, now2 - timedelta(seconds=5))
+    assert sent and sent[0].startswith("🔁 補發") and "急拉" in sent[0] and st["outbox"] == []
