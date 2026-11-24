@@ -1,0 +1,583 @@
+{
+  "topic": "供需事件：黃仁勳回鍋同一天！美打破逾1年慣例 輝達風波關鍵",
+  "one_line": "11/23 美國商務部 BIS 把新加坡雲端與資料中心公司 Megaspeed 及關聯公司（共 7 個實體，分布新加坡、馬來西亞、泰國）列入實體清單，所有受 EAR 管轄的物項須許可、推定否准，是聯邦公報自 2025/10/9 以來第一次新增實體（13 個月），並與輝達董事會宣布黃仁勳復職同日。官員稱 Megaspeed 被用來把輝達晶片轉運到中國；媒體轉述的金額有三種口徑（購買約 48 億、轉運 75 億、安排購買並轉運近 120 億美元），Megaspeed 否認、沒有法院認定；輝達自 2025/6 起把它列內部禁售名單，卻稱曾在商務部許可下出貨、仍列為雲端夥伴。這是執法事件，不是供需缺口，瓶頸在客戶盡職調查與審查時間差：Bessent 稱四個部會支持列名數月、商務部拖到 11/23，11/16 新規已把五國出貨與遠端存取納入許可。對臺灣只是東南亞出貨與買家審查的間接風險，本輪沒有任何報導點名臺灣廠商，曝險比例沒查到，一律標中性。內容來自搜尋摘要。",
+  "status": "混合",
+  "horizon": "短期（3個月內）",
+  "layers": [
+    {
+      "layer": "輝達晶片供給與客戶審查（公司端）",
+      "description": "輝達 2025/6 起把 Megaspeed 與一家子公司列內部禁售名單，並限制對 Aivres 的銷售；稱曾在商務部許可下出貨元件、仍把 Megaspeed 列為雲端夥伴。議員與 Bessent 的質疑焦點是客戶盡職調查。SEC 調查新加坡營收揭露、加州檢察長傳票是同一條壓力線（既有研究）。",
+      "global_players": [
+        "輝達"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2330",
+          "name": "台積電",
+          "role": "先進製程與封裝；11/16 規則的 OSAT 豁免對設計商位於五國或中國者收緊，法人稱影響有限（搜尋摘要）；本事件沒有直接影響",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "伺服器組裝與出貨（OEM／ODM）",
+      "description": "臺灣 ODM 在東南亞有組裝與出貨據點（緯穎馬來西亞、廣達泰國，2025/07 報導早於新規）；本輪沒有任何報導點名臺灣廠商與 Megaspeed 的交易，五國許可新規的曝險比例也沒查到。輝達 2025/6 限制對 Aivres 的銷售（背景搜尋摘要未說明）。",
+      "global_players": [
+        "Aivres（背景未說明）",
+        "美系 OEM（本次未點名）"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2317",
+          "name": "鴻海",
+          "role": "AI 伺服器組裝；東南亞出貨暴露度沒查到",
+          "impact": "中性"
+        },
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM；泰國打板與組裝（2025/07 報導）；暴露度沒查到",
+          "impact": "中性"
+        },
+        {
+          "code": "3231",
+          "name": "緯創",
+          "role": "AI 伺服器 ODM；暴露度沒查到",
+          "impact": "中性"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端伺服器；馬來西亞組裝線供應亞太資料中心（2025/07 報導）；暴露度沒查到",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "東南亞資料中心與新興雲（Megaspeed 網絡）",
+      "description": "11/23 列入實體清單：Megaspeed International（7Road International）、Apex Enterprise Solutions、Swiftdata（新加坡）、Speedmatrix（馬來西亞，Kharon 稱關聯公司）等，共 7 個實體分布新加坡、馬來西亞與泰國；須許可、推定否准。金額口徑：購買約 48 億美元、轉運 75 億美元、安排購買並轉運近 120 億美元（媒體轉述，未經法院認定）。CBS 稱其辦公室空置。",
+      "global_players": [
+        "Megaspeed International（7Road）",
+        "Apex Enterprise Solutions",
+        "Swiftdata",
+        "Speedmatrix"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "需求端：中國買家（轉運與遠端租用）",
+      "description": "對最高階輝達晶片的需求大於合法供給，B300 伺服器黑市價約 100～110 萬美元／台，近乎翻倍（既有研究）；11/16 新規把中國等 D:5 國家企業經海外資料中心遠端取得算力納入須許可。華為等國產晶片的替代程度未佐證。",
+      "global_players": [
+        "中國買家（本次未點名）"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "執法與規則（BIS、司法部、財政部、盟國）",
+      "description": "BIS 調查自 2024 年起，司法部後來接手刑事調查；Bessent 11/13 稱四個部會支持列名數月；11/23 列名是 13 個月來第一次新增實體；11/16 新規（五國許可、遠端存取）；新加坡警方調查並已起訴相關人士，馬來西亞檢視晶片再出口。",
+      "global_players": [
+        "商務部 BIS",
+        "司法部",
+        "財政部",
+        "新加坡警方"
+      ],
+      "tw_stocks": []
+    }
+  ],
+  "keywords": [
+    "Megaspeed",
+    "實體清單",
+    "Entity List",
+    "BIS",
+    "輝達",
+    "出口管制",
+    "新加坡",
+    "馬來西亞",
+    "泰國",
+    "晶片走私",
+    "轉運",
+    "Bessent",
+    "司法部",
+    "五國許可",
+    "遠端存取",
+    "Speedmatrix",
+    "7Road"
+  ],
+  "catalysts": [
+    "聯邦公報 11/23 列名全文與後續新增或補列的關聯公司",
+    "司法部刑事案是否起訴；新加坡法院案件進度",
+    "輝達下一份 10-Q／10-K 對客戶集中度與新加坡營收的揭露；是否移除 Megaspeed 的雲端夥伴身分",
+    "12/1 眾院閉門訪談與 12/3 參院聽證是否問到 Megaspeed 與客戶審查",
+    "鴻海、廣達、緯創、緯穎法說會對東南亞出貨占比與新規影響的說法",
+    "1/10 美中休戰期屆滿與實體清單政策走向"
+  ],
+  "risks": [
+    "全是搜尋摘要與標題；沒讀到聯邦公報、BIS 公告與法院文件",
+    "金額有三種口徑（購買、轉運、安排購買並轉運），沒有任何一個經法院認定；Megaspeed 否認違法",
+    "列名是行政措施，不等於走私成立；實體清單常見的換殼規避（推論）可能讓效果打折",
+    "輝達同時把 Megaspeed 列為雲端夥伴與內部禁售客戶，立場沒有解釋",
+    "單一來源說法（商務部中止調查、FT 延後新增兩個月）已標註、不採信",
+    "臺灣曝險沒有任何公司說法，台廠標中性只是缺資料，不代表沒有影響",
+    "美中休戰期到 1/10，之後是否再有列名未知（推論）"
+  ],
+  "spec_tables": [
+    {
+      "title": "表一：11/23 列入實體清單的名單（各報導對家數與名稱說法略有不同）",
+      "columns": [
+        "實體",
+        "所在地",
+        "說明",
+        "來源與備註"
+      ],
+      "rows": [
+        [
+          "Megaspeed International（亦稱 7Road International）",
+          "新加坡",
+          "雲端與資料中心公司；據報導源自一家中國遊戲公司的分支；曾是輝達的重要晶片客戶並列為官方雲端夥伴",
+          "The Edge Singapore、鉅亨網（搜尋摘要）"
+        ],
+        [
+          "Apex Enterprise Solutions（新加坡）",
+          "新加坡",
+          "名列新加坡條目",
+          "The Edge Singapore"
+        ],
+        [
+          "Swiftdata",
+          "新加坡",
+          "名列新加坡條目",
+          "The Edge Singapore"
+        ],
+        [
+          "Speedmatrix Sdn Bhd",
+          "馬來西亞",
+          "Kharon 稱為關聯公司；有報導稱它與 Megaspeed 三年合計購買約 48 億美元輝達先進 AI 設備與晶片",
+          "Kharon；金額見表二"
+        ],
+        [
+          "其餘馬來西亞與泰國實體",
+          "馬來西亞、泰國",
+          "合計 7 個實體（Megaspeed ＋ 6 家），分布新加坡、馬來西亞與泰國；各來源名單不完全一致",
+          "The Edge Singapore、Newscord（搜尋摘要）"
+        ]
+      ],
+      "note": "列名效果：所有受出口管理條例（EAR）管轄的物項都須許可，申請採推定否准；列名不等於判決，只是出口管制的行政措施。名單細節以聯邦公報為準，本輪沒有讀到。"
+    },
+    {
+      "title": "表二：金額口徑（不能直接比較）",
+      "columns": [
+        "口徑",
+        "數字",
+        "來源",
+        "性質與判讀"
+      ],
+      "rows": [
+        [
+          "華爾街日報看到的紀錄（經搜尋摘要轉述）：安排購買並轉往中國境內公司的頂級輝達晶片，2024～2025 年",
+          "近 120 億美元",
+          "The Edge Singapore 摘要",
+          "指控；「安排購買」不等於已交付，也不等於已轉運"
+        ],
+        [
+          "Fortune 11/11 調查：經新加坡與馬來西亞網絡轉給中國公司的輝達晶片",
+          "75 億美元",
+          "Fortune（標題）",
+          "媒體調查與指控；方法與範圍沒讀到"
+        ],
+        [
+          "Megaspeed 與馬來西亞關聯公司 Speedmatrix 三年購買的輝達先進 AI 設備與晶片",
+          "約 48 億美元",
+          "搜尋摘要（轉述）",
+          "購買金額；購買本身不等於走私（可能含合法的遠端算力用途）"
+        ],
+        [
+          "Megaspeed 買進的輝達晶片（另一轉述）",
+          "超過 40 億美元",
+          "FourWeekMBA、Let's Data Science（搜尋摘要）",
+          "購買金額；與上一列可能是同一口徑的不同轉述"
+        ]
+      ],
+      "note": "四個數字是三種不同的東西（安排購買並轉運、轉運、購買）。Megaspeed 否認違法；輝達先前稱未發現非法轉移的證據。沒有任何一個數字經法院確認。"
+    },
+    {
+      "title": "表三：時間軸",
+      "columns": [
+        "日期",
+        "事件",
+        "來源與備註"
+      ],
+      "rows": [
+        [
+          "2024",
+          "商務部 BIS 開始調查 Megaspeed（偵測到晶片可能被轉移）；後來司法部接手、主導刑事調查",
+          "搜尋摘要（The Hill、TRT World）"
+        ],
+        [
+          "2025/5",
+          "商務部要求輝達提供銷售紀錄",
+          "The Edge Singapore 摘要"
+        ],
+        [
+          "2025/6",
+          "輝達把 Megaspeed 與一家子公司列入內部禁售名單，並限制對 Aivres 的銷售（Aivres 背景搜尋摘要未說明）",
+          "搜尋摘要"
+        ],
+        [
+          "2025/10/9",
+          "聯邦公報最後一次新增實體清單；同年 10 月川普與習近平會面後，實體清單相關限制（50% 關聯公司規則）凍結一年",
+          "FourWeekMBA、CSIS、AOL、WSGR（標題）"
+        ],
+        [
+          "2026/11/6",
+          "美媒報導黃仁勳與一名被指為中國情報人員的人士關係密切；搜尋摘要稱該人士為 Megaspeed 高階主管、美方官員如今認定其為中國情報資產（未經判決）",
+          "中央社轉述；指控"
+        ],
+        [
+          "2026/11/11",
+          "Fortune 調查報導 Megaspeed 在新加坡與馬來西亞的網絡",
+          "Fortune"
+        ],
+        [
+          "2026/11/12",
+          "黃仁勳辭職",
+          "Roll Call"
+        ],
+        [
+          "2026/11/13",
+          "財政部長 Bessent 在 CNBC 稱財政部、戰爭部、貿易代表署與國務院支持列名 Megaspeed 已數月，BIS「握有筆」；同期 FT 稱商務部把新增名單延後兩個月並未列入 Megaspeed",
+          "Bloomberg Government、FourWeekMBA；FT 說法為單一來源（Let's Data Science 轉述）"
+        ],
+        [
+          "2026/11/16",
+          "BIS 公布臨時最終規則：五國許可與遠端存取",
+          "律所說明、臺灣媒體"
+        ],
+        [
+          "2026/11/23",
+          "BIS 把 Megaspeed 與關聯公司列入實體清單（13 個月來第一次新增）；同日輝達董事會宣布黃仁勳復職",
+          "The Edge Singapore、ZeroHedge（標題）、鉅亨網"
+        ]
+      ],
+      "note": "日期與內容來自搜尋摘要，未逐項核對聯邦公報與官方新聞稿。"
+    },
+    {
+      "title": "表四：一方言論檢核",
+      "columns": [
+        "說法",
+        "來源",
+        "證據等級",
+        "判讀"
+      ],
+      "rows": [
+        [
+          "11/23 BIS 把 Megaspeed 與關聯公司列入實體清單，須許可、推定否准",
+          "The Edge Singapore、Kharon、Townhall、Newscord、ZeroHedge（多家一致）",
+          "媒體報導（官方行為）",
+          "多家吻合，可視為事實；聯邦公報全文本輪沒讀到，家數與名單細節以公報為準"
+        ],
+        [
+          "官員稱 Megaspeed 被用來把輝達晶片轉運到中國；金額近 120 億／75 億／48 億美元",
+          "WSJ、Fortune、其他（搜尋摘要轉述）",
+          "指控與媒體調查",
+          "口徑不一（見表二）；Megaspeed 否認、輝達稱未發現非法轉移；沒有法院認定"
+        ],
+        [
+          "輝達：曾在商務部許可下出貨元件，仍把 Megaspeed 列為雲端夥伴",
+          "搜尋摘要轉述輝達說法",
+          "公司說法",
+          "與「2025/6 起內部禁售」並列時有張力：同時是夥伴與禁售客戶，輝達沒有解釋"
+        ],
+        [
+          "Bessent：財政部、戰爭部、貿易代表署、國務院支持列名數月，BIS 握有筆",
+          "CNBC 11/13（Bloomberg Government 轉述）",
+          "官員公開說法",
+          "是政治表態，等於公開指出商務部拖延；商務部回應沒查到"
+        ],
+        [
+          "FT：商務部把新增名單延後兩個月，並未列入 Megaspeed",
+          "Let's Data Science 轉述",
+          "單一來源",
+          "FT 原文沒讀到；11/23 的列名等於推翻這個狀態"
+        ],
+        [
+          "商務部曾因輝達接觸官員而中止走私調查，案件移交司法部",
+          "Crypto Briefing",
+          "單一來源",
+          "沒有其他來源佐證，不採信，列為未證實"
+        ],
+        [
+          "Megaspeed 辦公室空置、與輝達與中國關係存疑",
+          "CBS（標題）",
+          "媒體實地報導",
+          "只看到標題；空置辦公室是警訊，不是違法證據"
+        ],
+        [
+          "新加坡警方調查 Megaspeed；另已起訴五人涉詐欺共謀（與輝達晶片轉移有關）",
+          "搜尋摘要",
+          "媒體報導",
+          "與列名是不同司法管轄；案情細節未公開"
+        ],
+        [
+          "「列名與黃仁勳復職同日」＝商務部做了 Bessent 要求的事",
+          "ZeroHedge（標題）",
+          "立場評論",
+          "時間巧合不是因果，沒有證據顯示交換條件；只能說兩件事同日發生"
+        ]
+      ],
+      "note": "上表沒有一列屬於獨立的海關或交易數據；金額都是媒體轉述的紀錄或調查。"
+    },
+    {
+      "title": "表五：擴產與稼動檢核（不適用——執法事件，改列各環節的暴露度）",
+      "columns": [
+        "公司",
+        "瓶頸環節",
+        "現況稼動",
+        "擴產與資本支出",
+        "投產或放量時點",
+        "主要限制",
+        "證據等級"
+      ],
+      "rows": [
+        [
+          "Megaspeed 網絡（未上市）",
+          "東南亞資料中心與轉運／遠端租用",
+          "不適用（CBS 稱辦公室空置，實際算力規模不明）",
+          "沒查到",
+          "—",
+          "列名後無法取得美國零組件與技術；各國執法",
+          "媒體報導與指控"
+        ],
+        [
+          "輝達（非台股）",
+          "晶片供給與客戶審查",
+          "不適用",
+          "—",
+          "—",
+          "2025/6 起內部禁售；客戶盡職調查是議員與 Bessent 的質疑焦點",
+          "公司說法＋媒體"
+        ],
+        [
+          "Aivres（背景搜尋摘要未說明）",
+          "伺服器廠；輝達 2025/6 限制對其銷售",
+          "不適用",
+          "沒查到",
+          "—",
+          "供貨受輝達限制",
+          "搜尋摘要（單一）"
+        ],
+        [
+          "鴻海 2317、廣達 2382、緯創 3231、緯穎 6669",
+          "AI 伺服器組裝與出貨（東南亞據點）",
+          "不適用",
+          "沒查到",
+          "—",
+          "本輪沒有任何報導點名臺灣廠商與 Megaspeed 的交易；五國許可新規的曝險比例沒查到",
+          "沒有公司說法"
+        ]
+      ],
+      "note": "逐列檢查四項（稼動滿載卻沒擴廠、擴產但上游材料沒擴、產能被單一客戶專供、設計產能不等於可出貨）在這個事件上都不適用。要補的是：臺灣 ODM 出貨給東南亞新興雲的比例、其中客戶審查的做法、以及是否有訂單因新規與列名而遞延——本輪都沒查到，所以台廠一律標中性。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "公司層：內部禁售（2025/6）",
+      "composition": "輝達把 Megaspeed 與子公司列禁售、限制 Aivres",
+      "spec": "自律措施",
+      "application": "出貨前審查；與雲端夥伴身分並存"
+    },
+    {
+      "name": "調查層：BIS → 司法部（2024 起）",
+      "composition": "商務部調查、要求銷售紀錄；司法部刑事調查",
+      "spec": "調查不公開細節",
+      "application": "證據累積與跨國協作"
+    },
+    {
+      "name": "規則層：11/16 臨時最終規則",
+      "composition": "五國許可＋遠端存取",
+      "spec": "美國總部收貨人可豁免並月報",
+      "application": "堵住東南亞與遠端租用繞道"
+    },
+    {
+      "name": "名單層：11/23 實體清單",
+      "composition": "Megaspeed 與 6 家關聯公司",
+      "spec": "所有 EAR 物項須許可、推定否准",
+      "application": "13 個月來首次新增"
+    },
+    {
+      "name": "法案層：位置驗證（晶片安全法）",
+      "composition": "出口晶片加裝位置驗證，轉運或竄改須通報",
+      "spec": "法案生效後 180 天（提案內容）",
+      "application": "12 月 NDAA 協商，是否通過未定（另案）"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "一行鏈：輝達晶片 → 伺服器組裝（OEM／ODM）→ 新加坡、馬來西亞、泰國資料中心與新興雲（Megaspeed 網絡）→ 轉運或遠端租用 → 中國買家",
+        "執法鏈：BIS 調查（2024）→ 要求銷售紀錄（2025/5）→ 輝達內部禁售（2025/6）→ 司法部刑事調查 → 聯邦公報停止新增（2025/10/9 起）→ 11/16 新規 → 11/23 列名",
+        "瓶頸在客戶盡職調查：晶片賣給東南亞資料中心合法，問題是最終用戶與轉運；Bessent 質疑輝達審查、議員批評商務部拖延",
+        "金額口徑是購買、轉運、安排購買並轉運三種不同的東西，執法要證明的是轉運到受限用戶"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "同一載體上的規則：11/16 BIS 新規把五國與遠端存取納入許可，Megaspeed 的實體分布正好在範圍內",
+        "美中休戰：實體清單相關限制凍結一年（到 1/10），聯邦公報自 2025/10/9 無新增；列名對象是新加坡公司，不是中國公司（休戰框架下較容易，推論）",
+        "輝達風波的另兩條線：SEC 調查新加坡營收揭露、加州檢察長傳票",
+        "12/1 閉門訪談與 12/3 聽證可能問到 Megaspeed（推論）"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "供需缺口怎麼來的：中國對最高階輝達晶片的需求大於合法供給（B300 伺服器黑市價約 100～110 萬美元／台），缺口是許可而非產能；灰色路徑是透過東南亞資料中心購買、轉運或遠端租用",
+        "慣性①：出貨被管 → 往上游找供給與替代（輝達與伺服器夥伴、華為等國產晶片，未佐證）；慣性②：規則升級 → 往下游找承接合規者（位置驗證、KYC），沒有臺灣名單，沒有證據",
+        "痛點與解法：列名（已生效，卡換殼規避）、刑事與跨國執法（卡證據與管轄）、公司審查（卡立場不一致）、法案（卡 12 月 NDAA）",
+        "限制：證據門檻、盟國管轄、BIS 人力、休戰期",
+        "擴產與稼動檢核：不適用（見表五）",
+        "一方言論檢核：沒有任何一個金額經法院認定；單一來源說法已標註",
+        "舉一反三：與《SEC 調查輝達》《加州檢察長傳票》同一條調查線；與《黃仁勳復職》《沒有國安風險？根據什麼？》同日；與《中國 AI 算力買不到、租更貴》是管制到黑市的上下游",
+        "敘事陷阱自查：列名≠走私成立；金額口徑混用；時間巧合≠因果；單一來源當事實；新聞稿≠調查結論"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷：Megaspeed 網絡；客戶含中國企業的東南亞新興雲；輝達（客戶審查與揭露的監管風險）",
+        "受惠（條件式）：收貨人總部在美國的雲端業者（豁免只須月報）；合規與位置驗證解決方案（沒有臺灣名單）；華為等國產晶片（未佐證）",
+        "臺灣 AI 伺服器鏈與台積電：沒有報導點名與 Megaspeed 的交易，東南亞曝險比例沒查到，一律中性"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "聯邦公報全文與後續新增；司法部與新加坡法院案件進度",
+        "輝達 10-Q／10-K 對客戶集中度與新加坡營收的揭露；Megaspeed 雲端夥伴身分是否移除",
+        "12/1 與 12/3 是否問到 Megaspeed 與客戶審查",
+        "鴻海、廣達、緯創、緯穎法說會對東南亞出貨占比與新規影響",
+        "1/10 休戰期屆滿與實體清單政策"
+      ]
+    }
+  ],
+  "conclusion": [
+    "Megaspeed 與關聯公司 11/23 被列入實體清單是事實（多家一致），但「轉運近 120 億美元晶片到中國」是媒體轉述的紀錄與指控，金額有三種口徑、沒有法院認定，Megaspeed 否認。",
+    "這是執法事件，不是供需缺口：瓶頸在客戶盡職調查與審查的時間差；11/16 新規與 11/23 列名是同一條線的兩步，輝達把它同時列為夥伴與內部禁售客戶的立場沒有解釋。",
+    "對臺灣的影響是東南亞出貨與買家審查的間接風險；沒有報導點名臺灣廠商與 Megaspeed 的交易，曝險比例沒查到，一律標中性。",
+    "要補的資料：聯邦公報全文、司法部與法院文件、輝達揭露、臺灣 ODM 對東南亞出貨占比與新規影響的公司說法。"
+  ],
+  "sources": [
+    {
+      "title": "The Edge Singapore：US blacklists Megaspeed, and six firms across Malaysia, Singapore and Thailand over chip diversion risk（僅搜尋摘要）",
+      "url": "https://www.theedgesingapore.com/news/highlight/us-blacklists-megaspeed-and-six-firms-across-malaysia-singapore-and-thailand-over"
+    },
+    {
+      "title": "Kharon：BIS Adds Nvidia-Buying Megaspeed Network to Entity List Amid Mounting Pressure（僅搜尋摘要）",
+      "url": "https://www.kharon.com/brief/megaspeed-bis-entity-list-nvidia"
+    },
+    {
+      "title": "Townhall：Megaspeed Finally Put on Commerce Blacklist（2026-11-23；僅搜尋摘要）",
+      "url": "https://townhall.com/news/frank-camp/2026/11/23/megaspeed-finally-put-on-commerce-blacklist-n2686953"
+    },
+    {
+      "title": "Newscord：Trump Administration Blacklists Singapore's Megaspeed After Nvidia Scandal: 9 outlets compared（僅搜尋摘要）",
+      "url": "https://newscord.org/article/trump-administration-blacklists-singapores-megaspeed-after-nvidia-scandal--Story_20261123_UStoblacklistAsianAIbf4382a0"
+    },
+    {
+      "title": "ZeroHedge：Megablacklisted: Commerce Just Did The One Thing Bessent Demanded, On The Day Huang Returned（僅搜尋摘要；立場鮮明的評論）",
+      "url": "http://www.zerohedge.com/political/megablacklisted-commerce-just-did-one-thing-bessent-demanded-day-huang-returned"
+    },
+    {
+      "title": "鉅亨網：黃仁勳回鍋同一天！美打破逾1年慣例 輝達風波關鍵商Megaspeed列黑名單（佇列觸發；全文本輪未讀）",
+      "url": "https://news.cnyes.com/news/id/6670401"
+    },
+    {
+      "title": "The Hill：Megaspeed hit with dual agency investigation amid Nvidia scandal（僅搜尋摘要）",
+      "url": "https://thehill.com/policy/technology/6224649-us-investigates-megaspeed-nvidia-chips/"
+    },
+    {
+      "title": "Fortune：How Megaspeed built a network in Singapore and Malaysia to move $7.5 billion of Nvidia chips to Chinese companies（2026-11-11；僅搜尋摘要）",
+      "url": "https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/"
+    },
+    {
+      "title": "CBS News：Megaspeed's vacant offices raise questions about ties to Nvidia and China（僅搜尋摘要）",
+      "url": "https://www.cbsnews.com/news/megaspeed-nvidia-china-ties/"
+    },
+    {
+      "title": "TRT World：Singapore's Megaspeed under criminal investigation over Nvidia chip exports, US confirms（僅搜尋摘要）",
+      "url": "https://www.trtworld.com/article/9cd5943c59cb"
+    },
+    {
+      "title": "Crypto Briefing：Commerce Department halted Nvidia chip smuggling probe after Nvidia contacted officials（單一來源；僅搜尋摘要）",
+      "url": "https://cryptobriefing.com/commerce-halted-nvidia-chip-smuggling-probe/"
+    },
+    {
+      "title": "Bloomberg Government：Treasury Wanted to Blacklist Megaspeed for Months, Bessent Says（僅搜尋摘要）",
+      "url": "https://news.bgov.com/artificial-intelligence/treasury-wanted-to-blacklist-megaspeed-for-months-bessent-says"
+    },
+    {
+      "title": "FourWeekMBA：Bessent: 4 Agencies Backed Listing Nvidia Buyer Megaspeed（僅搜尋摘要）",
+      "url": "https://fourweekmba.com/ai-bessent-4-agencies-backed-listing-nvidia-buyer-megaspeed/"
+    },
+    {
+      "title": "FourWeekMBA：Bessent vs Lutnick on Nvidia Buyer: 398 Days, No Entity Adds（僅搜尋摘要）",
+      "url": "https://fourweekmba.com/ai-bessent-vs-lutnick-on-nvidia-buyer-398-days-no-entity-adds/"
+    },
+    {
+      "title": "CSIS：Entity List Additions Cool to Their Slowest Pace Since 2008（僅搜尋摘要）",
+      "url": "https://www.csis.org/analysis/entity-list-additions-cool-their-slowest-pace-2008"
+    },
+    {
+      "title": "AOL：US to halt entity restrictions for one year after Trump-Xi meeting, Bessent says（僅搜尋摘要）",
+      "url": "https://www.aol.com/articles/us-halt-entity-restrictions-one-113536671.html"
+    },
+    {
+      "title": "WSGR：treasury secretary bessent announces suspension of 50 percent affiliate rule for entity list military end users list（標題由網址還原；僅搜尋摘要）",
+      "url": "https://www.wsgr.com/en/insights/treasury-secretary-bessent-announces-suspension-of-50-percent-affiliate-rule-for-entity-list-military-end-users-list.html"
+    },
+    {
+      "title": "Let's Data Science：Commerce Department reportedly leaves Megaspeed off Entity List additions, FT says（單一來源；僅搜尋摘要）",
+      "url": "https://letsdatascience.com/news/commerce-department-reportedly-leaves-megaspeed-off-entity-l-e97af199"
+    },
+    {
+      "title": "Legistorm：bennet presses trump administration on failure to stop megaspeeds apparent ai tech diversion to china（日期未核對；僅搜尋摘要）",
+      "url": "https://www.legistorm.com/stormfeed/view_rss/3028508/member/996/title/bennet-presses-trump-administration-on-failure-to-stop-megaspeeds-apparent-ai-tech-diversion-to-china.html"
+    },
+    {
+      "title": "Roll Call：calls for nvidia probes new chip export limits intensify（2026-11-12；僅搜尋摘要）",
+      "url": "https://www.rollcall.com/2026/11/12/calls-for-nvidia-probes-new-chip-export-limits-intensify"
+    },
+    {
+      "title": "中央社：美媒指與中國情報人員關係密切 議員要求黃仁勳向國會簡報（2026-11-06；僅搜尋摘要）",
+      "url": "https://cna.com.tw/news/aopl/202611060026.aspx"
+    },
+    {
+      "title": "Akin Gump：BIS Issues Interim Final Rule Restricting Remote Access to Advanced Semiconductors, Adding Five Countries to Advanced Computing License Requirements and Formally Rescinding AI Diffusion Rule（律所說明；僅搜尋摘要）",
+      "url": "https://www.akingump.com/en/insights/alerts/bis-issues-interim-final-rule-restricting-remote-access-to-advanced-semiconductors-adding-five-countries-to-advanced-computing-license-requirements-and-formally-rescinding-ai-diffusion-rule"
+    },
+    {
+      "title": "Nixon Peabody：BIS targets remote access to advanced chips through overseas data centers（2026-11-16；律所說明；僅搜尋摘要）",
+      "url": "https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers"
+    },
+    {
+      "title": "科技新報：美國升級中國 AI 晶片管制，新加坡、泰國、馬來西亞、印尼與巴西列高風險國家（2026-11-17；僅搜尋摘要）",
+      "url": "https://technews.tw/2026/11/17/the-us-escalates-restrictions-on-chinese-ai-chips/"
+    },
+    {
+      "title": "經濟日報：美擴大先進晶片出口管制 馬國學者估資料中心衝擊大（僅搜尋摘要）",
+      "url": "https://money.udn.com/money/story/5599/9884765"
+    },
+    {
+      "title": "聯合報：美AI晶片管制升級 經濟部：台美共同防堵漏洞（僅看到標題）",
+      "url": "https://udn.com/news/story/7240/9885218"
+    },
+    {
+      "title": "旺得富：《科技》美盯上馬、泰出口AI晶片 法人：新措施衝擊台廠有限（2025-07，較早的類似措施；僅搜尋摘要）",
+      "url": "https://wantrich.chinatimes.com/news/20250708900337-420101"
+    }
+  ],
+  "evidence": "媒體報導",
+  "report": "# 供需事件：Megaspeed 被列入實體清單（11/23）——輝達風波的「晶片流向」端（執法事件）\n\n> 資料說明：寫於 **2026-11-24 上午**，來自搜尋摘要與標題（The Edge Singapore、Kharon、Fortune、CBS、The Hill、Bloomberg Government、律所說明與臺灣媒體），**聯邦公報、BIS 公告、法院文件與各篇全文本輪沒有讀到**。金額與行為是媒體轉述的紀錄與指控，Megaspeed 否認違法；本檔不寫私人當事人的姓名與私生活細節（媒體稱的情報人員指控尚無判決）。\n\n## 0. 一句話\n**一句話**：11/23 美國商務部 BIS 把新加坡雲端與資料中心公司 Megaspeed 及關聯公司（共 7 個實體，分布新加坡、馬來西亞、泰國）列入實體清單，所有受 EAR 管轄的物項都須許可、推定否准——這是聯邦公報自 2025/10/9 以來第一次新增實體（13 個月），也和輝達董事會宣布黃仁勳復職同一天。官員稱 Megaspeed 被用來把輝達晶片轉運到中國；媒體引述的紀錄金額從約 48 億（購買）到 75 億（轉運）到近 120 億美元（安排購買並轉運）不等，Megaspeed 否認，輝達自 2025/6 起把它列內部禁售名單，卻稱曾在商務部許可下出貨元件、仍把它列為雲端夥伴。這是**執法事件，不是供需缺口**；對臺灣的意義在「東南亞出貨的審查」與「AI 伺服器買家的盡職調查」，本輪沒有查到任何臺灣廠商與 Megaspeed 的出貨關係。\n\n## 1. 事件：列名內容\n| 實體 | 所在地 | 說明 | 來源與備註 |\n|---|---|---|---|\n| Megaspeed International（亦稱 7Road International） | 新加坡 | 雲端與資料中心公司；據報導源自一家中國遊戲公司的分支；曾是輝達的重要晶片客戶並列為官方雲端夥伴 | The Edge Singapore、鉅亨網（搜尋摘要） |\n| Apex Enterprise Solutions（新加坡） | 新加坡 | 名列新加坡條目 | The Edge Singapore |\n| Swiftdata | 新加坡 | 名列新加坡條目 | The Edge Singapore |\n| Speedmatrix Sdn Bhd | 馬來西亞 | Kharon 稱為關聯公司；有報導稱它與 Megaspeed 三年合計購買約 48 億美元輝達先進 AI 設備與晶片 | Kharon；金額見表二 |\n| 其餘馬來西亞與泰國實體 | 馬來西亞、泰國 | 合計 7 個實體（Megaspeed ＋ 6 家），分布新加坡、馬來西亞與泰國；各來源名單不完全一致 | The Edge Singapore、Newscord（搜尋摘要） |\n\n## 2. 金額口徑\n| 口徑 | 數字 | 來源 | 性質與判讀 |\n|---|---|---|---|\n| 華爾街日報看到的紀錄（經搜尋摘要轉述）：安排購買並轉往中國境內公司的頂級輝達晶片，2024～2025 年 | 近 120 億美元 | The Edge Singapore 摘要 | 指控；「安排購買」不等於已交付，也不等於已轉運 |\n| Fortune 11/11 調查：經新加坡與馬來西亞網絡轉給中國公司的輝達晶片 | 75 億美元 | Fortune（標題） | 媒體調查與指控；方法與範圍沒讀到 |\n| Megaspeed 與馬來西亞關聯公司 Speedmatrix 三年購買的輝達先進 AI 設備與晶片 | 約 48 億美元 | 搜尋摘要（轉述） | 購買金額；購買本身不等於走私（可能含合法的遠端算力用途） |\n| Megaspeed 買進的輝達晶片（另一轉述） | 超過 40 億美元 | FourWeekMBA、Let's Data Science（搜尋摘要） | 購買金額；與上一列可能是同一口徑的不同轉述 |\n\n## 3. 時間軸\n| 日期 | 事件 | 來源與備註 |\n|---|---|---|\n| 2024 | 商務部 BIS 開始調查 Megaspeed（偵測到晶片可能被轉移）；後來司法部接手、主導刑事調查 | 搜尋摘要（The Hill、TRT World） |\n| 2025/5 | 商務部要求輝達提供銷售紀錄 | The Edge Singapore 摘要 |\n| 2025/6 | 輝達把 Megaspeed 與一家子公司列入內部禁售名單，並限制對 Aivres 的銷售（Aivres 背景搜尋摘要未說明） | 搜尋摘要 |\n| 2025/10/9 | 聯邦公報最後一次新增實體清單；同年 10 月川普與習近平會面後，實體清單相關限制（50% 關聯公司規則）凍結一年 | FourWeekMBA、CSIS、AOL、WSGR（標題） |\n| 2026/11/6 | 美媒報導黃仁勳與一名被指為中國情報人員的人士關係密切；搜尋摘要稱該人士為 Megaspeed 高階主管、美方官員如今認定其為中國情報資產（未經判決） | 中央社轉述；指控 |\n| 2026/11/11 | Fortune 調查報導 Megaspeed 在新加坡與馬來西亞的網絡 | Fortune |\n| 2026/11/12 | 黃仁勳辭職 | Roll Call |\n| 2026/11/13 | 財政部長 Bessent 在 CNBC 稱財政部、戰爭部、貿易代表署與國務院支持列名 Megaspeed 已數月，BIS「握有筆」；同期 FT 稱商務部把新增名單延後兩個月並未列入 Megaspeed | Bloomberg Government、FourWeekMBA；FT 說法為單一來源（Let's Data Science 轉述） |\n| 2026/11/16 | BIS 公布臨時最終規則：五國許可與遠端存取 | 律所說明、臺灣媒體 |\n| 2026/11/23 | BIS 把 Megaspeed 與關聯公司列入實體清單（13 個月來第一次新增）；同日輝達董事會宣布黃仁勳復職 | The Edge Singapore、ZeroHedge（標題）、鉅亨網 |\n\n## 4. 一方言論檢核\n| 說法 | 來源 | 證據等級 | 判讀 |\n|---|---|---|---|\n| 11/23 BIS 把 Megaspeed 與關聯公司列入實體清單，須許可、推定否准 | The Edge Singapore、Kharon、Townhall、Newscord、ZeroHedge（多家一致） | 媒體報導（官方行為） | 多家吻合，可視為事實；聯邦公報全文本輪沒讀到，家數與名單細節以公報為準 |\n| 官員稱 Megaspeed 被用來把輝達晶片轉運到中國；金額近 120 億／75 億／48 億美元 | WSJ、Fortune、其他（搜尋摘要轉述） | 指控與媒體調查 | 口徑不一（見表二）；Megaspeed 否認、輝達稱未發現非法轉移；沒有法院認定 |\n| 輝達：曾在商務部許可下出貨元件，仍把 Megaspeed 列為雲端夥伴 | 搜尋摘要轉述輝達說法 | 公司說法 | 與「2025/6 起內部禁售」並列時有張力：同時是夥伴與禁售客戶，輝達沒有解釋 |\n| Bessent：財政部、戰爭部、貿易代表署、國務院支持列名數月，BIS 握有筆 | CNBC 11/13（Bloomberg Government 轉述） | 官員公開說法 | 是政治表態，等於公開指出商務部拖延；商務部回應沒查到 |\n| FT：商務部把新增名單延後兩個月，並未列入 Megaspeed | Let's Data Science 轉述 | 單一來源 | FT 原文沒讀到；11/23 的列名等於推翻這個狀態 |\n| 商務部曾因輝達接觸官員而中止走私調查，案件移交司法部 | Crypto Briefing | 單一來源 | 沒有其他來源佐證，不採信，列為未證實 |\n| Megaspeed 辦公室空置、與輝達與中國關係存疑 | CBS（標題） | 媒體實地報導 | 只看到標題；空置辦公室是警訊，不是違法證據 |\n| 新加坡警方調查 Megaspeed；另已起訴五人涉詐欺共謀（與輝達晶片轉移有關） | 搜尋摘要 | 媒體報導 | 與列名是不同司法管轄；案情細節未公開 |\n| 「列名與黃仁勳復職同日」＝商務部做了 Bessent 要求的事 | ZeroHedge（標題） | 立場評論 | 時間巧合不是因果，沒有證據顯示交換條件；只能說兩件事同日發生 |\n\n## 5. 產業鏈因果（垂直）：晶片怎麼從輝達走到買家，執法卡在哪一段\n\n**一行鏈**：輝達晶片 → 伺服器組裝（OEM／ODM）→ 新加坡、馬來西亞、泰國的資料中心與新興雲（Megaspeed 網絡）→ 轉運或遠端租用 → 中國買家。**執法鏈**：BIS 調查（2024）→ 要求輝達提供銷售紀錄（2025/5）→ 輝達內部禁售（2025/6）→ 司法部刑事調查 → 聯邦公報停止新增（2025/10/9 起）→ 11/16 五國許可與遠端存取規則 → 11/23 列名。\n\n- **瓶頸在「客戶盡職調查」這一段**：晶片賣給東南亞資料中心本身合法；問題是最終用戶與轉運。Bessent 質疑輝達的客戶審查（搜尋摘要），議員批評商務部拖延（Legistorm 標題）——兩邊都指向審查與執法的時間差。\n- **列名之前已有三道防線**：輝達內部禁售（2025/6）、11/16 新規（五國許可、遠端存取）、新加坡警方調查；列名是第四道，也是最有法律效力的一道（所有 EAR 物項須許可）。\n- **金額的問題**：購買、安排購買、轉運是不同的事（表二），執法最後要證明的是「轉運到受限用戶」，不是「買了多少」。\n\n## 6. 相關推進力（水平）\n- **同一個載體上的規則**：11/16 BIS 新規把印尼、馬來西亞、新加坡、泰國、巴西列為須許可地區，並限制中國等 D:5 國家企業經海外資料中心遠端取得算力——Megaspeed 的實體分布（新加坡、馬來西亞、泰國）正好落在這個範圍內。\n- **美中休戰**：2025/10 川普與習近平會面後，實體清單相關限制凍結一年（搜尋摘要稱休戰期到 1/10）；CSIS 的標題稱實體清單新增已是 2008 年以來最慢。11/23 的列名打破了這個慣例，但對象是新加坡公司，不是中國公司——休戰框架下較容易下手（推論）。\n- **輝達風波的另兩條線**：SEC 調查輝達新加坡營收揭露（既有研究）、加州檢察長傳票（既有研究）；Megaspeed 是把「晶片流向」與「新加坡營收」連在一起的節點。\n- **黃仁勳復職與聽證**：12/1 眾院閉門訪談、12/3 參院聽證會問到 Megaspeed 與客戶審查（推論，議程沒讀到；另案《沒有國安風險？根據什麼？》）。\n\n## 7. 慣性、痛點與限制（思辯）\n\n**供需缺口怎麼來的**：中國客戶對最高階輝達晶片的需求大於合法供給（B300 伺服器黑市價約 100～110 萬美元／台，近乎翻倍；既有研究），於是出現「透過東南亞資料中心購買、轉運或遠端租用」的灰色路徑。缺口不是產能，是許可：合法管道買不到的算力，在灰色管道以高價成交。\n\n**慣性①（出貨被管 → 往上游找供給）**：誰供貨——輝達與其伺服器夥伴；有沒有替代——華為等國產晶片（未佐證）；擴產了沒——不適用。\n**慣性②（規則升級 → 往下游找誰承接合規）**：位置驗證、客戶審查與資料中心 KYC 是直接承接者；搜尋結果沒有臺灣上市櫃名單，沒有證據。\n\n**痛點與最快的解法**（標時點與卡點）：\n- **列名（已生效）**：卡點是實體清單的常見規避——換殼公司或改名（推論；本輪沒有 Megaspeed 的直接報導，但 CBS 稱其辦公室空置，顯示實體規模不明）。\n- **刑事與跨國執法**：司法部刑事調查、新加坡警方調查與起訴；卡點是證據門檻與司法管轄，結案時間沒有資料。\n- **公司審查**：輝達內部禁售（2025/6）；卡點是同時把 Megaspeed 列為雲端夥伴，立場不一致。\n- **法案**：位置驗證（晶片安全法）；卡點是 12 月 NDAA 協商（另案）。\n\n**限制**：證據門檻（指控 vs 認定）、盟國司法管轄、BIS 人力、美中休戰期（到 1/10）。\n\n**擴產與稼動檢核**：不適用（見表五）。\n\n**敘事陷阱自查（執法版）**：\n1. **「列名＝走私成立」**：列名是行政措施，沒有法院認定。\n2. **「金額口徑混用」**：48 億、75 億、近 120 億是三種不同的東西。\n3. **「時間巧合＝因果」**：列名與復職同日，沒有證據顯示交換條件。\n4. **「單一來源當事實」**：商務部中止調查、FT 延後新增兩說都只有單一來源。\n5. **「新聞稿＝調查結論」**：議員、官員的表態不是調查報告。\n\n## 8. 擴產與稼動檢核（不適用）\n| 公司 | 瓶頸環節 | 現況稼動 | 擴產與資本支出 | 投產或放量時點 | 主要限制 | 證據等級 |\n|---|---|---|---|---|---|---|\n| Megaspeed 網絡（未上市） | 東南亞資料中心與轉運／遠端租用 | 不適用（CBS 稱辦公室空置，實際算力規模不明） | 沒查到 | — | 列名後無法取得美國零組件與技術；各國執法 | 媒體報導與指控 |\n| 輝達（非台股） | 晶片供給與客戶審查 | 不適用 | — | — | 2025/6 起內部禁售；客戶盡職調查是議員與 Bessent 的質疑焦點 | 公司說法＋媒體 |\n| Aivres（背景搜尋摘要未說明） | 伺服器廠；輝達 2025/6 限制對其銷售 | 不適用 | 沒查到 | — | 供貨受輝達限制 | 搜尋摘要（單一） |\n| 鴻海 2317、廣達 2382、緯創 3231、緯穎 6669 | AI 伺服器組裝與出貨（東南亞據點） | 不適用 | 沒查到 | — | 本輪沒有任何報導點名臺灣廠商與 Megaspeed 的交易；五國許可新規的曝險比例沒查到 | 沒有公司說法 |\n\n## 9. 舉一反三：和研究庫相鄰題材對照\n- **《SEC 調查輝達會計處理！新加坡營收揭露》（11/21）**：同一個新加坡節點——輝達 2025 年改以客戶總部歸屬揭露地區營收、新加坡從明細消失，是否與 Megaspeed 有關未確認；本檔補上 Megaspeed 的列名與金額口徑。\n- **《加州檢察長向輝達發傳票》（11/20）**：調查範圍是先進晶片是否流入中國、輝達是否誤導投資人；與 Megaspeed 案是同一條調查壓力線；研究庫已寫「臺灣 ODM 在東南亞有組裝據點，曝險比例沒查」，本檔同樣沒查到。\n- **《輝達董事會恢復黃仁勳…》（11/23）與《沒有國安風險？根據什麼？》**：同日事件；本檔是「晶片流向」端，另一檔是「政治與國會」端。\n- **《中國 AI 算力「買不到、租更貴」》（11/11）**：管制 → 黑市價近乎翻倍；列名與新規是封堵這個市場的下一步。\n- **《AI晶片買了卻可能用不了！微軟遊說川普》（11/11）**：雲端業者遊說放寬 vs 執法收緊；政策方向不是單向的。\n\n## 10. 誰受惠、誰受傷（條件式推論）\n- **受傷**：Megaspeed 網絡（列名後取得美國零組件與技術更難）；經營東南亞新興雲、客戶含中國企業的資料中心；輝達（客戶審查與揭露的監管風險）。\n- **受惠（條件式）**：收貨人總部在美國的雲端業者（11/16 新規豁免、須月報）；合規與位置驗證解決方案（沒有臺灣名單）；華為等國產晶片（未佐證）。\n- **臺灣**：鴻海、廣達、緯創、緯穎與台積電——**沒有任何報導點名與 Megaspeed 的交易，東南亞出貨曝險比例也沒查到，一律標中性**；法人稱 11/16 新規對台積電影響有限（搜尋摘要）；經濟部稱將與美方共同防堵漏洞（標題）。\n\n## 11. 傳聞與未證實\n- **「商務部曾因輝達接觸官員而中止調查」**：單一來源（Crypto Briefing）。\n- **「FT：商務部把新增名單延後兩個月並未列入 Megaspeed」**：單一來源轉述，原文沒讀到。\n- **「列名是 Bessent 施壓的結果／與復職交換」**：時間巧合與立場評論，沒有證據。\n- **「金額近 120 億美元已轉往中國」**：媒體轉述的紀錄與指控，沒有法院認定。\n\n## 12. 風險與矛盾\n- 全是搜尋摘要與標題；沒讀到聯邦公報、BIS 公告、法院文件。\n- 金額有三種口徑；家數有「7 個實體」與「Megaspeed ＋ 6 家」的說法差異（實為同一件事）；11/16 新規的國家名單有「三國」與「五國」兩種摘要說法，以律所說明的五國為準。\n- 輝達同時把 Megaspeed 列為雲端夥伴與內部禁售客戶，立場沒有解釋。\n- 臺灣曝險沒有任何公司說法。\n- 休戰期到 1/10：休戰是否延續會影響後續是否再有列名（推論）。\n\n## 13. 要追蹤的時間點與怎麼驗證\n- **聯邦公報**：11/23 列名的全文（實體名單、地址、許可政策）；是否有後續新增或關聯公司補列。\n- **司法部與法院**：刑事案是否起訴；新加坡法院案件進度。\n- **輝達**：下一份 10-Q／10-K 對客戶集中度與新加坡營收的揭露；是否把 Megaspeed 從雲端夥伴名單移除。\n- **12/1、12/3**：眾院閉門訪談與參院聽證是否問到 Megaspeed 與客戶審查。\n- **臺灣側**：鴻海、廣達、緯創、緯穎法說會對東南亞出貨占比與新規影響；經濟部與貿易署的後續措施。\n- **1/10**：美中休戰期屆滿與實體清單政策走向。\n\n## 資料來源\n- [The Edge Singapore：US blacklists Megaspeed, and six firms across Malaysia, Singapore and Thailand over chip diversion risk（僅搜尋摘要）](https://www.theedgesingapore.com/news/highlight/us-blacklists-megaspeed-and-six-firms-across-malaysia-singapore-and-thailand-over)\n- [Kharon：BIS Adds Nvidia-Buying Megaspeed Network to Entity List Amid Mounting Pressure（僅搜尋摘要）](https://www.kharon.com/brief/megaspeed-bis-entity-list-nvidia)\n- [Townhall：Megaspeed Finally Put on Commerce Blacklist（2026-11-23；僅搜尋摘要）](https://townhall.com/news/frank-camp/2026/11/23/megaspeed-finally-put-on-commerce-blacklist-n2686953)\n- [Newscord：Trump Administration Blacklists Singapore's Megaspeed After Nvidia Scandal: 9 outlets compared（僅搜尋摘要）](https://newscord.org/article/trump-administration-blacklists-singapores-megaspeed-after-nvidia-scandal--Story_20261123_UStoblacklistAsianAIbf4382a0)\n- [ZeroHedge：Megablacklisted: Commerce Just Did The One Thing Bessent Demanded, On The Day Huang Returned（僅搜尋摘要；立場鮮明的評論）](http://www.zerohedge.com/political/megablacklisted-commerce-just-did-one-thing-bessent-demanded-day-huang-returned)\n- [鉅亨網：黃仁勳回鍋同一天！美打破逾1年慣例 輝達風波關鍵商Megaspeed列黑名單（佇列觸發；全文本輪未讀）](https://news.cnyes.com/news/id/6670401)\n- [The Hill：Megaspeed hit with dual agency investigation amid Nvidia scandal（僅搜尋摘要）](https://thehill.com/policy/technology/6224649-us-investigates-megaspeed-nvidia-chips/)\n- [Fortune：How Megaspeed built a network in Singapore and Malaysia to move $7.5 billion of Nvidia chips to Chinese companies（2026-11-11；僅搜尋摘要）](https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/)\n- [CBS News：Megaspeed's vacant offices raise questions about ties to Nvidia and China（僅搜尋摘要）](https://www.cbsnews.com/news/megaspeed-nvidia-china-ties/)\n- [TRT World：Singapore's Megaspeed under criminal investigation over Nvidia chip exports, US confirms（僅搜尋摘要）](https://www.trtworld.com/article/9cd5943c59cb)\n- [Crypto Briefing：Commerce Department halted Nvidia chip smuggling probe after Nvidia contacted officials（單一來源；僅搜尋摘要）](https://cryptobriefing.com/commerce-halted-nvidia-chip-smuggling-probe/)\n- [Bloomberg Government：Treasury Wanted to Blacklist Megaspeed for Months, Bessent Says（僅搜尋摘要）](https://news.bgov.com/artificial-intelligence/treasury-wanted-to-blacklist-megaspeed-for-months-bessent-says)\n- [FourWeekMBA：Bessent: 4 Agencies Backed Listing Nvidia Buyer Megaspeed（僅搜尋摘要）](https://fourweekmba.com/ai-bessent-4-agencies-backed-listing-nvidia-buyer-megaspeed/)\n- [FourWeekMBA：Bessent vs Lutnick on Nvidia Buyer: 398 Days, No Entity Adds（僅搜尋摘要）](https://fourweekmba.com/ai-bessent-vs-lutnick-on-nvidia-buyer-398-days-no-entity-adds/)\n- [CSIS：Entity List Additions Cool to Their Slowest Pace Since 2008（僅搜尋摘要）](https://www.csis.org/analysis/entity-list-additions-cool-their-slowest-pace-2008)\n- [AOL：US to halt entity restrictions for one year after Trump-Xi meeting, Bessent says（僅搜尋摘要）](https://www.aol.com/articles/us-halt-entity-restrictions-one-113536671.html)\n- [WSGR：treasury secretary bessent announces suspension of 50 percent affiliate rule for entity list military end users list（標題由網址還原；僅搜尋摘要）](https://www.wsgr.com/en/insights/treasury-secretary-bessent-announces-suspension-of-50-percent-affiliate-rule-for-entity-list-military-end-users-list.html)\n- [Let's Data Science：Commerce Department reportedly leaves Megaspeed off Entity List additions, FT says（單一來源；僅搜尋摘要）](https://letsdatascience.com/news/commerce-department-reportedly-leaves-megaspeed-off-entity-l-e97af199)\n- [Legistorm：bennet presses trump administration on failure to stop megaspeeds apparent ai tech diversion to china（日期未核對；僅搜尋摘要）](https://www.legistorm.com/stormfeed/view_rss/3028508/member/996/title/bennet-presses-trump-administration-on-failure-to-stop-megaspeeds-apparent-ai-tech-diversion-to-china.html)\n- [Roll Call：calls for nvidia probes new chip export limits intensify（2026-11-12；僅搜尋摘要）](https://www.rollcall.com/2026/11/12/calls-for-nvidia-probes-new-chip-export-limits-intensify)\n- [中央社：美媒指與中國情報人員關係密切 議員要求黃仁勳向國會簡報（2026-11-06；僅搜尋摘要）](https://cna.com.tw/news/aopl/202611060026.aspx)\n- [Akin Gump：BIS Issues Interim Final Rule Restricting Remote Access to Advanced Semiconductors, Adding Five Countries to Advanced Computing License Requirements and Formally Rescinding AI Diffusion Rule（律所說明；僅搜尋摘要）](https://www.akingump.com/en/insights/alerts/bis-issues-interim-final-rule-restricting-remote-access-to-advanced-semiconductors-adding-five-countries-to-advanced-computing-license-requirements-and-formally-rescinding-ai-diffusion-rule)\n- [Nixon Peabody：BIS targets remote access to advanced chips through overseas data centers（2026-11-16；律所說明；僅搜尋摘要）](https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers)\n- [科技新報：美國升級中國 AI 晶片管制，新加坡、泰國、馬來西亞、印尼與巴西列高風險國家（2026-11-17；僅搜尋摘要）](https://technews.tw/2026/11/17/the-us-escalates-restrictions-on-chinese-ai-chips/)\n- [經濟日報：美擴大先進晶片出口管制 馬國學者估資料中心衝擊大（僅搜尋摘要）](https://money.udn.com/money/story/5599/9884765)\n- [聯合報：美AI晶片管制升級 經濟部：台美共同防堵漏洞（僅看到標題）](https://udn.com/news/story/7240/9885218)\n- [旺得富：《科技》美盯上馬、泰出口AI晶片 法人：新措施衝擊台廠有限（2025-07，較早的類似措施；僅搜尋摘要）](https://wantrich.chinatimes.com/news/20250708900337-420101)\n",
+  "trigger": "2026-11-24 供需失衡（政策管制）：黃仁勳回鍋同一天！美打破逾1年慣例 輝達風波關鍵商Megaspeed列黑名單\n美國23日將新加坡晶片公司Megaspeed列入貿易黑名單，該公司與輝達涉間諜調查密切相關&#10;美國司法部、商務部指自2024年起調查Megaspeed，疑違反出口管制、將輝達AI晶片運往中國&#10;Megaspeed曾是輝達重要晶片客戶並列官方雲端夥伴，遭列管恐更難取得美國零組件與技術\nhttps://news.cnyes.com/news/id/6670401"
+}
