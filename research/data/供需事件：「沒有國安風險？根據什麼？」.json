@@ -1,0 +1,634 @@
+{
+ "topic": "供需事件：「沒有國安風險？根據什麼？」",
+ "one_line": "輝達 11/23 讓黃仁勳復職時，董事會與川普都稱「沒有國安風險」，但公開資料找不到支持這句話的調查結論：依據是美國政府高層意見與司法部長 Blanche 的口頭確認，而董事會自己的獨立調查「將進行到結論」（尚未結束）；兩黨議員當天公開反駁（Moolenaar 等三位眾院主席、Warren、Scott、Cornyn），眾院三委員會 12/1 閉門訪談與參院銀行委員會 12/3 公開聽證（黃仁勳為唯一證人）照舊，FY2027 國防授權法案 12 月協商三項晶片出口法案（AI OVERWATCH、晶片安全法、MATCH，現況有兩種說法）。這是政策與治理事件，不是供需缺口，瓶頸在「許可與合規」：11/16 BIS 新規讓出貨到五國須許可（收貨人屬美國總部可豁免並月報）、遠端存取納管，11/23 Megaspeed 列實體清單；對臺灣 AI 伺服器鏈是東南亞出貨的許可與審查風險，不是訂單取消，各家曝險比例本輪沒查到，一律標中性。內容來自搜尋摘要。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "黃仁勳",
+  "輝達",
+  "復職",
+  "國安",
+  "川普",
+  "國會",
+  "聽證",
+  "出口管制",
+  "NDAA",
+  "AI OVERWATCH",
+  "晶片安全法",
+  "MATCH",
+  "BIS",
+  "實體清單",
+  "Megaspeed",
+  "東南亞",
+  "遠端存取",
+  "Tim Scott",
+  "Warren",
+  "Moolenaar"
+ ],
+ "catalysts": [
+  "12/1 眾院三委員會閉門訪談；結束後議員的公開說法",
+  "12/3 參院銀行委員會公開聽證；Lutnick 是否排入 12/10",
+  "12 月 FY2027 NDAA 協商文本：三項晶片法案是否保留、位置驗證是否涵蓋伺服器廠",
+  "輝達獨立董事委員會調查結論",
+  "BIS 聯邦公報全文、常見問答與是否再新增實體",
+  "鴻海、廣達、緯創、緯穎法說會對東南亞出貨占比與許可影響的說法"
+ ],
+ "risks": [
+  "全是搜尋摘要與標題；沒讀到 8-K 全文、聯邦公報、聽證通知",
+  "「沒有國安風險」目前只有官員與董事會的說法，沒有公開調查結論；董事會自己的調查尚未結束，結論可能被推翻",
+  "聽證日期在 11/20 與 11/23 的報導不同；Lutnick 日期未確認；BIS 新規生效日各來源不一",
+  "法案現況有兩種說法（參院版已含、12 月協商 vs 一篇未標日期稱可能被排除），單一來源與日期不明",
+  "臺灣曝險比例沒有任何公司說法，台廠標中性只是缺資料，不代表沒有影響",
+  "聽證與法案是尾部風險，股價與夜盤情緒（11/23 夜盤漲停）可能尚未反映"
+ ],
+ "spec_tables": [
+  {
+   "title": "表一：時間軸（含已排定的追蹤日）",
+   "columns": [
+    "日期",
+    "事件",
+    "來源與備註"
+   ],
+   "rows": [
+    [
+     "11/6",
+     "美媒報導黃仁勳與一名被指為中國情報人員的人士關係密切；眾院中國特別委員會、外交委員會、情報委員會三位共和黨主席聯名致函，要求他 11/18 出席閉門簡報",
+     "中央社轉述；是議員的要求與媒體的指控，沒有判決"
+    ],
+    [
+     "11/11～13",
+     "議員推動把更嚴的中國晶片出口管制放進國防授權法案；眾議院議長稱國會對限制對中國晶片出口逐漸形成共識",
+     "Korea Times、SCMP；議長說法只有單一來源，另一則搜尋摘要稱無法證實"
+    ],
+    [
+     "11/12",
+     "黃仁勳辭職；參院銀行委員會主席 Tim Scott 去信，邀他 12/3 公開作證、商務部長 Lutnick 12/10",
+     "Roll Call、Decrypt（搜尋摘要）"
+    ],
+    [
+     "11/16～19",
+     "BIS 公布臨時最終規則（五國許可＋遠端存取），11/19 聯邦公報刊登",
+     "律所說明與臺灣媒體；生效日各來源不一"
+    ],
+    [
+     "11/17",
+     "輝達財報電話會議：董事長 Jones 稱董事會一致接受辭呈、無意復任",
+     "既有研究《「應給第二次機會」》（多家轉述）"
+    ],
+    [
+     "11/18～20",
+     "黃仁勳同意赴參院銀行委員會公開作證；眾院三委員會閉門訪談排 12/1；11/20 CNBC 仍稱參院日期未公布",
+     "CNBC、CBS"
+    ],
+    [
+     "11/20～23",
+     "川普多次公開呼籲董事會讓他回任（11/21、11/22 等，各報導日期不一）；董事會 11/22 決議",
+     "聯合報；8-K 摘要與既有研究《「應給第二次機會」》"
+    ],
+    [
+     "11/23（一）",
+     "輝達公告一致恢復職務；川普稱直接與董事會談、說服他們；議員當天反彈；Scott 公布 12/3 聽證；眾院情報委員會發言人稱復職「changes nothing」；BIS 同日把 Megaspeed 與關聯公司列入實體清單",
+     "8-K、CBS、CNBC、NBC、PBS、華盛頓時報、The Edge Singapore"
+    ],
+    [
+     "12/1",
+     "眾院三委員會閉門訪談（transcribed interview）",
+     "CBS；華盛頓時報"
+    ],
+    [
+     "12/3",
+     "參院銀行委員會公開聽證〈Protecting America's AI Advantage: Oversight of U.S. Export Controls〉，黃仁勳為唯一證人",
+     "華盛頓時報（Scott 發出的通知）"
+    ],
+    [
+     "12/10（邀請日）",
+     "商務部長 Lutnick（Scott 11/12 信函的邀請日）；11/20 時沒有確認",
+     "Decrypt；CNBC 11/20"
+    ],
+    [
+     "12 月",
+     "FY2027 國防授權法案（NDAA）協商，三項晶片法案是否保留",
+     "FourWeekMBA（引 CNBC）；另一篇未標日期的報導稱相關條款可能不在最終版本"
+    ]
+   ],
+   "note": "日期與內容來自搜尋摘要，聽證日期各報導在 11/20 前後不同，以 11/23 起的報導為準。"
+  },
+  {
+   "title": "表二：一方言論檢核——「沒有國安風險」到底根據什麼",
+   "columns": [
+    "說法",
+    "來源",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "董事會：收到美國政府高層的意見，對黃仁勳回任「不構成國安風險」有信心；獨立董事委員會對他是否為外國情報行動目標的調查「將進行到結論」",
+     "輝達 8-K 新聞稿（11/23）",
+     "公司公告",
+     "是董事會的結論，依據是政府高層意見；沒有公開的調查報告，而且自己的調查還沒結束——結論先於調查"
+    ],
+    [
+     "川普：直接與董事會談、「說服他們」；稱美國政府沒有理由相信回任構成國安風險，並引司法部長 Blanche 確認沒有不法證據",
+     "CBS、CNBC、Yahoo／路透（搜尋摘要）",
+     "政治人物說法",
+     "沒有可供外界檢驗的調查結論；這就是議員追問「根據什麼」的原因"
+    ],
+    [
+     "董事會曾要求政府就國安威脅提供保證，副總統范斯居中斡旋；白宮證實川普完全參與",
+     "工商時報、鉅亨網（搜尋摘要）",
+     "媒體報導（單一轉述）",
+     "與華盛頓郵報、CNBC 的「川普直接介入」互相吻合，但范斯的角色只有臺灣媒體提到，需核對"
+    ],
+    [
+     "議員：Moolenaar 與另兩位眾院主席聯合聲明——董事會簡短的內部調查與復職抹不掉國安疑慮，不免除黃仁勳作證，也不免除輝達交代下落不明的晶片；Warren 稱魯莽，並把它連到法案急迫性；Scott 稱國安與出口管制是聽證核心；Cornyn 質疑官方保證",
+     "NBC、PBS、CNBC、Bloomberg Government（搜尋摘要）",
+     "公開聲明（兩黨）",
+     "是立場表態，不是立法或調查行動；共和黨內也有反對者，不能簡化成黨派對立"
+    ],
+    [
+     "12/1 眾院閉門訪談照舊；12/3 參院公開聽證，黃仁勳為唯一證人",
+     "CBS、華盛頓時報、The Hill",
+     "媒體報導（聽證通知）",
+     "11/20 CNBC 還說參院沒有日期，11/23 起才有 12/3；仍以委員會官方公告為準"
+    ],
+    [
+     "眾議院議長稱國會對限制對中國出口晶片逐漸形成共識",
+     "Korea Times（搜尋摘要）",
+     "單一來源",
+     "另一則搜尋摘要稱無法證實，不採信"
+    ],
+    [
+     "輝達 11/17 財報電話會議稱無意復任，11/23 反轉",
+     "既有研究（多家轉述）",
+     "公司說法對公司公告",
+     "5 天內反轉；顯示董事會的說法會隨政治壓力改變，不能把任何一次表態當成最終"
+    ]
+   ],
+   "note": "上表沒有一列屬於獨立調查數據；全部是公司、官員與議員的公開說法。"
+  },
+  {
+   "title": "表三：法案與規則一覽",
+   "columns": [
+    "項目",
+    "內容",
+    "狀態",
+    "證據"
+   ],
+   "rows": [
+    [
+     "BIS 臨時最終規則（11/16 公布）",
+     "先進 AI 晶片出口、再出口、境內轉移到印尼、馬來西亞、新加坡、泰國、巴西改須許可（收貨人總部或最終母公司在美國者可豁免，但須每月申報）；中國等 D:5 國家企業經海外資料中心遠端取得算力超過門檻須許可；正式廢止 Biden 時期 AI 擴散規則；晶圓製造與封測（OSAT）豁免對設計商位於這些國家者收緊",
+     "11/19 聯邦公報刊登；生效日各來源不一（一說刊登即生效，另有來源稱已服務此類客戶的資料中心有 90 天過渡期）",
+     "律所說明（Akin Gump、Nixon Peabody）、臺灣媒體（搜尋摘要）"
+    ],
+    [
+     "BIS 實體清單（11/23）",
+     "Megaspeed 與關聯公司（共 7 個實體，分布新加坡、馬來西亞、泰國；各報導對家數說法略有不同）",
+     "已生效",
+     "The Edge Singapore（搜尋摘要）；見另案《Megaspeed 列黑名單》"
+    ],
+    [
+     "AI OVERWATCH Act",
+     "把川普對最先進 AI 晶片出口對手國的限制法典化，並讓國會對晶片出口許可有否決權；參院版提案人為共和黨 Banks 與民主黨 Warren，眾院版由 Mast 提出",
+     "2026/1/21 眾院委員會通過；參院版 FY2027 NDAA 據報已含",
+     "Al Jazeera、Tom's Hardware（標題）、ARI"
+    ],
+    [
+     "晶片安全法（Chip Security Act）",
+     "要求出口管制的先進 AI 晶片在法案生效後 180 天內加裝位置驗證機制，被轉運或竄改須向 BIS 通報；不指定技術做法。是否涵蓋伺服器組裝廠與 ODM、成本誰負擔，搜尋摘要沒說明",
+     "Cotton 的參院版與眾院兩黨版（2025 年提出）；參院版 FY2027 NDAA 據報已含",
+     "Yahoo（Cotton）、SCMP（搜尋摘要）"
+    ],
+    [
+     "MATCH Act",
+     "要求盟國停止向中國銷售晶片製造設備",
+     "參院版 FY2027 NDAA 據報已含",
+     "ARI、FourWeekMBA（搜尋摘要）"
+    ],
+    [
+     "GAIN AI Act",
+     "2025 年底曾被排除在 FY2026 國防授權法案之外；黃仁勳當時稱它「比 AI 擴散規則更傷美國」",
+     "已被排除（過去事件）",
+     "搜尋摘要（2025 年報導）"
+    ],
+    [
+     "FY2027 NDAA",
+     "上述法案的載體；FourWeekMBA 稱三項法案共有約 120 位共同提案人，12 月進入協商",
+     "待定；一篇未標日期的報導稱相關條款可能不在最終版本",
+     "FourWeekMBA（引 CNBC）；另篇日期未確認，兩說並存"
+    ]
+   ],
+   "note": "法案名稱與內容取自搜尋摘要，未讀條文；是否通過、保留哪些條款要看 12 月的協商文本。"
+  },
+  {
+   "title": "表四：擴產與稼動檢核（不適用——政策與治理事件，改列各家對東南亞出貨的暴露度）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "鴻海 2317",
+     "AI 伺服器組裝與出貨",
+     "不適用（政策事件）",
+     "沒查到",
+     "—",
+     "出貨到五國若不屬於美國總部收貨人，需許可；曝險比例沒查到",
+     "沒有公司說法"
+    ],
+    [
+     "廣達 2382",
+     "AI 伺服器組裝；泰國打板與組裝（2025/07 報導，早於本次新規）",
+     "不適用",
+     "沒查到",
+     "—",
+     "同上；泰國屬五國之一",
+     "法人說法（舊報導）"
+    ],
+    [
+     "緯創 3231",
+     "AI 伺服器組裝與出貨",
+     "不適用",
+     "沒查到",
+     "—",
+     "同上",
+     "沒有公司說法"
+    ],
+    [
+     "緯穎 6669",
+     "馬來西亞組裝線供應亞太資料中心（2025/07 報導）",
+     "不適用",
+     "沒查到",
+     "—",
+     "馬來西亞屬五國之一；學者稱籌建中資料中心衝擊較大",
+     "法人與學者說法（舊報導與搜尋摘要）"
+    ],
+    [
+     "台積電 2330",
+     "先進製程與封裝",
+     "不適用",
+     "—",
+     "—",
+     "OSAT 豁免對設計商位於五國或中國者收緊；法人稱影響有限、有間接訂單遞延風險",
+     "法人說法（單一）"
+    ],
+    [
+     "輝達（非台股）",
+     "晶片供給與客戶審查",
+     "不適用",
+     "—",
+     "—",
+     "自 2025/6 起把 Megaspeed 列內部禁售名單；FT 稱口頭要求雲端夥伴新合約至少 51% 供非中國客戶（輝達未證實，既有研究）",
+     "公司說法＋媒體"
+    ]
+   ],
+   "note": "逐列檢查四項（稼動滿載卻沒擴廠、擴產但上游材料沒擴、產能被單一客戶專供、設計產能不等於可出貨）在這個事件上都不適用：這不是產能題材。真正要補的是各家對五國的出貨占比、須許可的出貨占比、以及審查造成的出貨遞延——本輪都沒查到，所以台廠一律標中性。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "AI 擴散規則（Biden 時期）",
+   "composition": "國家分級與資料中心 VEU",
+   "spec": "2026/11/16 BIS 規則正式廢止",
+   "application": "原先的分級管理被個案許可取代"
+  },
+  {
+   "name": "11/16 臨時最終規則",
+   "composition": "五國許可＋遠端存取＋OSAT 豁免收緊",
+   "spec": "美國總部收貨人可豁免並月報；遠端算力超過門檻須許可",
+   "application": "堵住以東南亞資料中心與遠端租用繞道的路"
+  },
+  {
+   "name": "11/23 實體清單執法",
+   "composition": "Megaspeed 與關聯公司",
+   "spec": "須許可、推定否准",
+   "application": "13 個月來首次新增實體；與輝達風波直接相關"
+  },
+  {
+   "name": "法案路徑",
+   "composition": "GAIN AI（2025 年底被排除）→ AI OVERWATCH、晶片安全法、MATCH（FY2027 NDAA）",
+   "spec": "國會否決權、位置驗證、盟國設備管制",
+   "application": "12 月協商；是否通過未定"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "一行鏈：國會與行政部門 → BIS 規則與執法 → 輝達的出貨許可與客戶審查 → AI 伺服器組裝與出貨 → 東南亞與新興雲端資料中心 → 終端客戶（含遠端租用的中國企業）",
+    "瓶頸在許可與合規，不在產能：11/16 新規讓五國出貨須許可（美國總部收貨人可豁免並月報）、遠端存取納管；臺灣 ODM 的東南亞出貨占比沒查到",
+    "執法端：11/23 Megaspeed 列實體清單；11/20 加州檢察長傳票、SEC 調查是同一條壓力線",
+    "立法端：法案都還是提案或併入 NDAA 的條款，沒有一項已成法律"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "H200 對中銷售與國會反彈：AI OVERWATCH Act 賦予國會否決權（眾院委員會 2026/1/21 通過）",
+    "美中休戰與實體清單凍結：聯邦公報自 2025/10/9 起沒有新增實體，Megaspeed 是 13 個月來第一次",
+    "資本市場：11/23 禁空令與國安基金、輝達復職、台指期夜盤漲停——股價先反映領導不確定性下降，聽證與法案的尾部還沒定價",
+    "雲端業者反向遊說（微軟 vs 光模組禁令）：政府內部同時有收緊與別傷雲端建置兩股力量"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口怎麼來的：沒有產能缺口，缺的是「合法可出貨的算力」與「想買算力的非美客戶」之間的許可缺口；中國客戶走黑市（B300 伺服器約 100～110 萬美元／台）、轉口（Megaspeed 案）與遠端租用，新規與列名在逐條封堵",
+    "慣性①：出貨被管 → 往上游找供給與替代（輝達自律、華為等國產晶片，市占說法未佐證）；慣性②：規則升級 → 往下游找承接合規者（位置驗證、KYC），但沒有臺灣上市櫃名單，沒有證據",
+    "痛點與解法：立法（12 月 NDAA，卡白宮與遊說）、行政規則（已生效，卡政治時序）、公司自律（卡審查能力）、盟國執法（新加坡、馬來西亞）、聽證（無立法效力）",
+    "限制：國會會期、白宮與國會立場差異、BIS 執法資源、盟國法域、董事會調查尚未結束",
+    "擴產與稼動檢核：不適用（政策與治理事件，見表四）",
+    "一方言論檢核：「沒有國安風險」只有董事會與官員的說法，沒有公開調查結論；議員的反對是立場表態，不是調查或立法行動",
+    "舉一反三：與《輝達董事會恢復黃仁勳…》互補（公告面 vs 政治面）；與《SEC 調查輝達》《加州檢察長傳票》同一條監管線；與《中國 AI 算力買不到、租更貴》是管制到黑市的上下游；「機率是零」「無意復任」被 11/23 推翻",
+    "敘事陷阱自查：復職≠風險解除；官員保證≠調查結論；股價反應≠事件已消化；法案提出≠通過；單一來源已標註"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受傷或承壓：輝達（聽證、法案、調查）；客戶含中國企業的東南亞新興雲端；依賴須許可出貨的伺服器訂單",
+    "受惠（條件式）：收貨人總部在美國的雲端業者（豁免只須月報）；華為等中國國產晶片（未佐證）；合規與位置驗證解決方案（沒有臺灣名單）",
+    "台灣 AI 伺服器鏈（鴻海、廣達、緯創、緯穎、台積電）：暴露度沒查到，一律中性；法人稱台積電影響有限"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "12/1 與 12/3 的證詞、逐字稿與影片；Lutnick 是否排入 12/10",
+    "12 月 NDAA 協商文本：三項法案是否保留、位置驗證是否涵蓋伺服器組裝與 ODM",
+    "獨立董事委員會調查結論是否公布",
+    "聯邦公報全文與 BIS 常見問答（生效日、過渡期、美國總部收貨人的認定）；是否再有新增實體",
+    "臺灣廠商法說會對東南亞出貨占比與許可影響的說法；經濟部與貿易署後續措施"
+   ]
+  }
+ ],
+ "conclusion": [
+  "「沒有國安風險」目前是董事會與官員的說法，不是公開的調查結論；董事會自己的獨立調查還沒結束，議員 11/23 當天就公開反駁，12/1 閉門訪談與 12/3 公開聽證照舊。",
+  "這是政策與治理事件，不是供需缺口：真正的傳導是許可與合規（五國許可、遠端存取、實體清單、可能的位置驗證），不是訂單取消；法案是否通過要看 12 月 NDAA 協商。",
+  "臺灣 AI 伺服器鏈與台積電的曝險比例本輪沒有查到，一律標中性；股價與夜盤情緒先反映領導不確定性下降，聽證與法案的尾部風險尚未定價。",
+  "要補的資料：8-K 與聯邦公報全文、聽證通知、各家對東南亞出貨的占比與許可影響、NDAA 協商文本、獨立委員會結論。"
+ ],
+ "sources": [
+  {
+   "title": "CNBC：Trump sealed deal for Nvidia to rehire Jensen Huang as CEO（2026-11-23；僅搜尋摘要）",
+   "url": "https://www.cnbc.com/2026/11/23/trump-nvidia-jensen-huang.html"
+  },
+  {
+   "title": "Yahoo Finance：Trump says he assured Nvidia that Jensen Huang posed no national security threat（僅搜尋摘要）",
+   "url": "https://finance.yahoo.com/technology/articles/trump-says-nvidia-board-made-142832710.html"
+  },
+  {
+   "title": "華盛頓郵報：Nvidia reinstates Jensen Huang after Trump speaks ‘directly’ to board（僅搜尋摘要）",
+   "url": "https://www.washingtonpost.com/technology/2026/11/23/nvidia-board-reinstates-jensen-huang-after-us-government-input/"
+  },
+  {
+   "title": "CBS News：Trump says he spoke to Nvidia board and \"convinced them\" to reinstate Jensen Huang（僅搜尋摘要）",
+   "url": "https://www.cbsnews.com/news/nvidia-jensen-huang-trump-comment-national-security-risk/"
+  },
+  {
+   "title": "NPR：Nvidia brings Jensen Huang back, and Trump claims credit（僅搜尋摘要）",
+   "url": "https://www.npr.org/2026/11/23/nx-s1-6050910/nvidias-jensen-huang-trump"
+  },
+  {
+   "title": "SEC：NVIDIA CORP - Form 8-K - FY2026（11/23 新聞稿；僅搜尋摘要）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000090/nov23pressrelease.htm"
+  },
+  {
+   "title": "NBC News：Congress reacts with anger and skepticism about Jensen Huang reinstatement（僅搜尋摘要）",
+   "url": "https://www.nbcnews.com/politics/congress/congress-criticism-jensen-huang-nvidia-reinstated-ceo-trump-rcna610926"
+  },
+  {
+   "title": "Bloomberg Government：Scott, Warren Press Huang for Testimony After Return to Nvidia（僅搜尋摘要）",
+   "url": "https://news.bgov.com/bloomberg-government-news/scott-warren-press-huang-for-testimony-after-return-to-nvidia"
+  },
+  {
+   "title": "PBS NewsHour：Huang's reinstatement at Nvidia sparks fury in Congress as lawmakers move forward with hearings（僅搜尋摘要）",
+   "url": "https://pbs.org/newshour/politics/huangs-reinstatement-at-nvidia-sparks-fury-in-congress-as-lawmakers-move-forward-with-hearings"
+  },
+  {
+   "title": "CNBC：Congress shreds Nvidia's 'outrageous' decision to bring back Huang: 'Failure of character'（僅搜尋摘要）",
+   "url": "https://cnbc.com/2026/11/23/nvidia-jensen-huang-congress-trump.html"
+  },
+  {
+   "title": "華盛頓時報：Sen. Tim Scott announces hearing with Nvidia CEO Jensen Huang amid scandal, company reversal（2026-11-23；僅搜尋摘要）",
+   "url": "https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/"
+  },
+  {
+   "title": "The Hill：Nvidia CEO Jensen Huang is set to testify before Senate Banking Committee（僅搜尋摘要）",
+   "url": "https://thehill.com/homenews/senate/6238064-nvidia-ceo-ai-hearing-december/"
+  },
+  {
+   "title": "CNBC：Jensen Huang has agreed to appear before Senate banking committee, Chairman Scott says（2026-11-18；僅搜尋摘要）",
+   "url": "https://www.cnbc.com/2026/11/18/jensen-huang-nvidia-tim-scott-congress.html"
+  },
+  {
+   "title": "CNBC：Jensen Huang to testify publicly before Senate banking panel, Chairman Scott says（2026-11-20；僅搜尋摘要）",
+   "url": "https://www.cnbc.com/2026/11/20/jensen-huang-nvidia-senate-testimony.html"
+  },
+  {
+   "title": "CBS News：Ex-Nvidia CEO Jensen Huang agrees to testify as Congress raises concerns about affair with suspected Chinese spy（僅搜尋摘要）",
+   "url": "https://www.cbsnews.com/news/house-republicans-nvidia-jensen-huang-testimony/"
+  },
+  {
+   "title": "Roll Call：calls for nvidia probes new chip export limits intensify（2026-11-12；僅搜尋摘要）",
+   "url": "https://www.rollcall.com/2026/11/12/calls-for-nvidia-probes-new-chip-export-limits-intensify"
+  },
+  {
+   "title": "Decrypt：Congress Summons Ex-Nvidia CEO Jensen Huang, Lutnick Over Chip Exports to China（僅搜尋摘要）",
+   "url": "https://decrypt.co/383211/congress-summons-ex-nvidia-ceo-jensen-huang-lutnick-over-chip-exports-to-china?amp=1"
+  },
+  {
+   "title": "Korea Times：China's access to Nvidia chips in doubt as curbs gain traction in US Congress（2026-11-13；僅搜尋摘要）",
+   "url": "https://www.koreatimes.co.kr/world/20261113/chinas-access-to-nvidia-chips-in-doubt-as-curbs-gain-traction-in-us-congress"
+  },
+  {
+   "title": "SCMP：us lawmakers push tougher china export controls defence bill amid nvidia scrutiny（僅搜尋摘要）",
+   "url": "https://www.scmp.com/tech/tech-war/article/3373940/us-lawmakers-push-tougher-china-export-controls-defence-bill-amid-nvidia-scrutiny"
+  },
+  {
+   "title": "ARI：Senate NDAA Takes Major Step to Strengthen AI Chip Export Controls（僅搜尋摘要）",
+   "url": "https://ari.us/senate-ndaa-takes-major-step-to-strengthen-ai-chip-export-controls/"
+  },
+  {
+   "title": "FourWeekMBA：After Huang, 3 China Chip Bills With 120 Cosponsors Eye NDAA（僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-after-huang-3-china-chip-bills-with-120-cosponsors-eye-ndaa/"
+  },
+  {
+   "title": "Tom's Hardware：congress wants veto power over trump administration for ai chip exports new proposed ai overwatch act would shift ultimate control of high performance chip exports（標題由網址還原；僅搜尋摘要）",
+   "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/congress-wants-veto-power-over-trump-administration-for-ai-chip-exports-new-proposed-ai-overwatch-act-would-shift-ultimate-control-of-high-performance-chip-exports"
+  },
+  {
+   "title": "Al Jazeera：US House panel advances bill to give Congress authority on AI chip exports（2026-01-21；僅搜尋摘要）",
+   "url": "https://www.aljazeera.com/economy/2026/1/21/us-house-panel-advances-bill-to-give-congress-authority-on-ai-chip-exports"
+  },
+  {
+   "title": "Yahoo：Cotton unveils legislation requiring location verification for advanced AI chip exports（僅搜尋摘要）",
+   "url": "https://www.yahoo.com/news/cotton-unveils-legislation-requiring-location-184843123.html"
+  },
+  {
+   "title": "Bloomberg Law：Congress Revisits Export Curbs After Trump's H200 Approval（僅搜尋摘要）",
+   "url": "https://news.bloomberglaw.com/tech-and-telecom-law/congress-revisits-export-curbs-in-wake-of-trumps-h200-approval"
+  },
+  {
+   "title": "工商時報：黃仁勳回歸！川普證實親自介入輝達董事會 並為國安威脅掛保證（僅搜尋摘要）",
+   "url": "https://www.ctee.com.tw/news/20261123701933-430701"
+  },
+  {
+   "title": "聯合報：下台11天後復職！黃仁勳逆襲回鍋時間軸一次看 川普及20萬人連署施壓（僅搜尋摘要）",
+   "url": "https://udn.com/news/story/125066/9897742"
+  },
+  {
+   "title": "鉅亨網：黃仁勳回歸幕後！川普：我說服輝達董事會 失去他才是威脅（僅搜尋摘要）",
+   "url": "https://news.cnyes.com/news/id/6670347"
+  },
+  {
+   "title": "鉅亨網：川普力挺黃仁勳復職 連共和黨議員也不買單：「沒有國安風險？根據什麼？」（佇列觸發；全文本輪未讀）",
+   "url": "https://news.cnyes.com/news/id/6670359"
+  },
+  {
+   "title": "中央社：美媒指與中國情報人員關係密切 議員要求黃仁勳向國會簡報（2026-11-06；僅搜尋摘要）",
+   "url": "https://cna.com.tw/news/aopl/202611060026.aspx"
+  },
+  {
+   "title": "Akin Gump：BIS Issues Interim Final Rule Restricting Remote Access to Advanced Semiconductors, Adding Five Countries to Advanced Computing License Requirements and Formally Rescinding AI Diffusion Rule（律所說明；僅搜尋摘要）",
+   "url": "https://www.akingump.com/en/insights/alerts/bis-issues-interim-final-rule-restricting-remote-access-to-advanced-semiconductors-adding-five-countries-to-advanced-computing-license-requirements-and-formally-rescinding-ai-diffusion-rule"
+  },
+  {
+   "title": "Nixon Peabody：BIS targets remote access to advanced chips through overseas data centers（2026-11-16；律所說明；僅搜尋摘要）",
+   "url": "https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers"
+  },
+  {
+   "title": "科技新報：美國升級中國 AI 晶片管制，新加坡、泰國、馬來西亞、印尼與巴西列高風險國家（2026-11-17；僅搜尋摘要）",
+   "url": "https://technews.tw/2026/11/17/the-us-escalates-restrictions-on-chinese-ai-chips/"
+  },
+  {
+   "title": "聯合報：美AI晶片管制升級 經濟部：台美共同防堵漏洞（僅看到標題）",
+   "url": "https://udn.com/news/story/7240/9885218"
+  },
+  {
+   "title": "經濟日報：美擴大先進晶片出口管制 馬國學者估資料中心衝擊大（僅搜尋摘要）",
+   "url": "https://money.udn.com/money/story/5599/9884765"
+  },
+  {
+   "title": "旺得富：《科技》美盯上馬、泰出口AI晶片 法人：新措施衝擊台廠有限（2025-07，較早的類似措施；僅搜尋摘要）",
+   "url": "https://wantrich.chinatimes.com/news/20250708900337-420101"
+  },
+  {
+   "title": "The Register：House GOP wants final say on AI chip exports after Trump gives Nvidia a China hall pass（2026-01-21；僅搜尋摘要）",
+   "url": "https://www.theregister.com/2026/01/21/house_gop_ai_chip_exports_trump_china_nvidia/"
+  },
+  {
+   "title": "Bloomberg Government：Treasury Wanted to Blacklist Megaspeed for Months, Bessent Says（僅搜尋摘要）",
+   "url": "https://news.bgov.com/artificial-intelligence/treasury-wanted-to-blacklist-megaspeed-for-months-bessent-says"
+  },
+  {
+   "title": "FourWeekMBA：Bessent vs Lutnick on Nvidia Buyer: 398 Days, No Entity Adds（僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-bessent-vs-lutnick-on-nvidia-buyer-398-days-no-entity-adds/"
+  },
+  {
+   "title": "CSIS：Entity List Additions Cool to Their Slowest Pace Since 2008（僅搜尋摘要）",
+   "url": "https://www.csis.org/analysis/entity-list-additions-cool-their-slowest-pace-2008"
+  },
+  {
+   "title": "AOL：US to halt entity restrictions for one year after Trump-Xi meeting, Bessent says（僅搜尋摘要）",
+   "url": "https://www.aol.com/articles/us-halt-entity-restrictions-one-113536671.html"
+  },
+  {
+   "title": "Crypto Briefing：Commerce Department halted Nvidia chip smuggling probe after Nvidia contacted officials（單一來源；僅搜尋摘要）",
+   "url": "https://cryptobriefing.com/commerce-halted-nvidia-chip-smuggling-probe/"
+  },
+  {
+   "title": "NOWnews：台股強彈778點！限空令上路、國安基金護盤 終場收復3萬6800點（僅搜尋摘要）",
+   "url": "https://www.nownews.com/news/6894765"
+  },
+  {
+   "title": "The Edge Singapore：US blacklists Megaspeed, and six firms across Malaysia, Singapore and Thailand over chip diversion risk（僅搜尋摘要）",
+   "url": "https://www.theedgesingapore.com/news/highlight/us-blacklists-megaspeed-and-six-firms-across-malaysia-singapore-and-thailand-over"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "立法與聽證（國會）",
+   "description": "11/12 辭職後兩黨議員要求作證；11/23 復職後當天公開反駁。眾院三委員會 12/1 閉門訪談、參院銀行委員會 12/3 公開聽證（黃仁勳為唯一證人，標題〈Protecting America's AI Advantage: Oversight of U.S. Export Controls〉）；Lutnick 12/10 為邀請日、未確認。AI OVERWATCH、晶片安全法、MATCH 三項法案據報在參院版 FY2027 NDAA，12 月協商；另有未標日期的報導稱可能被排除。",
+   "global_players": [
+    "美國參眾兩院（Scott、Warren、Moolenaar、Mast、Crawford、Cotton、Banks）",
+    "白宮"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "行政規則與執法（BIS、司法部、財政部）",
+   "description": "11/16 BIS 臨時最終規則（五國許可＋遠端存取＋廢止 AI 擴散規則），11/19 聯邦公報；11/23 把 Megaspeed 與關聯公司列入實體清單（13 個月來首次新增）；Bessent 11/13 稱財政部、戰爭部、貿易代表署與國務院支持列名已數月。司法部自 2024 年起調查 Megaspeed（另案）。",
+   "global_players": [
+    "商務部 BIS",
+    "司法部",
+    "財政部"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "輝達的出貨許可與客戶審查（公司端）",
+   "description": "董事會 11/23 稱收到美國政府高層意見、有信心回任無國安風險，獨立委員會調查將進行到結論；2025/6 起把 Megaspeed 列內部禁售名單；FT 稱口頭要求雲端夥伴新合約至少 51% 供非中國客戶（輝達未證實）。11/20 加州檢察長傳票與 SEC 調查是同一條壓力線。",
+   "global_players": [
+    "輝達"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "先進製程與封裝；11/16 規則的 OSAT 豁免對設計商位於五國或中國者收緊，法人稱影響有限、有間接訂單遞延風險（搜尋摘要）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "AI 伺服器組裝與出貨（臺灣 ODM 與美系 OEM）",
+   "description": "臺灣 ODM 在東南亞有組裝與出貨據點（緯穎馬來西亞、廣達泰國，2025/07 報導早於本次新規）；出貨到五國的須許可比例、收貨人屬美國總部者的比例都沒有查到。經濟部稱將與美方共同防堵漏洞（標題）。",
+   "global_players": [
+    "美系 OEM（本次未點名）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器組裝；東南亞出貨暴露度沒查到",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；泰國打板與組裝（2025/07 報導）；暴露度沒查到",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 ODM；暴露度沒查到",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器；馬來西亞組裝線供應亞太資料中心（2025/07 報導）；暴露度沒查到",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "東南亞與新興雲端資料中心、終端客戶（含遠端租用的中國企業）",
+   "description": "五國（印尼、馬來西亞、新加坡、泰國、巴西）須許可；收貨人總部在美國可豁免但月報；遠端存取超過門檻須許可。馬來西亞學者稱籌建中或即將營運的資料中心衝擊較大、既有封測影響有限（標題與摘要）。新加坡、馬來西亞正執法與檢視再出口。",
+   "global_players": [
+    "Megaspeed 網絡（另案）",
+    "美系雲端業者（可豁免）"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}
