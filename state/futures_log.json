@@ -1584,6 +1584,49 @@
     "qualified": true,
     "halted": false
    }
+  },
+  {
+   "date": "2026-11-24",
+   "session": "day",
+   "source": "即時",
+   "events": [
+    {
+     "ts": "2026-11-24T09:00:11+08:00",
+     "time": "09:00",
+     "kind": "進場",
+     "price": 40324.0,
+     "text": "🔺 做多試單 1 口微台 40,324：突破今日高點 40,319。停損 40,263.5（平均成本外 0.15%，這一單停損約虧 605 元）。盤面還沒到真正行情（振幅未達 1.0%），先只試單、不要太積極，也不要加碼。今天只做這個方向。",
+     "lots_after": 1,
+     "pts_after": 0.0
+    },
+    {
+     "ts": "2026-11-24T13:25:05+08:00",
+     "time": "13:25",
+     "kind": "出場",
+     "price": 40324.0,
+     "text": "⏰ 收盤前出場 40,324：剩下的全部出場（抱到快收盤、獲利與持有時間成正比）。用市價（範圍市價）。（1 口，約 +0 點）",
+     "lots_after": 0,
+     "pts_after": 0.0
+    }
+   ],
+   "summary": {
+    "dir": "long",
+    "entries": 1,
+    "adds": 0,
+    "lots_left": 0,
+    "realized_pts": 0.0,
+    "open_pts": 0.0,
+    "pts": 0.0,
+    "twd": 0,
+    "open": 40309.0,
+    "high": 40324.0,
+    "low": 39966.0,
+    "close": 40324.0,
+    "range_pct": 0.89,
+    "qualified": false,
+    "halted": false
+   },
+   "finished": true
   }
  ]
 }
