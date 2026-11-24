@@ -1,0 +1,332 @@
+{
+ "topic": "供需事件：輝達國安與出口管制委員會與法遵長（Threads說法求證）",
+ "one_line": "Threads 轉述稱「復職後輝達由全體獨立董事組成的出口管制委員會沒有解散，還加入國安與法律專家、增設法遵長，代表黃仁勳在對中政策上有內部制衡、短期很難放寬對中出口管制」——事實面大致屬實但被放大：委員會（國安與出口管制監督委員會，3 位獨立董事、至少每季開會）其實是 11/16～17 成立、早於 11/23 復職，復職公告只是重述；「國安與法律專家」是委員會聘請的外部律師與顧問，不是新增委員；「增設法遵長」其實是正在徵才、尚未任命；「內部制衡」與「短期很難放寬管制」是貼文作者的推論——近期收緊來自政府與國會（11/16 BIS 新規、11/23 Megaspeed 列名），不是公司內部委員會，委員會有無否決權沒有公開。這是治理與合規事件，不是供需缺口；對臺灣 AI 伺服器鏈的影響沒查到。內容來自搜尋摘要，輝達新聞稿與 8-K 全文未讀。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "輝達",
+  "黃仁勳",
+  "國安與出口管制監督委員會",
+  "法遵長",
+  "Chief Compliance Officer",
+  "獨立董事",
+  "出口管制",
+  "合規",
+  "復職",
+  "BIS",
+  "聽證"
+ ],
+ "catalysts": [
+  "法遵長任命公告與到任日期",
+  "委員會的首次會議、報告或對外說明；輝達 10-K 或委託書對權限的描述",
+  "12/1 眾院閉門訪談與 12/3 參院聽證是否問到委員會與合規機制",
+  "12 月 NDAA 協商與 BIS 後續規則（真正的約束）",
+  "獨立調查委員會的結論"
+ ],
+ "risks": [
+  "全是搜尋摘要；輝達新聞稿與 8-K 全文沒讀到，成員任期、權限與法遵長報告線以原文為準",
+  "貼文轉述的措辭（沒有解散、加入專家、增設法遵長）與原文有落差，已逐項標註",
+  "「內部制衡」與「短期很難放寬管制」是推論，沒有證據；委員會有無否決權沒公開",
+  "辭職日期各報導有 11/8、11/11、11/12 幾種說法；Reuters 稱委員會成立動機「不確定」",
+  "臺灣曝險沒有任何公司說法，標中性只是缺資料"
+ ],
+ "spec_tables": [
+  {
+   "title": "表一：Threads 說法逐項求證",
+   "columns": [
+    "說法",
+    "查核結果",
+    "證據",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "輝達的出口管制委員會沒有解散",
+     "屬實，但時序要更正：國安與出口管制監督委員會是 11/16～17 成立（復職前約 6 天），11/23 公告仍描述該委員會",
+     "輝達新聞稿（搜尋摘要）、TechCrunch／Euronews／BusinessDay（11/17）；11/23 8-K 摘要",
+     "「沒有解散」成立，但不是復職後才設；8-K 全文本輪沒讀到"
+    ],
+    [
+     "由全體獨立董事組成",
+     "屬實：3 位獨立董事（主席為董事 Suzanne Nora Johnson，另兩位 Stephen C. Neal、John O. Dabiri），至少每季開會，含與管理層及執行會議",
+     "輝達新聞稿（搜尋摘要）",
+     "公司公告"
+    ],
+    [
+     "加入國安與法律專家",
+     "部分屬實：委員會聘請具國安經驗的律師，律師再聘國安專業顧問——是外部顧問，不是委員會成員",
+     "11/23 公告摘要（搜尋摘要）",
+     "措辭被放大：沒有新增「專家委員」"
+    ],
+    [
+     "增設法遵長",
+     "部分屬實：公司「正在尋找」新的法遵長（Chief Compliance Officer），向提名與公司治理委員會報告；尚未任命",
+     "11/23 公告摘要（搜尋摘要）",
+     "是徵才中，不是已設；到任日期沒有"
+    ],
+    [
+     "黃仁勳在對中政策上至少有一個明確的內部制衡",
+     "推論：既有的國安團隊與全球貿易合規團隊直接向委員會報告，日常仍向管理層（當時為代理執行長）報告；委員會是否能否決對中銷售決策、決策權限沒有公開",
+     "11/17 公告摘要（搜尋摘要）",
+     "「監督」不等於「否決權」；權限細節沒查到"
+    ],
+    [
+     "短期內很難直接放寬對中國的晶片出口管制",
+     "觀點，不是事實：近期的收緊來自政府與國會——11/16 BIS 新規（五國許可、遠端存取）、11/23 Megaspeed 列入實體清單；黃仁勳過去長期反對更嚴的管制（Korea Times 搜尋摘要）",
+     "CP24、CS Monitor、Korea Times（搜尋摘要）",
+     "約束力來自政府，不是公司內部委員會；兩者不能互相替代"
+    ]
+   ],
+   "note": "上表全部來自搜尋摘要；輝達新聞稿與 8-K 全文本輪沒有讀到，細節（成員任期、權限、法遵長的報告線）以原文為準。"
+  },
+  {
+   "title": "表二：時間軸",
+   "columns": [
+    "日期",
+    "事件",
+    "來源與備註"
+   ],
+   "rows": [
+    [
+     "11/12 前後",
+     "黃仁勳辭職（各報導辭職與生效日有 11/8、11/11、11/12 幾種說法）；董事會隨後宣布獨立調查「外國情報行動目標」（日期未核對）",
+     "Roll Call（11/12）；其他報導日期不一"
+    ],
+    [
+     "11/16",
+     "BIS 公布臨時最終規則（五國許可、遠端存取）",
+     "CP24、CS Monitor（搜尋摘要）"
+    ],
+    [
+     "11/17",
+     "輝達董事會成立國安與出口管制監督委員會（Reuters 稱成立時間在 BIS 新規的隔天，輝達公告沒有把兩者連起來）",
+     "輝達新聞稿、TechCrunch、Euronews、BusinessDay"
+    ],
+    [
+     "11/23",
+     "董事會宣布黃仁勳復職；新聞稿重述該委員會、聘請具國安經驗的律師、尋找新的法遵長，並說獨立調查將進行到結論",
+     "SEC 8-K 新聞稿（搜尋摘要）"
+    ],
+    [
+     "11/23",
+     "BIS 把 Megaspeed 與關聯公司列入實體清單",
+     "另案《黃仁勳回鍋同一天》"
+    ],
+    [
+     "12/1、12/3",
+     "眾院閉門訪談與參院銀行委員會公開聽證——可能問到公司內部的合規機制（推論，議程沒讀到）",
+     "另案《沒有國安風險？根據什麼？》"
+    ]
+   ],
+   "note": "日期與內容來自搜尋摘要，未讀 8-K 全文。"
+  },
+  {
+   "title": "表三：擴產與稼動檢核（不適用——治理與合規事件，改列合規能量與暴露度）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "輝達（非台股）",
+     "國安團隊、全球貿易合規團隊與客戶審查",
+     "不適用（沒有人力或案件量數字）",
+     "委員會要求強化國安與貿易合規團隊；法遵長徵才中",
+     "法遵長到任日期沒有；委員會至少每季開會",
+     "權限與決策權沒公開；調查與聽證的壓力",
+     "公司公告（搜尋摘要）"
+    ],
+    [
+     "鴻海 2317、廣達 2382、緯創 3231、緯穎 6669",
+     "AI 伺服器組裝與出貨（東南亞據點）",
+     "不適用",
+     "沒查到",
+     "—",
+     "客戶審查更嚴可能拉長新興雲訂單的審查時間（推論）；曝險比例沒查到",
+     "沒有公司說法"
+    ]
+   ],
+   "note": "逐列檢查四項在治理事件上不適用；真正要看的是委員會的權限、法遵長何時到任、合規團隊規模與客戶審查的實務變化，本輪都沒查到。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "11/17 委員會成立",
+   "composition": "3 位獨立董事；國安與貿易合規團隊直接向委員會報告",
+   "spec": "至少每季開會、含執行會議",
+   "application": "董事會層級監督國安與出口管制合規"
+  },
+  {
+   "name": "11/23 復職公告重述",
+   "composition": "委員會聘請具國安經驗的律師，再聘專業顧問；徵求新的法遵長",
+   "spec": "法遵長向提名與公司治理委員會報告",
+   "application": "對外說明內部制衡"
+  },
+  {
+   "name": "待落地",
+   "composition": "法遵長任命、委員會報告、獨立調查結論",
+   "spec": "沒有時程",
+   "application": "12/1 與 12/3 聽證前後是否有具體成果"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "一行鏈：董事會 → 國安與出口管制監督委員會 → 國安團隊與全球貿易合規團隊 → 客戶審查與出貨許可 → 客戶；平行線：獨立調查委員會、法遵長（徵才中）",
+    "瓶頸在權限與報告線：直接向委員會報告是公開的，否決權與審批流程沒有",
+    "時序：BIS 11/16 新規 → 11/17 成立委員會 → 11/23 復職與重述；輝達沒有把前後連結"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "外部壓力：BIS 新規、Megaspeed 列名、12/1 與 12/3 聽證、SEC 與加州檢察長調查；公司機制是對應，不是替代",
+    "法案：晶片安全法與 AI OVERWATCH 等進入 12 月 NDAA 協商——真正的約束",
+    "治理線：獨立調查結論、法遵長到任"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口怎麼來的：不適用；有的是外界對公司合規能力的信任缺口",
+    "痛點與解法：公開權限與報告線、盡快任命法遵長、聽證前拿出成果；卡點是徵才時間、調查未結案、聽證日期近",
+    "限制：委員會是董事會層級監督，不取代政府執法",
+    "擴產與稼動檢核：不適用（見表三）",
+    "一方言論檢核：貼文的事實面大致屬實、措辭放大，推論面沒有證據",
+    "舉一反三：與《輝達董事會恢復黃仁勳》同一份公告；與《沒有國安風險？根據什麼？》《Megaspeed 列黑名單》是公司內部回應與外部壓力的兩端",
+    "敘事陷阱自查：設委員會≠問題解決；內部制衡≠政策鎖定；公告≠已執行；時間先後≠因果；單一來源"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠：輝達的合規與治理形象（若落地）",
+    "受傷或承壓：客戶審查變嚴可能拉長新興雲訂單審查（推論）；臺灣伺服器鏈暴露度沒查到，中性",
+    "沒有證據顯示委員會改變了對中銷售的實際規則"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "法遵長任命公告；委員會的首次會議或報告；10-K 或委託書對權限的描述",
+    "12/1、12/3 是否問到委員會",
+    "12 月 NDAA 協商與 BIS 後續規則",
+    "獨立調查結論是否公布"
+   ]
+  }
+ ],
+ "conclusion": [
+  "貼文的事實面大致屬實但被放大：委員會 11/16～17 成立（非復職後才設）、專家是外部律師與顧問、法遵長是徵才中。",
+  "「內部制衡」與「短期很難放寬對中出口管制」是推論：近期的收緊來自政府與國會，委員會有無否決權沒公開。",
+  "這是治理與合規事件，不是供需缺口；對臺灣 AI 伺服器鏈的影響沒查到。",
+  "要補的資料：輝達新聞稿與 8-K 全文、委員會權限、法遵長任命、聽證是否問到委員會。"
+ ],
+ "sources": [
+  {
+   "title": "輝達新聞稿：NVIDIA Board of Directors Establishes National Security and Export Control Oversight Committee（僅搜尋摘要）",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-board-of-directors-establishes-national-security-and-export-control-oversight-committee"
+  },
+  {
+   "title": "SEC：NVIDIA CORP - Form 8-K - FY2026（11/23 新聞稿；僅搜尋摘要，全文未讀）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000090/nov23pressrelease.htm"
+  },
+  {
+   "title": "TechCrunch：nvidias first big move after jensen huangs exit targets national security（2026-11-17，標題由網址還原；僅搜尋摘要）",
+   "url": "https://techcrunch.com/2026/11/17/nvidias-first-big-move-after-jensen-huangs-exit-targets-national-security/"
+  },
+  {
+   "title": "Euronews：nvidia sets up committee to oversee national security and export controls（2026-11-17；僅搜尋摘要）",
+   "url": "https://www.euronews.com/2026/11/17/nvidia-sets-up-committee-to-oversee-national-security-and-export-controls"
+  },
+  {
+   "title": "BusinessDay：businessday.co.za（標題未取得；網址日期 2026-11-17，網址主題為 Nvidia panel to oversee national security and export controls；僅搜尋摘要）",
+   "url": "https://www.businessday.co.za/world/international-companies/2026-11-17-nvidia-panel-to-oversee-national-security-and-export-controls/"
+  },
+  {
+   "title": "CBC（路透）：Nvidia forms export-control committee after Huang affair raises security concerns（僅搜尋摘要）",
+   "url": "https://www.cbc.ca/news/business/nvidia-exports-9.7424742"
+  },
+  {
+   "title": "TechRepublic：Nvidia Forms Board Committee to Oversee AI Chip Export Controls（僅搜尋摘要）",
+   "url": "https://www.techrepublic.com/article/news-nvidia-ai-chip-export-oversight/"
+  },
+  {
+   "title": "安納杜魯通訊社：nvidia sets up national security export control committee after huangs departure（標題由網址還原；僅搜尋摘要）",
+   "url": "https://aa.com.tr/en/world/nvidia-sets-up-national-security-export-control-committee-after-huangs-departure/4127668"
+  },
+  {
+   "title": "CP24：trump administration moves to block china from indirect access to american ai technology（2026-11-16；僅搜尋摘要）",
+   "url": "https://www.cp24.com/news/world/2026/11/16/trump-administration-moves-to-block-china-from-indirect-access-to-american-ai-technology/"
+  },
+  {
+   "title": "基督教科學箴言報：nvidia chips export bessent lutnick（2026-11-18；僅搜尋摘要）",
+   "url": "https://www.csmonitor.com/USA/Politics/2026/1118/nvidia-chips-export-bessent-lutnick?icid=rss"
+  },
+  {
+   "title": "Korea Times：China's access to Nvidia chips in doubt as curbs gain traction in US Congress（2026-11-13；僅搜尋摘要）",
+   "url": "https://www.koreatimes.co.kr/world/20261113/chinas-access-to-nvidia-chips-in-doubt-as-curbs-gain-traction-in-us-congress"
+  },
+  {
+   "title": "Threads：@ai.podcast.summarist 貼文（2026-11-24 11:47 收進待檢視清單；個人帳號轉述，未證實）",
+   "url": "https://www.threads.com/@ai.podcast.summarist/post/DgGyQcLkrYn"
+  }
+ ],
+ "evidence": "官方公告",
+ "layers": [
+  {
+   "layer": "董事會層級的監督（國安與出口管制監督委員會、獨立調查委員會）",
+   "description": "11/16～17 成立國安與出口管制監督委員會：3 位獨立董事（主席為董事 Suzanne Nora Johnson）、至少每季開會、監督國安政策、出口管制合規與全球貿易風險；既有的國安團隊與全球貿易合規團隊直接向委員會報告；11/23 公告重述，並聘請具國安經驗的律師（律師再聘專業顧問）。另有獨立董事組成的調查委員會，對外國情報行動目標的調查將進行到結論。",
+   "global_players": [
+    "輝達董事會"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "合規團隊與法遵長（執行層）",
+   "description": "國安團隊、全球貿易合規團隊（人數與預算沒查到）；11/23 公告稱正在尋找新的法遵長，向提名與公司治理委員會報告，尚未任命。",
+   "global_players": [
+    "輝達"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "客戶審查與出貨（外部影響面）",
+   "description": "11/16 BIS 新規與 11/23 Megaspeed 列名使東南亞新興雲的審查變嚴；臺灣 AI 伺服器廠在東南亞有組裝據點，曝險比例沒查到。",
+   "global_players": [
+    "東南亞新興雲（另案 Megaspeed）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器組裝；客戶審查變嚴的影響沒查到",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；影響沒查到",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 ODM；影響沒查到",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器；影響沒查到",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
