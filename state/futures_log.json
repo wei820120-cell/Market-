@@ -1627,6 +1627,81 @@
     "halted": false
    },
    "finished": true
+  },
+  {
+   "date": "2026-11-24N",
+   "session": "night",
+   "source": "即時",
+   "events": [
+    {
+     "ts": "2026-11-24T15:13:41+08:00",
+     "time": "15:13",
+     "kind": "盤面",
+     "price": 40532.0,
+     "text": "🟢 盤面合格，開盤動能強：夜盤振幅 0.74% ≥ 0.7%（真正行情），之後依訊號進場／加碼。",
+     "lots_after": 0,
+     "pts_after": 0.0
+    },
+    {
+     "ts": "2026-11-24T15:15:03+08:00",
+     "time": "15:15",
+     "kind": "進場",
+     "price": 40450.0,
+     "text": "🔻 做空試單 1 口微台 40,450：跌破本場低點 40,477。停損 40,510.7（平均成本外 61 點，0.15%；這一單停損約虧 607 元，快市場會滑價、實際可能更大）。盤面已合格，後續拉回可依訊號加碼。本場只做這個方向。",
+     "lots_after": 1,
+     "pts_after": 0.0
+    },
+    {
+     "ts": "2026-11-24T15:16:05+08:00",
+     "time": "15:16",
+     "kind": "停損",
+     "price": 40536.0,
+     "text": "🛑 停損全出 40,536：突破平均成本 40,450.0 的停損 40,510.7，比停損價多滑 25 點（報價約每 20～60 秒一筆，快市場會直接跳過停損價）。寧可小賠、不要小賺或打平出場；出場用市價（範圍市價），不要掛限價。（1 口，約 -86 點）",
+     "lots_after": 0,
+     "pts_after": -86.0
+    }
+   ],
+   "summary": {
+    "dir": "short",
+    "entries": 1,
+    "adds": 0,
+    "lots_left": 0,
+    "realized_pts": -86.0,
+    "open_pts": 0.0,
+    "pts": -86.0,
+    "twd": -860,
+    "open": 40749.0,
+    "high": 40813.0,
+    "low": 40445.0,
+    "close": 40536.0,
+    "range_pct": 0.9,
+    "qualified": true,
+    "halted": false
+   },
+   "rules": {
+    "stop_pct": 0.15,
+    "stop_noise_mult": 0.0,
+    "stop_noise_window": 60,
+    "active_range_pct": 0.7,
+    "early_trend_pct": 0.6,
+    "ext_add_pct": 0.04,
+    "ext_add_gap_sec": 15,
+    "bar_range_pct": 0.75,
+    "tick_jump_pct": 0.2,
+    "daily_loss_pct": 3.0,
+    "entry_start": "15:15",
+    "entry_until": "03:30",
+    "exit_times": [
+     "04:35",
+     "04:50"
+    ],
+    "max_entries": 2,
+    "min_open_range_pct": 0.2,
+    "unit_lots": 1,
+    "max_lots": 4,
+    "contract_multiplier": 10,
+    "capital": 1000000
+   }
   }
  ]
 }
