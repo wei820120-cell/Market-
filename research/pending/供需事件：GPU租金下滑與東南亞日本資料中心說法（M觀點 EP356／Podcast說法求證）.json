@@ -1,0 +1,541 @@
+{
+  "topic": "供需事件：GPU租金下滑與東南亞日本資料中心說法（M觀點 EP356／Podcast說法求證）",
+  "one_line": "EP356（約 32:21）稱近幾天推特上有些 GB200／H200 租金在掉，資料來自東南亞或日本資料中心，這些中心原本租給中國客戶、預期拿不到許可就解約低價拋售，所以不必太在意。核對：租金下滑只在部分指數成立——Ornn H200 11/21 為 6.00 美元、7 日 −9.1%、30 日 +0.2%（較 11/11 高點 −22.6%，算術），但 Silicon Data 持平、gpurentalprices 11 月 H200 +7.3%；GB200 沒有公開指數。『東南亞或日本拋售』與『因新規』沒有任何報導或數據支持；BIS 11/16 臨時最終規則屬實（>1,200 萬 TPP 取用須許可、5 國出口許可、既有資料中心 90 天寬限至約 2027-02-17，日本不在名單），但 Ornn 高點 11/11 早於規則，2026 年 6 月 B200 現貨 22 天 −30.9% 也沒有規則。租金局部下跌屬實、成因是推測；『不用太在意』方向合理、理由未證實。台灣 AI 伺服器鏈標中性。內容來自搜尋摘要，沒讀到規則原文與推特貼文。",
+  "status": "混合",
+  "horizon": "短期（3個月內）",
+  "layers": [
+    {
+      "layer": "中國客戶的算力需求與 BIS 11/16 遠端取用新規",
+      "description": "BIS 11/16 臨時最終規則（報導稱 11/19 生效）：向中國或澳門實體提供超過 1,200 萬 TPP 算力的資料中心須許可；印尼、馬來西亞、新加坡、泰國、巴西的先進晶片出口須許可；既有資料中心 90 天內須取得許可（約 2027-02-17，算術）；美國總部公司客戶可豁免；廢止 AI 擴散規則。輝達早在規則前口頭要求雲端夥伴新合約至少 51% 供非中國客戶（金融時報二手轉述）。",
+      "global_players": [
+        "美國商務部 BIS",
+        "輝達"
+      ],
+      "tw_stocks": []
+    },
+    {
+      "layer": "離岸 GPU 容量與租金（東南亞、日本資料中心與 neocloud）",
+      "description": "Ornn H200 指數 11/21 為 6.00 美元，7 日 −9.1%、30 日 +0.2%，高點 11/11 的 7.75 美元（較高點 −22.6%，算術）；Silicon Data 約 3.5 美元持平；gpurentalprices 11 月至今 H200 5.06 美元（比 10 月 +7.3%）、H100 3.51 美元（+6.3%）。GB200 沒有公開指數；沒找到把降價歸因到東南亞或日本資料中心的任何資料。2026 年 6 月 B200 現貨 22 天 −30.9%（6.11→4.22 美元）顯示基準波動大。",
+      "global_players": [],
+      "tw_stocks": []
+    },
+    {
+      "layer": "輝達與台灣 AI 伺服器鏈（出貨與庫存）",
+      "description": "租金下滑與台廠 AI 伺服器訂單的關聯沒有資料；東南亞資料中心擴建若放緩會影響拉貨，屬推論。沒有台廠被點名。",
+      "global_players": [
+        "輝達"
+      ],
+      "tw_stocks": [
+        {
+          "code": "2382",
+          "name": "廣達",
+          "role": "AI 伺服器 ODM；租金下滑與訂單的關聯沒有資料",
+          "impact": "中性"
+        },
+        {
+          "code": "3231",
+          "name": "緯創",
+          "role": "AI 伺服器 ODM；租金下滑與訂單的關聯沒有資料",
+          "impact": "中性"
+        },
+        {
+          "code": "2317",
+          "name": "鴻海",
+          "role": "AI 伺服器 ODM；租金下滑與訂單的關聯沒有資料",
+          "impact": "中性"
+        },
+        {
+          "code": "6669",
+          "name": "緯穎",
+          "role": "雲端資料中心伺服器 ODM；租金下滑與訂單的關聯沒有資料",
+          "impact": "中性"
+        }
+      ]
+    },
+    {
+      "layer": "中國境內算力與替代供給（華為昇騰等）",
+      "description": "2026-08 的二手分析稱境內 H100 伺服器租金較高點約 −70%，歸因華為昇騰 950PR 的國產供給（2026 年 4 月量產）；境內與離岸是不同市場（推論）。RTX Pro 5500 部分中國客戶取消訂單的報導（彭博轉述，規模未證實）。",
+      "global_players": [
+        "華為（昇騰）"
+      ],
+      "tw_stocks": []
+    }
+  ],
+  "keywords": [
+    "GPU租金",
+    "H200",
+    "GB200",
+    "B200",
+    "算力租賃",
+    "遠端存取",
+    "BIS",
+    "TPP",
+    "東南亞",
+    "日本",
+    "中國客戶",
+    "Ornn",
+    "Silicon Data",
+    "M觀點",
+    "EP356"
+  ],
+  "catalysts": [
+    "分區域（新加坡、馬來西亞、印尼、泰國、日本）租金序列與業者公告：中國租戶解約與容量釋出",
+    "聯邦公報原文與許可核發：門檻口徑、豁免、90 天寬限（約 2027-02-17）",
+    "Ornn、Silicon Data 等指數 11 月底到 12 月的走勢（是否延續回落或回到 30 日區間）",
+    "輝達下一次財報對中國與離岸租賃的說明",
+    "川習會後的美中晶片管制動作與北京反制"
+  ],
+  "risks": [
+    "全是搜尋摘要與標題；規則原文、推特貼文沒讀到；節目片段為自動轉錄，說法可能與原意有出入",
+    "各價格指數的方法與日期不一致（Ornn 6.00、Silicon Data 3.5、gpurentalprices 5.06）；單一指數 7 日跌幅不足以下結論",
+    "SMM『10 月下旬起回落』只出現在單次搜尋摘要；KrASIA 標題日期與內容未核對",
+    "規則的規模換算互相不一致（約 330 顆、約 200 顆 Blackwell、約 800 或 750 顆 H100）；『11/19 生效』與『90 天寬限』來自單一報導",
+    "指數的區域組成未知，無法對應『東南亞、日本』；GB200 沒有公開指數",
+    "『離岸容量轉租給非中國客戶』的吸收力沒有資料，供給過剩與否無法判斷"
+  ],
+  "spec_tables": [
+    {
+      "title": "表一：節目說法與查到的資料逐項對照",
+      "columns": [
+        "說法（EP356 約 32:21，改寫摘要）",
+        "查到的資料",
+        "來源",
+        "判讀"
+      ],
+      "rows": [
+        [
+          "有些 GB200／H200 租金開始掉",
+          "Ornn H200 指數 11/21 為 6.00 美元／GPU 小時，7 日 −9.1%、30 日 +0.2%；30 日區間 5.49～7.75 美元，高點在 11/11，到 11/21 下跌 22.6%（算術）。但 Silicon Data H200 11 月約 3.5 美元大致持平（11/22 最新 3.59）；gpurentalprices 11 月至今 H200 5.06 美元、H100 3.51 美元，分別比 10 月 +7.3%、+6.3%；Silicon Data H100 約 3.11 美元，年增近 60%。GB200：沒找到公開租金指數",
+          "Ornn、Silicon Data、gpurentalprices、shattered.io（搜尋摘要）",
+          "局部成立：一個指數的 7 日跌幅屬實，其餘指數 11 月持平或上升；GB200 沒有資料"
+        ],
+        [
+          "資料來自東南亞或日本的資料中心",
+          "沒找到任何報導或指數把降價歸因到這兩個地區；Ornn、Silicon Data 的區域組成本次沒查到。SMM 一則分析（單次搜尋摘要）稱自 10 月下旬起部分先進 GPU 隨需價格回落，海外（中國以外）也略回落，但資料中心電力與基礎建設交付仍緊",
+          "SMM（後續搜尋未重現）",
+          "未證實"
+        ],
+        [
+          "這些中心原本租給中國客戶",
+          "背景合理：金融時報（二手轉述）稱輝達要求雲端夥伴新合約至少 51% 供非中國客戶、既有租約不受影響；既有研究記錄中國需求轉向馬來西亞、印尼離岸租賃；新規 11/16 針對的正是這條管道。但沒有找到任何具體資料中心或其中國租戶比重",
+          "ABHS（二手）、數位時代、既有研究",
+          "背景成立；個別資料中心未核對"
+        ],
+        [
+          "預期拿不到許可 → 解約 → 低價打包賣出",
+          "新規給既有資料中心生效後 90 天內取得許可（11/19＋90 天＝2027-02-17，算術），沒有要求立刻解約；Ornn 的 30 日高點在 11/11，早於 11/16 發布；SMM 稱回落始於 10 月下旬；沒有任何解約或拋售的具體報導",
+          "數位時代、Ornn、SMM",
+          "機制合理，但時間線與證據不足；『趕快打包賣』是主持人的推測"
+        ],
+        [
+          "所以租金下降不必太在意",
+          "指數噪音大：B200 現貨 2026-05-30 為 6.11 美元、06-21 為 4.22 美元（−30.9%，22 天，算術），當時沒有這條規則；現貨與合約是兩套價格（現貨約為隨需的一半；一年承諾折 31%、三年折 56%）",
+          "知乎、GetDeploying、Safeguard（搜尋摘要）",
+          "方向合理（一週跌幅不足以下結論），但理由（拋售）未證實"
+        ],
+        [
+          "新規是晶片管制鷹派的勝利，管制從賣硬體延伸到算力",
+          "BIS 11/16 臨時最終規則對遠端取用設許可、廢止 AI 擴散規則（多來源）；ChinaTalk 標題為『BIS Takes on Compute Leakage』",
+          "數位時代、INSIDE、ChinaTalk（只看到標題）、英文搜尋摘要",
+          "規則事實成立；『鷹派的勝利』是評價，屬意見"
+        ]
+      ],
+      "note": "節目是自動轉錄（有錯字與斷句錯誤），本檔只改寫摘要、不引原文；說法可能與節目原意有出入。"
+    },
+    {
+      "title": "表二：GPU 租金資料（各指數方法不同，不能直接比）",
+      "columns": [
+        "指標",
+        "日期",
+        "水準（美元／GPU 小時）",
+        "變動",
+        "備註"
+      ],
+      "rows": [
+        [
+          "Ornn OCPI-H200",
+          "2026-11-21",
+          "6.00",
+          "7 日 −9.1%；30 日 +0.2%（30 日前約 5.99，算術）",
+          "30 日區間 5.49～7.75，高點 11/11；較高點 −22.6%（算術）；7 日前約 6.60（算術）"
+        ],
+        [
+          "Ornn H100 SXM",
+          "2026-11-23",
+          "3.03",
+          "—",
+          "同一指數的 H100"
+        ],
+        [
+          "Silicon Data H200（neocloud）",
+          "11 月，11/22 更新",
+          "約 3.5；最新 3.59",
+          "11 月大致持平",
+          "方法與 Ornn 不同"
+        ],
+        [
+          "Silicon Data H100（shattered.io 轉述）",
+          "2026-11-20",
+          "約 3.11",
+          "年增近 60%",
+          "二手轉述"
+        ],
+        [
+          "gpurentalprices 典型隨需 H200",
+          "11 月至今",
+          "5.06",
+          "比 10 月（4.72）+7.3%（來源值；四捨五入後自算 +7.2%）",
+          "整體指數比 10 月 +2.3%"
+        ],
+        [
+          "gpurentalprices 典型隨需 H100",
+          "11 月至今",
+          "3.51",
+          "比 10 月（3.30）+6.3%（來源值；自算 +6.4%）",
+          "差異來自進位"
+        ],
+        [
+          "Thunder Compute 隨需中位數",
+          "2026-11",
+          "H100：專用雲 4.17、超大型雲 7.89；H200：4.50 對 10.44",
+          "—",
+          "雲類型價差大"
+        ],
+        [
+          "Mercatus 指數",
+          "9 月中",
+          "B200 約 6.39；H200 4.43",
+          "B200 30 日持平；H200 −0.8%",
+          "較舊"
+        ],
+        [
+          "B200 現貨（中文報導）",
+          "2026-05-30 → 06-21",
+          "6.11 → 4.22",
+          "−30.9%（22 天，算術）",
+          "當時沒有 11/16 新規；知乎標題稱『一月暴跌 30%』"
+        ],
+        [
+          "Reddit 轉述（GPUSmith）",
+          "日期未標",
+          "—",
+          "B200 週末 −30%、H200 一個月 −37.7%",
+          "未證實的軼事，不採用"
+        ],
+        [
+          "GB200",
+          "—",
+          "沒找到公開指數",
+          "—",
+          "—"
+        ]
+      ],
+      "note": "價格來自搜尋摘要，各頁面的日期與方法不一致；引用前請回到各指數原頁面核對。"
+    },
+    {
+      "title": "表三：BIS 11/16 規則重點（依搜尋摘要）",
+      "columns": [
+        "項目",
+        "內容",
+        "來源",
+        "備註"
+      ],
+      "rows": [
+        [
+          "發布與生效",
+          "2026-11-16 發布臨時最終規則（interim final rule）；報導稱預定 11/19 刊登聯邦公報並同日生效",
+          "數位時代（11/19 生效）；英文搜尋摘要（11/16 臨時最終規則；未對應單一頁面）",
+          "沒讀到聯邦公報原文"
+        ],
+        [
+          "算力門檻",
+          "向中國或澳門的企業提供遠端算力，總量超過 1,200 萬 TPP 的資料中心須許可；含關聯資料中心與間接取用（例如雲端轉售商替中國企業訓練模型）",
+          "CyberQ（1,200 萬 TPP）；關聯與間接取用來自英文搜尋摘要（TechPowerUp、MLQ、SCMP 等，未對應單一頁面）",
+          "『總量』口徑以原文為準"
+        ],
+        [
+          "規模換算",
+          "有說法約等於 330 顆較先進的輝達晶片；另一說（引 McGuire）約 200 顆最先進 Blackwell 或約 800 顆 H100；AI Post Hub 標題稱『750 顆 H100 以上』",
+          "搜尋摘要（出處未對應單一頁面）",
+          "差異大；12,000,000÷750＝16,000、÷800＝15,000 TPP／顆（算術），未讀原文"
+        ],
+        [
+          "第三國出口許可",
+          "印尼、馬來西亞、新加坡、泰國、巴西：先進加速器出口須許可；美國總部公司客戶若符合新的報告要求可豁免",
+          "TechOrange、數位時代",
+          "日本不在這 5 國名單（搜尋摘要）"
+        ],
+        [
+          "盡職調查",
+          "資料中心、晶片廠與出口商須查客戶所有權（中國國企、澳門實體等），防止以重組或分拆規避；電商與社群媒體的商業推薦系統豁免",
+          "Yahoo香港（所有權查核、推薦系統豁免）；英文搜尋摘要（防止重組或分拆規避）",
+          ""
+        ],
+        [
+          "既有資料中心",
+          "生效後 90 天內須取得許可",
+          "數位時代",
+          "11/19＋90 天＝2027-02-17（算術）"
+        ],
+        [
+          "廢止",
+          "2025 年 1 月的 AI 擴散規則（國家分級、資料中心 VEU、模型權重管制）",
+          "INSIDE（廢止）；英文搜尋摘要（國家分級、VEU、模型權重）",
+          ""
+        ],
+        [
+          "市場反應",
+          "報導稱輝達當天股價跌逾 4%",
+          "數位時代",
+          "日期未核對"
+        ]
+      ],
+      "note": "以上為媒體整理，沒有聯邦公報或 BIS 原文。"
+    },
+    {
+      "title": "表四：擴產與稼動檢核（卡點在許可與中國租戶，不在台廠產能）",
+      "columns": [
+        "公司",
+        "瓶頸環節",
+        "現況稼動",
+        "擴產與資本支出",
+        "投產或放量時點",
+        "主要限制",
+        "證據等級"
+      ],
+      "rows": [
+        [
+          "東南亞離岸 GPU 資料中心（印尼、馬來西亞、新加坡、泰國）",
+          "中國租戶的合規與出口許可",
+          "未揭露；沒有區域租金序列",
+          "新出貨須許可；既有資料中心生效後 90 天內取得許可",
+          "11/19 生效；寬限約至 2027-02-17（算術）",
+          "許可核發速度與標準未知；盡職調查成本",
+          "媒體整理（規則）；租金部分無資料"
+        ],
+        [
+          "日本資料中心",
+          "是否有中國租戶（節目說法）",
+          "未揭露",
+          "不在 5 國許可名單（搜尋摘要）；但 1,200 萬 TPP 取用門檻全球適用",
+          "—",
+          "有無中國租戶、規模未知",
+          "節目說法，未證實"
+        ],
+        [
+          "中國境內算力（華為昇騰 950PR 等）",
+          "國產替代供給與生態",
+          "二手摘要稱昇騰 950PR 2026 年 4 月量產；境內 H100 伺服器租金較高點約 −70%（2026-08 的分析）",
+          "未揭露",
+          "—",
+          "與離岸租金走勢是不同市場（推論）",
+          "二手摘要"
+        ],
+        [
+          "非中國 neocloud 與超大型雲",
+          "Blackwell 世代切換、電力與基礎建設交付",
+          "多數指數顯示 H200 11 月持平或上升",
+          "未揭露",
+          "—",
+          "電力與交付仍緊（SMM 單次摘要）",
+          "價格追蹤站"
+        ]
+      ],
+      "note": "逐列檢查四項：稼動滿載卻沒擴廠——沒有稼動資料；擴產但上游材料沒擴——本題是需求端被切（中國租戶），不是材料；產能被單一客戶專供——中國租戶占比正是未知數；設計產能不等於可出貨——離岸容量能不能轉租給非中國客戶取決於許可與需求。"
+    }
+  ],
+  "evolution": [
+    {
+      "name": "2026 年初：輝達口頭要求新合約 ≥51% 供非中國客戶",
+      "composition": "雲端夥伴新合約的中國占比上限 49%",
+      "spec": "既有租約不受影響；口頭、未書面化（金融時報二手轉述）",
+      "application": "中國需求轉向馬來西亞、印尼離岸租賃（既有研究）"
+    },
+    {
+      "name": "2026-05-30～06-21：B200 現貨大幅波動",
+      "composition": "6.11 → 4.22 美元／GPU 小時",
+      "spec": "−30.9%（22 天）",
+      "application": "沒有新規時就有的基準波動"
+    },
+    {
+      "name": "2026-11-11～11-21：Ornn H200 回落",
+      "composition": "7.75 → 6.00 美元",
+      "spec": "較高點 −22.6%；7 日 −9.1%、30 日 +0.2%",
+      "application": "高點早於 11/16 規則；其他指數持平或上升"
+    },
+    {
+      "name": "2026-11-16：BIS 遠端取用新規",
+      "composition": ">1,200 萬 TPP 取用須許可；5 國出口許可；既有資料中心 90 天",
+      "spec": "報導稱 11/19 生效；寬限約至 2027-02-17",
+      "application": "離岸容量與中國租戶的合規重整"
+    }
+  ],
+  "concepts": [
+    {
+      "title": "產業鏈因果（垂直）",
+      "points": [
+        "一行鏈：中國客戶算力需求（受管制壓縮）→ 離岸租賃（東南亞、日本資料中心與 neocloud）→ GPU 容量供給與租金 → 輝達與台灣 AI 伺服器鏈出貨與庫存；新規切在第二環",
+        "已知：規則封鎖這條管道；輝達規則前已要求新合約 ≥51% 非中國；中國需求轉往馬來西亞、印尼",
+        "未知：受影響容量占全球租賃容量的比重、東南亞與日本租金序列、中國租戶解約案例；租金另有世代切換、現貨與隨需價差、電力與交付緊等推手"
+      ]
+    },
+    {
+      "title": "相關推進力（水平）",
+      "points": [
+        "輝達中國業務：RTX Pro 5500 取消訂單報導（規模未證實）、H200 對中銷售停滯、Q4 指引不含中國資料中心運算（既有研究）",
+        "中國境內供給：昇騰 950PR 使境內租金較高點約 −70%（二手摘要）；與離岸是不同市場",
+        "美中談判與北京反制警告；黃仁勳復職後輝達對管制的態度（節目意見，未查證）"
+      ]
+    },
+    {
+      "title": "慣性、痛點與限制（思辯）",
+      "points": [
+        "缺口方向是反的：潛在的是離岸容量過剩，不是缺貨；但需求強、電力緊，吸收力無資料",
+        "慣性：用好故事（被禁→解約→拋售）解釋噪音大的價格序列；一週跌幅當趨勢；推特當資料",
+        "痛點與解法：需要分區域租金序列、具體解約案例、90 天內許可核發結果；完整效果要到 2027 年初",
+        "限制：沒讀到規則原文、推特貼文與 GB200 指數；各指數方法不同",
+        "擴產與稼動檢核：見表四（卡點在許可與中國租戶）",
+        "敘事陷阱自查：一週跌幅≠趨勢；矛盾指數不能只選一個；高點早於規則日不能用規則解釋；可能≠已發生；推特轉述≠資料；忽略基準率（6 月 B200 −30.9%）"
+      ]
+    },
+    {
+      "title": "誰受惠、誰受傷",
+      "points": [
+        "受傷（情境）：依賴中國租戶的離岸業者、中國需方、輝達中國相關業務",
+        "受惠（情境）：非中國租戶（若容量低價釋出）、美國總部公司客戶（豁免）",
+        "台灣廣達、緯創、鴻海、緯穎一律標中性：租金下滑與訂單的關聯沒有資料，沒有台廠被點名"
+      ]
+    },
+    {
+      "title": "怎麼驗證",
+      "points": [
+        "分區域租金序列與業者公告（解約、容量釋出）",
+        "聯邦公報原文：門檻、豁免、90 天寬限；2027 年 2 月前後的許可核發結果",
+        "節目提到的推特原貼文；輝達下一次財報對中國與離岸租賃的說明"
+      ]
+    }
+  ],
+  "conclusion": [
+    "租金下滑只在部分指數成立：Ornn H200 7 日 −9.1%、較 11/11 高點 −22.6%，但 30 日 +0.2%，Silicon Data 持平、gpurentalprices 11 月 H200 +7.3%；GB200 沒有公開指數。",
+    "『東南亞、日本資料中心因新規而拋售』沒有任何報導或數據支持；新規本身屬實（>1,200 萬 TPP 取用須許可、5 國出口許可、既有資料中心 90 天寬限，日本不在名單），但 Ornn 高點在 11/11、早於 11/16 規則，且 6 月 B200 現貨 22 天 −30.9% 沒有規則也發生。",
+    "『不用太在意』方向合理（一週跌幅不足以下結論），理由未證實；台灣 AI 伺服器鏈標中性，沒有台廠被點名。",
+    "要補的資料：規則原文、推特原貼文、分區域租金序列、GB200 指數、2027 年初的許可核發結果。"
+  ],
+  "sources": [
+    {
+      "title": "SoundOn：M觀點 EP356. 黃仁勳意外閃電回歸、AI 基建股再遭重擊、FSD V15 正式推出、這波修正跌夠了嗎？（約 32:21 片段；score 4；自動轉錄，僅改寫摘要；未證實）",
+      "url": "https://player.soundon.fm/p/b8f5a471-f4f7-4763-9678-65887beda63a/episodes/2d0ce706-da57-4f3c-a757-3266c116ffb9"
+    },
+    {
+      "title": "數位時代：美國AI晶片新規上路！嚴防中國「遠端租算力」，出口星馬等5國全納管（僅搜尋摘要）",
+      "url": "https://www.bnext.com.tw/article/93084/us-ai-chip-rule-remote-access-data-centers"
+    },
+    {
+      "title": "TechOrange：美國堵中國企業遠端租 GPU：AI 晶片出口新加坡、馬來西亞等 5 國改採許可制（僅搜尋摘要）",
+      "url": "https://techorange.com/2026/11/17/us-curbs-remote-access-ai-chips/"
+    },
+    {
+      "title": "INSIDE：美國遠端存取新規防堵中國租用 AI 算力，新加坡、馬來西亞等 5 國晶片出口改採許可制（僅搜尋摘要）",
+      "url": "https://www.inside.com.tw/article/42931-us-bis-remote-access-ai-chips-rule-singapore-malaysia-license"
+    },
+    {
+      "title": "Yahoo香港：美商務部堵雲端漏洞 中國企業經第三國租 AI 晶片算力受限（僅搜尋摘要）",
+      "url": "https://hk.news.yahoo.com/%E7%BE%8E%E5%95%86%E5%8B%99%E9%83%A8%E5%A0%B5%E9%9B%B2%E7%AB%AF%E6%BC%8F%E6%B4%9E-%E4%B8%AD%E5%9C%8B%E4%BC%81%E6%A5%AD%E7%B6%93%E7%AC%AC%E4%B8%89%E5%9C%8B%E7%A7%9F-ai-%E6%99%B6%E7%89%87%E7%AE%97%E5%8A%9B%E5%8F%97%E9%99%90-095545858.html"
+    },
+    {
+      "title": "CyberQ：美國封堵中國海外算力 BIS新規增列5國晶片許可 新加坡官方回應（僅搜尋摘要）",
+      "url": "https://cyberq.tw/2026/11/17/the-us-blocks-chinas-overseas-computing/"
+    },
+    {
+      "title": "AI Post Hub：美國收緊 AI 晶片出口管制：海外資料中心遠端算力納入許可，750 顆 H100 以上全受限（僅搜尋摘要）",
+      "url": "https://www.aiposthub.com/us-commerce-remote-access-ai-chip-export-rules/"
+    },
+    {
+      "title": "TechPowerUp：U.S. Cracks Down on China Renting AI GPUs Through Overseas Data Centers（僅搜尋摘要）",
+      "url": "https://www.techpowerup.com/354927/u-s-cracks-down-on-china-renting-ai-gpus-through-overseas-data-centers?type=AI"
+    },
+    {
+      "title": "ChinaTalk：BIS Takes on Compute Leakage（只看到標題）",
+      "url": "https://www.chinatalk.media/p/bis-finally-takes-a-stand"
+    },
+    {
+      "title": "SCMP：US tightens AI chip export curbs to close China's overseas data centre loophole（僅搜尋摘要）",
+      "url": "https://www.scmp.com/tech/article/3374639/us-tightens-ai-chip-export-curbs-close-chinas-overseas-data-centre-loophole"
+    },
+    {
+      "title": "Kharon：AI Remote Access Rule & RASA: Export Compliance Guide（僅搜尋摘要）",
+      "url": "https://www.kharon.com/resources/guide/export-controls/understanding-remote-access-controls-the-ai-remote-access-rule-and-the-remote-access-security-act"
+    },
+    {
+      "title": "MLQ：Commerce issues a rule to stop Chinese companies reaching advanced AI chips through overseas data centers（僅搜尋摘要）",
+      "url": "https://mlq.ai/news/commerce-issues-a-rule-to-stop-chinese-companies-reaching-advanced-ai-chips-through-overseas-data-centers/"
+    },
+    {
+      "title": "Eurasia Review：US Moves To Restrict China's Remote Access To Advanced AI Chips（僅搜尋摘要）",
+      "url": "https://www.eurasiareview.com/18112026-us-moves-to-restrict-chinas-remote-access-to-advanced-si-chips/"
+    },
+    {
+      "title": "Ornn：H200 Price: $6.00/hr (Nov 21, 2026)（僅搜尋摘要）",
+      "url": "https://data.ornn.com/markets/h200"
+    },
+    {
+      "title": "Ornn：Compute Price Index (OCPI): Live GPU Rental Prices（H100 SXM 11/23；僅搜尋摘要）",
+      "url": "https://data.ornn.com/"
+    },
+    {
+      "title": "Silicon Data：H200 Rental Price Index（僅搜尋摘要）",
+      "url": "https://www.silicondata.com/products/silicon-index/h200"
+    },
+    {
+      "title": "gpurentalprices：GPU Rental Price Index, November 2026 to date: H100 averaged $3.51/hr（僅搜尋摘要）",
+      "url": "https://gpurentalprices.com/gpu-price-index/2026-11"
+    },
+    {
+      "title": "shattered.io：Nvidia H100 Rental Price Up 60% as Stock Falls 14%（11/20；Silicon Data H100 指數轉述；僅搜尋摘要）",
+      "url": "https://shattered.io/nvidia-older-gpu-rental-prices-h100-3-11-hour-stock-falls-14-percent/"
+    },
+    {
+      "title": "Thunder Compute：AI GPU Rental Market Trends (November 2026): Complete Industry Analysis（僅搜尋摘要）",
+      "url": "https://www.thundercompute.com/blog/ai-gpu-rental-market-trends"
+    },
+    {
+      "title": "知乎：都说算力稀缺，为什么英伟达B200租金一月暴跌30%（僅搜尋摘要；2026 年 6 月 B200 現貨走勢）",
+      "url": "https://zhuanlan.zhihu.com/p/2053783629059438259"
+    },
+    {
+      "title": "Mercatus：GPU Rental Prices: H100, H200, B200 Cost Per Hour by Provider（9 月中指數；僅搜尋摘要）",
+      "url": "https://www.mercatus-ai.com/blog/gpu-rental-prices"
+    },
+    {
+      "title": "GPUSmith：GPU Price Index 2026: H100, H200, B200, GB200 Street Prices（含未證實的 Reddit 轉述；僅搜尋摘要）",
+      "url": "https://gpusmith.com/articles/en/nvidia-ai-gpu-price-index-trends"
+    },
+    {
+      "title": "GetDeploying：GPU Rental Price Trends (2026)（現貨與隨需價差；僅搜尋摘要）",
+      "url": "https://getdeploying.com/gpu-price-trends"
+    },
+    {
+      "title": "Safeguard：GPU rental prices in 2026: H100, H200 and B200 per hour（承諾折扣；僅搜尋摘要）",
+      "url": "https://safeguard.sh/resources/blog/gpu-rental-prices-2026-h100-h200-b200-per-hour-and-why-they-move"
+    },
+    {
+      "title": "SMM：[SMM Analysis] Graphics Card Prices Drop in China, While ex-China Faces Power Connection Challenges（單次搜尋摘要，後續搜尋未重現）",
+      "url": "https://news.metal.com/newscontent/103999347-ญี่ปุ่นเรียกเก็บภาษีตอบโต้การทุ่มตลาดชั่วคราวกับสแตนเลสจากจีนและไต้หวัน"
+    },
+    {
+      "title": "KrASIA：Nvidia GPU rentals drop sharply, but experts say no cause for panic（只看到標題；日期與內容未核對，不採用）",
+      "url": "https://kr-asia.com/nvidia-gpu-rentals-drop-sharply-but-experts-say-no-cause-for-panic"
+    },
+    {
+      "title": "Modern Diplomacy：Can Nvidia Protect Its $11 Billion China Business After Jensen Huang's Exit?（2026-11-23；僅搜尋摘要）",
+      "url": "https://moderndiplomacy.eu/2026/11/23/can-nvidia-protect-its-11-billion-china-business-after-jensen-huangs-exit"
+    },
+    {
+      "title": "ABHS：Nvidia Tells Clouds: Keep China Under 49% of New Business（轉述金融時報；二手，僅搜尋摘要）",
+      "url": "https://abhs.in/blog/nvidia-cloud-partners-51-percent-non-china-rule-ft-export-controls-2026"
+    }
+  ],
+  "evidence": "社群傳聞",
+  "report": "# 供需事件：GPU 租金下滑與「東南亞、日本資料中心拋售」說法——租金局部下跌屬實，成因沒有證據（M觀點 EP356／Podcast 說法求證）\n\n> 資料說明：寫於 **2026-11-25 上午（台北時間）**，來自搜尋摘要與標題（價格追蹤站、BIS 新規的臺灣與英文媒體整理、SMM 等）與研究庫既有研究；節目《M觀點》EP356 約 32:21 片段是自動轉錄（待檢視清單），**本檔只改寫摘要、不引原文**；**沒有讀到聯邦公報或 BIS 原文**，也**沒有找到節目所說的推特貼文**與任何 GB200 租金指數；各價格頁面的日期與方法不一致。不是投資建議。\n\n## 0. 一句話\n**一句話**：EP356（約 32:21）稱近幾天推特上有些 GB200／H200 租金在掉，資料來自東南亞或日本的資料中心，這些中心原本租給中國客戶，預期拿不到許可就解約、低價拋售 GPU，所以不必太在意。核對：（1）**租金有掉只在部分指數成立**——Ornn H200 指數 11/21 為 6.00 美元／GPU 小時，7 日 −9.1%、30 日 +0.2%，從 11/11 的高點 7.75 美元算 −22.6%（算術），但 Silicon Data 約 3.5 美元持平、gpurentalprices 11 月至今 H200 5.06 美元比 10 月 +7.3%、H100 +6.3%；**GB200 沒找到公開租金指數**。（2）**『來自東南亞或日本資料中心』與『因新規而拋售』沒有找到任何報導或數據支持**。（3）**新規本身屬實**：美國商務部 BIS 11/16 發布臨時最終規則（報導稱 11/19 生效），對向中國或澳門實體提供超過 1,200 萬 TPP 算力的資料中心設許可，印尼、馬來西亞、新加坡、泰國、巴西的先進晶片出口改採許可制，既有資料中心生效後 90 天內須取得許可（約 2027-02-17，算術）；日本不在這 5 國名單。（4）**時間線對不上『新規造成拋售』**：Ornn 的高點在 11/11，早於 11/16 發布；2026 年 6 月 B200 現貨 22 天內也跌了 30.9%（6.11→4.22 美元，算術），當時沒有這條規則。結論：租金下滑是真的但很局部，成因是推測；『不用太在意』方向合理，理由沒有被證實。\n\n## 1. 節目說了什麼（改寫摘要）\n- 主持人稱過去幾天在推特上看到有些算力變便宜，部分 GB200 或 H200 租金開始下掉。\n- 他說資料來自東南亞或日本的資料中心，並**推測**它們原本租給中國客戶：預期之後拿不到許可，就把合約解掉、把 GPU 容量打包便宜賣。\n- 他的結論是不必太在意這種租金下降；並說商務部的晶片管制新規是華盛頓晶片管制鷹派的勝利，管制已從賣硬體延伸到算力，未來輝達對走私一定會嚴管。\n\n## 2. 說法逐項對照\n| 說法（EP356 約 32:21，改寫摘要） | 查到的資料 | 來源 | 判讀 |\n|---|---|---|---|\n| 有些 GB200／H200 租金開始掉 | Ornn H200 指數 11/21 為 6.00 美元／GPU 小時，7 日 −9.1%、30 日 +0.2%；30 日區間 5.49～7.75 美元，高點在 11/11，到 11/21 下跌 22.6%（算術）。但 Silicon Data H200 11 月約 3.5 美元大致持平（11/22 最新 3.59）；gpurentalprices 11 月至今 H200 5.06 美元、H100 3.51 美元，分別比 10 月 +7.3%、+6.3%；Silicon Data H100 約 3.11 美元，年增近 60%。GB200：沒找到公開租金指數 | Ornn、Silicon Data、gpurentalprices、shattered.io（搜尋摘要） | 局部成立：一個指數的 7 日跌幅屬實，其餘指數 11 月持平或上升；GB200 沒有資料 |\n| 資料來自東南亞或日本的資料中心 | 沒找到任何報導或指數把降價歸因到這兩個地區；Ornn、Silicon Data 的區域組成本次沒查到。SMM 一則分析（單次搜尋摘要）稱自 10 月下旬起部分先進 GPU 隨需價格回落，海外（中國以外）也略回落，但資料中心電力與基礎建設交付仍緊 | SMM（後續搜尋未重現） | 未證實 |\n| 這些中心原本租給中國客戶 | 背景合理：金融時報（二手轉述）稱輝達要求雲端夥伴新合約至少 51% 供非中國客戶、既有租約不受影響；既有研究記錄中國需求轉向馬來西亞、印尼離岸租賃；新規 11/16 針對的正是這條管道。但沒有找到任何具體資料中心或其中國租戶比重 | ABHS（二手）、數位時代、既有研究 | 背景成立；個別資料中心未核對 |\n| 預期拿不到許可 → 解約 → 低價打包賣出 | 新規給既有資料中心生效後 90 天內取得許可（11/19＋90 天＝2027-02-17，算術），沒有要求立刻解約；Ornn 的 30 日高點在 11/11，早於 11/16 發布；SMM 稱回落始於 10 月下旬；沒有任何解約或拋售的具體報導 | 數位時代、Ornn、SMM | 機制合理，但時間線與證據不足；『趕快打包賣』是主持人的推測 |\n| 所以租金下降不必太在意 | 指數噪音大：B200 現貨 2026-05-30 為 6.11 美元、06-21 為 4.22 美元（−30.9%，22 天，算術），當時沒有這條規則；現貨與合約是兩套價格（現貨約為隨需的一半；一年承諾折 31%、三年折 56%） | 知乎、GetDeploying、Safeguard（搜尋摘要） | 方向合理（一週跌幅不足以下結論），但理由（拋售）未證實 |\n| 新規是晶片管制鷹派的勝利，管制從賣硬體延伸到算力 | BIS 11/16 臨時最終規則對遠端取用設許可、廢止 AI 擴散規則（多來源）；ChinaTalk 標題為『BIS Takes on Compute Leakage』 | 數位時代、INSIDE、ChinaTalk（只看到標題）、英文搜尋摘要 | 規則事實成立；『鷹派的勝利』是評價，屬意見 |\n\n## 3. GPU 租金資料\n| 指標 | 日期 | 水準（美元／GPU 小時） | 變動 | 備註 |\n|---|---|---|---|---|\n| Ornn OCPI-H200 | 2026-11-21 | 6.00 | 7 日 −9.1%；30 日 +0.2%（30 日前約 5.99，算術） | 30 日區間 5.49～7.75，高點 11/11；較高點 −22.6%（算術）；7 日前約 6.60（算術） |\n| Ornn H100 SXM | 2026-11-23 | 3.03 | — | 同一指數的 H100 |\n| Silicon Data H200（neocloud） | 11 月，11/22 更新 | 約 3.5；最新 3.59 | 11 月大致持平 | 方法與 Ornn 不同 |\n| Silicon Data H100（shattered.io 轉述） | 2026-11-20 | 約 3.11 | 年增近 60% | 二手轉述 |\n| gpurentalprices 典型隨需 H200 | 11 月至今 | 5.06 | 比 10 月（4.72）+7.3%（來源值；四捨五入後自算 +7.2%） | 整體指數比 10 月 +2.3% |\n| gpurentalprices 典型隨需 H100 | 11 月至今 | 3.51 | 比 10 月（3.30）+6.3%（來源值；自算 +6.4%） | 差異來自進位 |\n| Thunder Compute 隨需中位數 | 2026-11 | H100：專用雲 4.17、超大型雲 7.89；H200：4.50 對 10.44 | — | 雲類型價差大 |\n| Mercatus 指數 | 9 月中 | B200 約 6.39；H200 4.43 | B200 30 日持平；H200 −0.8% | 較舊 |\n| B200 現貨（中文報導） | 2026-05-30 → 06-21 | 6.11 → 4.22 | −30.9%（22 天，算術） | 當時沒有 11/16 新規；知乎標題稱『一月暴跌 30%』 |\n| Reddit 轉述（GPUSmith） | 日期未標 | — | B200 週末 −30%、H200 一個月 −37.7% | 未證實的軼事，不採用 |\n| GB200 | — | 沒找到公開指數 | — | — |\n\n**讀法**：各指數的方法（隨需、現貨、neocloud、超大型雲）與樣本不同，水準差一倍以上很正常；能比的是同一指數的變動。同一個 Ornn H200 指數，7 日 −9.1% 與 30 日 +0.2% 並存，代表近期是『從高點回落』而不是『趨勢轉折』（推論）；其他指數的 11 月方向則是持平或小幅上升。\n\n## 4. 新規重點\n| 項目 | 內容 | 來源 | 備註 |\n|---|---|---|---|\n| 發布與生效 | 2026-11-16 發布臨時最終規則（interim final rule）；報導稱預定 11/19 刊登聯邦公報並同日生效 | 數位時代（11/19 生效）；英文搜尋摘要（11/16 臨時最終規則；未對應單一頁面） | 沒讀到聯邦公報原文 |\n| 算力門檻 | 向中國或澳門的企業提供遠端算力，總量超過 1,200 萬 TPP 的資料中心須許可；含關聯資料中心與間接取用（例如雲端轉售商替中國企業訓練模型） | CyberQ（1,200 萬 TPP）；關聯與間接取用來自英文搜尋摘要（TechPowerUp、MLQ、SCMP 等，未對應單一頁面） | 『總量』口徑以原文為準 |\n| 規模換算 | 有說法約等於 330 顆較先進的輝達晶片；另一說（引 McGuire）約 200 顆最先進 Blackwell 或約 800 顆 H100；AI Post Hub 標題稱『750 顆 H100 以上』 | 搜尋摘要（出處未對應單一頁面） | 差異大；12,000,000÷750＝16,000、÷800＝15,000 TPP／顆（算術），未讀原文 |\n| 第三國出口許可 | 印尼、馬來西亞、新加坡、泰國、巴西：先進加速器出口須許可；美國總部公司客戶若符合新的報告要求可豁免 | TechOrange、數位時代 | 日本不在這 5 國名單（搜尋摘要） |\n| 盡職調查 | 資料中心、晶片廠與出口商須查客戶所有權（中國國企、澳門實體等），防止以重組或分拆規避；電商與社群媒體的商業推薦系統豁免 | Yahoo香港（所有權查核、推薦系統豁免）；英文搜尋摘要（防止重組或分拆規避） |  |\n| 既有資料中心 | 生效後 90 天內須取得許可 | 數位時代 | 11/19＋90 天＝2027-02-17（算術） |\n| 廢止 | 2025 年 1 月的 AI 擴散規則（國家分級、資料中心 VEU、模型權重管制） | INSIDE（廢止）；英文搜尋摘要（國家分級、VEU、模型權重） |  |\n| 市場反應 | 報導稱輝達當天股價跌逾 4% | 數位時代 | 日期未核對 |\n\n## 5. 產業鏈因果（垂直）\n\n**一行鏈**：中國客戶的算力需求（受晶片出口管制壓縮）→ 離岸租賃（東南亞、日本等資料中心與 neocloud）→ GPU 容量的供給與租金（現貨與合約）→ 輝達與台灣 AI 伺服器鏈的出貨與庫存。BIS 11/16 新規切在第二環：若中國租戶被切斷，離岸容量只剩兩條路——轉租給非中國客戶（價格承壓）或閒置；若非中國需求吸收得下，租金不會明顯崩（推論）。\n\n- **已知（有來源）**：規則封鎖這條管道；輝達在規則前就口頭要求雲端夥伴新合約至少 51% 供非中國客戶（金融時報二手轉述）；中國需求轉往馬來西亞、印尼離岸租賃（既有研究）。\n- **未知（沒查到）**：受影響容量占全球 GPU 租賃容量的比重；東南亞與日本的租金序列；中國租戶實際解約案例。\n- **租金的其他推手（有來源）**：世代切換（H200 對 Blackwell）、隨需與現貨的價差、指數樣本與方法差異、電力與基礎建設交付仍緊（SMM 單次摘要）。\n\n## 6. 相關推進力（水平）\n- **輝達中國業務**：RTX Pro 5500 部分中國客戶取消訂單的報導（彭博與 Modern Diplomacy 轉述；路透未能證實規模，且是專業卡、不是 H200／B200 租賃）；H200 對中銷售獲核准後停滯、輝達 Q4 指引不含中國資料中心運算（既有研究）。\n- **中國境內供給**：2026-08 的二手分析稱境內 H100 伺服器租金較高點約 −70%，歸因華為昇騰 950PR 的國產供給——境內價格與離岸無關（推論）。\n- **美中談判**：川習會與北京反制警告（既有研究《〈分析〉川習會未解晶片僵局》）。\n- **黃仁勳復職**：節目認為輝達不會再為管制抗議（評論，屬意見，沒有查證）。\n\n## 7. 慣性、痛點與限制（思辯）\n\n**供需缺口怎麼來的**：這題的缺口方向是反的——不是缺貨，而是**潛在的離岸容量過剩**：若中國租戶被切斷，原本被中國需求吃掉的容量會找不到租客；但全球 AI 算力需求強、電力與交付仍緊，吸收力有多大沒有資料。\n\n**慣性**：用一個好故事（被禁 → 解約 → 拋售）解釋一個本來就噪音很大的價格序列；單一指數的 7 日跌幅被當成趨勢，一則推特被當成資料。\n\n**痛點與最快的解法**（標時點與卡點）：\n- **要證實故事需要三樣東西**：分區域租金序列、具體解約或拋售案例、規則生效後 90 天內的許可核發結果；卡點是沒有公開的區域序列。\n- **時間線**：90 天寬限到約 2027-02-17，所以規則的完整效果要到 2027 年初才看得到；現在看到的租金變動不能直接歸因。\n\n**限制**：沒讀到規則原文、推特貼文與 GB200 指數；各指數方法不同；節目片段是自動轉錄。\n\n**擴產與稼動檢核**：見第 9 節表四。\n\n**敘事陷阱自查**：\n1. **把一週跌幅當趨勢**：Ornn 7 日 −9.1% 對 30 日 +0.2%。\n2. **指數互相矛盾仍選一個**：Silicon Data 持平、gpurentalprices 上升。\n3. **用規則日期解釋早於規則日期的價格變化**：Ornn 高點在 11/11，規則 11/16 才發布。\n4. **把『可能』當『已發生』**：解約與拋售沒有任何具體案例。\n5. **把推特轉述當資料**：沒找到原始貼文。\n6. **忽略基準率**：2026 年 6 月 B200 現貨 22 天 −30.9%，沒有規則也會大幅波動。\n\n## 8. 誰受惠、誰受傷\n- **受傷（情境）**：依賴中國租戶的東南亞離岸業者（營收來源被切）；中國需方（取得離岸算力更難）；輝達中國相關業務（但 Q4 指引已不含中國資料中心運算，既有研究）。\n- **受惠（情境）**：非中國租戶（若容量低價釋出）；美國總部公司客戶（豁免，須符合報告要求）。\n- **台灣**：沒有台廠被點名。廣達 2382、緯創 3231、鴻海 2317、緯穎 6669 **一律標中性**——租金下滑與台廠 AI 伺服器訂單的關聯沒有資料；東南亞資料中心擴建若放緩會影響拉貨，屬推論。\n\n## 9. 擴產與稼動檢核\n| 公司 | 瓶頸環節 | 現況稼動 | 擴產與資本支出 | 投產或放量時點 | 主要限制 | 證據等級 |\n|---|---|---|---|---|---|---|\n| 東南亞離岸 GPU 資料中心（印尼、馬來西亞、新加坡、泰國） | 中國租戶的合規與出口許可 | 未揭露；沒有區域租金序列 | 新出貨須許可；既有資料中心生效後 90 天內取得許可 | 11/19 生效；寬限約至 2027-02-17（算術） | 許可核發速度與標準未知；盡職調查成本 | 媒體整理（規則）；租金部分無資料 |\n| 日本資料中心 | 是否有中國租戶（節目說法） | 未揭露 | 不在 5 國許可名單（搜尋摘要）；但 1,200 萬 TPP 取用門檻全球適用 | — | 有無中國租戶、規模未知 | 節目說法，未證實 |\n| 中國境內算力（華為昇騰 950PR 等） | 國產替代供給與生態 | 二手摘要稱昇騰 950PR 2026 年 4 月量產；境內 H100 伺服器租金較高點約 −70%（2026-08 的分析） | 未揭露 | — | 與離岸租金走勢是不同市場（推論） | 二手摘要 |\n| 非中國 neocloud 與超大型雲 | Blackwell 世代切換、電力與基礎建設交付 | 多數指數顯示 H200 11 月持平或上升 | 未揭露 | — | 電力與交付仍緊（SMM 單次摘要） | 價格追蹤站 |\n\n## 10. 怎麼驗證\n1. **分區域租金序列**（新加坡、馬來西亞、印尼、泰國、日本）的 H200、B200、GB200：Ornn、Silicon Data 若提供區域切分，或業者公開牌價。\n2. **聯邦公報原文**：門檻口徑、豁免、90 天寬限、許可類型。\n3. **東南亞與日本業者的公告或法說**：中國租戶合約終止、容量釋出。\n4. **節目提到的推特原貼文**：作者、日期、價格與地區。\n5. **2027 年 2 月前後**：許可核發結果與租金走勢。\n6. **輝達下一次財報**：對中國與離岸租賃的說明。\n\n## 11. 舉一反三：和研究庫相鄰題材對照\n- **《中國AI算力「買不到、租更貴」-輝達B300黑市》**：中國境內的『買不到、租更貴』與離岸租金下滑，是同一組管制的兩端——一端缺貨漲價，一端若有閒置容量則降價（推論）。\n- **《〈分析〉川習會未解晶片僵局-北京反制牌如何牽動貿易》**：BIS 11/16 新規與北京反制警告的背景。\n- **《龍頭企業高層復職對AI供應鏈的影響》**：黃仁勳復職與輝達對管制態度的背景。\n- **《CSP資本支出見頂時點（Threads說法求證）》**：需求端（雲端資本支出）若降溫，租金下滑的解讀會不同。\n\n## 12. 傳聞與未證實\n- **『東南亞、日本資料中心因新規拋售 GPU』**：沒有任何報導或數據。\n- **『GB200 租金下滑』**：沒有公開指數。\n- **Reddit 轉述的 B200 週末 −30%、H200 一個月 −37.7%**：未證實軼事。\n- **KrASIA 標題『Nvidia GPU rentals drop sharply, but experts say no cause for panic』**：只看到標題，日期與內容未核對，不採用。\n- **『輝達當天股價跌逾 4%』**：單一來源，日期未核對。\n\n## 13. 風險與矛盾\n- 全是搜尋摘要與標題；規則原文與推特貼文沒讀到；節目片段為自動轉錄。\n- 各價格頁面的日期與方法不一致（同一張 H200：Ornn 6.00、Silicon Data 3.5、gpurentalprices 5.06）；SMM 的『10 月下旬起回落』只出現在單次搜尋摘要，後續搜尋未重現。\n- 規則的規模換算互相不一致（約 330 顆、約 200 顆 Blackwell、約 800 顆或 750 顆 H100）。\n- 『90 天寬限』來自單一報導（數位時代）；『11/19 生效』是『預定』。\n- 指數的區域組成未知，無法對應『東南亞、日本』。\n\n## 資料來源\n- [SoundOn：M觀點 EP356. 黃仁勳意外閃電回歸、AI 基建股再遭重擊、FSD V15 正式推出、這波修正跌夠了嗎？（約 32:21 片段；score 4；自動轉錄，僅改寫摘要；未證實）](https://player.soundon.fm/p/b8f5a471-f4f7-4763-9678-65887beda63a/episodes/2d0ce706-da57-4f3c-a757-3266c116ffb9)\n- [數位時代：美國AI晶片新規上路！嚴防中國「遠端租算力」，出口星馬等5國全納管（僅搜尋摘要）](https://www.bnext.com.tw/article/93084/us-ai-chip-rule-remote-access-data-centers)\n- [TechOrange：美國堵中國企業遠端租 GPU：AI 晶片出口新加坡、馬來西亞等 5 國改採許可制（僅搜尋摘要）](https://techorange.com/2026/11/17/us-curbs-remote-access-ai-chips/)\n- [INSIDE：美國遠端存取新規防堵中國租用 AI 算力，新加坡、馬來西亞等 5 國晶片出口改採許可制（僅搜尋摘要）](https://www.inside.com.tw/article/42931-us-bis-remote-access-ai-chips-rule-singapore-malaysia-license)\n- [Yahoo香港：美商務部堵雲端漏洞 中國企業經第三國租 AI 晶片算力受限（僅搜尋摘要）](https://hk.news.yahoo.com/%E7%BE%8E%E5%95%86%E5%8B%99%E9%83%A8%E5%A0%B5%E9%9B%B2%E7%AB%AF%E6%BC%8F%E6%B4%9E-%E4%B8%AD%E5%9C%8B%E4%BC%81%E6%A5%AD%E7%B6%93%E7%AC%AC%E4%B8%89%E5%9C%8B%E7%A7%9F-ai-%E6%99%B6%E7%89%87%E7%AE%97%E5%8A%9B%E5%8F%97%E9%99%90-095545858.html)\n- [CyberQ：美國封堵中國海外算力 BIS新規增列5國晶片許可 新加坡官方回應（僅搜尋摘要）](https://cyberq.tw/2026/11/17/the-us-blocks-chinas-overseas-computing/)\n- [AI Post Hub：美國收緊 AI 晶片出口管制：海外資料中心遠端算力納入許可，750 顆 H100 以上全受限（僅搜尋摘要）](https://www.aiposthub.com/us-commerce-remote-access-ai-chip-export-rules/)\n- [TechPowerUp：U.S. Cracks Down on China Renting AI GPUs Through Overseas Data Centers（僅搜尋摘要）](https://www.techpowerup.com/354927/u-s-cracks-down-on-china-renting-ai-gpus-through-overseas-data-centers?type=AI)\n- [ChinaTalk：BIS Takes on Compute Leakage（只看到標題）](https://www.chinatalk.media/p/bis-finally-takes-a-stand)\n- [SCMP：US tightens AI chip export curbs to close China's overseas data centre loophole（僅搜尋摘要）](https://www.scmp.com/tech/article/3374639/us-tightens-ai-chip-export-curbs-close-chinas-overseas-data-centre-loophole)\n- [Kharon：AI Remote Access Rule & RASA: Export Compliance Guide（僅搜尋摘要）](https://www.kharon.com/resources/guide/export-controls/understanding-remote-access-controls-the-ai-remote-access-rule-and-the-remote-access-security-act)\n- [MLQ：Commerce issues a rule to stop Chinese companies reaching advanced AI chips through overseas data centers（僅搜尋摘要）](https://mlq.ai/news/commerce-issues-a-rule-to-stop-chinese-companies-reaching-advanced-ai-chips-through-overseas-data-centers/)\n- [Eurasia Review：US Moves To Restrict China's Remote Access To Advanced AI Chips（僅搜尋摘要）](https://www.eurasiareview.com/18112026-us-moves-to-restrict-chinas-remote-access-to-advanced-si-chips/)\n- [Ornn：H200 Price: $6.00/hr (Nov 21, 2026)（僅搜尋摘要）](https://data.ornn.com/markets/h200)\n- [Ornn：Compute Price Index (OCPI): Live GPU Rental Prices（H100 SXM 11/23；僅搜尋摘要）](https://data.ornn.com/)\n- [Silicon Data：H200 Rental Price Index（僅搜尋摘要）](https://www.silicondata.com/products/silicon-index/h200)\n- [gpurentalprices：GPU Rental Price Index, November 2026 to date: H100 averaged $3.51/hr（僅搜尋摘要）](https://gpurentalprices.com/gpu-price-index/2026-11)\n- [shattered.io：Nvidia H100 Rental Price Up 60% as Stock Falls 14%（11/20；Silicon Data H100 指數轉述；僅搜尋摘要）](https://shattered.io/nvidia-older-gpu-rental-prices-h100-3-11-hour-stock-falls-14-percent/)\n- [Thunder Compute：AI GPU Rental Market Trends (November 2026): Complete Industry Analysis（僅搜尋摘要）](https://www.thundercompute.com/blog/ai-gpu-rental-market-trends)\n- [知乎：都说算力稀缺，为什么英伟达B200租金一月暴跌30%（僅搜尋摘要；2026 年 6 月 B200 現貨走勢）](https://zhuanlan.zhihu.com/p/2053783629059438259)\n- [Mercatus：GPU Rental Prices: H100, H200, B200 Cost Per Hour by Provider（9 月中指數；僅搜尋摘要）](https://www.mercatus-ai.com/blog/gpu-rental-prices)\n- [GPUSmith：GPU Price Index 2026: H100, H200, B200, GB200 Street Prices（含未證實的 Reddit 轉述；僅搜尋摘要）](https://gpusmith.com/articles/en/nvidia-ai-gpu-price-index-trends)\n- [GetDeploying：GPU Rental Price Trends (2026)（現貨與隨需價差；僅搜尋摘要）](https://getdeploying.com/gpu-price-trends)\n- [Safeguard：GPU rental prices in 2026: H100, H200 and B200 per hour（承諾折扣；僅搜尋摘要）](https://safeguard.sh/resources/blog/gpu-rental-prices-2026-h100-h200-b200-per-hour-and-why-they-move)\n- [SMM：[SMM Analysis] Graphics Card Prices Drop in China, While ex-China Faces Power Connection Challenges（單次搜尋摘要，後續搜尋未重現）](https://news.metal.com/newscontent/103999347-ญี่ปุ่นเรียกเก็บภาษีตอบโต้การทุ่มตลาดชั่วคราวกับสแตนเลสจากจีนและไต้หวัน)\n- [KrASIA：Nvidia GPU rentals drop sharply, but experts say no cause for panic（只看到標題；日期與內容未核對，不採用）](https://kr-asia.com/nvidia-gpu-rentals-drop-sharply-but-experts-say-no-cause-for-panic)\n- [Modern Diplomacy：Can Nvidia Protect Its $11 Billion China Business After Jensen Huang's Exit?（2026-11-23；僅搜尋摘要）](https://moderndiplomacy.eu/2026/11/23/can-nvidia-protect-its-11-billion-china-business-after-jensen-huangs-exit)\n- [ABHS：Nvidia Tells Clouds: Keep China Under 49% of New Business（轉述金融時報；二手，僅搜尋摘要）](https://abhs.in/blog/nvidia-cloud-partners-51-percent-non-china-rule-ft-export-controls-2026)\n",
+  "trigger": "2026-11-24 待檢視清單（未證實）：Podcast《M觀點》EP356「黃仁勳意外閃電回歸、AI 基建股再遭重擊、FSD V15 正式推出、這波修正跌夠了嗎？」約 32:21 片段（score 4，seen_at 2026-11-24 22:02，https://player.soundon.fm/p/b8f5a471-f4f7-4763-9678-65887beda63a/episodes/2d0ce706-da57-4f3c-a757-3266c116ffb9；自動轉錄，僅改寫摘要）：主持人稱過去幾天在推特上看到有些算力變便宜、部分 GB200 或 H200 租金開始下掉，資料來自東南亞或日本的資料中心；他推測這些中心原本租給中國客戶，預期之後拿不到許可，就解約並把 GPU 打包低價賣出，所以租金下降不必太在意；並稱商務部的晶片管制新規是華盛頓晶片管制鷹派的勝利，管制從賣硬體延伸到算力——未證實。"
+}
