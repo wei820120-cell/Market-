@@ -145,3 +145,96 @@ def picks_message(df: pd.DataFrame, title: str, n: int = 5) -> str:
         pct = "" if r["漲跌%"] is None else f"{r['漲跌%']:+.1f}% "
         lines.append(f"・{r['代號']} {r['名稱']} {pct}{fut}｜{r['理由']}")
     return "\n".join(lines)
+
+
+# ---------- 大跌日逆勢榜（只列名單供觀察，不影響上面的分數；要不要加分先回測） ----------
+# 2026-11-25 加權指數 −4.80%，逆勢收紅的個股至少有三種來源：獲利兌現（金像電、川湖）、事件／內需輪動（資安股漲停）、
+# 反彈後沒回吐。三種的持續性不同，所以名單要附「類型」，不要混在一起加分。
+
+WEAK_DAY_PCT = -2.0     # 加權指數跌幅達這個門檻 → 大跌日
+LIMIT_UP_PCT = 9.4      # 漲幅達這個值視為漲停（一般股 ±10%）
+HELD_PCT = 5.0          # 前一天漲幅達這個值、大跌日還沒回吐 → 守住前日漲幅
+MIN_VALUE = 3e8         # 成交值至少 3 億元（太小的沒有參考性，也不好進出）
+MIN_YOY = 20.0          # 最新月營收年增達這個值 → 營收有成長（獲利兌現型候選）
+
+TYPE_REV = "營收有成長"
+TYPE_LIMIT_REV = "漲停・營收有成長"
+TYPE_LIMIT = "漲停・營收沒跟上（輪動？）"
+TYPE_OTHER = "營收未達標／無資料"
+WEAK_DAY_COLUMNS = ["代號", "名稱", "漲跌%", "相對大盤(pp)", "前日漲跌%", "量比", "成交(億)", "法人(億)",
+                    "月營收年增%", "類型", "備註", "族群"]
+
+
+def _num(v) -> float | None:
+    if v is None:
+        return None
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    return None if pd.isna(f) else f
+
+
+def is_weak_day(idx_pct, thr: float = WEAK_DAY_PCT) -> bool:
+    """大跌日：加權指數當天跌幅達門檻（抓不到指數就當不是，不要亂列名單）。"""
+    v = _num(idx_pct)
+    return v is not None and v <= thr
+
+
+def weak_day_leaders(day: pd.DataFrame, idx_pct: float, prev_pct: dict | None = None, ratio: dict | None = None,
+                     inst: dict | None = None, revenue: dict | None = None, alerts: dict | None = None,
+                     themes: dict | None = None, min_value: float = MIN_VALUE, min_yoy: float = MIN_YOY,
+                     top: int = 30) -> pd.DataFrame:
+    """大跌日逆勢榜：收紅，或跌幅不到大盤一半（抗跌）、成交值夠大的一般股（4 碼，不含 ETF、權證、特別股）。
+
+    day     全市場日行情（code、name、pct、value〔元〕）
+    prev_pct／ratio／inst  {代號: 前一天漲跌%／量比／外資＋投信買超億元}，沒有的欄位留空
+    revenue {代號: {"yoy": 最新月營收年增%}}（tw_daily.load_revenue）　alerts {代號: [處置／注意說明]}
+    排序：營收有成長的在前，其次相對大盤強度、成交值。每檔附類型與備註，不評分。"""
+    idx = _num(idx_pct)
+    if day is None or day.empty or idx is None:
+        return pd.DataFrame(columns=WEAK_DAY_COLUMNS)
+    prev_pct, ratio, inst = prev_pct or {}, ratio or {}, inst or {}
+    revenue, alerts, themes = revenue or {}, alerts or {}, themes or {}
+    half = idx / 2
+    rows = []
+    for r in day.itertuples():
+        code = str(r.code)
+        if not (code.isdigit() and len(code) == 4) or code.startswith("0"):
+            continue
+        pct, value = _num(getattr(r, "pct", None)), _num(getattr(r, "value", None))
+        if pct is None or value is None or value < min_value:
+            continue
+        if not (pct > 0 or pct >= half):          # 收紅，或跌幅不到大盤的一半
+            continue
+        yoy = _num((revenue.get(code) or {}).get("yoy"))
+        strong_rev = yoy is not None and yoy >= min_yoy
+        limit_up = pct >= LIMIT_UP_PCT
+        kind = (TYPE_LIMIT_REV if strong_rev else TYPE_LIMIT) if limit_up else (TYPE_REV if strong_rev else TYPE_OTHER)
+        prev = _num(prev_pct.get(code))
+        notes = []
+        if prev is not None and prev >= HELD_PCT and pct >= 0:
+            notes.append("守住前日漲幅")
+        ratio_v = _num(ratio.get(code))
+        if ratio_v is not None and ratio_v >= 1.5:
+            notes.append(f"量{ratio_v:.1f}倍")
+        inst_v = _num(inst.get(code))
+        if inst_v is not None and inst_v >= 1:
+            notes.append(f"法人買{inst_v:.0f}億")
+        if alerts.get(code):
+            notes.append("⚠" + "、".join(alerts[code]))
+        rows.append({
+            "代號": code, "名稱": getattr(r, "name", "") or code, "漲跌%": round(pct, 2),
+            "相對大盤(pp)": round(pct - idx, 2),
+            "前日漲跌%": None if prev is None else round(prev, 2),
+            "量比": None if ratio_v is None else round(ratio_v, 2),
+            "成交(億)": round(value / 1e8, 1),
+            "法人(億)": None if inst_v is None else round(inst_v, 1),
+            "月營收年增%": None if yoy is None else round(yoy, 1),
+            "類型": kind, "備註": "　".join(notes), "族群": "、".join((themes.get(code) or [])[:3]),
+            "_rank": (0 if strong_rev else 1, -(pct - idx), -value),
+        })
+    if not rows:
+        return pd.DataFrame(columns=WEAK_DAY_COLUMNS)
+    rows.sort(key=lambda x: x["_rank"])
+    return pd.DataFrame(rows).drop(columns="_rank").head(top).reset_index(drop=True)[WEAK_DAY_COLUMNS]
