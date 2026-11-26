@@ -22,6 +22,11 @@ categories:
   股利庫藏股:
     weight: 1
     words: [庫藏股, 買回, 配息創新高, 特別股利, buyback, special dividend]
+  低軌衛星:
+    weight: 1          # 題材標記：讓衛星類新聞進報告、替新聞點名的個股加 1 分；單獨一則不推播（推播門檻是 settings 的 news_min_score＝3），搭配接單、擴產、創高等類別才會推
+    words: [低軌, 星鏈, Starlink, SpaceX, Starmind, Kuiper, OneWeb, 衛星通訊, 衛星通信, 衛星直連, 直連衛星, 太空資料中心]
+    patterns:          # 單獨的「衛星」：排除氣象衛星、衛星雲圖、衛星電視／頻道、衛星城市、衛星導航／定位
+      - '(?<!氣象)衛星(?!雲圖|電視|頻道|城|導航|定位)'
   外資升評:
     weight: 3          # 外資／投顧升評、調升目標價（比一般利多更直接，單獨一則就推播）
     words: [升評, 調升評等, 上調評等, 評等調升, 調升目標價, 上調目標價, 目標價調升, 目標價上調, 目標價喊上, 目標價上看, 首次評等買進, upgrade to buy, raises price target, raised price target, initiates with buy]
@@ -136,6 +141,9 @@ google_queries_tw:
   - 光通訊 OR 光模組 OR 矽光子 漲價
   - 磷化銦 OR InP 出口管制
   - 3.2T OR 1.6T 光模組
+  # 低軌衛星（SpaceX、星鏈）：台股低軌衛星族群會跟著新聞急漲急殺（對應 themes.yaml 的「低軌衛星」）
+  - 低軌衛星 台廠
+  - SpaceX OR 星鏈 台股
   # 重大總經／地緣事件（對應 config/major_events.yaml）
   - 俄烏 停火 OR 能源停火 OR 柴油
   - 荷莫茲 OR 紅海 航運 攻擊

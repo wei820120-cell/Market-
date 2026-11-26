@@ -2851,3 +2851,39 @@ def test_supply_shocks_still_tell_you_when_the_daily_research_budget_is_full(tmp
     research.queue_research("MLCC供需", "x")
     sent.clear()
     assert cli.supply_shocks([NewsItem(source="鉅亨網", title="國巨 MLCC 產線火災 停工", summary="", codes=["2327"])], listings, {}) == [] and sent == []
+
+
+def test_low_orbit_satellite_theme_is_tracked_and_its_news_is_tagged():
+    """11/26 FCC 有條件批准 SpaceX 後，華通、昇達科、啟碁、穩懋等低軌衛星股同日集體大漲，但系統原本沒有這個族群
+    （資金流入偵測看不到整組、只能被別的題材零星抓到），新聞關鍵字也沒有衛星類。
+    現在：成分股在 config/themes.yaml、衛星新聞會被標出來（只加 1 分、單獨不推播）、有對應的 Google 新聞搜尋。"""
+    import yaml
+    from market_intel import config
+    from market_intel.utils import ROOT
+    tw = yaml.safe_load(open(ROOT / "config" / "themes.yaml", encoding="utf-8"))["tw"]   # 讀原始檔：config.themes() 還會併入研究自動產生的族群
+    sat = [str(c) for c in tw["低軌衛星"]]
+    assert sat == ["2313", "3491", "6285", "3105", "7717", "5243", "6190", "3138"] and len(set(sat)) == len(sat)
+
+    # 整組同時放量大漲 → 族群資金流入，而且排在其他族群前面
+    Q = tw_realtime.Quote
+    quotes = {c: Q(c, f"衛{c}", "otc", 109, 100, 100, 110, 99, 3000, "10:00") for c in sat}
+    quotes["2330"] = Q("2330", "台積電", "tse", 100.5, 100, 100, 101, 99, 1000, "10:00")
+    listings = {c: {"prev_value": 100e6} for c in quotes}
+    flow = sector_flow.theme_flow_intraday(quotes, tw, listings, datetime(2026, 11, 26, 10, 0, tzinfo=TW_TZ))
+    top = flow.iloc[0]
+    assert top["族群"] == "低軌衛星" and top["檔數"] == 8 and top["判讀"].startswith("資金流入")
+
+    kw = config.news_keywords()
+
+    def score(title):
+        return news_signals.score_item(news.NewsItem("t", title), kw)
+    for title in ("焦點股》華通：SpaceX獲准發射100萬顆衛星 股價直奔漲停", "昇達科帶頭！ 低軌衛星10檔齊飛天", "SpaceX 星鏈 Starlink 直連手機"):
+        it = score(title)
+        assert it.score == 1 and it.tags[0].startswith("低軌衛星"), title
+    news_min = config.settings()["realtime"]["news_min_score"]
+    assert news_min > 1                                                      # 單獨一則衛星新聞只進報告、不推播
+    assert score("昇達科拿下低軌衛星大單 營收創新高").score >= news_min         # 搭配接單、營運上修才會推播
+    for title in ("颱風路徑 衛星雲圖 顯示", "氣象衛星 風雲 發射", "衛星電視 頻道 調價", "衛星導航 定位 晶片", "台積電法說會"):
+        assert score(title).score == 0, title                                # 氣象、電視、導航不是題材
+    queries = kw["google_queries_tw"]
+    assert any("低軌衛星" in q for q in queries) and any("SpaceX" in q for q in queries)

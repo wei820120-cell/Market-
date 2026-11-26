@@ -208,12 +208,17 @@ def cmd_daily(args) -> None:
     # 0. 強勢標的（放在報告最前面）
     log.info("計算強勢標的…")
     picks_df = daily_picks(day, listings, hist, inst, closes, theme_df, themes_tw, ranked)
+    weak_md = ""
+    try:  # 大盤大跌的日子：多列一節「逆勢榜」（只列名單供觀察，不影響上面的分數）
+        weak_md = weak_day_markdown(day, _index_pct(), hist, inst, closes, themes_tw)
+    except Exception as e:  # noqa: BLE001
+        log.warning("大跌日逆勢榜產生失敗：%s", e)
     sections[2:2] = [
         "## 0. 今日強勢標的（資金流入＋題材＋漲價，附股票期貨／小型股票期貨）\n",
         "_分數＝量比×2（上限 10）＋法人買超每 5 億 1 分＋新聞題材分數＋漲價 4 分＋所屬族群資金流入 2 分；當天下跌打五折。"
         "股票期貨欄：CDF＝一般股票期貨代碼、小型＝小型股票期貨、夜盤＝有盤後交易時段。_\n\n",
         md_table(picks_df, 20) + "\n",
-    ]
+    ] + ([weak_md] if weak_md else [])
 
     path = REPORT_DIR / f"{today:%Y-%m-%d}.md"
     path.write_text("\n".join(sections), encoding="utf-8")
@@ -277,6 +282,49 @@ def daily_picks(day: pd.DataFrame, listings: dict, hist: dict, inst: pd.DataFram
             themes=ths, theme_inflow=any(t in inflow for t in ths),
         ))
     return picks.rank_picks(cands, futures)
+
+
+def _index_pct() -> float | None:
+    """加權指數最近一個交易日的漲跌幅（%），抓不到回傳 None。"""
+    try:
+        index_df, _ = yahoo.fetch_chart("^TWII", range_="1mo")
+    except Exception as e:  # noqa: BLE001
+        log.warning("加權指數漲跌幅抓取失敗：%s", e)
+        return None
+    if index_df is None or len(index_df) < 2:
+        return None
+    return float(index_df["close"].iloc[-1] / index_df["close"].iloc[-2] - 1) * 100
+
+
+def weak_day_markdown(day: pd.DataFrame, idx_pct, hist: dict, inst: pd.DataFrame, closes: dict, themes_tw: dict) -> str:
+    """盤後報告的「大跌日逆勢榜」；加權指數跌幅沒達門檻（或抓不到指數）回傳空字串。只列名單，不影響強勢標的分數。"""
+    if not picks.is_weak_day(idx_pct):
+        return ""
+    prev_pct: dict[str, float] = {}
+    ratio: dict[str, float] = {}
+    for c, h in (hist or {}).items():
+        if h is None or len(h) < 3:
+            continue
+        prev_pct[c] = float(h["close"].iloc[-2] / h["close"].iloc[-3] - 1) * 100
+        if len(h) >= 6:
+            v = h["close"] * h["volume"]
+            base = float(v.iloc[-6:-1].mean())
+            if base:
+                ratio[c] = float(v.iloc[-1]) / base
+    inst_map: dict[str, float] = {}
+    if inst is not None and not inst.empty:
+        for r in inst.itertuples():
+            px = closes.get(r.code)
+            if px and r.foreign is not None and r.trust is not None:
+                inst_map[r.code] = (r.foreign + r.trust) * px / 1e8
+    df = picks.weak_day_leaders(day, idx_pct, prev_pct, ratio, inst_map, tw_daily.load_revenue(), tw_daily.load_alerts(),
+                                picks.themes_of(themes_tw))
+    return (f"\n## 0b. 大跌日逆勢榜（加權指數 {idx_pct:+.2f}%）\n\n"
+            "_只在加權指數跌幅 ≥ 2% 的日子出現。名單＝收紅，或跌幅不到大盤一半、成交值 ≥ 3 億的一般股；"
+            "**只供觀察，不影響上面強勢標的的分數**（要不要加分，先回測）。_\n\n"
+            "_類型：營收有成長＝最新月營收年增 ≥ 20%（獲利兌現型候選）；漲停・營收沒跟上＝多半是題材或內需輪動，持續性要打折。"
+            "備註：守住前日漲幅＝前一天漲 5% 以上、今天沒回吐；⚠＝處置／注意股（分盤撮合，進出要小心）。不是買進建議。_\n\n"
+            + md_table(df, 30) + "\n")
 
 
 def _report_url(today: datetime) -> str:
