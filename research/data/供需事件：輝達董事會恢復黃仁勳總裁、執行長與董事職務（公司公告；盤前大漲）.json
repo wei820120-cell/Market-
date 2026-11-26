@@ -1,0 +1,518 @@
+{
+ "topic": "供需事件：輝達董事會恢復黃仁勳總裁、執行長與董事職務（公司公告；盤前大漲）",
+ "one_line": "輝達董事會一致恢復黃仁勳的總裁、執行長與董事職務、即刻生效（輝達 11/23 新聞稿；8-K 記載董事會 11/22 決議）；董事長 Harvey C. Jones 續任、Colette Kress 結束代理執行長、回任財務長。公司稱與黃仁勳經「一系列討論與會議」後決定，過程中收到美國政府高層的意見、對其回任「無國安風險」有信心；獨立董事組成的委員會對「黃仁勳是外國情報行動目標」的調查將進行到結論。這推翻 11/17 董事長 Jones 在財報電話會議稱「無意復任」的說法（5 天內反轉）。使用者貼來的快訊 21:56 標為「市場消息」，現已由公司公告證實（僅搜尋摘要，原文沒讀到）。市場：快訊 21:59 輝達盤前 +25%、22:01 那指 100 期貨 +6%；搜尋摘要為 +26%～+27%；較早（川普 11/23 呼籲董事會讓他回來、公告前）為輝達 +8%～+9.7%、期貨 +2.9%～+3.7%。本系統台指期夜盤 21:55:27 報 36,352、22:00:18 報 39,590（+3,238 點、+8.9%），22:07:39 報 39,339，較 11/23 日盤收 36,675 +2,664 點（+7.26%）。這是治理與政策事件，不是供需缺口：營運與訂單沒有因此改變的證據，反彈是風險溢價下降；風險從「領導真空」換成「調查結論、國會 12/1～12/3 時程、SEC 與加州檢察長」。既有研究的「回任機率」「接班人選與人才流失說」前提已過期（見對照表）。盤前數字不是收盤，美股 11/23 收盤與台股 11/24 開盤才可比較；全部來自搜尋摘要。",
+ "status": "已證實",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "輝達",
+  "黃仁勳",
+  "董事會",
+  "復職",
+  "恢復執行長",
+  "8-K",
+  "Kress",
+  "Harvey Jones",
+  "獨立董事委員會",
+  "外國情報",
+  "國安",
+  "盤前",
+  "那斯達克期貨",
+  "台指期夜盤",
+  "AI 供應鏈",
+  "台積電"
+ ],
+ "catalysts": [
+  "美股 11/23 收盤與台股 11/24 開盤、外資買賣超與台指期日盤；輝達與台積電 ADR 收盤（盤前不是收盤）",
+  "輝達 8-K 與新聞稿原文、後續 8-K（董事會、Kress 角色、薪酬或留任安排）",
+  "獨立董事委員會調查結論；12/1 眾院閉門、12/3 參院、12/10 盧特尼克是否照舊；貝森特 11/25 期限；SEC 與加州檢察長進展",
+  "台廠 11 月營收（約 12/10 前）與輝達供應鏈法說"
+ ],
+ "risks": [
+  "全是搜尋摘要與標題：SEC 與新聞稿原文沒讀到，公告確切發布時間沒查到",
+  "盤前數字不是收盤：+23%～+27% 是不同時點，美股 11/23 收盤與台股 11/24 開盤才可比較",
+  "理由只有公司說法：政府高層意見內容未公開，董事會 5 天內反轉的原因只有「討論與政府意見」",
+  "調查未結束：獨立董事「外國情報行動」調查、11/12 辭職時的個人行為問題，公告沒有交代；任何一項結論不利都可能再度反轉",
+  "既有研究多份前提過期（回任機率、接班人選與人才流失說、國會時程），需要重讀",
+  "台廠沒有訂單證據：情緒面利多不等於營收改變；公告前後沒有台廠被點名"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：說法、來源與證據等級",
+   "columns": [
+    "說法",
+    "來源",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "「市場消息：輝達董事會恢復黃仁勳 CEO 職務」（快訊 21:56，標為市場消息）",
+     "輝達新聞稿 11/23（GlobeNewswire）、8-K（SEC）、CNBC、TechFlow、Stock Titan、Crypto Briefing（搜尋摘要）",
+     "官方公告（僅搜尋摘要，沒讀到原文）",
+     "屬實，已不是傳聞：董事會一致表決，恢復黃仁勳的總裁、執行長與董事職務，即刻生效。8-K 記載董事會 11/22（日）決議、新聞稿日期 11/23（一），兩個日期不同；董事長 Harvey C. Jones 續任，Colette Kress 結束代理執行長、回任財務長"
+    ],
+    [
+     "理由：董事會與黃仁勳經過「一系列討論與會議」後認為他是帶領輝達的適當人選；過程中收到美國政府高層的意見，董事會稱對其回任「無國安風險」有信心；獨立董事組成的委員會對「黃仁勳是外國情報行動目標」的調查將進行到結論；另有獨立董事組成的國安與出口管制委員會負責貿易合規",
+     "輝達新聞稿與 8-K（搜尋摘要）",
+     "官方公告（公司說法）",
+     "這是董事會自己的說法：沒有政府公開聲明可對（只有川普 11/23 在 Truth Social 呼籲董事會讓他回來，搜尋摘要）；「政府高層意見」的內容沒公開；新聞稿說董事會對他的坦白與領導力滿意，沒有交代他 11/12 辭職時被指的個人行為問題如何處理"
+    ],
+    [
+     "反轉速度：11/17 董事長 Jones 在財報電話會議稱董事會無意復任，5 天後一致恢復",
+     "CBS News、路透轉述（搜尋摘要）；既有研究《回輝達機率是「零」》",
+     "媒體報導",
+     "5 天內反轉；公告沒有說明 11/17～11/22 之間發生了什麼，只提到討論與政府意見"
+    ],
+    [
+     "市場：輝達盤前 +25%（快訊 21:59）、那斯達克 100 期貨 +6%（快訊 22:01）",
+     "使用者截圖（快訊 App）；Yahoo Finance 即時頁標題寫輝達盤前 +27%、另一則稱逾 +26%、Finviz 標題 +23%（搜尋摘要）",
+     "媒體報導（盤前、時點不同）",
+     "盤前數字隨時間變動、不是收盤；各篇 +23%～+27% 是不同時點。較早（川普呼籲後、公告前）搜尋摘要為輝達 +8%～+9.7%、那指期貨 +2.9%～+3.7%，所以公告把漲幅從約 +9% 推到 +25% 以上（推論：時間順序吻合）"
+    ],
+    [
+     "背景：上週美股重挫（道瓊約 −8%、S&P 500 約 −8.6%、那斯達克約 −10%）、輝達上週五收 $125.53（單日 −14%）",
+     "搜尋摘要（單一彙整，未指明篇章）",
+     "媒體報導（單一來源，未核對）",
+     "只能當背景；反彈是從大跌之後的低基期起算，+25% 不能直接換算成回到 11/12 之前的價位"
+    ],
+    [
+     "台指期夜盤：21:55:27 報 36,352 → 22:00:18 報 39,590（+3,238 點、+8.9%）；22:07:39 報 39,339，較 11/23 日盤收 36,675 +2,664 點（+7.26%）；夜盤最高 39,735（+8.34%）",
+     "本系統 realtime-night 取樣（約 20 秒一筆）",
+     "數據報告（本系統記錄）",
+     "算術核對過；快訊 21:56 與台指期 21:55:48 起急拉的時間吻合（推論：同一則消息）；單一 20 秒取樣最大跳升 +843 點（21:59:58 → 22:00:18）"
+    ],
+    [
+     "預測市場稱回任機率偏低（一說 37%）",
+     "搜尋摘要（時點不明）",
+     "社群傳聞",
+     "已被公告推翻，不採信"
+    ]
+   ],
+   "note": "全是搜尋摘要與標題；SEC 與新聞稿原文本輪讀不到，原文措辭以公告為準。快訊 App 21:56 標「市場消息」，公告發布的確切時間沒查到。"
+  },
+  {
+   "title": "表：事件時間線（台北時間，美東另註）",
+   "columns": [
+    "日期",
+    "事件",
+    "來源"
+   ],
+   "rows": [
+    [
+     "11/9（一）",
+     "輝達盤前跌近 6%：董事會宣布就「外國情報機構鎖定黃仁勳」的報導成立獨立調查",
+     "搜尋摘要（單一來源）"
+    ],
+    [
+     "11/12（四）",
+     "黃仁勳辭去總裁、執行長與董事（8-K 檔名日期 11/11 美東，各報稱 11/12）；Kress 任代理執行長；Harvey C. Jones 任董事長；輝達盤前跌 10%～13%；董事會稱他揭露了不符行為準則的個人行為",
+     "輝達 8-K 與新聞稿、BigGo、StockAnalysis（搜尋摘要）"
+    ],
+    [
+     "11/14（六）",
+     "報導大股東與約 3,000 名員工要他回來（既有研究另記連署 13.6 萬～17.9 萬人，各報導不一）",
+     "24/7 Wall St.（標題）"
+    ],
+    [
+     "11/17（二）",
+     "財報電話會議：Jones 稱董事會無意復任",
+     "CBS News、路透轉述（搜尋摘要）"
+    ],
+    [
+     "11/20（五）",
+     "輝達收 $125.53（單日 −14%，單一來源）；台指期日盤收 35,759（−7.6%）",
+     "搜尋摘要；本系統記錄"
+    ],
+    [
+     "11/22（日）",
+     "董事會決議恢復黃仁勳（8-K 記載）",
+     "SEC 8-K（搜尋摘要）"
+    ],
+    [
+     "11/23（一）盤前",
+     "川普在 Truth Social 呼籲董事會讓他回來，輝達盤前先漲 +8%～+9%；輝達新聞稿公布恢復，盤前 +25%～+27%；台指期夜盤 21:55 起急拉",
+     "Yahoo Finance、Blockonomi、KuCoin；本系統記錄"
+    ],
+    [
+     "11/24（二）",
+     "台股開盤；高開幅度要看美股 11/23 收盤，盤前不是收盤",
+     "（待觀察）"
+    ],
+    [
+     "11/25（三）、12/1、12/3、約 12/10",
+     "貝森特給輝達董事會的期限；黃仁勳眾院閉門（12/1）、參院邀請（12/3）、盧特尼克聽證——既有研究記載的時程，復職後是否照舊沒查",
+     "既有研究"
+    ]
+   ],
+   "note": "日期取自搜尋摘要與本系統記錄；公告的確切發布時間沒查到。"
+  },
+  {
+   "title": "表：盤前與夜盤數字（時點不同，不能互相比較）",
+   "columns": [
+    "時點（台北）",
+    "項目",
+    "數字",
+    "來源",
+    "備註"
+   ],
+   "rows": [
+    [
+     "約 20:54（美東 7:54）",
+     "那指 100 期貨",
+     "約 +2.9%",
+     "CNBC 資料（搜尋摘要）",
+     "川普呼籲後、公告前"
+    ],
+    [
+     "約 21:34（美東 8:34）",
+     "那指 100 期貨",
+     "約 +3.17%",
+     "CNBC 資料（搜尋摘要）",
+     "公告前"
+    ],
+    [
+     "公告前（時點未標）",
+     "輝達盤前",
+     "+8%～+9.7%",
+     "Blockonomi、MLQ.ai、BigGo（搜尋摘要）",
+     "川普呼籲後；BigGo 另稱台積電 ADR 盤前 +6.96%（單一來源）"
+    ],
+    [
+     "21:55:27 → 22:00:18",
+     "台指期夜盤",
+     "36,352 → 39,590（+3,238 點、+8.9%）",
+     "本系統記錄",
+     "21:55:48 起急拉；單一 20 秒最大跳升 +843 點"
+    ],
+    [
+     "21:59",
+     "輝達盤前",
+     "+25%（快訊）；搜尋摘要 +26%～+27%",
+     "使用者截圖；Yahoo Finance",
+     "公告後"
+    ],
+    [
+     "22:01",
+     "那指 100 期貨",
+     "+6%（快訊）",
+     "使用者截圖",
+     "公告後"
+    ],
+    [
+     "22:07:39",
+     "台指期夜盤",
+     "39,339（較 11/23 日盤收 36,675 +2,664 點、+7.26%）",
+     "本系統記錄",
+     "夜盤最高 39,735；22:04 一度回到 38,397"
+    ]
+   ],
+   "note": "盤前不是收盤；美股 11/23 收盤與台股 11/24 開盤才是可比較的結果。"
+  },
+  {
+   "title": "表：既有研究的前提哪些已過期",
+   "columns": [
+    "既有研究",
+    "原本的結論或前提",
+    "現況（11/23 公告後）",
+    "處理"
+   ],
+   "rows": [
+    [
+     "《回輝達機率是「零」》",
+     "回任說法分歧；Jones 11/17 稱無意復任；本檔不給回任機率",
+     "11/22 董事會一致恢復、11/23 公布",
+     "前提過期，以本檔為準"
+    ],
+    [
+     "《輝達接班人選與人才流失說（庫克傳聞、員工調查、創業賣壓）》",
+     "接班名單、三成主管流失、創業賣壓；Kress 承諾 12 月加薪與追加股票（單一來源）",
+     "接班議題暫時失效，人才流失說的前提（他不回來）消失；Kress 回任財務長；加薪與追加股票承諾是否撤回沒查",
+     "前提過期"
+    ],
+    [
+     "《黃仁勳國會約談時程更新》《卸任還沒完！黃仁勳同意赴美國會作證》",
+     "12/1 眾院閉門、12/2 法務長、12/3 參院邀請、12/10 盧特尼克；以「卸任」身分出席",
+     "他是現任執行長；時程是否照舊、身分改變的影響，本輪沒查",
+     "待查"
+    ],
+    [
+     "《輝達財報前夕籠罩黃仁勳離任陰影》與財報更新",
+     "Q3 營收 1,158 億美元、Q4 指引 1,300 億美元（財報由代理執行長 Kress 主持）",
+     "營運數字不變；領導不確定性下降，治理與調查風險仍在",
+     "營運面沿用"
+    ],
+    [
+     "《SEC 調查輝達會計處理》《加州檢察長向輝達「發傳票」》",
+     "法律與監管風險",
+     "復職不處理這兩件；獨立董事委員會的「外國情報行動」調查將進行到結論",
+     "仍在"
+    ],
+    [
+     "《台股重挫連破三個防線》《禁空令救市多空激戰》",
+     "11/19～11/23 重挫的敘事之一：法人憂黃仁勳事件抵銷台灣 AI 溢價",
+     "復職移除這個敘事，但 BIS 規則、AI 資本支出下修說、融資斷頭等下跌原因仍在；反彈不能完全由復職解釋，下跌也不能完全由辭職解釋",
+     "補充"
+    ],
+    [
+     "《川習會談未提黃仁勳》",
+     "H200 政策上限；貝森特 11/25 期限",
+     "董事會稱收到美國政府高層意見、無國安風險；與貝森特期限的關係沒查",
+     "待查"
+    ]
+   ],
+   "note": "只列研究庫內已發布檔案的前提；各檔寫作當時是正確的，本表只標哪些需要重讀。"
+  },
+  {
+   "title": "表：擴產與稼動檢核（不適用）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "輝達董事會與治理",
+     "領導與監管風險（不是產能）",
+     "不適用",
+     "不適用",
+     "沒有時點；獨立董事調查「將進行到結論」、國會時程沒更新",
+     "調查結論未公開；政府高層意見內容未公開",
+     "官方公告、媒體報導"
+    ]
+   ],
+   "note": "不適用：這是治理與政策事件，不是產能事件；輝達營運與供應鏈承諾沿用 11/17 財報與既有研究。"
+  }
+ ],
+ "evolution": [],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "不適用：治理事件沒有上下游鏈",
+    "改列傳導路徑（推論）：董事會恢復創辦人 → 領導真空與人才流失說的疑慮下降；監管與國安風險以「政府高層意見、無國安風險」表述、調查仍在 → 輝達股價與 AI 概念股情緒反轉 → 美股期貨與 ADR → 台指期夜盤與台股 AI 權值股 → 實體供應鏈沒有因此改變的證據",
+    "瓶頸是調查結論與國會時程，不是產能"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "同一天：川普 11/23 呼籲董事會讓他回來（輝達盤前先 +8%～+9%）、上週重挫後的技術性反彈（那指期貨公告前約 +3%）",
+    "法律與監管並行：SEC 調查會計處理、加州檢察長傳票、BIS 11/16 規則與 H200 政策，復職都不處理",
+    "台股側：11/19～11/23 重挫的敘事之一「法人憂黃仁勳事件抵銷台灣 AI 溢價」被拿掉，其他下跌原因（BIS 規則、AI 資本支出下修說、融資斷頭、限空令）仍在"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口怎麼來的：沒有實體缺口；是領導不確定性與監管風險造成的風險溢價，11/12 辭職時輝達盤前 −10%～−13%、本次復職盤前 +25%～+27%，溢價下降不等於營收改變",
+    "慣性：治理與政治事件的情緒反轉常在一兩個交易日內走完大半（推論，沒有統計）；盤前漲幅以收盤為準",
+    "痛點：董事會 11/17 才說無意復任、5 天後一致恢復；公告沒有交代 11/12 辭職時被指的個人行為問題；政府高層意見內容未公開；獨立董事調查「將進行到結論」、結論未出",
+    "限制：SEC 調查、加州檢察長傳票、國會時程是否照舊都沒更新；本檔只有搜尋摘要，原文措辭以 8-K 與新聞稿為準",
+    "擴產與稼動檢核：不適用（治理事件）",
+    "敘事陷阱自查：把市場消息當事實；把盤前漲幅當收盤；把情緒反彈當基本面改變；「這次不一樣」沒有證據；把單日 +25% 外推；把復職當作所有風險解除；既有研究前提過期卻照舊引用"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受惠（情緒面）：輝達股東與 AI 概念股；台積電與 AI 伺服器代工（鴻海、廣達、緯創、緯穎）的情緒面，營收面沒有新證據",
+    "受傷或失效：11/12 之後賣出或放空輝達與 AI 概念股的投資人；「接班人選」與「人才流失」敘事；Kress 回任財務長（中性）",
+    "風險仍在：獨立董事調查、SEC、加州檢察長、國會；任何一項結論不利都可能再度反轉"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀 SEC EDGAR 的 8-K 與輝達新聞稿原文；看後續 8-K",
+    "看美股 11/23 收盤、輝達與台積電 ADR 收盤、台股 11/24 開盤與外資買賣超（盤前不是收盤）",
+    "看獨立董事調查結論、國會 12/1～12/10 時程是否照舊、貝森特 11/25 期限、SEC 與加州檢察長進展",
+    "看台廠 11 月營收與輝達供應鏈法說有沒有訂單變化的證據"
+   ]
+  }
+ ],
+ "conclusion": [
+  "已證實：輝達董事會一致恢復黃仁勳的總裁、執行長與董事職務（8-K 記載 11/22 決議、新聞稿 11/23），Jones 續任董事長、Kress 回任財務長；快訊 21:56 的「市場消息」已被公司公告證實（僅搜尋摘要，原文沒讀到）。這推翻 11/17 的「無意復任」。",
+  "這是治理事件，營運與訂單沒有因此改變的證據；盤前 +25%～+27%、本系統台指期夜盤 +7.26%（對 11/23 日盤收）是風險溢價下降，盤前不是收盤；風險從領導真空換成調查結論、國會與 SEC、加州檢察長。",
+  "既有研究的「回任機率」「接班人選與人才流失說」前提過期，國會時程是否照舊待查；接下來看美股 11/23 收盤、台股 11/24 開盤、8-K 原文與調查結論。"
+ ],
+ "sources": [
+  {
+   "title": "GlobeNewswire：NVIDIA Board Reinstates Jensen Huang as President, CEO and Board Director（輝達新聞稿，2026-11-23；僅搜尋摘要）",
+   "url": "https://www.globenewswire.com/news-release/2026/11/23/3408381/0/en/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director.html"
+  },
+  {
+   "title": "SEC EDGAR：NVIDIA CORP - Form 8-K - FY2026（新聞稿附件 nov23pressrelease，2026-11-23；僅搜尋摘要）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000090/nov23pressrelease.htm"
+  },
+  {
+   "title": "SEC EDGAR：NVIDIA CORP - Form 8-K - FY2026（董事會 11/22 決議，檔名 nvda-20261122；僅搜尋摘要）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000090/nvda-20261122.htm"
+  },
+  {
+   "title": "SEC EDGAR：NVIDIA CORP - Form 8-K - FY2026（辭職與代理執行長，檔名 nvidiaannouncesceotransiti；僅搜尋摘要）",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm"
+  },
+  {
+   "title": "輝達投資人關係：NVIDIA Announces CEO Transition（2026-11；僅搜尋摘要）",
+   "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-CEO-Transition/"
+  },
+  {
+   "title": "CNBC：Nvidia reinstates Jensen Huang as CEO（2026-11-23；僅搜尋摘要）",
+   "url": "https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html"
+  },
+  {
+   "title": "CNBC：Nvidia shares rise in premarket trading while Anthropic is flat after major tech sell-off（2026-11-23；僅搜尋摘要）",
+   "url": "https://cnbc.com/2026/11/23/anthropic-nvidia-shares.html"
+  },
+  {
+   "title": "TechFlow：NVIDIA board unanimously votes to reinstate Jensen Huang（二手；僅搜尋摘要）",
+   "url": "https://www.techflowpost.com/en-US/newsletter/146362"
+  },
+  {
+   "title": "Stock Titan：NVIDIA's board voted unanimously to bring Jensen Huang back as CEO（二手；僅搜尋摘要）",
+   "url": "https://www.stocktitan.net/news/NVDA/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-0p954rb1hzde.html"
+  },
+  {
+   "title": "Crypto Briefing：Nvidia board reinstates Jensen Huang as president and CEO（二手；僅搜尋摘要）",
+   "url": "https://cryptobriefing.com/nvidia-board-reinstates-jensen-huang-ceo/"
+  },
+  {
+   "title": "Yahoo Finance：Stock market today: Dow, S&P 500, Nasdaq futures surge amid relief rally, Nvidia stock surges as Jensen Huang gets reinstated as CEO（2026-11-23 即時頁；僅搜尋摘要）",
+   "url": "https://finance.yahoo.com/markets/live/stock-market-today-monday-november-23-dow-sp-500-nasdaq-091118583.html"
+  },
+  {
+   "title": "Yahoo Finance：Nvidia stock jumps as Trump makes U-turn on Jensen Huang（僅搜尋摘要）",
+   "url": "https://finance.yahoo.com/markets/stocks/article/nvidia-stock-jumps-as-dc-makes-stunning-u-turn-on-jensen-huang-113419437.html"
+  },
+  {
+   "title": "Blockonomi：Nvidia (NVDA) Stock Pops 8% as Trump Calls for Jensen Huang's Return（僅搜尋摘要）",
+   "url": "https://blockonomi.com/nvidia-nvda-stock-pops-8-as-trump-calls-for-jensen-huangs-return/"
+  },
+  {
+   "title": "KuCoin：Trump Calls for Jensen Huang's Return to Nvidia Amid Tech Selloff（僅搜尋摘要）",
+   "url": "https://www.kucoin.com/news/flash/trump-calls-for-jensen-huang-s-return-to-nvidia-amid-tech-selloff"
+  },
+  {
+   "title": "MLQ.ai：Nasdaq futures rise 3% and Nvidia gains 9% premarket as Zscaler jumps 20% on CrowdStrike's offer（僅搜尋摘要）",
+   "url": "https://mlq.ai/news/nasdaq-futures-rise-3-and-nvidia-gains-9-premarket-as-zscaler-jumps-20-on-crowdstrikes-offer/"
+  },
+  {
+   "title": "BigGo Finance：US premarket chip stocks surge across the board; SK Hynix up over 10%, Nvidia up more than 9%, gold and silver rise in tandem（台積電 ADR 盤前 +6.96% 的單一來源；僅搜尋摘要）",
+   "url": "https://finance.biggo.com/news/317523df-1c8c-4ed6-a32e-c75d8fc6bc33"
+  },
+  {
+   "title": "Qz：Nasdaq-100 futures rebound 3.4% after last week's tech sell-off（僅搜尋摘要）",
+   "url": "https://qz.com/nasdaq-100-futures-rebound-tech-selloff-shortened-week-112326"
+  },
+  {
+   "title": "Finviz：Nvidia shares rise 23% premarket following decline after Jensen Huang's departure（日期未核對；僅搜尋摘要）",
+   "url": "https://finviz.com/news/422466/nvidia-shares-rise-23-premarket-following-decline-after-jensen-huangs-departure"
+  },
+  {
+   "title": "CBS News：Nvidia's board of directors is against bringing back Jensen Huang as CEO（僅搜尋摘要）",
+   "url": "https://www.cbsnews.com/news/jensen-huang-nvidia-ceo-reinstatement-petition/"
+  },
+  {
+   "title": "BigGo Finance：Jensen Huang Unexpectedly Resigns as Nvidia CEO; Premarket Shares Plunge 10%, Kress Takes the Helm（僅搜尋摘要）",
+   "url": "https://finance.biggo.com/news/d372d266-beaf-4108-8459-bff7fd5b780f"
+  },
+  {
+   "title": "StockAnalysis：Jensen Huang resigns as Nvidia CEO and shares fall 12% premarket, with CFO Colette Kress named interim chief（僅搜尋摘要）",
+   "url": "https://stockanalysis.com/news/jensen-huang-resigns-as-nvidia-ceo/"
+  },
+  {
+   "title": "24/7 Wall St.：Big Shareholders and 3,000 Nvidia Employees Want Jensen Huang Back（2026-11-14；僅搜尋摘要）",
+   "url": "https://247wallst.com/investing/2026/11/14/big-shareholders-and-3000-nvidia-employees-want-jensen-huang-back/"
+  }
+ ],
+ "evidence": "官方公告",
+ "layers": [
+  {
+   "layer": "輝達董事會與治理（董事長 Jones、獨立董事委員會）——瓶頸在調查結論與決策可信度",
+   "description": "董事會一致恢復黃仁勳（8-K 記載 11/22 決議、11/23 公布），Jones 續任董事長、Kress 回任財務長；獨立董事委員會對「外國情報行動」的調查將進行到結論；另有獨立董事組成的國安與出口管制委員會。11/17 才稱無意復任、5 天後反轉，公告只提討論與美國政府高層意見。",
+   "global_players": [
+    "輝達董事會（Harvey C. Jones 董事長）",
+    "Colette Kress（財務長）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "美國政府與國會（白宮、國會、BIS、SEC、加州檢察長）——外部約束",
+   "description": "川普 11/23 在 Truth Social 呼籲董事會讓他回來；董事會稱收到美國政府高層意見、無國安風險。既有研究：貝森特 11/25 期限、12/1 眾院閉門、12/3 參院邀請、12/10 盧特尼克，復職後是否照舊沒查；SEC 調查會計處理、加州檢察長傳票、BIS 11/16 規則與 H200 政策都不因復職消失。",
+   "global_players": [
+    "白宮",
+    "美國國會",
+    "BIS",
+    "SEC",
+    "加州檢察長"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "輝達營運與雲端客戶（營運面沒變）",
+   "description": "11/17 財報（既有研究）：Q3 營收 1,158 億美元、Q4 指引 1,300 億美元（不含中國資料中心運算）、Vera Rubin 已出貨；本事件沒有訂單、產能或報價變動的證據。",
+   "global_players": [
+    "輝達",
+    "微軟、Google、Amazon、Meta（雲端客戶）"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台灣供應鏈（晶圓代工、AI 伺服器代工）——情緒面受惠，營收面沒有新證據",
+   "description": "台積電為輝達 GPU 晶圓代工與先進封裝夥伴，AI 伺服器由鴻海、廣達、緯創、緯穎等代工；公告前後沒有台廠被點名，BigGo 稱台積電 ADR 盤前 +6.96%（單一來源、公告前）。11/19～11/23 台股重挫的敘事之一是法人憂黃仁勳事件抵銷台灣 AI 溢價，復職移除這條。",
+   "global_players": [
+    "輝達",
+    "台積電",
+    "鴻海",
+    "廣達",
+    "緯創",
+    "緯穎"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "輝達 GPU 晶圓代工與先進封裝；ADR 盤前 +6.96%（單一來源、公告前）；情緒面",
+     "impact": "受惠"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器與機櫃代工；情緒面，營收面沒有新證據",
+     "impact": "受惠"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；情緒面，營收面沒有新證據",
+     "impact": "受惠"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器代工；情緒面，營收面沒有新證據",
+     "impact": "受惠"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器；情緒面，營收面沒有新證據",
+     "impact": "受惠"
+    }
+   ]
+  },
+  {
+   "layer": "市場傳導（美股期貨、ADR、台指期夜盤、台股）",
+   "description": "那指 100 期貨公告前約 +3%、快訊 22:01 +6%；本系統台指期夜盤 21:55:27 報 36,352 → 22:00:18 報 39,590（+3,238 點、+8.9%），22:07:39 報 39,339（較 11/23 日盤收 36,675 +7.26%）。盤前不是收盤，11/24 台股開盤看美股 11/23 收盤。",
+   "global_players": [
+    "那斯達克 100 期貨",
+    "台指期夜盤"
+   ],
+   "tw_stocks": []
+  }
+ ]
+}

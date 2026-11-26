@@ -33,6 +33,21 @@
    "date": "2026-10-23",
    "title": "〈能源盤後〉沙國能源設施遇襲、阿美要求員工撤離 Brent原油飆4%創5個月新高",
    "url": "https://news.cnyes.com/news/id/6636368"
+  },
+  {
+   "date": "2026-11-20",
+   "title": "美光示警：記憶體缺貨恐加劇！2027年75%供應量已售出",
+   "url": "https://news.cnyes.com/news/id/6668133"
+  },
+  {
+   "date": "2026-11-22",
+   "title": "馬斯克警告：AI產業2027年將面臨數千億美元資金短缺危機",
+   "url": "https://news.cnyes.com/news/id/6669844"
+  },
+  {
+   "date": "2026-11-25",
+   "title": "記憶體景氣兩樣情！明年NAND供過於求、DRAM仍缺貨 漲價動能逐季降溫 - 鏡週刊Mirror Media",
+   "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9LSkNfSV93VnZmRUVYVzNFN005ajJwN2dNenphby11eUNIYkxFa1Mya01PU2hnOXN4cFJtLVNndnMyVlFFeElKbFlGRjNSTTBtU1R3cXJPYU1RMTdBQjJoNmdxOXc?oc=5"
   }
  ],
  "供需事件：越南不銹鋼品反傾銷案經部初步認定國內產業受害": [
@@ -47,6 +62,11 @@
    "date": "2026-10-24",
    "title": "熱門股》被動元件大缺貨 日電貿3週翻倍漲 - 自由時報",
    "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBhVWZRd3pobUowN3lTMTdzVVloWkZ5ZEhtZGdVVWJXejhUaDcxUS1mc29pVC14SmFYdkl1cV9YTldqbExvX2s4dUZxV0x4UEVxbXJYR1JWYVQ?oc=5"
+  },
+  {
+   "date": "2026-11-24",
+   "title": "DRAM缺貨潮延燒至2027！「這大廠」毛利率飆破85% 明年EPS上看110元 - 三立新聞",
+   "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5yaHFYdnMzTFpmbzR1VVBlYWI3V0RWWWRxWEVHaVhuQVNWMWN4SFVNblhYWHFITVVzTkJPMXllM0t6MlhfcmJvYkM3cw?oc=5"
   }
  ],
  "封裝供需": [
@@ -457,6 +477,36 @@
    "date": "2026-11-18",
    "title": "【袁志峰專欄】美國收緊晶片出口管制",
    "url": "https://news.cnyes.com/news/id/6665607"
+  },
+  {
+   "date": "2026-11-19",
+   "title": "輝達財報亮眼仍跌近3%！AI投資與出口管制等「四大疑慮」未散",
+   "url": "https://news.cnyes.com/news/id/6666779"
+  },
+  {
+   "date": "2026-11-19",
+   "title": "美國擴大AI晶片出口管制，能見度與執法仍是關鍵- 新聞 - MoneyDJ",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPNGt3Q1ZWbDdkWnExcm9OOUVwaWNlbkk0UV9pbS1lNEVSRG1aUkoxSkdnZWl1Rmw2VlRVYzM3cWJuMWREaEE2MlFhd1JGVk5RSEE4eHBwZ2xDOU4xb2RBdE1QYjU5LVptYkVjcFNGNGtTRVVPZV9YYVMyX1Q5Sy1vOXk0MDJhV3JOMGxfWWM0QjZrQQ?oc=5"
+  },
+  {
+   "date": "2026-11-20",
+   "title": "美商務部核准逾87.9萬顆AI晶片銷中 議員質疑「出口管制失靈」",
+   "url": "https://news.cnyes.com/news/id/6668138"
+  },
+  {
+   "date": "2026-11-23",
+   "title": "眾院披露核准出口中國高階AI晶片清單，出口管制缺口與供應鏈重整角力升高- 新聞 - MoneyDJ",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOTlM1XzVYNW94ZF9DalM4TURndkpzQmRTYXpmRlplUlJkaW9ZanBYdTZ5al91SUcwdUF1VzRKaVNsckQzZlg3dHQ2ZXJqTER3Y2ViWTJHWk9LQkEyMk1idy0wVzdQbDhxc3Vmbjg3Q2NPZk81bDhxOEYzV2xSanh5d0wwTmluTnFkYmVKVGQtN3R1UQ?oc=5"
+  },
+  {
+   "date": "2026-11-25",
+   "title": "舒默控黃仁勳違反出口管制！共和黨議員：恐得派「保母」盯著",
+   "url": "https://news.cnyes.com/news/id/6671169"
+  },
+  {
+   "date": "2026-11-25",
+   "title": "地緣政治下的出口管制大挑戰 經部揪出高階晶片轉運三漏洞 | 政經焦點 | 要聞 - 經濟日報",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5kUVNrcW1Zc2hybl9KdVdPMUIwNnZyU0VjZE1vT0V3VWY0M2JkY205Vm8ydjZJUjFNU2h3akRoUVFvaFlpazhCWTh6UUJRU3R3Q3JLRlVvbmc1bzF6RkhXek40aEFsa24ycVd4ZFRreHp0MHZQcTJFeU1Zc0s?oc=5"
   }
  ],
  "供需事件：缺貨也漲不動？從鎧俠漲價放緩到AI籌資疑慮 牽動": [
@@ -531,6 +581,46 @@
    "date": "2026-11-17",
    "title": "2026-11-17 更新研究｜🔥 盤中資金流入：量能步調 2.02、資金 +45.2 億、加權 +1.0%",
    "url": ""
+  },
+  {
+   "date": "2026-11-19",
+   "title": "2026-11-19 更新研究｜🔥 盤中資金流入：量能步調 3.85、資金 +13.1 億、加權 +1.4%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-23",
+   "title": "2026-11-23 更新研究｜🔥 盤中資金流入：量能步調 2.65、資金 +8.1 億、加權 +4.9%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-23",
+   "title": "2026-11-23 更新研究｜🔥 盤中資金流入：量能步調 2.66、資金 +8.0 億、加權 +5.0%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-23",
+   "title": "2026-11-23 更新研究｜🔥 盤中資金流入：量能步調 2.03、資金 +12.8 億、加權 +5.2%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-24",
+   "title": "2026-11-24 更新研究｜🔥 盤中資金流入：量能步調 2.05、資金 +1.5 億、加權 +8.9%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-25",
+   "title": "2026-11-25 更新研究｜🔥 盤中資金流入：量能步調 46.45、資金 +209.4 億、加權 +1.8%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-25",
+   "title": "2026-11-25 更新研究｜🔥 盤中資金流入：量能步調 25.08、資金 +285.1 億、加權 +0.3%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-25",
+   "title": "2026-11-25 更新研究｜🔥 盤中資金流入：量能步調 40.76、資金 +161.8 億、加權 +0.7%",
+   "url": ""
   }
  ],
  "供需事件：AI資料中心踢到鐵板！美國38地通過禁令喊卡擴建": [
@@ -543,6 +633,68 @@
    "date": "2026-11-18",
    "title": "川普政府力推封堵中國資料中心關鍵零組件禁令 亞馬遜、谷歌、Meta密集遊說仍難阻 - CMoney投資網誌",
    "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPeno1d0Z3dERfLUhUdldJNkkxMzBsZVYyMVc2TXhIMTFZUDlyX200dkJHUGRRd1dZNzdWbGtzTmQ0dDFXTHN6VEZSVlQxM0xzdXA2SV9CS0ZXVG41bl9lT2lNZy0wRUp6RUIyLXBZOVNGRGVaVGlCcnZ6MWFLN0pYanVhYjZOZHdBdXhaaTRSUjVmdXYzYWpURHR4QTMzS0FNQlVwVkozRERXOHQ5Zzd0NkwwdGt0a1BhZ1BLTVVfVGtqci1Oc0hFaGxMSmhiUXc?oc=5"
+  }
+ ],
+ "供需事件：輝達傳減緩晶片訂單，AMD與ASIC陣營可望接產能": [
+  {
+   "date": "2026-11-19",
+   "title": "達航法說會／明年載板客戶營收占比目標76% 產能吃緊訂單能見度達2029 - 經濟日報",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBTcXJvdGtIUlpvdEdYMlM2VThvWm9zbURwM2RuV2xQWlliTmFTTlpsZzVya1F1LUpteGxvUV9FRFNWSjBkRGhWTldTZzh1SEUzd0Jzc3d4VFBvYXNTdVA1a08wY2RlcFpLSWc2ZG9iX01URDdFQ2F3dTZjb9IBX0FVX3lxTE5mRmRVUHhPeXE5MlRrVTZRQm9MeHdDa1o1cW9xVDV5Y1QxTlNobW5YZmhkZzF4ZU05dFZlNzR5MjBXU1FzUXdlVzBEY2hxSmc5WFMwb2VoR1FrbXJTb3pZ?oc=5"
+  }
+ ],
+ "供需事件：SpaceX Kessel太空機櫃與PCB midplane材料（傳聞）": [
+  {
+   "date": "2026-11-20",
+   "title": "2026-11-20 更新研究｜🔥 盤後資金流入：量比 2.0、資金 +724.0 億、加權 +2.6%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-25",
+   "title": "2026-11-25 更新研究｜🔥 盤後資金流入：量比 1.48、資金 +621.2 億、加權 +6.5%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-25",
+   "title": "2026-11-25 更新研究｜🔥 盤中資金流入：量能步調 41.42、資金 +335.1 億、加權 +1.5%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-26",
+   "title": "全球電子協會發布PCB缺貨警報 頭部廠商高端產品排產至2028年 - 觀點網",
+   "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9SUGE4SHlmMEdBQzRvbjc1NDZ2VzNJQjdNVVVESWpQOUNkcHdMZC1xdnh2RzJpQUxmYnJtQWNWZExwMjBjM3RIRWh2OGdCbEpjUGM0Ykk2RWRHYWV6eXVzN3Vub3A?oc=5"
+  }
+ ],
+ "光模組供需": [
+  {
+   "date": "2026-11-23",
+   "title": "2026-11-23 更新研究｜🔥 盤中資金流入：量能步調 7.62、資金 +146.7 億、加權 +0.8%",
+   "url": ""
+  }
+ ],
+ "供需事件：《路透》SEC調查輝達會計處理！新加坡營收揭露、": [
+  {
+   "date": "2026-11-24",
+   "title": "2026-11-24 更新研究｜🔥 盤中資金流入：量能步調 3.12、資金 +10.4 億、加權 +7.4%",
+   "url": ""
+  },
+  {
+   "date": "2026-11-26",
+   "title": "2026-11-26 更新研究｜🔥 盤後資金流入：量比 2.54、資金 +157.6 億、加權 +4.9%",
+   "url": ""
+  }
+ ],
+ "供需事件：輝達董事會恢復黃仁勳總裁、執行長與董事職務（公司公告；盤前大漲）": [
+  {
+   "date": "2026-11-24",
+   "title": "2026-11-24 更新研究｜🔥 盤中資金流入：量能步調 2.53、資金 +0.1 億、加權 +5.4%",
+   "url": ""
+  }
+ ],
+ "供需事件：《國際產業》美半導體禁令2.0版加速中美脫鉤": [
+  {
+   "date": "2026-11-26",
+   "title": "CBS：中資美企獲輝達高階晶片 出口管制漏洞浮現 | 國際焦點 | 國際 - 經濟日報",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFByd2JUbGc0a194VkR2Q2JLaW5fb0kyNVVHNktLNThFVU02akdYamxaSGdOUEEwZU05cGlFX3ZYTmh5OVBoYjZ0a21mZmxPLU1GNXBSd3g5UUF3VTlfNUY0NHl3RTFUckZTYUlGcWxFZ01tc2UxZnlF?oc=5"
   }
  ]
 }

@@ -1,0 +1,195 @@
+# 題材研究：供需事件：CSP資本支出見頂時點（Threads說法求證）
+
+> 🤖 AI 研究（2026-11-24 18:16），僅供參考，台股代號已和上市櫃清單核對。
+> 狀態：**混合**｜時間軸：**中期（3-12個月）**
+
+**一句話**：@aoyamaa._ 稱不少研究報告指 CSP 資本支出可能在 2027 年底到 2028 年初見頂。核對各家預測：沒有任何報告把「金額」的頂放在 2028 年之前——高盛（9/25）5 大 CSP 2026 年約 8,000 億 → 2027 年 1.2 兆（+54%）→ 2028 年 1.4 兆；UBS 2028 年 1.619 兆；摩根士丹利 2028 年 1.6～1.8 兆；集邦 9 大 CSP 2027 年逾 1.5 兆（+60%）。真正在見頂的是三件事：成長率 2026 年頂（高盛約 100% → 54% → 12%；UBS +105% → +43% → +12%）、年度增量 2028 年腰斬（UBS 約 +5,170 億 → +4,380 億 → +1,720 億美元，算術）、自由現金流 2027 年最負（MS 估燃燒近 6,000 億美元；S&P：2026～2027 皆負、2029 回復）。所以貼文的說法在增速與增量上有來源、在金額上沒有；公司層級只有 Alphabet 與亞馬遜說 2027 年增加，沒有公司給 2027 年金額或 2028 年指引。對台灣沒有訂單被砍的證據，風險在 2027 下半年～2029 才到位的專供擴產（景碩、矽品、欣興、京元電；既有研究）；十檔代表股標中性。內容來自二手摘要，口徑不同。
+
+## 台股供應鏈總表
+
+| 環節 | 代號 | 名稱 | 角色 | 影響 | 股票期貨 |
+|---|---|---|---|---|---|
+| AI 晶片與先進製程／封裝（輝達、ASIC；台積電 CoWoS） | 2330 | 台積電 | CoWoS 與先進製程；增量腰斬在 2028 年，CoWoS 擴產到 2027 年約 20～22 萬片；沒有訂單被砍的證據 | 中性 | CDF／小型QFF／夜盤 |
+| 載板與封測（專供輝達的擴產：2027 下半年～2029） | 3189 | 景碩 | 專供輝達 ABF 載板擴產（2027 下半年～2028 Q3）；沒查到保底條款；條件式風險在 2028 年增量腰斬後（既有研究標受傷，本檔標中性） | 中性 | IXF |
+| 載板與封測（專供輝達的擴產：2027 下半年～2029） | 3037 | 欣興 | 輝達產能預訂協議（2027 Q2 起、2028 年中完整）；保底量與期限未公開 | 中性 | IRF |
+| 載板與封測（專供輝達的擴產：2027 下半年～2029） | 3711 | 日月光投控 | 矽品專供先進封裝 2029 年中到位；條款未公開 | 中性 | OZF／小型VPF |
+| 載板與封測（專供輝達的擴產：2027 下半年～2029） | 2449 | 京元電子 | 輝達 11 億美元預付款支持美國測試廠、2027/4 目標量產；有預付款緩衝 | 中性 | GRF／小型VOF |
+| AI 伺服器 ODM（機櫃組裝與出貨） | 2317 | 鴻海 | 輝達機櫃主要組裝廠之一；2028 年增量腰斬的影響未知（推論） | 中性 | DHF |
+| AI 伺服器 ODM（機櫃組裝與出貨） | 2382 | 廣達 | AI 伺服器 ODM；稱沒看到改單、出貨高峰 2027 Q1 | 中性 | DKF |
+| AI 伺服器 ODM（機櫃組裝與出貨） | 3231 | 緯創 | AI 伺服器 ODM；同上（推論） | 中性 | DXF |
+| AI 伺服器 ODM（機櫃組裝與出貨） | 6669 | 緯穎 | 雲端伺服器 ODM；同上（推論） | 中性 | PVF／小型PWF |
+| 電源、散熱與資料中心基礎設施 | 2308 | 台達電 | 機櫃電源與液冷；capex 增速放緩的影響與估值見《台達電本益比與獲利年增》；沒有訂單被砍的證據 | 中性 | FRF／小型RVF |
+
+<details><summary>觸發來源</summary>
+
+2026-11-24 待檢視清單（未證實）：Threads @aoyamaa._（score 2，seen_at 2026-11-24 17:06，https://www.threads.com/@aoyamaa._/post/DgHlA1ekU3M）稱「資料中心建置面臨供電、人力和基礎設施瓶頸，加上民主黨未來可能提出更嚴格的監管法規，這些都還是未知數；另外我最近也看到不少研究報告也提到說 CSP 的 capex 可能在 2027 年底到 2028 年初左右見頂，這對 AI 產業鏈中那些大量提供設備或零組件的『賣鏟子』公司，絕對是需要持續追蹤的風險」；另 Threads @make_investment_easy（score 2，seen_at 2026-11-24 15:42，https://www.threads.com/@make_investment_easy/post/DgEs0f6GAMg）稱「Capex 增速放緩是大家都知道的消息，更在意 Capex 二階導變成負是否已被市場定價；吃增量而非存量的設備廠或供應鏈要特別小心」——個人帳號說法，未證實。
+
+</details>
+
+---
+
+# 供需事件：CSP 資本支出何時見頂——「2027 年底到 2028 年初」對得上哪一種「頂」（Threads 說法求證）
+
+> 資料說明：寫於 **2026-11-24 傍晚（台北時間）**，來自搜尋摘要與標題（高盛、摩根士丹利與瑞銀報告的二手整理、集邦、Reuters 分析的轉載、Fortune、S&P 評等、聯合報、工商時報、財經部落格等）與研究庫既有研究；**各機構的原始報告與公司財報全文本輪沒有讀到**；各家口徑（4／5／9 家、含不含租賃、AI 或全部資本支出）不同，不能直接相加或相比；數字多為二手部落格與網站的整理。本檔不是投資建議。
+
+## 0. 一句話
+**一句話**：@aoyamaa._ 稱「不少研究報告提到 CSP 資本支出可能在 2027 年底到 2028 年初見頂」，@make_investment_easy 問「二階導轉負是否已被定價」。核對：**沒有任何一份報告把「金額」的頂放在 2028 年之前**——高盛（9/25）5 大 CSP 2026 年約 8,000 億 → 2027 年 1.2 兆（+54%）→ 2028 年 1.4 兆；UBS 2028 年 1.619 兆；摩根士丹利 2028 年 1.6～1.8 兆；集邦 9 大 CSP 2027 年逾 1.5 兆（+60%）；SemiAnalysis 下修後 2030 年仍高於 2027 年。**真正在「見頂」的有三件事**：①**成長率**在 2026 年見頂（高盛約 100% → 54% → 12%；UBS +105% → +43% → +12%；法人 +77% → +33%）；②**年度增量**在 2028 年腰斬（UBS 約 +5,170 億 → +4,380 億 → +1,720 億美元；MS 單一來源 +4,510 億 → +5,500 億 → +1,690 億；高盛約 +4,000 億 → +2,000 億，算術）；③**自由現金流**在 2027 年最負（MS 估 2027 年現金燃燒近 6,000 億美元；S&P：2026～2027 皆負、2029 才回復）。所以貼文的說法在「增速與增量」上有來源、在「金額」上沒有；公司層級只有 Alphabet 與亞馬遜說 2027 年增加，**沒有任何公司給 2027 年金額或 2028 年指引**。對台灣：沒有訂單被砍的證據，風險在 2027 下半年～2029 年才到位的專供擴產（景碩、矽品、欣興、京元電；既有研究）。**十檔代表台股一律中性**。
+
+## 1. 各家預測對照
+| 機構（日期） | 口徑 | 2026 | 2027 | 2028 | 增速路徑 | 備註 |
+|---|---|---|---|---|---|---|
+| 高盛（9/25 報告；二手） | 5 大（亞馬遜、Alphabet、微軟、甲骨文、Meta）AI 資本支出 | 約 8,000 億美元（成長近 100%） | 1.2 兆美元（+54%）；共識約 1.1 兆 | 1.4 兆美元（+12%；四捨五入後算術約 +16.7%） | 約 100% → 54% → 12% | 另一則稱 6 月估計 2027 年只有 9,200 億美元，共識已大幅上移；高盛策略師稱 capex 一再超出共識 |
+| 摩根士丹利（Tech Debate，二手整理；原報告沒讀到） | hyperscalers | 約 9,170 億美元（由 2028 與各年增量反推，算術） | 約 1.467 兆美元（反推） | 1.636 兆美元 | 約 +97% → +60% → +11.5%（反推） | 增量 +4,510 億 → +5,500 億 → +1,690 億美元（單一來源 Substack）；另一則稱 2027 年 1.6 兆、2028 年 1.8 兆，MS 官網寫 2028 年 1.6 兆、2029 年 1.8 兆（年度標示矛盾）；TechFlow：2028 年現金 capex 約 1.57 兆、含租賃 1.81 兆 |
+| 瑞銀（UBS；Yield Theory 轉述） | hyperscalers | 1.009 兆美元 | 1.447 兆美元 | 1.619 兆美元 | +105% → +43% → +12%（算術） | 2025 年 4,920 億美元 |
+| 彭博共識（二手摘要） | — | 成長 +86% | +35% | 個位數（2028～2029） | 86% → 35% → 個位數 | 只見一則轉述，口徑沒說明 |
+| 集邦 TrendForce（10/15） | 前 9 大 CSP | 逾 9,570 億美元（+106%） | 逾 1.5 兆美元（+60%） | — | +106% → +60% | 上修原因含伺服器整機價格上漲、零組件缺貨與供應商要求預付款（價格因素） |
+| 法人（共識；聯合報） | 美系 4 大 CSP | 成長 +77% | 1.06 兆美元（+33%） | — | +77% → +33% | 尚有上調空間；另有外資稱 2028 年美系 CSP 逾 1 兆美元（舊稿） |
+| SemiAnalysis（11/13；既有研究，二手） | 全球 AI 加速器資本支出（口徑較窄） | 約 3,920 億美元（不變） | 6,270 億美元（−19%） | 7,580 億美元（−28%） | +60% → +21% → +5%（2029）→ +16%（2030） | 金額 2030 年仍高於 2027 年；2029 年 +5% 的數字一致性存疑（既有研究） |
+
+## 2. 什麼在「見頂」
+| 指標 | 見頂時點 | 來源 | 判讀 |
+|---|---|---|---|
+| 成長率（年增） | 2026 年 | 高盛（約 100% → 54% → 12%）、UBS（+105% → +43% → +12%）、彭博共識（86% → 35%）、集邦（+106% → +60%）、法人（+77% → +33%） | 多家一致：增速在 2026 年見頂，之後逐年下降；這是「二階導」已經轉負（成長率下降）的訊息，大家早已知道 |
+| 年度增量（美元） | 2027 年（MS）／2026 年（UBS）；2028 年增量腰斬 | UBS 增量 +5,170 億 → +4,380 億 → +1,720 億美元（算術）；MS（Substack 單一來源）+4,510 億 → +5,500 億 → +1,690 億美元；高盛約 +4,000 億（2027）→ +2,000 億（2028）（算術，以 2026 約 8,000 億、2027 年 1.2 兆、2028 年 1.4 兆） | 三家的 2028 年增量都落在約 1,700～2,000 億美元，約為前一年的一半以下：「增量見頂在 2026～2027 年、2028 年腰斬」是對得上的說法 |
+| 金額（絕對值） | 沒有來源在 2028 年前見頂 | 高盛 2028 年 1.4 兆、UBS 1.619 兆、MS 1.636 兆（或現金 1.57 兆／含租賃 1.81 兆）、集邦 2027 年逾 1.5 兆；SemiAnalysis 下修後 2030 年（9,230 億）仍高於 2027 年（6,270 億） | 沒找到任何報告把金額的頂放在 2027 年底到 2028 年初；MS 提示 2028 年有下行風險（Exencial 二手摘要） |
+| 自由現金流 | 2027 年最負 | MS（10/15）：超大型雲端與新雲 2027 年現金燃燒近 6,000 億美元；S&P 評等：6 大 2026、2027 年營運自由現金流皆為負、2029 年才回復；Reuters／LSEG（7 月）：2027 年前 capex 增量約 5,340 億美元、營運現金流增量約 3,400 億美元（差約 1,940 億，算術）；摩根大通與 T. Rowe 說法相近；獨立分析稱負值持續到 2029 年 | 資金壓力的高峰在 2027 年，與貼文「2027 年底到 2028 年初」最接近；但資金壓力可由債券與租賃吸收，不等於 capex 下降（搜尋摘要的保留：資金壓力可由債券與租賃吸收） |
+| 公司指引 | 只到 2027 年 | Alphabet：2026 年 1,950～2,050 億美元，2027 年「顯著增加」、細節 Q4 說明；亞馬遜：2026 年約 2,200 億美元（單一來源）、2027 年「明顯更多」；Meta：2026 年 1,350～1,450 億美元；微軟：2026 日曆年約 1,700 億美元（較先前下調，來源互相矛盾） | 沒有任何公司給 2027 年的金額，更沒有 2028 年指引；「2028 年見頂」沒有公司層級的證據（二手部落格整理） |
+
+**讀法**：把「見頂」拆成四個點，答案是——成長率頂 2026、增量頂 2026～2027（2028 腰斬）、現金流底 2027、金額頂沒找到。貼文把四者混成一個「見頂」，所以「2027 年底到 2028 年初」若指前三者大致有來源，若指金額就沒有。
+
+## 3. 公司指引（Q3 財報後，二手整理）
+- **Alphabet**：2026 日曆年 capex 指引 1,950～2,050 億美元不變；2027 年「顯著增加」，更多細節在 Q4 電話會議；外傳 2027 年逾 3,000 億美元是投資人推測，不是指引。
+- **亞馬遜**：2026 年約 2,200 億美元（單一來源）；2027 年「明顯更多」；Q3 capex 約 773 億美元（另一來源）。
+- **Meta**：2026 年 1,350～1,450 億美元（先前 1,300～1,450 億）。
+- **微軟**：2026 日曆年約 1,700 億美元（先前 1,750 億，7 月約 1,900 億，來源互相矛盾）；FY27 區間 1,200～1,600 億美元是部落格推算，不是指引。
+- **合計**：4 家 2026 年約 7,200～7,400 億美元（網站整理）；既有研究稱 4 大 Q3 capex 合計約 2,019 億美元（10-Q 合計，二手）。
+- **結論**：2027 年方向向上、金額未給；2028 年沒有任何指引——「2028 年見頂」沒有公司層級的證據。
+
+## 4. 產業鏈因果（垂直）：capex 見頂如何（不）傳到台灣
+
+**一行鏈**：CSP 現金流與融資 → 資本支出（土地、電力、機房、伺服器與網通）→ AI 晶片與機櫃訂單（輝達、ASIC）→ 台積電先進製程與 CoWoS、載板、封測、HBM → 台灣 ODM 與零組件。**瓶頸**在兩端：上游是 CoWoS 與零組件配貨，下游是電力、機房與融資（資金壓力）。
+
+- **「見頂」進鏈的方式是二階導，不是水位**：成長率下降 → 新增訂單斜率下降 → 專供擴產的利用率與資本報酬面臨壓力；但金額仍在上升（2028 年 1.4～1.6 兆美元），代表「出貨量仍在成長、只是成長變慢」。
+- **價格因素放大了名目 capex**：集邦稱上修含伺服器整機價格上漲、零組件缺貨與預付款；數量的成長小於金額的成長（推論），對「量」的供應鏈（組裝、封測）與「價」的供應鏈（載板、記憶體）影響不同。
+- **資金鏈是真正的槓桿**：capex 增量（約 5,340 億美元）大於營運現金流增量（約 3,400 億美元），缺口由債券與租賃補上（Reuters／LSEG；搜尋摘要）；融資成本與利率（聯準會 12/8～9）是傳導的第一站。
+
+## 5. 相關推進力（水平）
+- **融資與循環融資**：輝達的循環融資與股權投資（既有研究《輝達循環融資規模》；IEEE ComSoc 11/21 標題討論輝達退出循環融資是否降溫 capex）；Goldman 稱 2027 年 capex 可能有三分之一以上靠舉債、需要約 3,000 億美元年 AI 營收才能打平（二手摘要）。
+- **電力與基礎設施**：微軟維蘭站與 Nebius 第三方產能延到 2027 年（既有研究）；Fortune 引 Pantheon：供給限制與借貸成本使 2027 年增速放緩。
+- **政策與監管**：民主黨資料中心規範（investingLive 點名，細節未讀）、出口管制法案與 12/3 聽證（另案）。
+- **需求端 ARR 與 OpenAI**：SemiAnalysis 稱前沿實驗室淨新增 ARR 在 Q3 減速（既有研究，二手）。
+- **價格與供應**：伺服器單價與零組件缺貨墊高名目 capex；缺料緩解時，名目成長可能下修而數量不變（推論）。
+
+## 6. 慣性、痛點與限制（思辯）
+
+**供需缺口怎麼來的**：本題的缺口是「資本支出計畫」與「內部現金流」之間的缺口——capex 增量大於營運現金流增量約 1,940 億美元（算術），由債券與租賃補上；缺口越大，融資成本與投資人耐心越是 capex 的上限（推論）。
+
+**慣性（預言常失敗）**：高盛策略師稱 capex 近年一再超出共識；集邦在 10 月把 2026 與 2027 年預測都上修——「見頂」預言在過去常被推翻，所以應把「頂」當成待驗證的假說。
+
+**痛點與最快的解法**（標時點與卡點）：
+- **定義混用**：成長率頂、增量頂、金額頂與現金流底是四個點（表二）；卡點是貼文與多數轉述都沒說是哪一個。
+- **2028 年沒有公司指引**：解法是 2027 年 1～2 月 Q4 財報與電話會議；卡點是公司只給下一年。
+- **口徑不一**：4／5／9 家、AI 或全部、含不含租賃（表一）；卡點是原報告沒讀到。
+- **「是否已定價」無法檢驗**：沒有資料；台股單週 −17.5%、單日 +3,310 點顯示對這類消息極度敏感（推論）。
+
+**限制**：全是二手摘要與部落格整理；MS 增量數字只有單一來源 Substack；高盛 2028 年 +12% 與四捨五入後 +16.7% 不一致；各家日期不同（7～11 月）。
+
+**擴產與稼動檢核**：見第 9 節表四。
+
+**敘事陷阱自查（供需版）**：
+1. **「成長率見頂＝金額見頂」**：成長率 2026 年頂，金額到 2028 年仍在升。
+2. **「增量腰斬＝訂單崩」**：增量從 +4,000 億降到 +1,700～2,000 億，仍是每年新增近 2,000 億美元；是減速，不是砍單。
+3. **「共識上修＝無風險」**：上修含價格因素；現金流與融資是另一條線。
+4. **「公司沒給 2028 年指引＝2028 年下降」**：沒有指引只是沒有資訊。
+5. **「單一 Substack／券商數字當共識」**：MS 增量與 +60% 反推只有二手整理。
+
+## 7. 誰受惠、誰受傷
+- **台灣十檔代表股一律中性**：沒有任何報告或公司指出訂單被砍；風險是**專供擴產的到位時點**（景碩 2027 下半年～2028 Q3、欣興 2027 Q2～2028 年中、矽品 2029 年中、京元電 2027/4）落在 2028 年增量腰斬之後，合約保底與預付款不同（既有研究，條款多未公開）。
+- **條件式受傷**：專供單一客戶、無保底條款、到位時點在 2028 年後的「增量型」供應鏈；本檔沒有名單，不下結論。景碩在既有研究《SemiAnalysis下修…》標「受傷」是同一條件。
+- **條件式受惠**：以既有裝置的維運、升級、電源與散熱改裝為主的「存量型」供應鏈（貼文的框架；沒有分類名單，推論）。
+
+## 8. 傳聞與未證實
+- **「不少研究報告指 2027 年底到 2028 年初見頂」**：貼文沒指名報告；本輪找不到任何報告用這個時間點。
+- **MS 的增量與反推**：只有單一 Substack；MS 官網與其他二手年度標示矛盾。
+- **「民主黨資料中心規範」**：細節與時程沒讀到。
+- **「capex 二階導已被市場定價」**：觀點，沒有資料。
+
+## 9. 擴產與稼動檢核
+| 公司 | 瓶頸環節 | 現況稼動 | 擴產與資本支出 | 投產或放量時點 | 主要限制 | 證據等級 |
+|---|---|---|---|---|---|---|
+| 台積電 2330 | CoWoS 先進封裝 | 供不應求（沒有稼動率數字） | 2026 年底月產能各家估 13～14 萬片、2027 年約 20～22 萬片（供應鏈與法人估計，非官方；另案《龍頭企業高層復職對AI供應鏈的影響》） | 2026 年底、2027 年 | 輝達占過半；設備與廠房 | 供應鏈與法人估計 |
+| 景碩 3189 | 專供輝達 ABF 載板 | 沒查到 | 專供輝達產能增至 3.5 倍以上（既有研究，輝達 11/17 供應鏈承諾） | 2027 下半年投產、2028 Q3 到位 | 沒查到預付款或保底條款；到位時點正落在增量腰斬的 2028 年 | 公司／輝達公告（既有研究） |
+| 欣興 3037 | ABF 載板（產能預訂協議） | 沒查到 | 輝達產能預訂協議 | 2027 Q2 起增加、2028 年中完整 | 保底量與期限未公開 | 公司／輝達公告（既有研究） |
+| 日月光投控 3711（矽品） | 先進封裝（專供輝達） | 沒查到 | 矽品專供產能、獲輝達資金支持 | 2029 年中到位 | 條款未公開 | 公司／輝達公告（既有研究） |
+| 京元電子 2449 | 測試（美國廠） | 沒查到 | 輝達 11 億美元預付款支持 | 2027/4 目標量產 | 有預付款緩衝 | 公司／輝達公告（既有研究） |
+| 鴻海 2317、廣達 2382、緯創 3231、緯穎 6669 | AI 伺服器機櫃組裝 | 沒查到本輪稼動 | 廣達 11/11 稱沒看到客戶改單、出貨高峰在 2027 Q1（既有研究，早於 11/17） | 2027 年 | 輝達與 ASIC 混合；客戶資金與電力 | 公司說法（既有研究） |
+| 台達電 2308 | 機櫃電源與液冷 | 沒查到 | 2026 年資本支出約 650～700 億元（2025 年 466 億元；既有研究） | 2026～2027 年 | 電源 IC 缺料；800V 時程 | 公司與法人說法（既有研究） |
+
+## 10. 一方言論檢核
+| 說法 | 來源 | 證據等級 | 判讀 |
+|---|---|---|---|
+| 不少研究報告提到 CSP 資本支出可能在 2027 年底到 2028 年初見頂 | @aoyamaa._（未指名報告） | 個人帳號 | 部分成立：成長率與增量的「頂」有多家報告（表二）；金額的頂沒找到；「2027 年底到 2028 年初」的精確時點沒有任何一家使用 |
+| 資料中心建置面臨供電、人力與基礎設施瓶頸 | @aoyamaa._ | 個人帳號 | 有來源：微軟與 Nebius 第三方資料中心因電力延到 2027 年（既有研究《新興雲端Nebius、CoreWeave重挫》《SemiAnalysis下修…》）；Fortune 引 Pantheon：供給限制與借貸成本使 2027 年增速放緩 |
+| 民主黨未來可能提出更嚴格的監管法規 | @aoyamaa._ | 個人帳號 | 有分析師點名「民主黨的資料中心規範」是未解題（investingLive 摘要），細節與時程沒讀到；視為風險，不是事實 |
+| Capex 增速放緩是大家都知道的消息；二階導變成負是否已被市場定價 | @make_investment_easy | 個人觀點 | 事實部分成立：成長率逐年下降是多家共識（表二）；「是否已被定價」沒有資料可檢驗（台股 11/13～11/20 單週約 −17.5%、11/24 單日 +3,310 點，說明價格對這類消息極為敏感，推論） |
+| 吃增量而非存量的設備廠與供應鏈要特別小心 | @make_investment_easy | 個人觀點 | 框架合理但沒有分類名單：專供擴產到位時點落在 2027 下半年～2029 年（表四），是否為「增量型」要看合約；本檔不下結論 |
+| 共識一再上修，沒有見頂跡象 | 高盛策略師、集邦（上修 2026 與 2027） | 賣方與研究機構 | 上修含價格因素（伺服器單價、零組件缺貨、預付款），不全是數量；「一再超出共識」也意味著見頂預言常失敗（推論） |
+
+## 11. 驗證日曆
+| 時點 | 項目 | 要看什麼 | 備註 |
+|---|---|---|---|
+| 2027 年 1～2 月 | Alphabet、亞馬遜、Meta、微軟的 Q4 財報與電話會議 | 是否首度給 2027 日曆年 capex 金額；有沒有談 2028 年 | Alphabet 稱 Q4 會說明 2027 年細節；微軟 FY27 指引 |
+| 12 月 | 集邦 TrendForce 等機構對 2027 年的更新 | 是否續上修；價格與數量的拆分 | 目前 9 大 CSP 2027 年逾 1.5 兆、+60% |
+| 12/8～9 | 聯準會利率決策；10 年期美債殖利率約 4.9% | 債券與租賃融資成本：資金壓力的傳導 | 投資人要證明 AI 支出能帶來可持續獲利（另案） |
+| 12/3 與 12 月 | 參院聽證與出口管制法案；民主黨資料中心規範（若成真） | 政策對 capex 的壓抑路徑 | 另案《龍頭企業高層復職對AI供應鏈的影響》 |
+| 約 12/10 起每月 | 台廠月營收與法說（鴻海、廣達、緯創、緯穎、載板與封測） | 2027 年出貨指引與客戶改單 | 既有研究：廣達稱沒看到改單 |
+| 未定 | SemiAnalysis 後續模型更新；摩根士丹利原報告 | 2028 年下行風險的量化；年度標示矛盾的釐清 | 本輪原文都沒讀到 |
+
+## 12. 舉一反三：和研究庫相鄰題材對照
+- **《SemiAnalysis下修AI加速器出貨與資本支出預測》**：下修 2028～2030 年的二手數字（表一最後一列）與專供擴產的時點錯配；本檔補上其他機構的對照，顯示金額仍在上升。
+- **《高盛上修2027～2028年全球伺服器市場》**：賣方上修；與本檔高盛 9/25 的資本支出預測同向。
+- **《新興雲端Nebius、CoreWeave重挫》《輝達循環融資規模》**：融資與延遲面的證據。
+- **《龍頭企業高層復職對AI供應鏈的影響》**與**《台達電本益比與獲利年增》**：11/23～11/24 的急漲與估值，是「見頂」被當成風險的背景。
+
+## 13. 風險與矛盾
+- 全是搜尋摘要與二手整理；各機構原報告沒讀到。
+- 口徑與日期不同：4／5／9 家、AI 或全部、含不含租賃；高盛 9/25、集邦 10/15、S&P 8/27、Reuters 7 月、MS 10 月。
+- 高盛 2028 年 +12% 與 1.4÷1.2＝+16.7% 不一致；MS 2027／2028 與 2028／2029 的年度標示互相矛盾；亞馬遜與微軟 2026 年金額互相矛盾。
+- 反推值（MS 各年金額與成長率、UBS 增量）是算術，不是報導值。
+- 沒有任何公司給 2027 年金額或 2028 年指引；貼文的「研究報告」未指名。
+- 台廠曝險與合約條款沒有公司說法，標中性是缺資料。
+
+## 資料來源
+- [Threads：@aoyamaa._ 貼文（2026-11-24；score 2；個人帳號，未證實）](https://www.threads.com/@aoyamaa._/post/DgHlA1ekU3M)
+- [Threads：@make_investment_easy 貼文（2026-11-23；score 2；個人帳號，未證實；原文「（續」未取得後文）](https://www.threads.com/@make_investment_easy/post/DgEs0f6GAMg)
+- [Goldman Sachs puts hyperscaler AI spending at $1.2 trillion in 2027（Active Investor；2026-09-26；僅搜尋摘要）](https://activeinvestormag.com/story/2026-09-26-am-goldman-sachs-puts-hyperscaler-ai-spending-at-1-2-trillion-i/)
+- [Startup Fortune：Goldman Sachs says hyperscalers will spend $1.2 trillion on AI in 2027 - Startup Fortune（僅搜尋摘要）](https://startupfortune.com/goldman-sachs-says-hyperscalers-will-spend-12-trillion-on-ai-in-2027/)
+- [Briefs：Hyperscaler AI Capex Could Reach $1.2T in 2027（僅搜尋摘要）](https://www.briefs.co/news/goldman-says-hyperscaler-ai-spend-could-jump-to-1-2-trillion/)
+- [TechFlow：Goldman Sachs Research Report Analysis: AI CapEx to Rise 54% in 2027, Hyperscaler Valuations at Decade Lows（僅搜尋摘要）](https://www.techflowpost.com/en-US/article/34264)
+- [Yahoo Finance：Goldman says consensus 2027 hyperscaler capex estimates are too conservative（僅搜尋摘要）](https://finance.yahoo.com/sectors/technology/articles/goldman-says-consensus-2027-hyperscaler-140152065.html)
+- [Morgan Stanley Tech Debate: Hyperscaler Capex Growth Peaking; Compute Leads, Networking Follows, Memory Enters Late Cycle（456x Research Substack 二手整理；摩根士丹利原報告沒讀到；僅搜尋摘要）](https://456xresearch.substack.com/p/morgan-stanley-tech-debate-hyperscaler)
+- [Exencial（Substack）：Morgan Stanley Says Buy the AI Drop, Keeps $1.6T Hyperscaler Capex Call After US Midterms（僅搜尋摘要）](https://exencialrp.substack.com/p/morgan-stanley-says-buy-the-ai-drop)
+- [摩根士丹利：Investing in AI: Why the Post-Midterm Selloff Looks Overdone（僅搜尋摘要）](https://www.morganstanley.com/insights/articles/investing-in-ai-after-2026-midterms-selloff)
+- [TechFlow：Morgan Stanley Research Analysis: $1.6 Trillion AI Capex, AI Accounts for a Quarter of S&P 500 Growth（僅搜尋摘要）](https://www.techflowpost.com/en-US/article/34762)
+- [investingLive：Morgan Stanley says buy the AI dip, sees $3.4 trillion in hyperscaler spending through 2028（僅搜尋摘要）](https://investinglive.com/stocks/morgan-stanley-says-buy-the-ai-dip-sees-3-4-trillion-in-hyperscaler-spending-through-2028/)
+- [Crypto Briefing：Morgan Stanley sees hyperscaler cash burn nearing $600 billion in 2027（僅搜尋摘要）](https://cryptobriefing.com/morgan-stanley-hyperscaler-cash-burn-2027/)
+- [Yield Theory：Hyperscaler Capex 2027 Forecast: Guidance, Estimates and the Run Rate（網站整理；UBS 與共識數字；僅搜尋摘要）](https://www.yieldtheory.app/research/hyperscaler-capex-2027-forecast)
+- [BigGo Finance：Hyperscaler Capex Growth Expectations Peak; AI Boom Shows First Structural Divergence at the Funding Layer — BigGo Finance（僅搜尋摘要）](https://finance.biggo.com/news/6c0f576a-271b-495b-a5a9-ea4cc6860448)
+- [Fortune：AI is heading toward a cash-flow negative inflection point, and spending will slow in 2027, Wall Street thinks（2026-10-07；僅搜尋摘要）](https://fortune.com/2026/10/07/ai-cash-flow-negative-inflection-point-capex-slow/)
+- [S&P Global Ratings：AI Infrastructure Investment To Exceed $1.3 Trillion By 2027, S&P Global Ratings Says - Aug 27, 2026（僅搜尋摘要）](https://press.spglobal.com/2026-08-27-AI-Infrastructure-Investment-To-Exceed-1-3-Trillion-By-2027,-S-P-Global-Ratings-Says)
+- [Analysis-AI investment boom puts Big Tech's free cash flow under pressure（Euronext 轉載 Reuters 分析；7 月；僅搜尋摘要）](https://live.euronext.com/en/financial-news/analysis-ai-investment-boom-puts-big-techs-free-cash-flow-under-pressure)
+- [T. Rowe Price：Is AI infrastructure spending sustainable?（2026 Q2；僅搜尋摘要）](https://www.troweprice.com/financial-intermediary/us/en/insights/articles/2026/q2/Is-ai-infrastructure-spending-sustainable.html)
+- [Gate：Hyperscalers Projected to Hit Negative Free Cash Flow by 2027 Amid AI Capex Surge（轉述摩根大通；僅搜尋摘要）](https://www.gate.com/news/detail/MS/hyperscalers-projected-to-hit-negative-free-cash-flow-by-2027-amid-ai-capex-25068731)
+- [Decoding Discontinuity：Hyperscaler Free Cash Flow Stays Negative Until 2030（獨立分析；僅搜尋摘要）](https://www.decodingdiscontinuity.com/p/hyperscaler-ai-cash-flow)
+- [工商時報：2027前九大CSP資本支出 有望破1.5兆美元 - 日報 - 工商時報（2026-10-15；僅搜尋摘要）](https://www.ctee.com.tw/news/20261015700114-430502)
+- [鉅亨網：TrendForce：九大CSP資本支出明年估破1.5兆美元 AI伺服器產值年增逾90%（僅搜尋摘要）](https://news.cnyes.com/news/id/6639165)
+- [知新聞：AI軍備競賽升溫！9大雲端巨頭2027資本支出衝破1.5兆美元 年增率上調至6成｜知新聞（只看到標題）](https://www.knews.com.tw/news/B0115FF44602EF684D77CEE70CDA6147)
+- [聯合報：美系四大CSP上修資本支出 法人點名13檔受惠供應鏈（僅搜尋摘要）](https://udn.com/news/story/7251/9667218)
+- [聯合報：外資力挺AI狂潮！2028年美系CSP砸逾兆元 17台廠賺翻（僅搜尋摘要）](https://udn.com/news/story/7251/9588646)
+- [Tech Insider：Microsoft, Meta, Google AI Capex Hits $725B [2026]（部落格；僅搜尋摘要）](https://tech-insider.org/microsoft-meta-google-ai-capex-725-billion-2026/)
+- [Averin：Big Tech Q3 2026 Earnings: AI Capex $209B, Azure, Google Cloud, AWS（部落格；僅搜尋摘要）](https://averin.com/en/journal/ruslan-averin-big-tech-q3-2026-earnings-ai-capex-stress-test-microsoft-alphabet-meta-amazon-apple)
+- [ValueAdd VC：Big Tech Capex 2026: $730B After Q3, Microsoft Trims to $170B（部落格；僅搜尋摘要）](https://valueaddvc.com/blog/big-tech-ai-capex-in-2025-microsoft-google-meta-amazon-and-the-spending-race)
+- [Alphabet, Amazon, Meta and Microsoft plan over $740B in capex（Silicon Report；僅搜尋摘要）](https://www.siliconreport.com/alphabet-amazon-meta-and-microsoft-plan-over-740b-in-capex)
+- [IEEE ComSoc：Will Nvidia's Retreat from Circular Financing Deals Curtail the AI CAPEX Infrastructure Spending Frenzy?（2026-11-21；僅搜尋摘要）](https://techblog.comsoc.org/2026/11/21/will-nvidias-retreat-from-circular-financing-deals-curtail-the-ai-capex-infrastructure-spending-frenzy/)
+- [investingLive：Nvidia's Huang is back. Monday's rally leaves three big questions unanswered.（僅搜尋摘要；民主黨資料中心規範等未解題）](https://investinglive.com/stocks/nvidia-s-huang-is-back-monday-s-rally-leaves-three-big-questions-unanswered/)
+

@@ -1,0 +1,314 @@
+{
+ "topic": "供需事件：加州檢察長向輝達「發傳票」 追查先進晶片是否違規",
+ "one_line": "加州檢察長邦塔辦公室 11/19 對輝達送達調查傳票（已由加州司法部新聞稿與多家媒體證實）：範圍是輝達的先進晶片或機密資訊是否流入中國、輝達是否就此風險誤導投資人與大眾，所得資料用來評估是否違反加州法律；各報導都稱是初步調查，不是違法認定。11/18 還只是「可能審查」，一天內升級；華爾街日報（經 The Hill 轉述）稱 SEC 也在調查，焦點不明；The Hill 側重晶片銷售、新聞稿側重私人關係的報導，兩種框架並存。傳票內容與輝達回應沒讀到。這是政策與司法事件，不是供需缺口：目前沒有訂單或出貨被取消的資料，可能的傳導是東南亞與新興雲端的審查與驗證時間拉長（推論）；台灣 ODM 在東南亞有組裝據點，曝險比例沒查。",
+ "status": "已證實",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "加州檢察長",
+  "邦塔",
+  "輝達",
+  "傳票",
+  "出口管制",
+  "中國",
+  "Megaspeed",
+  "SEC",
+  "集體訴訟",
+  "黃仁勳",
+  "合規",
+  "東南亞轉運"
+ ],
+ "catalysts": [
+  "輝達對傳票的回應與是否配合；加州司法部後續行動",
+  "SEC 是否公開調查及其焦點",
+  "約 11/25 貝森特給輝達董事會的期限；12/10 盧特尼克聽證（既有研究）",
+  "集體訴訟（11/9 提起）進展；BIS 規則許可細節",
+  "台灣 ODM 東南亞據點對合規與客戶審查的說法"
+ ],
+ "risks": [
+  "傳票內容、期限與輝達回應沒讀到；新聞稿原文只見搜尋摘要",
+  "SEC 調查沒有公開，各報導說法不一（華爾街日報稱焦點不確定，佇列稱民事調查）",
+  "涉及個人的指控尚無認定，本檔不引述姓名與細節；傳票是調查第一步，不是違法認定",
+  "加州傳票、Megaspeed 刑事調查、Super Micro 案、SEC 調查的法律依據與對象不同，不能直接串在一起",
+  "台灣標的的「中性」是推論，曝險比例沒查"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：加州傳票與相關調查（說法、來源與證據等級）",
+   "columns": [
+    "說法",
+    "來源",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "加州檢察長辦公室 11/19 對輝達送達調查傳票；範圍：輝達的先進晶片或機密資訊是否流入中國、輝達是否就此風險誤導投資人與大眾；所得資料用來評估是否違反加州法律",
+     "加州司法部新聞稿（搜尋結果摘要）；Newsweek、The Hill、NBC、Fox 9 等",
+     "官方公告",
+     "已證實；各報導都稱是初步調查，不是違法認定"
+    ],
+    [
+     "檢察長稱輝達與其前執行長的作為「亮起紅燈」，包含可能誤導投資人",
+     "同上（新聞稿用語的轉述）",
+     "官方公告（轉述）",
+     "用語取自報導，原文沒讀到全文"
+    ],
+    [
+     "背景：報導稱黃仁勳的私人關係涉及疑似與中國情報有關、並與新加坡 Megaspeed 有關的人；另有 11/9 提起的集體訴訟，指輝達與黃仁勳隱瞞此事",
+     "Newsweek、The Hill（搜尋摘要）",
+     "媒體報導",
+     "涉及個人的指控，法院與主管機關尚無認定；本檔不引述姓名"
+    ],
+    [
+     "傳票的框架有兩種：The Hill 側重輝達向中國銷售晶片，新聞稿側重私人關係的報導",
+     "The Hill 與新聞稿對照",
+     "媒體報導",
+     "同一件事兩種描述並存"
+    ],
+    [
+     "SEC 也在調查，範圍含輝達是否誤導投資人",
+     "華爾街日報（經 The Hill 轉述）；佇列摘要稱 SEC 就資訊揭露展開民事調查",
+     "媒體報導（二手）",
+     "華爾街日報稱無法確認調查焦點；SEC 沒有公開"
+    ],
+    [
+     "11/18 的報導還只是「可能審查」（檢察長辦公室仍在判斷法律與事實是否足以採取行動）",
+     "FourWeekMBA 引述 Bloomberg",
+     "媒體報導（二手）",
+     "一天內由「可能」變成已送達傳票"
+    ]
+   ],
+   "note": "傳票內容、期限與輝達的回應沒讀到；各報導都強調傳票只是調查的第一步。"
+  },
+  {
+   "title": "表：輝達晶片流向中國的相關調查（時間與機關）",
+   "columns": [
+    "時間",
+    "事件",
+    "備註"
+   ],
+   "rows": [
+    [
+     "2024～2025",
+     "商務部對 Megaspeed 的調查自 2024 年開始；2025/5 向輝達調閱紀錄",
+     "既有研究"
+    ],
+    [
+     "2026/3",
+     "司法部起訴 3 名與 Super Micro 有關的人，涉嫌把約 5.1 億美元搭載輝達晶片的伺服器轉運到中國",
+     "搜尋摘要；與輝達無直接關係"
+    ],
+    [
+     "2026/6",
+     "華倫參議員致函輝達，詢問出口管制合規",
+     "Bloomberg Government 標題"
+    ],
+    [
+     "2026/10/1",
+     "Bloomberg 調查報導：輝達的監督機制似乎沒有攔下多項警訊；同日一名加州居民被捕，被控 2023～2024 年走私逾 3 億美元搭載輝達晶片的伺服器到中國",
+     "搜尋摘要"
+    ],
+    [
+     "11/9",
+     "集體訴訟提起，指輝達與黃仁勳隱瞞相關事件",
+     "The Hill、Newsweek 摘要"
+    ],
+    [
+     "11/11",
+     "華倫、孔斯等參議員致函商務部長與國務卿等，要求保存輝達與 Megaspeed 相關紀錄",
+     "FourWeekMBA 摘要；國會另有針對 H200 中國出口安排的來函"
+    ],
+    [
+     "11/16",
+     "BIS 遠端存取規則；商務部與司法部的 Megaspeed 聯合聲明（刑事調查）",
+     "既有研究"
+    ],
+    [
+     "11/17",
+     "輝達董事會新設監督國家安全政策與出口管制合規的委員會",
+     "既有研究"
+    ],
+    [
+     "11/19",
+     "加州檢察長送達傳票",
+     "本檔"
+    ]
+   ],
+   "note": "日期與案件取自搜尋摘要與既有研究，個案細節沒逐一核對；各案之間的關聯不能直接推論。"
+  }
+ ],
+ "evolution": [],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "適用程度：部分適用——沒有供給瓶頸，只有『合規鏈』：輝達 → 伺服器組裝（台灣與東南亞）→ 雲端或中介業者 → 最終用戶",
+    "瓶頸在中間環節的審查：Megaspeed、Super Micro 相關案件與遠端存取規則都落在轉運與中介這一層"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "多個機關同時推進：加州檢察長、SEC、司法部、BIS、國會，外加集體訴訟；時間表各自獨立",
+    "同日 AMD 也遭放空報告質疑中國曝險（見另一份研究），輝達與 AMD 的中國問題互相放大市場的合規疑慮"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "慣性：政策風險 → 往下游找誰有曝險；痛點是曝險比例沒公開",
+    "供需缺口怎麼來的：沒有缺口；是合規與審查成本改變出貨節奏的風險（東南亞與新興雲端的驗證時間可能拉長，推論）",
+    "限制：調查時程長、結果不確定；傳票不等於違法；加州法律（誤導投資人）與出口管制是兩個法律問題",
+    "一方言論檢核：SEC 調查只見華爾街日報經 The Hill 轉述；『近 18 萬連署』等回任說法與本案無關，不要混用"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受傷：輝達（調查與訴訟成本、揭露風險）；沒有資料顯示對出貨的直接影響",
+    "相對受惠（弱推論）：沒有中國曝險或曝險較低的 ASIC 陣營；但 AMD 同日也遭質疑，不能一概而論",
+    "台灣供應鏈：中性（曝險未查）；東南亞組裝據點的合規成本是風險"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀加州司法部新聞稿全文與傳票範圍；看輝達的回應與公告",
+    "看 SEC 是否公開調查；看 BIS 規則許可細節與司法部 Megaspeed 案後續",
+    "看台灣 ODM 的法說與月營收對東南亞出貨、客戶審查與拉貨時點的說法"
+   ]
+  }
+ ],
+ "conclusion": [
+  "加州檢察長 11/19 對輝達送達調查傳票已由加州司法部新聞稿與多家媒體證實：查先進晶片或機密資訊是否流入中國、輝達是否就此誤導投資人；各報導都稱是初步調查，不是違法認定；SEC 調查只見華爾街日報經 The Hill 轉述，焦點不明。",
+  "這是政策與司法事件，不是供需缺口：目前沒有訂單或出貨被取消的資料，輝達營運照常；可能的傳導是東南亞與新興雲端的審查與驗證時間拉長（推論）。",
+  "接下來看輝達的回應、SEC 是否公開、約 11/25 與 12/10 的政策節點，以及台灣 ODM 東南亞據點的說法。"
+ ],
+ "sources": [
+  {
+   "title": "加州司法部（檢察長辦公室）：Attorney General Bonta Serves Investigative Subpoena on Nvidia（2026-11-19，僅搜尋結果列出標題與摘要）",
+   "url": "https://oag.ca.gov/news/press-releases/attorney-general-bonta-serves-investigative-subpoena-nvidia"
+  },
+  {
+   "title": "Newsweek：Nvidia Subpoenaed in California Over Jensen Huang China Scandal（僅搜尋摘要）",
+   "url": "https://newsweek.com/nvidia-california-subpoena-jensen-huang-china-scandal-12743893"
+  },
+  {
+   "title": "The Hill：California AG issues subpoena to Nvidia over chip sales to China（僅搜尋摘要；引述 WSJ 稱 SEC 也在調查）",
+   "url": "https://thehill.com/homenews/state-watch/6232059-california-bonta-subpoenas-nvidia-ai-chips/amp/"
+  },
+  {
+   "title": "Fox 9：加州傳票輝達的報導（僅搜尋摘要）",
+   "url": "https://www.fox9.com/news/california-subpoenas-nvidia-jensen-huang-scandal"
+  },
+  {
+   "title": "NBC News（影片）：California's attorney general subpoenas Nvidia on whether its chips ended up in China（僅標題）",
+   "url": "https://nbcnews.com/video/california-s-attorney-general-subpoenas-nvidia-on-whether-its-chips-ended-up-in-china-273860165624"
+  },
+  {
+   "title": "BigGo Finance：California AG Subpoenas Nvidia Over Alleged Chip Diversion to China（僅標題）",
+   "url": "https://finance.biggo.com/news/4ab8389f-6548-4037-972b-432b3109737f"
+  },
+  {
+   "title": "FourWeekMBA：California AG May Examine Nvidia, 6 Days After CEO Exit（約 11/18，引述 Bloomberg，僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-california-ag-may-examine-nvidia-6-days-after-ceo-exit/"
+  },
+  {
+   "title": "鉅亨網：加州檢察長向輝達「發傳票」追查先進晶片是否違規流入中國（2026-11-20，僅看到系統佇列摘要）",
+   "url": "https://news.cnyes.com/news/id/6668159"
+  },
+  {
+   "title": "FourWeekMBA：Senators Ask to Keep Nvidia Records on $4.8B Megaspeed Buys（僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-senators-ask-to-keep-nvidia-records-on-4-8b-megaspeed-buys/"
+  },
+  {
+   "title": "SCMP：US details criminal probe of Nvidia customer Megaspeed over potential chip diversion（僅搜尋摘要）",
+   "url": "https://scmp.com/tech/tech-war/article/3374742/us-details-criminal-probe-nvidia-customer-megaspeed-over-potential-chip-diversion"
+  },
+  {
+   "title": "Bloomberg Government：Nvidia Queried by Sen. Warren Over Export Control Compliance（2026-06，僅標題與搜尋摘要）",
+   "url": "https://news.bgov.com/artificial-intelligence/nvidia-queried-by-sen-warren-over-export-control-compliance"
+  },
+  {
+   "title": "Crypto Briefing：US officials question Nvidia's oversight as restricted chips reach China（引述 Bloomberg 10/1 調查，僅搜尋摘要）",
+   "url": "https://cryptobriefing.com/us-officials-question-nvidia-chip-diversion-china/"
+  }
+ ],
+ "evidence": "官方公告",
+ "layers": [
+  {
+   "layer": "司法與監管（州檢察長、SEC、司法部、BIS、國會）——調查的推動端",
+   "description": "加州檢察長 11/19 送達傳票；SEC 調查（華爾街日報轉述，焦點不明）；司法部對 Megaspeed 的刑事調查（既有研究）；BIS 11/16 遠端存取規則；國會 11/11 與 H200 中國出口安排的來函；11/9 集體訴訟。各機關時間表獨立。",
+   "global_players": [
+    "加州司法部",
+    "SEC",
+    "美國司法部",
+    "商務部 BIS",
+    "美國國會"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "輝達（公司與董事會）——被調查對象",
+   "description": "11/17 董事會新設監督國家安全政策與出口管制合規的委員會；財報 Q4 指引 1,300 億美元 ±3%（不含中國資料中心運算收入）；黃仁勳 11/12 辭職、回任說法分歧（既有研究）。傳票的回應沒讀到。",
+   "global_players": [
+    "輝達",
+    "輝達董事會"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "轉運與中介（東南亞伺服器組裝、新興雲端、雲端中介）——各案共同的焦點，瓶頸在審查",
+   "description": "Megaspeed（新加坡）、Super Micro 相關案件與遠端存取規則都落在這一層；更嚴的客戶審查與轉運管制可能拉長東南亞與新興雲端的出貨與驗證時間（推論，沒有資料）。",
+   "global_players": [
+    "Megaspeed",
+    "Super Micro",
+    "新加坡與馬來西亞的雲端與組裝業者"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台灣供應鏈曝險（東南亞組裝據點與晶圓）",
+   "description": "台灣 ODM 在馬來西亞、泰國等地有伺服器組裝據點，BIS 規則與調查直接影響許可與客戶審查；各家曝險比例沒查到。台積電是輝達晶圓夥伴，沒有證據顯示受影響。",
+   "global_players": [
+    "鴻海",
+    "廣達",
+    "緯創",
+    "緯穎",
+    "台積電"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "輝達晶圓與 CoWoS 夥伴；沒有證據顯示受影響（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "輝達機櫃主要組裝廠之一；東南亞據點的合規曝險比例沒查",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；11/11 法說稱沒看到客戶改單（早於此事）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 ODM；曝險沒查（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器 ODM；曝險沒查（推論）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,619 @@
+{
+ "topic": "供需事件：輝達接班人選與人才流失說（庫克傳聞、員工調查、創業賣壓）",
+ "one_line": "股癌 EP714 與 M觀點 EP355 談黃仁勳 11/12 辭職後：主管三成會走、AMD／OpenAI 挖角、創業賣股壓盤、庫克接班、ASIC 與 AMD 大漲（個人看法與轉述，未證實）。逐項查：扁平組織有來源（直接報告人數各報導 36～80 人）、員工支持有來源（辭職前一次輝達員工 Blind 調查 88% 要他留任；連署逾 18 萬）、代理執行長 Kress 承諾 12 月加薪與追加股票有來源（單一來源）、持股約 3.7%～3.8% 是 2025 年資料；三成流失、挖角（只查到馬斯克陣營「可能轉去」的線，沒有 AMD／OpenAI）、創業帶走 50 人、賣壓都沒有任何報導；庫克確實被川普與 Dan Ives 點名，但「大外資與大行主張」沒對上；AMD、博通漲但 Marvell 等同日跌。接班名單（Kress、Buck、庫克、Kurian、Arora、Haas、Lisa Su、Srouji、Madison Huang）全是媒體推測，董事會只說內外部遴選。台灣替代平台名單在輝達 11/12 公告黃辭職後的 11/13 大漲（世芯-KY +9.39%、創意 +9.54%、聯發科 +7.01%；台指期 +1.6%），11/16 隨大盤崩跌（−6.03%）一天回吐（−8.96%、−9.99%、−7.9%），之後與違約交割、財報等其他事件交纏，不是持續的替代資金，不能歸因於領導層。這是治理與人才事件，不是供需缺口；沒有台廠訂單變動的證據。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "輝達",
+  "黃仁勳",
+  "接班人",
+  "庫克",
+  "Colette Kress",
+  "Blind 調查",
+  "員工連署",
+  "人才流失",
+  "扁平組織",
+  "替代平台",
+  "ASIC",
+  "AMD",
+  "博通",
+  "世芯-KY",
+  "創意",
+  "股癌",
+  "M觀點"
+ ],
+ "catalysts": [
+  "輝達董事會的執行長遴選公告（人選、代理期限）",
+  "高階主管離職公告（SEC 8-K、領英）與 SpaceX 的招聘動作",
+  "12 月加薪與追加股票獎勵的落實；之後的員工離職率與 Blind 調查",
+  "黃仁勳的公開表態、新事業或持股變動的任何證據",
+  "貝森特給董事會的期限（約 11/25）與 12/10 盧特尼克聽證（既有研究）"
+ ],
+ "risks": [
+  "個人推測的比重高：三成離職、挖角、創業挖角、賣壓都沒有報導或資料",
+  "單一來源與搜尋摘要：加薪承諾、員工調查、持股、候選名單；數字各報導不一（輝達跌幅、直接報告人數、連署人數、持股）",
+  "Blind 調查是自願參與、樣本小；第一次在辭職前；後一次一般科技人調查（1,323 人）中的輝達員工只有 100 人",
+  "持股資料是 2025 年；離職後的持股申報與鎖定沒查證",
+  "台灣替代平台股走勢被大盤重挫、Vera Rubin 傳聞與違約交割標題掩蓋，不能歸因於領導層變動"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：節目說法 vs 查到的資料",
+   "columns": [
+    "說法（節目）",
+    "出處與時間點",
+    "查到的資料",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "黃直接帶約 50～60 位一線主管、彼此不隸屬、沒有人能仲裁；也沒有接班計畫",
+     "M觀點 30:31；股癌 16:37",
+     "直接報告人數各報導不同：Fortune（2026）稱約 36 人、Tom's Hardware 稱最多 40 人、Fortune（2024）稱 60 人、Calcalist 稱約 80 位資深主管；搜尋摘要稱黃本人說過這批人都有能力當別家公司的執行長（出處對不到單篇），wccftech 與 Tom's Hardware 稱他不相信接班計畫；Fortune（11/12、11/15）把扁平組織與接班人才庫不足連在一起，並引述前執行長稱大公司的合理人數是 8～12 人（以上都是搜尋摘要）",
+     "媒體報導（僅搜尋摘要）",
+     "方向有來源；「50～60」落在 36～80 的範圍內，不是定數"
+    ],
+    [
+     "這批主管一到兩年內會流失三成（約 20 人）",
+     "M觀點 30:31",
+     "沒有找到任何報導、統計或離職名單；Fortune 的論點只是這批人沒有被放到最高職位上歷練、接班人才庫薄，沒有預測離職比例；本輪沒查到輝達任何一位高階主管離職的報導",
+     "個人預測",
+     "沒有證據；是主持人的推測"
+    ],
+    [
+     "聽說很多人被 AMD、Arm、OpenAI 挖角",
+     "M觀點 30:31",
+     "搜尋沒有找到 AMD、Arm 或 OpenAI 挖走輝達高階主管的報導（搜尋結果裡的 OpenAI 項目是 2023 年自家員工事件）；有報導的是另一條線：輝達員工內部信稱董事會若不讓黃回任，可能轉去馬斯克的 SpaceX（搜尋摘要用語「Terafab」），The Standard（香港）的標題稱馬斯克向員工保證職位（只看到標題）",
+     "挖角說：未查到；Terafab 線：媒體報導（單一來源、僅標題與搜尋摘要）",
+     "節目的挖角對象沒有證據；有線索的是馬斯克陣營，而且是「可能轉去」的威脅，不是已發生的離職"
+    ],
+    [
+     "最近一個月有兩次輝達員工調查，八九成希望黃回來",
+     "M觀點 30:31",
+     "查到的是一次輝達員工調查：Blind 對 232 位輝達員工（11/9～10，辭職前）問該不該續任，88% 要他留任、11% 支持自願辭職、1% 支持董事會撤換；另兩次 Blind 調查對象是一般科技從業者：1,689 人中 60% 認為應續任、1,323 人中 58%（另一則標題寫 57%）認為不該辭職，後一次的輝達員工子樣本只有 100 人；連署：本輪搜尋摘要稱逾 18 萬人簽名（既有研究整理各報導為 13.6 萬～17.9 萬）；WIRED 的盤點（搜尋摘要轉述，沒有取得原文）稱約 24 位員工在 LinkedIn 公開力挺、同期沒看到支持離任的貼文",
+     "媒體報導（Blind 是自願參與的網路調查；僅搜尋摘要）",
+     "員工與業界偏向支持黃有來源，但「兩次輝達員工調查、八九成」只對上一次，而且是辭職前做的；樣本小、自願參與，不代表全體員工"
+    ],
+    [
+     "代理執行長（財務長）宣布加薪與提早發股票，但留不住人",
+     "M觀點 33:07",
+     "搜尋摘要：Kress 在黃辭職後的首次全員會議承諾 12 月加薪與追加股票獎勵，比一般週期早數個月；薪酬是會前提交的約 700 個問題中最常見的主題；金額與適用對象沒公布；沒有看到「加速歸屬」的說法；財報電話會議上她把穩定員工列為目前最重要的事之一",
+     "媒體報導（單一來源、僅搜尋摘要）",
+     "「加薪、提早發股票」大致對上；「留不住」是主持人的判斷（員工多已財務自由），沒有數據，要看之後的離職率"
+    ],
+    [
+     "黃約有 3% 多持股；若創業要賣股，會有賣壓",
+     "股癌 20:41",
+     "持股：2025 年的報導稱約 3.7%～3.8%（約 9.2 億～9.3 億股）；另一份申報整理為直接約 7,500 萬股加信託與 LLC 約 7.83 億股（合計約 8.6 億股，口徑與日期不同）；他 2024～2025 年依 10b5-1 計畫持續賣股，2025 年計畫至多 600 萬股，約占上述持股的 0.64%～0.70%（我自己算）；沒有任何報導說他要創業或要賣股，離職後的限制或鎖定也沒查到",
+     "持股：媒體報導（2025 年資料，可能過期）；賣壓：個人推測",
+     "「3% 多」對得上；賣壓沒有證據，目前能拿來當尺度的只有一個不到 1% 的舊計畫"
+    ],
+    [
+     "黃若另起爐灶，輝達最強的 100 名技術人才至少 50 人會跳",
+     "M觀點 33:07",
+     "沒有任何報導；既有研究《回輝達機率是「零」》也指出「傳募資 500 億美元另創事業」查不到原始來源",
+     "個人推測",
+     "沒有證據"
+    ],
+    [
+     "市場傳大外資與美系大行都主張讓庫克接任",
+     "股癌 26:40（既有研究另引股癌 EP715 的庫克類比）",
+     "庫克確實被點名：川普公開建議他接任；Dan Ives 把庫克、Thomas Kurian（Google Cloud）、Nikesh Arora（Palo Alto Networks）列為外部前三，稱庫克是「黑馬」；搜尋摘要稱庫克最近才卸任蘋果執行長，是否有意願不明；沒有看到特定外資或大行集體主張庫克接任的報導",
+     "媒體報導（僅搜尋摘要）",
+     "「被點名」是真的，「外資與大行主張」沒對上（逐字稿的「美國大通」字句不清，這裡解讀為美系大行）；董事會沒有公布人選"
+    ],
+    [
+     "辭職消息出來後，ASIC 和 AMD 直接噴出去",
+     "股癌 24:46",
+     "搜尋摘要：輝達辭職消息後的跌幅各報導不一（約 −4.3%～−8%，盤中最深約 −14%）；AMD 與博通收盤各約 +5.9%、+5.5%（一則報導）；IBTimes 標題稱 AMD 一週大漲約三成（只看到標題）；Khaleej Times 稱同日 Marvell、英特爾、Arm、德儀跌 4.5%～6.3%——不是整個替代陣營一起漲；數字都沒有對照原始行情",
+     "媒體報導（數字各報導不同、僅搜尋摘要）",
+     "AMD、博通漲有對上；說成 ASIC 整體噴出太籠統（Marvell 跌）；台灣名單的實際走勢見第 4 節"
+    ]
+   ],
+   "note": "全是搜尋摘要與節目逐字稿（語音轉文字，可能有錯字）；輝達新聞稿、Blind 原頁與 SEC 申報本輪沒讀到。節目說法只做改寫，不是引文。"
+  },
+  {
+   "title": "表：接班人選（媒體列名，全部未證實）",
+   "columns": [
+    "人選",
+    "身分",
+    "誰點名",
+    "限制或爭議",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "Colette Kress",
+     "輝達財務長，11/12 起兼任代理執行長（輝達新聞稿：任到永久接班人確定為止）",
+     "輝達公告；分析師與前員工點名為內部人選",
+     "代理期限與是否參選沒公布",
+     "官方公告（代理）；媒體報導（人選）"
+    ],
+    [
+     "Ian Buck",
+     "輝達資料中心與加速運算事業負責人",
+     "分析師與前員工（搜尋摘要）",
+     "沒有公開表態",
+     "媒體報導（僅搜尋摘要）"
+    ],
+    [
+     "Madison Huang",
+     "輝達主管、黃仁勳之女",
+     "FT（搜尋摘要轉述）稱可能是長期接班人選",
+     "只說長期；本輪沒查到董事會或本人表態",
+     "媒體報導（二手、單一來源）"
+    ],
+    [
+     "Tim Cook",
+     "前蘋果執行長（搜尋摘要稱最近才卸任）",
+     "川普公開建議；Dan Ives 稱「黑馬」",
+     "是否有意願不明；節目認為供應鏈管理出身會偏標準化與壓價（推論）",
+     "媒體報導（僅搜尋摘要）"
+    ],
+    [
+     "Thomas Kurian",
+     "Google Cloud 執行長（搜尋摘要寫 Tom Kurian）",
+     "Dan Ives（外部前三）",
+     "沒有公開表態",
+     "媒體報導（僅搜尋摘要）"
+    ],
+    [
+     "Nikesh Arora",
+     "Palo Alto Networks 執行長",
+     "Dan Ives（外部前三）",
+     "沒有公開表態",
+     "媒體報導（僅搜尋摘要）"
+    ],
+    [
+     "Rene Haas",
+     "Arm 執行長，曾在輝達任職",
+     "多家報導（搜尋摘要）",
+     "外部人選",
+     "媒體報導（僅搜尋摘要）"
+    ],
+    [
+     "Lisa Su",
+     "AMD 執行長",
+     "彭博（搜尋摘要）",
+     "領導輝達主要對手，利益衝突是最大障礙",
+     "媒體報導（僅搜尋摘要）"
+    ],
+    [
+     "Johny Srouji",
+     "蘋果硬體技術資深副總",
+     "彭博（搜尋摘要）",
+     "沒有公開表態",
+     "媒體報導（僅搜尋摘要）"
+    ]
+   ],
+   "note": "全是媒體推測；董事會只公告展開內外部遴選（既有研究）。搜尋摘要稱黃曾說希望下一任已在公司內；彭博 2026/1 的標題已稱輝達沒有明確接班人。Axios（列 11 人）、Newsweek（排名 5 人）、SCMP、Fortune 另有名單，這裡只列搜尋摘要看得到的名字。"
+  },
+  {
+   "title": "表：情境整理與對台灣的推論（推論，沒有可靠機率）",
+   "columns": [
+    "情境",
+    "怎麼觀察到",
+    "對輝達",
+    "對台灣供應鏈（推論）",
+    "目前證據"
+   ],
+   "rows": [
+    [
+     "A. 黃回任",
+     "董事會公告；貝森特要求外聘與出口管制調查是障礙（既有研究）",
+     "領導與規格節奏回原軌；替代平台題材被反向擠壓（節目說法）",
+     "組裝與零組件偏中性；替代平台題材股短線回吐",
+     "董事會「無意恢復」只有單一來源（既有研究）；回任機率沒有可靠來源"
+    ],
+    [
+     "B. 內部人選接任（財務長、事業主管）",
+     "董事會公告人選",
+     "路線圖照舊，決策速度與冒險程度可能較低（節目說法）",
+     "最前沿規格推進放慢時，高規格零組件（散熱、載板）的成長溢價承壓；組裝廠短期中性",
+     "沒有證據；節目說法與推論"
+    ],
+    [
+     "C. 外部供應鏈型人選接任（如庫克）",
+     "董事會公告人選",
+     "偏標準化、降成本、壓價（節目類比蘋果）",
+     "代工與零組件面臨毛利壓力；標準化加速後組裝競爭加劇",
+     "川普與 Dan Ives 點名；意願不明；類比沒有數據"
+    ],
+    [
+     "D. 黃另起爐灶並帶走人才（節目稱最恐怖情境）",
+     "新公司申報與融資報導；高階主管離職公告",
+     "人才與路線圖分流、持股賣壓（節目說法）",
+     "可能多一個新客戶，也可能分散輝達訂單；最大的不確定性",
+     "沒有證據：500 億美元募資傳聞查不到原始來源；沒有高階離職報導"
+    ]
+   ],
+   "note": "這是我把節目的說法整理成情境（推論）；沒有任何一個情境有可靠機率。"
+  },
+  {
+   "title": "表：台灣替代平台名單的實際走勢（專案盤後報告）",
+   "columns": [
+    "資料日",
+    "世芯-KY（3661）",
+    "創意（3443）",
+    "聯發科（2454）",
+    "備註"
+   ],
+   "rows": [
+    [
+     "11/13（五）",
+     "4,020 元，+9.39%",
+     "8,610 元，+9.54%",
+     "4,120 元，+7.01%",
+     "輝達 11/12 公告黃辭職後的交易日；台指期 +1.6%（43,097 → 43,780，本系統）；台積電 2,350 元（+0.43%）；三檔大漲"
+    ],
+    [
+     "11/16（一）",
+     "3,660 元，−8.96%",
+     "7,750 元，−9.99%",
+     "−7.9%",
+     "加權指數 −6.03%（收 41,040）、跌停 211 家；台積電 −5.7%（2,215 元）、智原 −4.8%；同日有 Vera Rubin 延後傳聞（未證實）；三檔全數回吐"
+    ],
+    [
+     "11/17（二）",
+     "3,595 元，−1.78%",
+     "6,975 元，−10.0%",
+     "+1.2%",
+     "台指期收 40,169（本系統）；台積電 −2.0%（2,170 元）、智原 −2.7%；輝達財報（美東 11/17 盤後）"
+    ],
+    [
+     "11/18（三）",
+     "3,950 元，+9.87%",
+     "6,665 元，−4.44%",
+     "+2.6%",
+     "加權收 40,194.91；台積電 +0.2%（2,175 元）、智原 +2.5%；鉅亨網 11/18 21:05 標題「AI 鏈鉅額違約交割（創意、華通等 9 檔）」（只有標題）"
+    ],
+    [
+     "11/19（四）",
+     "3,600 元，−8.86%",
+     "−10.0%（跌停）",
+     "3,720 元，−5.58%",
+     "加權 −4.40%（收 38,426.89）、櫃買 −7.22%；台積電 −3.45%（2,100 元）、智原 −7.0%"
+    ]
+   ],
+   "note": "取自專案 11/17～11/21 版盤後報告：報告的價格表落後一個交易日（法人資料是最新一天、價格是前一個交易日），我用台積電與加權收盤對過（11/19 台積電收 2,100、加權收 38,426.89 與 11/18 收 40,194.91 來自網路報導；11/16 加權 −6.03% 與跌停 211 家來自既有研究與本系統）。聯發科 11/16～11/18 與智原只有報告族群欄的漲跌幅（沒有股價）；11/13 之前的報告檔沒有保留。創意 11/16、11/17、11/19 三度跌停（−9.99%、−10.0%、−10.0%）、世芯-KY 11/18 在漲停價附近（以升降單位推算，3,950 元就是漲停價，我自己算），原因沒查到，不能歸因於輝達領導層變動。"
+  },
+  {
+   "title": "表：擴產與稼動檢核（不適用）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "輝達領導層與人才事件",
+     "決策與人才（不是產能）",
+     "不適用",
+     "不適用",
+     "沒有時點；遴選與人才去向未知",
+     "沒有第二來源的說法多、搜尋摘要為二手",
+     "媒體報導（二手）＋個人推測"
+    ]
+   ],
+   "note": "不適用：這是領導層與人才事件，不是產能事件；產能瓶頸（HBM、先進封裝、電力）見既有的輝達供應鏈研究。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "辭職前的壓力（2026/11/9～11/11）",
+   "composition": "董事會對執行長的獨立調查、Megaspeed 訴訟、出口管制審查（既有研究）",
+   "spec": "11/9 輝達 −4.27%、AMD +13.3%、博通 +8.8%（既有研究）",
+   "application": "替代平台的傳聞行情"
+  },
+  {
+   "name": "辭職與代理（2026/11/12）",
+   "composition": "黃辭去總裁、執行長與董事；Kress 代理、Harvey C. Jones 任首位董事長；展開內外部遴選（輝達新聞稿）",
+   "spec": "輝達跌幅各報導約 −4.3%～−8%；AMD、博通漲、Marvell 等跌（搜尋摘要）",
+   "application": "領導層交接"
+  },
+  {
+   "name": "回任攻防與員工聲浪（2026/11/13～11/18）",
+   "composition": "連署與內部信、Blind 調查、貝森特要求外聘、馬斯克的說法（既有研究與搜尋摘要）",
+   "spec": "連署 13.6 萬～18 萬；Blind 輝達員工 88%（辭職前）",
+   "application": "人才留任與談判"
+  },
+  {
+   "name": "待觀察：遴選與人才去向（2026/11/20 起）",
+   "composition": "接班人選公告、高階主管去向、12 月薪酬",
+   "spec": "全部未確定",
+   "application": "領導層與路線圖"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "輝達是算力供應鏈的規格設定者：路線圖 → 台積電先進製程與封裝、HBM、散熱與電源 → 台系伺服器代工 → 雲端客戶資本支出；領導層變動不改變產能瓶頸，改變的是規格節奏、決策速度與採購、融資的冒險程度",
+    "M觀點分四塊：技術決策與人才（影響大）、供應鏈與客戶關係（主持人認為八九成守得住）、市場競爭策略（擔心新任者縮手）——個人判斷；供應鏈面短期與 11/17 財報及夥伴承諾一致（既有研究）",
+    "人才是最先看到的傳導點：直接向黃報告的主管群（36～80 人，各報導不一）；若流失，先影響技術路線的仲裁與跨部門協調"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "替代平台交易：11/9 傳聞行情（AMD +13.3%、博通 +8.8%，既有研究）；辭職後 AMD、博通收漲、Marvell 等跌；台灣名單 11/13 大漲、11/16 隨大盤崩跌回吐",
+    "人才的另一個出口：輝達員工內部信提到可能轉去馬斯克的 SpaceX；類比 2023 年 OpenAI 事件，但輝達董事會是否鬆口沒有可靠消息",
+    "更大的驅動力：股癌認為台灣供應鏈能見度更大一部分來自去中國化政策而非黃個人——個人看法，沒驗證"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口怎麼來的：沒有供需缺口；是領導層不確定性造成的估值與敘事折價",
+    "慣性：CUDA 生態與客戶鎖定、既有路線圖與訂單——短期不會因換人而改變",
+    "痛點：沒有接班計畫、扁平組織讓人才庫薄；員工多已財務自由，加薪與提早發股票未必留得住人（節目推論）；連署與內部信是情緒與談判籌碼，不等於離職",
+    "限制：多數說法是個人推測；查證多為搜尋摘要；Blind 自願參與、樣本小；持股是 2025 年資料",
+    "擴產與稼動檢核：不適用（領導層與人才事件）",
+    "敘事陷阱自查：一次員工調查被說成兩次；被點名當成董事會屬意；聽說挖角當事實；2025 年持股當現在；大盤暴跌日的個股漲跌歸因於領導層；庫克被點名不是外資共識"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受傷（情境）：最前沿規格推進鏈（散熱、載板等）——新任者放慢規格節奏或偏壓價時，成長溢價與毛利承壓（節目說法＋推論）",
+    "受惠（情境）：AMD、博通與台灣 ASIC 設計服務——海外短線已反映，台灣名單走勢反覆、沒有轉單證據；本檔不標為受惠",
+    "中性：台積電（輝達與替代平台都用先進製程）；伺服器代工短期照既定路線圖"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "讀輝達新聞稿與 SEC 8-K：執行長人選、代理期限、高階主管離職；查領英與媒體上關鍵主管的去向",
+    "看 12 月加薪與追加股票獎勵是否落實、之後的離職率與 Blind 調查；讀 Blind 原頁的樣本與題目",
+    "查黃仁勳的持股申報與新公司申報（離職後哪些申報仍適用，需另查）",
+    "對照台廠 11 月營收（12/10 前後）與法說會對 2027 年輝達專案的說法；替代平台看 AMD、博通的客戶宣布與世芯-KY、創意月營收"
+   ]
+  }
+ ],
+ "conclusion": [
+  "節目說的「一到兩年流失三成主管」「AMD、Arm、OpenAI 在挖角」「創業帶走 100 人中的 50 人」「賣壓」都沒有報導或資料支持，是個人推測；有來源的是：扁平組織與沒有接班計畫（直接報告人數各報導 36～80 人）、員工與業界支持黃回任（辭職前一次輝達員工 Blind 調查 88%、連署逾 18 萬）、代理執行長承諾 12 月加薪與追加股票（單一來源）、持股約 3.7%～3.8%（2025 年資料）。",
+  "接班人選全是媒體推測，沒有定案：川普建議庫克、Dan Ives 列庫克／Kurian／Arora 為外部前三，內部有 Kress、Ian Buck，另有 Rene Haas、Lisa Su、Johny Srouji、Madison Huang 被點名；董事會只說內外部遴選。",
+  "對台灣：短期照既定路線圖，沒有訂單變動的證據；中期變數是新任者風格與人才去向；替代平台「受惠」在海外有 AMD、博通上漲，在台灣名單只有 11/13 大漲一天、11/16 就隨大盤崩跌回吐，不能當趨勢。接下來看遴選公告、高階離職、12 月薪酬落實與台廠營收。"
+ ],
+ "sources": [
+  {
+   "title": "股癌 EP714「🥏」（2026-11-14 發布；逐字稿 12:34、16:37、20:41、24:46、26:40；個人看法，語音轉文字可能有錯字）",
+   "url": "https://player.soundon.fm/p/954689a5-3096-43a4-a80b-7810b219cef3/episodes/52dc3b92-2b06-49b6-ae34-821a9d632754"
+  },
+  {
+   "title": "M觀點 EP355「沒有黃仁勳的輝達、谷歌 OpenAI 新模型、FSD 進台灣法律問題」（2026-11-19 發布；逐字稿 30:31、33:07、38:13；個人看法）",
+   "url": "https://player.soundon.fm/p/b8f5a471-f4f7-4763-9678-65887beda63a/episodes/73fe5f43-849a-4cfa-bb3f-ca6797854d78"
+  },
+  {
+   "title": "NVIDIA Announces CEO Transition（輝達新聞稿；僅搜尋摘要，本輪沒讀全文）",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition"
+  },
+  {
+   "title": "AI Weekly：Blind Survey: 88% of Nvidia Employees Want Jensen Huang Back as CEO After Ouster（僅搜尋摘要）",
+   "url": "https://aiweekly.co/alerts/blind-survey-88-of-nvidia-employees-want-jensen-huang-back-as-ceo-after-ouster"
+  },
+  {
+   "title": "Unusual Whales：88% of Nvidia Employees Want Huang to Stay as CEO, Blind Poll Shows（僅搜尋摘要）",
+   "url": "https://unusualwhales.com/news/nvidia-employees-88-percent-huang-stay-blind-poll"
+  },
+  {
+   "title": "Blind：60% of Professionals Say Jensen Huang Should Remain Nvidia CEO（調查；標題後半從略；僅搜尋摘要）",
+   "url": "https://www.teamblind.com/news/jensen-huang-should-remain-nvidia-ceo"
+  },
+  {
+   "title": "Blind：57% Say Jensen Huang Shouldn't Have Resigned, Blind Survey Finds（調查；僅搜尋摘要；摘要的內文數字是 58%）",
+   "url": "https://www.teamblind.com/news/jensen-huang-shouldnothave-resigned"
+  },
+  {
+   "title": "AI Weekly：Nvidia Employees Petition Board to Reinstate Jensen Huang（僅搜尋摘要）",
+   "url": "https://aiweekly.co/alerts/nvidia-employees-petition-board-to-reinstate-jensen-huang"
+  },
+  {
+   "title": "The Standard（香港）：Nvidia staff demand to bring back Jensen Huang says Musk assured them positions（只看到標題與搜尋摘要）",
+   "url": "https://www.thestandard.com.hk/finance/article/348427/Nvidia-staff-demand-to-bring-back-Jensen-Huang-says-Musk-assured-them-positions"
+  },
+  {
+   "title": "AI Weekly：Nvidia interim CEO Kress pledges December raises at all-hands（僅搜尋摘要；單一來源）",
+   "url": "https://aiweekly.co/alerts/nvidia-interim-ceo-kress-pledges-december-raises-at-all-hands"
+  },
+  {
+   "title": "Winzheng：Inside Nvidia's First Post-Jensen All-Hands: Pay Raises and More Equity（僅搜尋摘要）",
+   "url": "https://www.winzheng.com/en/article/nvidia-post-jensen-all-hands-pay-raise"
+  },
+  {
+   "title": "Fortune：Jensen Huang and Nvidia's flat org and succession planning（2026-11-12；標題取自網址；僅搜尋摘要）",
+   "url": "https://fortune.com/2026/11/12/jensen-huang-nvidia-flat-org-succession-planning/"
+  },
+  {
+   "title": "Fortune：Fortune 500 CEOs say Nvidia succession failed most basic test（2026-11-15；標題取自網址；僅搜尋摘要）",
+   "url": "https://fortune.com/2026/11/15/fortune-500-ceos-say-nvidia-succession-failed-most-basic-test/"
+  },
+  {
+   "title": "Fortune：Jensen Huang, Nvidia CEO, leadership（2024-11-12；標題取自網址；搜尋摘要稱 60 位直接報告）",
+   "url": "https://fortune.com/2024/11/12/jensen-huang-nvidia-ceo-leadership-mpp"
+  },
+  {
+   "title": "wccftech：NVIDIA CEO Doesn't Believe in \"Succession Plans\"（僅搜尋摘要）",
+   "url": "https://wccftech.com/nvidia-ceo-doesnt-believe-in-succession-plans/"
+  },
+  {
+   "title": "Tom's Hardware：Jensen Huang's Unusual Nvidia Management Style Doesn't Include Long-Term Plans or Reports（僅搜尋摘要）",
+   "url": "https://www.tomshardware.com/news/nvidia-ceo-shares-management-style-always-learn-make-no-plans"
+  },
+  {
+   "title": "Calcalist：Jensen Huang（標題只有人名；搜尋摘要稱約 80 位資深主管直接向他報告）",
+   "url": "https://www.calcalistech.com/ctechnews/article/67jmqubyj"
+  },
+  {
+   "title": "Axios：11 names to watch in the Jensen Huang succession search（2026-11-12；僅搜尋摘要）",
+   "url": "https://www.axios.com/2026/11/12/nvidia-next-ceo-jensen-huang-predictions"
+  },
+  {
+   "title": "Fortune：Nvidia next CEO: the outside contenders to succeed Jensen Huang（2026-11-12；僅搜尋摘要）",
+   "url": "https://fortune.com/2026/11/12/nvidia-next-ceo-the-outside-contenders-to-succeed-jensen-huang/"
+  },
+  {
+   "title": "Newsweek：Who could replace Jensen Huang as Nvidia CEO, 5 candidates ranked（標題取自網址；僅搜尋摘要）",
+   "url": "https://newsweek.com/who-could-replace-jensen-huang-as-nvidia-ceo-5-candidates-ranked-12709926"
+  },
+  {
+   "title": "SCMP：Nvidia's hunt for Jensen Huang's successor: insiders, rivals and Trump pick（標題取自網址；僅搜尋摘要）",
+   "url": "https://www.scmp.com/news/china/diplomacy/article/3374268/nvidias-hunt-jensen-huangs-successor-insiders-rivals-and-trump-pick"
+  },
+  {
+   "title": "Bloomberg（2026-01-27）：Nvidia Lacks Clear Successor for Superstar CEO Who Built Company（辭職前的標題；只看到標題）",
+   "url": "https://www.bloomberg.com/news/articles/2026-01-27/nvidia-lacks-clear-successor-for-superstar-ceo-who-built-company"
+  },
+  {
+   "title": "Tom's Hardware：Nvidia CEO Jensen Huang begins sale of $925M worth of Nvidia stock（2025；搜尋摘要的持股數字出處對不到單篇）",
+   "url": "https://www.tomshardware.com/tech-industry/nvidia-ceo-jensen-huang-begins-sale-of-usd925m-worth-of-nvidia-stock-sale-of-6-million-shares-barely-dents-his-usd123-billion-in-shares"
+  },
+  {
+   "title": "NBC News：Nvidia CEO Huang sells $15 million worth of stock, first sale of $873 million plan（2025；僅搜尋摘要）",
+   "url": "https://www.nbcnews.com/business/business-news/nvidia-ceo-huang-sells-15-million-stock-first-sale-873-million-plan-rcna214782"
+  },
+  {
+   "title": "Khaleej Times：Global AI stocks sink as Nvidia CEO's exit deepens sector selloff（僅搜尋摘要；Marvell、英特爾、Arm、德儀同日下跌的說法）",
+   "url": "https://www.khaleejtimes.com/business/global-ai-stocks-sink-as-nvidia-ceos-exit-deepens-sector-selloff?amp=1"
+  },
+  {
+   "title": "IBTimes：Nvidia's Rivals Are Cashing in on Jensen Huang's Exit. AMD Shares Have Jumped 30% This Week（只看到標題）",
+   "url": "https://www.ibtimes.com/amd-broadcom-shares-rise-nvidia-leadership-crisis-3809711"
+  },
+  {
+   "title": "IBTimes AU：Nvidia Stock Sinks 8% to $159 After Jensen Huang Resigns as AMD and Broadcom Rally（只看到標題與搜尋摘要）",
+   "url": "https://www.ibtimes.com.au/nvidia-shares-fall-jensen-huang-resigns-ceo-1878502"
+  },
+  {
+   "title": "Decrypt：Nvidia, AMD, Broadcom: The AI Stock Winners and Losers After Jensen Huang's Ousting（僅搜尋摘要）",
+   "url": "https://decrypt.co/383146/nvidia-amd-broadcom-ai-stock-winners-loses-jensen-huang?amp=1"
+  },
+  {
+   "title": "鉅亨網：罕見連環爆！AI鏈驚見鉅額違約交割 創意、華通等9檔合計4.27億元（2026-11-18 21:05；只看到標題，取自專案 11/19 盤後報告）",
+   "url": "https://news.cnyes.com/news/id/6666606"
+  }
+ ],
+ "evidence": "社群傳聞",
+ "layers": [
+  {
+   "layer": "輝達領導層與人才（決策、規格路線、人才庫）——沒有台廠直接受影響",
+   "description": "11/12 黃辭職、Kress 代理（輝達新聞稿、既有研究）；直接報告人數 36～80 人（各報導不一）；員工支持與連署；12 月加薪與追加股票承諾；接班人選全是媒體推測。",
+   "global_players": [
+    "輝達（Colette Kress 代理執行長）",
+    "輝達董事會",
+    "候選人（Kress、Buck、庫克等，皆未證實）",
+    "SpaceX"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "AI 伺服器代工與系統（台系）",
+   "description": "短期照既定路線圖與訂單（11/17 財報與夥伴承諾，既有研究）；中期看新任者的採購、壓價與規格節奏（推論）；沒有訂單變動的證據。",
+   "global_players": [
+    "輝達",
+    "雲端客戶"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器代工與系統；短期照既定路線圖，中期看新任者的採購與壓價態度（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器代工；同上（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器代工；同上（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2356",
+     "name": "英業達",
+     "role": "AI 伺服器代工；同上（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端客戶直接下單的伺服器廠；與輝達領導層的連結是間接的（推論）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "高規格推進鏈（散熱等）——最依賴規格推進節奏",
+   "description": "節目認為「技術走在最前面、每次跟著黃衝」的公司最容易受影響；若新任者放慢規格節奏，成長溢價承壓（節目說法＋推論）；沒有營收證據。",
+   "global_players": [
+    "輝達",
+    "散熱與液冷供應商"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3017",
+     "name": "奇鋐",
+     "role": "散熱模組（含液冷）；受益於輝達規格快速升級，規格節奏放慢時成長溢價承壓（推論），沒有新的營收證據",
+     "impact": "中性"
+    },
+    {
+     "code": "3324",
+     "name": "雙鴻",
+     "role": "散熱模組（含液冷）；同上（推論）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "先進製程與封裝",
+   "description": "輝達與替代平台（AMD、ASIC）都用先進製程；領導層變動是客戶之間的移動，不是需求消失（推論）。",
+   "global_players": [
+    "台積電",
+    "輝達",
+    "AMD",
+    "博通"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "晶圓代工與先進封裝；輝達與替代平台都用，領導層變動是客戶間移動而不是需求消失（推論）",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "替代平台（AMD／博通／ASIC）——海外短線已反映，台灣名單走勢反覆",
+   "description": "辭職後 AMD、博通收漲、Marvell 等跌（搜尋摘要）；台灣名單 11/13 大漲、11/16 起隨大盤崩跌回吐，與大盤、Vera Rubin 傳聞、違約交割等其他事件交纏；沒有轉單證據。",
+   "global_players": [
+    "AMD",
+    "博通",
+    "Marvell",
+    "Google（TPU，節目提到）"
+   ],
+   "tw_stocks": [
+    {
+     "code": "3661",
+     "name": "世芯-KY",
+     "role": "ASIC 設計服務；市場把它當輝達替代平台的題材股，11/13 大漲 +9.39%、11/16 −8.96% 回吐，沒有轉單證據（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "3443",
+     "name": "創意",
+     "role": "ASIC 設計服務；11/13 +9.54%，之後 11/16、11/17、11/19 三度跌停（−9.99%、−10.0%、−10.0%；原因沒查到，11/18 晚有違約交割標題）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}

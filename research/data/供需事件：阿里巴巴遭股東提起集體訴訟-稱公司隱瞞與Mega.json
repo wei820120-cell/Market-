@@ -1,0 +1,381 @@
+{
+ "topic": "供需事件：阿里巴巴遭股東提起集體訴訟 稱公司隱瞞與Mega",
+ "one_line": "佇列的鉅亨網報導（11/20）稱阿里巴巴與吳泳銘遭股東在紐約提告，指 2024、2025、2026 財年年報低估美國出口管制風險、虛增股價；訴訟聚焦 Megaspeed 涉協助取得受限輝達晶片、阿里巴巴被揭為主要客戶；股價 4 個交易日重挫 14%。求證：本輪三次搜尋都找不到這起訴訟的第二個來源；找到的是 2026/8/4 在紐約南區對阿里巴巴與吳泳銘提起的另一起證券集體訴訟（集團期間 2025/6/26～2026/6/24），理由是未揭露被認定為「中國軍事公司」的風險與 AI 模型蒸餾活動描述不實，不是 Megaspeed；兩起的關係沒查到。能核對的背景：FT 稱阿里巴巴是 Megaspeed 的最大客戶並（2024/6）有新加坡子公司借款給其馬來西亞子公司；彭博稱阿里巴巴經 Megaspeed 租用輝達晶片；做空機構 Culper（2026/5）稱阿里巴巴祕密出資（未證實）；Megaspeed 否認、輝達稱晶片都在現場，調查對象是 Megaspeed、沒有公開認定阿里巴巴涉及非法出貨（司法部與商務部 11/16 聯合聲明）。股價只核對到 11/12 港股一度 −7.3%、收 93.80 港元（導火線是商務部新規報導），14% 沒查到。這是法律與合規事件，不是供需缺口，產業鏈框架不適用；沒有台廠被點名。",
+ "status": "混合",
+ "horizon": "短期（3個月內）",
+ "keywords": [
+  "阿里巴巴",
+  "Megaspeed",
+  "集體訴訟",
+  "出口管制",
+  "輝達",
+  "吳泳銘",
+  "Culper",
+  "Speedmatrix",
+  "1260H",
+  "新加坡",
+  "證券訴訟"
+ ],
+ "catalysts": [
+  "11/20 訴訟的文件（法院、案號、被告、指控、集團期間）與阿里巴巴的回應",
+  "阿里巴巴 9 月季財報與電話會議的相關說法（原訂 11/19）",
+  "司法部與商務部對 Megaspeed 的後續：是否起訴、是否點名客戶",
+  "商務部 11/16 新規最終條文；輝達 10-Q 與訴訟揭露"
+ ],
+ "risks": [
+  "單一來源：11/20 訴訟只有 cnyes；找不到第二來源或法院文件",
+  "兩起訴訟混淆風險：8/4 的訴訟理由是軍事公司認定與 AI 模型蒸餾、不是 Megaspeed",
+  "指控與證實：Megaspeed 否認；輝達稱晶片都在現場；沒有公開認定阿里巴巴涉及非法出貨；Culper 是做空機構",
+  "股價 14% 沒查到，只核對到 11/12 一天的跌幅",
+  "對台灣的影響只有推論；沒有台廠被點名"
+ ],
+ "spec_tables": [
+  {
+   "title": "表：說法與證據（佇列摘要 vs 能核對的背景）",
+   "columns": [
+    "說法",
+    "來源",
+    "證據等級",
+    "判讀"
+   ],
+   "rows": [
+    [
+     "阿里巴巴與吳泳銘遭股東在紐約提告，指 2024、2025、2026 財年年報低估美國出口管制風險、虛增股價",
+     "鉅亨網（佇列摘要，全文沒讀到）",
+     "媒體報導（單一來源）",
+     "本輪三次搜尋都找不到這起訴訟的第二個來源，也找不到 11/18～20 的相關報導（搜尋索引可能落後）；不當作已確認"
+    ],
+    [
+     "（對照）2026/8/4 在紐約南區對阿里巴巴與吳泳銘提起的證券集體訴訟",
+     "D&O Diary、律所通告（搜尋摘要）",
+     "媒體報導；律所通告是廣告，不是法院認定",
+     "集團期間 2025/6/26～2026/6/24；指控年報未揭露公司依 NDAA 1260H 條被認定為「中國軍事公司」的風險（與工信部的關係），並把 AI 模型蒸餾活動描述成假設性；針對 2026 年報與 SOX 認證；首席原告申請期限 2026/10/5。**理由不是 Megaspeed**；與 cnyes 說的訴訟是同一案、新案或修正訴狀，沒查到"
+    ],
+    [
+     "訴訟聚焦 Megaspeed 協助取得受限輝達晶片，阿里巴巴是其主要客戶",
+     "FT、彭博、WSJ 等（二手整理）",
+     "媒體報導",
+     "背景可核對：FT 稱阿里巴巴從一開始就是 Megaspeed 的錨定客戶、至今仍是最大客戶，並稱與阿里巴巴關聯的新加坡子公司 2024/6 借款給 Speedmatrix；彭博稱阿里巴巴透過 Megaspeed International 租用輝達晶片；做空機構 Culper Research（2026/5）稱阿里巴巴以空殼公司祕密出資、預付款 41 億美元——是做空機構的說法，沒有證實"
+    ],
+    [
+     "Megaspeed 協助中國取得受限輝達晶片",
+     "WSJ：2024/3～2025/6 安排近 120 億美元輝達晶片給中國公司；彭博：輝達進口逾 46 億美元；The Information：至少 75 億美元（經馬來西亞子公司 Speedmatrix）",
+     "媒體報導（各家數字不同）",
+     "Megaspeed 否認；輝達稱多次查核、晶片都在現場；美國司法部與商務部 11/16 確認自 2024 年起調查（既有研究），沒有宣布起訴；調查對象是 Megaspeed，不是阿里巴巴"
+    ],
+    [
+     "阿里巴巴股價 4 個交易日重挫 14%",
+     "鉅亨網（佇列摘要）",
+     "媒體報導（單一來源）",
+     "只核對到 11/12 港股一度 −7.3%、收 93.80 港元（較前一日 −6.8%）——導火線是 The Information 稱美國商務部將敲定限制遠端使用海外資料中心晶片的新規；14% 沒查到"
+    ],
+    [
+     "阿里巴巴未即時回應",
+     "鉅亨網（佇列摘要）",
+     "—",
+     "沒有查到阿里巴巴的回應；9 月季財報原訂 11/19 公布，結果與股價反應沒查到"
+    ],
+    [
+     "（對照）輝達的 Megaspeed 證券訴訟",
+     "ITV、FourWeekMBA（搜尋摘要）",
+     "媒體報導（二手）",
+     "2026/11/9 在加州北區（聖荷西）提起，案號 5:26-cv-13448，指控輝達與黃仁勳對 Megaspeed 的說法漏掉黃與前 Megaspeed 高層 Alice Huang 的關係；對應 11/9 股價 −4.27%（約 1,920 億美元市值）；集團期間各報導不同（11/13 有修正訴狀）——與阿里巴巴案是兩案"
+    ]
+   ],
+   "note": "全是搜尋摘要；法院文件本輪沒讀到。搜尋結果混有較早的案件（阿里巴巴 2024 年以 4.335 億美元和解的螞蟻集團案），與本事件無關。"
+  },
+  {
+   "title": "表：時間線",
+   "columns": [
+    "日期",
+    "事件",
+    "來源"
+   ],
+   "rows": [
+    [
+     "2024/3～2025/6",
+     "WSJ：Megaspeed 安排近 120 億美元輝達晶片給中國公司",
+     "WSJ（二手）"
+    ],
+    [
+     "2024/6",
+     "FT：與阿里巴巴關聯的新加坡子公司借款給 Speedmatrix",
+     "FT（二手）"
+    ],
+    [
+     "2025/5～6",
+     "輝達向 Megaspeed 調取銷售紀錄、列入拒售名單",
+     "既有研究"
+    ],
+    [
+     "2025/10",
+     "新加坡警方調查 Megaspeed 涉嫌違反國內法",
+     "二手"
+    ],
+    [
+     "2026/5",
+     "Culper Research 做空報告：阿里巴巴祕密出資 Megaspeed",
+     "二手（做空機構說法）"
+    ],
+    [
+     "2026/7/14",
+     "FT（經 Startup Fortune 轉述）：輝達把獲准購買先進晶片的亞洲公司砍掉一半以上，新加坡、馬來西亞、日本查核更嚴",
+     "二手"
+    ],
+    [
+     "2026/8/4",
+     "紐約南區對阿里巴巴與吳泳銘的證券集體訴訟（集團期間 2025/6/26～2026/6/24；首席原告期限 10/5）",
+     "D&O Diary、律所通告"
+    ],
+    [
+     "2026/11/9",
+     "輝達股價 −4.27%；輝達證券集體訴訟在加州北區提起",
+     "二手"
+    ],
+    [
+     "2026/11/12",
+     "阿里巴巴港股一度 −7.3%（The Information 報導商務部新規）；彭博：阿里巴巴經 Megaspeed 租用輝達晶片",
+     "TIKR、The Edge Malaysia、FourWeekMBA"
+    ],
+    [
+     "2026/11/16",
+     "美國司法部與商務部就 Megaspeed 案發聯合聲明；商務部新規",
+     "既有研究"
+    ],
+    [
+     "2026/11/19",
+     "阿里巴巴 9 月季財報原訂公布日",
+     "搜尋摘要；結果沒查到"
+    ],
+    [
+     "2026/11/20",
+     "鉅亨網：阿里巴巴遭股東在紐約提告（單一來源）",
+     "佇列"
+    ]
+   ],
+   "note": "日期取自搜尋摘要與既有研究。"
+  },
+  {
+   "title": "表：擴產與稼動檢核（不適用）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "阿里巴巴與 Megaspeed 事件",
+     "出口管制執行、合規與訴訟（不是產能）",
+     "不適用",
+     "不適用",
+     "沒有時點；訴訟與調查進度未知",
+     "訴訟內容單一來源、調查對象是 Megaspeed",
+     "媒體報導（單一來源＋多家轉述）"
+    ]
+   ],
+   "note": "不適用：這是法律與合規事件，不是產能事件。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "Megaspeed 採購與租賃（2024～2025）",
+   "composition": "輝達晶片經新加坡與馬來西亞租賃給中國客戶（報導）",
+   "spec": "WSJ 近 120 億、彭博逾 46 億、The Information 至少 75 億美元（口徑不同）",
+   "application": "AI 算力租賃"
+  },
+  {
+   "name": "調查與做空報告（2025/10～2026/5）",
+   "composition": "新加坡警方調查；Culper 做空報告",
+   "spec": "指控未證實",
+   "application": "執法與市場"
+  },
+  {
+   "name": "訴訟（2026/8～11）",
+   "composition": "阿里巴巴（8/4）與輝達（11/9）的證券集體訴訟；11/20 cnyes 稱新訴訟",
+   "spec": "理由各不相同；11/20 單一來源",
+   "application": "投資人求償"
+  },
+  {
+   "name": "新規與聯合聲明（2026/11/16）",
+   "composition": "商務部新規；司法部與商務部聯合聲明",
+   "spec": "調查對象是 Megaspeed",
+   "application": "出口管制執行"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "不適用：法律與合規事件沒有上下游鏈",
+    "出口管制的執行鏈：輝達 → 東南亞雲端租賃商（Megaspeed）→ 終端租用者 → 美國商務部與司法部；瓶頸在許可與查核"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "同一政策載體上的其他事件：商務部新規、Megaspeed 案聯合聲明、加州檢察長傳票、輝達證券訴訟、輝達治理風波（既有研究）",
+    "輝達自我收緊：獲准購買的亞洲公司砍掉一半以上"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口怎麼來的：沒有供需缺口；是監管與訴訟風險溢價",
+    "痛點：單一來源、法院文件沒讀到；做空機構說法與調查結論易被混淆；調查對象是 Megaspeed",
+    "限制：搜尋索引可能落後；11/20 與 8/4 訴訟的關係沒查到",
+    "擴產與稼動檢核：不適用（法律事件）",
+    "敘事陷阱自查：兩起訴訟混淆、做空機構說法當事實、律所通告當法院認定、14% 沒查到"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "受傷（情境）：阿里巴巴、Megaspeed、輝達（訴訟與監管風險）",
+    "受惠：沒有明確受惠者",
+    "中性：台積電、鴻海、廣達、緯創（沒有台廠被點名）"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "查 PACER／紐約南區法院的 11/20 訴訟文件與案號；對照 8/4 案的訴狀（是否修正）",
+    "讀阿里巴巴 9 月季財報與公告、港交所與 SEC 文件",
+    "讀司法部與商務部聯合聲明全文；查 FT、彭博、WSJ 原文"
+   ]
+  }
+ ],
+ "conclusion": [
+  "11/20 的阿里巴巴訴訟（年報低估出口管制風險、聚焦 Megaspeed）只有鉅亨網一個來源，本輪找不到第二來源或法院文件；8/4 在紐約南區的另一起訴訟理由是軍事公司認定與 AI 模型蒸餾，不是 Megaspeed。",
+  "能核對的背景：FT、彭博稱阿里巴巴是 Megaspeed 的最大客戶與出資方、做空機構 Culper 的指控未證實、Megaspeed 否認、調查對象是 Megaspeed；股價只核對到 11/12 一天的跌幅（港股一度 −7.3%），14% 沒查到。",
+  "這是法律與合規事件，不是供需缺口；沒有台廠被點名。接下來看法院文件、阿里巴巴的回應與季財報說法，以及司法部對 Megaspeed 的後續。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網：阿里巴巴遭股東提起集體訴訟 稱公司隱瞞與 Megaspeed 密切關係（佇列摘要，11/20 16:21；全文沒讀到）",
+   "url": "https://news.cnyes.com/news/id/6668997"
+  },
+  {
+   "title": "D&O Diary：Securities Suit Against Alibaba Combines Two Key Litigation Trends（2026-08；僅搜尋摘要）",
+   "url": "https://www.dandodiary.com/2026/08/articles/artificial-intelligence/securities-suit-against-alibaba-combines-two-key-litigation-trends/"
+  },
+  {
+   "title": "律所通告（allmind 轉載）：BABA Investor Alert: Alibaba Group Holding Limited Securities Class Action Notice（律所通告是廣告，不是法院認定；僅搜尋摘要）",
+   "url": "https://allmind.ai/news/02d7bacd574ec0ba02f054175213837510c1f6b1c66f0275407e29719fe368f7"
+  },
+  {
+   "title": "Yicai Global：Alibaba Settles Shareholder Lawsuit for USD433.5 Million（較早的另一案，與本事件無關；僅搜尋摘要）",
+   "url": "https://yicaiglobal.com/news/alibaba-settles-shareholder-lawsuit-for-usd4335-million"
+  },
+  {
+   "title": "FourWeekMBA：What We Know About Megaspeed, the Nvidia Buyer in the Probe（二手整理；僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-what-we-know-about-megaspeed-the-nvidia-buyer-in-the-probe/"
+  },
+  {
+   "title": "FourWeekMBA：Records: Megaspeed Arranged ~$12B of Nvidia Orders for China（二手整理；僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-records-megaspeed-arranged-12b-of-nvidia-orders-for-china/"
+  },
+  {
+   "title": "TIKR：Nvidia’s Megaspeed Probe Leads to Alibaba, Whose Singapore Unit Made $4.1 Billion in Prepayments（引做空機構 Culper 的說法；僅搜尋摘要）",
+   "url": "https://www.tikr.com/blog/nvidias-megaspeed-probe-leads-to-alibaba-whose-singapore-unit-made-4-1-billion-in-prepayments"
+  },
+  {
+   "title": "TIKR：Alibaba Slides 7% as Wu’s Promise to “Accelerate Further” Runs Into U.S. Chip Curbs（11/12；僅搜尋摘要）",
+   "url": "https://www.tikr.com/blog/alibaba-slides-7-as-wus-promise-to-accelerate-further-runs-into-u-s-chip-curbs"
+  },
+  {
+   "title": "FourWeekMBA：Alibaba Sheds $17B, 2.6x Tencent’s Drop, on Chip-Access Fear（11/12；僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-alibaba-sheds-17b-26x-tencents-drop-on-chipaccess-fear/"
+  },
+  {
+   "title": "The Edge Malaysia：Thursday 12 Nov 2026（標題取自搜尋結果；阿里巴巴港股收 93.80 港元的說法可能出自此頁；僅搜尋摘要）",
+   "url": "https://theedgemalaysia.com/node/825506"
+  },
+  {
+   "title": "Digital Trends：Nvidia's latest chip scandal has an Alibaba connection, new report claims（僅搜尋摘要）",
+   "url": "https://digitaltrends.com/computing/nvidias-latest-chip-scandal-has-an-alibaba-connection-new-report-claims"
+  },
+  {
+   "title": "Startup Fortune（FT 轉述，2026-07-14）：輝達把獲准購買先進晶片的亞洲公司砍掉一半以上（標題不明；僅搜尋摘要）",
+   "url": "https://startupfortune.com/?p=15607"
+  },
+  {
+   "title": "ITV：Nvidia and Jensen Huang face shareholder lawsuit alleging investors were misled about spy affair（2026-11-10；僅搜尋摘要）",
+   "url": "https://www.itv.com/news/2026-11-10/a-shareholder-sues-nvidia-and-jensen-huang-over-alleged-investor-deception-on-spy-affair"
+  },
+  {
+   "title": "FourWeekMBA：Nvidia Investor Suit Over Megaspeed Rests on a $192B Drop（僅搜尋摘要）",
+   "url": "https://fourweekmba.com/ai-nvidia-investor-suit-over-megaspeed-rests-on-a-192b-drop/"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "輝達與出口管制執行（美國商務部、司法部）——瓶頸在許可與查核，不是產能",
+   "description": "司法部與商務部 11/16 就 Megaspeed 案聯合聲明、商務部新規封堵遠端使用（既有研究）；輝達把獲准購買先進晶片的亞洲公司砍掉一半以上（FT，經 Startup Fortune）。",
+   "global_players": [
+    "美國商務部（BIS）",
+    "美國司法部",
+    "輝達"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "Megaspeed 與阿里巴巴（雲端租賃與終端租用者）",
+   "description": "Megaspeed 是新加坡租賃輝達 GPU 的雲端公司；FT 稱阿里巴巴是最大客戶與（借款）出資方；Megaspeed 否認非法轉運，輝達稱晶片都在現場；做空機構 Culper 稱阿里巴巴祕密出資、預付款 41 億美元（未證實）。",
+   "global_players": [
+    "Megaspeed",
+    "阿里巴巴",
+    "輝達"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "資本市場與訴訟（股東集體訴訟）",
+   "description": "2026/8/4 紐約南區對阿里巴巴與吳泳銘的證券集體訴訟（軍事公司認定、AI 模型蒸餾）；11/20 cnyes 稱的新訴訟（年報低估出口管制風險、聚焦 Megaspeed）單一來源；輝達 11/9 在加州北區的證券訴訟（案號 5:26-cv-13448）。",
+   "global_players": [
+    "阿里巴巴",
+    "輝達",
+    "原告律所"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台灣供應鏈（AI 伺服器 ODM、晶圓代工）——沒有台廠被點名",
+   "description": "對台灣是東南亞 AI 伺服器據點與客戶審查的間接合規風險（推論，既有研究）；沒有訂單變動的證據。",
+   "global_players": [
+    "AI 伺服器 ODM",
+    "晶圓代工"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "晶圓代工；間接曝險（既有研究），沒有新的直接曝險數字",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器 ODM；東南亞據點的合規風險（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；同上（推論）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器 ODM；同上（推論）",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
