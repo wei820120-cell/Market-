@@ -1,0 +1,218 @@
+# 題材研究：供需事件：FCC有條件批准SpaceX部署最多100萬顆太空資料中心衛星（Threads說法求證）
+
+> 🤖 AI 研究（2026-11-26 10:27），僅供參考，台股代號已和上市櫃清單核對。
+> 狀態：**混合**｜時間軸：**長期（1年以上）**
+
+**一句話**：FCC 太空局 11/25（美東）對 SpaceX『Starmind』申請部分核准、部分延後、附條件：最多 100 萬顆軌道資料中心衛星，六個殼層 500（一則稱 550）～1,002 公里（原申請最高 2,000 公里；四個殼層在 600 公里以上，須先提修改申請與最終碎片計畫），里程碑 2033／2035／2038／2040 年各 11/25 達一顆、10%、50%、全部，錯過即授權失效，期限 15 年，SpaceX 30 天內可拒絕附條件核准，Amazon、Viasat、美國天文學會反對。Threads 轉載的數字多半對（在軌約 1.7 萬顆、里程碑、1,002 公里、『7 年首發 14 年交卷』與 ITU Resolution 35 的 7＋2／5／7 年同形），但『牌照』『正式／直接批准』『駁回阻撓請願』說過頭——是附條件的部分核准，『駁回』沒讀到；ITU 時鐘自 ITU 申請受理日起算、罰則是縮減衛星數而非作廢；『先到先得』與『Starlink 占三分之二』沒查到；『2027 年底測試硬體』與既有研究的 2027 Q3 入軌不同；『另一方 20 萬個位置』最符合中國 2025-12 的 ITU 申請（推論）。授權事件不是訂單，台廠（華通、昇達科、萊德光電-KY、啟碁、乙盛-KY）沒有核准後的訂單證據，標中性；FCC 命令原文沒讀到。
+
+## 台股供應鏈總表
+
+| 環節 | 代號 | 名稱 | 角色 | 影響 | 股票期貨 |
+|---|---|---|---|---|---|
+| 台灣太空與低軌衛星題材股（既有研究連結，無核准後訂單證據） | 2313 | 華通 | 低軌衛星相關 PCB（既有研究）；本次沒有訂單或股價報導 | 中性 | FTF |
+| 台灣太空與低軌衛星題材股（既有研究連結，無核准後訂單證據） | 3491 | 昇達科 | 低軌衛星射頻被動元件（既有研究）；本次沒查數字 | 中性 | 無 |
+| 台灣太空與低軌衛星題材股（既有研究連結，無核准後訂單證據） | 7717 | 萊德光電-KY | 星間雷射通訊；公司只說打入美系衛星大廠供應鏈、未點名 SpaceX（既有研究）；FCC 文件顯示系統主要以光學星間雷射連線，無訂單證據 | 中性 | 無 |
+| 台灣太空與低軌衛星題材股（既有研究連結，無核准後訂單證據） | 6285 | 啟碁 | 低軌衛星用戶端設備（既有研究）；軌道資料中心的關係沒查 | 中性 | KGF |
+| 台灣太空與低軌衛星題材股（既有研究連結，無核准後訂單證據） | 5243 | 乙盛-KY | 媒體稱是 SpaceX 低軌衛星關鍵機構件主要供應商（既有研究）；本次沒查 | 中性 | 無 |
+
+<details><summary>觸發來源</summary>
+
+2026-11-26 待檢視清單（未證實）：Threads @n__nchang（score 3，seen_at 2026-11-26 08:02，https://www.threads.com/@n__nchang/post/DgLxC6WlKbl ；同帳號另一則 score 2：https://www.threads.com/@n__nchang/post/DgLxC7VFDOF）兩則「網路轉載」貼文，大意：全球在軌衛星約 1.7 萬顆，SpaceX 取得可部署 100 萬顆太空 AI 資料中心衛星的牌照（Starmind 申請），11/25 FCC 正式批准；15 年期、2033 年前首發、2035 年 10%、2038 年 50%、2040 年全數完成否則作廢，節奏對應 ITU「7 年首發、14 年交卷」規則（先到先得）；FCC 把最高軌道高度由 2,000 公里下修到 1,002 公里、保留碎片與防碰撞要求、駁回競爭對手的阻撓請願、直接批准；並稱散熱與晶片折舊是難關、馬斯克把首批測試硬體排在 2027 年底、ITU 搶先圈 20 萬個位置的另一方到 7 年大限要拿什麼產能——網路轉載，未證實。
+
+</details>
+
+---
+
+# 供需事件：FCC 有條件批准 SpaceX 部署最多 100 萬顆太空資料中心衛星——Threads 轉載的數字多半對得上，『牌照』『直接批准』『駁回阻撓』說過頭了（2026-11-26）
+
+> 資料說明：寫於 **2026-11-26 上午（台北時間）**，內容來自搜尋摘要與標題（Via Satellite、TechCrunch、CBS、Quartz、Light Reading、i10x、SiliconANGLE 等外媒；聯合新聞網、科技新報、中央社等台灣媒體；ITU 說明與 SatNews、IEEE ComSoc 對中國 ITU 申請的報導）；**FCC 命令（DA 26-113）原文沒有讀到**；Threads 貼文是『網路轉載』，作者與原文出處未知。不是投資建議。
+
+## 0. 一句話
+**一句話**：FCC 太空局 11/25（美東）對 SpaceX『Starmind』申請**部分核准、部分延後、附條件**：最多 100 萬顆軌道資料中心衛星；六個殼層在 500（一則稱 550）～1,002 公里（原申請最高 2,000 公里），其中四個殼層在 600 公里以上，須先提修改申請與最終碎片計畫；里程碑是 2033／2035／2038／2040 年各 11/25 達成一顆、10%、50%、全部，錯過即授權失效；期限 15 年；SpaceX 30 天內可拒絕附條件的核准；Amazon、Viasat、美國天文學會反對。
+
+Threads 轉載的說法逐項核對：
+- **數字多半對得上**：在軌約 1.7 萬顆、里程碑日期與 10 萬／50 萬顆、1,002 公里、『7 年首發、14 年交卷』與 ITU Resolution 35 的 7＋2／5／7 年同形。
+- **說過頭**：『牌照』『正式批准』『直接批准』——實際是部分核准、部分延後、附條件；『駁回競爭對手的阻撓請願』沒讀到。
+- **ITU 的對照不完全**：ITU 的時鐘自 ITU 申請受理日起算，FCC 這次從核准日起算；ITU 的罰則是縮減可保留的衛星數，FCC 是授權失效。
+- **未查證**：『先到先得』原文、『Starlink 占在軌衛星三分之二』、『2027 年底測試硬體』（既有研究是 2027 Q3 入軌，本人說法）。『ITU 搶先圈 20 萬個位置的另一方』未具名，最符合中國 2025-12 的 ITU 申請約 20 萬顆（推論）。
+
+這是**授權事件，不是訂單**；台廠（華通、昇達科、萊德光電-KY、啟碁、乙盛-KY）沒有核准後的訂單證據，一律標中性。
+
+## 1. Threads 轉載說法逐項核對
+| 說法（Threads 轉載） | 查到的資料 | 來源 | 判讀 |
+|---|---|---|---|
+| 『全人類在軌衛星才 1.7 萬顆』 | 外媒稱目前在軌衛星約 1 萬 7 千顆 | 台灣媒體轉述（聯合新聞網、科技新報、中央社等，搜尋摘要） | 大致屬實；『現役』與『全部』的口徑沒查 |
+| 『SpaceX 剛剛拿到發射 100 萬顆衛星的牌照』 | FCC 太空局 11/25 對 Starmind 申請『部分核准、部分延後、附條件』，授權最多 100 萬顆軌道資料中心衛星；SpaceX 自命令發布起 30 天內可拒絕附條件的核准（沉默視為接受） | Via Satellite、TechCrunch、Quartz、Light Reading、i10x 等（搜尋摘要） | 數字屬實、『牌照』說過頭：是部分核准且附條件；『發射』並非 FCC 這份核准的標的（一般背景，搜尋結果未查證） |
+| 『不是用來連網，專門在太空運行 AI 資料中心』 | FCC 主席 Brendan Carr 稱核准 100 萬顆『軌道運算模組』建立太空資料中心；系統以光學星間雷射連線（含連接 Starlink）、太陽能供電 | CBS、TechCrunch、中文摘要 | 屬實 |
+| 『11/25 FCC 正式批准 Starmind』 | 美東 11/25（週三）；台灣媒體標 11/26；批准是部分核准、附條件 | 搜尋摘要 | 日期屬實；『正式批准』說過頭 |
+| 『翻了將近 60 倍』 | 算術：100 萬 ÷ 1.7 萬 ＝ 58.8；（1.7 萬 ＋ 100 萬）÷ 1.7 萬 ＝ 59.8 | 算術 | 算術對，但 100 萬是核准上限、要到 2040 年；外媒稱不確定 SpaceX 是否真的送上 100 萬顆 |
+| 『15 年期牌照』 | 期限 15 年；起算點兩種說法——自第一顆衛星認證營運起（i10x 等）、自第一顆衛星發射起（Via Satellite） | i10x、Via Satellite（搜尋摘要） | 屬實；起算點各家不同 |
+| 『2033 前（第 7 年）首發、2035 部署 10%＝10 萬顆、2038 部署 50%＝50 萬顆、2040（第 14 年）全數 100 萬顆，未完成牌照作廢』 | 里程碑：2033-11-25 一顆（有的稱發射、有的稱營運）、2035-11-25 10%、2038-11-25 50%、2040-11-25 其餘；錯過任一個里程碑，授權失效 | Light Reading、TechCrunch、Via Satellite、Interesting Engineering、wpnews（搜尋摘要） | 屬實；10 萬與 50 萬是算術（100 萬的 10%、50%） |
+| 『7 年首發、14 年交卷，嚴絲合縫對應 ITU 規則』 | ITU Resolution 35：7 年內啟用後，2 年內 10%、5 年內 50%、7 年內 100%（累計第 9、12、14 年）；FCC 日期（2033、2035、2038、2040）與此同形 | ITU 說明與搜尋摘要 | 結構對得上；但 ITU 時鐘自 ITU 申請受理日起算，FCC 這次從核准日（2026-11-25）起算，罰則也不同（ITU：縮減可保留的衛星數；FCC：授權失效） |
+| 『ITU：低軌軌位與頻率先到先得，後來者須協調讓路』 | 本次搜尋沒有讀到相關原文 | — | 未查證（一般背景知識：ITU 協調以申請先後為基礎） |
+| 『FCC 把最高軌道高度由 2,000 公里下修至 1,002 公里』 | 多家摘要：SpaceX 原申請殼層最高到 2,000 公里；核准六個殼層在 500～1,002 公里（一則稱下限 550 公里）；其中四個殼層在 600 公里以上 | i10x、Via Satellite、Light Reading（搜尋摘要） | 屬實；注意『2,000 公里』也出現在被延後的處置豁免（任務結束後須再入大氣的規則），兩件事不要混為一談 |
+| 『保留太空碎片處理與防碰撞的強制要求』 | 碎片計畫只被認定在 600 公里以下合規；600 公里以上的殼層須先提修改申請與最終碎片計畫；任務結束後再入大氣規則的豁免申請被延後 | Light Reading、i10x（搜尋摘要） | 方向屬實；更精確的說法是『高軌殼層尚未放行』 |
+| 『駁回競爭對手的阻撓請願，直接批准』 | 反對者有 Amazon、Viasat、美國天文學會；沒讀到請願是否被『駁回』；批准並非『直接』——部分延後、附條件、30 天可拒絕 | CBS、Via Satellite（搜尋摘要） | 『駁回』沒查到；『直接批准』不符 |
+| 『馬斯克把首批測試硬體安排在 2027 年底左右』 | 既有研究記載馬斯克 11/6 稱與輝達共同設計的 Starlink 運算衛星預計 2027 Q3 入軌（本人說法）；本次沒查到『2027 年底』的出處 | 先前研究《馬斯克 Terafab 與太空資料中心》 | 時點不同（Q3 與年底）；出處未查到 |
+| 『散熱與晶片折舊是兩道難關』 | 作者看法；TechCrunch 稱初步監管核准不代表軌道資料中心即將到來；本次沒查到工程與折舊資料 | TechCrunch（搜尋摘要） | 未證實的工程判斷 |
+| 『Starlink 占在軌衛星將近三分之二』 | 本次沒有查到 | — | 未查證 |
+| 『ITU 搶先圈下 20 萬個位置的另一方』 | 未具名；最符合的是中國 2025 年 12 月底向 ITU 申請約 20 萬顆（CTC-1、CTC-2 各 96,714 顆，合計 193,428；加國網 12,992 顆約 20.6 萬顆，算術）；6 月另有報導稱累計約 24.4 萬顆；SpaceX 的百萬顆申請在 2026 年初跟進 | SatNews、IEEE ComSoc、Advanced Television（搜尋摘要） | 推論指中國（Threads 未點名）；ITU 申請不等於會建造 |
+
+## 2. FCC 核准內容與條件
+| 項目 | 內容 | 來源 | 備註 |
+|---|---|---|---|
+| 機關與日期 | FCC 太空局（Space Bureau）於美東 2026-11-25 以命令『部分核准、部分延後、附條件』；命令編號 DA 26-113 | Via Satellite、Light Reading、搜尋結果列出的 FCC 文件標題 | 命令原文沒讀到 |
+| 規模 | 最多 100 萬顆衛星（FCC 主席稱 100 萬顆『軌道運算模組』） | CBS、Quartz | 上限，不是部署計畫 |
+| 殼層與高度 | 六個殼層，500～1,002 公里（一則稱下限 550 公里）；SpaceX 原申請最高到 2,000 公里；四個殼層在 600 公里以上 | i10x、Via Satellite、Light Reading | 下限各家不同 |
+| 軌道碎片 | 碎片計畫只被認定在 600 公里以下合規；600 公里以上須先提修改申請與最終碎片計畫；任務結束後須再入大氣規則的豁免申請被延後 | Light Reading、i10x | 高軌殼層尚未放行；另一則中文摘要稱 FCC 聲明說系統符合碎片規範，口徑不同 |
+| 里程碑 | 2033-11-25 一顆（有的稱發射、有的稱營運）；2035-11-25 10%（10 萬顆，算術）；2038-11-25 50%（50 萬顆）；2040-11-25 其餘；錯過即授權失效 | Light Reading、TechCrunch、wpnews | 『發射』與『營運』口徑不一 |
+| 期限 | 15 年，自第一顆衛星認證營運（或發射）起算 | i10x、Via Satellite | 起算點說法不一 |
+| 接受附條件核准 | SpaceX 自命令發布起 30 天內可拒絕附條件的核准，沉默視為接受（約至 2026-12-25，算術） | Light Reading（搜尋摘要） | 起算日以命令為準 |
+| 技術 | 光學星間雷射連結（含連接 Starlink）、太陽能供電 | TechCrunch、中文摘要 | — |
+| 反對與後續 | Amazon、Viasat、美國天文學會反對；FCC 還在審其他軌道資料中心申請並預計逐案裁決（WSJ 引述） | CBS、Via Satellite | 競爭申請的名單沒查 |
+
+## 3. 事件時間軸與里程碑
+| 日期 | 事件 | 內容 | 備註 |
+|---|---|---|---|
+| 2025-12 下旬 | 中國向 ITU 申請約 20 萬顆衛星 | CTC-1、CTC-2 各 96,714 顆（合計 193,428，算術）加國網 12,992 顆等 | SatNews、IEEE ComSoc；6 月報導稱累計約 24.4 萬顆 |
+| 2026 年 1 月底～2 月初 | SpaceX 向 FCC 申請約 100 萬顆軌道資料中心衛星 | 搜尋摘要稱『2026 年初跟進』；確切申請日沒查 | SatNews 2/1 標題『Musk wants another 1 million satellites』 |
+| 2026-11-06 | 馬斯克 Baron 訪談 | 與輝達共同設計的運算衛星預計 2027 Q3 入軌（本人說法） | 先前研究《馬斯克 Terafab 與太空資料中心》 |
+| 2026-11-25（週三，美東） | FCC 太空局命令 | 部分核准、部分延後、附條件 | 台灣媒體標 11/26 |
+| 約 2026-12-25 | 30 天接受或拒絕附條件核准 | 沉默視為接受（算術，起算日以命令為準） | — |
+| 2033-11-25 | 里程碑 1：一顆衛星 | 第 7 年；有的稱發射、有的稱營運 | — |
+| 2035-11-25 | 里程碑 2：10% | 10 萬顆（算術）；第 9 年 | — |
+| 2038-11-25 | 里程碑 3：50% | 50 萬顆（算術）；第 12 年 | — |
+| 2040-11-25 | 里程碑 4：其餘 | 累計 100 萬顆；第 14 年 | 錯過任一里程碑，授權失效 |
+
+## 4. ITU Resolution 35 與 FCC 命令的里程碑對照
+| 項目 | ITU Resolution 35（WRC-19，WRC-23 修訂） | FCC Starmind 命令 | 差異 |
+|---|---|---|---|
+| 起算點 | ITU 申請受理後 7 年內須啟用（至少一個空間站） | 2026-11-25 核准日起 7 年（2033-11-25） | 起算點不同：ITU 看申請日，FCC 看核准日 |
+| 10% | 啟用期後 2 年（累計第 9 年） | 2035-11-25（第 9 年） | 同形 |
+| 50% | 啟用期後 5 年（累計第 12 年） | 2038-11-25（第 12 年） | 同形 |
+| 100% | 啟用期後 7 年（累計第 14 年） | 2040-11-25（第 14 年） | 同形 |
+| 罰則 | 縮減該申請可保留的衛星數：上限為已部署數的 10 倍（M1）、2 倍（M2）（ITU 簡報摘要） | 授權失效（null and void） | 不同：縮減上限 vs 失效 |
+| 寬限 | 每個里程碑後 30 天寬限（ITU 簡報摘要） | 沒讀到 | — |
+| 先到先得與協調 | 本次搜尋沒有讀到 | — | 未查證 |
+
+## 5. 台灣太空與低軌衛星題材股
+| 代號 | 公司 | 既有研究的角色 | 本次查證 | 判讀 |
+|---|---|---|---|---|
+| 2313 | 華通 | 低軌衛星相關 PCB（既有研究） | 沒有查到 FCC 核准後的訂單或股價報導 | 中性 |
+| 3491 | 昇達科 | 低軌衛星射頻被動元件（既有研究） | 同上；本次沒查數字 | 中性 |
+| 7717 | 萊德光電-KY | 星間雷射通訊；公司只說打入美系衛星大廠供應鏈、未點名 SpaceX（既有研究） | FCC 文件顯示系統主要以光學星間雷射連線（TechCrunch 轉述）——題材方向相關，但沒有訂單證據 | 中性 |
+| 6285 | 啟碁 | 低軌衛星用戶端設備（既有研究） | 軌道資料中心與用戶端設備的關係沒查 | 中性 |
+| 5243 | 乙盛-KY | 媒體稱是 SpaceX 低軌衛星關鍵機構件主要供應商（既有研究） | 本次沒查 | 中性 |
+
+## 6. 產業鏈因果（垂直）
+
+**一行鏈**：ITU 申請（軌位與頻率）→ FCC 授權（殼層、碎片條件、里程碑）→ SpaceX 發射與衛星量產（星艦入軌成本、運算衛星 2027 Q3 目標，本人說法）→ 運算酬載（與輝達共同設計的晶片、散熱、電力）→ 衛星機構件、PCB、雷射通訊、射頻（台灣供應商）。**瓶頸在發射量與運算酬載的經濟性，不在授權**；FCC 里程碑是『最後期限』，不是需求。
+
+- **授權的意義**：把頻譜、軌道與殼層『排進隊』，並附上時間表與條件；不保證 SpaceX 會做滿。
+- **高軌殼層尚未放行**：六個殼層中有四個在 600 公里以上，須先通過碎片計畫（算術：6−4＝2 個殼層在 600 公里以下）。
+- **台灣供應鏈**：既有研究的題材股沒有訂單證據。
+
+## 7. 相關推進力（水平）
+- **競爭申請**：FCC 還在審其他軌道資料中心申請並預計逐案裁決；中國 2025-12 的 ITU 申請約 20 萬顆（推論是 Threads 所指）。
+- **反對者**：Amazon、Viasat、美國天文學會（天文觀測與軌道擁擠）。
+- **輝達與 Terafab**：運算衛星與晶片產能目標（既有研究：本人說法）。
+- **SpaceX 與特斯拉的合併談判**（既有研究，公司結構事件）。
+- **碎片與太空交通管理**：600 公里以上殼層的最終碎片計畫。
+
+## 8. 慣性、痛點與限制（思辯）
+
+**供需缺口怎麼來的**：本題的缺口是**制度與資訊缺口**——授權日期已過、里程碑已排定，但運算衛星是否經濟（散熱、輻射、折舊）沒有公開數據；Threads 貼文把『授權』讀成『即將建成』。
+
+**慣性**：把部分核准當全面批准；把『最多 100 萬顆』當計畫；把授權當訂單；把 ITU 與 FCC 的里程碑當同一件事；把『2,000 公里』的兩處提及混為一談。
+
+**痛點與最快的解法**（標時點與卡點）：
+- **SpaceX 是否接受附條件核准**：卡點在約 2026-12-25 的 30 天窗口（沉默視為接受）；看 FCC 公告與 SpaceX 動作。
+- **600 公里以上殼層**：卡點在修改申請與最終碎片計畫；看 FCC 後續命令。
+- **運算衛星 2027 Q3 入軌**：卡點在星艦量產與酬載；看馬斯克與 SpaceX 公開時程是否滑動。
+- **台廠訂單**：看月營收與法說會，目前沒有證據。
+
+**限制**：FCC 命令原文沒讀到；各家對起算點、里程碑『發射或營運』、下限高度的說法略有出入；沒有 11/26 台股個股報導。
+
+**擴產與稼動檢核**：見第 9 節表六（授權事件，不適用於產能）。
+
+**敘事陷阱自查**：
+1. **『拿到發射 100 萬顆的牌照』**：是部分核准、附條件、可拒絕；授權的是部署與營運。
+2. **『正式批准、直接批准』**：部分延後。
+3. **『駁回阻撓請願』**：沒讀到。
+4. **『2,000 → 1,002 公里』**：屬實；但別與延後的處置豁免混為一談。
+5. **『嚴絲合縫對應 ITU』**：結構同形，起算點與罰則不同。
+6. **『翻了 60 倍』**：上限，不是計畫；2040 才是最後期限。
+7. **『台廠受惠』**：沒有訂單證據。
+
+## 9. 擴產與稼動檢核
+| 公司 | 瓶頸環節 | 現況稼動 | 擴產與資本支出 | 投產或放量時點 | 主要限制 | 證據等級 |
+|---|---|---|---|---|---|---|
+| SpaceX（衛星製造與發射） | 發射量與運算酬載（散熱、輻射、折舊為 Threads 作者看法，未查證） | 未揭露 | 既有研究：Terafab 首期約 168 億美元、全面建置上限約 1,190 億美元（單一來源的媒體轉述） | 運算衛星 2027 Q3 入軌（本人說法）；FCC 里程碑 2033～2040 | 600 公里以上殼層需另提碎片計畫；30 天可拒絕附條件核准；Amazon、Viasat、天文學會反對；ITU 協調 | 媒體報導；本人說法 |
+| FCC／ITU 授權（制度面） | 不適用：授權不是產能 | 不適用 | 不適用 | 2026-11-25 核准；2033-11-25 起的里程碑 | 里程碑未達即失效；ITU 縮減衛星數風險 | 官方命令（原文未讀）／媒體報導 |
+| 台灣衛星供應鏈（華通、昇達科、萊德光電-KY、啟碁、乙盛-KY） | 不適用：本題沒有訂單或產能資料 | 未揭露 | 未揭露 | 未揭露 | 沒有 FCC 核准後的訂單證據；運算衛星與通訊衛星的需求不同（既有研究的推論） | 資料缺口 |
+
+## 10. 誰受惠、誰受傷
+- **SpaceX**：取得附條件授權（可拒絕）；實際受益取決於發射與酬載經濟性（推論）。
+- **反對者與競爭者**：Amazon、Viasat、天文學會反對；其他軌道資料中心申請將逐案裁決（推論：核准讓 SpaceX 先佔位）。
+- **台灣題材股（華通 2313、昇達科 3491、萊德光電-KY 7717、啟碁 6285、乙盛-KY 5243）一律標中性**：既有研究的連結，沒有 FCC 核准後的訂單證據。
+
+## 11. 怎麼驗證
+1. **FCC 命令原文（DA 26-113）**：殼層清單、里程碑『發射或營運』、碎片條件、對請願的處理。
+2. **約 2026-12-25 的 30 天窗口**：SpaceX 是否接受附條件核准。
+3. **600 公里以上殼層的修改申請**與最終碎片計畫。
+4. **SpaceX 公開時程**：運算衛星 2027 Q3 入軌是否滑動；星艦入軌成本與酬載。
+5. **台廠月營收與法說會**：是否出現與 Starmind 相關的訂單。
+6. **ITU 申請日期與協調結果**：SpaceX 與中國申請的先後與重疊頻段。
+
+## 12. 舉一反三：和研究庫相鄰題材對照
+- **《馬斯克 Terafab 與太空資料中心（Baron 訪談；目標多為本人說法）》（11/08）**：運算衛星 2027 Q3 入軌與 Terafab 目標，本檔的『2027 年底』與其不同。
+- **《SpaceX Kessel 太空機櫃與 PCB midplane 材料（傳聞）》（11/12）**：太空機櫃與 PCB 材料的傳聞求證。
+- **《SpaceX 與特斯拉合併談判進入最終條款階段（彭博、節目說法）》（11/20）**：公司結構事件與台廠題材股名單。
+- **《美國301調查結果出爐》（11/26）**、**《深V不是轉折  是分歧》（11/26）**：同日的其他事件。
+
+## 13. 傳聞與未證實
+- **『ITU 先到先得』**：本次搜尋沒有讀到原文。
+- **『Starlink 占在軌衛星將近三分之二』**：沒查。
+- **『馬斯克把首批測試硬體排在 2027 年底』**：既有研究是 2027 Q3 入軌，出處沒查到。
+- **『駁回競爭對手的阻撓請願』**：沒讀到。
+- **『ITU 搶先圈 20 萬個位置的另一方是中國』**：推論。
+
+## 14. 風險與矛盾
+- 全是搜尋摘要與標題；FCC 命令原文沒讀到；Threads 貼文是網路轉載、原文出處未知。
+- 里程碑一顆衛星是『發射』還是『營運』、15 年的起算點、下限高度（500 或 550 公里）各家說法不一。
+- 『2,000 公里』在兩處出現（原申請最高高度、被延後的處置規則門檻），容易混淆
+- 碎片部分口徑不一：英文摘要稱碎片計畫只在 600 公里以下被認定合規，中文摘要稱 FCC 聲明說系統符合碎片規範。
+- ITU 欄位來自說明與新聞摘要，沒讀到 Resolution 35 全文。
+- 台灣題材股沒有核准後的報導或訂單證據。
+
+## 資料來源
+- [Threads：@n__nchang 貼文（2026-11-26；score 3；網路轉載，未證實）](https://www.threads.com/@n__nchang/post/DgLxC6WlKbl)
+- [Threads：@n__nchang 貼文（2026-11-26；score 2；網路轉載，未證實）](https://www.threads.com/@n__nchang/post/DgLxC7VFDOF)
+- [DA 26 113A1（FCC 太空局命令；只看到標題與連結，內容沒讀到）](https://docs.fcc.gov/public/attachments/DA-26-113A1.txt)
+- [FCC Approves SpaceX’s 1-Million Satellite Orbital Data Center Constellation（Via Satellite，2026-11-25；僅搜尋摘要）](https://www.satellitetoday.com/connectivity/2026/11/25/fcc-approves-spacexs-1-million-satellite-orbital-data-center-constellation/)
+- [SpaceX wins FCC approval to deploy 1 million orbital data center satellites（CNBC，2026-11-25；只看到標題）](https://www.cnbc.com/2026/11/25/spacex-fcc-satellite-approval.html)
+- [SpaceX gets FCC approval for one million space data center satellites（Interesting Engineering；僅搜尋摘要）](https://interestingengineering.com/space/spacex-million-satellites-data-centers-fcc)
+- [FCC approves SpaceX plan to put AI data centers in space（TechCrunch，2026-11-25；僅搜尋摘要）](https://techcrunch.com/2026/11/25/fcc-approves-spacex-plan-to-put-ai-data-centers-in-space/)
+- [FCC Approves SpaceX's Plan to Deploy 1 Million Satellites to Orbit（Gizmodo；只看到標題）](https://gizmodo.com/feds-approve-spacexs-ai-data-center-satellites-all-1-million-of-them-2000845526)
+- [SpaceX gets FCC approval for 1 million satellites to build data centers in space, Brendan Carr says（CBS News；僅搜尋摘要）](https://www.cbsnews.com/news/spacex-fcc-approval-data-centers-space/)
+- [FCC gave SpaceX the green light for up to 1 million orbital AI data centers（Quartz；只看到標題）](https://qz.com/fcc-spacex-starmind-million-data-center-satellites-112526)
+- [‘Data centers in space’: FCC clears SpaceX for 1M satellites to ‘extend America’s lead in superintelligence’（Fox Business；只看到標題）](https://www.foxbusiness.com/politics/data-centers-space-fcc-clears-spacex-1m-satellites-extend-americas-lead-superintelligence)
+- [FCC Approves SpaceX Starmind: What the 1 Million Satellite Grant Covers（i10x；僅搜尋摘要）](https://i10x.ai/news/fcc-spacex-starmind-orbital-data-center-grant-what-it-covers)
+- [FCC clears SpaceX to put up to 1 million Starmind data centers in space（SiliconANGLE，2026-11-25；只看到標題）](https://siliconangle.com/2026/11/25/fcc-clears-spacex-to-put-up-to-1-million-starmind-data-centers-in-space/)
+- [SpaceX OK'd to deploy up to 1M AI satellites, wrap it up by 2040（Light Reading；僅搜尋摘要）](https://www.lightreading.com/satellite/spacex-ok-d-to-deploy-up-to-1m-ai-satellites-complete-constellation-by-2040)
+- [FCC conditionally authorizes SpaceX's Starmind constellation（Venture Atlas，2026-11-25；只看到標題）](https://www.ventureatlas.org/news/2026-11-25-fcc-spacex-starmind)
+- [FCC gives SpaceX conditional approval for a million data center satellites（Startup Fortune；只看到標題）](https://startupfortune.com/fcc-gives-spacex-conditional-approval-for-a-million-data-center-satellites/)
+- [FCC Authorizes SpaceX Starmind Constellation: 1 Million Orbital Compute Satellites Approved, But Deployment Milestones Stretch to 2040（wpnews；只看到標題）](https://wpnews.pro/news/fcc-authorizes-spacex-starmind-constellation-1-million-orbital-compute-approved)
+- [美批准SpaceX部署100萬顆衛星 建太空資料中心（聯合新聞網；僅搜尋摘要）](https://udn.com/news/story/6811/9902518)
+- [美批准 SpaceX 部署 100 萬顆衛星，建太空資料中心（科技新報，2026-11-26；僅搜尋摘要）](https://technews.tw/2026/11/26/us-authorizes-spacex-to-deploy-1-million-satellites-for-data-centers-in-space/)
+- [美批准SpaceX部署100萬顆衛星 建太空資料中心（中央社，2026-11-26；僅搜尋摘要）](https://www.cna.com.tw/news/ait/202611260012.aspx)
+- [准了！FCC 首度批准 SpaceX 部署 100 萬顆衛星 Starmind 太空 AI 資料中心可能成真（電腦王阿達；僅搜尋摘要）](https://www.kocpc.com.tw/archives/704709)
+- [SpaceX獲FCC批准部署100萬顆衛星，打造軌道數據中心星座（Investing.com 香港；僅搜尋摘要）](https://hk.investing.com/news/stock-market-news/article-1777314)
+- [FCC批准SpaceX部署100萬顆衛星 建太空資料中心（世界日報；只看到標題）](https://www.worldjournal.com/wj/story/121172/9902558)
+- [itu members agree to new milestones for non geostationary satellite deployment（ITU Hub；僅搜尋摘要）](https://www.itu.int/hub/2020/01/itu-members-agree-to-new-milestones-for-non-geostationary-satellite-deployment/)
+- [ITU Resolution 35 說明頁（ITU-R；只看到標題與連結）](https://www.itu.int/en/ITU-R/space/Pages/res35main.aspx)
+- [As SpaceX Targets 50,000 Starlink Satellites, China Files for 200,000-Unit Mega Constellation（SatNews，2026-01-12；標題由網址還原；僅搜尋摘要）](https://satnews.com/2026/01/12/as-spacex-targets-50000-starlink-satellites-china-files-for-200000-unit-mega-constellation/)
+- [China ITU filing to put ~200K satellites in low earth orbit while FCC authorizes 7.5K additional Starlink LEO satellites（IEEE ComSoc Technology Blog，2026-01-13；僅搜尋摘要）](https://techblog.comsoc.org/2026/01/13/china-itu-filing-to-put-200k-satellites-in-orbit-fcc-authorizes-7-5k-additional-starlink-leo-satellites/)
+- [Musk wants another 1 million satellites（SatNews，2026-02-01；標題由網址還原；只看到標題）](https://satnews.com/2026/02/01/musk-wants-another-1-million-satellites/)
+- [China files for 244,000 satellites with ITU（Advanced Television；只看到標題）](https://www.advanced-television.com/?p=287075)
+
