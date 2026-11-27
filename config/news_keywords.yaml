@@ -144,6 +144,7 @@ google_queries_tw:
   # 低軌衛星（SpaceX、星鏈）：台股低軌衛星族群會跟著新聞急漲急殺（對應 themes.yaml 的「低軌衛星」）
   - 低軌衛星 台廠
   - SpaceX OR 星鏈 台股
+  - SpaceX FCC 批准 OR 核准 OR 獲准      # 2026-11-27 加：FCC 批准在台灣開盤前就公開，要在源頭抓到（對應 major_events 的『低軌衛星與SpaceX』）
   # 重大總經／地緣事件（對應 config/major_events.yaml）
   - 俄烏 停火 OR 能源停火 OR 柴油
   - 荷莫茲 OR 紅海 航運 攻擊
@@ -163,6 +164,7 @@ google_queries_tw:
   - 貨品輸入規定變更 公告
 
 google_queries_us:
+  - SpaceX FCC approval satellites      # 2026-11-27 加：美東白天的消息，台灣開盤前就該看到
   - price increase letter
   - price increase notice semiconductor
   - price hike stocks

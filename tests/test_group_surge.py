@@ -370,3 +370,23 @@ def test_backtest_eventgroup_runs_end_to_end_on_synthetic_data(tmp_path, monkeyp
                    "## 低軌衛星個案", "事件日明細"):
         assert needle in md
     assert (tmp_path / "research" / "backtest" / "event_group.json").exists()
+
+
+def test_premarket_lead_list_picks_satellite_names_with_futures_when_spcx_jumps():
+    """盤前領先名單：SpaceX（SPCX）前一晚漲超過門檻 → 低軌衛星族群裡有股期、還沒跟上的股票（華通、啟碁、穩懋）排進名單。"""
+    from market_intel.trade import early
+    idx = pd.date_range("2026-10-01", periods=30, freq="B")
+    close = pd.Series(100.0, index=idx)
+    close.iloc[-1] = 106.5                                                  # 前一晚 +6.5%（門檻 5%）
+    df = pd.DataFrame({"close": close, "volume": 1e6}, index=idx)
+    calm = df.assign(close=100.0)                                           # 其他太空股沒動
+    moves = early.us_moves({"SPCX": df, "ASTS": calm, "RKLB": calm}, config.us_lead())
+    assert [m["sym"] for m in moves] == ["SPCX"] and moves[0]["themes"] == ["低軌衛星"] and moves[0]["name"] == "SpaceX"
+    themes_tw = {k: [str(c) for c in v] for k, v in config.themes()["tw"].items()}
+    state = {"close": 100.0, "ret5": 0.0, "ret20": 0.0, "ret120": None, "gap": 0.02, "vr": 1.0, "above60": True, "breakout": False}
+    states = {c: dict(state) for c in themes_tw["低軌衛星"]}
+    picks_ = early.lead_picks(moves, themes_tw, states, FUT)                # FUT：只有華通、啟碁、穩懋有股期
+    assert {p["code"] for p in picks_} == {"2313", "6285", "3105"}
+    states["2313"]["ret5"] = 0.12                                           # 已經漲過頭的不列
+    assert {p["code"] for p in early.lead_picks(moves, themes_tw, states, FUT)} == {"6285", "3105"}
+    assert early.us_moves({"SPCX": calm}, config.us_lead()) == []           # 沒達門檻就沒有領先名單
