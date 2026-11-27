@@ -2296,6 +2296,63 @@
     "capital": 1000000
    },
    "finished": true
+  },
+  {
+   "date": "2026-11-27N",
+   "session": "night",
+   "source": "即時",
+   "events": [
+    {
+     "ts": "2026-11-27T15:22:46+08:00",
+     "time": "15:22",
+     "kind": "進場",
+     "price": 39188.0,
+     "text": "🔻 做空試單 1 口微台 39,188：跌破本場低點 39,196。停損 39,246.8（平均成本外 59 點，0.15%；這一單停損約虧 588 元，快市場會滑價、實際可能更大）。盤面還沒到真正行情（振幅未達 0.7%），先只試單、不要太積極，也不要加碼。本場只做這個方向。",
+     "lots_after": 1,
+     "pts_after": 0.0
+    }
+   ],
+   "summary": {
+    "dir": "short",
+    "entries": 1,
+    "adds": 0,
+    "lots_left": 1,
+    "realized_pts": 0.0,
+    "open_pts": -0.0,
+    "pts": 0.0,
+    "twd": 0,
+    "open": 39323.0,
+    "high": 39377.0,
+    "low": 39188.0,
+    "close": 39188.0,
+    "range_pct": 0.48,
+    "qualified": false,
+    "halted": false
+   },
+   "rules": {
+    "stop_pct": 0.15,
+    "stop_noise_mult": 0.0,
+    "stop_noise_window": 60,
+    "active_range_pct": 0.7,
+    "early_trend_pct": 0.6,
+    "ext_add_pct": 0.04,
+    "ext_add_gap_sec": 15,
+    "bar_range_pct": 0.75,
+    "tick_jump_pct": 0.2,
+    "daily_loss_pct": 3.0,
+    "entry_start": "15:15",
+    "entry_until": "03:30",
+    "exit_times": [
+     "04:35",
+     "04:50"
+    ],
+    "max_entries": 2,
+    "min_open_range_pct": 0.2,
+    "unit_lots": 1,
+    "max_lots": 4,
+    "contract_multiplier": 10,
+    "capital": 1000000
+   }
   }
  ]
 }
