@@ -213,20 +213,27 @@ def test_research_related_for_codes_orders_by_overlap_then_date(isolated, tmp_pa
 FUT = {"2313": {"std": "FTF", "mini": "QTF"}, "6285": {"std": "FXF", "mini": ""}, "3105": {"std": "", "mini": "MWF"}}
 
 
-def test_event_group_candidates_tiers_locked_and_two_percent_sizing():
+def test_event_group_candidates_chase_needs_60ma_laggards_watch_only_and_two_percent_sizing():
+    """回測：只有『追價且站上 60 日線』有優勢才算口數；補漲、沒站上 60 日線的追價只列觀察。"""
     g = group_surge.detect(sat_quotes(), {"低軌衛星": ["2313", "3491", "6285", "3105", "7717", "5243"]})[0]
-    lv = {"2313": {"atr": 6.0}, "6285": {"atr": 7.0}, "3105": {"atr": 15.0}}
-    rows = event_group.candidates(g, FUT, lv, 1_000_000, {})
+    lv = {"2313": {"atr": 6.0}, "6285": {"atr": 7.0, "ma60": 150.0}, "3105": {"atr": 15.0, "ma60": 400.0}}
+    rows = event_group.candidates(g, FUT, lv, 3_000_000, {})
     by = {r["code"]: r for r in rows}
-    assert "2313" not in by                                   # 鎖死漲停買不到，不列
-    assert by["6285"]["tier"] == "追價" and by["3105"]["tier"] == "補漲"
-    assert [r["tier"] for r in rows] == ["補漲", "追價"]       # 補漲排在前面
-    assert by["3105"]["stop"] == pytest.approx(444.5 - 1.5 * 15.0) and by["3105"]["qty"] >= 1
-    assert by["3105"]["contract"] == "MWF" and "可做" in event_group.size_text(by["3105"])
+    assert "2313" not in by and "3491" not in by                # 鎖死漲停買不到、沒有股期，都不列
+    assert by["6285"]["tier"] == "追價" and not by["6285"]["watch"] and by["6285"]["above60"] is True
+    assert by["3105"]["tier"] == "補漲" and by["3105"]["watch"] and by["3105"]["why"] == "補漲回測無優勢"
+    assert by["3105"]["qty"] == 0 and by["3105"]["stop"] is None and "僅觀察" in event_group.size_text(by["3105"])
+    assert [r["code"] for r in rows] == ["6285", "3105"]        # 可做的追價排前面，觀察排後面
+    six = by["6285"]
+    assert six["stop"] == pytest.approx(193.0 - 1.5 * 7.0) and six["contract"] == "FXF" and six["qty"] >= 1
+    assert "可做" in event_group.size_text(six)
     tight = event_group.candidates(g, FUT, lv, 20_000, {})     # 本金太小：2% 規則做不了，要列需要的本金
     assert not any(r["qty"] for r in tight) and "超過 2% 上限" in event_group.size_text({r["code"]: r for r in tight}["6285"])
     nolv = event_group.candidates(g, FUT, {}, 1_000_000, {})
+    assert nolv[0]["code"] == "6285" and nolv[0]["above60"] is None and not nolv[0]["watch"]   # 沒有 60 日線資料：不擋、標資料缺
     assert "沒有 ATR" in event_group.size_text(nolv[0])
+    below = event_group.candidates(g, FUT, {"6285": {"atr": 7.0, "ma60": 200.0}}, 3_000_000, {})
+    assert below[0]["watch"] and below[0]["why"] == "未站上60日線" and below[0]["qty"] == 0
     assert event_group.tier_of(-1.5) == "" and event_group.tier_of(-0.5) == "補漲" and event_group.tier_of(5.0) == "追價"
 
 
@@ -240,14 +247,20 @@ def test_event_group_backing_events_and_message():
     proof = event_group.backing("SpaceX FCC", "2026-11-26", ["低軌衛星與SpaceX"])
     assert proof == ["研究《SpaceX FCC》2026-11-26", "重大事件｜低軌衛星與SpaceX"]
     g = group_surge.detect(sat_quotes(), {"低軌衛星": ["2313", "3491", "6285", "3105", "7717", "5243"]})[0]
-    rows = event_group.candidates(g, FUT, {"6285": {"atr": 7.0}, "3105": {"atr": 15.0}}, 1_000_000, {})
+    lv = {"6285": {"atr": 7.0, "ma60": 150.0}, "3105": {"atr": 15.0, "ma60": 400.0}}
+    rows = event_group.candidates(g, FUT, lv, 3_000_000, {})
     bull = event_group.message(g, rows, proof, True, datetime(2026, 11, 27, 10, 30))
     bear = event_group.message(g, rows, proof, False, datetime(2026, 11, 27, 10, 30))
-    assert "🧩 10:30 事件族群進場候選｜低軌衛星" in bull and "補漲（還沒漲到 5%" in bull and "追價（已漲 ≥5%" in bull
+    assert "🧩 10:30 事件族群進場候選｜低軌衛星" in bull and "追價（已漲 ≥5% 沒鎖死" in bull and "僅觀察（回測不支持，不算口數）" in bull
+    assert "｜站上60日線" in bull and "補漲回測無優勢" in bull and "🟢 可做 FXF" in bull
+    assert bull.index("追價（已漲") < bull.index("僅觀察（回測不支持")                   # 可做的追價在前、觀察在後
     assert "鎖死漲停 1 檔，買不到、不列" in bull and "🟢 多頭" in bull and "撐腰：研究《SpaceX FCC》" in bull
     assert "🔴 空頭／盤整——依規則不開新倉，名單只供觀察" in bear and "穩懋" in bear          # 空頭：只標示風險，名單照列
-    assert "試行規則" in bull and "event_group_backtest.md" in bull
+    assert "試行規則" in bull and "event_group_backtest.md" in bull and "補漲" in bull and "+1.65%" in bull
     assert "沒有進場候選" in event_group.message(g, [], proof, True, datetime(2026, 11, 27, 10, 30))
+    watch_only = event_group.candidates(g, FUT, {"6285": {"atr": 7.0, "ma60": 200.0}, "3105": {"atr": 15.0, "ma60": 400.0}}, 3_000_000, {})
+    txt = event_group.message(g, watch_only, proof, True, datetime(2026, 11, 27, 10, 30))
+    assert "沒有可做的追價候選" in txt and "未站上60日線" in txt and "🟢 可做" not in txt
 
 
 # ---------------------------------------------------------------- 盤中整合

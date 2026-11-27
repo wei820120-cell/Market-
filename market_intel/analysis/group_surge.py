@@ -141,5 +141,5 @@ def message(g: dict, now: datetime, fut_labels: dict | None = None, sizing: dict
     for extra in (research_line, market_line):
         if extra:
             lines.append(extra)
-    lines.append("這是偵測不是進場訊號；進場候選（補漲／可追、2% 口數）看進出場機器人的『事件族群』訊息。")
+    lines.append("這是偵測不是進場訊號；進場候選（站上 60 日線的追價、2% 口數）看進出場機器人的『事件族群』訊息，補漲回測沒有優勢只列觀察。")
     return "\n".join(lines)

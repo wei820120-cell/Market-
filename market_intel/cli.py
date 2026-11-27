@@ -507,7 +507,7 @@ def _group_surge_check(gs: dict, quotes: dict, themes_tw: dict, listings: dict, 
         cands, sizing = [], {}
         if trade_rt:
             cands = event_group.candidates(g, futures, trade_rt["levels"], trade_rt["equity"], trade_rt["rates"])
-            sizing = {r["code"]: event_group.size_text(r) for r in cands if r["tier"] == event_group.TIER_CHASE}
+            sizing = {r["code"]: event_group.size_text(r) for r in cands}
         notify.send(group_surge.message(g, now, fut_labels, sizing, research_line, market), channel="picks")
         proof = event_group.backing(topic, topic_date, events)
         if trade_rt and proof:

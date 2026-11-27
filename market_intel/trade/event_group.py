@@ -6,11 +6,16 @@
   1. 族群 ≥3 檔（大族群 ≥25%）同日漲 ≥5%（analysis/group_surge.py 偵測）
   2. 有事件或研究撐腰：族群有對應研究，或今天有命中的重大事件（config/major_events.yaml）
   3. 候選＝族群成分股裡有股票期貨、沒有鎖死漲停（買得到）的：
-       補漲＝還沒漲到 5%（−1% ～ +5%）；追價＝已漲 ≥5% 但沒鎖死（追高風險大）
+       追價＝已漲 ≥5% 但沒鎖死（追高風險大），而且站上 60 日線 → 算口數（回測有優勢）
+       補漲＝還沒漲到 5%（−1% ～ +5%）、或追價但沒站上 60 日線 → 只列觀察、不算口數（回測沒有優勢）
   4. 停損＝現價 − 1.5ATR，口數照 2% 規則（trade/backtest.size）；大盤空頭／盤整時只標示風險，名單照列（不擋）
 
-回測：python -m market_intel backtest --eventgroup（GitHub 上跑，結果在 research/event_group_backtest.md）。
-先前的回測已經發現「同題材補漲單獨做不賺錢」，所以這支是『列名單＋口數』，不自動進場，要不要進場自己決定。
+回測（2026-11-27，近 2 年、日 K 近似；python -m market_intel backtest --eventgroup，GitHub 上跑，結果在 research/event_group_backtest.md）：
+  訊號品質（大盤多頭日，隔天開盤買進、持有 5 日平均）：族群內追價 +1.65%、站上 60 日線 +2.23%（勝率 54%）；同樣條件但不在拉升族群的單檔追價 +0.26%；
+  補漲 +0.12%（中位數 −0.67%），都不比全部股票的 +0.45% 好 → 補漲沒有優勢，只列觀察。
+  組合回測（同一套停損與 2% 風險）：B 現行 +169.5%；另加 1 檔事件族群專用名額：追價 +182.8%、追價＋補漲站上 60 日線 +196.6%（回撤 −25%～−28%，B 為 −29.3%），
+  只放補漲則降到 +144.5%；事件族群交易本身只有 9～13 筆、平均 R −0.14～+0.56，增量不能算顯著；排在突破前面反而降到 +89.7%。
+所以這支是『列名單＋口數』，不自動進場，要不要進場自己決定；若要用，只當專用名額、不要排在突破前面。
 """
 from __future__ import annotations
 
@@ -25,7 +30,10 @@ from .paper import PARAMS
 SURGE_PCT = 5.0        # 與 analysis/group_surge.py 一致
 LAG_FLOOR = -1.0       # 補漲候選的跌幅下限（%）：不跌的才算「還沒跟上」，跌的多半是別的原因
 TIER_LAG, TIER_CHASE = "補漲", "追價"
-NOTE = ("試行規則：回測結果見 research/event_group_backtest.md（先前回測同題材補漲單獨做不賺錢，要看相對強度）；"
+WHY_LAG, WHY_BELOW60 = "補漲回測無優勢", "未站上60日線"
+NOTE = ("試行規則（回測見 research/event_group_backtest.md，近 2 年、日 K 近似）：族群內追價 5 日平均 +1.65%、站上 60 日線 +2.23%"
+        "（單檔追價對照 +0.26%、全部股票 +0.45%）；補漲 +0.12%、中位數 −0.67%，沒有優勢，所以只列觀察。"
+        "組合回測：另加 1 檔追價專用名額 +182.8%（B 現行 +169.5%；只放補漲 +144.5%），但事件族群交易只有 9～13 筆、平均 R −0.14～+0.56，樣本太少；排在突破前面報酬腰斬。"
         "只列名單與 2% 口數，不自動進場，鎖死漲停的買不到所以不列。")
 
 
@@ -59,7 +67,8 @@ def tier_of(pct: float, surge_pct: float = SURGE_PCT, lag_floor: float = LAG_FLO
 
 def candidates(group: dict, futures: dict, levels: dict, equity: float, rates: dict, p=PARAMS) -> list[dict]:
     """族群裡有股期、沒鎖死漲停的成分股，附停損與 2% 規則口數。group＝analysis/group_surge.detect 的一筆。
-    levels＝{代號: {"atr": …}}（trade/intraday.levels）；沒有 ATR 的列出但不算口數。"""
+    levels＝{代號: {"atr": …, "ma60": …}}（trade/intraday.levels）；沒有 ATR 的列出但不算口數，沒有 60 日線的追價不擋但標『資料缺』。
+    回測只有『追價且站上 60 日線』有優勢 → 算口數；補漲、沒站上 60 日線的追價只列觀察（row["watch"]＝True、不算口數）。"""
     out = []
     for m in group["members"]:
         info = futures.get(m["code"]) or {}
@@ -68,11 +77,15 @@ def candidates(group: dict, futures: dict, levels: dict, equity: float, rates: d
         tier = tier_of(m["pct"])
         if not tier:
             continue
+        lv = levels.get(m["code"]) or {}
+        ma60 = lv.get("ma60")
+        above60 = (m["price"] > ma60) if ma60 else None                   # 沒有 60 日線資料就不擋（標示資料缺）
+        # 回測只有『追價且站上 60 日線』有優勢；補漲與沒站上 60 日線的追價只列觀察、不算口數
+        why = WHY_LAG if tier == TIER_LAG else (WHY_BELOW60 if above60 is False else "")
         row = {"code": m["code"], "name": m["name"], "pct": m["pct"], "price": m["price"], "tier": tier,
                "limit_up": m["limit_up"], "info": info, "qty": 0, "contract": "", "stop": None, "dist": None,
-               "risk": None, "need": None}
-        lv = levels.get(m["code"]) or {}
-        if lv.get("atr"):
+               "risk": None, "need": None, "above60": above60, "watch": bool(why), "why": why}
+        if lv.get("atr") and not why:
             stop = m["price"] - p.atr_mult * lv["atr"]
             dist = m["price"] - stop
             contract, mult, qty = bt.size(equity, m["price"], stop, info, p, rates.get(m["code"], p.margin_rate))
@@ -80,12 +93,14 @@ def candidates(group: dict, futures: dict, levels: dict, equity: float, rates: d
             row.update(stop=stop, dist=dist, contract=contract, qty=qty,
                        risk=dist * mult * qty if qty else dist * unit, need=dist * unit / p.risk_pct)
         out.append(row)
-    rank = {TIER_LAG: 0, TIER_CHASE: 1}
-    return sorted(out, key=lambda r: (rank[r["tier"]], 0 if r["qty"] else 1, -r["pct"]))
+    rank = {TIER_CHASE: 0, TIER_LAG: 1}
+    return sorted(out, key=lambda r: (r["watch"], rank[r["tier"]], 0 if r["qty"] else 1, -r["pct"]))
 
 
 def size_text(r: dict, p=PARAMS) -> str:
-    """一檔的 2% 規則說明（給族群拉升快訊與進場候選共用）。"""
+    """一檔的 2% 規則說明（給族群拉升快訊與進場候選共用）。僅觀察的不算口數。"""
+    if r.get("watch"):
+        return f"⚪ 僅觀察：{r['why']}，不算口數"
     if r.get("stop") is None:
         return "2% 規則：沒有 ATR 資料，無法算口數"
     if r["qty"]:
@@ -103,9 +118,11 @@ def message(group: dict, cands: list[dict], proof: list[str], market_ok: bool, n
     if not cands:
         return "\n".join(lines + ["族群裡沒有『有股期、沒鎖死漲停』的標的 → 今天沒有進場候選"])
     shown = 0
-    for tier, title in ((TIER_LAG, "補漲（還沒漲到 5%，族群在動它還沒動）"),
-                        (TIER_CHASE, "追價（已漲 ≥5% 但沒鎖死；追高風險大，停損要守）")):
-        rows = [r for r in cands if r["tier"] == tier][: max(limit - shown, 0)]
+    if not any(not r["watch"] for r in cands):
+        lines.append("沒有可做的追價候選（要有股期、沒鎖死、已漲 ≥5% 且站上 60 日線）")
+    for watch, title in ((False, "追價（已漲 ≥5% 沒鎖死；回測有優勢，要站上 60 日線；追高風險大、停損要守）"),
+                         (True, "僅觀察（回測不支持，不算口數）")):
+        rows = [r for r in cands if r["watch"] == watch][: max(limit - shown, 0)]
         if not rows:
             continue
         lines.append(f"\n{title}：")
@@ -113,8 +130,9 @@ def message(group: dict, cands: list[dict], proof: list[str], market_ok: bool, n
             shown += 1
             fut = "／".join(filter(None, [f"一般 {r['info']['std']}" if r["info"].get("std") else "",
                                            f"小型 {r['info']['mini']}" if r["info"].get("mini") else ""]))
-            lines.append(f"・{r['code']} {r['name']} {r['price']:,.2f}（{r['pct']:+.1f}%）{fut}"
-                         + ("｜漲停有賣盤" if r["limit_up"] else ""))
+            flags = ("｜漲停有賣盤" if r["limit_up"] else "") + ("｜站上60日線" if r.get("above60") else
+                                                              "｜60日線資料缺" if r.get("above60") is None else "")
+            lines.append(f"・{r['code']} {r['name']} {r['price']:,.2f}（{r['pct']:+.1f}%，{r['tier']}）{fut}{flags}")
             lines.append(f"  {size_text(r)}")
     lines.append("\n" + NOTE)
     return "\n".join(lines)
