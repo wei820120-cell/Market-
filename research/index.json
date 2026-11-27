@@ -14392,5 +14392,84 @@
   "usd": 0.0,
   "auto": false,
   "evidence": "媒體報導"
+ },
+ "供需事件：AWS與TPU 2027～2028年下修及東南亞算力說法（Threads小道消息求證）": {
+  "file": "2026-11-27-供需事件：AWS與TPU-2027～2028年下修及東南亞算力說法（Thread.md",
+  "date": "2026-11-27",
+  "keywords": [
+   "TPU",
+   "AWS",
+   "Trainium",
+   "EMIB-T",
+   "CoWoS",
+   "聯發科",
+   "博通",
+   "東南亞算力",
+   "B300租金",
+   "2028年",
+   "小道消息",
+   "Threads說法求證"
+  ],
+  "codes": [
+   "2454",
+   "3661",
+   "3037"
+  ],
+  "status": "傳聞",
+  "usd": 0.0,
+  "auto": false,
+  "evidence": "社群傳聞"
+ },
+ "供需事件：Starship入軌部署26顆Starlink V3與Amazon Leo進度說法（Threads求證）": {
+  "file": "2026-11-27-供需事件：Starship入軌部署26顆Starlink-V3與Amazon-L.md",
+  "date": "2026-11-27",
+  "keywords": [
+   "Starship",
+   "Starlink V3",
+   "Flight 14",
+   "Amazon Leo",
+   "低軌衛星",
+   "雷射終端",
+   "萊德光電",
+   "昇達科",
+   "華通",
+   "台光電",
+   "啟碁",
+   "Threads說法求證"
+  ],
+  "codes": [
+   "7717",
+   "3491",
+   "2313",
+   "2383",
+   "6285"
+  ],
+  "status": "混合",
+  "usd": 0.0,
+  "auto": false,
+  "evidence": "媒體報導"
+ },
+ "供需事件：三集瑞-KY拿下輝達訂單或認證（傳聞求證）": {
+  "file": "2026-11-27-供需事件：三集瑞-KY拿下輝達訂單或認證（傳聞求證）.md",
+  "date": "2026-11-27",
+  "keywords": [
+   "三集瑞-KY",
+   "6862",
+   "輝達Rubin",
+   "ASIC",
+   "BBU",
+   "HVDC",
+   "Molding TLVR",
+   "電感",
+   "傳聞求證",
+   "供應鏈轉單"
+  ],
+  "codes": [
+   "6862"
+  ],
+  "status": "混合",
+  "usd": 0.0,
+  "auto": false,
+  "evidence": "媒體報導"
  }
 }
