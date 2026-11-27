@@ -166,6 +166,60 @@ def signals(themes_tw: dict, fr: dict[str, pd.DataFrame], futures: dict, pct: fl
     return out
 
 
+def combine(*sigs: dict) -> dict:
+    """把幾種訊號直接疊在一起（不重新排名；forward_stats 只看型態名稱，不看分數）。"""
+    out: dict = defaultdict(list)
+    for s in sigs:
+        for ts, items in s.items():
+            out[ts] += list(items)
+    return out
+
+
+def single_signals(themes_tw: dict, fr: dict[str, pd.DataFrame], futures: dict, pct: float = SURGE_PCT,
+                   min_n: int = 3, min_share: float = 0.25, lock_pct: float = 9.4, trend: bool = False,
+                   name: str = "單檔追價") -> dict:
+    """對照組：一樣是『有股期、當天漲 ≥pct、沒鎖死漲停』，但不是事件族群的追價（當天它所屬的族群沒有達到事件條件，單獨一檔在漲）。
+    用來分辨『族群一起動』有沒有額外價值，還是只是『強勢股追價』本身的動能效果。"""
+    ev = signals(themes_tw, fr, futures, pct, min_n, min_share, lock_pct=lock_pct, trend=trend, tiers=(TIER_CHASE,))
+    in_event = {(ts, c) for ts, items in ev.items() for _, c, _ in items}
+    close, high = fr["close"], fr["high"]
+    day = close / close.shift(1) - 1
+    locked = (day >= lock_pct / 100) & (close >= high - 1e-9)
+    fut_ok = [c for c in close.columns if (futures.get(c) or {}).get("std") or (futures.get(c) or {}).get("mini")]
+    hit = (day[fut_ok] >= pct / 100) & ~locked[fut_ok]
+    if trend:
+        hit &= close[fut_ok] > fr["ma60"][fut_ok]
+    out: dict = defaultdict(list)
+    for ts in hit.index[hit.any(axis=1)]:
+        for c in hit.columns[hit.loc[ts].to_numpy()]:
+            if (ts, c) not in in_event:
+                out[ts].append((float(day.at[ts, c]), c, name))
+    return out
+
+
+def summarize_events(evs: list[dict], horizons: tuple = (1, 3, 5), gap_days: int = 7) -> list[dict]:
+    """事件日明細的統計：全部事件日、以及『每一波只算第一天』（與前一個事件日相隔超過 gap_days 個日曆天才算新的一波，
+    連續幾天的事件日高度重疊，全部平均會把同一波算很多次）。報酬＝有股期成分股隔天開盤買進（沒扣成本、沒扣鎖死買不到）。"""
+    import statistics
+    from datetime import date as _date
+    firsts, prev = [], None
+    for e in evs:
+        d = _date.fromisoformat(e["日期"])
+        if prev is None or (d - prev).days > gap_days:
+            firsts.append(e)
+        prev = d
+    out = []
+    for label, rows in (("全部事件日", evs), ("每一波第一天", firsts)):
+        rec: dict = {"範圍": label, "事件數": len(rows)}
+        for h in horizons:
+            v = [r[f"有股期成分股隔天開盤買進{h}日%"] for r in rows if r.get(f"有股期成分股隔天開盤買進{h}日%") is not None]
+            rec[f"{h}日平均%"] = round(sum(v) / len(v), 2) if v else None
+            rec[f"{h}日中位%"] = round(statistics.median(v), 2) if v else None
+            rec[f"{h}日勝率%"] = round(sum(x > 0 for x in v) / len(v) * 100, 1) if v else None
+        out.append(rec)
+    return out
+
+
 def theme_events(theme: str, members: list, fr: dict[str, pd.DataFrame], futures: dict, pct: float = SURGE_PCT,
                  min_n: int = 3, horizons: tuple = (1, 3, 5)) -> list[dict]:
     """單一族群的事件日明細（給『低軌衛星』這類個案看）：哪天幾檔漲 ≥pct、有股期的候選隔天開盤買進後 1／3／5 日報酬。"""

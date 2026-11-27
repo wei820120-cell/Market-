@@ -2802,6 +2802,10 @@ def _backtest_eventgroup(data, futures, index_df, rates, capital: float, range_:
 
     both = early.merge(sig["補漲"], sig["追價"])
     both_tr = early.merge(sig["補漲＋站上60日線"], sig["追價＋站上60日線"])
+    # 對照組：同樣『有股期、漲 ≥5%、沒鎖死』但不在拉升族群裡（單獨一檔在漲）→ 看『族群一起動』有沒有額外價值
+    solo = event_group.single_signals(themes_tw, fr, futures)
+    solo_tr = event_group.single_signals(themes_tw, fr, futures, trend=True)
+    log.info("單檔追價（對照）訊號數：%d；站上60日線 %d", count(solo), count(solo_tr))
     lines = [f"# 事件族群進場規則回測（{now_tw():%Y-%m-%d %H:%M}，資料範圍 {range_}）", "",
              "規則（trade/event_group.py）：族群同日 ≥3 檔（大族群 ≥25%）漲 ≥5% → 當天收盤產生訊號、隔天開盤進場；只對有股期的股票出訊號。"
              "補漲＝當天漲幅 −1%～+5%；追價＝當天漲幅 ≥5% 且不是鎖死漲停（日 K 近似：漲幅 ≥9.4% 且收在最高價）。"
@@ -2810,8 +2814,8 @@ def _backtest_eventgroup(data, futures, index_df, rates, capital: float, range_:
              "實際是盤中就推、不一定等到收盤；樣本只有近 2 年、事件日有同一天多族群重疊的問題。", ""]
     quality = {}
     for title, mk in (("大盤多頭日", mkt), ("全部日子（含空頭／盤整）", all_days)):
-        q = early.forward_stats(both, fr, mk)
-        q_tr = early.forward_stats(both_tr, fr, mk)
+        q = early.forward_stats(event_group.combine(both, solo), fr, mk)
+        q_tr = early.forward_stats(event_group.combine(both_tr, solo_tr), fr, mk)
         q_tr["訊號"] = q_tr["訊號"].where(q_tr["訊號"].str.contains("基準"), q_tr["訊號"] + "（站上60日線）")
         q = pd.concat([q, q_tr[~q_tr["訊號"].str.contains("基準")]], ignore_index=True)
         quality[title] = q
@@ -2824,16 +2828,24 @@ def _backtest_eventgroup(data, futures, index_df, rates, capital: float, range_:
         json.dumps({k: json.loads(v.to_json(orient="records", force_ascii=False)) for k, v in quality.items()},
                    ensure_ascii=False, indent=1), encoding="utf-8")
 
+    # 現行每天約 7 檔突破訊號，額外訊號『排後面、只補空位』幾乎進不去（early2 已發現）→ 共用名額的列只留一個代表；
+    # 真正的增量用『專用名額』（另外加 1 檔，不和突破搶位）來比，並附『B 4 檔』當對照（多一個位置本身的效果）。
+    plus = {"extra_slots": 1}
     cases = {
         "B 現行（收盤突破＋拉回）": ({}, None),
-        "B＋事件族群補漲": ({}, sig["補漲"]),
-        "B＋事件族群追價": ({}, sig["追價"]),
-        "B＋事件族群（補漲＋追價）": ({}, both),
-        "B＋事件族群（補漲＋追價，站上60日線）": ({}, both_tr),
+        "B 4 檔（對照：多一個位置本身的效果）": ({"max_pos": 4}, None),
+        "B＋事件族群（共用名額，只補空位）": ({}, both),
+        "B 3 檔＋事件族群專用 1 檔（補漲）": (plus, sig["補漲"]),
+        "B 3 檔＋事件族群專用 1 檔（追價）": (plus, sig["追價"]),
+        "B 3 檔＋事件族群專用 1 檔（補漲＋追價）": (plus, both),
+        "B 3 檔＋事件族群專用 1 檔（追價，站上60日線）": (plus, sig["追價＋站上60日線"]),
+        "B 3 檔＋事件族群專用 1 檔（補漲＋追價，站上60日線）": (plus, both_tr),
+        "B 3 檔＋單檔追價專用 1 檔（對照：不在拉升族群）": (plus, solo),
         "只做事件族群補漲": ({"setups": ()}, sig["補漲"]),
         "只做事件族群追價": ({"setups": ()}, sig["追價"]),
         "只做事件族群（補漲＋追價）": ({"setups": ()}, both),
         "只做事件族群（站上60日線）": ({"setups": ()}, both_tr),
+        "只做單檔追價（對照：不在拉升族群）": ({"setups": ()}, solo),
         "事件族群排在突破前面": ({"extra_first": True}, both),
     }
     rows = _early_table(cases, base, data_fut, futures, index_df, rates)
@@ -2844,6 +2856,9 @@ def _backtest_eventgroup(data, futures, index_df, rates, capital: float, range_:
         print(f"・{r['策略']}：{r['各型態']}")
     (out / "event_group.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
     lines += ["## 組合回測（同一套停損、2% 風險、最多 3 檔；前後半段各自回測）", "",
+              "讀法：『共用名額，只補空位』那列和 B 現行完全一樣，是因為現行每天約 7 檔突破訊號，排在後面的額外訊號根本進不去，"
+              "不代表事件族群沒效果；要看增量請看『專用 1 檔』列，對照『B 4 檔』（多一個位置本身的效果）；"
+              "『單檔追價』是對照組（同樣有股期、漲 ≥5%、沒鎖死，但不在拉升族群內）。", "",
               _md_table(table.drop(columns=["各型態"])), ""]
     lines += [f"- {r['策略']}：{r['各型態']}" for r in rows] + [""]
 
@@ -2862,6 +2877,15 @@ def _backtest_eventgroup(data, futures, index_df, rates, capital: float, range_:
             lines += [f"### {label}：成分股逐日漲幅（%）與規則是否觸發", "", _md_table(pd.DataFrame(w)), ""]
             print(f"\n【低軌衛星｜{label}】")
             print(pd.DataFrame(w).to_string(index=False))
+        summ = event_group.summarize_events(evs) if evs else []
+        if summ:
+            lines += ["### 低軌衛星事件日統計：有股期的成分股隔天開盤買進（沒扣成本、也沒扣『鎖死漲停買不到』）", "",
+                      _md_table(pd.DataFrame(summ)), "",
+                      "『每一波第一天』＝與前一個事件日相隔超過 7 個日曆天才算新的一波；連續幾天的事件日高度重疊，全部平均會把同一波算很多次。", ""]
+            print("\n【低軌衛星｜事件日統計】")
+            print(pd.DataFrame(summ).to_string(index=False))
+            (out / "event_group_satellite.json").write_text(json.dumps({"統計": summ, "事件日": evs}, ensure_ascii=False, indent=1),
+                                                            encoding="utf-8")
         lines += ["### 事件日明細（≥3 檔漲 ≥5%）：有股期的成分股隔天開盤買進後的平均報酬", "",
                   (_md_table(pd.DataFrame(evs)) if evs else "沒有符合的事件日。"), ""]
         print("\n【低軌衛星｜事件日明細】")

@@ -330,6 +330,46 @@ def test_event_group_signals_split_tiers_and_skip_locked_and_no_futures():
     assert event_group.signals({"T": ["A1", "A2"]}, fr, futures) == {}                       # 只有 2 檔
 
 
+def test_single_signals_exclude_event_chase_locked_and_no_futures_and_combine_keeps_names():
+    """對照組：有股期、漲 ≥5%、沒鎖死，但不在事件族群內（A1、A2 是事件族群的追價，A3 鎖死）→ 另一個族群裡單獨漲的 B1 才算。"""
+    fr, day = synth_frames()
+    idx = fr["close"].index
+    for key in ("close", "high", "open"):                                  # 加一檔 B1：同日單獨漲 7%，不屬於任何達標族群
+        fr[key]["B1"] = fr[key]["A4"].copy()
+    fr["close"].loc[idx[day == idx].tolist() or idx[30:], "B1"] = fr["close"]["A4"].iloc[29] * 1.07
+    fr["high"].loc[idx[30:], "B1"] = fr["close"].loc[idx[30:], "B1"] * 1.001
+    fr["ma60"], fr["rs"] = fr["close"] * 0.9, pd.DataFrame({c: pd.Series(0.5, index=idx) for c in fr["close"].columns})
+    futures = {c: {"std": "XXF", "mini": ""} for c in ("A1", "A2", "A3", "A4", "A5", "B1")}
+    themes = {"T": ["A1", "A2", "A3", "A4", "A5", "A6"], "U": ["B1", "A4"]}
+    solo = event_group.single_signals(themes, fr, futures)
+    got = {(c, t) for items in solo.values() for _, c, t in items}
+    assert ("B1", "單檔追價") in got
+    assert not ({"A1", "A2", "A3"} & {c for c, _ in got})                  # 事件族群的追價與鎖死的都不算單檔
+    assert not any(c == "A6" for c, _ in got)                              # 沒股期
+    trend_below = dict(fr, ma60=fr["close"] * 1.2)
+    assert event_group.single_signals(themes, trend_below, futures, trend=True) == {}
+    ev = event_group.signals(themes, fr, futures)
+    both = event_group.combine(ev, solo)
+    names = {t for items in both.values() for _, _, t in items}
+    assert {"追價", "補漲", "單檔追價"} <= names
+    assert sum(len(v) for v in both.values()) == sum(len(v) for v in ev.values()) + sum(len(v) for v in solo.values())
+
+
+def test_summarize_events_counts_all_days_and_first_day_of_each_wave():
+    key = lambda h: f"有股期成分股隔天開盤買進{h}日%"  # noqa: E731
+    evs = [{"日期": "2026-01-05", key(1): 2.0, key(3): 4.0, key(5): None},
+           {"日期": "2026-01-06", key(1): -1.0, key(3): -2.0, key(5): -3.0},
+           {"日期": "2026-01-07", key(1): 3.0, key(3): 1.0, key(5): 1.0},
+           {"日期": "2026-02-02", key(1): -4.0, key(3): 6.0, key(5): 8.0}]
+    allr, firsts = event_group.summarize_events(evs)
+    assert allr["範圍"] == "全部事件日" and allr["事件數"] == 4
+    assert allr["1日平均%"] == 0.0 and allr["1日中位%"] == 0.5 and allr["1日勝率%"] == 50.0
+    assert allr["5日平均%"] == 2.0 and allr["5日勝率%"] == pytest.approx(66.7)       # 缺值（None）不算進去
+    assert firsts["範圍"] == "每一波第一天" and firsts["事件數"] == 2                    # 1/5 與 2/2（1/6、1/7 接在同一波）
+    assert firsts["1日平均%"] == -1.0 and firsts["3日平均%"] == 5.0
+    assert event_group.summarize_events([])[0]["事件數"] == 0
+
+
 def test_theme_events_and_window_table_report_case_days():
     fr, day = synth_frames()
     futures = {c: {"std": "XXF", "mini": ""} for c in ("A1", "A2", "A3", "A4", "A5")}
@@ -349,7 +389,7 @@ def test_backtest_eventgroup_runs_end_to_end_on_synthetic_data(tmp_path, monkeyp
     def bars(drift, jump_days=()):
         r = rng.normal(drift, 0.012, n)
         for d in jump_days:
-            r[d] += 0.06
+            r[d] += 0.09                 # 夠大，確保三檔同日都 ≥5%（事件日）
         c = 100 * np.cumprod(1 + r)
         o = np.r_[c[0], c[:-1]]
         return pd.DataFrame({"open": o, "high": np.maximum(o, c) * 1.005, "low": np.minimum(o, c) * 0.995, "close": c,
@@ -366,10 +406,11 @@ def test_backtest_eventgroup_runs_end_to_end_on_synthetic_data(tmp_path, monkeyp
     (tmp_path / "research").mkdir()
     cli._backtest_eventgroup(data, futures, index_df, {}, 100_000, "2y")
     md = (tmp_path / "research" / "event_group_backtest.md").read_text(encoding="utf-8")
-    for needle in ("# 事件族群進場規則回測", "## 訊號品質｜大盤多頭日", "## 訊號品質｜全部日子", "## 組合回測", "B＋事件族群（補漲＋追價）",
-                   "## 低軌衛星個案", "事件日明細"):
+    for needle in ("# 事件族群進場規則回測", "## 訊號品質｜大盤多頭日", "## 訊號品質｜全部日子", "## 組合回測", "B 3 檔＋事件族群專用 1 檔（補漲＋追價）",
+                   "B 4 檔（對照", "單檔追價", "## 低軌衛星個案", "事件日明細", "低軌衛星事件日統計", "每一波第一天"):
         assert needle in md
     assert (tmp_path / "research" / "backtest" / "event_group.json").exists()
+    assert (tmp_path / "research" / "backtest" / "event_group_satellite.json").exists()
 
 
 def test_premarket_lead_list_picks_satellite_names_with_futures_when_spcx_jumps():
