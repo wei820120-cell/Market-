@@ -7,7 +7,7 @@
  "duration_min": 64,
  "paras": 26,
  "ad_paras": 5,
- "chars": 16950,
+ "chars": 16926,
  "market_start": "",
  "qa_start": "",
  "tags": {
@@ -31,13 +31,13 @@
   "風險": 3,
   "趨勢": 3,
   "現金": 6,
-  "ETF": 2,
+  "ETF": 3,
   "基本面": 2,
   "產業": 5,
   "供應鏈": 1,
   "毛利": 3
  },
  "model": "medium",
- "transcribed_at": "2026-11-27T02:24:01+00:00",
+ "transcribed_at": "2026-11-27T21:49:04+00:00",
  "archive_key": "a245ba719986"
 }
