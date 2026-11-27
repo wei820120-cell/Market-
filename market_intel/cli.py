@@ -452,6 +452,68 @@ def intraday_picks(quotes: dict, listings: dict, flow: pd.DataFrame, theme_map: 
     return picks.rank_picks(cands, futures, min_ratio=1.5)
 
 
+GROUP_SURGE_DEFAULTS = {"enabled": True, "start": "09:05", "pct": 5.0, "min_stocks": 3, "min_share": 0.25, "max_per_day": 8}
+
+
+def _group_surge_setup() -> dict | None:
+    """族群拉升快訊（analysis/group_surge.py）與事件族群進場候選（trade/event_group.py）的盤中狀態。"""
+    conf = {**GROUP_SURGE_DEFAULTS, **((config.settings().get("realtime") or {}).get("group_surge") or {})}
+    if not conf["enabled"]:
+        return None
+    return {"conf": conf, "covered": set(), "themes": set(), "sent_today": 0}
+
+
+def _group_surge_check(gs: dict, quotes: dict, themes_tw: dict, listings: dict, futures: dict, trade_rt: dict | None,
+                       now: datetime, idx: dict | None = None) -> None:
+    """同一族群 ≥3 檔同時漲 ≥5% → 選股機器人整組推一則（漲幅、鎖死漲停、股期、2% 規則）；
+    有研究或今天的重大事件撐腰、而且有進出場機器人時，再推『事件族群』進場候選。每個族群每級每天各一次（跨重啟用 cards_sent 去重）。"""
+    from .analysis import group_surge
+    from .trade import event_group
+    conf = gs["conf"]
+    if f"{now:%H:%M}" < conf["start"]:
+        return
+    groups = group_surge.detect(quotes, themes_tw, pct=conf["pct"], min_n=conf["min_stocks"], min_share=conf["min_share"])
+    gs["covered"] |= group_surge.covered_codes(groups)
+    gs["themes"] |= {g["theme"] for g in groups}
+    taiex = (idx or {}).get("加權指數")
+    market = (f"大盤：加權 {taiex.price:,.0f}（{taiex.change_pct:+.2f}%）"
+              if taiex and taiex.price is not None and taiex.change_pct is not None else "")
+    today = f"{now:%Y-%m-%d}"
+    try:
+        major_state = json.loads(MAJOR_PATH.read_text(encoding="utf-8")) if MAJOR_PATH.exists() else {}
+    except (ValueError, OSError):
+        major_state = {}
+    events_cfg = config.major_events().get("events") or {}
+    for g in groups:
+        key = f"grpsurge:{g['theme']}:{g['level']}"
+        if theme_card.already_sent(key) or gs["sent_today"] >= int(conf["max_per_day"]):
+            continue
+        theme_card.mark_sent(key)       # 先記再推：寧可少一則，不要重複洗版
+        gs["sent_today"] += 1
+        codes = [str(c) for c in themes_tw.get(g["theme"], [])]
+        topic = research.topic_for_theme(g["theme"], codes)
+        topic_date = (research.load_index().get(topic) or {}).get("date", "") if topic else ""
+        events = event_group.events_for_theme(g["theme"], major_state, events_cfg, today)
+        if topic:
+            research_line = f"📚 研究：《{topic}》{topic_date}"
+        elif not g["theme"].startswith("研究:") and research.queue_research(
+                g["theme"], f"{today} 族群拉升：{g['n_up']}/{g['n']} 檔漲 ≥{conf['pct']:g}%｜成分股：{'、'.join(codes)}"):
+            research_line = "📚 這組還沒有研究，已排入研究"
+        else:
+            research_line = "📚 這組還沒有研究"
+        if events:
+            research_line += "\n🌐 今天的重大事件：" + "、".join(events)
+        fut_labels = {m["code"]: stock_futures.label(futures.get(m["code"])) if futures else "未知" for m in g["members"]}
+        cands, sizing = [], {}
+        if trade_rt:
+            cands = event_group.candidates(g, futures, trade_rt["levels"], trade_rt["equity"], trade_rt["rates"])
+            sizing = {r["code"]: event_group.size_text(r) for r in cands if r["tier"] == event_group.TIER_CHASE}
+        notify.send(group_surge.message(g, now, fut_labels, sizing, research_line, market), channel="picks")
+        proof = event_group.backing(topic, topic_date, events)
+        if trade_rt and proof:
+            notify.send(event_group.message(g, cands, proof, trade_rt["market_ok"], now), channel="trade")
+
+
 VOLPRICE_SEEN = research.ROOT / "state" / "volprice_seen.json"
 VOLPRICE_NOTE = ("回測（近 2 年、343 檔）：這類股票之後 10 日內出現放量突破的機率約 41%（沒放量約 27%），進場價比突破日低約 6%；"
                  "但勝率只有 42%、平均 R≈0，同題材有人放量上漲也沒有加分。所以是『比突破更早盯上』的觀察名單，不是進場訊號。")
@@ -575,6 +637,11 @@ def cmd_realtime(args) -> None:
         fd = _futures_day_setup()
     except Exception as e:  # noqa: BLE001
         log.warning("台指期日內訊號準備失敗：%s", e)
+    gs = None
+    try:
+        gs = _group_surge_setup()
+    except Exception as e:  # noqa: BLE001
+        log.warning("族群拉升快訊準備失敗：%s", e)
     news_map: dict[str, dict] = {}  # 今天看過的新聞依個股彙總（題材、漲價）
     alerted: set[str] = set()
     pushed_times: set[str] = set()
@@ -613,6 +680,11 @@ def cmd_realtime(args) -> None:
                     _futures_day_check(fd, now)
                 except Exception as e:  # noqa: BLE001
                     log.warning("台指期日內訊號失敗：%s", e)
+            if gs and _in_session(now):
+                try:
+                    _group_surge_check(gs, quotes, themes_tw, listings, futures, trade_rt, now, idx)
+                except Exception as e:  # noqa: BLE001
+                    log.warning("族群拉升快訊失敗：%s", e)
             flow = sector_flow.theme_flow_intraday(quotes, themes_tw, listings, now)
             head = " ｜ ".join(f"{k} {q.price:,.2f} ({q.change_pct:+.2f}%)" for k, q in idx.items()
                                if q.price is not None and q.change_pct is not None)
@@ -648,6 +720,9 @@ def cmd_realtime(args) -> None:
                         alerted.add(key)
                         notify.send(f"🔥 資金湧入【{r['族群']}】量能步調 {r['量能步調']} 倍，加權漲 {r['加權漲跌%']}%，領漲：{r['領漲']}")
                         surged.append(r["族群"])
+                if surged and gs:   # 拉升的股票已由族群拉升快訊整組推過 → 重疊過半的小族群（多半是研究自動產生的）不再各推一張卡
+                    from .analysis import group_surge
+                    surged = [t for t in surged if t in gs["themes"] or not group_surge.is_covered(themes_tw.get(t, []), gs["covered"])]
                 if surged:  # 資金湧入的族群 → 研究機器人推題材卡
                     try:
                         push_theme_cards(flow[flow["族群"].isin(surged)], None, listings, "盤中", futures=futures)
@@ -1187,11 +1262,19 @@ def major_events(items: list, listings: dict, macro_rows: list | None = None) ->
             lines.append(f"・{it.title[:90]}" + (f"\n  {it.url}" if it.url and "mops" not in it.url else ""))
         tag = {"+": "受惠", "-": "受傷", "?": "看細節"}
         rows = []
+        names_max = int(spec.get("names_max", 4))      # 族群名單列幾檔（預設 4；低軌衛星這類整組都要看的設 8）
+        theme_codes: list[str] = []
         for th, (d, why) in (spec.get("themes") or {}).items():
-            names = "、".join(f"{c} {(listings.get(str(c)) or {}).get('name', '')}" for c in (themes_tw.get(th) or [])[:4])
+            members = [str(c) for c in (themes_tw.get(th) or [])]
+            theme_codes += members
+            names = "、".join(f"{c} {(listings.get(c) or {}).get('name', '')}" for c in members[:names_max])
             rows.append(f"・{th}｜{tag.get(d, d)}：{why}" + (f"\n  {names}" if names else ""))
         if rows:
             lines += ["", "初步推論（未驗證，研究完成才算數）："] + rows
+        if spec.get("with_research") and theme_codes:      # 附既有研究：開盤前就能看到「這組之前研究過什麼」
+            related = research.related_for_codes(list(dict.fromkeys(theme_codes)), limit=5)
+            if related:
+                lines += ["", "📚 既有研究（成分股相關）："] + [f"・《{t}》{d}" for t, d in related]
         market = macro.line(macro_rows, spec.get("watch") or [])
         if market:
             lines += ["", f"📊 國際行情：{market}"]
@@ -2687,6 +2770,128 @@ def _backtest_early(data, futures, index_df, rates, capital: float, range_: str)
     (out / "early.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
 
 
+def _backtest_eventgroup(data, futures, index_df, rates, capital: float, range_: str) -> None:
+    """事件族群進場規則回測（trade/event_group.py；使用者 2026-11-27 要求，上線前先回測）。
+
+    事件日＝同一族群（手動族群）同日 ≥3 檔（大族群 ≥25%）漲 ≥5%，收盤產生訊號、隔天開盤進場，只對有股期的股票出訊號：
+      補漲＝當天漲幅 −1%～+5%（還沒跟上）、追價＝當天漲幅 ≥5% 且沒有（日 K 近似的）鎖死漲停。
+    1) 事件日統計  2) 訊號品質（隔天開盤買進後 1／3／5／10 日；大盤多頭日 vs 全部日；對照『全部股票』基準）
+    3) 組合回測（同一套停損、2% 風險、最多 3 檔、前後半段）  4) 低軌衛星個案（5/18 前後、6/12 SpaceX 掛牌前後的逐日漲幅與事件日明細）
+    寫到 research/event_group_backtest.md 與 research/backtest/event_group*.json。「有事件或研究」這一條無法回頭重現，所以回測只驗證價量部分。
+    """
+    from .trade import backtest as bt
+    from .trade import early, event_group
+    base = bt.Params(capital=capital, exit_ma="ma20")  # 策略 B
+    themes_tw = {k: [str(c) for c in v] for k, v in (config.load("themes").get("tw") or {}).items()}
+    prepped_all = {c: bt.prepare(d, base) for c, d in data.items() if len(d) > 80}
+    fr = early.frames(prepped_all)
+    mkt = bt.market_ok(index_df)
+    all_days = pd.Series(True, index=fr["close"].index)
+    # 組合回測只放有股期的股票（和其他回測的標的一致）；事件偵測用整個族群
+    fut_codes = {c for c in data if (futures.get(c) or {}).get("std") or (futures.get(c) or {}).get("mini")}
+    data_fut = {c: d for c, d in data.items() if c in fut_codes}
+    sig = {
+        "補漲": event_group.signals(themes_tw, fr, futures, tiers=(event_group.TIER_LAG,)),
+        "追價": event_group.signals(themes_tw, fr, futures, tiers=(event_group.TIER_CHASE,)),
+        "補漲＋站上60日線": event_group.signals(themes_tw, fr, futures, tiers=(event_group.TIER_LAG,), trend=True),
+        "追價＋站上60日線": event_group.signals(themes_tw, fr, futures, tiers=(event_group.TIER_CHASE,), trend=True),
+    }
+    count = lambda x: sum(len(v) for v in x.values())  # noqa: E731
+    days_n = {k: len(v) for k, v in sig.items()}
+    log.info("事件族群訊號數：%s；事件日 %s", {k: count(v) for k, v in sig.items()}, days_n)
+
+    both = early.merge(sig["補漲"], sig["追價"])
+    both_tr = early.merge(sig["補漲＋站上60日線"], sig["追價＋站上60日線"])
+    lines = [f"# 事件族群進場規則回測（{now_tw():%Y-%m-%d %H:%M}，資料範圍 {range_}）", "",
+             "規則（trade/event_group.py）：族群同日 ≥3 檔（大族群 ≥25%）漲 ≥5% → 當天收盤產生訊號、隔天開盤進場；只對有股期的股票出訊號。"
+             "補漲＝當天漲幅 −1%～+5%；追價＝當天漲幅 ≥5% 且不是鎖死漲停（日 K 近似：漲幅 ≥9.4% 且收在最高價）。"
+             "停損 −1.5ATR、跌破 20 日線出場、2% 風險、最多 3 檔（策略 B）。", "",
+             "限制：只驗證價量部分，『有事件或研究撐腰』無法回頭重現；族群成分股是用現在的清單回頭套（存活者偏差）；日 K 看不到盤中順序，"
+             "實際是盤中就推、不一定等到收盤；樣本只有近 2 年、事件日有同一天多族群重疊的問題。", ""]
+    quality = {}
+    for title, mk in (("大盤多頭日", mkt), ("全部日子（含空頭／盤整）", all_days)):
+        q = early.forward_stats(both, fr, mk)
+        q_tr = early.forward_stats(both_tr, fr, mk)
+        q_tr["訊號"] = q_tr["訊號"].where(q_tr["訊號"].str.contains("基準"), q_tr["訊號"] + "（站上60日線）")
+        q = pd.concat([q, q_tr[~q_tr["訊號"].str.contains("基準")]], ignore_index=True)
+        quality[title] = q
+        print(f"【訊號品質｜{title}：隔天開盤買進後的平均報酬（不受口數、持倉數限制）】")
+        print(q.to_string(index=False))
+        lines += [f"## 訊號品質｜{title}", "", _md_table(q), ""]
+    out = research.RESEARCH_DIR / "backtest"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "event_group_signals.json").write_text(
+        json.dumps({k: json.loads(v.to_json(orient="records", force_ascii=False)) for k, v in quality.items()},
+                   ensure_ascii=False, indent=1), encoding="utf-8")
+
+    cases = {
+        "B 現行（收盤突破＋拉回）": ({}, None),
+        "B＋事件族群補漲": ({}, sig["補漲"]),
+        "B＋事件族群追價": ({}, sig["追價"]),
+        "B＋事件族群（補漲＋追價）": ({}, both),
+        "B＋事件族群（補漲＋追價，站上60日線）": ({}, both_tr),
+        "只做事件族群補漲": ({"setups": ()}, sig["補漲"]),
+        "只做事件族群追價": ({"setups": ()}, sig["追價"]),
+        "只做事件族群（補漲＋追價）": ({"setups": ()}, both),
+        "只做事件族群（站上60日線）": ({"setups": ()}, both_tr),
+        "事件族群排在突破前面": ({"extra_first": True}, both),
+    }
+    rows = _early_table(cases, base, data_fut, futures, index_df, rates)
+    table = pd.DataFrame(rows)
+    print("\n【組合回測】")
+    print(table.drop(columns=["各型態"]).to_string(index=False))
+    for r in rows:
+        print(f"・{r['策略']}：{r['各型態']}")
+    (out / "event_group.json").write_text(table.to_json(orient="records", force_ascii=False, indent=1), encoding="utf-8")
+    lines += ["## 組合回測（同一套停損、2% 風險、最多 3 檔；前後半段各自回測）", "",
+              _md_table(table.drop(columns=["各型態"])), ""]
+    lines += [f"- {r['策略']}：{r['各型態']}" for r in rows] + [""]
+
+    sat = themes_tw.get("低軌衛星") or []
+    if sat:
+        names = {c: (listings_name(c)) for c in sat}
+        evs = event_group.theme_events("低軌衛星", sat, fr, futures)
+        win = []
+        for start, end, label in (("2026-05-14", "2026-05-22", "5/18 前後"), ("2026-06-10", "2026-06-18", "6/12 SpaceX 掛牌前後"),
+                                  ("2026-11-20", "2026-11-27", "11/25～11/26 FCC 批准前後")):
+            w = event_group.window_table(sat, fr, start, end)
+            if w:
+                win.append((label, w))
+        lines += ["## 低軌衛星個案（8 檔：" + "、".join(f"{c}{names[c]}" for c in sat) + "）", ""]
+        for label, w in win:
+            lines += [f"### {label}：成分股逐日漲幅（%）與規則是否觸發", "", _md_table(pd.DataFrame(w)), ""]
+            print(f"\n【低軌衛星｜{label}】")
+            print(pd.DataFrame(w).to_string(index=False))
+        lines += ["### 事件日明細（≥3 檔漲 ≥5%）：有股期的成分股隔天開盤買進後的平均報酬", "",
+                  (_md_table(pd.DataFrame(evs)) if evs else "沒有符合的事件日。"), ""]
+        print("\n【低軌衛星｜事件日明細】")
+        print(pd.DataFrame(evs).to_string(index=False) if evs else "沒有符合的事件日")
+    p = research.ROOT / "research" / "event_group_backtest.md"
+    p.write_text("\n".join(lines), encoding="utf-8")
+    print(f"\n已寫入 {p}")
+
+
+def _md_table(df: pd.DataFrame) -> str:
+    """DataFrame → Markdown 表格（不依賴 tabulate）。"""
+    cols = [str(c) for c in df.columns]
+
+    def cell(v) -> str:
+        if v is None or (isinstance(v, float) and pd.isna(v)):
+            return ""
+        return str(v).replace("|", "／").replace("\n", " ")
+    rows = ["| " + " | ".join(cols) + " |", "|" + "|".join(["---"] * len(cols)) + "|"]
+    rows += ["| " + " | ".join(cell(v) for v in r) + " |" for r in df.itertuples(index=False)]
+    return "\n".join(rows)
+
+
+def listings_name(code: str) -> str:
+    """回測報告用的股票名稱（抓不到就空字串）。"""
+    try:
+        return (_listings().get(code) or {}).get("name", "")
+    except Exception:  # noqa: BLE001
+        return ""
+
+
 def _early_table(cases: dict, base, data, futures, index_df, rates) -> list[dict]:
     """逐組情境回測：全期間＋前後半段。cases：{名稱: (Params 覆寫, 額外訊號)}。"""
     from .trade import backtest as bt
@@ -2903,6 +3108,9 @@ def cmd_backtest(args) -> None:
     listings = _listings()
     futures = stock_futures.load_stock_futures()
     codes = [c for c, v in futures.items() if c in listings and not c.startswith("00") and (v.get("std") or v.get("mini"))]
+    if getattr(args, "eventgroup", False):  # 事件族群：要看整個族群同日拉升（很多成分股沒有股期），只用手動族群、避免研究題材的後見之明
+        extra = {str(c) for v in (config.load("themes").get("tw") or {}).values() for c in v}
+        codes = sorted(set(codes) | {x for x in extra if x in listings and not x.startswith("00")})
     if getattr(args, "volprice", False):  # 量增價未漲：標的要涵蓋題材成分股和所有研究過的股票（很多小型題材股沒有股票期貨）
         extra = set(config.all_tw_theme_codes())
         for e in research.load_index().values():
@@ -2945,6 +3153,9 @@ def cmd_backtest(args) -> None:
         return
     if args.early2:
         _backtest_early2(data, futures, index_df, rates, args.capital, args.range)
+        return
+    if getattr(args, "eventgroup", False):
+        _backtest_eventgroup(data, futures, index_df, rates, args.capital, args.range)
         return
     if args.launch:
         _backtest_launch(data, futures, index_df, rates, args.capital, args.range)
@@ -3447,6 +3658,7 @@ def main(argv: list[str] | None = None) -> None:
     bk.add_argument("--launch2", action="store_true", help="發動機率分數放進策略：逐季向前訓練、每天取前幾檔，和 B 比組合回測")
     bk.add_argument("--launch", action="store_true", help="短線發動機率研究：條件分組發動率、合成分數的樣本外提升倍數")
     bk.add_argument("--early2", action="store_true", help="提前進場第二輪：專用名額、強度濾網、盤中突破強度門檻")
+    bk.add_argument("--eventgroup", action="store_true", help="事件族群進場規則：族群同日 ≥3 檔漲 ≥5% 後的補漲／追價，訊號品質、組合回測、低軌衛星個案")
     bk.add_argument("--speed", action="store_true", help="翻倍速度：不同風險／持倉數、不同起點，多久翻倍與回撤")
     bk.set_defaults(func=cmd_backtest)
     tr = sub.add_parser("trade", help="進出場機器人（模擬）")

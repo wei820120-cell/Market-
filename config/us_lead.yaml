@@ -42,3 +42,12 @@ leads:
   XBI:  {name: 生技ETF,  pct: 2.5, themes: [生技]}
   SMH:  {name: 半導體ETF, pct: 2.2, themes: [晶圓代工, 先進封裝設備, AI伺服器, IC設計, 封測]}
   SOXX: {name: 費半ETF,  pct: 2.2, themes: [晶圓代工, 先進封裝設備, AI伺服器, IC設計, 封測]}
+  # 2026-11-27 加：太空／低軌衛星。SPCX＝SpaceX（2026-06-12 Nasdaq 掛牌，發行價 135 美元）。GSAT（Globalstar）被併購標的、股價受交易條件主導，不列。
+  # 注意：2026-06-12 SpaceX 掛牌日美股大漲 19%，台股低軌衛星股反而下挫（利多出盡）——這張對照只是「盤前觀察名單」的起點，不是進場訊號，
+  # 要不要進場看開盤後族群是否真的拉升（族群拉升快訊）與事件族群規則。
+  SPCX: {name: SpaceX,           pct: 5.0, themes: [低軌衛星]}
+  ASTS: {name: AST SpaceMobile,  pct: 8.0, themes: [低軌衛星]}
+  RKLB: {name: Rocket Lab,       pct: 8.0, themes: [低軌衛星]}
+  SATS: {name: EchoStar,         pct: 6.0, themes: [低軌衛星]}
+  IRDM: {name: Iridium,          pct: 6.0, themes: [低軌衛星]}
+  UFO:  {name: 太空ETF,          pct: 2.5, themes: [低軌衛星]}

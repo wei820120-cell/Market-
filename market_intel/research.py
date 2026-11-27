@@ -604,6 +604,18 @@ def find_for_codes(codes: list[str], min_overlap: int = 2) -> str | None:
     return best
 
 
+def related_for_codes(codes: list[str], limit: int = 5) -> list[tuple[str, str]]:
+    """成分股出現在哪些研究裡：回傳 [(研究題材, 日期)]，重疊檔數多的在前、同檔數日期新的在前（最多 limit 份）。"""
+    want = {str(c) for c in codes}
+    rows = []
+    for topic, e in load_index().items():
+        n = len(want & {str(c) for c in e.get("codes", [])})
+        if n:
+            rows.append((n, str(e.get("date", "")), topic))
+    rows.sort(reverse=True)
+    return [(t, d) for _, d, t in rows[:limit]]
+
+
 def pending_commands(updates: list[dict], owner_chat: str | None, offset: int | None) -> tuple[list[str], int | None]:
     """從 getUpdates 結果取出主人傳的「研究 XXX」指令，回傳（題材清單, 下一次的 offset）。"""
     topics = []

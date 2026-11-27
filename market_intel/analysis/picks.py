@@ -8,6 +8,10 @@
   族群漲價 上游漲價、所屬族群受惠 +2
   族群   所屬族群今天判讀為資金流入 +2
   當天下跌時總分打五折。
+
+價量確認（2026-11-27）：新聞、漲價、漲價信、族群漲價這四項「故事分」要有價格（漲幅 ≥ 2%）或量能（量比 ≥ 1.5）支持才給足；
+價量都有 ×1.0、只有一項 ×0.6、都沒有 ×0.3。原因：11/26 低軌衛星族群集體漲停，前 5 名卻被整天不變的題材／漲價標籤占滿，
+有漲價信的股票不用漲也贏過漲停股。另外前 5 名保留名額給「漲幅 ≥ 5% 且量能達標」最強的（rank_picks 的 reserve）。
 """
 from __future__ import annotations
 
@@ -16,6 +20,14 @@ from dataclasses import dataclass, field
 import pandas as pd
 
 from ..fetchers.stock_futures import label as futures_label
+
+
+CONFIRM_PCT = 2.0       # 漲幅達這個值算價格確認
+CONFIRM_RATIO = 1.5     # 量比／量能步調達這個值算量能確認
+STORY_FACTOR = {2: 1.0, 1: 0.6, 0: 0.3}   # 價量確認幾項 → 故事分（新聞、漲價、漲價信、族群漲價）的係數
+STRONG_PCT = 5.0        # 保留名額的門檻：漲幅 ≥ 5%（量比要達 rank_picks 的 min_ratio）
+SLOTS = 5               # 推播列前幾名（picks_message 的預設）
+RESERVE = 2             # 前 SLOTS 名裡最多保留幾個給量價最強的
 
 
 @dataclass
@@ -71,8 +83,18 @@ def news_by_code(ranked: list, themes: dict[str, list] | None = None) -> dict[st
     return out
 
 
+def confirmations(c: Candidate) -> int | None:
+    """價量確認幾項（價格、量能各一項）；漲幅和量比都沒有資料時回 None（不打折）。"""
+    if c.pct is None and c.ratio is None:
+        return None
+    return int(c.pct is not None and c.pct >= CONFIRM_PCT) + int(c.ratio is not None and c.ratio >= CONFIRM_RATIO)
+
+
 def score(c: Candidate) -> tuple[float, list[str]]:
     s, why = 0.0, []
+    k = confirmations(c)
+    f = 1.0 if k is None else STORY_FACTOR[k]     # 故事分的價量確認係數
+    story = 0.0
     if c.ratio is not None:
         s += min(max(c.ratio, 0), 5) * 2
         if c.ratio >= 1.5:
@@ -82,17 +104,20 @@ def score(c: Candidate) -> tuple[float, list[str]]:
         if c.inst >= 1:
             why.append(f"法人買{c.inst:.0f}億")
     if c.news_score > 0:
-        s += min(c.news_score, 8)
+        story += min(c.news_score, 8)
         why.append("題材")
     if c.price_hike:
-        s += 4
+        story += 4
         why.append("漲價")
     if c.price_letter:
-        s += 2
+        story += 2
         why.append("漲價信")
     if c.theme_hike and not c.price_hike:
-        s += 2
+        story += 2
         why.append("族群漲價")
+    s += story * f
+    if story and f < 1.0:
+        why.append("未價量確認")
     if c.theme_inflow:
         s += 2
         why.append("族群資金流入")
@@ -101,8 +126,40 @@ def score(c: Candidate) -> tuple[float, list[str]]:
     return round(s, 1), why
 
 
+def reserve_strong(df: pd.DataFrame, slots: int = SLOTS, reserve: int = RESERVE, min_ratio: float = 1.2) -> pd.DataFrame:
+    """前 slots 名保留名額給量價最強的（漲幅 ≥ STRONG_PCT 且量比 ≥ min_ratio，依漲幅、量比排序取前 reserve 檔）。
+    這些股票若沒進前 slots 名，就換掉前 slots 名裡分數最低、又不是量價最強的幾檔；換進來的理由標「量價最強」。"""
+    if df.empty or reserve <= 0 or len(df) <= slots:
+        return df
+    pct = pd.to_numeric(df["漲跌%"], errors="coerce").fillna(-99)
+    ratio = pd.to_numeric(df["量比"], errors="coerce").fillna(0)
+    strong = df[(pct >= STRONG_PCT) & (ratio >= min_ratio)].assign(_p=pct, _r=ratio)
+    keep = list(strong.sort_values(["_p", "_r"], ascending=False).head(reserve).index)
+    head = list(df.index[:slots])
+    missing = [i for i in keep if i not in head]
+    if not missing:
+        return df
+    moved = []
+    for i in reversed(head[:]):
+        if not missing:
+            break
+        if i in keep:
+            continue
+        head.remove(i)
+        take = missing.pop(0)
+        head.append(take)
+        moved.append(take)
+    head.sort(key=lambda i: -float(df.at[i, "分數"]))
+    rest = [i for i in df.index if i not in head]
+    out = df.loc[head + rest].copy()
+    for i in moved:
+        why = str(out.at[i, "理由"])
+        out.at[i, "理由"] = (why + "、" if why else "") + "量價最強"
+    return out.reset_index(drop=True)
+
+
 def rank_picks(cands: list[Candidate], futures: dict[str, dict], top: int = 20,
-               min_ratio: float = 1.2) -> pd.DataFrame:
+               min_ratio: float = 1.2, slots: int = SLOTS, reserve: int = RESERVE) -> pd.DataFrame:
     rows = []
     for c in cands:
         # 至少要有資金（量增或法人買）或題材，且當天沒有明顯下跌
@@ -127,7 +184,8 @@ def rank_picks(cands: list[Candidate], futures: dict[str, dict], top: int = 20,
     df = pd.DataFrame(rows)
     if df.empty:
         return df
-    return df.sort_values("分數", ascending=False).head(top).reset_index(drop=True)
+    df = df.sort_values("分數", ascending=False).reset_index(drop=True)
+    return reserve_strong(df, slots, reserve, min_ratio).head(top).reset_index(drop=True)
 
 
 def themes_of(themes: dict[str, list]) -> dict[str, list[str]]:

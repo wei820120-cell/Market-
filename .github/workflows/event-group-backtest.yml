@@ -1,0 +1,44 @@
+# 事件族群進場規則回測（trade/event_group.py；使用者 2026-11-27 要求「上線前先回測」）。
+# 族群同日 ≥3 檔漲 ≥5% 之後的補漲／追價，用同一套停損、2% 風險、最多 3 檔比較；另附低軌衛星個案（5/18 前後、6/12 SpaceX 掛牌前後、11/25～11/26 FCC 批准前後）。
+# Yahoo 日 K 在雲端沙盒抓不到，所以在 GitHub 上跑，結果 commit 回去（research/event_group_backtest.md，也印在日誌裡）。
+# 手動執行（workflow_dispatch，只在預設分支）；開發分支改這個檔時也會跑一次（push 觸發，方便檢查）。
+name: event-group-backtest
+on:
+  workflow_dispatch:
+    inputs:
+      range:
+        description: "回測資料範圍（Yahoo range，例如 2y、5y）"
+        default: "2y"
+  push:
+    branches: [claude/funny-goodall-fft1u6]
+    paths: [".github/workflows/event-group-backtest.yml"]
+permissions:
+  contents: write
+concurrency:
+  group: event-group-backtest
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 回測
+        run: python -m market_intel backtest --eventgroup --range "${{ inputs.range || '2y' }}" 2>&1 | tee event_group_backtest.log
+      - name: 存檔
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/event_group_backtest.md research/backtest/event_group.json research/backtest/event_group_signals.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "事件族群進場規則回測 $(TZ=Asia/Taipei date '+%F %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase -q && git push -q && exit 0
+            git rebase --abort 2>/dev/null || true; sleep 5
+          done
+          echo "存檔衝突，放棄這次記錄"
