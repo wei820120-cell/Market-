@@ -1,0 +1,412 @@
+{
+ "topic": "供需事件：美AI晶片禁令升級！惠譽示警亞太AIDC融資趨緊",
+ "one_line": "cnyes（11/27 10:56）稱惠譽指美國收緊先進 AI 晶片與算力管制，亞太資料中心投資將放緩、新雲端業者最受衝擊（晶片取得與終端用戶受限 → 營收能見度降、融資壓力升），馬來西亞等東南亞專案恐分化、放款更重視發起人、長約與客戶資格；惠譽報告本身這輪沒找到，只有三句摘要。規則屬實：BIS 11/16 臨時最終規則（11/19 刊登）對印尼、馬來西亞、新加坡、泰國、巴西出口先進晶片要許可，並對向中國或澳門公司供應合計超過 1,200 萬 TPP 的資料中心要許可，90 天過渡到約 2027-02-17，同時廢止 AI 擴散規則。其他機構方向一致但語氣不同：CGS『減速丘不是出軌』、OCBC 陸資持股或客戶者合規成本最高、Kenanga 稱美系超大規模業者需求可緩衝；S&P（10/16）早就預期馬來西亞資料中心與 GPU 融資三年內超過銀行放款上限——融資趨緊有規則以外的原因。對台灣：曝險沒查到，台系伺服器 ODM 標中性、緯創偏受傷（既有研究推論）。",
+ "status": "混合",
+ "horizon": "中期（3-12個月）",
+ "keywords": [
+  "惠譽",
+  "Fitch",
+  "亞太資料中心",
+  "AIDC融資",
+  "新雲端業者",
+  "BIS",
+  "遠端存取",
+  "1,200萬TPP",
+  "馬來西亞",
+  "AI擴散規則",
+  "出口管制",
+  "政策管制"
+ ],
+ "catalysts": [
+  "惠譽原文與發布日期（Fitch Ratings 官網）：是否點名新雲端業者與評等行動",
+  "BIS 規則聯邦公報文本與 FAQ（TPP 門檻折算、五國清單、每月申報）",
+  "90 天過渡期（到約 2027-02-17）前後：東南亞營運商的許可申請與客戶公告",
+  "CoreWeave、Nebius 的債券殖利率與新發行條件；銀行放款條件是否改以發起人、長約與客戶資格為主",
+  "台系 ODM 月營收與法說對東南亞與新雲端客戶的說法"
+ ],
+ "risks": [
+  "惠譽原文、cnyes 原文與 BIS 規則原文都沒讀到，全部是搜尋摘要；『惠譽示警』只有三句摘要",
+  "融資趨緊有規則以外的原因（放款額度、利息成本、電力延遲），不能全記在新規則上",
+  "TPP 門檻折算兩說；生效日兩說；陸資客戶占比只有未經獨立驗證的估計",
+  "GPU 租金資料互相矛盾，租金下滑與規則沒有因果證據",
+  "沒有台廠對本規則的說法與曝險；立法（國會法案）與執法（Megaspeed）風險獨立於本規則"
+ ],
+ "spec_tables": [
+  {
+   "title": "表一：規則內容與各方反應（全部出自搜尋摘要；BIS 規則原文與惠譽報告都沒讀到）",
+   "columns": [
+    "項目",
+    "內容",
+    "來源",
+    "算術與備註"
+   ],
+   "rows": [
+    [
+     "規則名稱與日期",
+     "BIS 臨時最終規則『Addressing Remote Access to Advanced Semiconductors』，2026-11-16 公布、預定 11/19 刊登聯邦公報；多數事務所稱刊登即生效（另一說為 11/19 生效），不是 90 天後",
+     "Fenwick、Nixon Peabody、Akin、GT Law（搜尋摘要）",
+     "兩說都落在 11/19 前後；11/16 為週一、11/19 為週四（算術）"
+    ],
+    [
+     "五國許可",
+     "對印尼、馬來西亞、新加坡、泰國、巴西出口、再出口與境內移轉先進晶片需許可；最終收貨人或最終用戶總部（或最終母公司）在美國的案件排除，但要符合新的每月申報；逐案審查，看各國出口管制執法",
+     "Akin、GT Law、TechPowerUp（搜尋摘要）",
+     "日本不在名單（既有研究 11/25）"
+    ],
+    [
+     "遠端存取",
+     "向總部在 D:5 國家（含中國）或澳門的公司提供合計運算力超過 1,200 萬 TPP 的資料中心，出口先進加速器需許可；含『連結資料中心』與間接取用（例如雲端轉售商替中國公司訓練模型）；加強客戶盡職調查（含陸資國企、澳門實體，防重組規避）",
+     "TechPowerUp、Nixon Peabody、SCMP（搜尋摘要）",
+     "門檻折合多少顆晶片兩說：『約 330 顆較先進晶片』對『約 200 顆 Blackwell 或約 800 顆 H100』（分析師 McGuire）；沒讀到 BIS 原文，數字未確認"
+    ],
+    [
+     "過渡期與廢除",
+     "已服務此類客戶的資料中心有 90 天過渡期；同時正式廢止 2025 年 1 月 AI 擴散規則（國家分級、資料中心 VEU、模型權重管制、License Exception AIA 與 LPP）",
+     "Akin、GT Law、Fenwick（搜尋摘要）",
+     "2026-11-19 ＋ 90 天 ＝ 2027-02-17（算術）"
+    ],
+    [
+     "惠譽觀點——觸發報導",
+     "cnyes（11/27 10:56）三句摘要：美國收緊先進 AI 晶片與算力管制，亞太資料中心投資將放緩；新雲端業者最受衝擊（晶片取得、終端用戶受限 → 營收能見度降、融資壓力升）；馬來西亞等東南亞專案恐分化，放款更重視發起人、長約與客戶資格",
+     "鉅亨網（佇列）",
+     "惠譽報告本身、發布日期與是否為評等行動，兩次搜尋都沒找到；cnyes 原文也沒讀到"
+    ],
+    [
+     "惠譽較早的相關說法（日期未確認）",
+     "分析師 Sajal Kishore：馬來西亞市場可能比外界以為更有抗震力；亞太資料中心需求主力是雲端運算而不是 AI；多數宣布容量仍在規劃階段，交付取決於電力接入、土地、許可、融資與設備供應",
+     "搜尋摘要（來源頁面對應未確認）",
+     "語氣比觸發報導溫和；是否同一份報告、時間點都沒確認"
+    ],
+    [
+     "券商與銀行看法",
+     "CGS International：短期阻力、不會讓東協資料中心長期成長出軌，馬來西亞與泰國投資可能延後到 2027；OCBC：授權不確定性、執行延遲與合規成本，陸資持股或客戶的營運商最受影響，但不太會打斷東協整體擴張；Kenanga：馬來西亞業者面臨更嚴審查，美國超大規模業者的強勁需求可緩衝；NST：美系大型科技公司支持的既有專案短期不太受影響，新擴建審查更嚴",
+     "Business Today、NST、Focus Malaysia（搜尋摘要）",
+     "惠譽、CGS、OCBC、Kenanga 方向一致：分化而不是全面停擺"
+    ],
+    [
+     "融資背景（規則之前就在）",
+     "S&P Global Ratings（10/16）：馬來西亞資料中心與 GPU 融資三年內預期超過銀行放款上限，GPU 融資也開始出現在銀行資產負債表；The Star（2026-01）：亞洲銀行家擔心融資案讓中國終端用戶遠端使用先進美製晶片而被美方審查",
+     "The Star（搜尋摘要）",
+     "融資趨緊有規則以外的原因（銀行放款額度），不能全記在這條規則上"
+    ],
+    [
+     "新雲端業者壓力（既有研究 11/18）",
+     "Nebius 把原訂今年上線的第三方產能延到 2027 上半年、資本支出上調到約 270 億美元；CoreWeave 積壓訂單約 1,325 億美元、利息使淨損 7.09 億美元、部分債券殖利率逾 16%",
+     "既有研究《新興雲端Nebius、CoreWeave重挫》（搜尋摘要）",
+     "規則前就已出現延遲與融資成本升，『壓力最大』不是新現象；7.09 ÷ 1,325 ≈ 0.5%（淨損對積壓訂單的量級，非獲利率）"
+    ]
+   ],
+   "note": "全部數字來自搜尋摘要；cnyes、Fitch 與 BIS 原文頁面在本工作階段都沒讀到；『惠譽示警』只有 cnyes 三句摘要可對照。"
+  },
+  {
+   "title": "表二：擴產與稼動檢核（資料中心與 AI 伺服器鏈：卡的是許可、客戶資格、電力與融資，不是需求）",
+   "columns": [
+    "公司",
+    "瓶頸環節",
+    "現況稼動",
+    "擴產與資本支出",
+    "投產或放量時點",
+    "主要限制",
+    "證據等級"
+   ],
+   "rows": [
+    [
+     "Nebius（美股）",
+     "電力、第三方機房與融資成本",
+     "稼動沒查到；原訂今年上線的第三方產能延到 2027 上半年",
+     "資本支出上調到約 270 億美元（既有研究，搜尋摘要）",
+     "2027 上半年；微軟維蘭站因電力延到 2027 Q2",
+     "電力與機房交付；融資成本；規則對其客戶結構的影響沒查到",
+     "媒體報導（二手）"
+    ],
+    [
+     "CoreWeave（美股）",
+     "融資成本與交付",
+     "積壓訂單約 1,325 億美元（需求在）",
+     "本輪數字沒查到",
+     "沒查到",
+     "利息使淨損 7.09 億美元、部分債券殖利率逾 16%；中國客戶占比沒查到",
+     "媒體報導（二手）"
+    ],
+    [
+     "東南亞資料中心營運商（馬來西亞、新加坡、泰國、印尼）",
+     "先進晶片取得許可、客戶資格、電力與水",
+     "稼動沒查到；報導稱馬來西亞 2025 年已因電網與水資源限制放緩",
+     "沒查到；惠譽（較早說法）稱多數宣布容量仍在規劃階段",
+     "新規 90 天過渡到約 2027-02-17；CGS 稱投資可能延後到 2027",
+     "陸資持股或陸資客戶的專案最受影響；美系超大規模業者支持的專案相對安全（OCBC、NST 說法）",
+     "媒體報導（搜尋摘要）"
+    ],
+    [
+     "台系 AI 伺服器 ODM（廣達、緯創、緯穎、英業達、鴻海）",
+     "GPU 與機櫃交付",
+     "稼動沒查到；廣達 11/11 法說稱沒看到客戶改單、出貨高峰 2027 Q1（既有研究，二手）",
+     "沒查到",
+     "2027 Q1（廣達說法，早於本規則）",
+     "東南亞與新雲端客戶占比沒查到；沒有台廠對本規則的說法",
+     "媒體報導（二手）"
+    ]
+   ],
+   "note": "逐列檢查四項：需求滿載卻沒擴產（不是，卡在許可與資格）、擴產但上游沒擴（電力與機房是共同瓶頸）、單一客戶專供（新雲端業者客戶集中，細節沒查到）、設計產能不等於可出貨（許可與客戶資格決定能不能出貨）。"
+  },
+  {
+   "title": "表三：融資壓力怎麼傳導（推論表，不是預測）",
+   "columns": [
+    "專案或業者類型",
+    "規則下的處境",
+    "融資面可能的影響（推論）",
+    "資料缺口"
+   ],
+   "rows": [
+    [
+     "有美系超大規模業者長約的專案",
+     "最終用戶總部在美國者排除，但要每月申報",
+     "影響最小；放款看長約與客戶信用，可能更偏好這類專案",
+     "各專案的客戶結構沒查到"
+    ],
+    [
+     "以陸資客戶為主或陸資持股的營運商",
+     "合計超過 1,200 萬 TPP 的取用要許可；90 天過渡到約 2027-02-17；盡職調查與反規避條款",
+     "營收能見度下降、長約可執行性存疑 → 放款條件收緊或抽身",
+     "陸資客戶占比：只有 DSET 報告估馬來西亞柔佛州資料中心逾半為陸資背景（約 58%，未經獨立驗證，搜尋摘要）"
+    ],
+    [
+     "沒有錨定客戶的新雲端業者",
+     "五國取得晶片要許可；客戶資格受限",
+     "營收能見度降、融資成本升（惠譽說法，原文沒讀到）；與 Nebius、CoreWeave 既有的融資成本壓力疊加",
+     "客戶中的中國占比與債務到期表沒查到"
+    ],
+    [
+     "GPU 擔保品價值",
+     "可轉售對象縮小",
+     "GPU 抵押貸款的價值與租金可能受壓；但租金資料互相矛盾：Ornn H200 11/21 較 11/11 高點 −22.6%，Silicon Data 持平、gpurentalprices 11 月 +7.3%（既有研究 11/25）",
+     "租金下滑與本規則之間沒有任何因果證據"
+    ],
+    [
+     "銀行放款額度",
+     "S&P：馬來西亞資料中心與 GPU 融資三年內超過銀行放款上限",
+     "融資趨緊有結構性原因（額度），規則只是多加一層",
+     "其他國家沒查到"
+    ]
+   ],
+   "note": "只用來看傳導路徑；沒有債務金額、到期日或利率的資料，所以沒有量級計算。"
+  }
+ ],
+ "evolution": [
+  {
+   "name": "2025-01：AI 擴散規則",
+   "composition": "國家分級、資料中心 VEU、模型權重管制",
+   "spec": "11/16 規則正式廢止",
+   "application": "改以五國許可與遠端存取門檻取代"
+  },
+  {
+   "name": "2026-11-16/19：BIS 臨時最終規則",
+   "composition": "五國出口許可＋合計 1,200 萬 TPP 遠端存取許可",
+   "spec": "美國總部最終用戶排除（每月申報）；90 天過渡到約 2027-02-17",
+   "application": "陸資取用與東南亞轉運是主要目標"
+  },
+  {
+   "name": "2026-11-27：惠譽（cnyes 摘要）",
+   "composition": "亞太資料中心投資放緩、新雲端最受衝擊、專案分化",
+   "spec": "放款重視發起人、長約與客戶資格",
+   "application": "融資條件分化；原文未讀"
+  }
+ ],
+ "concepts": [
+  {
+   "title": "產業鏈因果（垂直）",
+   "points": [
+    "一行鏈：BIS 許可 → 輝達與 ODM 出貨 → 資料中心與新雲端（電力、機房、客戶資格）→ 銀行與債券投資人（長約、發起人、GPU 擔保品）→ 客戶",
+    "許可改變的是『賣給誰』不是『賣多少』；長約客戶資格存疑 → 營收能見度降 → 放款條件收緊（推論）",
+    "GPU 擔保品價值看租金與轉售價，但租金資料互相矛盾，不能記在規則上"
+   ]
+  },
+  {
+   "title": "相關推進力（水平）",
+   "points": [
+    "規則之前的融資壓力：S&P 放款額度預期、Nebius 延後、CoreWeave 利息、ING 出售資料中心貸款",
+    "執法與立法：Megaspeed 案、國會出口管制法案與輝達聽證",
+    "馬來西亞自己的電網與水資源限制"
+   ]
+  },
+  {
+   "title": "慣性、痛點與限制（思辯）",
+   "points": [
+    "供需缺口：合規算力可用性下降、合格客戶更重要、風險溢酬升；超大規模業者需求沒被直接打掉",
+    "慣性：禁令升級當成需求下降；惠譽摘要當成惠譽結論；融資趨緊全記在新規則；租金下滑當規則證據",
+    "痛點與解法：惠譽原文、BIS 規則文本與 FAQ、90 天過渡期前後的許可與客戶公告",
+    "限制：沒有債務金額、到期日、利率與客戶結構；台廠沒有說法；TPP 門檻折算兩說",
+    "擴產與稼動檢核：見表二（卡在許可、客戶資格、電力與融資，不是需求）",
+    "敘事陷阱自查：禁令升級是陸資取用方向、惠譽示警只見三句摘要、融資趨緊有規則以外原因、新雲端最受衝擊缺客戶占比、台灣曝險沒查到"
+   ]
+  },
+  {
+   "title": "誰受惠、誰受傷",
+   "points": [
+    "台系伺服器 ODM（廣達、緯穎、英業達、鴻海）標中性：美系客戶排除、廣達出貨高峰 2027 Q1；東南亞與新雲端占比沒查到",
+    "緯創標受傷（推論，既有研究）：偏中小型新雲端客戶",
+    "台積電標中性：管制影響賣給誰而非總需求",
+    "受傷最直接的是非台股：陸資客戶為主的東南亞營運商、沒有錨定客戶的新雲端業者"
+   ]
+  },
+  {
+   "title": "怎麼驗證",
+   "points": [
+    "惠譽原文與發布日期",
+    "BIS 規則聯邦公報文本與 FAQ",
+    "CoreWeave、Nebius 債券殖利率與銀行放款條件",
+    "東南亞營運商許可申請與客戶公告",
+    "台系 ODM 月營收與法說"
+   ]
+  }
+ ],
+ "conclusion": [
+  "規則屬實（BIS 11/16 臨時最終規則、11/19 刊登：五國許可、1,200 萬 TPP 遠端存取門檻、90 天過渡到約 2027-02-17、廢止 AI 擴散規則）；惠譽示警只有 cnyes 三句摘要，原文沒找到。",
+  "融資趨緊的方向與多家機構一致（分化而非全面停擺：陸資客戶與沒有錨定客戶者壓力最大），但 S&P、Nebius、CoreWeave 顯示壓力在規則之前就存在；租金下滑與規則沒有因果證據。",
+  "要補：惠譽原文與日期、BIS 規則文本與 FAQ、各業者的客戶結構與債務、台廠曝險；台灣標中性、緯創偏受傷（推論）。"
+ ],
+ "sources": [
+  {
+   "title": "鉅亨網（佇列觸發連結；2026-11-27 10:56；三句摘要見佇列，原文頁面在本工作階段打不開）",
+   "url": "https://news.cnyes.com/news/id/6673563"
+  },
+  {
+   "title": "BIS Announces New Export Controls on Remote Access, AI Chips（Fenwick；搜尋結果標題）",
+   "url": "https://www.fenwick.com/insights/publications/bis-announces-new-export-controls-remote-access-ai-chips"
+  },
+  {
+   "title": "BIS Issues Interim Final Rule Restricting Remote Access to Advanced Semiconductors, Adding Five Countries to Advanced Computing License Requirements and Formally Rescinding AI Diffusion Rule（Akin；搜尋結果標題）",
+   "url": "https://www.akingump.com/en/insights/alerts/bis-issues-interim-final-rule-restricting-remote-access-to-advanced-semiconductors-adding-five-countries-to-advanced-computing-license-requirements-and-formally-rescinding-ai-diffusion-rule"
+  },
+  {
+   "title": "BIS targets remote access to advanced chips through overseas data centers（Nixon Peabody 2026-11-16；搜尋結果標題）",
+   "url": "https://www.nixonpeabody.com/insights/alerts/2026/11/16/bis-targets-remote-access-to-advanced-chips-through-overseas-data-centers"
+  },
+  {
+   "title": "BIS Interim Final Rule Targets Remote Access to Advanced Semiconductors, Rescinds AI Diffusion Rule（Greenberg Traurig；搜尋結果標題）",
+   "url": "https://www.gtlaw.com/en/insights/2026/11/bis-interim-final-rule-targets-remote-access-to-advanced-semiconductors-rescinds-ai-diffusion-rule"
+  },
+  {
+   "title": "BIS Issues Rule Restricting Remote Access to Advanced AI Chips（Simpson Thacher；搜尋結果標題）",
+   "url": "https://www.stblaw.com/bis-issues-rule-restrictingremote-access-to-advanced-ai-chips/"
+  },
+  {
+   "title": "U.S. Cracks Down on China Renting AI GPUs Through Overseas Data Centers（TechPowerUp；搜尋結果標題）",
+   "url": "https://www.techpowerup.com/354927/u-s-cracks-down-on-china-renting-ai-gpus-through-overseas-data-centers?type=AI"
+  },
+  {
+   "title": "US tightens AI chip export curbs to close China's overseas data centre loophole（南華早報；搜尋結果標題）",
+   "url": "https://www.scmp.com/tech/article/3374639/us-tightens-ai-chip-export-curbs-close-chinas-overseas-data-centre-loophole"
+  },
+  {
+   "title": "BIS Takes on Compute Leakage（ChinaTalk；搜尋結果標題；McGuire 的 200 顆 Blackwell／800 顆 H100 說法可能出自它，對應未確認）",
+   "url": "https://www.chinatalk.media/p/bis-finally-takes-a-stand"
+  },
+  {
+   "title": "US chip curb a speed bump, not derailment, for Asean data centre boom: CGS（Business Today Malaysia 2026-11-18；搜尋結果網址標題）",
+   "url": "https://www.businesstoday.com.my/2026/11/18/us-chip-curb-a-speed-bump-not-derailment-for-asean-data-centre-boom-cgs/"
+  },
+  {
+   "title": "Tighter US chip rules cloud Malaysia's data centre outlook [WATCH]（New Straits Times；搜尋結果標題）",
+   "url": "https://www.nst.com.my/amp/business/economy/2026/11/1580155/tighter-us-chip-rules-cloud-malaysias-data-centre-outlook-watch"
+  },
+  {
+   "title": "US AI chip curbs cloud data centre boom, but Malaysia holds firm（Focus Malaysia；搜尋結果標題）",
+   "url": "https://focusmalaysia.my/?p=246213"
+  },
+  {
+   "title": "The Edge Malaysia（搜尋結果列出；標題未顯示；CGS 與 11/19 生效的說法可能出自它，對應未確認）",
+   "url": "https://theedgemalaysia.com/node/809843"
+  },
+  {
+   "title": "Malaysia's data centre, GPU funding expected to exceed bank lending limits in three years - S&P Global Ratings（The Star 2026-10-16；搜尋結果標題）",
+   "url": "https://www.thestar.com.my/business/business-news/2026/10/16/malaysia039s-data-centre-gpu-funding-expected-to-exceed-bank-lending-limits-in-three-years---sp-global-ratings"
+  },
+  {
+   "title": "Bankers fear US scrutiny of loans involving chips（The Star 2026-01-09；搜尋結果標題）",
+   "url": "https://www.thestar.com.my/business/insight/2026/01/09/bankers-fear-us-scrutiny-of-loans-involving-chips"
+  },
+  {
+   "title": "risk and resilience in asia pacifics maturing data centre market（Clifford Chance 2026-11 briefing PDF；搜尋結果標題；內容沒讀到）",
+   "url": "https://www.cliffordchance.com/content/dam/cliffordchance/briefings/2026/11/risk-and-resilience-in-asia-pacifics-maturing-data-centre-market.pdf"
+  },
+  {
+   "title": "Asia's AI data center financing gets complicated（KrASIA；搜尋結果標題；內容沒讀到）",
+   "url": "https://kr-asia.com/asias-ai-data-center-financing-gets-complicated"
+  }
+ ],
+ "evidence": "媒體報導",
+ "layers": [
+  {
+   "layer": "政策層：BIS 許可（五國出口、遠端存取 1,200 萬 TPP）",
+   "description": "11/16 臨時最終規則、11/19 刊登；對印尼、馬來西亞、新加坡、泰國、巴西出口先進晶片要許可，對中國或澳門公司取用合計超過 1,200 萬 TPP 的資料中心要許可；美國總部最終用戶排除（每月申報）；90 天過渡到約 2027-02-17；廢止 AI 擴散規則。管制多影響賣給誰而非總需求（既有研究判斷）。",
+   "global_players": [
+    "美國商務部 BIS",
+    "輝達"
+   ],
+   "tw_stocks": [
+    {
+     "code": "2330",
+     "name": "台積電",
+     "role": "輝達 GPU 的先進製程與 CoWoS 代工；管制多影響賣給誰而非總需求（既有研究判斷）；沒有曝險數字",
+     "impact": "中性"
+    }
+   ]
+  },
+  {
+   "layer": "算力供給：新雲端業者與東南亞資料中心",
+   "description": "新雲端業者（Nebius、CoreWeave 等）靠債務擴產：Nebius 第三方產能延到 2027 上半年、資本支出約 270 億美元，CoreWeave 積壓訂單約 1,325 億美元但利息使淨損 7.09 億美元（既有研究）；東南亞營運商受陸資客戶與許可影響最大（惠譽、OCBC、CGS 說法）。",
+   "global_players": [
+    "Nebius",
+    "CoreWeave"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "融資：銀行與債券投資人",
+   "description": "放款重視發起人、長約與客戶資格（惠譽說法，原文未讀）；S&P 預期馬來西亞資料中心與 GPU 融資三年內超過銀行放款上限；GPU 擔保品價值與租金資料互相矛盾；沒有債務金額與到期日資料。",
+   "global_players": [
+    "Fitch Ratings",
+    "S&P Global Ratings"
+   ],
+   "tw_stocks": []
+  },
+  {
+   "layer": "台系 AI 伺服器 ODM（東南亞據點與新雲端客戶）",
+   "description": "廣達 11/11 法說稱沒看到客戶改單、出貨高峰 2027 Q1（公司說法，二手）；緯創偏中小型新雲端客戶（搜尋摘要，日期未核對，推論）；緯穎偏大型 CSP；東南亞據點（馬來西亞、泰國）曝險沒查到；沒有台廠對本規則的說法。",
+   "global_players": [],
+   "tw_stocks": [
+    {
+     "code": "2382",
+     "name": "廣達",
+     "role": "AI 伺服器 ODM；11/11 法說稱沒看到客戶改單、出貨高峰 2027 Q1（公司說法，二手，早於本規則）",
+     "impact": "中性"
+    },
+    {
+     "code": "3231",
+     "name": "緯創",
+     "role": "AI 伺服器與主機板代工；搜尋摘要稱偏中小型新雲端客戶，融資壓力下相對風險較高（推論，日期未核對）",
+     "impact": "受傷"
+    },
+    {
+     "code": "6669",
+     "name": "緯穎",
+     "role": "雲端伺服器 ODM，偏大型 CSP（搜尋摘要，日期未核對）；產能集中在馬來西亞的報導說法，曝險未查",
+     "impact": "中性"
+    },
+    {
+     "code": "2356",
+     "name": "英業達",
+     "role": "伺服器代工；馬來西亞設廠（報導說法）；曝險未查",
+     "impact": "中性"
+    },
+    {
+     "code": "2317",
+     "name": "鴻海",
+     "role": "AI 伺服器與機櫃代工；美國產能動作快，可能相對受惠（分析說法，非條文）；曝險未查",
+     "impact": "中性"
+    }
+   ]
+  }
+ ]
+}
